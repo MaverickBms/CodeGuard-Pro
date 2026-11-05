@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Configuración inicial — CodeGuard Pro{% endblock %}
+{% block page_title %}Configuración inicial{% endblock %}
+{% block page_subtitle %}Crea tu cuenta y genera tu frase de rescate de alta entropía.{% endblock %}
+
+{% block content %}
+<div class="glass-card form-card">
+  <div class="form-header">
+    <div class="d-flex align-items-center justify-content-center mb-3">
+      <i class="fa-solid fa-shield-halved fa-2x text-theme-primary"></i>
+    </div>
+    <h2>Configuración inicial</h2>
+    <p>Bienvenido a CodeGuard Pro. Crea tu usuario y contraseña maestra para comenzar.</p>
+  </div>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="form-group">
+      <label class="form-label">{{ form.username.label }}</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+        {{ form.username }}
+      </div>
+      {{ form.username.errors }}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">{{ form.password1.label }}</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+        {{ form.password1 }}
+      </div>
+      {{ form.password1.errors }}
+      <p class="form-text">Mínimo 8 caracteres. Se almacenará hasheada con Argon2.</p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">{{ form.password2.label }}</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+        {{ form.password2 }}
+      </div>
+      {{ form.password2.errors }}
+    </div>
+
+    <div class="form-check glass p-3">
+      {{ form.aceptar_terminos }}
+      <label class="form-check-label" for="{{ form.aceptar_terminos.id_for_label }}">
+        <i class="fa-solid fa-file-signature me-2"></i>
+        Acepto los <strong>términos de uso</strong> y el <strong>código de ética</strong> (RF-122).
+      </label>
+      {{ form.aceptar_terminos.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width: 100%;">
+      <i class="fa-solid fa-user-plus me-2"></i>Crear cuenta y generar frase de rescate
+    </button>
+  </form>
+
+  <div class="text-center mt-4">
+    <p class="text-muted small">¿Ya tienes cuenta? <a href="{% url 'accounts:login' %}" class="text-theme-primary">Iniciar sesión</a></p>
+  </div>
+</div>
+{% endblock %}

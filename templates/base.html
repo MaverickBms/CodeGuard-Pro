@@ -1,0 +1,287 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="referrer" content="no-referrer">
+  <title>{% block title %}CodeGuard Pro{% endblock %}</title>
+
+  <!-- Recursos estáticos locales (sin CDN, offline-first) -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/themes.css' %}">
+  <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+  <link rel="stylesheet" href="{% static 'css/codeguard.css' %}">
+  <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/sweetalert2.min.css' %}">
+  <link rel="shortcut icon" href="{% static 'icons/icon.svg' %}">
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-light" data-theme="light">
+  <!-- Barra lateral semántica -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-content">
+        <div class="brand-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <span class="brand-text">CodeGuard Pro</span>
+      </div>
+      <button class="toggle-sidebar" id="toggleSidebar" title="Contraer menú">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+    </div>
+    <nav class="sidebar-nav" aria-label="Navegación principal">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <button class="nav-item active" data-url="{% url 'core:panel' %}">
+          <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+          <span class="nav-label">Panel principal</span>
+        </button>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Academia</div>
+        <button class="nav-item disabled" disabled data-url="#">
+          <span class="nav-icon"><i class="fa-solid fa-map"></i></span>
+          <span class="nav-label">Roadmap ASCENSO</span>
+        </button>
+        <button class="nav-item disabled" disabled data-url="#">
+          <span class="nav-icon"><i class="fa-solid fa-medal"></i></span>
+          <span class="nav-label">Competencias</span>
+        </button>
+        <button class="nav-item disabled" disabled data-url="#">
+          <span class="nav-icon"><i class="fa-solid fa-book"></i></span>
+          <span class="nav-label">Biblioteca</span>
+        </button>
+        <button class="nav-item disabled" disabled data-url="#">
+          <span class="nav-icon"><i class="fa-solid fa-brain"></i></span>
+          <span class="nav-label">Base de conocimiento</span>
+        </button>
+        <button class="nav-item disabled" disabled data-url="#">
+          <span class="nav-icon"><i class="fa-solid fa-pen-nib"></i></span>
+          <span class="nav-label">Evaluaciones</span>
+        </button>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Práctica</div>
+        <button class="nav-item disabled" disabled data-url="#">
+          <span class="nav-icon"><i class="fa-solid fa-paperclip"></i></span>
+          <span class="nav-label">Evidencias</span>
+        </button>
+        <button class="nav-item disabled" disabled data-url="#">
+          <span class="nav-icon"><i class="fa-solid fa-flask"></i></span>
+          <span class="nav-label">Laboratorios</span>
+        </button>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Administración</div>
+        <button class="nav-item disabled" disabled data-url="#">
+          <span class="nav-icon"><i class="fa-solid fa-database"></i></span>
+          <span class="nav-label">Backups</span>
+        </button>
+        <button class="nav-item disabled" disabled data-url="#">
+          <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
+          <span class="nav-label">Vigencia</span>
+        </button>
+        <button class="nav-item disabled" disabled data-url="#">
+          <span class="nav-icon"><i class="fa-solid fa-scales"></i></span>
+          <span class="nav-label">Ética</span>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Área principal semántica -->
+  <div class="main-content" id="mainContent">
+    <header class="main-header">
+      <div class="main-header-left">
+        <div class="page-title">{% block page_title %}Panel{% endblock %}</div>
+        <div class="page-subtitle">{% block page_subtitle %}{% endblock %}</div>
+      </div>
+      <div class="main-header-right">
+        <div class="theme-selector" id="themeSelector" title="Cambiar tema">
+          <i class="fa-solid fa-palette" style="font-size: 1.1rem;"></i>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="user-badge">
+          <div class="user-avatar">{{ user.get_username|slice:":1"|upper }}</div>
+          <div>{{ user.get_username }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </header>
+
+    <main class="page-container" role="main">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="main-footer">
+      <div class="footer-content">
+        <span>CodeGuard Pro — Plataforma educativa offline-first</span>
+        <span>Servidor local en 127.0.0.1 · Sin CDN · Sin telemetría</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts locales (sin CDN) -->
+  <script src="{% static 'js/htmx.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/sweetalert2.min.js' %}"></script>
+
+  <!-- Script de temas y utilidades -->
+  <script>
+    // Gestión de temas (12 temas videojuego)
+    const themes = [
+      'light', 'dark', 'high-contrast',
+      'retro-pixel', 'cyberpunk', 'fantasy',
+      'sci-fi', 'warrior', 'mage', 'rogue',
+      'paladin', 'dark-mage'
+    ];
+
+    const themeNames = {
+      'light': 'Claro Diurno',
+      'dark': 'Oscuro Nocturno',
+      'high-contrast': 'Alto Contraste',
+      'retro-pixel': 'Retro Pixel',
+      'cyberpunk': 'Cyberpunk',
+      'fantasy': 'Reino Fantasía',
+      'sci-fi': 'Ciencia Ficción',
+      'warrior': 'Guerrero',
+      'mage': 'Mago',
+      'rogue': 'Pícaro',
+      'paladin': 'Paladín',
+      'dark-mage': 'Oscuro Mago'
+    };
+
+    function getCurrentTheme() {
+      return localStorage.getItem('cg-theme') || 'light';
+    }
+
+    function setTheme(theme) {
+      if (!themes.includes(theme)) theme = 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('cg-theme', theme);
+      document.body.className = `bg-light theme-${theme}`;
+    }
+
+    function cycleTheme() {
+      const current = getCurrentTheme();
+      const idx = themes.indexOf(current);
+      const next = themes[(idx + 1) % themes.length];
+      setTheme(next);
+      showToast(`Tema: ${themeNames[next]}`, 'info');
+    }
+
+    // Inicializar tema guardado
+    document.addEventListener('DOMContentLoaded', () => {
+      setTheme(getCurrentTheme());
+
+      // Selector de tema
+      const themeBtn = document.getElementById('themeSelector');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', cycleTheme);
+        themeBtn.title = `Tema actual: ${themeNames[getCurrentTheme()]}`;
+      }
+
+      // Toggle sidebar
+      const toggleBtn = document.getElementById('toggleSidebar');
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      if (toggleBtn && sidebar && mainContent) {
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          mainContent.classList.toggle('collapsed');
+          const icon = toggleBtn.querySelector('i');
+          if (sidebar.classList.contains('collapsed')) {
+            icon.classList.remove('fa-chevron-left');
+            icon.classList.add('fa-chevron-right');
+          } else {
+            icon.classList.remove('fa-chevron-right');
+            icon.classList.add('fa-chevron-left');
+          }
+        });
+
+        // Navegación de módulos
+        document.querySelectorAll('.nav-item[data-url]').forEach(item => {
+          item.addEventListener('click', (e) => {
+            if (item.classList.contains('disabled')) return;
+            const url = item.getAttribute('data-url');
+            if (url && url !== '#') {
+              window.location.href = url;
+            }
+          });
+        });
+      }
+    });
+
+    // Utilidades de SweetAlert2
+    function showAlert(title, text, type = 'info') {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: type,
+          title: title,
+          text: text,
+          confirmButtonColor: '#1e3a8a',
+          customClass: {
+            popup: 'glass-card'
+          }
+        });
+      } else {
+        alert(title + ': ' + text);
+      }
+    }
+
+    function showConfirm(title, text, onConfirm) {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'question',
+          title: title,
+          text: text,
+          showCancelButton: true,
+          confirmButtonText: 'Confirmar',
+          cancelButtonText: 'Cancelar',
+          confirmButtonColor: '#1e3a8a',
+          customClass: {
+            popup: 'glass-card'
+          }
+        }).then((result) => {
+          if (result.isConfirmed && onConfirm) onConfirm();
+        });
+      } else {
+        if (confirm(title + ': ' + text) && onConfirm) onConfirm();
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      if (typeof Swal !== 'undefined') {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          customClass: {
+            popup: 'glass-card'
+          }
+        });
+        Toast.fire({ icon: type, title: message });
+      }
+    }
+
+    // Exponer funciones globalmente
+    window.codeguardUI = { showAlert, showConfirm, showToast, setTheme, cycleTheme };
+  </script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

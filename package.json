@@ -1,0 +1,109 @@
+{
+  "name": "codeguard-pro",
+  "productName": "CodeGuard Pro",
+  "version": "1.0.0",
+  "description": "Plataforma educativa personal, monousuario, local y offline-first para organizar la formación técnica, gestionar el roadmap ASCENSO, biblioteca de documentos PDF, base de conocimiento, evaluaciones, evidencias y laboratorios.",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "cross-env NODE_ENV=development electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "author": "CodeGuard Pro Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MaverickBms/CodeGuard-Pro.git"
+  },
+  "keywords": [
+    "codeguard",
+    "education",
+    "offline",
+    "django",
+    "electron",
+    "learning"
+  ],
+  "build": {
+    "appId": "com.codeguard.pro",
+    "productName": "CodeGuard Pro",
+    "copyright": "© 2026 CodeGuard Pro",
+    "buildVersion": "1.0.0",
+    "files": [
+      "electron/",
+      "config/",
+      "apps/",
+      "templates/",
+      "static/",
+      "manage.py",
+      "requirements.txt",
+      ".env.example",
+      "logs/"
+    ],
+    "extraFiles": [
+      {
+        "from": "static",
+        "to": "static",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "templates",
+        "to": "templates",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "manage.py",
+        "to": "."
+      },
+      {
+        "from": "requirements.txt",
+        "to": "."
+      },
+      {
+        "from": ".env.example",
+        "to": "."
+      }
+    ],
+    "extraMetadata": {
+      "main": "electron/main.js"
+    },
+    "directories": {
+      "buildResources": "static/icons",
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        }
+      ],
+      "icon": "static/icons/icon.ico",
+      "publisherName": "CodeGuard Pro",
+      "installerHeaderIcon": "static/icons/icon.ico"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "static/icons/icon.png",
+      "category": "Education"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0"
+  }
+}

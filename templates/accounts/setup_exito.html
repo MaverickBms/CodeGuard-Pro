@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Frase de rescate — CodeGuard Pro{% endblock %}
+{% block page_title %}Tu frase de rescate{% endblock %}
+{% block page_subtitle %}Guárdala en un lugar seguro. Se mostrará una sola vez.{% endblock %}
+
+{% block content %}
+<div class="glass-card rescue-card">
+  <div class="card-header">
+    <i class="fa-solid fa-triangle-exclamation me-2"></i>
+    Muestra esta frase ahora — no se volverá a mostrar
+  </div>
+
+  <p style="color: var(--cg-text-muted); margin-bottom: 24px; font-size: 0.95rem;">
+    Esta frase te permite recuperar el acceso si olvidas tu contraseña. Se almacena como hash Argon2 (nunca en texto plano) y es de un solo uso.
+  </p>
+
+  <div class="rescue-phrase">{{ frase_rescate }}</div>
+
+  <ul>
+    <li><i class="fa-solid fa-copy me-2"></i>Copia esta frase ahora y guárdala en un lugar seguro.</li>
+    <li><i class="fa-solid fa-user-secret me-2"></i>No la compartas con nadie.</li>
+    <li><i class="fa-solid fa-lock me-2"></i>No la almacenes en archivos sin cifrar.</li>
+    <li><i class="fa-solid fa-rotate-right me-2"></i>Tras usarse una vez, se invalida permanentemente.</li>
+  </ul>
+
+  <a href="{% url 'accounts:login' %}" class="btn btn-primary" style="margin-top: 24px; display: inline-block;">
+    <i class="fa-solid fa-sign-in me-2"></i>Ir al inicio de sesión
+  </a>
+</div>
+{% endblock %}

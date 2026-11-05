@@ -1,0 +1,56 @@
+# CodeGuard Pro — .gitignore
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+*.pyc
+__pycache__/
+*.pyo
+
+# Base de datos SQLite
+db.sqlite3
+db.sqlite3-journal
+
+# Media y archivos de usuario
+media/
+staticfiles/
+
+# Logs
+logs/*.log
+
+# Entorno (secreto — no commitear)
+.env
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+.directory
+
+# Empaquetados / backups locales
+*.tar.gz
+*.zip
+
+# Node.js / Electron
+node_modules/
+package-lock.json
+dist/
+build/
+electron-builder.json
+
+# Python virtual env
+.env
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+
+# Media y archivos de usuario
+media/
+staticfiles/
+
+# Logs
+logs/*.log
