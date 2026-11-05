@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Recuperación exitosa — CodeGuard Pro{% endblock %}
+{% block page_title %}Frase validada</script>{% endblock %}
+{% block page_subtitle %}Tu frase de rescate ha sido validada y marcada como usada.{% endblock %}
+
+{% block content %}
+<div class="glass-card rescue-card">
+  <div class="card-header" style="background: rgba(5, 150, 105, 0.1); color: var(--cg-success);">
+    <i class="fa-solid fa-circle-check me-2"></i>
+    Frase de rescate validada
+  </div>
+
+  <p style="color: var(--cg-text-muted); margin-bottom: 24px; font-size: 0.95rem;">
+    Tu frase de rescate ha sido validada y marcada como usada (de un solo uso).
+  </p>
+
+  <a href="{% url 'accounts:login' %}" class="btn btn-primary" style="display: inline-block;">
+    <i class="fa-solid fa-sign-in me-2"></i>Iniciar sesión
+  </a>
+</div>
+{% endblock %}

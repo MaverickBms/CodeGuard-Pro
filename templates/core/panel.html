@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Panel principal — CodeGuard Pro{% endblock %}
+{% block page_title %}Panel principal{% endblock %}
+{% block page_subtitle %}Bienvenido de vuelta, {{ user.get_username }}. Aquí tienes el resumen de tu formación y los módulos del MVP.{% endblock %}
+
+{% block content %}
+<!-- Tarjeta de bienvenida -->
+<div class="glass-card welcome-card">
+  <div class="d-flex align-items-center mb-3">
+    <i class="fa-solid fa-shield-halved fa-3x me-3"></i>
+    <div>
+      <h1>CodeGuard Pro</h1>
+    </div>
+  </div>
+  <p>Tu plataforma educativa personal, offline y segura. Organiza tu aprendizaje, documenta tu progreso y demuestra tus competencias.</p>
+</div>
+
+<!-- Tarjetas de módulos -->
+<div class="modules-grid">
+  <div class="module-card">
+    <span class="card-icon"><i class="fa-solid fa-map"></i></span>
+    <h3>Roadmap académico</h3>
+    <p>33 etapas ASCENSO, módulos, lecciones, actividades y dependencias.</p>
+    <span class="card-tag">Próximamente</span>
+    <button class="btn-open disabled" disabled>
+      <i class="fa-solid fa-lock me-2"></i>En desarrollo
+    </button>
+  </div>
+  <div class="module-card">
+    <span class="card-icon"><i class="fa-solid fa-medal"></i></span>
+    <h3>Competencias</h3>
+    <p>Niveles de dominio, criterios verificables y registro de logros.</p>
+    <span class="card-tag">Próximamente</span>
+    <button class="btn-open disabled" disabled>
+      <i class="fa-solid fa-lock me-2"></i>En desarrollo
+    </button>
+  </div>
+  <div class="module-card">
+    <span class="card-icon"><i class="fa-solid fa-book"></i></span>
+    <h3>Biblioteca documental</h3>
+    <p>Importación de PDFs, metadatos, extracción de texto y búsqueda FTS5.</p>
+    <span class="card-tag">Próximamente</span>
+    <button class="btn-open disabled" disabled>
+      <i class="fa-solid fa-lock me-2"></i>En desarrollo
+    </button>
+  </div>
+  <div class="module-card">
+    <span class="card-icon"><i class="fa-solid fa-brain"></i></span>
+    <h3>Base de conocimiento</h3>
+    <p>Conceptos, relaciones tipadas y trazabilidad documental precisa.</p>
+    <span class="card-tag">Próximamente</span>
+    <button class="btn-open disabled" disabled>
+      <i class="fa-solid fa-lock me-2"></i>En desarrollo
+    </button>
+  </div>
+  <div class="module-card">
+    <span class="card-icon"><i class="fa-solid fa-pen-nib"></i></span>
+    <h3>Evaluaciones</h3>
+    <p>Preguntas, rúbricas, intentos, resultados y retroalimentación.</p>
+    <span class="card-tag">Próximamente</span>
+    <button class="btn-open disabled" disabled>
+      <i class="fa-solid fa-lock me-2"></i>En desarrollo
+    </button>
+  </div>
+  <div class="module-card">
+    <span class="card-icon"><i class="fa-solid fa-paperclip"></i></span>
+    <h3>Evidencias</h3>
+    <p>Portafolio por etapa y competencia con verificación SHA-256.</p>
+    <span class="card-tag">Próximamente</span>
+    <button class="btn-open disabled" disabled>
+      <i class="fa-solid fa-lock me-2"></i>En desarrollo
+    </button>
+  </div>
+  <div class="module-card">
+    <span class="card-icon"><i class="fa-solid fa-flask"></i></span>
+    <h3>Laboratorios</h3>
+    <p>Guías, pasos secuenciales, comandos y registro de resultados.</p>
+    <span class="card-tag">Próximamente</span>
+    <button class="btn-open disabled" disabled>
+      <i class="fa-solid fa-lock me-2"></i>En desarrollo
+    </button>
+  </div>
+  <div class="module-card">
+    <span class="card-icon"><i class="fa-solid fa-database"></i></span>
+    <h3>Administración</h3>
+    <p>Backups protegidos, restauración segura y auditoría.</p>
+    <span class="card-tag">Próximamente</span>
+    <button class="btn-open disabled" disabled>
+      <i class="fa-solid fa-lock me-2"></i>En desarrollo
+    </button>
+  </div>
+  <div class="module-card">
+    <span class="card-icon"><i class="fa-solid fa-calendar-check"></i></span>
+    <h3>Vigencia y revisión</h3>
+    <p>Estado de vigencia, fecha de revisión y decisiones manuales.</p>
+    <span class="card-tag">Próximamente</span>
+    <button class="btn-open disabled" disabled>
+      <i class="fa-solid fa-lock me-2"></i>En desarrollo
+    </button>
+  </div>
+  <div class="module-card">
+    <span class="card-icon"><i class="fa-solid fa-scales"></i></span>
+    <h3>Ética y seguridad</h3>
+    <p>Advertencias, aceptación explícita y guías de uso ético.</p>
+    <span class="card-tag">Próximamente</span>
+    <button class="btn-open disabled" disabled>
+      <i class="fa-solid fa-lock me-2"></i>En desarrollo
+    </button>
+  </div>
+</div>
+
+<!-- Estado del sistema -->
+<div class="glass-card system-status">
+  <h3><i class="fa-solid fa-info-circle me-2"></i>Estado del sistema</h3>
+  <div class="status-list">
+    <div class="status-item">
+      <span class="label"><i class="fa-solid fa-user me-1"></i>Usuario</span>
+      <span class="value">{{ user.get_username }}</span>
+    </div>
+    <div class="status-item">
+      <span class="label"><i class="fa-solid fa-cog me-1"></i>Configuración inicial</span>
+      <span class="value">{% if configuracion.configuracion_inicial_completada %}<span class="status-badge ok">Completada</span>{% else %}<span class="status-badge pending">Pendiente</span>{% endif %}</span>
+    </div>
+    <div class="status-item">
+      <span class="label"><i class="fa-solid fa-clock me-1"></i>Sesión (inactividad)</span>
+      <span class="value">{{ configuracion.sesion_timeout_minutos }} minutos</span>
+    </div>
+    <div class="status-item">
+      <span class="label"><i class="fa-solid fa-server me-1"></i>Servidor</span>
+      <span class="value">127.0.0.1 (localhost, sin red)</span>
+    </div>
+    <div class="status-item">
+      <span class="label"><i class="fa-solid fa-cube me-1"></i>Modo</span>
+      <span class="value">{% if debug %}<span class="status-badge pending">Desarrollo</span>{% else %}<span class="status-badge ok">Producción local</span>{% endif %}</span>
+    </div>
+    <div class="status-item">
+      <span class="label"><i class="fa-solid fa-compact-disc me-1"></i>Recursos</span>
+      <span class="value"><span class="status-badge ok">Locales (sin CDN)</span></span>
+    </div>
+    <div class="status-item">
+      <span class="label"><i class="fa-solid fa-wifi-slash me-1"></i>Conexión</span>
+      <span class="value"><span class="status-badge ok">Offline-first</span></span>
+    </div>
+  </div>
+</div>
+{% endblock %}

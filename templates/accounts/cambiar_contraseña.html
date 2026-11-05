@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cambiar contraseña — CodeGuard Pro{% endblock %}
+{% block page_title %}Cambiar contraseña maestra{% endblock %}
+{% block page_subtitle %}Actualiza tu contraseña de acceso.{% endblock %}
+
+{% block content %}
+<div class="glass-card form-card">
+  <div class="form-header">
+    <div class="d-flex align-items-center justify-content-center mb-3">
+      <i class="fa-solid fa-key fa-2x text-theme-primary"></i>
+    </div>
+    <h2>Cambiar contraseña</h2>
+    <p>Ingresa tu contraseña actual y la nueva.</p>
+  </div>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="form-group">
+      <label class="form-label">{{ form.old_password.label }}</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+        {{ form.old_password }}
+      </div>
+      {{ form.old_password.errors }}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">{{ form.new_password1.label }}</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+        {{ form.new_password1 }}
+      </div>
+      {{ form.new_password1.errors }}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">{{ form.new_password2.label }}</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+        {{ form.new_password2 }}
+      </div>
+      {{ form.new_password2.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width: 100%;">
+      <i class="fa-solid fa-save me-2"></i>Cambiar contraseña
+    </button>
+  </form>
+</div>
+{% endblock %}

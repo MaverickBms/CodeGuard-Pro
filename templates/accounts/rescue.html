@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Frase de rescate — CodeGuard Pro{% endblock %}
+{% block page_title %}Recuperación de acceso{% endblock %}
+{% block page_subtitle %}Valida tu frase de rescate para recuperar el acceso a tu cuenta.{% endblock %}
+
+{% block content %}
+<div class="glass-card form-card">
+  <div class="form-header">
+    <div class="d-flex align-items-center justify-content-center mb-3">
+      <i class="fa-solid fa-key fa-2x text-theme-primary"></i>
+    </div>
+    <h2>Frase de rescate</h2>
+    <p>Ingresa tu frase de rescate para recuperar el acceso.</p>
+  </div>
+
+  {% if error %}
+    <div class="alert alert-danger">
+      <i class="fa-solid fa-circle-exclamation me-2"></i>
+      Frase de rescate incorrecta o ya utilizada.
+    </div>
+  {% endif %}
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="form-label">Frase de rescate</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+        <input type="text" name="frase_rescate" class="form-control" required autocomplete="off">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width: 100%;">
+      <i class="fa-solid fa-check me-2"></i>Validar frase de rescate
+    </button>
+  </form>
+</div>
+{% endblock %}
