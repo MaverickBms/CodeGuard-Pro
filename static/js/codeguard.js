@@ -62,7 +62,12 @@ function cycleTheme() {
   showToast(`Tema: ${themeNames[next]}`, 'info');
 }
 
+// Aplicar el tema guardado inmediatamente al cargar el módulo (con `defer`,
+// se ejecuta tras el parseo del HTML y antes del primer paint).
+applyTheme(getCurrentTheme());
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Aplicar tema guardado antes del primer paint (ya se ejecutó arriba con defer).
   applyTheme(getCurrentTheme());
 
   if (window.codeguardAPI && typeof window.codeguardAPI.onThemeChange === 'function') {
@@ -108,13 +113,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+function getPrimaryColor() {
+  return (
+    getComputedStyle(document.documentElement).getPropertyValue('--cg-primary').trim() ||
+    '#DC586D'
+  );
+}
+
 function showAlert(title, text, type = 'info') {
   if (typeof Swal !== 'undefined') {
     Swal.fire({
       icon: type,
       title: title,
       text: text,
-      confirmButtonColor: '#1e3a8a',
+      confirmButtonColor: getPrimaryColor(),
       customClass: {
         popup: 'glass-card'
       }
@@ -133,7 +145,7 @@ function showConfirm(title, text, onConfirm) {
       showCancelButton: true,
       confirmButtonText: 'Confirmar',
       cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#1e3a8a',
+      confirmButtonColor: getPrimaryColor(),
       customClass: {
         popup: 'glass-card'
       }

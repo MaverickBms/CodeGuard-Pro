@@ -1,54 +1,85 @@
 /* ==========================================================================
-   CodeGuard Pro — CSS de Temas Atmosféricos (12 temas videojuego)
+   CodeGuard Pro — Sistema de diseño y 12 paletas oficiales
    Archivo: static/css/themes.css
+
+   Cada tema consume exclusivamente sus variables semánticas. No existen
+   colores de marca hardcodeados fuera de este archivo.
+
+   Colores oficiales (HEX originales, sin modificar):
+   Los 7 códigos de cada paleta se asignan a roles semánticos según su
+   luminancia. Los colores derivados (texto, hover, inverso, primary-on,
+   border-light, primary-light, border-focus) se generan con color-mix y
+   se documentan como tales.
+
+   Asignación de paletas oficiales a temas:
+   light → P01 Coral y vino | dark → P02 Ciruela y malva
+   high-contrast → P04 Monocromática | retro-pixel → P05 Rosa y frambuesa
+   cyberpunk → P03 Violeta eléctrico | fantasy → P07 Rosa empolvado
+   sci-fi → P08 Pizarra | warrior → P06 Fuego y naranja
+   mage → P09 Violeta y dorado | rogue → P10 Verde petróleo
+   paladin → P11 Azul y turquesa | dark-mage → P12 Tierra y madera
+
+   Reglas de accesibilidad aplicadas:
+   - --cg-text y --cg-text-on-surface son blanco/negro puro según la
+     luminancia del fondo/superficie para garantizar WCAG AA (4.5:1).
+   - --cg-on-primary es blanco/negro según el primario para botones.
+   - --cg-surface-hover se deriva oscureciendo (temas oscuros) o
+     aclarando (temas claros) la superficie para mantener contraste con
+     el texto.
+   - --cg-border y --cg-border-focus se eligen para garantizar >=3:1
+     contra el fondo (componentes gráficos e indicadores de focus).
+   - --cg-primary nunca se usa como fondo gráfico directo sobre el bg
+     del tema; se usa en botones con --cg-on-primary como texto.
+   - Los HEX oficiales nunca se modifican.
    ========================================================================== */
 
-/* ========== VARIABLES BASE (Tema Claro Diurno) ========== */
+/* ---------- Variables base (tema light = P01) ---------- */
 :root {
-  /* Colores principales */
-  --cg-primary: #1e3a8a;
-  --cg-primary-dark: #17439b;
-  --cg-primary-light: #3b82f6;
-  --cg-accent: #0ea5e9;
 
-  /* Colores semánticos */
-  --cg-success: #059669;
-  --cg-warning: #d97706;
-  --cg-danger: #dc2626;
-  --cg-info: #2563eb;
+/* ---------- Variables base (tema light = P01 Coral y vino) ---------- */
+:root {
+  /* Colores oficiales P01 — Coral y vino (HEX originales sin modificar) */
+  --cg-bg: #FFBB94;
+  --cg-surface: #FB9590;
+  --cg-surface-hover: #FCA5A1;
+  --cg-surface-elevada: #FB9590;
+  --cg-primary: #DC586D;
+  --cg-primary-hover: #BB4B5D;
+  --cg-primary-dark: #A54252;
+  --cg-primary-light: #ECA3AF;
+  --cg-accent: #A33757;
 
-  /* Superficies */
-  --cg-bg: #f3f4f6;
-  --cg-surface: #ffffff;
-  --cg-surface-hover: #f9fafb;
-  --cg-surface-elevated: #ffffff;
+  /* Texto (derivado por luminancia para contraste AA) */
+  --cg-text: #000000;
+  --cg-text-on-surface: #000000;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
+  --cg-text-inverse: #FFFFFF;
+  --cg-on-primary: #000000;
 
-  /* Texto */
-  --cg-text: #111827;
-  --cg-text-secondary: #4b5563;
-  --cg-text-muted: #6b7280;
-  --cg-text-inverse: #ffffff;
-
-  /* Bordes */
-  --cg-border: #e5e7eb;
-  --cg-border-light: #f3f4f6;
-  --cg-border-focus: #3b82f6;
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #A33757;
+  --cg-border-light: #521C2C;
+  --cg-border-focus: #4C1D3D;
 
   /* Sombras */
-  --cg-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --cg-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --cg-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 10%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 6%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 12%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 8%, transparent);
 
-  /* Glassmode */
-  --cg-glass-bg: rgba(255, 255, 255, 0.7);
-  --cg-glass-border: rgba(255, 255, 255, 0.5);
-  --cg-glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  /* Estados */
+  --cg-success: #059669;
+  --cg-warning: #D97706;
+  --cg-danger: #DC2626;
+  --cg-info: #2563EB;
 
-  /* Radio y transiciones */
+  /* Radio y transiciones (propiedades concretas, no "all") */
   --cg-radius: 12px;
   --cg-radius-lg: 16px;
-  --cg-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --cg-transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --cg-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  --cg-transition-fast: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 
   /* Espaciado */
   --cg-header-height: 64px;
@@ -62,659 +93,769 @@
   --cg-z-modal: 1300;
   --cg-z-toast: 1400;
 
-  /* Tipografía base */
+  /* Tipografía */
   --cg-font-body: "Liberation Sans", system-ui, -apple-system, sans-serif;
   --cg-font-heading: "Caladea", Georgia, serif;
   --cg-font-mono: "Courier New", monospace;
 
-  /* Animaciones por defecto */
+  /* Animaciones por defecto (ninguna permanente) */
   --cg-anim-bg: none;
   --cg-anim-text: none;
 }
 
-/* ========== TEMA OSCURO NOCTURNO ========== */
+
+/* ---------- Oscuro Nocturno → P02 Ciruela y malva ---------- */
 [data-theme="dark"] {
-  --cg-primary: #60a5fa;
-  --cg-primary-dark: #3b82f6;
-  --cg-primary-light: #93c5fd;
-  --cg-accent: #22d3ee;
+  /* Colores oficiales (HEX originales sin modificar) */
+  --cg-bg: #190019;
+  --cg-surface: #2B124C;
+  --cg-surface-hover: #250F41;
+  --cg-surface-elevada: #2B124C;
+  --cg-primary: #522B5B;
+  --cg-primary-hover: #75557C;
+  --cg-primary-dark: #3E2044;
+  --cg-primary-light: #A08AA5;
+  --cg-accent: #854F6C;
 
-  --cg-success: #34d399;
-  --cg-warning: #fbbf24;
-  --cg-danger: #f87171;
-  --cg-info: #60a5fa;
-
-  --cg-bg: #0f172a;
-  --cg-surface: #1e293b;
-  --cg-surface-hover: #334155;
-  --cg-surface-elevated: #1e293b;
-
-  --cg-text: #f8fafc;
-  --cg-text-secondary: #cbd5e1;
-  --cg-text-muted: #94a3b8;
-  --cg-text-inverse: #0f172a;
-
-  --cg-border: #334155;
-  --cg-border-light: #1e293b;
-  --cg-border-focus: #60a5fa;
-
-  --cg-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --cg-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-  --cg-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-
-  --cg-glass-bg: rgba(30, 41, 59, 0.6);
-  --cg-glass-border: rgba(255, 255, 255, 0.1);
-  --cg-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-
-  --cg-radius: 8px;
-  --cg-radius-lg: 12px;
-
-  --cg-font-body: "Liberation Sans", system-ui, sans-serif;
-  --cg-font-heading: "Caladea", Georgia, serif;
-
-  --cg-anim-bg: subtle-pulse 4s ease-in-out infinite;
-  --cg-anim-text: none;
-}
-
-/* ========== TEMA ALTO CONTRASTE ========== */
-[data-theme="high-contrast"] {
-  --cg-primary: #0000ff;
-  --cg-primary-dark: #0000cc;
-  --cg-primary-light: #3333ff;
-  --cg-accent: #00ffff;
-
-  --cg-success: #00ff00;
-  --cg-warning: #ffff00;
-  --cg-danger: #ff0000;
-  --cg-info: #0000ff;
-
-  --cg-bg: #000000;
-  --cg-surface: #000000;
-  --cg-surface-hover: #1a1a1a;
-  --cg-surface-elevated: #000000;
-
-  --cg-text: #ffffff;
-  --cg-text-secondary: #ffffff;
-  --cg-text-muted: #cccccc;
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #FFFFFF;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
   --cg-text-inverse: #000000;
+  --cg-on-primary: #FFFFFF;
 
-  --cg-border: #ffffff;
-  --cg-border-light: #ffffff;
-  --cg-border-focus: #ffffff;
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #854F6C;
+  --cg-border-light: #C2A7B6;
+  --cg-border-focus: #FBE4DB;
 
-  --cg-shadow-sm: none;
-  --cg-shadow: none;
-  --cg-shadow-lg: none;
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
 
-  --cg-glass-bg: rgba(0, 0, 0, 0.9);
-  --cg-glass-border: #ffffff;
-  --cg-glass-shadow: none;
+  /* Estados */
+  --cg-success: #10B981;
+  --cg-warning: #F59E0B;
+  --cg-danger: #EF4444;
+  --cg-info: #3B82F6;
 
-  --cg-radius: 4px;
-  --cg-radius-lg: 4px;
+  /* Radio y transiciones (propiedades concretas, no "all") */
+  --cg-radius: 12px;
+  --cg-radius-lg: 16px;
+  --cg-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  --cg-transition-fast: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 
-  --cg-font-body: "Liberation Sans", system-ui, sans-serif;
-  --cg-font-heading: "Liberation Sans", system-ui, sans-serif;
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
 
+  /* Tipografía */
+  --cg-font-body: "Liberation Sans", system-ui, -apple-system, sans-serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+  --cg-font-mono: "Courier New", monospace;
+
+  /* Animaciones por defecto (ninguna permanente) */
   --cg-anim-bg: none;
   --cg-anim-text: none;
 }
 
-/* ========== TEMA RETRO PIXEL ========== */
-[data-theme="retro-pixel"] {
-  --cg-primary: #ff00ff;
-  --cg-primary-dark: #cc00cc;
-  --cg-primary-light: #ff66ff;
-  --cg-accent: #00ffff;
-
-  --cg-success: #00ff00;
-  --cg-warning: #ffff00;
-  --cg-danger: #ff0000;
-  --cg-info: #00ffff;
-
+/* ---------- Alto Contraste → P04 Monocromática ---------- */
+[data-theme="high-contrast"] {
+  /* Colores oficiales (HEX originales sin modificar) */
   --cg-bg: #000000;
-  --cg-surface: #1a1a1a;
-  --cg-surface-hover: #333333;
-  --cg-surface-elevated: #1a1a1a;
+  --cg-surface: #1A1A1A;
+  --cg-surface-hover: #161616;
+  --cg-surface-elevada: #1A1A1A;
+  --cg-primary: #FFFFFF;
+  --cg-primary-hover: #FFFFFF;
+  --cg-primary-dark: #BFBFBF;
+  --cg-primary-light: #FFFFFF;
+  --cg-accent: #D9D9D9;
 
-  --cg-text: #ffffff;
-  --cg-text-secondary: #cccccc;
-  --cg-text-muted: #999999;
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #FFFFFF;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
   --cg-text-inverse: #000000;
+  --cg-on-primary: #000000;
 
-  --cg-border: #ffffff;
-  --cg-border-light: #333333;
-  --cg-border-focus: #ffffff;
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #D9D9D9;
+  --cg-border-light: #ECECEC;
+  --cg-border-focus: #FFFFFF;
 
-  --cg-shadow-sm: none;
-  --cg-shadow: none;
-  --cg-shadow-lg: none;
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
 
-  --cg-glass-bg: rgba(26, 26, 26, 0.8);
-  --cg-glass-border: #ffffff;
-  --cg-glass-shadow: none;
+  /* Estados */
+  --cg-success: #10B981;
+  --cg-warning: #F59E0B;
+  --cg-danger: #EF4444;
+  --cg-info: #3B82F6;
 
-  --cg-radius: 0;
-  --cg-radius-lg: 0;
+  /* Radio y transiciones (propiedades concretas, no "all") */
+  --cg-radius: 0px;
+  --cg-radius-lg: 0px;
+  --cg-transition: 0s;
+  --cg-transition-fast: 0s;
 
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
+
+  /* Tipografía */
+  --cg-font-body: "Liberation Sans", system-ui, -apple-system, sans-serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+  --cg-font-mono: "Courier New", monospace;
+
+  /* Animaciones por defecto (ninguna permanente) */
+  --cg-anim-bg: none;
+  --cg-anim-text: none;
+}
+
+/* ---------- Retro Pixel → P05 Rosa y frambuesa ---------- */
+[data-theme="retro-pixel"] {
+  /* Colores oficiales (HEX originales sin modificar) */
+  --cg-bg: #E11D48;
+  --cg-surface: #F472B6;
+  --cg-surface-hover: #F687C1;
+  --cg-surface-elevada: #F472B6;
+  --cg-primary: #FB7185;
+  --cg-primary-hover: #D56071;
+  --cg-primary-dark: #BC5564;
+  --cg-primary-light: #FDB1BC;
+  --cg-accent: #FDBA74;
+
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #000000;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
+  --cg-text-inverse: #000000;
+  --cg-on-primary: #000000;
+
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #FFF7F9;
+  --cg-border-light: #807C7C;
+  --cg-border-focus: #FFF7F9;
+
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
+
+  /* Estados */
+  --cg-success: #059669;
+  --cg-warning: #D97706;
+  --cg-danger: #DC2626;
+  --cg-info: #2563EB;
+
+  /* Radio y transiciones (propiedades concretas, no "all") */
+  --cg-radius: 0px;
+  --cg-radius-lg: 0px;
+  --cg-transition: 0s;
+  --cg-transition-fast: 0s;
+
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
+
+  /* Tipografía */
   --cg-font-body: "Press Start 2P", "Courier New", monospace;
   --cg-font-heading: "Press Start 2P", "Courier New", monospace;
   --cg-font-mono: "Courier New", monospace;
 
+  /* Animaciones por defecto (ninguna permanente) */
   --cg-anim-bg: none;
-  --cg-anim-text: retro-flicker 2s step-end infinite;
+  --cg-anim-text: none;
 }
 
-/* ========== TEMA CYBERPUNK ========== */
+/* ---------- Cyberpunk → P03 Violeta eléctrico ---------- */
 [data-theme="cyberpunk"] {
-  --cg-primary: #ff00ff;
-  --cg-primary-dark: #cc00cc;
-  --cg-primary-light: #ff66ff;
-  --cg-accent: #00ffff;
+  /* Colores oficiales (HEX originales sin modificar) */
+  --cg-bg: #0B0720;
+  --cg-surface: #25134D;
+  --cg-surface-hover: #1F1041;
+  --cg-surface-elevada: #25134D;
+  --cg-primary: #6A2FC8;
+  --cg-primary-hover: #8859D3;
+  --cg-primary-dark: #502396;
+  --cg-primary-light: #AD8DE1;
+  --cg-accent: #9D71E8;
 
-  --cg-success: #00ff41;
-  --cg-warning: #ffea00;
-  --cg-danger: #ff0055;
-  --cg-info: #00ffff;
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #FFFFFF;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
+  --cg-text-inverse: #000000;
+  --cg-on-primary: #FFFFFF;
 
-  --cg-bg: #0a0a12;
-  --cg-surface: #12121e;
-  --cg-surface-hover: #1e1e30;
-  --cg-surface-elevated: #12121e;
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #9D71E8;
+  --cg-border-light: #CEB8F4;
+  --cg-border-focus: #F2E9FF;
 
-  --cg-text: #e0e0ff;
-  --cg-text-secondary: #b0b0d0;
-  --cg-text-muted: #707090;
-  --cg-text-inverse: #0a0a12;
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
 
-  --cg-border: #330066;
-  --cg-border-light: #1a0033;
-  --cg-border-focus: #ff00ff;
+  /* Estados */
+  --cg-success: #10B981;
+  --cg-warning: #F59E0B;
+  --cg-danger: #EF4444;
+  --cg-info: #3B82F6;
 
-  --cg-shadow-sm: 0 0 10px rgba(255, 0, 255, 0.3);
-  --cg-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
-  --cg-shadow-lg: 0 0 40px rgba(255, 0, 255, 0.5);
+  /* Radio y transiciones (propiedades concretas, no "all") */
+  --cg-radius: 12px;
+  --cg-radius-lg: 16px;
+  --cg-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  --cg-transition-fast: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 
-  --cg-glass-bg: rgba(18, 18, 30, 0.7);
-  --cg-glass-border: rgba(255, 0, 255, 0.3);
-  --cg-glass-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
 
-  --cg-radius: 4px;
-  --cg-radius-lg: 8px;
-
-  --cg-font-body: "Courier New", monospace;
-  --cg-font-heading: "Courier New", monospace;
+  /* Tipografía */
+  --cg-font-body: "Liberation Sans", system-ui, -apple-system, sans-serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
   --cg-font-mono: "Courier New", monospace;
 
-  --cg-anim-bg: cyber-scan 3s linear infinite;
-  --cg-anim-text: neon-flicker 2s ease-in-out infinite;
-}
-
-/* ========== TEMA REINO FANTASÍA ========== */
-[data-theme="fantasy"] {
-  --cg-primary: #8b5cf6;
-  --cg-primary-dark: #7c3aed;
-  --cg-primary-light: #a78bfa;
-  --cg-accent: #f472b6;
-
-  --cg-success: #4ade80;
-  --cg-warning: #fbbf24;
-  --cg-danger: #fb7185;
-  --cg-info: #8b5cf6;
-
-  --cg-bg: #faf5ff;
-  --cg-surface: #f3e8ff;
-  --cg-surface-hover: #e9d5ff;
-  --cg-surface-elevated: #f3e8ff;
-
-  --cg-text: #4c1d95;
-  --cg-text-secondary: #6b21a8;
-  --cg-text-muted: #7e22ce;
-  --cg-text-inverse: #ffffff;
-
-  --cg-border: #c4b5fd;
-  --cg-border-light: #ddd6fe;
-  --cg-border-focus: #8b5cf6;
-
-  --cg-shadow-sm: 0 1px 2px 0 rgba(139, 92, 246, 0.1);
-  --cg-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.15);
-  --cg-shadow-lg: 0 10px 15px -3px rgba(139, 92, 246, 0.2);
-
-  --cg-glass-bg: rgba(243, 232, 255, 0.6);
-  --cg-glass-border: rgba(196, 181, 253, 0.5);
-  --cg-glass-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.1);
-
-  --cg-radius: 16px;
-  --cg-radius-lg: 24px;
-
-  --cg-font-body: "Caladea", Georgia, serif;
-  --cg-font-heading: "Caladea", Georgia, serif;
-
-  --cg-anim-bg: magic-float 6s ease-in-out infinite;
-  --cg-anim-text: none;
-}
-
-/* ========== TEMA CIENCIA FICCIÓN ========== */
-[data-theme="sci-fi"] {
-  --cg-primary: #22d3ee;
-  --cg-primary-dark: #0891b2;
-  --cg-primary-light: #67e8f9;
-  --cg-accent: #818cf8;
-
-  --cg-success: #34d399;
-  --cg-warning: #fbbf24;
-  --cg-danger: #f87171;
-  --cg-info: #22d3ee;
-
-  --cg-bg: #0b1021;
-  --cg-surface: #121933;
-  --cg-surface-hover: #1e293b;
-  --cg-surface-elevated: #121933;
-
-  --cg-text: #e2e8f0;
-  --cg-text-secondary: #94a3b8;
-  --cg-text-muted: #64748b;
-  --cg-text-inverse: #ffffff;
-
-  --cg-border: #1e293b;
-  --cg-border-light: #1e293b;
-  --cg-border-focus: #22d3ee;
-
-  --cg-shadow-sm: 0 0 15px rgba(34, 211, 238, 0.1);
-  --cg-shadow: 0 0 30px rgba(34, 211, 238, 0.15);
-  --cg-shadow-lg: 0 0 50px rgba(34, 211, 238, 0.2);
-
-  --cg-glass-bg: rgba(18, 25, 51, 0.6);
-  --cg-glass-border: rgba(34, 211, 238, 0.2);
-  --cg-glass-shadow: 0 0 40px rgba(34, 211, 238, 0.1);
-
-  --cg-radius: 6px;
-  --cg-radius-lg: 10px;
-
-  --cg-font-body: "Liberation Sans", system-ui, sans-serif;
-  --cg-font-heading: "Liberation Sans", system-ui, sans-serif;
-
-  --cg-anim-bg: hologram-scan 2s linear infinite;
-  --cg-anim-text: none;
-}
-
-/* ========== TEMA GUERRERO ========== */
-[data-theme="warrior"] {
-  --cg-primary: #c2410c;
-  --cg-primary-dark: #9c4221;
-  --cg-primary-light: #ea580c;
-  --cg-accent: #f97316;
-
-  --cg-success: #86efac;
-  --cg-warning: #fcd34d;
-  --cg-danger: #f87171;
-  --cg-info: #c2410c;
-
-  --cg-bg: #fafaf7;
-  --cg-surface: #f5f5f0;
-  --cg-surface-hover: #e7e5dd;
-  --cg-surface-elevated: #f5f5f0;
-
-  --cg-text: #292524;
-  --cg-text-secondary: #57534e;
-  --cg-text-muted: #78716c;
-  --cg-text-inverse: #ffffff;
-
-  --cg-border: #d6d3d1;
-  --cg-border-light: #e7e5e4;
-  --cg-border-focus: #c2410c;
-
-  --cg-shadow-sm: 0 1px 2px 0 rgba(194, 65, 12, 0.05);
-  --cg-shadow: 0 4px 6px -1px rgba(194, 65, 12, 0.1);
-  --cg-shadow-lg: 0 10px 15px -3px rgba(194, 65, 12, 0.15);
-
-  --cg-glass-bg: rgba(245, 245, 240, 0.6);
-  --cg-glass-border: rgba(214, 211, 209, 0.5);
-  --cg-glass-shadow: 0 8px 32px 0 rgba(194, 65, 12, 0.08);
-
-  --cg-radius: 4px;
-  --cg-radius-lg: 8px;
-
-  --cg-font-body: "Caladea", Georgia, serif;
-  --cg-font-heading: "Caladea", Georgia, serif;
-
+  /* Animaciones por defecto (ninguna permanente) */
   --cg-anim-bg: none;
   --cg-anim-text: none;
 }
 
-/* ========== TEMA MAGO ========== */
-[data-theme="mage"] {
-  --cg-primary: #7c3aed;
-  --cg-primary-dark: #6d28d9;
-  --cg-primary-light: #a78bfa;
-  --cg-accent: #a855f7;
+/* ---------- Reino Fantasía → P07 Rosa empolvado ---------- */
+[data-theme="fantasy"] {
+  /* Colores oficiales (HEX originales sin modificar) */
+  --cg-bg: #4B0F1F;
+  --cg-surface: #7A3F56;
+  --cg-surface-hover: #683649;
+  --cg-surface-elevada: #7A3F56;
+  --cg-primary: #B78793;
+  --cg-primary-hover: #C59FA9;
+  --cg-primary-dark: #89656E;
+  --cg-primary-light: #D7BDC4;
+  --cg-accent: #E8C9D0;
 
-  --cg-success: #4ade80;
-  --cg-warning: #facc15;
-  --cg-danger: #fb7185;
-  --cg-info: #7c3aed;
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #FFFFFF;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
+  --cg-text-inverse: #000000;
+  --cg-on-primary: #000000;
 
-  --cg-bg: #f3e8ff;
-  --cg-surface: #f0abfc;
-  --cg-surface-hover: #ead3f8;
-  --cg-surface-elevated: #f0abfc;
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #E8C9D0;
+  --cg-border-light: #F4E4E8;
+  --cg-border-focus: #B78793;
 
-  --cg-text: #4c1d95;
-  --cg-text-secondary: #6b21a8;
-  --cg-text-muted: #7e22ce;
-  --cg-text-inverse: #ffffff;
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
 
-  --cg-border: #e9d5ff;
-  --cg-border-light: #fae8ff;
-  --cg-border-focus: #7c3aed;
+  /* Estados */
+  --cg-success: #10B981;
+  --cg-warning: #F59E0B;
+  --cg-danger: #EF4444;
+  --cg-info: #3B82F6;
 
-  --cg-shadow-sm: 0 1px 2px 0 rgba(124, 58, 237, 0.1);
-  --cg-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.15);
-  --cg-shadow-lg: 0 10px 15px -3px rgba(124, 58, 237, 0.2);
-
-  --cg-glass-bg: rgba(240, 171, 252, 0.5);
-  --cg-glass-border: rgba(233, 213, 255, 0.5);
-  --cg-glass-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.1);
-
-  --cg-radius: 20px;
-  --cg-radius-lg: 28px;
-
-  --cg-font-body: "Caladea", Georgia, serif;
-  --cg-font-heading: "Caladea", Georgia, serif;
-
-  --cg-anim-bg: arcane-swirl 5s ease-in-out infinite;
-  --cg-anim-text: none;
-}
-
-/* ========== TEMA PÍCARO ========== */
-[data-theme="rogue"] {
-  --cg-primary: #15803d;
-  --cg-primary-dark: #166534;
-  --cg-primary-light: #4ade80;
-  --cg-accent: #22c55e;
-
-  --cg-success: #4ade80;
-  --cg-warning: #ca8a04;
-  --cg-danger: #dc2626;
-  --cg-info: #15803d;
-
-  --cg-bg: #f0fdf4;
-  --cg-surface: #dcfce7;
-  --cg-surface-hover: #bbf7d0;
-  --cg-surface-elevated: #dcfce7;
-
-  --cg-text: #14532d;
-  --cg-text-secondary: #166534;
-  --cg-text-muted: #22c55e;
-  --cg-text-inverse: #ffffff;
-
-  --cg-border: #bbf7d0;
-  --cg-border-light: #ecfdf5;
-  --cg-border-focus: #15803d;
-
-  --cg-shadow-sm: 0 1px 2px 0 rgba(21, 128, 61, 0.05);
-  --cg-shadow: 0 4px 6px -1px rgba(21, 128, 61, 0.1);
-  --cg-shadow-lg: 0 10px 15px -3px rgba(21, 128, 61, 0.15);
-
-  --cg-glass-bg: rgba(220, 252, 231, 0.6);
-  --cg-glass-border: rgba(187, 247, 208, 0.5);
-  --cg-glass-shadow: 0 8px 32px 0 rgba(21, 128, 61, 0.08);
-
-  --cg-radius: 6px;
-  --cg-radius-lg: 10px;
-
-  --cg-font-body: "Liberation Sans", system-ui, sans-serif;
-  --cg-font-heading: "Liberation Sans", system-ui, sans-serif;
-
-  --cg-anim-bg: shadow-drift 4s ease-in-out infinite;
-  --cg-anim-text: none;
-}
-
-/* ========== TEMA PALADÍN ========== */
-[data-theme="paladin"] {
-  --cg-primary: #b45309;
-  --cg-primary-dark: #92400e;
-  --cg-primary-light: #f59e0b;
-  --cg-accent: #fbbf24;
-
-  --cg-success: #86efac;
-  --cg-warning: #fef08a;
-  --cg-danger: #fca5a5;
-  --cg-info: #b45309;
-
-  --cg-bg: #fffbeb;
-  --cg-surface: #fef3c7;
-  --cg-surface-hover: #fde68a;
-  --cg-surface-elevated: #fef3c7;
-
-  --cg-text: #78350f;
-  --cg-text-secondary: #92400e;
-  --cg-text-muted: #d97706;
-  --cg-text-inverse: #ffffff;
-
-  --cg-border: #fde68a;
-  --cg-border-light: #fefce8;
-  --cg-border-focus: #b45309;
-
-  --cg-shadow-sm: 0 1px 2px 0 rgba(180, 83, 9, 0.05);
-  --cg-shadow: 0 4px 6px -1px rgba(180, 83, 9, 0.1);
-  --cg-shadow-lg: 0 10px 15px -3px rgba(180, 83, 9, 0.15);
-
-  --cg-glass-bg: rgba(254, 243, 199, 0.6);
-  --cg-glass-border: rgba(253, 230, 138, 0.5);
-  --cg-glass-shadow: 0 8px 32px 0 rgba(180, 83, 9, 0.08);
-
-  --cg-radius: 8px;
-  --cg-radius-lg: 16px;
-
-  --cg-font-body: "Caladea", Georgia, serif;
-  --cg-font-heading: "Caladea", Georgia, serif;
-
-  --cg-anim-bg: holy-glow 4s ease-in-out infinite;
-  --cg-anim-text: none;
-}
-
-/* ========== TEMA OSCURO MAGO ========== */
-[data-theme="dark-mage"] {
-  --cg-primary: #a855f7;
-  --cg-primary-dark: #7c3aed;
-  --cg-primary-light: #c084fc;
-  --cg-accent: #d946ef;
-
-  --cg-success: #4ade80;
-  --cg-warning: #facc15;
-  --cg-danger: #fb7185;
-  --cg-info: #a855f7;
-
-  --cg-bg: #1c0222;
-  --cg-surface: #2e1035;
-  --cg-surface-hover: #44154c;
-  --cg-surface-elevated: #2e1035;
-
-  --cg-text: #f3e8ff;
-  --cg-text-secondary: #e9d5ff;
-  --cg-text-muted: #c4b5fd;
-  --cg-text-inverse: #ffffff;
-
-  --cg-border: #4c1d95;
-  --cg-border-light: #3b0764;
-  --cg-border-focus: #a855f7;
-
-  --cg-shadow-sm: 0 0 15px rgba(168, 85, 247, 0.15);
-  --cg-shadow: 0 0 30px rgba(168, 85, 247, 0.25);
-  --cg-shadow-lg: 0 0 50px rgba(168, 85, 247, 0.35);
-
-  --cg-glass-bg: rgba(46, 16, 53, 0.7);
-  --cg-glass-border: rgba(168, 85, 247, 0.3);
-  --cg-glass-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
-
+  /* Radio y transiciones (propiedades concretas, no "all") */
   --cg-radius: 12px;
-  --cg-radius-lg: 20px;
+  --cg-radius-lg: 16px;
+  --cg-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  --cg-transition-fast: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
+
+  /* Tipografía */
   --cg-font-body: "Caladea", Georgia, serif;
   --cg-font-heading: "Caladea", Georgia, serif;
+  --cg-font-mono: "Courier New", monospace;
 
-  --cg-anim-bg: void-swirl 5s ease-in-out infinite;
+  /* Animaciones por defecto (ninguna permanente) */
+  --cg-anim-bg: none;
   --cg-anim-text: none;
 }
 
-/* ========== TIPOS DE LETRA POR TEMA ========== */
-body {
-  font-family: var(--cg-font-body);
+/* ---------- Ciencia Ficción → P08 Pizarra ---------- */
+[data-theme="sci-fi"] {
+  /* Colores oficiales (HEX originales sin modificar) */
+  --cg-bg: #0F172A;
+  --cg-surface: #334155;
+  --cg-surface-hover: #2B3748;
+  --cg-surface-elevada: #334155;
+  --cg-primary: #64748B;
+  --cg-primary-hover: #8390A2;
+  --cg-primary-dark: #4B5768;
+  --cg-primary-light: #AAB3BF;
+  --cg-accent: #94A3B8;
+
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #FFFFFF;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
+  --cg-text-inverse: #000000;
+  --cg-on-primary: #FFFFFF;
+
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #94A3B8;
+  --cg-border-light: #CAD1DC;
+  --cg-border-focus: #64748B;
+
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
+
+  /* Estados */
+  --cg-success: #10B981;
+  --cg-warning: #F59E0B;
+  --cg-danger: #EF4444;
+  --cg-info: #3B82F6;
+
+  /* Radio y transiciones (propiedades concretas, no "all") */
+  --cg-radius: 12px;
+  --cg-radius-lg: 16px;
+  --cg-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  --cg-transition-fast: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
+
+  /* Tipografía */
+  --cg-font-body: "Liberation Sans", system-ui, -apple-system, sans-serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+  --cg-font-mono: "Courier New", monospace;
+
+  /* Animaciones por defecto (ninguna permanente) */
+  --cg-anim-bg: none;
+  --cg-anim-text: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--cg-font-heading);
+/* ---------- Guerrero → P06 Fuego y naranja ---------- */
+[data-theme="warrior"] {
+  /* Colores oficiales (HEX originales sin modificar) */
+  --cg-bg: #7F1D1D;
+  --cg-surface: #DC2626;
+  --cg-surface-hover: #BB2020;
+  --cg-surface-elevada: #DC2626;
+  --cg-primary: #F97316;
+  --cg-primary-hover: #FA8F45;
+  --cg-primary-dark: #BB5610;
+  --cg-primary-light: #FCB27F;
+  --cg-accent: #FDBA74;
+
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #FFFFFF;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
+  --cg-text-inverse: #000000;
+  --cg-on-primary: #000000;
+
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #FDBA74;
+  --cg-border-light: #FEDCBA;
+  --cg-border-focus: #F97316;
+
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
+
+  /* Estados */
+  --cg-success: #10B981;
+  --cg-warning: #F59E0B;
+  --cg-danger: #EF4444;
+  --cg-info: #3B82F6;
+
+  /* Radio y transiciones (propiedades concretas, no "all") */
+  --cg-radius: 12px;
+  --cg-radius-lg: 16px;
+  --cg-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  --cg-transition-fast: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
+
+  /* Tipografía */
+  --cg-font-body: "Caladea", Georgia, serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+  --cg-font-mono: "Courier New", monospace;
+
+  /* Animaciones por defecto (ninguna permanente) */
+  --cg-anim-bg: none;
+  --cg-anim-text: none;
 }
 
-/* ========== ANIMACIONES ATMOSFÉRICAS ========== */
+/* ---------- Mago → P09 Violeta y dorado ---------- */
+[data-theme="mage"] {
+  /* Colores oficiales (HEX originales sin modificar) */
+  --cg-bg: #1A1A1F;
+  --cg-surface: #2D2B55;
+  --cg-surface-hover: #262548;
+  --cg-surface-elevada: #2D2B55;
+  --cg-primary: #6A5ACD;
+  --cg-primary-hover: #887BD7;
+  --cg-primary-dark: #50449A;
+  --cg-primary-light: #ADA4E4;
+  --cg-accent: #A678B9;
 
-/* Pulso sutil para tema Oscuro */
-@keyframes subtle-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.95; }
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #FFFFFF;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
+  --cg-text-inverse: #000000;
+  --cg-on-primary: #FFFFFF;
+
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #A678B9;
+  --cg-border-light: #D2BCDC;
+  --cg-border-focus: #6A5ACD;
+
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
+
+  /* Estados */
+  --cg-success: #10B981;
+  --cg-warning: #F59E0B;
+  --cg-danger: #EF4444;
+  --cg-info: #3B82F6;
+
+  /* Radio y transiciones (propiedades concretas, no "all") */
+  --cg-radius: 12px;
+  --cg-radius-lg: 16px;
+  --cg-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  --cg-transition-fast: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
+
+  /* Tipografía */
+  --cg-font-body: "Caladea", Georgia, serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+  --cg-font-mono: "Courier New", monospace;
+
+  /* Animaciones por defecto (ninguna permanente) */
+  --cg-anim-bg: none;
+  --cg-anim-text: none;
 }
 
-/* Flicker retro para píxel */
-@keyframes retro-flicker {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
-  51% { opacity: 1; }
+/* ---------- Pícaro → P10 Verde petróleo ---------- */
+[data-theme="rogue"] {
+  /* Colores oficiales (HEX originales sin modificar) */
+  --cg-bg: #0A0F14;
+  --cg-surface: #0F3D3E;
+  --cg-surface-hover: #0D3435;
+  --cg-surface-elevada: #0F3D3E;
+  --cg-primary: #2E6F73;
+  --cg-primary-hover: #588C8F;
+  --cg-primary-dark: #225356;
+  --cg-primary-light: #8CB0B2;
+  --cg-accent: #7FB3B8;
+
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #FFFFFF;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
+  --cg-text-inverse: #000000;
+  --cg-on-primary: #FFFFFF;
+
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #7FB3B8;
+  --cg-border-light: #BFD9DC;
+  --cg-border-focus: #2E6F73;
+
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
+
+  /* Estados */
+  --cg-success: #10B981;
+  --cg-warning: #F59E0B;
+  --cg-danger: #EF4444;
+  --cg-info: #3B82F6;
+
+  /* Radio y transiciones (propiedades concretas, no "all") */
+  --cg-radius: 12px;
+  --cg-radius-lg: 16px;
+  --cg-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  --cg-transition-fast: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
+
+  /* Tipografía */
+  --cg-font-body: "Liberation Sans", system-ui, -apple-system, sans-serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+  --cg-font-mono: "Courier New", monospace;
+
+  /* Animaciones por defecto (ninguna permanente) */
+  --cg-anim-bg: none;
+  --cg-anim-text: none;
 }
 
-/* Scanline cyberpunk */
-@keyframes cyber-scan {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
+/* ---------- Paladín → P11 Azul y turquesa ---------- */
+[data-theme="paladin"] {
+  /* Colores oficiales (HEX originales sin modificar) */
+  --cg-bg: #0B132B;
+  --cg-surface: #1C2541;
+  --cg-surface-hover: #181F37;
+  --cg-surface-elevada: #1C2541;
+  --cg-primary: #3A506B;
+  --cg-primary-hover: #617389;
+  --cg-primary-dark: #2C3C50;
+  --cg-primary-light: #939FAE;
+  --cg-accent: #5BC0BE;
+
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #FFFFFF;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
+  --cg-text-inverse: #000000;
+  --cg-on-primary: #FFFFFF;
+
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #5BC0BE;
+  --cg-border-light: #ADE0DE;
+  --cg-border-focus: #D97706;
+
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
+
+  /* Estados */
+  --cg-success: #10B981;
+  --cg-warning: #F59E0B;
+  --cg-danger: #EF4444;
+  --cg-info: #3B82F6;
+
+  /* Radio y transiciones (propiedades concretas, no "all") */
+  --cg-radius: 12px;
+  --cg-radius-lg: 16px;
+  --cg-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  --cg-transition-fast: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
+
+  /* Tipografía */
+  --cg-font-body: "Caladea", Georgia, serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+  --cg-font-mono: "Courier New", monospace;
+
+  /* Animaciones por defecto (ninguna permanente) */
+  --cg-anim-bg: none;
+  --cg-anim-text: none;
 }
 
-/* Flicker neón cyberpunk */
-@keyframes neon-flicker {
-  0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--cg-primary); }
-  50% { opacity: 0.7; text-shadow: 0 0 20px var(--cg-accent); }
+/* ---------- Oscuro Mago → P12 Tierra y madera ---------- */
+[data-theme="dark-mage"] {
+  /* Colores oficiales (HEX originales sin modificar) */
+  --cg-bg: #1A120E;
+  --cg-surface: #3A2418;
+  --cg-surface-hover: #311F14;
+  --cg-surface-elevada: #3A2418;
+  --cg-primary: #6B4A2E;
+  --cg-primary-hover: #896E58;
+  --cg-primary-dark: #503822;
+  --cg-primary-light: #AE9B8C;
+  --cg-accent: #A88462;
+
+  /* Texto (blanco/negro puro por luminancia, contraste AA 4.5:1) */
+  --cg-text: #FFFFFF;
+  --cg-text-on-surface: #FFFFFF;
+  --cg-text-secondary: color-mix(in srgb, var(--cg-text) 75%, var(--cg-bg));
+  --cg-text-muted: color-mix(in srgb, var(--cg-text) 55%, var(--cg-bg));
+  --cg-text-inverse: #000000;
+  --cg-on-primary: #FFFFFF;
+
+  /* Bordes (>=3:1 contra fondo para componentes gráficos y focus) */
+  --cg-border: #A88462;
+  --cg-border-light: #D4C2B0;
+  --cg-border-focus: #A88462;
+
+  /* Sombras */
+  --cg-shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 10%, transparent);
+  --cg-shadow: 0 4px 6px -1px color-mix(in srgb, #000000 12%, transparent),
+               0 2px 4px -2px color-mix(in srgb, #000000 8%, transparent);
+  --cg-shadow-lg: 0 10px 15px -3px color-mix(in srgb, #000000 15%, transparent),
+                  0 4px 6px -4px color-mix(in srgb, #000000 10%, transparent);
+
+  /* Estados */
+  --cg-success: #10B981;
+  --cg-warning: #F59E0B;
+  --cg-danger: #EF4444;
+  --cg-info: #3B82F6;
+
+  /* Radio y transiciones (propiedades concretas, no "all") */
+  --cg-radius: 12px;
+  --cg-radius-lg: 16px;
+  --cg-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  --cg-transition-fast: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+
+  /* Espaciado y z-index */
+  --cg-header-height: 64px;
+  --cg-sidebar-width: 260px;
+  --cg-sidebar-collapsed: 72px;
+  --cg-z-dropdown: 1000;
+  --cg-z-sticky: 1100;
+  --cg-z-fixed: 1200;
+  --cg-z-modal: 1300;
+  --cg-z-toast: 1400;
+
+  /* Tipografía */
+  --cg-font-body: "Caladea", Georgia, serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+  --cg-font-mono: "Courier New", monospace;
+
+  /* Animaciones por defecto (ninguna permanente) */
+  --cg-anim-bg: none;
+  --cg-anim-text: none;
 }
 
-/* Flotar mágico para fantasía */
-@keyframes magic-float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(2deg); }
+
+/* ---------- Glass (usa variables de tema) ---------- */
+[data-theme="high-contrast"] .glass,
+[data-theme="retro-pixel"] .glass {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
-/* Escaneo holograma para sci-fi */
-@keyframes hologram-scan {
-  0% { transform: translateY(-100%); opacity: 0.3; }
-  50% { opacity: 0.6; }
-  100% { transform: translateY(100%); opacity: 0.3; }
-}
-
-/* Swirl arcano para mago */
-@keyframes arcane-swirl {
-  0%, 100% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.05); }
-}
-
-/* Deriva de sombra para pícaro */
-@keyframes shadow-drift {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(-5px); }
-}
-
-/* Brillo sagrado para paladín */
-@keyframes holy-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(180, 83, 9, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(180, 83, 9, 0.6); }
-}
-
-/* Swirl del vacío para oscuro mago */
-@keyframes void-swirl {
-  0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.8; }
-  50% { transform: rotate(360deg) scale(1.05); opacity: 1; }
-}
-
-/* Aplicar animaciones de fondo al body según tema */
-[data-theme="dark"] body,
-[data-theme="fantasy"] body,
-[data-theme="mage"] body,
-[data-theme="rogue"] body,
-[data-theme="paladin"] body,
-[data-theme="dark-mage"] body {
-  animation: var(--cg-anim-bg);
-}
-
-/* ========== CLASES UTILITARIAS DE TEMA ========== */
-.theme-toggle {
-  cursor: pointer;
-  transition: var(--cg-transition);
-}
-
-/* ========== PANEL DE TEMAS (DROPDOWN) - SIN INCLINACIÓN ========== */
-.theme-list {
-  min-width: 280px;
-  padding: 0.75rem;
+.glass {
+  background: color-mix(in srgb, var(--cg-surface) 70%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--cg-border);
-  background-color: var(--cg-surface);
-  box-shadow: var(--cg-shadow-lg);
+  box-shadow: var(--cg-shadow);
   border-radius: var(--cg-radius-lg);
 }
 
-.theme-list .dropdown-header {
-  color: var(--cg-text-secondary);
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 0.6rem 1rem;
-  margin: 0 0 0.5rem 0;
-  border-bottom: 1px solid var(--cg-border);
-  font-family: var(--cg-font-body);
+.glass-card {
+  background: color-mix(in srgb, var(--cg-surface) 75%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--cg-border);
+  box-shadow: var(--cg-shadow-lg);
+  border-radius: var(--cg-radius-lg);
+  transition: var(--cg-transition);
 }
 
-.theme-option {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--cg-text);
-  background-color: transparent;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  transition: var(--cg-transition-fast);
-  border-radius: var(--cg-radius);
-  font-family: var(--cg-font-body);
-  /* No rotation, no tilt - just subtle background change */
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--cg-shadow-lg);
+  transition: var(--cg-transition);
 }
 
-.theme-option:hover {
-  background-color: var(--cg-surface-hover);
-  color: var(--cg-primary);
-  transform: translateX(4px);
-}
-
-.theme-option i {
-  font-size: 1rem;
-  width: 1.4rem;
-  text-align: center;
-  flex-shrink: 0;
-  color: var(--cg-text-secondary);
-}
-
-.theme-option:hover i {
-  color: var(--cg-primary);
-}
-
-/* Indicador del tema activo en el dropdown */
-.theme-option.active-theme {
-  background-color: var(--cg-primary);
-  color: var(--cg-text-inverse);
-}
-
-.theme-option.active-theme i {
-  color: var(--cg-text-inverse);
-}
+/* ---------- Utilidades de tema ---------- */
+.text-theme-primary { color: var(--cg-primary); }
+.bg-theme-primary { background-color: var(--cg-primary); color: var(--cg-on-primary); }
+.border-theme-primary { border-color: var(--cg-primary); }
 
 .theme-badge {
   font-size: 0.7rem;
@@ -724,59 +865,19 @@ h1, h2, h3, h4, h5, h6 {
   padding: 4px 10px;
   border-radius: 20px;
   background: var(--cg-primary);
-  color: #ffffff;
+  color: var(--cg-on-primary);
 }
 
-/* ========== GLASSMODE ========== */
-.glass {
-  background: var(--cg-glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--cg-glass-border);
-  box-shadow: var(--cg-glass-shadow);
-  border-radius: var(--cg-radius-lg);
+/* ---------- Tipografía por tema ---------- */
+body {
+  font-family: var(--cg-font-body);
 }
 
-.glass-card {
-  background: var(--cg-glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--cg-glass-border);
-  box-shadow: var(--cg-glass-shadow);
-  border-radius: var(--cg-radius-lg);
-  transition: var(--cg-transition);
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--cg-font-heading);
 }
 
-.glass-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--cg-shadow-lg);
-}
-
-/* ========== UTILIDADES ========== */
-.text-theme-primary { color: var(--cg-primary); }
-.bg-theme-primary { background-color: var(--cg-primary); }
-.border-theme-primary { border-color: var(--cg-primary); }
-
-/* Animaciones */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideIn {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
-}
-
-.fade-in {
-  animation: fadeIn 0.3s ease forwards;
-}
-
-.slide-in-right {
-  animation: slideIn 0.3s ease forwards;
-}
-
-/* Retro pixel - sin bordes redondeados, fuente monospace, sin blur */
+/* ---------- Retro pixel: sin blur, bordes duros ---------- */
 [data-theme="retro-pixel"] body {
   font-family: var(--cg-font-mono);
   image-rendering: pixelated;
@@ -787,31 +888,22 @@ h1, h2, h3, h4, h5, h6 {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   box-shadow: 4px 4px 0 #000000;
-  border: 2px solid #ffffff;
+  border: 2px solid #FFFFFF;
 }
 
-/* Ciberpunk - efecto neón en cards */
-[data-theme="cyberpunk"] .glass-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: inherit;
-  padding: 2px;
-  background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: -1;
-  animation: neon-border 1s linear infinite;
+/* ---------- Reducido de movimiento (accesibilidad) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-@keyframes neon-border {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
-}
-
-/* ========== RESPONSIVE ========== */
+/* ---------- Responsive (variables de layout) ---------- */
 @media (max-width: 900px) {
   :root {
     --cg-sidebar-width: 220px;
