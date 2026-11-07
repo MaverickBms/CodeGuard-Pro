@@ -37,9 +37,20 @@
 | El usuario inicial puede crearse | `crear_usuario_inicial` | ✅ |
 | El login funciona | POST `/accounts/login/` → 302 | ✅ |
 | Las rutas protegidas requieren auth | GET `/` sin login → 302 a login | ✅ |
-| El servidor escucha en 127.0.0.1 | `ss -ltnp` | ✅ |
+| El servidor escucha en 127.0.0.1 (Waitress + WhiteNoise) | `ss -ltnp` / `python server_entry.py` | ✅ |
 | No depende de CDN | recursos en `/static/` | ✅ |
 | No necesita conexión externa para el núcleo | offline | ✅ |
+
+### Hardening aplicado (intervención de auditoría — CG-001 a CG-010)
+
+- `DEBUG=False` por defecto; desarrollo con `DEBUG=True` (solo en `config/settings/development.py`).
+- CSP estricta (sin `unsafe-inline` en scripts) + middleware de cabeceras de seguridad.
+- Sesiones con timeout por inactividad y registro en auditoría.
+- Autenticación local completa: setup, login, logout, rescate, cambio de contraseña.
+- Servidor local exclusivo en `127.0.0.1` con Waitress + WhiteNoise.
+- Suite de pruebas automatizadas: 31 tests OK (auth, panel, roadmaps, auditoría).
+- Modelo de usuario custom `accounts.Usuario` activo (`AUTH_USER_MODEL`) con migración de datos
+  que preservó al usuario existente.
 
 ---
 

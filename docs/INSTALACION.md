@@ -45,9 +45,17 @@ python manage.py shell
 >>> u, frase = crear_usuario_inicial("admin", "TU_CONTRASEÑA_MAESTRA")
 >>> print("FRASE DE RESCATE (guardarla, una sola vez):", frase)
 
-# 7. Arrancar el servidor (únicamente en localhost)
-python manage.py runserver 127.0.0.1:8000
+# 7. Arrancar el servidor WSGI local (Waitress + WhiteNoise; solo en localhost)
+python server_entry.py        # o: ./run.sh (prepara entorno e inicia Electron, el que arranca Django)
 ```
+
+El servidor escucha exclusivamente en `127.0.0.1` (nunca `0.0.0.0`) en el puerto definido
+por `CODEGUARD_PORT` (por defecto `8000`).
+
+> **Nota (hardening):** el modelo de usuario activo es el custom `accounts.Usuario`
+> (`AUTH_USER_MODEL = "accounts.Usuario"`). El usuario único persiste en la tabla
+> `accounts_usuario` de la base de datos SQLite (`data/db.sqlite3`). La transición desde
+> el usuario por defecto fue migrada sin pérdida de datos (ver `docs/DECISIONES_PENDIENTES.md`).
 
 Luego abrir en el navegador: `http://127.0.0.1:8000/`
 

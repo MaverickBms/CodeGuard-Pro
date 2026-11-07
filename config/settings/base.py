@@ -43,6 +43,11 @@ SECRET_KEY = _obtener_secret_key()
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "False").strip().lower() in {"true", "1", "yes", "on"}
 
+# Modelo de usuario activo: el usuario único local de CodeGuard Pro (monousuario).
+# La transición desde el usuario por defecto (auth_user) ya fue migrada sin pérdida
+# de datos (ver apps/accounts/migrations/0002_*).
+AUTH_USER_MODEL = "accounts.Usuario"
+
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",")

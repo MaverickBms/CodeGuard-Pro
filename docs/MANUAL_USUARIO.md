@@ -36,7 +36,7 @@ usas para recuperar el acceso, se invalida.
 ## 3. Inicio de sesión
 
 Ingresa tu usuario y contraseña maestra en la ventana de la aplicación (el servidor local
-escucha en `127.0.0.1` en un puerto asignado automáticamente).
+escucha en `127.0.0.1` en el puerto definido por `CODEGUARD_PORT`, por defecto `8000`).
 
 La sesión expira por inactividad tras el tiempo configurado (15 minutos por defecto). Al
 cerrar sesión o al expirar, se registra un evento de auditoría.

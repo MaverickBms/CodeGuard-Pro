@@ -38,7 +38,29 @@ No se detectaron contradicciones técnicas graves entre requisitos aprobados.
 
 ---
 
-## 3. Decisiones pendientes (requieren definición del propietario)
+## 3. Intervención de auditoría y consolidación (2026-11-07)
+
+Durante la auditoría de arquitectura y seguridad se aplicaron las correcciones técnicas
+identificadas en el plan maestro (CG-001 a CG-010):
+
+- **CG-007** — `DEBUG=False` por defecto (desarrollo con `DEBUG=True` en `config/settings/development.py`).
+- **CG-008** — CSP estricta (sin `unsafe-inline` en scripts) + script inline externalizado a `static/js/codeguard.js`.
+- **CG-009** — Servidor WSGI local con Waitress + WhiteNoise en `127.0.0.1`.
+- **CG-010** — Limpieza de `run.sh`.
+- **CG-003** — Eliminación de la creación implícita de usuario.
+- **CG-004** — Middlewares de sesión/autenticación.
+- **CG-005** — Middleware de inactividad.
+- **CG-006** — Rutas protegidas con `@login_required`.
+- **CG-001** — Vistas y URLs de autenticación implementadas.
+- **CG-002** — Modelo de usuario custom `accounts.Usuario` activado (`AUTH_USER_MODEL`) con
+  migración de datos que preservó al usuario existente.
+
+Con estas correcciones, el núcleo local (autenticación, sesión, seguridad, servidor) quedó
+implementado y verificado (31 tests OK).
+
+---
+
+## 4. Decisiones pendientes (requieren definición del propietario)
 
 | ID | Decisión pendiente | Por qué es necesaria | Recomendación |
 |---|---|---|---|

@@ -20,7 +20,7 @@ prueba que pasa).
 
 | ID | Descripción | Módulo | Componente | Prueba | Estado |
 |---|---|---|---|---|---|
-| RF-001 | Autenticación local | Identidad | `apps.accounts` (login) | T-001 | ✅ Implementado |
+| RF-001 | Autenticación local | Identidad | `apps.accounts` (Usuario custom `accounts.Usuario` + login) | T-001, T-006 a T-012 | ✅ Implementado |
 | RF-002 | Cierre por inactividad | Identidad | Middleware `SesionInactividad` | T-002 | ✅ Implementado |
 | RF-003 | Configuración inicial | Identidad | `apps.accounts` (setup) | T-003 | ✅ Implementado |
 | RF-004 | Frase de rescate (hash, un uso) | Identidad | `apps.accounts` (servicios) | T-004 | ✅ Implementado |

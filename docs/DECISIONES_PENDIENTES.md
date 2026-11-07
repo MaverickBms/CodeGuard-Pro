@@ -23,7 +23,7 @@
 | T-001 | Django 5.2.19 LTS | Versión con soporte vigente, compatible con Python 3.14 y Argon2. |
 | T-002 | SQLite con FTS5 | Monousuario, sin proceso servidor, rápido en NVMe, verificado en entorno real. |
 | T-003 | HTMX + Bootstrap 5 locales (sin CDN) | Offline-first, sin dependencia de Internet, bajo consumo. |
-| T-004 | Modelo de usuario personalizado (`accounts.Usuario`) | Permite campos específicos (tiempo de sesión, fecha de setup) sin romper auth de Django. |
+| T-004 | Modelo de usuario personalizado (`accounts.Usuario`) — **RESUELTA (CG-002)** | Activado con `AUTH_USER_MODEL = "accounts.Usuario"`; la migración de datos preservó al usuario existente (tabla `auth_user` → `accounts_usuario`). Permite campos específicos (tiempo de sesión, fecha de setup) sin romper auth de Django. |
 | T-005 | Middleware propio para sesión, seguridad y setup | Centraliza lógica transversal sin acoplar vistas. |
 | T-006 | `ConfiguracionSistema` como singleton (pk=1) | Configuración global sencilla sin tabla de parámetros por ahora. |
 | T-007 | Estructura de apps por dominio (`core`, `accounts`, `audit`, ...) | Monolito modular con responsabilidades delimitadas, sin apps innecesarias. |

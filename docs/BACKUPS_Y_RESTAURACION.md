@@ -9,7 +9,8 @@
 ## 1. Formato de backup
 
 El formato previsto es **tar.gz** que empaqueta:
-- Base de datos SQLite (`db.sqlite3`).
+- Base de datos SQLite (`data/db.sqlite3`; la tabla del usuario único local es
+  `accounts_usuario` tras el modelo custom `AUTH_USER_MODEL = "accounts.Usuario"`).
 - Archivos de usuario (`media/`).
 - Archivo de metadatos del backup (fecha, versión, hash SHA-256).
 
