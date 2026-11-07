@@ -1,0 +1,3701 @@
+{
+  "metadata": {
+    "nombre": "PROYECTO ASCENSO — Roadmap Maestro Consolidado",
+    "edicion": "3.1",
+    "fecha_consolidacion": "2026-10-29",
+    "fuente": "PROYECTO_ASCENSO_Roadmap_Maestro_Consolidado_3_1_2026.docx",
+    "sha256_fuente": "15a9ef38c7284de79eedd1ba10ef33cc50b324c9706836740205778eea4704d3",
+    "regla": "Contenido extraído del documento oficial. No se inventan etapas, módulos ni dependencias."
+  },
+  "etapas": [
+    {
+      "numero": 0,
+      "titulo": "Preparación y método de aprendizaje",
+      "bloque": "I — FUNDAMENTOS DE INFORMÁTICA E INGENIERÍA",
+      "seccion": "ETAPAS 0–6 · CONSTRUIR LOS CIMIENTOS",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "desarrollar un método de estudio sostenible y aprender a investigar problemas técnicos.",
+      "modulos": [
+        {
+          "numero": "0.1",
+          "titulo": "Aprender a aprender",
+          "lecciones": [
+            "Aprendizaje activo.",
+            "Pensamiento crítico.",
+            "Método Feynman.",
+            "Repetición espaciada.",
+            "Práctica deliberada.",
+            "Resolución de problemas.",
+            "Descomposición de problemas complejos.",
+            "Aprendizaje basado en proyectos."
+          ]
+        },
+        {
+          "numero": "0.2",
+          "titulo": "Investigación técnica",
+          "lecciones": [
+            "Buscar documentación.",
+            "Buscar soluciones a errores.",
+            "Leer Stack Overflow.",
+            "Consultar GitHub.",
+            "Investigar repositorios.",
+            "Diferenciar información verificada de opiniones.",
+            "Formular preguntas técnicas."
+          ]
+        },
+        {
+          "numero": "0.3",
+          "titulo": "Herramientas",
+          "lecciones": [
+            "Visual Studio Code.",
+            "Terminal.",
+            "Git.",
+            "GitHub.",
+            "Navegador y DevTools.",
+            "Markdown.",
+            "Draw.io.",
+            "Herramientas de diagramación."
+          ]
+        },
+        {
+          "numero": "0.4",
+          "titulo": "Depuración",
+          "lecciones": [
+            "Debugging.",
+            "Breakpoints.",
+            "Stack traces.",
+            "Logs.",
+            "Hipótesis.",
+            "Reproducción de errores.",
+            "Análisis de causas."
+          ]
+        }
+      ],
+      "proyecto": "Crear ASCENSO-Knowledge-Base, un repositorio para documentar todo el aprendizaje.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 1,
+      "titulo": "Fundamentos de computación y arquitectura del computador",
+      "bloque": "I — FUNDAMENTOS DE INFORMÁTICA E INGENIERÍA",
+      "seccion": "ETAPAS 0–6 · CONSTRUIR LOS CIMIENTOS",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "comprender cómo funciona físicamente y lógicamente un computador.",
+      "modulos": [
+        {
+          "numero": "1.1",
+          "titulo": "Hardware",
+          "lecciones": [
+            "CPU (Unidad Central de Procesamiento).",
+            "ALU (Unidad Aritmético-Lógica).",
+            "Registros.",
+            "Núcleos.",
+            "Hilos de ejecución.",
+            "Frecuencia.",
+            "Caché L1, L2 y L3.",
+            "RAM.",
+            "ROM.",
+            "SSD.",
+            "HDD.",
+            "GPU.",
+            "Motherboard.",
+            "Buses.",
+            "Fuente de alimentación.",
+            "Periféricos."
+          ]
+        },
+        {
+          "numero": "1.2",
+          "titulo": "Representación de información",
+          "lecciones": [
+            "Sistema binario.",
+            "Sistema decimal.",
+            "Sistema hexadecimal.",
+            "Bits y bytes.",
+            "ASCII.",
+            "Unicode.",
+            "UTF-8.",
+            "Representación de enteros.",
+            "Números de punto flotante."
+          ]
+        },
+        {
+          "numero": "1.3",
+          "titulo": "Arquitectura de computadores",
+          "lecciones": [
+            "Arquitectura Von Neumann.",
+            "Arquitectura Harvard.",
+            "Ciclo Fetch-Decode-Execute.",
+            "Conjunto de instrucciones.",
+            "Registros del procesador.",
+            "Memoria.",
+            "Entrada y salida.",
+            "Interrupciones."
+          ]
+        },
+        {
+          "numero": "1.4",
+          "titulo": "Arranque",
+          "lecciones": [
+            "BIOS.",
+            "UEFI.",
+            "POST.",
+            "Bootloader.",
+            "Kernel.",
+            "Secuencia de arranque.",
+            "Secure Boot."
+          ]
+        },
+        {
+          "numero": "1.5",
+          "titulo": "Memoria",
+          "lecciones": [
+            "Memoria física.",
+            "Memoria virtual.",
+            "Stack.",
+            "Heap.",
+            "Paginación.",
+            "Direccionamiento de memoria."
+          ]
+        }
+      ],
+      "proyecto": "Representar visualmente el funcionamiento interno de un computador desde que recibe energía hasta que ejecuta una aplicación.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 2,
+      "titulo": "Pensamiento computacional, lógica y matemáticas",
+      "bloque": "I — FUNDAMENTOS DE INFORMÁTICA E INGENIERÍA",
+      "seccion": "ETAPAS 0–6 · CONSTRUIR LOS CIMIENTOS",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "desarrollar la capacidad de solucionar problemas antes de escribir código.",
+      "modulos": [
+        {
+          "numero": "2.1",
+          "titulo": "Pensamiento computacional",
+          "lecciones": [
+            "Descomposición.",
+            "Abstracción.",
+            "Reconocimiento de patrones.",
+            "Generalización.",
+            "Modelado de problemas.",
+            "Casos límite."
+          ]
+        },
+        {
+          "numero": "2.2",
+          "titulo": "Lógica",
+          "lecciones": [
+            "Proposiciones.",
+            "Operadores AND, OR, NOT.",
+            "Tablas de verdad.",
+            "Implicaciones.",
+            "Equivalencias.",
+            "Álgebra booleana.",
+            "Predicados."
+          ]
+        },
+        {
+          "numero": "2.3",
+          "titulo": "Algoritmos iniciales",
+          "lecciones": [
+            "Entrada.",
+            "Procesamiento.",
+            "Salida.",
+            "Pseudocódigo.",
+            "Diagramas de flujo.",
+            "Variables.",
+            "Contadores.",
+            "Acumuladores.",
+            "Condiciones.",
+            "Iteraciones."
+          ]
+        },
+        {
+          "numero": "2.4",
+          "titulo": "Matemáticas",
+          "lecciones": [
+            "Aritmética.",
+            "Álgebra básica.",
+            "Ecuaciones.",
+            "Funciones.",
+            "Conjuntos.",
+            "Relaciones.",
+            "Proporciones.",
+            "Porcentajes.",
+            "Probabilidad básica."
+          ]
+        },
+        {
+          "numero": "2.5",
+          "titulo": "Matemática discreta (introducción)",
+          "lecciones": [
+            "Lógica matemática.",
+            "Combinatoria.",
+            "Permutaciones.",
+            "Combinaciones.",
+            "Relaciones.",
+            "Grafos.",
+            "Aritmética modular."
+          ]
+        }
+      ],
+      "proyecto": "Diseñar algoritmos y diagramas de flujo de un sistema de administración de una empresa.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 3,
+      "titulo": "Programación desde cero con Java",
+      "bloque": "I — FUNDAMENTOS DE INFORMÁTICA E INGENIERÍA",
+      "seccion": "ETAPAS 0–6 · CONSTRUIR LOS CIMIENTOS",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "aprender programación de verdad utilizando Java como primer lenguaje principal.",
+      "modulos": [
+        {
+          "numero": "3.1",
+          "titulo": "Fundamentos",
+          "lecciones": [
+            "JDK.",
+            "JVM.",
+            "JRE.",
+            "Compilación.",
+            "Interpretación.",
+            "Sintaxis.",
+            "Semántica.",
+            "Variables.",
+            "Constantes.",
+            "Tipos primitivos.",
+            "Tipos de referencia.",
+            "Casting.",
+            "Operadores."
+          ]
+        },
+        {
+          "numero": "3.2",
+          "titulo": "Control de flujo",
+          "lecciones": [
+            "if.",
+            "else.",
+            "else if.",
+            "switch.",
+            "for.",
+            "while.",
+            "do-while.",
+            "break.",
+            "continue."
+          ]
+        },
+        {
+          "numero": "3.3",
+          "titulo": "Métodos",
+          "lecciones": [
+            "Declaración.",
+            "Parámetros.",
+            "Argumentos.",
+            "Retorno.",
+            "Sobrecarga.",
+            "Scope.",
+            "Recursividad."
+          ]
+        },
+        {
+          "numero": "3.4",
+          "titulo": "Manejo de información",
+          "lecciones": [
+            "Strings.",
+            "Arrays.",
+            "Matrices.",
+            "Enums.",
+            "Entrada y salida.",
+            "Scanner.",
+            "Formateo de datos."
+          ]
+        },
+        {
+          "numero": "3.5",
+          "titulo": "Manejo de errores",
+          "lecciones": [
+            "Excepciones.",
+            "try/catch/finally.",
+            "throw.",
+            "throws.",
+            "Checked exceptions.",
+            "Unchecked exceptions."
+          ]
+        },
+        {
+          "numero": "3.6",
+          "titulo": "Archivos",
+          "lecciones": [
+            "Lectura.",
+            "Escritura.",
+            "Directorios.",
+            "Paths.",
+            "Archivos de texto.",
+            "Serialización básica."
+          ]
+        }
+      ],
+      "proyecto": "Sistema de inventario mediante consola, con registro, consulta, modificación y eliminación de productos.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 4,
+      "titulo": "Programación Orientada a Objetos y paradigmas",
+      "bloque": "I — FUNDAMENTOS DE INFORMÁTICA E INGENIERÍA",
+      "seccion": "ETAPAS 0–6 · CONSTRUIR LOS CIMIENTOS",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "comprender cómo diseñar programas organizados y mantenibles.",
+      "modulos": [
+        {
+          "numero": "4.1",
+          "titulo": "POO",
+          "lecciones": [
+            "Clases.",
+            "Objetos.",
+            "Instancias.",
+            "Atributos.",
+            "Métodos.",
+            "Constructores.",
+            "Encapsulamiento.",
+            "Abstracción.",
+            "Herencia.",
+            "Polimorfismo.",
+            "Interfaces.",
+            "Clases abstractas."
+          ]
+        },
+        {
+          "numero": "4.2",
+          "titulo": "Relaciones",
+          "lecciones": [
+            "Asociación.",
+            "Agregación.",
+            "Composición.",
+            "Dependencia.",
+            "Delegación."
+          ]
+        },
+        {
+          "numero": "4.3",
+          "titulo": "Conceptos de diseño",
+          "lecciones": [
+            "Acoplamiento.",
+            "Cohesión.",
+            "Separación de responsabilidades.",
+            "Inyección de dependencias.",
+            "Responsabilidad única."
+          ]
+        },
+        {
+          "numero": "4.4",
+          "titulo": "Paradigmas",
+          "lecciones": [
+            "Programación imperativa.",
+            "Programación estructurada.",
+            "Programación orientada a objetos.",
+            "Programación funcional.",
+            "Programación declarativa."
+          ]
+        },
+        {
+          "numero": "4.5",
+          "titulo": "UML",
+          "lecciones": [
+            "Diagramas de clases.",
+            "Objetos.",
+            "Relaciones.",
+            "Herencia.",
+            "Interfaces.",
+            "Diagramas de secuencia."
+          ]
+        }
+      ],
+      "proyecto": "Sistema de biblioteca utilizando POO y diagramas UML.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 5,
+      "titulo": "Git, GitHub, terminal y modularidad",
+      "bloque": "I — FUNDAMENTOS DE INFORMÁTICA E INGENIERÍA",
+      "seccion": "ETAPAS 0–6 · CONSTRUIR LOS CIMIENTOS",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "comenzar a trabajar como un desarrollador que forma parte de un equipo.",
+      "modulos": [
+        {
+          "numero": "5.1",
+          "titulo": "Git",
+          "lecciones": [
+            "Repositorios.",
+            "Working directory.",
+            "Staging area.",
+            "Commits.",
+            "Branches.",
+            "Merge.",
+            "Rebase.",
+            "Clone.",
+            "Pull.",
+            "Push.",
+            "Fetch.",
+            "Diff.",
+            "Log.",
+            "Stash.",
+            "Reset.",
+            "Revert.",
+            "Cherry-pick."
+          ]
+        },
+        {
+          "numero": "5.2",
+          "titulo": "GitHub",
+          "lecciones": [
+            "Repositorios públicos y privados.",
+            "README.",
+            "Issues.",
+            "Pull Requests.",
+            "Forks.",
+            "Releases.",
+            "GitHub Projects.",
+            "Code Review.",
+            "Branch protection."
+          ]
+        },
+        {
+          "numero": "5.3",
+          "titulo": "Terminal",
+          "lecciones": [
+            "Shell.",
+            "Comandos.",
+            "Rutas absolutas y relativas.",
+            "PATH.",
+            "Variables de entorno.",
+            "Redirecciones.",
+            "Pipes."
+          ]
+        },
+        {
+          "numero": "5.4",
+          "titulo": "Modularidad",
+          "lecciones": [
+            "Módulos.",
+            "Imports.",
+            "Exports.",
+            "Namespaces.",
+            "Paquetes.",
+            "Dependencias.",
+            "Gestores de paquetes.",
+            "Versionado semántico.",
+            "Archivos de bloqueo de dependencias."
+          ]
+        }
+      ],
+      "proyecto": "Convertir uno de tus proyectos anteriores en un repositorio organizado, modular y documentado.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 6,
+      "titulo": "Estructuras de datos y algoritmos",
+      "bloque": "I — FUNDAMENTOS DE INFORMÁTICA E INGENIERÍA",
+      "seccion": "ETAPAS 0–6 · CONSTRUIR LOS CIMIENTOS",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "comprender cómo organizar información y desarrollar soluciones eficientes.",
+      "modulos": [
+        {
+          "numero": "6.1",
+          "titulo": "Estructuras lineales",
+          "lecciones": [
+            "Arrays.",
+            "Matrices.",
+            "Arrays dinámicos.",
+            "Linked Lists.",
+            "Doubly Linked Lists.",
+            "Circular Linked Lists.",
+            "Stacks.",
+            "Queues.",
+            "Deques."
+          ]
+        },
+        {
+          "numero": "6.2",
+          "titulo": "Estructuras asociativas",
+          "lecciones": [
+            "Hash Tables.",
+            "HashMap.",
+            "HashSet.",
+            "Diccionarios.",
+            "Sets.",
+            "Hash Functions.",
+            "Hash Collisions."
+          ]
+        },
+        {
+          "numero": "6.3",
+          "titulo": "Árboles",
+          "lecciones": [
+            "Trees.",
+            "Binary Trees.",
+            "Binary Search Trees.",
+            "AVL Trees.",
+            "Heaps.",
+            "Priority Queues.",
+            "Tries."
+          ]
+        },
+        {
+          "numero": "6.4",
+          "titulo": "Grafos",
+          "lecciones": [
+            "Grafos dirigidos.",
+            "Grafos no dirigidos.",
+            "Grafos ponderados.",
+            "Matrices de adyacencia.",
+            "Listas de adyacencia.",
+            "BFS.",
+            "DFS."
+          ]
+        },
+        {
+          "numero": "6.5",
+          "titulo": "Algoritmos",
+          "lecciones": [
+            "Linear Search.",
+            "Binary Search.",
+            "Bubble Sort.",
+            "Selection Sort.",
+            "Insertion Sort.",
+            "Merge Sort.",
+            "Quick Sort.",
+            "Heap Sort.",
+            "Dijkstra.",
+            "A*.",
+            "Prim.",
+            "Kruskal."
+          ]
+        },
+        {
+          "numero": "6.6",
+          "titulo": "Técnicas",
+          "lecciones": [
+            "Recursividad.",
+            "Divide and Conquer.",
+            "Greedy.",
+            "Backtracking.",
+            "Dynamic Programming.",
+            "Two Pointers.",
+            "Sliding Window."
+          ]
+        },
+        {
+          "numero": "6.7",
+          "titulo": "Complejidad",
+          "lecciones": [
+            "Big O.",
+            "Big Ω.",
+            "Big Θ.",
+            "Complejidad temporal.",
+            "Complejidad espacial.",
+            "Mejor caso.",
+            "Caso promedio.",
+            "Peor caso."
+          ]
+        }
+      ],
+      "proyecto": "Biblioteca de estructuras de datos implementadas desde cero en Java.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 7,
+      "titulo": "Sistemas operativos: Linux, Windows y administración",
+      "bloque": "II — SISTEMAS OPERATIVOS, REDES Y DATOS",
+      "seccion": "ETAPAS 7–10 · COMPRENDER LA INFRAESTRUCTURA",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "aprender a administrar computadores y servidores, comprender sus procesos internos y utilizar la terminal.",
+      "modulos": [
+        {
+          "numero": "7.1",
+          "titulo": "Fundamentos de sistemas operativos",
+          "lecciones": [
+            "Kernel.",
+            "User Space.",
+            "Kernel Space.",
+            "Procesos.",
+            "Hilos.",
+            "Scheduler.",
+            "Context Switching.",
+            "Memoria virtual.",
+            "Sistema de archivos.",
+            "Drivers.",
+            "System Calls.",
+            "IPC (comunicación entre procesos).",
+            "Concurrencia.",
+            "Paralelismo."
+          ]
+        },
+        {
+          "numero": "7.2",
+          "titulo": "Linux",
+          "lecciones": [
+            "Distribuciones.",
+            "Kernel Linux.",
+            "Ubuntu.",
+            "Debian.",
+            "Estructura del sistema de archivos.",
+            "Directorios /etc, /var, /home, /usr, /tmp, /opt.",
+            "Usuarios.",
+            "Grupos.",
+            "Permisos.",
+            "Propietarios.",
+            "Root.",
+            "Sudo.",
+            "Procesos.",
+            "Servicios.",
+            "Paquetes.",
+            "Logs.",
+            "Variables de entorno."
+          ]
+        },
+        {
+          "numero": "7.3",
+          "titulo": "Administración Linux",
+          "lecciones": [
+            "pwd",
+            "ls",
+            "cd",
+            "mkdir",
+            "touch",
+            "cp",
+            "mv",
+            "rm",
+            "find",
+            "grep",
+            "chmod",
+            "chown",
+            "ps",
+            "top",
+            "kill",
+            "systemctl",
+            "journalctl",
+            "df",
+            "du",
+            "mount"
+          ]
+        },
+        {
+          "numero": "7.4",
+          "titulo": "Bash",
+          "lecciones": [
+            "Variables.",
+            "Operadores.",
+            "Condicionales.",
+            "Bucles.",
+            "Funciones.",
+            "Arrays.",
+            "Pipes.",
+            "Redirecciones.",
+            "Exit codes.",
+            "Scripts.",
+            "Cron.",
+            "Automatización."
+          ]
+        },
+        {
+          "numero": "7.5",
+          "titulo": "Windows",
+          "lecciones": [
+            "Arquitectura de Windows.",
+            "Sistema de archivos NTFS.",
+            "Usuarios y grupos.",
+            "Permisos.",
+            "Procesos.",
+            "Servicios.",
+            "Registro de Windows.",
+            "Administrador de tareas.",
+            "Visor de eventos.",
+            "Firewall.",
+            "PowerShell.",
+            "Administración de servicios."
+          ]
+        },
+        {
+          "numero": "7.6",
+          "titulo": "Virtualización",
+          "lecciones": [
+            "VirtualBox.",
+            "VMware.",
+            "Máquinas virtuales.",
+            "Snapshots.",
+            "Recursos virtualizados.",
+            "Redes virtuales.",
+            "NAT.",
+            "Host-only.",
+            "Adaptadores de red virtuales."
+          ]
+        }
+      ],
+      "proyecto": "Instalar y administrar dos servidores virtuales: Ubuntu Server. Windows Server (introducción). Administrar usuarios, permisos, servicios, procesos y registros.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 8,
+      "titulo": "Redes informáticas y protocolos de comunicación",
+      "bloque": "II — SISTEMAS OPERATIVOS, REDES Y DATOS",
+      "seccion": "ETAPAS 7–10 · COMPRENDER LA INFRAESTRUCTURA",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "comprender cómo se comunican los computadores y cómo funciona Internet.",
+      "modulos": [
+        {
+          "numero": "8.1",
+          "titulo": "Fundamentos de redes",
+          "lecciones": [
+            "Redes LAN.",
+            "WAN.",
+            "MAN.",
+            "Internet.",
+            "Intranet.",
+            "Extranet.",
+            "Cliente-servidor.",
+            "Peer-to-peer.",
+            "Router.",
+            "Switch.",
+            "Firewall.",
+            "Gateway.",
+            "Access Point."
+          ]
+        },
+        {
+          "numero": "8.2",
+          "titulo": "Modelos de comunicación",
+          "lecciones": [
+            "Modelo OSI.",
+            "Las siete capas OSI.",
+            "Modelo TCP/IP.",
+            "Encapsulamiento.",
+            "Desencapsulamiento.",
+            "Paquetes.",
+            "Tramas.",
+            "Segmentos.",
+            "MTU."
+          ]
+        },
+        {
+          "numero": "8.3",
+          "titulo": "Direccionamiento",
+          "lecciones": [
+            "Dirección MAC.",
+            "IPv4.",
+            "IPv6.",
+            "IP pública.",
+            "IP privada.",
+            "Máscaras.",
+            "Subnetting.",
+            "CIDR.",
+            "VLSM.",
+            "Gateway.",
+            "Broadcast.",
+            "ARP.",
+            "DHCP."
+          ]
+        },
+        {
+          "numero": "8.4",
+          "titulo": "Protocolos",
+          "lecciones": [
+            "TCP.",
+            "UDP.",
+            "ICMP.",
+            "DNS.",
+            "HTTP.",
+            "HTTPS.",
+            "SSH.",
+            "FTP.",
+            "SFTP.",
+            "SMTP.",
+            "IMAP.",
+            "POP3.",
+            "SMB.",
+            "LDAP.",
+            "Kerberos.",
+            "WebSockets."
+          ]
+        },
+        {
+          "numero": "8.5",
+          "titulo": "Routing y Switching",
+          "lecciones": [
+            "Switching.",
+            "Routing.",
+            "Tablas de rutas.",
+            "Rutas estáticas.",
+            "Rutas dinámicas.",
+            "NAT.",
+            "VLAN.",
+            "Trunking.",
+            "Segmentación.",
+            "Subredes."
+          ]
+        },
+        {
+          "numero": "8.6",
+          "titulo": "Seguridad de redes",
+          "lecciones": [
+            "Firewalls.",
+            "VPN.",
+            "DMZ.",
+            "ACL.",
+            "Segmentación.",
+            "Puertos abiertos.",
+            "Servicios expuestos.",
+            "Superficie de ataque.",
+            "Filtrado de tráfico."
+          ]
+        },
+        {
+          "numero": "8.7",
+          "titulo": "Herramientas",
+          "lecciones": [
+            "Wireshark.",
+            "tcpdump.",
+            "Nmap.",
+            "ping.",
+            "traceroute.",
+            "ip.",
+            "ss.",
+            "netstat.",
+            "dig.",
+            "nslookup.",
+            "curl."
+          ]
+        }
+      ],
+      "proyecto": "Crear una red virtual con varias máquinas, configurar direcciones IP, probar conectividad y analizar paquetes con Wireshark.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 9,
+      "titulo": "Bases de datos relacionales y SQL",
+      "bloque": "II — SISTEMAS OPERATIVOS, REDES Y DATOS",
+      "seccion": "ETAPAS 7–10 · COMPRENDER LA INFRAESTRUCTURA",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "aprender a modelar, almacenar, consultar y administrar información.",
+      "modulos": [
+        {
+          "numero": "9.1",
+          "titulo": "Fundamentos",
+          "lecciones": [
+            "Qué es una base de datos.",
+            "DBMS (Sistema Gestor de Bases de Datos).",
+            "Servidor de bases de datos.",
+            "Cliente de bases de datos.",
+            "Bases relacionales.",
+            "Tablas.",
+            "Filas.",
+            "Columnas.",
+            "Esquemas.",
+            "Tipos de datos."
+          ]
+        },
+        {
+          "numero": "9.2",
+          "titulo": "Modelado",
+          "lecciones": [
+            "Entidades.",
+            "Atributos.",
+            "Relaciones.",
+            "Cardinalidad.",
+            "Claves primarias.",
+            "Claves foráneas.",
+            "Restricciones.",
+            "Diagramas entidad-relación.",
+            "Modelo conceptual.",
+            "Modelo lógico.",
+            "Modelo físico."
+          ]
+        },
+        {
+          "numero": "9.3",
+          "titulo": "MySQL",
+          "lecciones": [
+            "Instalación de MySQL Server.",
+            "Configuración.",
+            "MySQL Workbench.",
+            "Creación de bases de datos.",
+            "Creación de tablas.",
+            "Usuarios.",
+            "Permisos.",
+            "Conexiones.",
+            "Una distinción importante"
+          ]
+        },
+        {
+          "numero": "9.4",
+          "titulo": "SQL",
+          "lecciones": [
+            "DDL.",
+            "DML.",
+            "DQL.",
+            "DCL.",
+            "TCL.",
+            "CREATE.",
+            "ALTER.",
+            "DROP.",
+            "SELECT.",
+            "INSERT.",
+            "UPDATE.",
+            "DELETE.",
+            "WHERE.",
+            "ORDER BY.",
+            "GROUP BY.",
+            "HAVING.",
+            "JOIN.",
+            "Subqueries.",
+            "CTE."
+          ]
+        },
+        {
+          "numero": "9.5",
+          "titulo": "Diseño y normalización",
+          "lecciones": [
+            "Primera forma normal (1NF).",
+            "Segunda forma normal (2NF).",
+            "Tercera forma normal (3NF).",
+            "BCNF.",
+            "Redundancia.",
+            "Integridad referencial.",
+            "Relaciones uno a uno.",
+            "Uno a muchos.",
+            "Muchos a muchos."
+          ]
+        },
+        {
+          "numero": "9.6",
+          "titulo": "Bases de datos avanzadas",
+          "lecciones": [
+            "Índices.",
+            "B-Tree.",
+            "Índices compuestos.",
+            "Vistas.",
+            "Triggers.",
+            "Stored Procedures.",
+            "Transacciones.",
+            "ACID.",
+            "Commit.",
+            "Rollback.",
+            "Locks.",
+            "Deadlocks.",
+            "Isolation Levels.",
+            "Optimización.",
+            "EXPLAIN."
+          ]
+        },
+        {
+          "numero": "9.7",
+          "titulo": "PostgreSQL",
+          "lecciones": [
+            "Arquitectura.",
+            "Roles.",
+            "Esquemas.",
+            "Tipos de datos.",
+            "JSONB.",
+            "Índices.",
+            "Transacciones.",
+            "Consultas avanzadas."
+          ]
+        }
+      ],
+      "proyecto": "Diseñar la base de datos de un sistema de ventas con clientes, productos, proveedores, facturación, inventario y pagos.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 10,
+      "titulo": "Bases de datos NoSQL y almacenamiento moderno",
+      "bloque": "II — SISTEMAS OPERATIVOS, REDES Y DATOS",
+      "seccion": "ETAPAS 7–10 · COMPRENDER LA INFRAESTRUCTURA",
+      "prioridad": "P1",
+      "prioridad_detalle": "PRIORIDAD P1",
+      "objetivo": "aprender cuándo utilizar bases relacionales y cuándo utilizar modelos no relacionales.",
+      "modulos": [
+        {
+          "numero": "10.1",
+          "titulo": "Fundamentos NoSQL",
+          "lecciones": [
+            "Qué es NoSQL.",
+            "Diferencias SQL vs. NoSQL.",
+            "Modelos de almacenamiento.",
+            "Consistencia.",
+            "Disponibilidad.",
+            "Escalabilidad.",
+            "CAP Theorem.",
+            "Denormalización."
+          ]
+        },
+        {
+          "numero": "10.2",
+          "titulo": "MongoDB",
+          "lecciones": [
+            "Documentos.",
+            "Colecciones.",
+            "BSON.",
+            "JSON.",
+            "CRUD.",
+            "Queries.",
+            "Filters.",
+            "Indexes.",
+            "Aggregation Pipeline.",
+            "Relationships.",
+            "Embedding.",
+            "Referencing.",
+            "Replication.",
+            "Sharding."
+          ]
+        },
+        {
+          "numero": "10.3",
+          "titulo": "Redis",
+          "lecciones": [
+            "Key-value.",
+            "Strings.",
+            "Lists.",
+            "Sets.",
+            "Hashes.",
+            "Sorted Sets.",
+            "TTL.",
+            "Cache.",
+            "Sessions.",
+            "Pub/Sub.",
+            "Rate Limiting."
+          ]
+        },
+        {
+          "numero": "10.4",
+          "titulo": "Otras arquitecturas de almacenamiento",
+          "lecciones": [
+            "Document databases.",
+            "Key-value databases.",
+            "Column-family databases.",
+            "Graph databases.",
+            "Time-series databases."
+          ]
+        }
+      ],
+      "proyecto": "Diseñar un sistema que utilice MySQL para datos transaccionales, MongoDB para documentos y Redis para caché, justificando cada decisión. Esta ampliación desarrolla las etapas 9 y 10. La prioridad es comprender el modelo relacional y dominar SQL antes de pasar a los modelos documentales y a la caché. El objetivo es poder diseñar, consultar, administrar, optimizar y proteger los datos de una aplicación real. Bloque A — Fundamentos y diseño de bases de datos Concepto de base de datos y SGBD (Sistema Gestor de Bases de Datos); diferencia entre servidor, motor, cliente y herramienta gráfica. Modelos conceptual, lógico y físico; diseño de esquemas y diccionario de datos. Entidades, atributos, relaciones, cardinalidad y participación; diagramas entidad-relación. Claves primarias (PK) y foráneas (FK), restricciones, unicidad, valores nulos e integridad referencial. Relaciones uno a uno, uno a muchos y muchos a muchos; tablas intermedias. Normalización: primera forma normal (1FN), segunda (2FN), tercera (3FN) y forma normal de Boyce-Codd (FNBC/BCNF). Redundancia, anomalías de inserción/actualización/eliminación y criterios para normalizar o desnormalizar. Bloque B — MySQL y SQL a profundidad Instalación, configuración y administración de MySQL Server; conexión desde terminal y cliente gráfico. MySQL Workbench como herramienta visual para modelar, consultar y administrar; no es el servidor ni reemplaza al motor. Lenguaje SQL y sus grupos: DDL (definición), DML (manipulación), DQL (consulta), DCL (control) y TCL (transacciones). CREATE, ALTER, DROP; SELECT, INSERT, UPDATE, DELETE; filtros, ordenamiento, agrupación y funciones de agregación. JOIN: INNER, LEFT, RIGHT y otras combinaciones; subconsultas, expresiones comunes de tabla (CTE) y funciones de ventana. Vistas, procedimientos almacenados, funciones, triggers y eventos; cuándo utilizarlos y cómo mantenerlos. Índices B-Tree, índices compuestos y selectividad; análisis de ejecución mediante EXPLAIN. Transacciones y propiedades ACID; COMMIT, ROLLBACK, bloqueos, interbloqueos (deadlocks) y niveles de aislamiento. Usuarios, roles, privilegios, principio de mínimo privilegio, copias de seguridad, restauración y mantenimiento. Bloque C — PostgreSQL Instalación, arquitectura, configuración, roles, usuarios y esquemas. Tipos de datos, tablas, restricciones, relaciones y consultas SQL. JOIN, subconsultas, CTE, funciones de ventana y consultas avanzadas. Índices, planes de ejecución, EXPLAIN, rendimiento y optimización. Transacciones, concurrencia, bloqueos, aislamiento, copias y restauración. JSONB y características distintivas de PostgreSQL; comparación práctica con MySQL sin volver a aprender SQL desde cero. Bloque D — MongoDB Bases de datos, colecciones y documentos; relación entre JSON y BSON (representación binaria de documentos). Operaciones CRUD (crear, leer, actualizar y eliminar), consultas, filtros, proyecciones y operadores. Documentos anidados, arreglos, documentos embebidos y referencias; criterios de modelado. Aggregation Pipeline (canalización de agregación) para transformar y analizar datos. Índices, validación de esquemas, rendimiento, replicación y fragmentación (sharding). Criterios para decidir cuándo conviene MongoDB y cuándo un modelo relacional. Bloque E — Redis y operación en entornos reales Modelo clave-valor y estructuras: strings, listas, conjuntos, hashes y conjuntos ordenados. TTL (tiempo de vida), caché, sesiones, Pub/Sub (publicación/suscripción) y control de frecuencia de solicitudes. Conexiones desde aplicaciones, configuración, persistencia, seguridad y monitoreo básico. ORM (mapeo objeto-relacional), migraciones, seeders o datos iniciales y pool de conexiones. Rendimiento, índices, consultas lentas, respaldos, restauración y privilegios. Criterio de dominio No avanzaremos a backends complejos hasta que puedas modelar una base desde requisitos, explicar sus relaciones, escribir consultas SQL, comprender transacciones y analizar una consulta lenta. No basta con memorizar comandos. | Secuencia práctica recomendada Orden | Tecnología / capacidad | Evidencia de dominio | 1 | Modelado relacional y SQL | Diagrama ER, modelo lógico/físico, restricciones, normalización y diccionario de datos. | 2 | MySQL | Sistema de ventas con consultas, JOIN, transacciones, índices, EXPLAIN, permisos y respaldo. | 3 | PostgreSQL | Migrar o replicar el diseño y comparar sintaxis, tipos, índices y administración. | 4 | MongoDB | Modelo de documentos, CRUD, agregaciones, índices y decisión justificada frente a SQL. | 5 | Redis | Caché o sesiones en una aplicación, TTL y estrategia de invalidación. | 6 | Integración backend | Conexión segura, ORM cuando corresponda, migraciones, pool de conexiones y pruebas. |",
+      "proyecto_titulo": "Proyecto",
+      "notas": [
+        "Ampliación de profundidad: ruta de bases de datos"
+      ]
+    },
+    {
+      "numero": 11,
+      "titulo": "HTML y CSS: fundamentos profesionales del frontend",
+      "bloque": "III — DESARROLLO FULL STACK",
+      "seccion": "ETAPAS 11–16 · CONSTRUIR APLICACIONES COMPLETAS",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "construir interfaces web correctamente estructuradas, accesibles y adaptables.",
+      "modulos": [
+        {
+          "numero": "11.1",
+          "titulo": "HTML",
+          "lecciones": [
+            "Estructura de documentos.",
+            "DOCTYPE.",
+            "Head.",
+            "Body.",
+            "Etiquetas.",
+            "Atributos.",
+            "HTML semántico.",
+            "Headings.",
+            "Sections.",
+            "Articles.",
+            "Header.",
+            "Footer.",
+            "Nav.",
+            "Forms.",
+            "Inputs.",
+            "Selects.",
+            "Textareas.",
+            "Tables.",
+            "Multimedia.",
+            "SVG.",
+            "Canvas."
+          ]
+        },
+        {
+          "numero": "11.2",
+          "titulo": "Accesibilidad",
+          "lecciones": [
+            "WCAG.",
+            "ARIA.",
+            "Navegación por teclado.",
+            "Etiquetas accesibles.",
+            "Contraste.",
+            "Lectores de pantalla.",
+            "Formularios accesibles.",
+            "HTML semántico."
+          ]
+        },
+        {
+          "numero": "11.3",
+          "titulo": "CSS",
+          "lecciones": [
+            "Selectores.",
+            "Cascade.",
+            "Specificity.",
+            "Inheritance.",
+            "Box Model.",
+            "Display.",
+            "Position.",
+            "Flexbox.",
+            "Grid.",
+            "Pseudoclases.",
+            "Pseudoelementos.",
+            "Variables.",
+            "Media Queries.",
+            "Responsive Design.",
+            "Animations.",
+            "Transitions.",
+            "Transformations."
+          ]
+        },
+        {
+          "numero": "11.4",
+          "titulo": "Diseño de interfaces",
+          "lecciones": [
+            "Jerarquía visual.",
+            "Espaciado.",
+            "Tipografía.",
+            "Layouts.",
+            "Componentes.",
+            "Design Systems.",
+            "Consistencia visual.",
+            "Mobile-first."
+          ]
+        },
+        {
+          "numero": "11.5",
+          "titulo": "SEO",
+          "lecciones": [
+            "Metadatos.",
+            "Títulos.",
+            "Descripciones.",
+            "Estructura semántica.",
+            "Indexación.",
+            "Datos estructurados (introducción)."
+          ]
+        }
+      ],
+      "proyecto": "Construir una web profesional responsive, accesible y con varias páginas.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 12,
+      "titulo": "JavaScript, TypeScript y frameworks frontend",
+      "bloque": "III — DESARROLLO FULL STACK",
+      "seccion": "ETAPAS 11–16 · CONSTRUIR APLICACIONES COMPLETAS",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "convertirte en un desarrollador frontend capaz de construir aplicaciones interactivas.",
+      "modulos": [
+        {
+          "numero": "12.1",
+          "titulo": "JavaScript",
+          "lecciones": [
+            "Variables.",
+            "Tipos.",
+            "Operadores.",
+            "Condicionales.",
+            "Bucles.",
+            "Funciones.",
+            "Objetos.",
+            "Arrays.",
+            "Strings.",
+            "Destructuring.",
+            "Spread.",
+            "Rest.",
+            "Scope.",
+            "Closures.",
+            "Hoisting.",
+            "Prototypes.",
+            "This.",
+            "ES6+.",
+            "Modules."
+          ]
+        },
+        {
+          "numero": "12.2",
+          "titulo": "DOM",
+          "lecciones": [
+            "Document Object Model.",
+            "Selección de elementos.",
+            "Manipulación del DOM.",
+            "Eventos.",
+            "Event listeners.",
+            "Event bubbling.",
+            "Event delegation.",
+            "Formularios.",
+            "Validaciones."
+          ]
+        },
+        {
+          "numero": "12.3",
+          "titulo": "Asincronía",
+          "lecciones": [
+            "Synchronous programming.",
+            "Asynchronous programming.",
+            "Callbacks.",
+            "Promises.",
+            "Async/Await.",
+            "Event Loop.",
+            "Microtasks.",
+            "Macrotasks.",
+            "Error handling.",
+            "Race conditions."
+          ]
+        },
+        {
+          "numero": "12.4",
+          "titulo": "Web APIs",
+          "lecciones": [
+            "Fetch API.",
+            "LocalStorage.",
+            "SessionStorage.",
+            "Cookies.",
+            "Geolocation.",
+            "Clipboard.",
+            "File API."
+          ]
+        },
+        {
+          "numero": "12.5",
+          "titulo": "TypeScript",
+          "lecciones": [
+            "Tipos.",
+            "Interfaces.",
+            "Type aliases.",
+            "Union types.",
+            "Intersection types.",
+            "Generics.",
+            "Type narrowing.",
+            "Utility types.",
+            "Enums.",
+            "Type inference.",
+            "Strict mode."
+          ]
+        },
+        {
+          "numero": "12.6",
+          "titulo": "React",
+          "lecciones": [
+            "Components.",
+            "JSX.",
+            "Props.",
+            "State.",
+            "Hooks.",
+            "useState.",
+            "useEffect.",
+            "useContext.",
+            "useRef.",
+            "Forms.",
+            "Routing.",
+            "Context API.",
+            "Component lifecycle.",
+            "State management.",
+            "Custom Hooks.",
+            "Error Boundaries."
+          ]
+        },
+        {
+          "numero": "12.7",
+          "titulo": "Next.js",
+          "lecciones": [
+            "App Router.",
+            "Routing.",
+            "Server Components.",
+            "Client Components.",
+            "Server-side rendering.",
+            "Static site generation.",
+            "Data fetching.",
+            "Authentication.",
+            "Metadata.",
+            "Deployment."
+          ]
+        },
+        {
+          "numero": "12.8",
+          "titulo": "Herramientas",
+          "lecciones": [
+            "npm.",
+            "pnpm.",
+            "Vite.",
+            "ESLint.",
+            "Prettier.",
+            "Tailwind CSS.",
+            "React DevTools."
+          ]
+        }
+      ],
+      "proyecto": "Dashboard administrativo con autenticación visual, formularios, paneles, tablas, filtros y consumo de APIs.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 13,
+      "titulo": "Internet, HTTP, APIs y comunicación entre sistemas",
+      "bloque": "III — DESARROLLO FULL STACK",
+      "seccion": "ETAPAS 11–16 · CONSTRUIR APLICACIONES COMPLETAS",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "comprender cómo se comunican las aplicaciones y aprender a consumir y construir APIs.",
+      "modulos": [
+        {
+          "numero": "13.1",
+          "titulo": "Arquitectura web",
+          "lecciones": [
+            "Cliente-servidor.",
+            "Navegador.",
+            "Servidor.",
+            "DNS.",
+            "IP.",
+            "Puertos.",
+            "Hosting.",
+            "HTTP.",
+            "HTTPS.",
+            "TLS.",
+            "Certificados.",
+            "Cookies.",
+            "Sesiones."
+          ]
+        },
+        {
+          "numero": "13.2",
+          "titulo": "HTTP en profundidad",
+          "lecciones": [
+            "Requests.",
+            "Responses.",
+            "Métodos.",
+            "Headers.",
+            "Body.",
+            "Status codes.",
+            "Content-Type.",
+            "Authorization.",
+            "Caching.",
+            "Idempotencia.",
+            "Statelessness."
+          ]
+        },
+        {
+          "numero": "13.3",
+          "titulo": "APIs",
+          "lecciones": [
+            "Qué es una API.",
+            "API pública.",
+            "API privada.",
+            "API REST.",
+            "Endpoints.",
+            "Resources.",
+            "JSON.",
+            "XML (introducción).",
+            "Serialización.",
+            "Deserialización.",
+            "CRUD.",
+            "Paginación.",
+            "Filtrado.",
+            "Versionado."
+          ]
+        },
+        {
+          "numero": "13.4",
+          "titulo": "Consumo de APIs",
+          "lecciones": [
+            "Fetch.",
+            "Axios.",
+            "Postman.",
+            "Insomnia.",
+            "Thunder Client.",
+            "Manejo de errores.",
+            "Autenticación.",
+            "Headers.",
+            "Tokens.",
+            "Documentación."
+          ]
+        },
+        {
+          "numero": "13.5",
+          "titulo": "Otros estilos de comunicación",
+          "lecciones": [
+            "GraphQL.",
+            "WebSockets.",
+            "gRPC.",
+            "Webhooks.",
+            "Server-Sent Events."
+          ]
+        },
+        {
+          "numero": "13.6",
+          "titulo": "Seguridad",
+          "lecciones": [
+            "CORS.",
+            "API Keys.",
+            "JWT.",
+            "Cookies seguras.",
+            "Refresh tokens.",
+            "Rate limiting."
+          ]
+        },
+        {
+          "numero": "13.7",
+          "titulo": "Documentación",
+          "lecciones": [
+            "OpenAPI.",
+            "Swagger.",
+            "Postman Collections.",
+            "API versioning."
+          ]
+        }
+      ],
+      "proyecto": "Consumir tres APIs públicas y desarrollar una aplicación que combine sus datos.",
+      "proyecto_titulo": "Proyecto",
+      "notas": [
+        "Trayecto complementario — Desarrollo móvil con Dart y Flutter"
+      ]
+    },
+    {
+      "numero": 14,
+      "titulo": "Backend I: Java y Spring Boot",
+      "bloque": "III — DESARROLLO FULL STACK",
+      "seccion": "ETAPAS 11–16 · CONSTRUIR APLICACIONES COMPLETAS",
+      "prioridad": "P1",
+      "prioridad_detalle": "Especialización principal",
+      "objetivo": "construir servicios backend profesionales utilizando Java.",
+      "modulos": [
+        {
+          "numero": "14.1",
+          "titulo": "Arquitectura backend",
+          "lecciones": [
+            "Cliente-servidor.",
+            "Request-response.",
+            "MVC.",
+            "Middleware.",
+            "Controllers.",
+            "Services.",
+            "Repositories.",
+            "Models.",
+            "DTOs."
+          ]
+        },
+        {
+          "numero": "14.2",
+          "titulo": "Spring Framework",
+          "lecciones": [
+            "Inversion of Control.",
+            "Dependency Injection.",
+            "Beans.",
+            "Application Context.",
+            "Configuration.",
+            "Component Scanning."
+          ]
+        },
+        {
+          "numero": "14.3",
+          "titulo": "Spring Boot",
+          "lecciones": [
+            "Spring Initializr.",
+            "Estructura del proyecto.",
+            "Controllers.",
+            "Services.",
+            "Repositories.",
+            "REST.",
+            "DTOs.",
+            "Validation.",
+            "Exception Handling.",
+            "Configuration Properties."
+          ]
+        },
+        {
+          "numero": "14.4",
+          "titulo": "Persistencia",
+          "lecciones": [
+            "Spring Data JPA.",
+            "Hibernate.",
+            "ORM.",
+            "Entities.",
+            "Relationships.",
+            "Repositories.",
+            "Migrations.",
+            "MySQL.",
+            "PostgreSQL."
+          ]
+        },
+        {
+          "numero": "14.5",
+          "titulo": "Seguridad",
+          "lecciones": [
+            "Spring Security.",
+            "Authentication.",
+            "Authorization.",
+            "Password Hashing.",
+            "JWT.",
+            "Roles.",
+            "Permissions.",
+            "OAuth2.",
+            "OpenID Connect."
+          ]
+        },
+        {
+          "numero": "14.6",
+          "titulo": "Backend avanzado",
+          "lecciones": [
+            "Transactions.",
+            "Caching.",
+            "Pagination.",
+            "Filtering.",
+            "Async.",
+            "Events.",
+            "WebSockets.",
+            "File Upload.",
+            "Email.",
+            "Queues."
+          ]
+        },
+        {
+          "numero": "14.7",
+          "titulo": "Construcción y dependencias",
+          "lecciones": [
+            "Maven.",
+            "Gradle.",
+            "Dependencies.",
+            "Build Lifecycle.",
+            "Profiles."
+          ]
+        }
+      ],
+      "proyecto": "API REST empresarial para administrar usuarios, productos, inventario, ventas y permisos.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 15,
+      "titulo": "Backend II: Node.js y NestJS",
+      "bloque": "III — DESARROLLO FULL STACK",
+      "seccion": "ETAPAS 11–16 · CONSTRUIR APLICACIONES COMPLETAS",
+      "prioridad": "P2",
+      "prioridad_detalle": "Especialización complementaria",
+      "objetivo": "desarrollar aplicaciones backend con JavaScript y TypeScript.",
+      "modulos": [
+        {
+          "numero": "15.1",
+          "titulo": "Node.js",
+          "lecciones": [
+            "Runtime.",
+            "V8.",
+            "Event Loop.",
+            "Modules.",
+            "CommonJS.",
+            "ES Modules.",
+            "npm.",
+            "pnpm.",
+            "Filesystem.",
+            "Events.",
+            "Streams.",
+            "Buffers.",
+            "HTTP Module.",
+            "Async Programming."
+          ]
+        },
+        {
+          "numero": "15.2",
+          "titulo": "Express.js",
+          "lecciones": [
+            "Routing.",
+            "Middleware.",
+            "Controllers.",
+            "Error Handling.",
+            "Request.",
+            "Response.",
+            "REST APIs."
+          ]
+        },
+        {
+          "numero": "15.3",
+          "titulo": "NestJS",
+          "lecciones": [
+            "Modules.",
+            "Controllers.",
+            "Providers.",
+            "Services.",
+            "Dependency Injection.",
+            "DTOs.",
+            "Pipes.",
+            "Guards.",
+            "Interceptors.",
+            "Middleware.",
+            "Exception Filters.",
+            "Validation.",
+            "Configuration."
+          ]
+        },
+        {
+          "numero": "15.4",
+          "titulo": "Persistencia",
+          "lecciones": [
+            "Prisma.",
+            "TypeORM.",
+            "MySQL.",
+            "PostgreSQL.",
+            "MongoDB.",
+            "Redis."
+          ]
+        },
+        {
+          "numero": "15.5",
+          "titulo": "Seguridad",
+          "lecciones": [
+            "Authentication.",
+            "Authorization.",
+            "Passport.",
+            "JWT.",
+            "OAuth2.",
+            "RBAC.",
+            "Rate Limiting."
+          ]
+        },
+        {
+          "numero": "15.6",
+          "titulo": "Avanzado",
+          "lecciones": [
+            "WebSockets.",
+            "Queues.",
+            "Background jobs.",
+            "Event-driven architecture.",
+            "Microservices.",
+            "Testing."
+          ]
+        }
+      ],
+      "proyecto": "Construir una API completa con NestJS, autenticación, roles, bases de datos y documentación.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 16,
+      "titulo": "Backend III: PHP, Laravel y .NET",
+      "bloque": "III — DESARROLLO FULL STACK",
+      "seccion": "ETAPAS 11–16 · CONSTRUIR APLICACIONES COMPLETAS",
+      "prioridad": "P2",
+      "prioridad_detalle": "P2 · Complementaria",
+      "objetivo": "conocer otros ecosistemas empresariales y poder adaptarte a proyectos que utilicen diferentes tecnologías.",
+      "modulos": [
+        {
+          "numero": "16.1",
+          "titulo": "PHP",
+          "lecciones": [
+            "Sintaxis.",
+            "Variables.",
+            "Tipos.",
+            "Operadores.",
+            "Funciones.",
+            "Arrays.",
+            "Objetos.",
+            "POO.",
+            "Namespaces.",
+            "Excepciones.",
+            "Composer.",
+            "Autoloading."
+          ]
+        },
+        {
+          "numero": "16.2",
+          "titulo": "Laravel",
+          "lecciones": [
+            "Routing.",
+            "Controllers.",
+            "Models.",
+            "Eloquent ORM.",
+            "Migrations.",
+            "Seeders.",
+            "Middleware.",
+            "Validation.",
+            "Authentication.",
+            "Authorization.",
+            "Queues.",
+            "Jobs.",
+            "Events.",
+            "Notifications.",
+            "API Resources."
+          ]
+        },
+        {
+          "numero": "16.3",
+          "titulo": "C# y .NET",
+          "lecciones": [
+            "Sintaxis de C#.",
+            "Tipos.",
+            "Clases.",
+            "Interfaces.",
+            "POO.",
+            "LINQ.",
+            "Generics.",
+            "Async/Await.",
+            "Exception handling."
+          ]
+        },
+        {
+          "numero": "16.4",
+          "titulo": "ASP.NET Core",
+          "lecciones": [
+            "Arquitectura.",
+            "Controllers.",
+            "Minimal APIs.",
+            "Dependency Injection.",
+            "Middleware.",
+            "Entity Framework Core.",
+            "REST.",
+            "Authentication.",
+            "Authorization.",
+            "JWT."
+          ]
+        }
+      ],
+      "proyecto": "Crear una API pequeña en Laravel y otra en ASP.NET Core, comparando su arquitectura con Spring Boot y NestJS.",
+      "proyecto_titulo": "Proyecto",
+      "notas": [
+        "Criterio: no buscaremos dominar cuatro frameworks backend al mismo nivel. Java/Spring Boot será nuestra especialización principal, NestJS nuestra segunda implementación completa y PHP/.NET serán ecosistemas complementarios.",
+        "Trayecto complementario — CMS y comercio electrónico"
+      ]
+    },
+    {
+      "numero": 17,
+      "titulo": "Testing, aseguramiento y calidad del software",
+      "bloque": "IV — INGENIERÍA DE SOFTWARE Y CALIDAD",
+      "seccion": "ETAPAS 17–20 · CONSTRUIR SOFTWARE PROFESIONAL",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "aprender a demostrar que el software funciona, cumple requisitos y tiene una calidad verificable.",
+      "modulos": [
+        {
+          "numero": "17.1",
+          "titulo": "Fundamentos",
+          "lecciones": [
+            "Quality Assurance (QA).",
+            "Quality Control (QC).",
+            "Verificación.",
+            "Validación.",
+            "Defectos.",
+            "Bugs.",
+            "Casos de prueba."
+          ]
+        },
+        {
+          "numero": "17.2",
+          "titulo": "Testing funcional",
+          "lecciones": [
+            "Unit Testing.",
+            "Integration Testing.",
+            "End-to-End Testing.",
+            "Regression Testing.",
+            "Smoke Testing.",
+            "Sanity Testing.",
+            "API Testing."
+          ]
+        },
+        {
+          "numero": "17.3",
+          "titulo": "Testing de usuario",
+          "lecciones": [
+            "Usability Testing.",
+            "Accessibility Testing.",
+            "Exploratory Testing.",
+            "User Acceptance Testing (UAT)."
+          ]
+        },
+        {
+          "numero": "17.4",
+          "titulo": "Rendimiento",
+          "lecciones": [
+            "Load Testing.",
+            "Stress Testing.",
+            "Spike Testing.",
+            "Endurance Testing.",
+            "Response Time.",
+            "Throughput.",
+            "Latency.",
+            "Bottlenecks."
+          ]
+        },
+        {
+          "numero": "17.5",
+          "titulo": "Testing técnico",
+          "lecciones": [
+            "Test Cases.",
+            "Assertions.",
+            "Mocking.",
+            "Fixtures.",
+            "Test Doubles.",
+            "Test Coverage.",
+            "Test Isolation."
+          ]
+        },
+        {
+          "numero": "17.6",
+          "titulo": "Metodologías",
+          "lecciones": [
+            "TDD.",
+            "BDD.",
+            "AAA (Arrange, Act, Assert).",
+            "Pirámide de testing."
+          ]
+        },
+        {
+          "numero": "17.7",
+          "titulo": "Herramientas",
+          "lecciones": [
+            "JUnit.",
+            "Mockito.",
+            "Jest.",
+            "Vitest.",
+            "Playwright.",
+            "Cypress.",
+            "Postman.",
+            "JMeter."
+          ]
+        },
+        {
+          "numero": "17.8",
+          "titulo": "Análisis de calidad",
+          "lecciones": [
+            "Static Analysis.",
+            "Linters.",
+            "Formatters.",
+            "SonarQube.",
+            "Code Coverage.",
+            "Code Smells."
+          ]
+        },
+        {
+          "numero": "17.9",
+          "titulo": "Normas y modelos de calidad",
+          "lecciones": [
+            "ISO/IEC 25010.",
+            "ISO/IEC/IEEE 12207.",
+            "CMMI.",
+            "Indicadores de calidad.",
+            "Mantenibilidad.",
+            "Fiabilidad.",
+            "Seguridad.",
+            "Rendimiento.",
+            "Usabilidad.",
+            "Product quality model"
+          ]
+        }
+      ],
+      "proyecto": "Diseñar un plan de pruebas completo y automatizar las pruebas de una aplicación construida en etapas anteriores.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 18,
+      "titulo": "Arquitectura, diseño y planeación de software",
+      "bloque": "IV — INGENIERÍA DE SOFTWARE Y CALIDAD",
+      "seccion": "ETAPAS 17–20 · CONSTRUIR SOFTWARE PROFESIONAL",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "aprender a planear y diseñar sistemas antes de comenzar a programar.",
+      "modulos": [
+        {
+          "numero": "18.1",
+          "titulo": "Análisis de requerimientos",
+          "lecciones": [
+            "Requerimientos funcionales.",
+            "No funcionales.",
+            "Historias de usuario.",
+            "Casos de uso.",
+            "Reglas de negocio.",
+            "Restricciones.",
+            "Stakeholders.",
+            "Alcance del proyecto."
+          ]
+        },
+        {
+          "numero": "18.2",
+          "titulo": "Metodologías ágiles",
+          "lecciones": [
+            "Manifiesto Ágil.",
+            "Scrum.",
+            "Kanban.",
+            "Sprints.",
+            "Product Backlog.",
+            "Sprint Backlog.",
+            "Planning.",
+            "Daily.",
+            "Review.",
+            "Retrospective.",
+            "Definition of Done.",
+            "Story Points.",
+            "Gestión del trabajo en progreso (WIP)."
+          ]
+        },
+        {
+          "numero": "18.3",
+          "titulo": "Documentación",
+          "lecciones": [
+            "README.",
+            "Especificación de requisitos.",
+            "Documentación técnica.",
+            "Documentación funcional.",
+            "API Documentation.",
+            "Architecture Decision Records (ADR).",
+            "Changelog.",
+            "Manual de instalación.",
+            "Manual de usuario.",
+            "Plan de pruebas.",
+            "Documentación de despliegue."
+          ]
+        },
+        {
+          "numero": "18.4",
+          "titulo": "Diagramas",
+          "lecciones": [
+            "Diagramas de flujo.",
+            "UML.",
+            "Diagrama de clases.",
+            "Diagrama de secuencia.",
+            "Diagrama de actividades.",
+            "Diagrama de componentes.",
+            "Diagrama de despliegue.",
+            "Diagramas ER.",
+            "C4 Model."
+          ]
+        },
+        {
+          "numero": "18.5",
+          "titulo": "Principios de diseño",
+          "lecciones": [
+            "SOLID.",
+            "DRY.",
+            "KISS.",
+            "YAGNI.",
+            "Separation of Concerns.",
+            "High Cohesion.",
+            "Low Coupling.",
+            "Dependency Inversion."
+          ]
+        },
+        {
+          "numero": "18.6",
+          "titulo": "Patrones GoF",
+          "lecciones": [
+            "Creacionales",
+            "Factory.",
+            "Abstract Factory.",
+            "Builder.",
+            "Singleton.",
+            "Prototype.",
+            "Estructurales",
+            "Adapter.",
+            "Decorator.",
+            "Facade.",
+            "Proxy.",
+            "Composite.",
+            "Bridge.",
+            "Flyweight.",
+            "Comportamiento",
+            "Strategy.",
+            "Observer.",
+            "Command.",
+            "State.",
+            "Iterator.",
+            "Mediator.",
+            "Template Method.",
+            "Chain of Responsibility."
+          ]
+        },
+        {
+          "numero": "18.7",
+          "titulo": "Arquitecturas",
+          "lecciones": [
+            "Monolithic Architecture.",
+            "Modular Monolith.",
+            "Layered Architecture.",
+            "MVC.",
+            "Clean Architecture.",
+            "Hexagonal Architecture.",
+            "Onion Architecture.",
+            "Event-Driven Architecture.",
+            "Microservices."
+          ]
+        },
+        {
+          "numero": "18.8",
+          "titulo": "Diseño de sistemas",
+          "lecciones": [
+            "Scalability.",
+            "Availability.",
+            "Reliability.",
+            "Consistency.",
+            "CAP Theorem.",
+            "Load Balancing.",
+            "Caching.",
+            "Message Queues.",
+            "Distributed Systems.",
+            "API Gateway.",
+            "Service Discovery.",
+            "Fault Tolerance."
+          ]
+        },
+        {
+          "numero": "18.9",
+          "titulo": "Modelado de dominios",
+          "lecciones": [
+            "Domain-Driven Design.",
+            "Entities.",
+            "Value Objects.",
+            "Aggregates.",
+            "Repositories.",
+            "Bounded Contexts.",
+            "Ubiquitous Language."
+          ]
+        }
+      ],
+      "proyecto": "Recibir un problema empresarial, analizarlo, documentarlo, modelarlo, diseñar su arquitectura y elaborar un plan de trabajo antes de escribir código.",
+      "proyecto_titulo": "Proyecto",
+      "notas": [
+        "Ampliación metodológica — SDD (Spec-Driven Development)"
+      ]
+    },
+    {
+      "numero": 19,
+      "titulo": "DevOps, Docker, CI/CD y servidores",
+      "bloque": "IV — INGENIERÍA DE SOFTWARE Y CALIDAD",
+      "seccion": "ETAPAS 17–20 · CONSTRUIR SOFTWARE PROFESIONAL",
+      "prioridad": "P1",
+      "prioridad_detalle": "PRIORIDAD P1",
+      "objetivo": "aprender a ejecutar, desplegar, mantener y administrar aplicaciones en infraestructura real.",
+      "modulos": [
+        {
+          "numero": "19.1",
+          "titulo": "Fundamentos DevOps",
+          "lecciones": [
+            "Development.",
+            "Operations.",
+            "Continuous Integration.",
+            "Continuous Delivery.",
+            "Continuous Deployment.",
+            "Infrastructure as Code.",
+            "Automation."
+          ]
+        },
+        {
+          "numero": "19.2",
+          "titulo": "Docker",
+          "lecciones": [
+            "Containers.",
+            "Images.",
+            "Dockerfile.",
+            "Volumes.",
+            "Networks.",
+            "Registries.",
+            "Docker Compose.",
+            "Multi-stage builds.",
+            "Container lifecycle."
+          ]
+        },
+        {
+          "numero": "19.3",
+          "titulo": "Servidores",
+          "lecciones": [
+            "Linux Server.",
+            "SSH.",
+            "Usuarios.",
+            "Permisos.",
+            "Firewall.",
+            "Services.",
+            "Logs.",
+            "Storage.",
+            "Process management."
+          ]
+        },
+        {
+          "numero": "19.4",
+          "titulo": "Nginx",
+          "lecciones": [
+            "Web Server.",
+            "Reverse Proxy.",
+            "Virtual Hosts.",
+            "Static Files.",
+            "TLS.",
+            "Load Balancing."
+          ]
+        },
+        {
+          "numero": "19.5",
+          "titulo": "CI/CD",
+          "lecciones": [
+            "Pipelines.",
+            "Automated Builds.",
+            "Automated Tests.",
+            "Deployment.",
+            "GitHub Actions.",
+            "Secrets.",
+            "Environments.",
+            "Rollbacks."
+          ]
+        },
+        {
+          "numero": "19.6",
+          "titulo": "Cloud",
+          "lecciones": [
+            "Cloud Computing.",
+            "IaaS.",
+            "PaaS.",
+            "SaaS.",
+            "Virtual Machines.",
+            "Storage.",
+            "Networking.",
+            "IAM.",
+            "Monitoring."
+          ]
+        },
+        {
+          "numero": "19.7",
+          "titulo": "Proveedores",
+          "lecciones": [
+            "AWS.",
+            "Azure.",
+            "Google Cloud."
+          ]
+        },
+        {
+          "numero": "19.8",
+          "titulo": "Kubernetes",
+          "lecciones": [
+            "Pods.",
+            "Nodes.",
+            "Deployments.",
+            "Services.",
+            "ConfigMaps.",
+            "Secrets.",
+            "Volumes.",
+            "Ingress.",
+            "Scaling.",
+            "Networking."
+          ]
+        },
+        {
+          "numero": "19.9",
+          "titulo": "Terraform",
+          "lecciones": [
+            "Infrastructure as Code.",
+            "Providers.",
+            "Resources.",
+            "Variables.",
+            "State.",
+            "Modules."
+          ]
+        }
+      ],
+      "proyecto": "Desplegar una aplicación Full Stack completa en un servidor Linux mediante Docker, Nginx y un pipeline CI/CD.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 20,
+      "titulo": "Desarrollo seguro de software (AppSec)",
+      "bloque": "IV — INGENIERÍA DE SOFTWARE Y CALIDAD",
+      "seccion": "ETAPAS 17–20 · CONSTRUIR SOFTWARE PROFESIONAL",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "aprender a desarrollar aplicaciones seguras desde su diseño.",
+      "modulos": [
+        {
+          "numero": "20.1",
+          "titulo": "Fundamentos",
+          "lecciones": [
+            "Secure Coding.",
+            "Security by Design.",
+            "Security by Default.",
+            "Least Privilege.",
+            "Defense in Depth.",
+            "Threat Modeling.",
+            "Attack Surface."
+          ]
+        },
+        {
+          "numero": "20.2",
+          "titulo": "Seguridad web",
+          "lecciones": [
+            "SQL Injection.",
+            "XSS.",
+            "CSRF.",
+            "SSRF.",
+            "IDOR.",
+            "Broken Access Control.",
+            "Path Traversal.",
+            "Command Injection.",
+            "File Upload Vulnerabilities.",
+            "Authentication Flaws."
+          ]
+        },
+        {
+          "numero": "20.3",
+          "titulo": "OWASP Top 10",
+          "lecciones": [
+            "A01: Broken Access Control.",
+            "A02: Security Misconfiguration.",
+            "A03: Software Supply Chain Failures.",
+            "A04: Cryptographic Failures.",
+            "A05: Injection.",
+            "A06: Insecure Design.",
+            "A07: Authentication Failures.",
+            "A08: Software or Data Integrity Failures.",
+            "A09: Security Logging and Alerting Failures.",
+            "A10: Mishandling of Exceptional Conditions.",
+            "Esta es la edición publicada más reciente que hemos verificado.",
+            "OWASP Top 10:2025"
+          ]
+        },
+        {
+          "numero": "20.4",
+          "titulo": "Autenticación y autorización",
+          "lecciones": [
+            "Authentication.",
+            "Authorization.",
+            "Sessions.",
+            "Cookies.",
+            "JWT.",
+            "OAuth2.",
+            "OpenID Connect.",
+            "MFA.",
+            "RBAC.",
+            "ABAC.",
+            "Password Hashing.",
+            "Secure Password Storage."
+          ]
+        },
+        {
+          "numero": "20.5",
+          "titulo": "Seguridad de APIs",
+          "lecciones": [
+            "OWASP API Security Top 10.",
+            "Broken Object Level Authorization.",
+            "Broken Authentication.",
+            "Unrestricted Resource Consumption.",
+            "API Misconfiguration.",
+            "Unsafe API Consumption."
+          ]
+        },
+        {
+          "numero": "20.6",
+          "titulo": "Seguridad de infraestructura",
+          "lecciones": [
+            "HTTPS.",
+            "TLS.",
+            "Secure Headers.",
+            "CORS.",
+            "Secrets Management.",
+            "Environment Variables.",
+            "Rate Limiting.",
+            "Input Validation.",
+            "Output Encoding.",
+            "Secure Error Handling."
+          ]
+        }
+      ],
+      "proyecto": "Construir una aplicación web deliberadamente vulnerable en un entorno controlado, identificar sus debilidades, corregirlas y realizar pruebas de regresión de seguridad.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 21,
+      "titulo": "Fundamentos de ciberseguridad, gestión de riesgos y ética",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "comprender el panorama de la ciberseguridad, sus principios, amenazas, responsabilidades y marcos de protección.",
+      "modulos": [
+        {
+          "numero": "21.1",
+          "titulo": "Introducción a la ciberseguridad",
+          "lecciones": [
+            "Seguridad informática.",
+            "Seguridad de la información.",
+            "Ciberseguridad.",
+            "Seguridad de aplicaciones.",
+            "Seguridad de infraestructura.",
+            "Seguridad empresarial.",
+            "Red Team.",
+            "Blue Team.",
+            "Purple Team."
+          ]
+        },
+        {
+          "numero": "21.2",
+          "titulo": "Principios fundamentales",
+          "lecciones": [
+            "CIA Triad.",
+            "Confidentiality.",
+            "Integrity.",
+            "Availability.",
+            "Authenticity.",
+            "Non-repudiation.",
+            "Accountability."
+          ]
+        },
+        {
+          "numero": "21.3",
+          "titulo": "Conceptos de seguridad",
+          "lecciones": [
+            "Assets.",
+            "Threats.",
+            "Vulnerabilities.",
+            "Exploits.",
+            "Attack Vectors.",
+            "Attack Surface.",
+            "Risk.",
+            "Impact.",
+            "Likelihood.",
+            "Security Controls."
+          ]
+        },
+        {
+          "numero": "21.4",
+          "titulo": "Gestión de riesgos",
+          "lecciones": [
+            "Identificación de activos.",
+            "Clasificación de información.",
+            "Identificación de amenazas.",
+            "Identificación de vulnerabilidades.",
+            "Análisis de probabilidad.",
+            "Análisis de impacto.",
+            "Matriz de riesgos.",
+            "Evaluación de riesgos.",
+            "Tratamiento de riesgos.",
+            "Mitigación.",
+            "Aceptación.",
+            "Transferencia.",
+            "Evitación."
+          ]
+        },
+        {
+          "numero": "21.5",
+          "titulo": "Ciberamenazas",
+          "lecciones": [
+            "Malware.",
+            "Ransomware.",
+            "Spyware.",
+            "Trojan.",
+            "Worms.",
+            "Phishing.",
+            "Spear Phishing.",
+            "Credential Theft.",
+            "Social Engineering.",
+            "Insider Threats.",
+            "Supply Chain Attacks.",
+            "Denial of Service.",
+            "Distributed Denial of Service."
+          ]
+        },
+        {
+          "numero": "21.6",
+          "titulo": "Marcos y estándares",
+          "lecciones": [
+            "NIST Cybersecurity Framework 2.0.",
+            "ISO/IEC 27001:2022.",
+            "ISO/IEC 27002:2022.",
+            "ISO/IEC 27005.",
+            "CIS Controls.",
+            "MITRE ATT&CK.",
+            "Principios Zero Trust.",
+            "Information security management systems"
+          ]
+        },
+        {
+          "numero": "21.7",
+          "titulo": "Ética y legislación",
+          "lecciones": [
+            "Hacking ético.",
+            "Diferencia entre White Hat, Gray Hat y Black Hat.",
+            "Autorización.",
+            "Alcance.",
+            "Rules of Engagement.",
+            "Confidencialidad.",
+            "Divulgación responsable.",
+            "Protección de datos.",
+            "Gestión de evidencias.",
+            "Responsabilidad profesional.",
+            "Consideraciones legales colombianas."
+          ]
+        },
+        {
+          "numero": "21.8",
+          "titulo": "Gestión de identidades (IAM)",
+          "lecciones": [
+            "Identity and Access Management.",
+            "Usuarios.",
+            "Roles.",
+            "Permisos.",
+            "Privilegios.",
+            "MFA.",
+            "RBAC.",
+            "ABAC.",
+            "Least Privilege.",
+            "Identity Federation.",
+            "Service Accounts."
+          ]
+        }
+      ],
+      "proyecto": "Elaborar una evaluación de riesgos para una empresa ficticia, identificando activos, amenazas, vulnerabilidades, impactos y controles.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 22,
+      "titulo": "Laboratorio de ciberseguridad, hardening y administración segura",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "construir un laboratorio donde puedas practicar seguridad de sistemas y redes sin poner en riesgo equipos ajenos.",
+      "modulos": [
+        {
+          "numero": "22.1",
+          "titulo": "Virtualización",
+          "lecciones": [
+            "Hipervisores.",
+            "Máquinas virtuales.",
+            "Snapshots.",
+            "Redes aisladas.",
+            "NAT.",
+            "Host-only.",
+            "Segmentación.",
+            "Laboratorios vulnerables."
+          ]
+        },
+        {
+          "numero": "22.2",
+          "titulo": "Distribuciones Linux",
+          "lecciones": [
+            "Ubuntu.",
+            "Debian.",
+            "Kali Linux.",
+            "Kali Tools.",
+            "Gestión de paquetes.",
+            "Usuarios.",
+            "Grupos.",
+            "Permisos.",
+            "Servicios.",
+            "Logs.",
+            "Procesos."
+          ]
+        },
+        {
+          "numero": "22.3",
+          "titulo": "Seguridad Linux",
+          "lecciones": [
+            "SSH Hardening.",
+            "Gestión de usuarios.",
+            "Sudo.",
+            "File Permissions.",
+            "Firewall.",
+            "UFW.",
+            "Fail2ban.",
+            "Actualizaciones.",
+            "Servicios innecesarios.",
+            "Logs de seguridad.",
+            "Auditoría básica."
+          ]
+        },
+        {
+          "numero": "22.4",
+          "titulo": "Seguridad Windows",
+          "lecciones": [
+            "Windows Defender.",
+            "Windows Firewall.",
+            "Windows Update.",
+            "UAC.",
+            "NTFS Permissions.",
+            "Users and Groups.",
+            "Process Security.",
+            "Services.",
+            "Registry.",
+            "Event Viewer.",
+            "PowerShell."
+          ]
+        },
+        {
+          "numero": "22.5",
+          "titulo": "Seguridad de redes",
+          "lecciones": [
+            "Firewall Rules.",
+            "ACL.",
+            "NAT.",
+            "VLAN.",
+            "DMZ.",
+            "Network Segmentation.",
+            "Network Access Control.",
+            "Exposed Ports.",
+            "Unnecessary Services.",
+            "Network Hardening."
+          ]
+        },
+        {
+          "numero": "22.6",
+          "titulo": "Laboratorios",
+          "lecciones": [
+            "Kali Linux.",
+            "Ubuntu Server.",
+            "Windows.",
+            "Windows Server.",
+            "OWASP Juice Shop.",
+            "DVWA.",
+            "Máquinas de entrenamiento vulnerables."
+          ]
+        }
+      ],
+      "proyecto": "Montar un laboratorio con una máquina de pruebas, una máquina objetivo vulnerable y una máquina de administración. Documentar su topología, sus reglas de aislamiento y sus medidas de seguridad.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 23,
+      "titulo": "Reconocimiento, OSINT y gestión de vulnerabilidades",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P1",
+      "prioridad_detalle": "PRIORIDAD P1",
+      "objetivo": "aprender a recopilar información y evaluar la exposición de una infraestructura.",
+      "modulos": [
+        {
+          "numero": "23.1",
+          "titulo": "Reconocimiento",
+          "lecciones": [
+            "Reconnaissance.",
+            "Passive Reconnaissance.",
+            "Active Reconnaissance.",
+            "Scope.",
+            "Asset Discovery.",
+            "Attack Surface Mapping.",
+            "Reconnaissance Methodology."
+          ]
+        },
+        {
+          "numero": "23.2",
+          "titulo": "OSINT (Open Source Intelligence)",
+          "lecciones": [
+            "Fuentes abiertas.",
+            "Motores de búsqueda.",
+            "Operadores de búsqueda avanzada.",
+            "Información pública.",
+            "Registros de dominios.",
+            "DNS Records.",
+            "Certificados digitales.",
+            "Certificate Transparency.",
+            "Repositorios públicos.",
+            "Metadatos.",
+            "Documentos expuestos.",
+            "Correlación de información."
+          ]
+        },
+        {
+          "numero": "23.3",
+          "titulo": "Herramientas OSINT",
+          "lecciones": [
+            "Maltego.",
+            "WHOIS.",
+            "DNSdumpster.",
+            "theHarvester.",
+            "Amass.",
+            "Google Dorking.",
+            "ExifTool."
+          ]
+        },
+        {
+          "numero": "23.4",
+          "titulo": "Identificación de activos",
+          "lecciones": [
+            "Dominios.",
+            "Subdominios.",
+            "Direcciones IP.",
+            "Servidores.",
+            "Aplicaciones.",
+            "Tecnologías.",
+            "Servicios.",
+            "Infraestructura expuesta."
+          ]
+        },
+        {
+          "numero": "23.5",
+          "titulo": "Escaneo y enumeración",
+          "lecciones": [
+            "Host Discovery.",
+            "Port Scanning.",
+            "TCP Scanning.",
+            "UDP Scanning.",
+            "Service Enumeration.",
+            "Version Detection.",
+            "OS Detection.",
+            "Nmap.",
+            "Nmap Scripting Engine (NSE)."
+          ]
+        },
+        {
+          "numero": "23.6",
+          "titulo": "Gestión de vulnerabilidades",
+          "lecciones": [
+            "Vulnerability Assessment.",
+            "CVE.",
+            "CWE.",
+            "CVSS.",
+            "Severidad.",
+            "Impacto.",
+            "Probabilidad.",
+            "Priorización.",
+            "Falsos positivos.",
+            "Remediación."
+          ]
+        },
+        {
+          "numero": "23.7",
+          "titulo": "Herramientas",
+          "lecciones": [
+            "Nessus.",
+            "OpenVAS.",
+            "Greenbone.",
+            "Nmap.",
+            "Nmap NSE."
+          ]
+        }
+      ],
+      "proyecto": "Elaborar un informe de reconocimiento y evaluación de vulnerabilidades sobre un laboratorio propio, incluyendo evidencias, clasificación y recomendaciones.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 24,
+      "titulo": "Pentesting de redes y sistemas",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P2",
+      "prioridad_detalle": "P2 · Especialización ofensiva",
+      "objetivo": "aprender metodologías profesionales de pruebas de penetración en sistemas y servicios autorizados.",
+      "modulos": [
+        {
+          "numero": "24.1",
+          "titulo": "Fundamentos de Pentesting",
+          "lecciones": [
+            "Pentesting.",
+            "Vulnerability Assessment.",
+            "Security Audit.",
+            "Black Box.",
+            "Gray Box.",
+            "White Box.",
+            "Alcance.",
+            "Autorización.",
+            "Rules of Engagement.",
+            "Evidencias.",
+            "Reportes."
+          ]
+        },
+        {
+          "numero": "24.2",
+          "titulo": "Evaluación de sistemas",
+          "lecciones": [
+            "Enumeración.",
+            "Identificación de servicios.",
+            "Análisis de versiones.",
+            "Configuraciones inseguras.",
+            "Superficie de ataque.",
+            "CVE.",
+            "CWE.",
+            "CVSS.",
+            "Validación controlada."
+          ]
+        },
+        {
+          "numero": "24.3",
+          "titulo": "Metasploit Framework",
+          "lecciones": [
+            "Arquitectura.",
+            "Consola.",
+            "Módulos.",
+            "Exploits.",
+            "Auxiliary.",
+            "Payloads.",
+            "Encoders.",
+            "Sessions.",
+            "Post Modules.",
+            "Interpretación de resultados."
+          ]
+        },
+        {
+          "numero": "24.4",
+          "titulo": "Seguridad de credenciales",
+          "lecciones": [
+            "Password Security.",
+            "Password Policies.",
+            "Hashing.",
+            "Salt.",
+            "Password Cracking Concepts.",
+            "Weak Credentials.",
+            "Auditoría controlada.",
+            "Herramientas",
+            "John the Ripper.",
+            "Hashcat."
+          ]
+        },
+        {
+          "numero": "24.5",
+          "titulo": "Post-explotación",
+          "lecciones": [
+            "Privilege Escalation Concepts.",
+            "Evaluación de impacto.",
+            "Evidencias.",
+            "Persistencia como concepto de análisis.",
+            "Identificación del alcance de un compromiso.",
+            "Cierre responsable.",
+            "Remediación."
+          ]
+        }
+      ],
+      "proyecto": "Realizar una prueba de penetración controlada sobre una máquina vulnerable, desde la planificación hasta la entrega de un informe técnico.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 25,
+      "titulo": "Seguridad de aplicaciones web y APIs",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P1",
+      "prioridad_detalle": "PRIORIDAD P1 para nuestro perfil",
+      "objetivo": "",
+      "modulos": [
+        {
+          "numero": "25.1",
+          "titulo": "Arquitectura de seguridad web",
+          "lecciones": [
+            "Cliente-servidor.",
+            "Frontend.",
+            "Backend.",
+            "Database.",
+            "API.",
+            "Sessions.",
+            "Cookies.",
+            "Authentication.",
+            "Authorization.",
+            "TLS."
+          ]
+        },
+        {
+          "numero": "25.2",
+          "titulo": "Vulnerabilidades web",
+          "lecciones": [
+            "SQL Injection.",
+            "NoSQL Injection.",
+            "Cross-Site Scripting (XSS).",
+            "Cross-Site Request Forgery (CSRF).",
+            "Server-Side Request Forgery (SSRF).",
+            "IDOR.",
+            "Broken Access Control.",
+            "Path Traversal.",
+            "Command Injection.",
+            "Insecure File Upload.",
+            "Authentication Bypass.",
+            "Security Misconfiguration."
+          ]
+        },
+        {
+          "numero": "25.3",
+          "titulo": "OWASP",
+          "lecciones": [
+            "OWASP Top 10:2025.",
+            "OWASP Web Security Testing Guide.",
+            "Secure Coding.",
+            "Threat Modeling.",
+            "Security Testing."
+          ]
+        },
+        {
+          "numero": "25.4",
+          "titulo": "Burp Suite",
+          "lecciones": [
+            "Proxy.",
+            "HTTP History.",
+            "Repeater.",
+            "Intruder.",
+            "Decoder.",
+            "Comparer.",
+            "Target.",
+            "Scanner (según disponibilidad y licencia).",
+            "Análisis de requests y responses."
+          ]
+        },
+        {
+          "numero": "25.5",
+          "titulo": "Seguridad de APIs",
+          "lecciones": [
+            "REST Security.",
+            "API Authentication.",
+            "API Authorization.",
+            "Token Management.",
+            "API Rate Limiting.",
+            "API Inventory.",
+            "Broken Object Level Authorization.",
+            "Unrestricted Resource Consumption.",
+            "Unsafe API Consumption."
+          ]
+        },
+        {
+          "numero": "25.6",
+          "titulo": "Herramientas",
+          "lecciones": [
+            "Burp Suite.",
+            "Postman.",
+            "OWASP ZAP.",
+            "OWASP Juice Shop.",
+            "Web Security Academy."
+          ]
+        }
+      ],
+      "proyecto": "Construir una aplicación deliberadamente vulnerable en un entorno local, evaluarla, documentar los hallazgos y desarrollar las correcciones.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 26,
+      "titulo": "Active Directory y seguridad empresarial Windows",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P2",
+      "prioridad_detalle": "P2 · Especialización",
+      "objetivo": "comprender cómo funcionan los entornos corporativos Windows y cómo protegerlos.",
+      "modulos": [
+        {
+          "numero": "26.1",
+          "titulo": "Active Directory",
+          "lecciones": [
+            "Domain.",
+            "Domain Controller.",
+            "Forest.",
+            "Tree.",
+            "Organizational Units.",
+            "Users.",
+            "Groups.",
+            "Computers.",
+            "Group Policy Objects."
+          ]
+        },
+        {
+          "numero": "26.2",
+          "titulo": "Protocolos",
+          "lecciones": [
+            "LDAP.",
+            "Kerberos.",
+            "NTLM.",
+            "SMB.",
+            "DNS."
+          ]
+        },
+        {
+          "numero": "26.3",
+          "titulo": "Administración",
+          "lecciones": [
+            "Usuarios.",
+            "Grupos.",
+            "Permisos.",
+            "Políticas.",
+            "Autenticación.",
+            "Autorización.",
+            "Gestión de identidades."
+          ]
+        },
+        {
+          "numero": "26.4",
+          "titulo": "Seguridad de Active Directory",
+          "lecciones": [
+            "Misconfigurations.",
+            "Privileged Accounts.",
+            "Excessive Permissions.",
+            "Kerberos Security.",
+            "NTLM Risks.",
+            "Lateral Movement Concepts.",
+            "Privilege Escalation Paths.",
+            "Credential Security."
+          ]
+        },
+        {
+          "numero": "26.5",
+          "titulo": "Herramientas",
+          "lecciones": [
+            "BloodHound.",
+            "SharpHound.",
+            "PowerShell.",
+            "Windows Event Viewer."
+          ]
+        },
+        {
+          "numero": "26.6",
+          "titulo": "Hardening",
+          "lecciones": [
+            "Least Privilege.",
+            "Privileged Access.",
+            "Credential Protection.",
+            "Group Policy Security.",
+            "Auditing.",
+            "Logging."
+          ]
+        }
+      ],
+      "proyecto": "Crear un pequeño dominio de Active Directory en laboratorio, configurar usuarios y políticas y elaborar una evaluación de seguridad.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 27,
+      "titulo": "Blue Team, SOC, SIEM e ingeniería de detección",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P2",
+      "prioridad_detalle": "P2 · Especialización defensiva",
+      "objetivo": "aprender a detectar, analizar y responder a comportamientos sospechosos.",
+      "modulos": [
+        {
+          "numero": "27.1",
+          "titulo": "Blue Team",
+          "lecciones": [
+            "Defensive Security.",
+            "Defense in Depth.",
+            "Preventive Controls.",
+            "Detective Controls.",
+            "Corrective Controls.",
+            "Zero Trust.",
+            "Security Monitoring."
+          ]
+        },
+        {
+          "numero": "27.2",
+          "titulo": "SOC",
+          "lecciones": [
+            "Security Operations Center.",
+            "SOC Analyst.",
+            "Alert Triage.",
+            "Event Classification.",
+            "Incident Escalation.",
+            "Security Monitoring.",
+            "Threat Detection."
+          ]
+        },
+        {
+          "numero": "27.3",
+          "titulo": "Logs",
+          "lecciones": [
+            "Application Logs.",
+            "System Logs.",
+            "Authentication Logs.",
+            "Network Logs.",
+            "Security Events.",
+            "Event Correlation.",
+            "Timelines."
+          ]
+        },
+        {
+          "numero": "27.4",
+          "titulo": "Indicadores",
+          "lecciones": [
+            "IOC (Indicators of Compromise).",
+            "IOA (Indicators of Attack).",
+            "TTP (Tactics, Techniques and Procedures).",
+            "Anomalies.",
+            "Behavioral Analysis."
+          ]
+        },
+        {
+          "numero": "27.5",
+          "titulo": "IDS/IPS",
+          "lecciones": [
+            "Intrusion Detection System.",
+            "Intrusion Prevention System.",
+            "Signature-based Detection.",
+            "Anomaly-based Detection.",
+            "Network Monitoring.",
+            "Traffic Analysis."
+          ]
+        },
+        {
+          "numero": "27.6",
+          "titulo": "Herramientas",
+          "lecciones": [
+            "Wireshark.",
+            "tcpdump.",
+            "Suricata.",
+            "Zeek.",
+            "Sysmon."
+          ]
+        },
+        {
+          "numero": "27.7",
+          "titulo": "SIEM",
+          "lecciones": [
+            "Security Information and Event Management.",
+            "Log Collection.",
+            "Log Normalization.",
+            "Correlation Rules.",
+            "Dashboards.",
+            "Alerts.",
+            "Detection.",
+            "Incident Investigation.",
+            "Herramientas",
+            "Splunk.",
+            "Elastic Stack (ELK).",
+            "Wazuh."
+          ]
+        },
+        {
+          "numero": "27.8",
+          "titulo": "Detection Engineering",
+          "lecciones": [
+            "Sigma.",
+            "Detection Rules.",
+            "Detection-as-Code.",
+            "Alert Tuning.",
+            "False Positives.",
+            "Alert Fatigue.",
+            "Log Sources.",
+            "Rule Validation.",
+            "Correlation."
+          ]
+        }
+      ],
+      "proyecto": "Construir un pequeño SOC de laboratorio que recopile registros de Linux y Windows, centralice eventos y genere alertas ante comportamientos simulados.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 28,
+      "titulo": "Threat Hunting, respuesta a incidentes y forense digital",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P3",
+      "prioridad_detalle": "PRIORIDAD P2/P3 — Especialización avanzada",
+      "objetivo": "investigar incidentes y reconstruir qué ocurrió en un sistema comprometido.",
+      "modulos": [
+        {
+          "numero": "28.1",
+          "titulo": "Threat Hunting",
+          "lecciones": [
+            "Hipótesis.",
+            "Telemetría.",
+            "Threat Indicators.",
+            "Anomaly Detection.",
+            "Event Correlation.",
+            "TTP.",
+            "Threat Investigation.",
+            "Documentation."
+          ]
+        },
+        {
+          "numero": "28.2",
+          "titulo": "Inteligencia de amenazas",
+          "lecciones": [
+            "Threat Intelligence.",
+            "Threat Actors.",
+            "Campaigns.",
+            "Attack Patterns.",
+            "IOC.",
+            "IOA.",
+            "MITRE ATT&CK.",
+            "Threat Feeds.",
+            "Threat Reports."
+          ]
+        },
+        {
+          "numero": "28.3",
+          "titulo": "Incident Response",
+          "lecciones": [
+            "Preparation.",
+            "Identification.",
+            "Analysis.",
+            "Containment.",
+            "Eradication.",
+            "Recovery.",
+            "Lessons Learned.",
+            "Incident Reporting."
+          ]
+        },
+        {
+          "numero": "28.4",
+          "titulo": "Forense digital (DFIR)",
+          "lecciones": [
+            "Digital Forensics.",
+            "Incident Response.",
+            "Evidence Preservation.",
+            "Chain of Custody.",
+            "Disk Forensics.",
+            "Memory Forensics.",
+            "File System Analysis.",
+            "Metadata.",
+            "Timeline Analysis.",
+            "Log Analysis.",
+            "Incident Reconstruction."
+          ]
+        },
+        {
+          "numero": "28.5",
+          "titulo": "Herramientas",
+          "lecciones": [
+            "Autopsy.",
+            "Sleuth Kit.",
+            "Volatility.",
+            "KAPE.",
+            "Sysmon.",
+            "Eric Zimmerman Tools (introducción)."
+          ]
+        },
+        {
+          "numero": "28.6",
+          "titulo": "Estándares",
+          "lecciones": [
+            "NIST SP 800-61.",
+            "NIST CSF 2.0.",
+            "MITRE ATT&CK.",
+            "CSRC"
+          ]
+        }
+      ],
+      "proyecto": "Investigar un incidente simulado, construir una línea temporal, identificar la causa, determinar el impacto y elaborar un informe forense.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 29,
+      "titulo": "Cloud Security, DevSecOps y Supply Chain Security",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P2",
+      "prioridad_detalle": "P2 · Especialización avanzada",
+      "objetivo": "aprender a proteger aplicaciones, infraestructura y servicios desplegados en la nube.",
+      "modulos": [
+        {
+          "numero": "29.1",
+          "titulo": "Cloud Security",
+          "lecciones": [
+            "Shared Responsibility Model.",
+            "Cloud IAM.",
+            "Cloud Networking.",
+            "Network Segmentation.",
+            "Cloud Storage Security.",
+            "Encryption.",
+            "Secrets Management.",
+            "Cloud Logging.",
+            "Cloud Monitoring.",
+            "Security Misconfigurations."
+          ]
+        },
+        {
+          "numero": "29.2",
+          "titulo": "AWS Security",
+          "lecciones": [
+            "IAM.",
+            "Roles.",
+            "Policies.",
+            "EC2.",
+            "S3.",
+            "VPC.",
+            "Security Groups.",
+            "CloudTrail.",
+            "CloudWatch.",
+            "GuardDuty (introducción)."
+          ]
+        },
+        {
+          "numero": "29.3",
+          "titulo": "Azure Security",
+          "lecciones": [
+            "Entra ID.",
+            "RBAC.",
+            "Azure Policies.",
+            "Key Vault.",
+            "Defender for Cloud (introducción)."
+          ]
+        },
+        {
+          "numero": "29.4",
+          "titulo": "Google Cloud Security",
+          "lecciones": [
+            "IAM.",
+            "Service Accounts.",
+            "VPC.",
+            "Cloud Logging.",
+            "Cloud Monitoring."
+          ]
+        },
+        {
+          "numero": "29.5",
+          "titulo": "Docker Security",
+          "lecciones": [
+            "Image Security.",
+            "Container Isolation.",
+            "Privileges.",
+            "Non-root Containers.",
+            "Vulnerability Scanning.",
+            "Secrets.",
+            "Secure Dockerfiles."
+          ]
+        },
+        {
+          "numero": "29.6",
+          "titulo": "Kubernetes Security",
+          "lecciones": [
+            "RBAC.",
+            "Network Policies.",
+            "Secrets.",
+            "Pod Security.",
+            "Image Security.",
+            "Cluster Hardening.",
+            "Runtime Security."
+          ]
+        },
+        {
+          "numero": "29.7",
+          "titulo": "Supply Chain Security",
+          "lecciones": [
+            "Dependency Security.",
+            "Dependency Scanning.",
+            "SBOM.",
+            "Software Bill of Materials.",
+            "Artifact Integrity.",
+            "Artifact Signing.",
+            "Provenance.",
+            "Malicious Dependencies.",
+            "Software Supply Chain Attacks."
+          ]
+        },
+        {
+          "numero": "29.8",
+          "titulo": "DevSecOps",
+          "lecciones": [
+            "Secure SDLC.",
+            "SAST.",
+            "DAST.",
+            "SCA.",
+            "Container Scanning.",
+            "Infrastructure Scanning.",
+            "Secrets Scanning.",
+            "Security Gates.",
+            "Security Automation.",
+            "CI/CD Security.",
+            "Herramientas",
+            "Trivy.",
+            "Gitleaks.",
+            "OWASP Dependency-Check.",
+            "GitHub Dependabot.",
+            "Semgrep.",
+            "Terraform.",
+            "GitHub Actions."
+          ]
+        }
+      ],
+      "proyecto": "Crear un pipeline DevSecOps que construya, pruebe, analice y despliegue una aplicación de manera automatizada, integrando controles de seguridad.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 30,
+      "titulo": "Inteligencia artificial, automatización y seguridad avanzada",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P3",
+      "prioridad_detalle": "PRIORIDAD P2/P3 — Especialización avanzada",
+      "objetivo": "comprender las amenazas modernas y desarrollar capacidades de automatización de seguridad.",
+      "modulos": [
+        {
+          "numero": "30.1",
+          "titulo": "Inteligencia artificial para seguridad",
+          "lecciones": [
+            "Machine Learning.",
+            "Anomaly Detection.",
+            "Pattern Recognition.",
+            "Classification.",
+            "Security Analytics.",
+            "AI-assisted Investigation.",
+            "Limitations of AI in Security."
+          ]
+        },
+        {
+          "numero": "30.2",
+          "titulo": "LLM Security",
+          "lecciones": [
+            "Large Language Models.",
+            "Prompt Injection.",
+            "Indirect Prompt Injection.",
+            "Jailbreaking.",
+            "Data Leakage.",
+            "Context Manipulation.",
+            "Tool Abuse.",
+            "Agent Security.",
+            "RAG Security.",
+            "Guardrails.",
+            "Sandboxing.",
+            "Least Privilege for Agents."
+          ]
+        },
+        {
+          "numero": "30.3",
+          "titulo": "AI Red Teaming",
+          "lecciones": [
+            "Attack Surface.",
+            "Adversarial Inputs.",
+            "Prompt Injection Testing.",
+            "Tool-use Abuse.",
+            "Data Exfiltration Scenarios.",
+            "Model Evaluation.",
+            "Security Testing of AI Systems."
+          ]
+        },
+        {
+          "numero": "30.4",
+          "titulo": "Automatización con Python",
+          "lecciones": [
+            "Python avanzado.",
+            "OOP.",
+            "Modules.",
+            "Packages.",
+            "Requests.",
+            "JSON.",
+            "YAML.",
+            "Regex.",
+            "subprocess.",
+            "Sockets.",
+            "Asyncio.",
+            "Logging.",
+            "APIs.",
+            "File Processing."
+          ]
+        },
+        {
+          "numero": "30.5",
+          "titulo": "Automatización de seguridad",
+          "lecciones": [
+            "Log Processing.",
+            "IOC Extraction.",
+            "Threat Intelligence Collection.",
+            "Report Generation.",
+            "API Integrations.",
+            "Vulnerability Reporting.",
+            "Alert Classification.",
+            "Security Automation Pipelines."
+          ]
+        },
+        {
+          "numero": "30.6",
+          "titulo": "Threat Intelligence avanzado",
+          "lecciones": [
+            "Threat Intelligence Lifecycle.",
+            "OSINT Automation.",
+            "MITRE ATT&CK.",
+            "TTP Correlation.",
+            "Threat Feeds.",
+            "Intelligence Analysis."
+          ]
+        },
+        {
+          "numero": "30.7",
+          "titulo": "Criptografía avanzada",
+          "lecciones": [
+            "Symmetric Cryptography.",
+            "Asymmetric Cryptography.",
+            "AES.",
+            "RSA.",
+            "ECC.",
+            "Hashing.",
+            "SHA-2.",
+            "SHA-3.",
+            "Digital Signatures.",
+            "PKI.",
+            "TLS.",
+            "Key Management."
+          ]
+        },
+        {
+          "numero": "30.8",
+          "titulo": "Criptografía poscuántica",
+          "lecciones": [
+            "Quantum Computing Concepts.",
+            "Harvest Now, Decrypt Later.",
+            "Post-Quantum Cryptography.",
+            "ML-KEM.",
+            "ML-DSA.",
+            "SLH-DSA.",
+            "Cryptographic Migration.",
+            "Crypto Agility.",
+            "CSRC"
+          ]
+        }
+      ],
+      "proyecto": "Crear un sistema de automatización en Python que recopile información de fuentes autorizadas, procese indicadores de compromiso y genere reportes de seguridad.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 31,
+      "titulo": "Ciberseguridad de bajo nivel, análisis de malware e ingeniería inversa",
+      "bloque": "V — CIBERSEGURIDAD Y HACKING ÉTICO",
+      "seccion": "ETAPAS 21–30 · ESPECIALIZACIÓN EN SEGURIDAD INFORMÁTICA",
+      "prioridad": "P3",
+      "prioridad_detalle": "P3 · Especialización avanzada",
+      "objetivo": "comprender cómo funcionan los programas a nivel de memoria y cómo investigar software malicioso.",
+      "modulos": [
+        {
+          "numero": "31.1",
+          "titulo": "Lenguaje C",
+          "lecciones": [
+            "Sintaxis.",
+            "Variables.",
+            "Punteros.",
+            "Arrays.",
+            "Strings.",
+            "Structs.",
+            "Memory Allocation.",
+            "malloc.",
+            "calloc.",
+            "realloc.",
+            "free.",
+            "Punteros a funciones.",
+            "Gestión manual de memoria."
+          ]
+        },
+        {
+          "numero": "31.2",
+          "titulo": "C++",
+          "lecciones": [
+            "Clases.",
+            "Objetos.",
+            "Punteros.",
+            "Referencias.",
+            "Constructors.",
+            "Destructors.",
+            "Memory Management.",
+            "Smart Pointers.",
+            "STL.",
+            "Templates.",
+            "RAII."
+          ]
+        },
+        {
+          "numero": "31.3",
+          "titulo": "Arquitectura de bajo nivel",
+          "lecciones": [
+            "Stack.",
+            "Heap.",
+            "Registers.",
+            "Memory Layout.",
+            "Calling Conventions.",
+            "Assembly.",
+            "x86-64.",
+            "ELF.",
+            "PE Files."
+          ]
+        },
+        {
+          "numero": "31.4",
+          "titulo": "Seguridad de memoria",
+          "lecciones": [
+            "Buffer Overflow.",
+            "Stack Overflow.",
+            "Use After Free.",
+            "Double Free.",
+            "Memory Corruption.",
+            "Out-of-Bounds Access.",
+            "Memory Safety.",
+            "ASLR.",
+            "DEP/NX.",
+            "Stack Canaries.",
+            "ROP (Return-Oriented Programming)."
+          ]
+        },
+        {
+          "numero": "31.5",
+          "titulo": "Assembly",
+          "lecciones": [
+            "Instrucciones.",
+            "Registros.",
+            "Operaciones.",
+            "Direccionamiento.",
+            "Stack Frames.",
+            "Funciones.",
+            "Debugging."
+          ]
+        },
+        {
+          "numero": "31.6",
+          "titulo": "Ingeniería inversa",
+          "lecciones": [
+            "Reverse Engineering.",
+            "Static Analysis.",
+            "Dynamic Analysis.",
+            "Disassembling.",
+            "Decompiling.",
+            "Binary Analysis.",
+            "Debugging.",
+            "Sandbox Analysis."
+          ]
+        },
+        {
+          "numero": "31.7",
+          "titulo": "Análisis de malware",
+          "lecciones": [
+            "Virus.",
+            "Worms.",
+            "Trojans.",
+            "Ransomware.",
+            "Rootkits.",
+            "Loaders.",
+            "Persistence Mechanisms.",
+            "Malware Behavior.",
+            "Indicators of Compromise."
+          ]
+        },
+        {
+          "numero": "31.8",
+          "titulo": "Herramientas",
+          "lecciones": [
+            "Ghidra.",
+            "GDB.",
+            "x64dbg.",
+            "WinDbg.",
+            "PE-bear.",
+            "Detect It Easy.",
+            "Volatility."
+          ]
+        }
+      ],
+      "proyecto": "Analizar una muestra de entrenamiento inofensiva o un binario preparado para laboratorio, estudiar su comportamiento y elaborar un informe técnico. Importante: las pruebas de explotación de memoria y el análisis de malware se realizarán en entornos aislados, sin ejecutar muestras peligrosas en tu sistema habitual.",
+      "proyecto_titulo": "Proyecto",
+      "notas": []
+    },
+    {
+      "numero": 32,
+      "titulo": "Proyecto profesional, portafolio y preparación laboral",
+      "bloque": "VI — CONSOLIDACIÓN PROFESIONAL",
+      "seccion": "ETAPA 32 · DEMOSTRAR LO APRENDIDO",
+      "prioridad": "P1",
+      "prioridad_detalle": "P1 · Obligatoria",
+      "objetivo": "consolidar todos los conocimientos en proyectos demostrables y prepararte para trabajar profesionalmente.",
+      "modulos": [
+        {
+          "numero": "32.1",
+          "titulo": "Portafolio de desarrollo",
+          "lecciones": [
+            "GitHub Profile.",
+            "Repositories.",
+            "README.",
+            "Technical Documentation.",
+            "Architecture Documentation.",
+            "API Documentation.",
+            "Screenshots.",
+            "Demo.",
+            "Deployment.",
+            "Project Presentation."
+          ]
+        },
+        {
+          "numero": "32.2",
+          "titulo": "Proyectos Full Stack",
+          "lecciones": [
+            "Sistema de autenticación.",
+            "Sistema de inventario.",
+            "Sistema de ventas.",
+            "E-commerce.",
+            "Dashboard administrativo.",
+            "Sistema de reservas.",
+            "Sistema de gestión empresarial.",
+            "Aplicación con comunicación en tiempo real."
+          ]
+        },
+        {
+          "numero": "32.3",
+          "titulo": "Proyectos de infraestructura",
+          "lecciones": [
+            "Servidor Linux.",
+            "API desplegada.",
+            "Aplicación Dockerizada.",
+            "Nginx Reverse Proxy.",
+            "Pipeline CI/CD.",
+            "Monitorización.",
+            "Gestión de logs."
+          ]
+        },
+        {
+          "numero": "32.4",
+          "titulo": "Proyectos de seguridad",
+          "lecciones": [
+            "Auditoría de una aplicación propia.",
+            "Laboratorio de reconocimiento.",
+            "Evaluación de vulnerabilidades.",
+            "Pentesting documentado.",
+            "Laboratorio SOC.",
+            "Reglas Sigma.",
+            "Threat Hunting.",
+            "Análisis de incidentes.",
+            "Automatización de seguridad.",
+            "Cloud Security Assessment."
+          ]
+        },
+        {
+          "numero": "32.5",
+          "titulo": "Trabajo colaborativo",
+          "lecciones": [
+            "Code Review.",
+            "Pull Requests.",
+            "Git Flow.",
+            "Scrum.",
+            "Kanban.",
+            "Trabajo en equipo.",
+            "Comunicación técnica.",
+            "Gestión de tareas.",
+            "Resolución de conflictos."
+          ]
+        },
+        {
+          "numero": "32.6",
+          "titulo": "Preparación laboral",
+          "lecciones": [
+            "Hoja de vida.",
+            "LinkedIn.",
+            "Portafolio web.",
+            "Entrevistas técnicas.",
+            "Entrevistas conductuales.",
+            "Resolución de algoritmos.",
+            "SQL Interviews.",
+            "System Design.",
+            "Comunicación en inglés.",
+            "Presentación de proyectos."
+          ]
+        }
+      ],
+      "proyecto": "Construir una aplicación integral que reúna frontend, backend, bases de datos, infraestructura, arquitectura, pruebas automatizadas y seguridad. La aplicación tendrá documentación técnica y un informe de seguridad independiente.",
+      "proyecto_titulo": "Proyecto final",
+      "notas": []
+    }
+  ]
+}

@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # apuntando a userData (Windows: %APPDATA%/CodeGuard Pro) para que la base de
 # datos, los logs y los medios no se escriban dentro del directorio de
 # instalación (que puede ser de solo lectura).
-DATA_DIR = Path(os.environ.get("CODEGUARD_DATA_DIR", BASE_DIR)).expanduser().resolve()
+DATA_DIR = Path(os.environ.get("CODEGUARD_DATA_DIR", BASE_DIR / "data")).expanduser().resolve()
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 

@@ -8,11 +8,12 @@ env/
 __pycache__/
 *.pyo
 
-# Base de datos SQLite y clave secreta local
+# Base de datos SQLite y clave secreta local (solo la carpeta de datos de runtime en raíz;
+# apps/roadmaps/data/ contiene el JSON del roadmap y sí se versiona)
 db.sqlite3
 db.sqlite3-journal
 .secret_key
-data/
+/data/
 
 # Media y archivos de usuario
 media/
