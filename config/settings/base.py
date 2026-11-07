@@ -41,7 +41,7 @@ def _obtener_secret_key() -> str:
 
 SECRET_KEY = _obtener_secret_key()
 
-DEBUG = os.environ.get("DJANGO_DEBUG", "True").strip().lower() in {"true", "1", "yes", "on"}
+DEBUG = os.environ.get("DJANGO_DEBUG", "False").strip().lower() in {"true", "1", "yes", "on"}
 
 ALLOWED_HOSTS = [
     host.strip()
@@ -63,11 +63,18 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "config.middleware.CabecerasSeguridadMiddleware",
+    "config.middleware.SesionInactividadMiddleware",
 ]
+
+# URL de inicio de sesión usada por @login_required y el middleware de
+# inactividad. El flujo de autenticación aún se encuentra en implementación (CG-001).
+LOGIN_URL = "accounts:login"
 
 ROOT_URLCONF = "config.urls"
 
@@ -105,6 +112,12 @@ LANGUAGE_CODE = "es"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
+
+# Tiempo máximo de inactividad de sesión (minutos). Lo consultan los middlewares
+# de sesión/autenticación; el usuario puede ajustarlo en su configuración inicial.
+SESSION_TIMEOUT_MINUTES = int(
+    os.environ.get("DJANGO_SESSION_TIMEOUT_MINUTES", "15") or 15
+)
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]

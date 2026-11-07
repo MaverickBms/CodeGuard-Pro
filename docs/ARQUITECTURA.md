@@ -94,7 +94,7 @@ incrementos siguientes sin modificar el núcleo ya implementado.
 ## 5. Seguridad por diseño
 
 - **Bind exclusivo:** `127.0.0.1` (nunca `0.0.0.0`).
-- **CSP:** `default-src 'self'; script-src 'self'; style-src 'self'; ... frame-ancestors 'none';`
+- **CSP:** `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self';`
 - **Cabeceras:** `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`,
   `Referrer-Policy: no-referrer`, `Permissions-Policy` restrictiva.
 - **CSRF:** token en todas las peticiones que cambian estado.
@@ -117,8 +117,11 @@ aplican desde una base de datos vacía. Ver `docs/MODELO_DATOS.md`.
 
 ## 7. Despliegue y ejecución
 
-Servidor de desarrollo de Django (`runserver`) escuchando en `127.0.0.1:8000`. Para ejecución
-habitual se usará el mismo servidor local con `DEBUG=False` y una única conexión (monousuario).
+**Servidor empaquetado (Electron):** `server_entry.py` arranca el WSGI de Django mediante
+**Waitress** en `127.0.0.1:<CODEGUARD_PORT>` con **WhiteNoise** para servir los recursos
+estáticos locales. No se usa `runserver --insecure`.
+
+**Desarrollo:** `python manage.py runserver 127.0.0.1:8000` (solo desarrollo, `DEBUG=True`).
 
 No se usan contenedores, máquinas virtuales ni servicios adicionales (RNF-001, restricciones de
 hardware).

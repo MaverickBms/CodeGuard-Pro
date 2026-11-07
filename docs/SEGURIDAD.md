@@ -21,7 +21,7 @@ autenticación, y no se asume que la red local es segura.
 | RS-001 | Autenticación local obligatoria | Todas las vistas requieren login; sin acceso anónimo | ✅ |
 | RS-002 | Argon2 para contraseñas | `AUTH_PASSWORD_HASHERS` con Argon2 primero | ✅ |
 | RS-003 | Frase de rescate ≥128 bits, hash, un uso | `generar_frase_rescate()` (32 caracteres, ~201 bits), hash Argon2, `usada` | ✅ |
-| RS-004 | Bind 127.0.0.1 | `runserver 127.0.0.1:8000`; `ALLOWED_HOSTS` solo localhost | ✅ |
+| RS-004 | Bind 127.0.0.1 | Servidor WSGI local (Waitress) en `127.0.0.1:<puerto>`; `ALLOWED_HOSTS` solo localhost | ✅ |
 | RS-005 | Validación de archivos | Pendiente (incremento de evidencias) | ⏳ |
 | RS-006 | Archivos fuera de web root | Pendiente (incremento de evidencias) | ⏳ |
 | RS-007 | Backup íntegro (hash + validación) | Pendiente (incremento de backups) | ⏳ |
@@ -47,9 +47,13 @@ autenticación, y no se asume que la red local es segura.
   inactividad (RF-002, RS-009). Registra evento `logout_inactividad` en auditoría.
 - **`CabecerasSeguridadMiddleware`**: añade a cada respuesta `X-Frame-Options: DENY`,
   `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy`
-  restrictiva y una CSP estricta (solo recursos propios, sin CDN).
-- **`ConfiguracionInicialMiddleware`**: redirige a `/accounts/setup/` si no existe usuario
-  todavía.
+  restrictiva y una CSP estricta (solo recursos propios, sin CDN; scripts locales sin
+  `unsafe-inline`, estilos con `unsafe-inline` por uso de estilos inline).
+- **Redirección de configuración inicial**: implementada en la vista `apps.accounts.setup_inicial`;
+  si no existe usuario, redirige a `/accounts/setup/`.
+
+> Nota: la redirección de primer uso se implementó en la vista (no en un middleware separado).
+> El resto de middlewares descritos corresponden a la implementación actual.
 
 ---
 

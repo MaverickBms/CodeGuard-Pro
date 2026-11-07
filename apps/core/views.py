@@ -1,6 +1,6 @@
 """Vistas del módulo core (panel principal y navegación)."""
 
-from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from apps.audit.services import registrar_evento
@@ -8,14 +8,15 @@ from apps.core.models import ConfiguracionSistema
 
 
 def get_usuario_actual(request):
-    """Devuelve el usuario actual para una app monousuario sin auth."""
-    Usuario = get_user_model()
-    usuario = Usuario.objects.first()
-    if usuario is None:
-        usuario = Usuario.objects.create_user(username="usuario", password="")
-    return usuario
+    """Devuelve el usuario autenticado de la petición.
+
+    No existe creación implícita de usuarios: la identidad proviene del flujo
+    de autenticación (configuración inicial / inicio de sesión). Ver CG-003.
+    """
+    return request.user
 
 
+@login_required
 def panel(request):
     """Panel principal (dashboard).
 

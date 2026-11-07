@@ -5,6 +5,10 @@
 # Backend Django (obligatorio)
 Django==5.2.19
 argon2-cffi==25.1.0
+whitenoise==6.9.0
+
+# Servidor local WSGI para la aplicación de escritorio (Electron + Django)
+waitress==3.0.0
 
 # Procesamiento PDF (biblioteca documental, fase futura)
 PyMuPDF==2.1

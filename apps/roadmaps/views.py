@@ -1,12 +1,11 @@
 """Vistas del módulo académico (roadmap ASCENSO).
 
-Nota: Aplicación local, monousuario y offline-first. Sin sistema de
-inicio de sesión. Se usa el primer usuario de la base de datos como
-usuario actual para el seguimiento de progreso.
+Nota: Aplicación local, monousuario y offline-first. La identidad del usuario
+actual proviene del flujo de autenticación; no se crea identidad implícita.
 """
 
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -24,20 +23,15 @@ from .services import (
 
 
 def get_usuario_actual(request):
-    """Devuelve el usuario actual para una app monousuario sin auth.
+    """Devuelve el usuario autenticado de la petición.
 
-    Retorna el primer usuario en la base de datos o lo crea si no existe.
+    No existe creación implícita de usuarios: la identidad proviene del flujo
+    de autenticación (configuración inicial / inicio de sesión). Ver CG-003.
     """
-    Usuario = get_user_model()
-    usuario = Usuario.objects.first()
-    if usuario is None:
-        usuario = Usuario.objects.create_user(
-            username="usuario",
-            password="",
-        )
-    return usuario
+    return request.user
 
 
+@login_required
 def lista(request):
     """Listado de las 33 etapas con filtros, avance y estado de bloqueo."""
     roadmap = roadmap_activo()
@@ -107,6 +101,7 @@ def lista(request):
     )
 
 
+@login_required
 def detalle(request, numero):
     """Detalle de una etapa: módulos, lecciones, proyecto y prerrequisitos."""
     roadmap = roadmap_activo()
@@ -149,6 +144,7 @@ def detalle(request, numero):
     )
 
 
+@login_required
 @require_POST
 def marcar_etapa_view(request, numero):
     """Marca o reabre una etapa completa (POST)."""
@@ -174,6 +170,7 @@ def marcar_etapa_view(request, numero):
     return redirect("roadmaps:detalle", numero=etapa.numero)
 
 
+@login_required
 @require_POST
 def marcar_leccion_view(request, leccion_id):
     """Marca o desmarca una lección (POST)."""

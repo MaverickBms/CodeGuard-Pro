@@ -42,6 +42,8 @@ hiddenimports = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "whitenoise",
+    "waitress",
 ]
 hiddenimports += collect_submodules("apps")
 

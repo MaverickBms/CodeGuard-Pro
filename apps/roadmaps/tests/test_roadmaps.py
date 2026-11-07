@@ -140,13 +140,14 @@ class VistasRoadmapTest(TestCase):
     def setUp(self):
         pass
 
-    def test_lista_accesible_sin_login(self):
-        """La lista de roadmap es accesible sin login (app monousuario)."""
+    def test_lista_redirige_sin_login(self):
+        """La lista de roadmap debe redirigir al login si no hay sesión."""
         respuesta = self.client.get(reverse("roadmaps:lista"))
-        self.assertEqual(respuesta.status_code, 200)
-        self.assertEqual(len(respuesta.context["etapas"]), 33)
+        self.assertEqual(respuesta.status_code, 302)
+        self.assertTrue(respuesta.url.startswith(reverse("accounts:login")))
 
     def test_lista_muestra_las_33_etapas(self):
+        self.client.force_login(self.usuario)
         respuesta = self.client.get(reverse("roadmaps:lista"))
         self.assertEqual(respuesta.status_code, 200)
         self.assertEqual(len(respuesta.context["etapas"]), 33)
@@ -154,6 +155,7 @@ class VistasRoadmapTest(TestCase):
         self.assertContains(respuesta, "Roadmap ASCENSO")
 
     def test_lista_filtra_por_prioridad(self):
+        self.client.force_login(self.usuario)
         respuesta = self.client.get(reverse("roadmaps:lista"), {"prioridad": "P3"})
         self.assertEqual(respuesta.status_code, 200)
         self.assertTrue(respuesta.context["etapas"])
@@ -162,6 +164,7 @@ class VistasRoadmapTest(TestCase):
         )
 
     def test_detalle_muestra_modulos_y_lecciones(self):
+        self.client.force_login(self.usuario)
         respuesta = self.client.get(reverse("roadmaps:detalle", args=[0]))
         self.assertEqual(respuesta.status_code, 200)
         self.assertContains(respuesta, "Preparación y método de aprendizaje")
@@ -169,6 +172,7 @@ class VistasRoadmapTest(TestCase):
         self.assertGreater(len(respuesta.context["modulos"]), 0)
 
     def test_marcar_etapa_desde_vista(self):
+        self.client.force_login(self.usuario)
         respuesta = self.client.post(
             reverse("roadmaps:marcar_etapa", args=[0]), {"completada": "1"}
         )
@@ -183,6 +187,7 @@ class VistasRoadmapTest(TestCase):
         )
 
     def test_vista_rechaza_etapa_bloqueada(self):
+        self.client.force_login(self.usuario)
         respuesta = self.client.post(
             reverse("roadmaps:marcar_etapa", args=[10]),
             {"completada": "1"},
@@ -200,6 +205,7 @@ class VistasRoadmapTest(TestCase):
         self.assertContains(respuesta, "prerrequisitos sin completar")
 
     def test_marcar_leccion_desde_vista(self):
+        self.client.force_login(self.usuario)
         leccion = Leccion.objects.filter(modulo__etapa__numero=0).first()
         respuesta = self.client.post(
             reverse("roadmaps:marcar_leccion", args=[leccion.pk]), {"completada": "1"}
@@ -214,6 +220,10 @@ class VistasRoadmapTest(TestCase):
 
 class RoadmapSinDatosTest(TestCase):
     def test_lista_sin_roadmap_muestra_instrucciones(self):
+        usuario = get_user_model().objects.create_user(
+            username="tester", password="ClaveSegura123!"
+        )
+        self.client.force_login(usuario)
         respuesta = self.client.get(reverse("roadmaps:lista"))
         self.assertEqual(respuesta.status_code, 200)
         self.assertContains(respuesta, "cargar_ascenso")

@@ -2,6 +2,31 @@
 
 Todos los cambios notables del proyecto se documentan aquí.
 
+## [1.0.1] — 2026-11-07 — Intervención de auditoría y consolidación técnica
+
+### Corregido
+- `DEBUG` ahora es `False` por defecto en settings base (antes `True`); desarrollo usa
+  `DEBUG=True` explícito (`config/settings/development.py`).
+- CSP endurecida: `script-src 'self'` (scripts locales sin `unsafe-inline`); el script inline de
+  temas/utilidades se movió a `static/js/codeguard.js`; `style-src 'self' 'unsafe-inline'`.
+- Eliminado ocultamiento de errores en `run.sh` (`cargar_ascenso` ya no se ejecuta con `|| true`).
+- Sustituido `runserver --insecure` por servidor WSGI local **Waitress + WhiteNoise** en
+  `server_entry.py`, settings de escritorio y `requirements.txt`; spec PyInstaller actualizado.
+- Eliminada la creación implícita de usuario con contraseña vacía en panel y roadmap; la
+  identidad pasa a ser la del usuario autenticado.
+
+### Añadido
+- Middlewares de sesión y autenticación (`SessionMiddleware`, `AuthenticationMiddleware`) y
+  `SesionInactividadMiddleware` (timeout por inactividad, RF-002/RS-009, default 15 min).
+- Vistas de autenticación completas: setup inicial, login, logout, rescate y cambio de contraseña.
+- Rutas protegidas con `@login_required` (panel, roadmap lista, detalle, marcar etapa/lección).
+
+### Verificado
+- `manage.py check` (development + desktop): sin errores.
+- `makemigrations --check`: sin cambios pendientes.
+- Suite de pruebas: 31 pruebas OK (`apps.core apps.accounts apps.audit apps.roadmaps`).
+- Smoke test del servidor WSGI: `GET / → 302` (login), `GET /static/js/codeguard.js → 200`.
+
 ## [1.0.0] — 2026-11-05 — Incremento 1: Núcleo funcional
 
 ### Añadido

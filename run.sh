@@ -54,7 +54,7 @@ echo "[INFO] Aplicando migraciones de Django en $CODEGUARD_DATA_DIR..."
 
 # --- Cargar el roadmap oficial si aún no existe ---
 echo "[INFO] Verificando roadmap ASCENSO..."
-"$PYTHON" manage.py cargar_ascenso --settings=config.settings.development >/dev/null 2>&1 || true
+"$PYTHON" manage.py cargar_ascenso --settings=config.settings.development
 
 # --- Instalar dependencias Node.js si es necesario ---
 echo "[INFO] Verificando dependencias Node.js..."

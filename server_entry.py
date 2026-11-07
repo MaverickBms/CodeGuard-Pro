@@ -5,7 +5,8 @@ en ``http://127.0.0.1:<CODEGUARD_PORT>/``. El proceso:
 
 1. Aplica las migraciones pendientes en la base de datos del usuario.
 2. Carga el roadmap oficial ASCENSO 3.1 si todavía no existe.
-3. Sirve la aplicación y los estáticos locales con ``runserver --insecure``.
+3. Sirve la aplicación y los estáticos locales con un servidor WSGI local
+   (Waitress + WhiteNoise).
 
 No abre puertos externos: escucha exclusivamente en 127.0.0.1.
 """
@@ -41,12 +42,13 @@ def main() -> int:
     port = os.environ.get("CODEGUARD_PORT", "8000").strip() or "8000"
     print(f"[CodeGuard] Servidor local en http://127.0.0.1:{port}/", flush=True)
 
-    call_command(
-        "runserver",
-        f"127.0.0.1:{port}",
-        "--noreload",
-        "--insecure",
-        verbosity=1,
+    from config.wsgi import application
+    from waitress import serve
+
+    serve(
+        application,
+        host="127.0.0.1",
+        port=int(port),
     )
     return 0
 

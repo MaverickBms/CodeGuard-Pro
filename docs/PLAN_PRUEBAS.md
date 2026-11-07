@@ -22,7 +22,7 @@ El objetivo de "menos de 300 MB de RAM en reposo" es un **objetivo a validar**, 
 | Django | 5.2.19 |
 
 Procedimiento de medición de RAM en reposo:
-1. Arrancar `runserver 127.0.0.1:8000` con `DEBUG=False`.
+1. Arrancar el servidor WSGI local (Waitress) con `DEBUG=False`.
 2. Medir RSS del proceso Python tras 5 minutos de inactividad (`ps` / `psutil`).
 3. Repetir 3 veces y reportar promedio.
 
@@ -32,13 +32,27 @@ Procedimiento de medición de RAM en reposo:
 
 | ID | Prueba | Caso | Resultado esperado | Estado |
 |---|---|---|---|---|
-| T-001 | Login | Credenciales válidas | Acceso al panel (200) | ✅ Verificado manualmente |
-| T-002 | Expiración de sesión | Inactividad > 15 min | Redirección a login | ⏳ Por automatizar |
-| T-003 | Configuración inicial | Primer arranque sin usuario | Redirección a `/accounts/setup/` | ✅ Verificado manualmente |
+| T-001 | Login | Credenciales válidas | Acceso al panel (200) | ✅ Verificado (automática: `test_login_redirige_a_panel_si_autentica`) |
+| T-002 | Expiración de sesión | Inactividad > 15 min | Redirección a login | ✅ Verificado (automática: `test_sesion_expira_por_inactividad`) |
+| T-003 | Configuración inicial | Primer arranque sin usuario | Redirección a `/accounts/setup/` | ✅ Verificado (vista: usuario existente → login) |
 | T-004 | Frase de rescate | Crear y mostrar una vez | Frase generada, hash almacenado, no texto plano | ✅ Verificado (servicio) |
-| T-005 | Auditoría de accesos | Login/logout | Entradas en `AuditLog` | ✅ Verificado (servicio) |
+| T-005 | Auditoría de accesos | Login/logout | Entradas en `AuditLog` | ✅ Verificado (servicio/vistas) |
 | T-200 | Offline | Desconectar red | Core funciona sin Internet | ✅ Arquitectura |
 | T-201 | Bind 127.0.0.1 | `ss -ltnp` | Solo 127.0.0.1:8000 | ✅ Verificado |
+
+---
+
+## 2.1 Pruebas funcionales de autenticación (implementadas en esta intervención)
+
+| ID | Prueba | Caso | Resultado esperado | Estado |
+|---|---|---|---|---|
+| T-006 | Login correcto | POST `/accounts/login/` con credenciales válidas | Redirección a panel (302 → `/`) | ✅ Automática |
+| T-007 | Login incorrecto | POST con contraseña inválida | Re-render del login con error (200) | ✅ Automática |
+| T-008 | Login repetido | GET `/accounts/login/` autenticado | Redirección a panel (302) | ✅ Automática |
+| T-009 | Logout | POST `/accounts/logout/` | Redirección a panel + sesión cerrada | ✅ Automática |
+| T-010 | Cambio de contraseña | POST con datos válidos | Redirección + `check_password` | ✅ Automática |
+| T-011 | Frase de rescate inválida | POST con frase incorrecta | Re-render con error (200) | ✅ Automática |
+| T-012 | Frase de rescate válida | POST con frase válida | Redirección a `/accounts/rescate/exito/` | ✅ Automática |
 
 ---
 
@@ -100,4 +114,8 @@ El incremento 1 se considera terminado con las pruebas manuales verificadas (log
 logout, acceso protegido, bind 127.0.0.1, sin CDN). Las pruebas automatizadas completas (T-002
 en adelante) se implementarán en `tests/` a medida que avance cada incremento.
 
-No se declara un requisito como implementado sin evidencia de prueba.
+Con la intervención actual se completaron las pruebas automatizadas de autenticación, cierre de
+sesión, cambio de contraseña, frase de rescate y expiración por inactividad (T-006 a T-012 y
+T-002). No se declara un requisito como implementado sin evidencia de prueba. Las pruebas de
+seguridad restantes (CSRF, XSS, validación de archivos, acceso no autorizado, path traversal,
+archivos maliciosos, exposición de secretos) siguen pendientes en sus respectivos incrementos.
