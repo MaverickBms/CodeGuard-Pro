@@ -19,96 +19,24 @@
 
 <!-- Tarjetas de módulos -->
 <div class="modules-grid">
-  <div class="module-card">
-    <span class="card-icon"><i class="fa-solid fa-map"></i></span>
-    <h3>Roadmap académico</h3>
-    <p>33 etapas ASCENSO, módulos, lecciones, actividades y dependencias.</p>
-    <span class="card-tag">Próximamente</span>
-    <button class="btn-open disabled" disabled>
-      <i class="fa-solid fa-lock me-2"></i>En desarrollo
-    </button>
-  </div>
-  <div class="module-card">
-    <span class="card-icon"><i class="fa-solid fa-medal"></i></span>
-    <h3>Competencias</h3>
-    <p>Niveles de dominio, criterios verificables y registro de logros.</p>
-    <span class="card-tag">Próximamente</span>
-    <button class="btn-open disabled" disabled>
-      <i class="fa-solid fa-lock me-2"></i>En desarrollo
-    </button>
-  </div>
-  <div class="module-card">
-    <span class="card-icon"><i class="fa-solid fa-book"></i></span>
-    <h3>Biblioteca documental</h3>
-    <p>Importación de PDFs, metadatos, extracción de texto y búsqueda FTS5.</p>
-    <span class="card-tag">Próximamente</span>
-    <button class="btn-open disabled" disabled>
-      <i class="fa-solid fa-lock me-2"></i>En desarrollo
-    </button>
-  </div>
-  <div class="module-card">
-    <span class="card-icon"><i class="fa-solid fa-brain"></i></span>
-    <h3>Base de conocimiento</h3>
-    <p>Conceptos, relaciones tipadas y trazabilidad documental precisa.</p>
-    <span class="card-tag">Próximamente</span>
-    <button class="btn-open disabled" disabled>
-      <i class="fa-solid fa-lock me-2"></i>En desarrollo
-    </button>
-  </div>
-  <div class="module-card">
-    <span class="card-icon"><i class="fa-solid fa-pen-nib"></i></span>
-    <h3>Evaluaciones</h3>
-    <p>Preguntas, rúbricas, intentos, resultados y retroalimentación.</p>
-    <span class="card-tag">Próximamente</span>
-    <button class="btn-open disabled" disabled>
-      <i class="fa-solid fa-lock me-2"></i>En desarrollo
-    </button>
-  </div>
-  <div class="module-card">
-    <span class="card-icon"><i class="fa-solid fa-paperclip"></i></span>
-    <h3>Evidencias</h3>
-    <p>Portafolio por etapa y competencia con verificación SHA-256.</p>
-    <span class="card-tag">Próximamente</span>
-    <button class="btn-open disabled" disabled>
-      <i class="fa-solid fa-lock me-2"></i>En desarrollo
-    </button>
-  </div>
-  <div class="module-card">
-    <span class="card-icon"><i class="fa-solid fa-flask"></i></span>
-    <h3>Laboratorios</h3>
-    <p>Guías, pasos secuenciales, comandos y registro de resultados.</p>
-    <span class="card-tag">Próximamente</span>
-    <button class="btn-open disabled" disabled>
-      <i class="fa-solid fa-lock me-2"></i>En desarrollo
-    </button>
-  </div>
-  <div class="module-card">
-    <span class="card-icon"><i class="fa-solid fa-database"></i></span>
-    <h3>Administración</h3>
-    <p>Backups protegidos, restauración segura y auditoría.</p>
-    <span class="card-tag">Próximamente</span>
-    <button class="btn-open disabled" disabled>
-      <i class="fa-solid fa-lock me-2"></i>En desarrollo
-    </button>
-  </div>
-  <div class="module-card">
-    <span class="card-icon"><i class="fa-solid fa-calendar-check"></i></span>
-    <h3>Vigencia y revisión</h3>
-    <p>Estado de vigencia, fecha de revisión y decisiones manuales.</p>
-    <span class="card-tag">Próximamente</span>
-    <button class="btn-open disabled" disabled>
-      <i class="fa-solid fa-lock me-2"></i>En desarrollo
-    </button>
-  </div>
-  <div class="module-card">
-    <span class="card-icon"><i class="fa-solid fa-scales"></i></span>
-    <h3>Ética y seguridad</h3>
-    <p>Advertencias, aceptación explícita y guías de uso ético.</p>
-    <span class="card-tag">Próximamente</span>
-    <button class="btn-open disabled" disabled>
-      <i class="fa-solid fa-lock me-2"></i>En desarrollo
-    </button>
-  </div>
+  {% for modulo in modulos %}
+    <div class="module-card{% if not modulo.implementado %} disabled{% endif %}">
+      <span class="card-icon">{{ modulo.icono }}</span>
+      <h3>{{ modulo.titulo }}</h3>
+      <p>{{ modulo.descripcion }}</p>
+      {% if modulo.implementado %}
+        <span class="card-tag implemented">Disponible</span>
+        <a class="btn-open" href="{% url modulo.url %}">
+          <i class="fa-solid fa-arrow-right me-2"></i>Abrir
+        </a>
+      {% else %}
+        <span class="card-tag">Próximamente</span>
+        <button class="btn-open disabled" disabled>
+          <i class="fa-solid fa-lock me-2"></i>En desarrollo
+        </button>
+      {% endif %}
+    </div>
+  {% endfor %}
 </div>
 
 <!-- Estado del sistema -->

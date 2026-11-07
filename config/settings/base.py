@@ -5,7 +5,41 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-dev-key-change-me")
+# Directorio de datos escribibles. En desarrollo coincide con la raíz del
+# proyecto; en la aplicación empaquetada Electron pasa CODEGUARD_DATA_DIR
+# apuntando a userData (Windows: %APPDATA%/CodeGuard Pro) para que la base de
+# datos, los logs y los medios no se escriban dentro del directorio de
+# instalación (que puede ser de solo lectura).
+DATA_DIR = Path(os.environ.get("CODEGUARD_DATA_DIR", BASE_DIR)).expanduser().resolve()
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def _obtener_secret_key() -> str:
+    """Devuelve la clave secreta local, generándola y persistiéndola si falta.
+
+    Nunca se versiona: en desarrollo se guarda en DATA_DIR/.secret_key y en la
+    aplicación empaquetada en la carpeta de datos del usuario.
+    """
+    valor = os.environ.get("DJANGO_SECRET_KEY", "").strip()
+    if valor:
+        return valor
+
+    archivo = DATA_DIR / ".secret_key"
+    if archivo.exists():
+        return archivo.read_text(encoding="utf-8").strip()
+
+    from django.core.management.utils import get_random_secret_key
+
+    clave = get_random_secret_key()
+    archivo.write_text(clave, encoding="utf-8")
+    try:
+        archivo.chmod(0o600)
+    except OSError:
+        pass
+    return clave
+
+
+SECRET_KEY = _obtener_secret_key()
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "True").strip().lower() in {"true", "1", "yes", "on"}
 
@@ -24,19 +58,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.audit",
     "apps.core",
+    "apps.roadmaps",
 ]
-
-AUTH_USER_MODEL = "accounts.Usuario"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "config.middleware.SesionInactividadMiddleware",
-    "config.middleware.ConfiguracionInicialMiddleware",
     "config.middleware.CabecerasSeguridadMiddleware",
 ]
 
@@ -63,7 +92,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": DATA_DIR / "db.sqlite3",
     }
 }
 
@@ -82,20 +111,16 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = DATA_DIR / "media"
+MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
 
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SECURE = False  # Aplicación local sin TLS; ver docs/SEGURIDAD.md
-
-SESSION_TIMEOUT_MINUTES = int(os.environ.get("DJANGO_SESSION_TIMEOUT_MINUTES", "15"))
-
-CSRF_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SAMESITE = "Lax"
-CSRF_TRUSTED_ORIGINS = []
+LOG_DIR = DATA_DIR / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Mensajes basados en cookies (sin requerir middleware de sesión).
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 USE_TZ = True
 
@@ -115,7 +140,7 @@ LOGGING = {
         },
         "file": {
             "class": "logging.FileHandler",
-            "filename": BASE_DIR / "logs" / "codeguard.log",
+            "filename": LOG_DIR / "codeguard.log",
             "formatter": "verbose",
         },
     },
@@ -133,5 +158,6 @@ LOGGING = {
     },
 }
 
-for _dirname in ("logs",):
-    (_BASE_DIR_LOGS := BASE_DIR / _dirname).mkdir(parents=True, exist_ok=True)
+# Salvaguarda: los directorios escribibles existen antes de configurar logging.
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+MEDIA_ROOT.mkdir(parents=True, exist_ok=True)

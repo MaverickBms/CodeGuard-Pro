@@ -1,21 +1,30 @@
 """Vistas del módulo core (panel principal y navegación)."""
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 from django.shortcuts import render
 
 from apps.audit.services import registrar_evento
 from apps.core.models import ConfiguracionSistema
 
 
-@login_required
+def get_usuario_actual(request):
+    """Devuelve el usuario actual para una app monousuario sin auth."""
+    Usuario = get_user_model()
+    usuario = Usuario.objects.first()
+    if usuario is None:
+        usuario = Usuario.objects.create_user(username="usuario", password="")
+    return usuario
+
+
 def panel(request):
-    """Panel principal protegido (dashboard).
+    """Panel principal (dashboard).
 
     Muestra el progreso general, etapas, competencias, actividades pendientes,
     evaluaciones, laboratorios, documentos, evidencias y revisiones pendientes.
     En este primer incremento es un esqueleto funcional que enumera los módulos
     disponibles del MVP.
     """
+    usuario = get_usuario_actual(request)
     configuracion = ConfiguracionSistema.cargar()
 
     modulos = [
@@ -24,7 +33,7 @@ def panel(request):
             "descripcion": "33 etapas ASCENSO, módulos, lecciones y actividades.",
             "url": "roadmaps:lista",
             "icono": "🗺️",
-            "implementado": False,
+            "implementado": True,
         },
         {
             "titulo": "Competencias",
@@ -93,7 +102,7 @@ def panel(request):
 
     registrar_evento(
         "acceso_panel",
-        usuario=request.user,
+        usuario=usuario,
         descripcion="Acceso al panel principal.",
     )
 
@@ -103,5 +112,6 @@ def panel(request):
         {
             "configuracion": configuracion,
             "modulos": modulos,
+            "user": usuario,
         },
     )

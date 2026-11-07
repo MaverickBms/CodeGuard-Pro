@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Roadmap ASCENSO — CodeGuard Pro{% endblock %}
+{% block page_title %}Roadmap ASCENSO{% endblock %}
+{% block page_subtitle %}33 etapas oficiales del Roadmap Maestro Consolidado 3.1, con módulos, lecciones, proyectos y dependencias.{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="glass-card roadmap-hero">
+  <div class="roadmap-hero-main">
+    <span class="roadmap-kicker"><i class="fa-solid fa-map"></i> PROYECTO ASCENSO</span>
+    <h1>{{ roadmap.nombre }}</h1>
+    <p>Edición {{ roadmap.edicion }} · Contenido extraído del documento maestro oficial. Las 33 etapas permanecen visibles aunque no estén desarrolladas en el MVP.</p>
+    <div class="roadmap-hero-tags">
+      <span class="badge badge-neutral">Edición {{ roadmap.edicion }}</span>
+      {% if roadmap.fecha_consolidacion %}<span class="badge badge-neutral">Consolidado: {{ roadmap.fecha_consolidacion|date:"d/m/Y" }}</span>{% endif %}
+      <span class="badge badge-neutral">Sin CDN · Offline-first</span>
+    </div>
+  </div>
+  <div class="roadmap-hero-progress">
+    <div class="progress-ring-label">Avance general</div>
+    <div class="progress-big">{{ avance.porcentaje }}%</div>
+    <div class="progress-track progress-track-lg">
+      <div class="progress-fill" style="width: {{ avance.porcentaje }}%"></div>
+    </div>
+    <div class="progress-caption">{{ avance.completadas }} de {{ avance.total }} etapas completadas</div>
+  </div>
+</section>
+
+<section class="roadmap-stats" aria-label="Resumen del roadmap">
+  <article class="glass-card stat-card">
+    <span class="stat-icon"><i class="fa-solid fa-flag-checkered"></i></span>
+    <div><div class="stat-value">{{ resumen.total_etapas }}</div><div class="stat-label">Etapas</div></div>
+  </article>
+  <article class="glass-card stat-card">
+    <span class="stat-icon"><i class="fa-solid fa-layer-group"></i></span>
+    <div><div class="stat-value">{{ resumen.total_modulos }}</div><div class="stat-label">Módulos</div></div>
+  </article>
+  <article class="glass-card stat-card">
+    <span class="stat-icon"><i class="fa-solid fa-book-open"></i></span>
+    <div><div class="stat-value">{{ resumen.total_lecciones }}</div><div class="stat-label">Lecciones</div></div>
+  </article>
+  <article class="glass-card stat-card">
+    <span class="stat-icon"><i class="fa-solid fa-diagram-project"></i></span>
+    <div><div class="stat-value">{{ resumen.total_proyectos }}</div><div class="stat-label">Proyectos</div></div>
+  </article>
+  <article class="glass-card stat-card">
+    <span class="stat-icon"><i class="fa-solid fa-medal"></i></span>
+    <div><div class="stat-value">{{ avance.completadas }}</div><div class="stat-label">Completadas</div></div>
+  </article>
+</section>
+
+<form class="glass-card roadmap-filters" method="get" action="{% url 'roadmaps:lista' %}">
+  <div class="filter-field">
+    <label for="filtro-bloque">Bloque</label>
+    <select id="filtro-bloque" name="bloque">
+      <option value="">Todos los bloques</option>
+      {% for valor in bloques %}
+        <option value="{{ valor }}" {% if valor == bloque_seleccionado %}selected{% endif %}>{{ valor|default:"Sin bloque" }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="filter-field">
+    <label for="filtro-prioridad">Prioridad</label>
+    <select id="filtro-prioridad" name="prioridad">
+      <option value="">Todas</option>
+      <option value="P1" {% if prioridad_seleccionada == "P1" %}selected{% endif %}>P1 — Obligatoria</option>
+      <option value="P2" {% if prioridad_seleccionada == "P2" %}selected{% endif %}>P2 — Complementaria</option>
+      <option value="P3" {% if prioridad_seleccionada == "P3" %}selected{% endif %}>P3 — Especialización avanzada</option>
+    </select>
+  </div>
+  <div class="filter-field filter-field-grow">
+    <label for="filtro-busqueda">Buscar</label>
+    <input id="filtro-busqueda" type="search" name="q" value="{{ busqueda }}" placeholder="Etapa, módulo o lección…">
+  </div>
+  <div class="filter-actions">
+    <button class="btn-theme" type="submit"><i class="fa-solid fa-filter"></i> Filtrar</button>
+    <a class="btn-theme btn-theme-ghost" href="{% url 'roadmaps:lista' %}"><i class="fa-solid fa-rotate-left"></i> Limpiar</a>
+  </div>
+</form>
+
+{% if etapas %}
+  {% regroup etapas by seccion as secciones %}
+  {% for seccion in secciones %}
+    <section class="roadmap-section">
+      <h2 class="roadmap-section-title">{{ seccion.grouper|default:"Etapas" }}</h2>
+      <div class="etapas-grid">
+        {% for etapa in seccion.list %}
+          <article class="glass-card etapa-card{% if etapa.completada %} etapa-completed{% endif %}{% if etapa.bloqueada %} etapa-blocked{% endif %}">
+            <header class="etapa-card-header">
+              <span class="etapa-number">{{ etapa.numero }}</span>
+              <div class="etapa-badges">
+                <span class="badge badge-{{ etapa.prioridad|lower }}">{{ etapa.prioridad }}</span>
+                {% if etapa.completada %}
+                  <span class="badge badge-success"><i class="fa-solid fa-check"></i> Completada</span>
+                {% elif etapa.bloqueada %}
+                  <span class="badge badge-locked"><i class="fa-solid fa-lock"></i> Bloqueada</span>
+                {% else %}
+                  <span class="badge badge-neutral">Disponible</span>
+                {% endif %}
+              </div>
+            </header>
+
+            <h3 class="etapa-title">{{ etapa.titulo }}</h3>
+            {% if etapa.objetivo %}<p class="etapa-objective">{{ etapa.objetivo|truncatechars:165 }}</p>{% endif %}
+
+            <div class="etapa-meta">
+              <span><i class="fa-solid fa-layer-group"></i> {{ etapa.total_modulos }} módulos</span>
+              <span><i class="fa-solid fa-book-open"></i> {{ etapa.total_lecciones_cache }} lecciones</span>
+              {% if etapa.proyecto %}<span><i class="fa-solid fa-diagram-project"></i> Proyecto</span>{% endif %}
+            </div>
+
+            <div class="etapa-progress">
+              <div class="progress-label">
+                <span>Avance</span>
+                <span>{{ etapa.progreso_actual.porcentaje|default:0 }}%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: {{ etapa.progreso_actual.porcentaje|default:0 }}%"></div>
+              </div>
+            </div>
+
+            {% if etapa.bloqueada %}
+              <div class="etapa-lock-note">
+                <i class="fa-solid fa-lock"></i>
+                Requiere:
+                {% for pre in etapa.prerrequisitos.all %}
+                  etapa {{ pre.etapa_requerida.numero }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="etapa-actions">
+              <a class="btn-theme" href="{% url 'roadmaps:detalle' etapa.numero %}">
+                <i class="fa-solid fa-arrow-right"></i> Ver etapa
+              </a>
+            </div>
+
+            <div class="mvp-note"><i class="fa-solid fa-circle-info"></i> No desarrollada en MVP (decisión P-002 pendiente)</div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+{% else %}
+  <div class="glass-card empty-state">
+    <i class="fa-solid fa-magnifying-glass fa-2x"></i>
+    <h3>No hay etapas que coincidan con los filtros</h3>
+    <p>Prueba con otro bloque, prioridad o término de búsqueda.</p>
+    <a class="btn-theme" href="{% url 'roadmaps:lista' %}">Ver todas las etapas</a>
+  </div>
+{% endif %}
+
+<section class="glass-card roadmap-legend">
+  <h3><i class="fa-solid fa-circle-info"></i> Cómo leer el roadmap</h3>
+  <div class="legend-grid">
+    <div><span class="badge badge-p1">P1</span> Etapa obligatoria de la ruta principal.</div>
+    <div><span class="badge badge-p2">P2</span> Etapa complementaria o de especialización.</div>
+    <div><span class="badge badge-p3">P3</span> Especialización avanzada.</div>
+    <div><span class="badge badge-locked"><i class="fa-solid fa-lock"></i></span> Tiene prerrequisitos sin completar.</div>
+  </div>
+  <p class="legend-note">El estado «No desarrollada en MVP» se mantiene hasta que se resuelva la decisión P-002. Ninguna etapa se elimina del roadmap.</p>
+</section>
+{% endblock %}

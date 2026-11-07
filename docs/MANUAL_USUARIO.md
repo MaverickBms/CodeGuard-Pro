@@ -35,10 +35,25 @@ usas para recuperar el acceso, se invalida.
 
 ## 3. Inicio de sesión
 
-Ingresa tu usuario y contraseña maestra en `http://127.0.0.1:8000/accounts/login/`.
+Ingresa tu usuario y contraseña maestra en la ventana de la aplicación (el servidor local
+escucha en `127.0.0.1` en un puerto asignado automáticamente).
 
 La sesión expira por inactividad tras el tiempo configurado (15 minutos por defecto). Al
 cerrar sesión o al expirar, se registra un evento de auditoría.
+
+---
+
+## 4. Cambio de tema visual
+
+CodeGuard Pro incluye 12 temas con estilo de videojuego. Para cambiar el tema:
+
+1. Haz clic en el botón **Tema** (icono de paleta) en la parte superior derecha de la ventana.
+2. Se desplegará un panel con las 12 opciones disponibles:
+   - Claro Diurno, Oscuro Nocturno, Alto Contraste, Retro Pixel, Cyberpunk, Reino
+     Fantasía, Ciencia Ficción, Guerrero, Mago, Pícaro, Paladín, Oscuro Mago.
+3. Selecciona el tema deseado. Se aplica inmediatamente y se recuerda para la próxima sesión.
+
+El tema también se puede cambiar desde el menú de Electron → **Ver → Tema**.
 
 ---
 

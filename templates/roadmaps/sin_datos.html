@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Roadmap ASCENSO — Sin datos{% endblock %}
+{% block page_title %}Roadmap ASCENSO{% endblock %}
+{% block page_subtitle %}No hay un roadmap cargado todavía.{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="glass-card empty-state">
+  <i class="fa-solid fa-database fa-3x"></i>
+  <h2>El roadmap todavía no está cargado</h2>
+  <p>Ejecuta el comando de carga para importar las 33 etapas oficiales de ASCENSO 3.1 desde el JSON incluido en la aplicación.</p>
+  <pre class="code-block">python manage.py cargar_ascenso</pre>
+  <p class="muted">El comando es idempotente: puedes ejecutarlo de nuevo sin perder el progreso registrado.</p>
+</section>
+{% endblock %}

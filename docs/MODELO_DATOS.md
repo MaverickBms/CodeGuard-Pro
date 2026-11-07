@@ -1,8 +1,8 @@
 # CodeGuard Pro — Modelo de datos
 
 **Producto:** CodeGuard Pro  
-**Versión:** 1.0 (MVP, primer incremento)  
-**SRS de referencia:** `IEEE830(1).md` v2.0 — Sección 3.4 (RD-001 a RD-022)
+**Versión:** 1.1 (Incrementos 1–2)
+**SRS de referencia:** `IEEE830.md` v2.2 — Sección 3.4 (RD-001 a RD-022)
 
 ---
 

@@ -23,6 +23,10 @@ class AuditLog(models.Model):
         ("backup_creado", "Backup creado"),
         ("backup_restaurado", "Backup restaurado"),
         ("error_importacion", "Error de importación de documento"),
+        ("roadmap_etapa_completada", "Etapa del roadmap completada"),
+        ("roadmap_etapa_reabierta", "Etapa del roadmap reabierta"),
+        ("roadmap_leccion_completada", "Lección del roadmap completada"),
+        ("roadmap_leccion_reabierta", "Lección del roadmap reabierta"),
     ]
 
     usuario = models.ForeignKey(

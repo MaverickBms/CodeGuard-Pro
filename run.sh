@@ -2,9 +2,13 @@
 # =============================================================================
 # CodeGuard Pro — Script de ejecución para Linux
 # Arquitectura: Electron + Django API local
+#
+# Electron es el único responsable de iniciar y detener el servidor Django
+# (ver electron/main.js). Este script solo prepara el entorno y lanza Electron,
+# evitando así dos procesos Django compitiendo por el mismo puerto.
 # =============================================================================
 
-set -e
+set -euo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$PROJECT_DIR"
@@ -26,21 +30,31 @@ if ! command -v node &> /dev/null; then
 fi
 
 # --- Activar entorno virtual si existe ---
+PYTHON="python3"
 if [ -d ".venv" ]; then
     echo "[INFO] Activando entorno virtual Python..."
+    # shellcheck disable=SC1091
     source .venv/bin/activate
+    PYTHON=".venv/bin/python"
 fi
 
 # --- Instalar dependencias Python si es necesario ---
 echo "[INFO] Verificando dependencias Python..."
-if ! python3 -c "import django" 2>/dev/null; then
+if ! "$PYTHON" -c "import django" 2>/dev/null; then
     echo "[INFO] Instalando dependencias Python..."
-    pip install -r requirements.txt
+    "$PYTHON" -m pip install -r requirements.txt
 fi
 
+# --- Directorio de datos (misma base de datos que usará Electron) ---
+export CODEGUARD_DATA_DIR="$PWD/data"
+
 # --- Aplicar migraciones de Django ---
-echo "[INFO] Aplicando migraciones de Django..."
-python3 manage.py migrate --settings=config.settings.development
+echo "[INFO] Aplicando migraciones de Django en $CODEGUARD_DATA_DIR..."
+"$PYTHON" manage.py migrate --settings=config.settings.development
+
+# --- Cargar el roadmap oficial si aún no existe ---
+echo "[INFO] Verificando roadmap ASCENSO..."
+"$PYTHON" manage.py cargar_ascenso --settings=config.settings.development >/dev/null 2>&1 || true
 
 # --- Instalar dependencias Node.js si es necesario ---
 echo "[INFO] Verificando dependencias Node.js..."
@@ -57,29 +71,9 @@ if [ ! -f ".env" ]; then
     fi
 fi
 
-# --- Iniciar Django en segundo plano ---
-echo "[INFO] Iniciando servidor Django API local (127.0.0.1:8000)..."
-DJANGO_SETTINGS_MODULE=config.settings.development nohup python3 manage.py runserver 127.0.0.1:8000 > logs/django.log 2>&1 &
-DJANGO_PID=$!
-echo "    Django PID: $DJANGO_PID"
-
-# Esperar a que Django esté listo
-echo "[INFO] Esperando a que Django esté disponible..."
-for i in $(seq 1 30); do
-    if curl -s http://127.0.0.1:8000/ > /dev/null 2>&1; then
-        echo "[INFO] Django está listo."
-        break
-    fi
-    sleep 1
-done
-
-# --- Iniciar Electron ---
+# --- Iniciar Electron (él inicia y detiene Django) ---
 echo "[INFO] Iniciando aplicación Electron..."
 npm start
-
-# --- Detener Django al salir ---
-echo "[INFO] Deteniendo servidor Django..."
-kill $DJANGO_PID 2>/dev/null || true
 
 echo "============================================="
 echo "   CodeGuard Pro — Cerrado correctamente"

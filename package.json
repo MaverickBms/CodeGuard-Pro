@@ -31,39 +31,44 @@
     "productName": "CodeGuard Pro",
     "copyright": "© 2026 CodeGuard Pro",
     "buildVersion": "1.0.0",
+    "asar": true,
+    "compression": "maximum",
     "files": [
-      "electron/",
-      "config/",
-      "apps/",
-      "templates/",
-      "static/",
-      "manage.py",
-      "requirements.txt",
-      ".env.example",
-      "logs/"
+      "electron/**/*",
+      "static/icons/icon.png",
+      "static/icons/icon.ico",
+      "README.md",
+      "README_WINDOWS.md",
+      "IEEE830.md",
+      "docs/**/*"
     ],
-    "extraFiles": [
+    "extraResources": [
       {
-        "from": "static",
-        "to": "static",
+        "from": "dist-server/CodeGuardServer",
+        "to": "server",
         "filter": ["**/*"]
       },
       {
-        "from": "templates",
-        "to": "templates",
+        "from": "static/icons",
+        "to": "icons",
+        "filter": ["icon.png", "icon.ico"]
+      },
+      {
+        "from": "README.md",
+        "to": "README.md"
+      },
+      {
+        "from": "README_WINDOWS.md",
+        "to": "README_WINDOWS.md"
+      },
+      {
+        "from": "IEEE830.md",
+        "to": "IEEE830.md"
+      },
+      {
+        "from": "docs",
+        "to": "docs",
         "filter": ["**/*"]
-      },
-      {
-        "from": "manage.py",
-        "to": "."
-      },
-      {
-        "from": "requirements.txt",
-        "to": "."
-      },
-      {
-        "from": ".env.example",
-        "to": "."
       }
     ],
     "extraMetadata": {
@@ -77,12 +82,17 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64", "ia32"]
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
         }
       ],
       "icon": "static/icons/icon.ico",
       "publisherName": "CodeGuard Pro",
-      "installerHeaderIcon": "static/icons/icon.ico"
+      "installerHeaderIcon": "static/icons/icon.ico",
+      "artifactName": "CodeGuard-Pro-${version}-${arch}.${ext}"
     },
     "linux": {
       "target": [
@@ -92,13 +102,20 @@
         }
       ],
       "icon": "static/icons/icon.png",
-      "category": "Education"
+      "category": "Education",
+      "artifactName": "CodeGuard-Pro-${version}-${arch}.${ext}"
     },
     "nsis": {
       "oneClick": false,
+      "perMachine": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "shortcutName": "CodeGuard Pro",
+      "deleteAppDataOnUninstall": false
+    },
+    "portable": {
+      "artifactName": "CodeGuard-Pro-${version}-portable.${ext}"
     }
   },
   "devDependencies": {

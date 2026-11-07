@@ -1,12 +1,14 @@
 # Especificación de Requisitos de Software (SRS)
 
 **Proyecto:** CodeGuard Pro (El arte de crear código. La ciencia de defenderlo.)
-**Versión del Documento:** 2.0 (Revisión Completa y Validada)  
+**Versión del Documento:** 2.2 (Revisión Incremento 2 — Electron + Django)
 **Estándar de Referencia:** IEEE Std 830-1998 (Adaptado a prácticas modernas)  
 **Fecha:** 5 de noviembre de 2026  
 **Estado:** Documento base consolidado. Distingue explícitamente requisitos aprobados, decisiones pendientes y propuestas de arquitectura.  
 **Cambios respecto a v1.0:** Incorporación de requisitos faltantes de evaluación, competencias, evidencias, laboratorios y vigencia documental. Precisión de decisiones de seguridad. Corrección y fijación del stack. Validación explícita de la integración ASCENSO. Matriz de trazabilidad completa con estados.
-**Cambios respecto a v2.0 (primera revisión post-MVP):** Cambio de arquitectura de aplicación web en navegador a aplicación desktop independiente (PySide6 + Django embebido). Registro de versión .exe para Windows. Mejora de estética y estilado profesional.
+**Cambios respecto a v2.0 (primera revisión post-MVP):** Cambio de arquitectura de aplicación web en navegador a aplicación desktop independiente (Electron + Django embebido). Registro de versión .exe para Windows. Mejora de estética y estilado profesional.
+
+**Cambios respecto a v2.1 (revisión Incremento 2):** Sustitución de PySide6/Qt por Electron como contenedor de escritorio. El servidor Django se empaqueta de forma autónoma con PyInstaller y electron-builder genera el instalador NSIS y la versión portable para Windows. Se incorpora el roadmap ASCENSO 3.1 completo (33 etapas, 212 módulos, 1 946 lecciones, 33 proyectos).
 
 ---
 
@@ -16,7 +18,7 @@
 Este documento define formal, estructurada y verificablemente los requisitos funcionales, no funcionales, de datos y de seguridad para la construcción de una plataforma educativa personal monousuario, offline-first. Constituye la línea base técnica para diseño, implementación, pruebas y despliegue del MVP. Se distingue explícitamente entre requisitos aprobados, decisiones pendientes y propuestas de arquitectura.
 
 ### 1.2. Alcance del Producto
-Aplicación desktop independiente, local, monousuario y offline-first, para gestionar la formación técnica del usuario mediante el Roadmap ASCENSO, biblioteca documental trazable, evaluaciones por competencias, laboratorios y portafolio de evidencias. La aplicación se ejecuta como un programa nativo de escritorio (no requiere navegador web externo) con servidor Django embebido en `127.0.0.1` y ventana nativa de PySide6/Qt.
+Aplicación desktop independiente, local, monousuario y offline-first, para gestionar la formación técnica del usuario mediante el Roadmap ASCENSO, biblioteca documental trazable, evaluaciones por competencias, laboratorios y portafolio de evidencias. La aplicación se ejecuta como un programa nativo de escritorio (no requiere navegador web externo) con servidor Django embebido en `127.0.0.1` y ventana nativa de Electron (Chromium).
 
 *   **Incluye (MVP):** Roadmap ASCENSO (33 etapas representadas), importación y lectura de PDFs con detección de errores, base de conocimiento relacional, evaluaciones teórico-prácticas, registro detallado de resultados e intentos, gestión de competencias, registro de laboratorios, evidencias con integridad verificable, progreso, autenticación local, copias de seguridad protegidas.
 *   **No incluye (Futuro):** IA integrada, ejecución de VMs/contenedores desde la plataforma, multiusuario, foros, sincronización cloud, OCR, videojuegos, multimedia integrada.
@@ -32,12 +34,12 @@ Aplicación desktop independiente, local, monousuario y offline-first, para gest
 *   **Argon2:** Algoritmo de hashing de contraseñas.
 *   **MVT:** Model-View-Template (patrón de Django).
 *   **CSP:** Content Security Policy.
-*   **Aplicación desktop:** Programa nativo de escritorio que se ejecuta sin navegador web externo, con interfaz renderizada en ventana nativa (PySide6/Qt) y servidor Django embebido en localhost.
+*   **Aplicación desktop:** Programa nativo de escritorio que se ejecuta sin navegador web externo, con interfaz renderizada en ventana nativa de Electron (Chromium) y servidor Django embebido en localhost.
 
 ### 1.4. Referencias
 *   PROYECTO ASCENSO — ROADMAP MAESTRO CONSOLIDADO 3.1 (fuente de verdad académica).
 *   IEEE Std 830-1998.
-*   Documentación oficial de Django, SQLite, PyMuPDF, HTMX, Bootstrap, PySide6/Qt.
+*   Documentación oficial de Django, SQLite, PyMuPDF, HTMX, Bootstrap, Electron, PyInstaller y electron-builder.
 *   OWASP ASVS, OWASP Top 10.
 *   Fedora Linux 44 Release Notes.
 
@@ -49,7 +51,7 @@ Sección 2: descripción general. Sección 3: requisitos específicos (RF, RNF, 
 ## 2. Descripción General
 
 ### 2.1. Perspectiva del Producto
-Aplicación desktop independiente basada en un monolito modular Django con servidor embebido en `127.0.0.1` y ventana nativa de PySide6/Qt. Sustituye la dispersión de herramientas (lectores, notas, hojas de cálculo) centralizando el proceso educativo. No depende de servicios en la nube ni de navegador web externo.
+Aplicación desktop independiente basada en un monolito modular Django con servidor embebido en `127.0.0.1` y ventana nativa de Electron. Sustituye la dispersión de herramientas (lectores, notas, hojas de cálculo) centralizando el proceso educativo. No depende de servicios en la nube ni de navegador web externo.
 
 ### 2.2. Funciones del Producto
 1.  Identidad y acceso local con rescate seguro.
@@ -71,11 +73,11 @@ Usuario único: estudiante con perfil técnico (ciberseguridad/backend), capaz d
 *   **Hardware:** HP 240 G10, Intel Core i3-N305 (8 núcleos), 8 GB RAM (2.9 GiB disponibles en el entorno actual), SSD NVMe 238.5 GB (108 GB libres).
 *   **SO:** Fedora Linux 44 (Workstation Edition).
 *   **Cifrado de disco:** LUKS activo en la partición principal.
-*   **Entorno:** Entorno de escritorio con PySide6/Qt, Python 3.x, SQLite con FTS5. No requiere navegador web externo.
+*   **Entorno:** Entorno de escritorio con Electron (Chromium), Python 3.x y SQLite con FTS5. No requiere navegador web externo.
 
 ### 2.5. Suposiciones y Dependencias
 *   El usuario posee los PDFs de estudio.
-*   El entorno de escritorio soporta renderizado web embebido (Qt WebEngine).
+*   El entorno de escritorio incluye Chromium embebido mediante Electron y Node.js para el proceso principal.
 *   Python y SQLite están disponibles en el entorno Fedora.
 *   Las versiones específicas del stack se fijan en la Sección 6.1.
 
@@ -90,9 +92,9 @@ Usuario único: estudiante con perfil técnico (ciberseguridad/backend), capaz d
 
 ### 3.1. Requisitos de Interfaces Externas
 
-*   **3.1.1. UI:** Ventana desktop nativa (PySide6/Qt) con motor de renderizado web embebido (Qt WebEngine). Diseño profesional, responsivo, accesible, Bootstrap 5 para la capa web interna. Servida localmente sin CDN.
+*   **3.1.1. UI:** Ventana desktop nativa de Electron con Chromium embebido. Diseño profesional, responsivo, accesible, Bootstrap 5 y 12 temas CSS con glassmorphism para la capa web interna. Servida localmente sin CDN.
 *   **3.1.2. Hardware:** Sistema de archivos local para lectura de PDFs y escritura de evidencias/backups.
-*   **3.1.3. Software:** Servidor Django embebido en `127.0.0.1`, SQLite con FTS5, PyMuPDF, PySide6/Qt.
+*   **3.1.3. Software:** Servidor Django embebido en `127.0.0.1`, SQLite con FTS5, PyMuPDF, Electron, PyInstaller y electron-builder.
 *   **3.1.4. Comunicación:** HTTP sobre `127.0.0.1` exclusivamente (servidor embebido, no expuesto a red). No exponer en `0.0.0.0`.
 
 ### 3.2. Requisitos Funcionales
@@ -486,7 +488,7 @@ Usuario único: estudiante con perfil técnico (ciberseguridad/backend), capaz d
 | **Lenguaje** | Python 3.12+ (versión estable disponible en Fedora 44) | Compatibilidad con Django LTS y librerías de extracción. |
 | **Backend** | Django LTS con soporte vigente (versión a fijar en implementación según disponibilidad y soporte oficial) | ORM seguro, autenticación integrada, admin, protección CSRF/XSS/SQLi, bajo consumo configurable. |
 | **Base de datos** | SQLite con FTS5 verificado en la compilación del sistema | Monousuario, sin proceso servidor, rápido en NVMe. |
-| **Frontend** | Ventana desktop nativa (PySide6/Qt) con motor de renderizado web embebido (Qt WebEngine). Capa web interna con HTML5 + HTMX + Bootstrap 5 (archivos locales, sin CDN). | Interfaz de aplicación independiente, sin navegador externo, offline, responsivo. |
+| **Frontend** | Ventana desktop nativa de Electron (Chromium embebido). Capa web interna con HTML5 + HTMX + Bootstrap 5 + 12 temas CSS con glassmorphism (archivos locales, sin CDN). | Interfaz de aplicación independiente, sin navegador externo, offline, responsivo. |
 | **PDF** | PyMuPDF (fitz) en modo batch | Rápido, bajo consumo controlado. |
 | **Hashing** | Argon2 | Recomendación OWASP. |
 
@@ -524,16 +526,16 @@ Usuario único: estudiante con perfil técnico (ciberseguridad/backend), capaz d
 
 ### 6.5. Evolución Prevista
 
-1.  **Fase 1 (MVP actual):** Aplicación desktop independiente, servidor Django embebido, ventana PySide6/Qt, SQLite, autenticación local, frase de rescate, panel principal, seguridad (CSP, CSRF, XSS, SQLi), backups verificados, estilos profesionales.
+1.  **Fase 1 (MVP actual):** Aplicación desktop independiente, servidor Django embebido, ventana Electron (Chromium), SQLite, autenticación local, frase de rescate, panel principal, roadmap ASCENSO 3.1 con progreso, seguridad (CSP, CSRF, XSS, SQLi), backups verificados, estilos profesionales y 12 temas.
 2.  **Fase 2:** Cifrado de backup, OCR por lotes, panel de competencias avanzado, informes.
 3.  **Fase 3:** Tutor IA local (LLM cuantizado), búsqueda semántica.
 4.  **Fase 4:** Multiusuario, sincronización, comunidad (solo si se justifica).
 
 ### 6.6. Empaquetado y Distribución
 
-La aplicación se distribuye como una versión comprimida para Windows en formato `.exe`, generada con PyInstaller. El ejecutable empaqueta el intérprete Python, Django, PySide6/Qt, PyMuPDF, Argon2 y todos los recursos estáticos (CSS, fuentes, imágenes) necesarios para funcionar sin conexión a Internet.
+La aplicación se distribuye para Windows en formato `.exe` mediante dos etapas: **PyInstaller** empaqueta el servidor Django autónomo (intérprete Python, Django, PyMuPDF, Argon2, plantillas, estáticos y el JSON de ASCENSO) en `dist-server/CodeGuardServer/`; después **electron-builder** integra Electron, el servidor y los recursos en un instalador **NSIS** y una versión **portable**. Ambos artefactos se generan en Windows con `build_windows.bat`.
 
-El servidor Django embebido escucha exclusivamente en `127.0.0.1` y no expone la aplicación a la red local ni a Internet. La versión .exe está destinada exclusivamente a sistemas Windows y se entrega como un archivo comprimido (.zip) listo para ejecutar sin instalación previa.
+El servidor Django embebido escucha exclusivamente en `127.0.0.1` y no expone la aplicación a la red local ni a Internet. Electron elige un puerto libre, espera la disponibilidad del servidor y detiene el árbol de procesos al cerrar. Los datos escribibles (base de datos, logs, medios y clave secreta local) se guardan en `%APPDATA%\CodeGuard Pro`, nunca dentro del directorio de instalación.
 
 ---
 

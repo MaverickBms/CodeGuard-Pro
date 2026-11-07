@@ -1,17 +1,18 @@
-# CodeGuard Pro — dependencias del entorno virtual (producción local)
+# CodeGuard Pro — dependencias del entorno virtual
 # Versiones exactas fijadas para reproducibilidad y seguridad (RS-019).
 # Instalar con: .venv/bin/pip install -r requirements.txt
 
-# Backend (obligatorio)
+# Backend Django (obligatorio)
 Django==5.2.19
 argon2-cffi==25.1.0
 
-# Procesamiento PDF (fase futura - biblioteca documental)
+# Procesamiento PDF (biblioteca documental, fase futura)
 PyMuPDF==2.1
 
-# Escritorio (PySide6/Qt para aplicación independiente)
-PySide6==6.12.0
-
-# Empaquetado (generar .exe para Windows)
+# Empaquetado del servidor local para la aplicación Electron (Windows/Linux).
+# Se usa en build_windows.bat para generar dist-server/CodeGuardServer.
 pyinstaller==6.22.3
 pyinstaller-hooks-contrib==2026.9
+
+# Nota: PySide6/Qt ya no es una dependencia de la aplicación principal.
+# El directorio desktop/ se conserva únicamente como referencia histórica.

@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Etapa {{ etapa.numero }} — {{ etapa.titulo }}{% endblock %}
+{% block page_title %}Etapa {{ etapa.numero }}{% endblock %}
+{% block page_subtitle %}{{ etapa.titulo }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">
+{% endblock %}
+
+{% block content %}
+<nav class="roadmap-breadcrumb" aria-label="Migas de pan">
+  <a href="{% url 'roadmaps:lista' %}"><i class="fa-solid fa-arrow-left"></i> Volver al roadmap</a>
+  <span class="breadcrumb-sep">/</span>
+  <span>Etapa {{ etapa.numero }}</span>
+</nav>
+
+<section class="glass-card etapa-hero{% if bloqueada %} etapa-hero-blocked{% endif %}">
+  <div class="etapa-hero-main">
+    <div class="etapa-number etapa-number-xl">{{ etapa.numero }}</div>
+    <div class="etapa-hero-copy">
+      <div class="etapa-badges">
+        <span class="badge badge-{{ etapa.prioridad|lower }}">{{ etapa.prioridad }}</span>
+        {% if etapa.completada %}
+          <span class="badge badge-success"><i class="fa-solid fa-check"></i> Completada</span>
+        {% elif bloqueada %}
+          <span class="badge badge-locked"><i class="fa-solid fa-lock"></i> Bloqueada</span>
+        {% else %}
+          <span class="badge badge-neutral">Disponible</span>
+        {% endif %}
+        <span class="badge badge-neutral">{{ etapa.prioridad_detalle }}</span>
+      </div>
+      <h1>{{ etapa.titulo }}</h1>
+      {% if etapa.objetivo %}<p class="etapa-hero-objetivo">{{ etapa.objetivo }}</p>{% endif %}
+      <div class="etapa-meta">
+        <span><i class="fa-solid fa-layer-group"></i> {{ etapa.total_modulos }} módulos</span>
+        <span><i class="fa-solid fa-book-open"></i> {{ etapa.total_lecciones }} lecciones</span>
+        {% if etapa.proyecto %}<span><i class="fa-solid fa-diagram-project"></i> {{ etapa.proyecto_titulo|default:"Proyecto" }}</span>{% endif %}
+        {% if etapa.bloque %}<span><i class="fa-solid fa-folder-tree"></i> {{ etapa.bloque }}</span>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="etapa-hero-side">
+    <div class="progress-ring-label">Avance de la etapa</div>
+    <div class="progress-big">{{ progreso.porcentaje|default:0 }}%</div>
+    <div class="progress-track progress-track-lg">
+      <div class="progress-fill" style="width: {{ progreso.porcentaje|default:0 }}%"></div>
+    </div>
+    {% if bloqueada %}
+      <div class="etapa-lock-note">
+        <i class="fa-solid fa-lock"></i>
+        Completa primero:
+        {% for pre in prerrequisitos %}
+          <a href="{% url 'roadmaps:detalle' pre.etapa_requerida.numero %}">etapa {{ pre.etapa_requerida.numero }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+    <form method="post" action="{% url 'roadmaps:marcar_etapa' etapa.numero %}" class="etapa-complete-form">
+      {% csrf_token %}
+      {% if completada %}
+        <input type="hidden" name="completada" value="0">
+        <button class="btn-theme btn-theme-ghost" type="submit"><i class="fa-solid fa-rotate-left"></i> Reabrir etapa</button>
+      {% else %}
+        <input type="hidden" name="completada" value="1">
+        <button class="btn-theme" type="submit" {% if bloqueada %}disabled{% endif %}><i class="fa-solid fa-check"></i> Marcar completada</button>
+      {% endif %}
+    </form>
+  </div>
+</section>
+
+{% if etapa.nota_mvp %}
+<div class="glass-card roadmap-note">
+  <i class="fa-solid fa-circle-info"></i>
+  <div>
+    <strong>Estado en el MVP</strong>
+    <p>{{ etapa.nota_mvp }}</p>
+  </div>
+</div>
+{% endif %}
+
+<div class="detalle-grid">
+  <div class="detalle-main">
+    <div class="detalle-section-head">
+      <h2><i class="fa-solid fa-list-check"></i> Módulos y lecciones</h2>
+      <span class="detalle-count">{{ etapa.total_lecciones }} lecciones en {{ etapa.total_modulos }} módulos</span>
+    </div>
+
+    {% for modulo in modulos %}
+      <section class="glass-card modulo-card">
+        <header class="modulo-header">
+          <span class="modulo-numero">{{ modulo.numero }}</span>
+          <h3>{{ modulo.titulo }}</h3>
+          <span class="modulo-count">{{ modulo.lecciones_lista|length }} lecciones</span>
+        </header>
+        <ul class="lecciones-list">
+          {% for leccion in modulo.lecciones_lista %}
+            <li class="leccion-item{% if leccion.completada %} leccion-done{% endif %}">
+              <div class="leccion-info">
+                <i class="fa-solid {% if leccion.completada %}fa-circle-check{% else %}fa-circle{% endif %}"></i>
+                <span>{{ leccion.titulo }}</span>
+              </div>
+              <form method="post" action="{% url 'roadmaps:marcar_leccion' leccion.id %}" class="leccion-form">
+                {% csrf_token %}
+                {% if leccion.completada %}
+                  <input type="hidden" name="completada" value="0">
+                  <button class="btn-icon" type="submit" title="Reabrir lección" aria-label="Reabrir lección {{ leccion.titulo }}">
+                    <i class="fa-solid fa-rotate-left"></i>
+                  </button>
+                {% else %}
+                  <input type="hidden" name="completada" value="1">
+                  <button class="btn-icon" type="submit" title="Marcar lección como completada" aria-label="Marcar lección {{ leccion.titulo }}">
+                    <i class="fa-regular fa-circle-check"></i>
+                  </button>
+                {% endif %}
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% empty %}
+      <div class="glass-card empty-state">
+        <i class="fa-solid fa-folder-open fa-2x"></i>
+        <h3>Esta etapa no tiene módulos registrados</h3>
+        <p>El documento maestro no detalla módulos para esta etapa.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <aside class="detalle-side" aria-label="Información de la etapa">
+    <section class="glass-card side-card">
+      <h3><i class="fa-solid fa-diagram-project"></i> {{ etapa.proyecto_titulo|default:"Proyecto de la etapa" }}</h3>
+      {% if etapa.proyecto %}
+        <p>{{ etapa.proyecto }}</p>
+      {% else %}
+        <p class="muted">El documento maestro no registra un proyecto para esta etapa.</p>
+      {% endif %}
+    </section>
+
+    <section class="glass-card side-card">
+      <h3><i class="fa-solid fa-clipboard-check"></i> Criterios de finalización</h3>
+      {% for criterio in criterios %}
+        <div class="criterio">
+          <strong>{{ criterio.titulo }}</strong>
+          {% if criterio.descripcion %}<p>{{ criterio.descripcion }}</p>{% endif %}
+        </div>
+      {% empty %}
+        <p class="muted">Sin criterios registrados.</p>
+      {% endfor %}
+    </section>
+
+    <section class="glass-card side-card">
+      <h3><i class="fa-solid fa-lock"></i> Prerrequisitos</h3>
+      {% for pre in prerrequisitos %}
+        <a class="prereq-link" href="{% url 'roadmaps:detalle' pre.etapa_requerida.numero %}">
+          <span class="prereq-num">{{ pre.etapa_requerida.numero }}</span>
+          <span class="prereq-title">{{ pre.etapa_requerida.titulo }}</span>
+          {% if pre.etapa_requerida.numero in completadas %}
+            <i class="fa-solid fa-check prereq-ok" title="Completada"></i>
+          {% else %}
+            <i class="fa-solid fa-lock prereq-pending" title="Pendiente"></i>
+          {% endif %}
+        </a>
+        {% if pre.justificacion %}<p class="prereq-justificacion">{{ pre.justificacion }}</p>{% endif %}
+      {% empty %}
+        <p class="muted">Sin prerrequisitos explícitos documentados.</p>
+      {% endfor %}
+    </section>
+
+    {% if desbloquea %}
+      <section class="glass-card side-card">
+        <h3><i class="fa-solid fa-arrow-right"></i> Desbloquea</h3>
+        {% for pre in desbloquea %}
+          <a class="prereq-link" href="{% url 'roadmaps:detalle' pre.etapa.numero %}">
+            <span class="prereq-num">{{ pre.etapa.numero }}</span>
+            <span class="prereq-title">{{ pre.etapa.titulo }}</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        {% endfor %}
+      </section>
+    {% endif %}
+
+    {% if etapa.notas %}
+      <section class="glass-card side-card">
+        <h3><i class="fa-solid fa-note-sticky"></i> Notas del documento</h3>
+        <p>{{ etapa.notas|linebreaksbr }}</p>
+      </section>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

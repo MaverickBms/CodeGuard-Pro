@@ -1,9 +1,9 @@
 /* ==========================================================================
-   CodeGuard Pro — CSS de Temas (12 temas videojuego + Glassmode)
+   CodeGuard Pro — CSS de Temas Atmosféricos (12 temas videojuego)
    Archivo: static/css/themes.css
    ========================================================================== */
 
-/* ========== VARIABLES BASE (Tema Claro por defecto) ========== */
+/* ========== VARIABLES BASE (Tema Claro Diurno) ========== */
 :root {
   /* Colores principales */
   --cg-primary: #1e3a8a;
@@ -47,7 +47,7 @@
   /* Radio y transiciones */
   --cg-radius: 12px;
   --cg-radius-lg: 16px;
-  --cg-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --cg-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --cg-transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Espaciado */
@@ -61,9 +61,18 @@
   --cg-z-fixed: 1200;
   --cg-z-modal: 1300;
   --cg-z-toast: 1400;
+
+  /* Tipografía base */
+  --cg-font-body: "Liberation Sans", system-ui, -apple-system, sans-serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+  --cg-font-mono: "Courier New", monospace;
+
+  /* Animaciones por defecto */
+  --cg-anim-bg: none;
+  --cg-anim-text: none;
 }
 
-/* ========== TEMA OSCURO ========== */
+/* ========== TEMA OSCURO NOCTURNO ========== */
 [data-theme="dark"] {
   --cg-primary: #60a5fa;
   --cg-primary-dark: #3b82f6;
@@ -96,6 +105,15 @@
   --cg-glass-bg: rgba(30, 41, 59, 0.6);
   --cg-glass-border: rgba(255, 255, 255, 0.1);
   --cg-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+  --cg-radius: 8px;
+  --cg-radius-lg: 12px;
+
+  --cg-font-body: "Liberation Sans", system-ui, sans-serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+
+  --cg-anim-bg: subtle-pulse 4s ease-in-out infinite;
+  --cg-anim-text: none;
 }
 
 /* ========== TEMA ALTO CONTRASTE ========== */
@@ -134,6 +152,12 @@
 
   --cg-radius: 4px;
   --cg-radius-lg: 4px;
+
+  --cg-font-body: "Liberation Sans", system-ui, sans-serif;
+  --cg-font-heading: "Liberation Sans", system-ui, sans-serif;
+
+  --cg-anim-bg: none;
+  --cg-anim-text: none;
 }
 
 /* ========== TEMA RETRO PIXEL ========== */
@@ -172,6 +196,13 @@
 
   --cg-radius: 0;
   --cg-radius-lg: 0;
+
+  --cg-font-body: "Press Start 2P", "Courier New", monospace;
+  --cg-font-heading: "Press Start 2P", "Courier New", monospace;
+  --cg-font-mono: "Courier New", monospace;
+
+  --cg-anim-bg: none;
+  --cg-anim-text: retro-flicker 2s step-end infinite;
 }
 
 /* ========== TEMA CYBERPUNK ========== */
@@ -207,9 +238,19 @@
   --cg-glass-bg: rgba(18, 18, 30, 0.7);
   --cg-glass-border: rgba(255, 0, 255, 0.3);
   --cg-glass-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
+
+  --cg-radius: 4px;
+  --cg-radius-lg: 8px;
+
+  --cg-font-body: "Courier New", monospace;
+  --cg-font-heading: "Courier New", monospace;
+  --cg-font-mono: "Courier New", monospace;
+
+  --cg-anim-bg: cyber-scan 3s linear infinite;
+  --cg-anim-text: neon-flicker 2s ease-in-out infinite;
 }
 
-/* ========== TEMA FANTASÍA ========== */
+/* ========== TEMA REINO FANTASÍA ========== */
 [data-theme="fantasy"] {
   --cg-primary: #8b5cf6;
   --cg-primary-dark: #7c3aed;
@@ -242,6 +283,15 @@
   --cg-glass-bg: rgba(243, 232, 255, 0.6);
   --cg-glass-border: rgba(196, 181, 253, 0.5);
   --cg-glass-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.1);
+
+  --cg-radius: 16px;
+  --cg-radius-lg: 24px;
+
+  --cg-font-body: "Caladea", Georgia, serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+
+  --cg-anim-bg: magic-float 6s ease-in-out infinite;
+  --cg-anim-text: none;
 }
 
 /* ========== TEMA CIENCIA FICCIÓN ========== */
@@ -277,6 +327,15 @@
   --cg-glass-bg: rgba(18, 25, 51, 0.6);
   --cg-glass-border: rgba(34, 211, 238, 0.2);
   --cg-glass-shadow: 0 0 40px rgba(34, 211, 238, 0.1);
+
+  --cg-radius: 6px;
+  --cg-radius-lg: 10px;
+
+  --cg-font-body: "Liberation Sans", system-ui, sans-serif;
+  --cg-font-heading: "Liberation Sans", system-ui, sans-serif;
+
+  --cg-anim-bg: hologram-scan 2s linear infinite;
+  --cg-anim-text: none;
 }
 
 /* ========== TEMA GUERRERO ========== */
@@ -312,6 +371,15 @@
   --cg-glass-bg: rgba(245, 245, 240, 0.6);
   --cg-glass-border: rgba(214, 211, 209, 0.5);
   --cg-glass-shadow: 0 8px 32px 0 rgba(194, 65, 12, 0.08);
+
+  --cg-radius: 4px;
+  --cg-radius-lg: 8px;
+
+  --cg-font-body: "Caladea", Georgia, serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+
+  --cg-anim-bg: none;
+  --cg-anim-text: none;
 }
 
 /* ========== TEMA MAGO ========== */
@@ -347,6 +415,15 @@
   --cg-glass-bg: rgba(240, 171, 252, 0.5);
   --cg-glass-border: rgba(233, 213, 255, 0.5);
   --cg-glass-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.1);
+
+  --cg-radius: 20px;
+  --cg-radius-lg: 28px;
+
+  --cg-font-body: "Caladea", Georgia, serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+
+  --cg-anim-bg: arcane-swirl 5s ease-in-out infinite;
+  --cg-anim-text: none;
 }
 
 /* ========== TEMA PÍCARO ========== */
@@ -382,6 +459,15 @@
   --cg-glass-bg: rgba(220, 252, 231, 0.6);
   --cg-glass-border: rgba(187, 247, 208, 0.5);
   --cg-glass-shadow: 0 8px 32px 0 rgba(21, 128, 61, 0.08);
+
+  --cg-radius: 6px;
+  --cg-radius-lg: 10px;
+
+  --cg-font-body: "Liberation Sans", system-ui, sans-serif;
+  --cg-font-heading: "Liberation Sans", system-ui, sans-serif;
+
+  --cg-anim-bg: shadow-drift 4s ease-in-out infinite;
+  --cg-anim-text: none;
 }
 
 /* ========== TEMA PALADÍN ========== */
@@ -417,6 +503,15 @@
   --cg-glass-bg: rgba(254, 243, 199, 0.6);
   --cg-glass-border: rgba(253, 230, 138, 0.5);
   --cg-glass-shadow: 0 8px 32px 0 rgba(180, 83, 9, 0.08);
+
+  --cg-radius: 8px;
+  --cg-radius-lg: 16px;
+
+  --cg-font-body: "Caladea", Georgia, serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+
+  --cg-anim-bg: holy-glow 4s ease-in-out infinite;
+  --cg-anim-text: none;
 }
 
 /* ========== TEMA OSCURO MAGO ========== */
@@ -452,12 +547,173 @@
   --cg-glass-bg: rgba(46, 16, 53, 0.7);
   --cg-glass-border: rgba(168, 85, 247, 0.3);
   --cg-glass-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
+
+  --cg-radius: 12px;
+  --cg-radius-lg: 20px;
+
+  --cg-font-body: "Caladea", Georgia, serif;
+  --cg-font-heading: "Caladea", Georgia, serif;
+
+  --cg-anim-bg: void-swirl 5s ease-in-out infinite;
+  --cg-anim-text: none;
+}
+
+/* ========== TIPOS DE LETRA POR TEMA ========== */
+body {
+  font-family: var(--cg-font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--cg-font-heading);
+}
+
+/* ========== ANIMACIONES ATMOSFÉRICAS ========== */
+
+/* Pulso sutil para tema Oscuro */
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
+
+/* Flicker retro para píxel */
+@keyframes retro-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+  51% { opacity: 1; }
+}
+
+/* Scanline cyberpunk */
+@keyframes cyber-scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Flicker neón cyberpunk */
+@keyframes neon-flicker {
+  0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--cg-primary); }
+  50% { opacity: 0.7; text-shadow: 0 0 20px var(--cg-accent); }
+}
+
+/* Flotar mágico para fantasía */
+@keyframes magic-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+/* Escaneo holograma para sci-fi */
+@keyframes hologram-scan {
+  0% { transform: translateY(-100%); opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { transform: translateY(100%); opacity: 0.3; }
+}
+
+/* Swirl arcano para mago */
+@keyframes arcane-swirl {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+}
+
+/* Deriva de sombra para pícaro */
+@keyframes shadow-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-5px); }
+}
+
+/* Brillo sagrado para paladín */
+@keyframes holy-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(180, 83, 9, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(180, 83, 9, 0.6); }
+}
+
+/* Swirl del vacío para oscuro mago */
+@keyframes void-swirl {
+  0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.8; }
+  50% { transform: rotate(360deg) scale(1.05); opacity: 1; }
+}
+
+/* Aplicar animaciones de fondo al body según tema */
+[data-theme="dark"] body,
+[data-theme="fantasy"] body,
+[data-theme="mage"] body,
+[data-theme="rogue"] body,
+[data-theme="paladin"] body,
+[data-theme="dark-mage"] body {
+  animation: var(--cg-anim-bg);
 }
 
 /* ========== CLASES UTILITARIAS DE TEMA ========== */
 .theme-toggle {
   cursor: pointer;
   transition: var(--cg-transition);
+}
+
+/* ========== PANEL DE TEMAS (DROPDOWN) - SIN INCLINACIÓN ========== */
+.theme-list {
+  min-width: 280px;
+  padding: 0.75rem;
+  border: 1px solid var(--cg-border);
+  background-color: var(--cg-surface);
+  box-shadow: var(--cg-shadow-lg);
+  border-radius: var(--cg-radius-lg);
+}
+
+.theme-list .dropdown-header {
+  color: var(--cg-text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.6rem 1rem;
+  margin: 0 0 0.5rem 0;
+  border-bottom: 1px solid var(--cg-border);
+  font-family: var(--cg-font-body);
+}
+
+.theme-option {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--cg-text);
+  background-color: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--cg-transition-fast);
+  border-radius: var(--cg-radius);
+  font-family: var(--cg-font-body);
+  /* No rotation, no tilt - just subtle background change */
+}
+
+.theme-option:hover {
+  background-color: var(--cg-surface-hover);
+  color: var(--cg-primary);
+  transform: translateX(4px);
+}
+
+.theme-option i {
+  font-size: 1rem;
+  width: 1.4rem;
+  text-align: center;
+  flex-shrink: 0;
+  color: var(--cg-text-secondary);
+}
+
+.theme-option:hover i {
+  color: var(--cg-primary);
+}
+
+/* Indicador del tema activo en el dropdown */
+.theme-option.active-theme {
+  background-color: var(--cg-primary);
+  color: var(--cg-text-inverse);
+}
+
+.theme-option.active-theme i {
+  color: var(--cg-text-inverse);
 }
 
 .theme-badge {
@@ -520,9 +776,9 @@
   animation: slideIn 0.3s ease forwards;
 }
 
-/* Retro pixel - sin bordes redondeados, fuente monospace */
+/* Retro pixel - sin bordes redondeados, fuente monospace, sin blur */
 [data-theme="retro-pixel"] body {
-  font-family: 'Courier New', monospace;
+  font-family: var(--cg-font-mono);
   image-rendering: pixelated;
 }
 
@@ -531,9 +787,10 @@
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   box-shadow: 4px 4px 0 #000000;
+  border: 2px solid #ffffff;
 }
 
-/* Ciberpunk - efecto neón */
+/* Ciberpunk - efecto neón en cards */
 [data-theme="cyberpunk"] .glass-card::before {
   content: '';
   position: absolute;
@@ -546,6 +803,12 @@
   mask-composite: exclude;
   pointer-events: none;
   z-index: -1;
+  animation: neon-border 1s linear infinite;
+}
+
+@keyframes neon-border {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
 }
 
 /* ========== RESPONSIVE ========== */

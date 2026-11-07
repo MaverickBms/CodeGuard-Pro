@@ -1,71 +1,259 @@
-const { app, BrowserWindow, ipcMain, dialog, notification } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  shell,
+  Notification,
+  Menu
+} = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const os = require('os');
+const http = require('http');
+const net = require('net');
 
 let mainWindow = null;
 let djangoProcess = null;
-let isDev = process.env.NODE_ENV === 'development';
+let djangoPort = null;
+let quitting = false;
 
-const DJANGO_PORT = 8000;
 const DJANGO_HOST = '127.0.0.1';
-const DJANGO_URL = `http://${DJANGO_HOST}:${DJANGO_PORT}`;
+const THEMES = [
+  ['light', 'Claro Diurno'],
+  ['dark', 'Oscuro Nocturno'],
+  ['high-contrast', 'Alto Contraste'],
+  ['retro-pixel', 'Retro Pixel'],
+  ['cyberpunk', 'Cyberpunk'],
+  ['fantasy', 'Reino Fantasía'],
+  ['sci-fi', 'Ciencia Ficción'],
+  ['warrior', 'Guerrero'],
+  ['mage', 'Mago'],
+  ['rogue', 'Pícaro'],
+  ['paladin', 'Paladín'],
+  ['dark-mage', 'Oscuro Mago']
+];
 
-// Función para iniciar Django como proceso hijo
-function startDjango() {
-  const pythonPath = process.platform === 'win32'
-    ? path.join(__dirname, '..', '.venv', 'Scripts', 'python.exe')
-    : path.join(__dirname, '..', '.venv', 'bin', 'python');
+function projectRoot() {
+  return path.join(__dirname, '..');
+}
 
-  // Si no existe el venv, usar python del sistema
-  if (!fs.existsSync(pythonPath)) {
-    pythonPath = 'python3';
-  }
+function dataDir() {
+  const dir = process.env.CODEGUARD_DATA_DIR
+    || (app.isPackaged
+      ? app.getPath('userData')
+      : path.join(projectRoot(), 'data'));
+  fs.mkdirSync(dir, { recursive: true });
+  return dir;
+}
 
-  const managePy = path.join(__dirname, '..', 'manage.py');
+function iconPath() {
+  const candidate = path.join(projectRoot(), 'static', 'icons', 'icon.png');
+  return fs.existsSync(candidate) ? candidate : undefined;
+}
 
-  djangoProcess = spawn(pythonPath, [
-    managePy,
-    'runserver',
-    `${DJANGO_HOST}:${DJANGO_PORT}`
-  ], {
-    cwd: path.join(__dirname, '..'),
-    env: {
-      ...process.env,
-      DJANGO_SETTINGS_MODULE: 'config.settings.development',
-      PYTHONUNBUFFERED: '1'
-    },
-    stdio: ['ignore', 'pipe', 'pipe']
-  });
-
-  djangoProcess.stdout.on('data', (data) => {
-    console.log(`[Django] ${data.toString().trim()}`);
-  });
-
-  djangoProcess.stderr.on('data', (data) => {
-    console.error(`[Django ERR] ${data.toString().trim()}`);
-  });
-
-  djangoProcess.on('close', (code) => {
-    console.log(`[Django] Proceso terminado con código ${code}`);
+function getFreePort() {
+  return new Promise((resolve, reject) => {
+    const server = net.createServer();
+    server.unref();
+    server.on('error', reject);
+    server.listen(0, DJANGO_HOST, () => {
+      const { port } = server.address();
+      server.close(() => resolve(port));
+    });
   });
 }
 
-// Detener Django al salir
-function stopDjango() {
-  if (djangoProcess) {
-    try {
-      if (process.platform === 'win32') {
-        spawn('taskkill', ['/PID', djangoProcess.pid, '/F', '/T']);
-      } else {
-        process.kill(-djangoProcess.pid);
+function waitForServer(url, timeoutMs = 45000) {
+  const started = Date.now();
+  return new Promise((resolve, reject) => {
+    const retry = () => {
+      if (Date.now() - started > timeoutMs) {
+        reject(new Error(`El servidor local no respondió en ${Math.round(timeoutMs / 1000)} s.`));
+        return;
       }
-    } catch (e) {
-      console.error('Error deteniendo Django:', e);
-    }
+      setTimeout(attempt, 400);
+    };
+
+    const attempt = () => {
+      const request = http.get(url, { timeout: 2500 }, (response) => {
+        response.resume();
+        if (response.statusCode && response.statusCode < 500) {
+          resolve();
+        } else {
+          retry();
+        }
+      });
+      request.on('error', retry);
+      request.on('timeout', () => {
+        request.destroy();
+        retry();
+      });
+    };
+
+    attempt();
+  });
+}
+
+function attachProcessLogs(child) {
+  child.stdout.on('data', (data) => {
+    console.log(`[Django] ${data.toString().trim()}`);
+  });
+  child.stderr.on('data', (data) => {
+    console.error(`[Django ERR] ${data.toString().trim()}`);
+  });
+  child.on('error', (error) => {
+    console.error('[Django] No se pudo iniciar el proceso:', error);
+  });
+  child.on('close', (code) => {
+    console.log(`[Django] Proceso terminado con código ${code}`);
     djangoProcess = null;
+  });
+}
+
+async function startDjango() {
+  djangoPort = await getFreePort();
+  const env = {
+    ...process.env,
+    DJANGO_SETTINGS_MODULE: app.isPackaged
+      ? 'config.settings.desktop'
+      : 'config.settings.development',
+    CODEGUARD_DATA_DIR: dataDir(),
+    CODEGUARD_PORT: String(djangoPort),
+    PYTHONUNBUFFERED: '1'
+  };
+
+  if (app.isPackaged) {
+    const serverDir = path.join(process.resourcesPath, 'server');
+    const executable = process.platform === 'win32'
+      ? 'CodeGuardServer.exe'
+      : 'CodeGuardServer';
+    const serverPath = path.join(serverDir, executable);
+
+    if (!fs.existsSync(serverPath)) {
+      throw new Error(
+        `No se encontró el servidor local empaquetado en:\n${serverPath}\n\n` +
+        'Vuelve a generar el paquete con build_windows.bat.'
+      );
+    }
+
+    djangoProcess = spawn(serverPath, [], {
+      cwd: serverDir,
+      env,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      windowsHide: true
+    });
+  } else {
+    let pythonPath = process.env.CODEGUARD_PYTHON;
+    if (!pythonPath) {
+      pythonPath = process.platform === 'win32'
+        ? path.join(projectRoot(), '.venv', 'Scripts', 'python.exe')
+        : path.join(projectRoot(), '.venv', 'bin', 'python');
+    }
+    if (!fs.existsSync(pythonPath)) {
+      pythonPath = process.platform === 'win32' ? 'python' : 'python3';
+    }
+
+    djangoProcess = spawn(
+      pythonPath,
+      [
+        path.join(projectRoot(), 'manage.py'),
+        'runserver',
+        `${DJANGO_HOST}:${djangoPort}`,
+        '--noreload'
+      ],
+      {
+        cwd: projectRoot(),
+        env,
+        stdio: ['ignore', 'pipe', 'pipe'],
+        detached: process.platform !== 'win32'
+      }
+    );
   }
+
+  attachProcessLogs(djangoProcess);
+
+  await waitForServer(`http://${DJANGO_HOST}:${djangoPort}/`);
+  return `http://${DJANGO_HOST}:${djangoPort}`;
+}
+
+function stopDjango() {
+  if (!djangoProcess) return;
+  const child = djangoProcess;
+  djangoProcess = null;
+
+  try {
+    if (process.platform === 'win32') {
+      spawn('taskkill', ['/PID', String(child.pid), '/F', '/T'], {
+        windowsHide: true,
+        stdio: 'ignore'
+      });
+    } else {
+      // El proceso se lanzó con detached=true: matar todo el grupo.
+      try {
+        process.kill(-child.pid, 'SIGTERM');
+      } catch (_error) {
+        child.kill('SIGTERM');
+      }
+      setTimeout(() => {
+        try {
+          process.kill(-child.pid, 'SIGKILL');
+        } catch (_error) {
+          // El proceso ya terminó.
+        }
+      }, 3000).unref();
+    }
+  } catch (error) {
+    console.error('[Django] Error al detener el servidor:', error);
+  }
+}
+
+function splashHtml() {
+  return `data:text/html;charset=utf-8,${encodeURIComponent(`
+    <!doctype html>
+    <html lang="es">
+      <head>
+        <meta charset="utf-8">
+        <title>CodeGuard Pro</title>
+        <style>
+          :root { color-scheme: dark; }
+          * { box-sizing: border-box; }
+          body {
+            margin: 0; min-height: 100vh; display: grid; place-items: center;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at 30% 20%, #1e3a8a, #0f172a 65%);
+            color: #f8fafc;
+          }
+          .card { text-align: center; padding: 40px; }
+          .shield {
+            width: 84px; height: 84px; margin: 0 auto 22px;
+            border-radius: 22px; display: grid; place-items: center;
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            box-shadow: 0 18px 50px rgba(0,0,0,.45);
+            font-size: 42px;
+          }
+          h1 { margin: 0 0 10px; font-size: 1.6rem; letter-spacing: -.02em; }
+          p { margin: 0; color: #cbd5e1; font-size: .95rem; }
+          .spinner {
+            width: 28px; height: 28px; margin: 26px auto 0;
+            border: 3px solid rgba(255,255,255,.18);
+            border-top-color: #60a5fa; border-radius: 50%;
+            animation: spin .9s linear infinite;
+          }
+          @keyframes spin { to { transform: rotate(360deg); } }
+        </style>
+      </head>
+      <body>
+        <div class="card">
+          <div class="shield">🛡️</div>
+          <h1>CodeGuard Pro</h1>
+          <p>Iniciando el servidor local seguro…</p>
+          <div class="spinner"></div>
+        </div>
+      </body>
+    </html>
+  `)}`;
 }
 
 function createWindow() {
@@ -73,41 +261,59 @@ function createWindow() {
     width: 1400,
     height: 900,
     minWidth: 1024,
-    minHeight: 768,
+    minHeight: 720,
     title: 'CodeGuard Pro',
-    icon: path.join(__dirname, '..', 'static', 'icons', 'icon.png'),
+    icon: iconPath(),
+    backgroundColor: '#0f172a',
+    show: false,
+    autoHideMenuBar: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
+      sandbox: true,
       webSecurity: true,
       allowRunningInsecureContent: false
-    },
-    show: false,
-    titleBarStyle: 'hiddenInset',
-    backgroundColor: '#0f172a'
+    }
   });
 
-  // Cargar la aplicación Django localmente
-  mainWindow.loadURL(DJANGO_URL);
+  mainWindow.loadURL(splashHtml());
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
+  });
+
+  mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    const allowed = djangoPort
+      ? url.startsWith(`http://${DJANGO_HOST}:${djangoPort}/`)
+      : false;
+    if (!allowed) {
+      event.preventDefault();
+    }
   });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
 
-  // Menú de aplicación personalizado
-  const { Menu } = require('electron');
+  buildMenu();
+}
+
+function buildMenu() {
+  const themeItems = THEMES.map(([id, label]) => ({
+    label,
+    click: () => sendTheme(id)
+  }));
+
   const template = [
     {
       label: 'CodeGuard Pro',
       submenu: [
-        { label: 'Acerca de', click: () => showAbout() },
+        { label: 'Acerca de', click: showAbout },
         { type: 'separator' },
-        { label: 'Preferencias', accelerator: 'CmdOrCtrl+,', click: () => openPreferences() },
+        { label: 'Abrir carpeta de datos', click: () => shell.openPath(dataDir()) },
         { type: 'separator' },
         { label: 'Salir', accelerator: 'CmdOrCtrl+Q', click: () => app.quit() }
       ]
@@ -120,36 +326,34 @@ function createWindow() {
         { type: 'separator' },
         { label: 'Cortar', accelerator: 'CmdOrCtrl+X', role: 'cut' },
         { label: 'Copiar', accelerator: 'CmdOrCtrl+C', role: 'copy' },
-        { label: 'Pegar', accelerator: 'CmdOrCtrl+V', role: 'paste' }
+        { label: 'Pegar', accelerator: 'CmdOrCtrl+V', role: 'paste' },
+        { label: 'Seleccionar todo', accelerator: 'CmdOrCtrl+A', role: 'selectAll' }
       ]
     },
     {
       label: 'Ver',
       submenu: [
-        { label: 'Recargar', accelerator: 'CmdOrCtrl+R', click: () => mainWindow.reload() },
-        { label: 'Herramientas de desarrollador', accelerator: 'F12', click: () => mainWindow.webContents.toggleDevTools() },
+        { label: 'Recargar', accelerator: 'CmdOrCtrl+R', click: () => mainWindow && mainWindow.reload() },
+        { label: 'Herramientas de desarrollador', accelerator: 'F12', click: () => mainWindow && mainWindow.webContents.toggleDevTools() },
         { type: 'separator' },
-        { label: 'Tema claro', click: () => setTheme('light') },
-        { label: 'Tema oscuro', click: () => setTheme('dark') },
-        { label: 'Alto contraste', click: () => setTheme('high-contrast') }
+        { label: 'Tema', submenu: themeItems }
       ]
     },
     {
       label: 'Ayuda',
       submenu: [
-        { label: 'Documentación', click: () => openDocs() },
-        { label: 'Verificar actualizaciones', click: () => checkUpdates() }
+        { label: 'Documentación local', click: showDocs },
+        { label: 'Información de versión', click: showVersion }
       ]
     }
   ];
 
-  const menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(menu);
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
-function setTheme(theme) {
+function sendTheme(theme) {
   if (mainWindow) {
-    mainWindow.webContents.send('set-theme', theme);
+    mainWindow.webContents.send('theme-changed', theme);
   }
 }
 
@@ -158,70 +362,119 @@ function showAbout() {
     type: 'info',
     title: 'Acerca de CodeGuard Pro',
     message: 'CodeGuard Pro',
-    detail: 'Plataforma educativa personal, offline-first.\nArquitectura: Electron + Django API local.\nVersión: 1.0.0\n\n© 2026 CodeGuard Pro'
+    detail:
+      'Plataforma educativa personal, offline-first.\n' +
+      'Arquitectura: Electron + Django API local.\n' +
+      `Versión: ${app.getVersion()}\n\n` +
+      'Servidor local en 127.0.0.1 · Sin CDN · Sin telemetría\n' +
+      '© 2026 CodeGuard Pro'
   });
 }
 
-function openPreferences() {
-  if (mainWindow) {
-    mainWindow.webContents.send('open-preferences');
-  }
-}
-
-function openDocs() {
-  const { shell } = require('electron');
-  shell.openExternal('https://github.com/MaverickBms/CodeGuard-Pro.git');
-}
-
-function checkUpdates() {
+function showDocs() {
+  const root = app.isPackaged ? process.resourcesPath : projectRoot();
   dialog.showMessageBox(mainWindow, {
     type: 'info',
-    title: 'Actualizaciones',
-    message: 'Verificando actualizaciones...',
-    detail: 'No se encontraron actualizaciones disponibles.'
+    title: 'Documentación local',
+    message: 'Documentación de CodeGuard Pro',
+    detail:
+      'La documentación se distribuye junto con la aplicación:\n\n' +
+      '• README.md — instalación, ejecución y empaquetado.\n' +
+      '• IEEE830.md — especificación de requisitos.\n' +
+      '• docs/ — modelo de datos, plan de desarrollo y decisiones.\n\n' +
+      `Carpeta de referencia: ${root}`
   });
 }
 
-// IPC: manejar notificaciones del sistema
-ipcMain.on('show-notification', (event, { title, body, icon }) => {
-  const notif = new notification.Notification({
-    title: title || 'CodeGuard Pro',
-    body: body || '',
-    icon: icon || path.join(__dirname, '..', 'static', 'icons', 'icon.png')
+function showVersion() {
+  dialog.showMessageBox(mainWindow, {
+    type: 'info',
+    title: 'Información de versión',
+    message: `CodeGuard Pro ${app.getVersion()}`,
+    detail:
+      `Electron: ${process.versions.electron}\n` +
+      `Chromium: ${process.versions.chrome}\n` +
+      `Node.js: ${process.versions.node}\n` +
+      `Plataforma: ${process.platform} ${process.arch}\n\n` +
+      'Aplicación local, sin telemetría ni comprobaciones de red.'
   });
-  notif.show();
+}
+
+// IPC: el renderer solicita cambiar el tema; el proceso principal lo difunde.
+ipcMain.on('set-theme', (_event, theme) => {
+  if (THEMES.some(([id]) => id === theme)) {
+    sendTheme(theme);
+  }
 });
 
-// IPC: obtener información del sistema
-ipcMain.handle('get-system-info', async () => {
-  return {
-    platform: os.platform(),
-    arch: os.arch(),
-    totalmem: os.totalmem(),
-    freemem: os.freemem(),
-    hostname: os.hostname()
-  };
+// IPC: notificaciones nativas del sistema.
+ipcMain.on('show-notification', (_event, options = {}) => {
+  if (!Notification.isSupported()) return;
+  const notification = new Notification({
+    title: options.title || 'CodeGuard Pro',
+    body: options.body || '',
+    icon: options.icon || iconPath()
+  });
+  notification.show();
 });
 
-// IPC: seleccionar carpeta para backup/restauración
+// IPC: información del sistema (sin datos sensibles).
+ipcMain.handle('get-system-info', async () => ({
+  platform: os.platform(),
+  arch: os.arch(),
+  totalmem: os.totalmem(),
+  freemem: os.freemem(),
+  hostname: os.hostname()
+}));
+
+// IPC: seleccionar carpeta para backup/restauración.
 ipcMain.handle('select-folder', async () => {
-  const result = await dialog.showOpenDialog(mainWindow, {
+  return dialog.showOpenDialog(mainWindow, {
     properties: ['openDirectory', 'createDirectory']
   });
-  return result;
 });
 
-// Manejar cierre de la aplicación
-app.whenReady().then(() => {
-  startDjango();
-  createWindow();
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+const gotLock = app.requestSingleInstanceLock();
+if (!gotLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
     }
   });
-});
+
+  app.whenReady().then(async () => {
+    if (process.platform === 'win32') {
+      app.setAppUserModelId('com.codeguard.pro');
+    }
+
+    createWindow();
+
+    try {
+      const url = await startDjango();
+      if (mainWindow) {
+        await mainWindow.loadURL(url);
+      }
+    } catch (error) {
+      console.error('No se pudo iniciar la aplicación:', error);
+      dialog.showErrorBox(
+        'No se pudo iniciar CodeGuard Pro',
+        `${error.message}\n\nRevisa los registros en:\n${path.join(dataDir(), 'logs')}`
+      );
+      quitting = true;
+      stopDjango();
+      app.quit();
+    }
+
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+      }
+    });
+  });
+}
 
 app.on('window-all-closed', () => {
   stopDjango();
@@ -231,11 +484,15 @@ app.on('window-all-closed', () => {
 });
 
 app.on('before-quit', () => {
+  quitting = true;
   stopDjango();
 });
 
-// Manejo de errores no capturados
+process.on('exit', () => {
+  if (!quitting) stopDjango();
+});
+
 process.on('uncaughtException', (error) => {
   console.error('Error no capturado:', error);
-  dialog.showErrorBox('Error', error.message || 'Ocurrió un error inesperado');
+  dialog.showErrorBox('Error inesperado', error.message || 'Ocurrió un error inesperado.');
 });
