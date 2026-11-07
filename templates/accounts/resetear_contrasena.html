@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Nueva contraseña — CodeGuard Pro{% endblock %}
+{% block page_title %}Nueva contraseña maestra{% endblock %}
+{% block page_subtitle %}Define tu nueva contraseña maestra tras validar la frase de rescate.{% endblock %}
+
+{% block content %}
+<div class="glass-card form-card">
+  <div class="form-header">
+    <div class="d-flex align-items-center justify-content-center mb-3">
+      <i class="fa-solid fa-key fa-2x text-theme-primary"></i>
+    </div>
+    <h2>Establecer nueva contraseña</h2>
+    <p>Ingresa tu frase de rescate y la nueva contraseña maestra (mínimo 8 caracteres).</p>
+  </div>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="form-group">
+      <label class="form-label">{{ form.frase_rescate.label }}</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+        {{ form.frase_rescate }}
+      </div>
+      {{ form.frase_rescate.errors }}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">{{ form.password1.label }}</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+        {{ form.password1 }}
+      </div>
+      {{ form.password1.errors }}
+      <p class="form-text">Mínimo 8 caracteres. Se almacenará hasheada con Argon2.</p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">{{ form.password2.label }}</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+        {{ form.password2 }}
+      </div>
+      {{ form.password2.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width: 100%;">
+      <i class="fa-solid fa-shield-halved me-2"></i>Restablecer contraseña
+    </button>
+  </form>
+
+  <div class="text-center mt-4">
+    <p class="text-muted small">¿Recuerdas tu frase? <a href="{% url 'accounts:rescate' %}" class="text-theme-primary">Volver a intentar</a></p>
+  </div>
+</div>
+{% endblock %}

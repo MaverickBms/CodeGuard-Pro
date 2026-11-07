@@ -9,7 +9,8 @@ import secrets
 import string
 
 from django.contrib.auth import authenticate
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password, make_password
+from django.db import transaction
 from django.utils import timezone
 
 from apps.accounts.models import FraseRescate, Usuario
@@ -71,31 +72,69 @@ def crear_usuario_inicial(
     return usuario, frase_texto
 
 
-def validar_frase_rescate(usuario: Usuario, frase_texto: str) -> bool:
-    """Valida una frase de rescate contra su hash Argon2.
+def verificar_frase_rescate(usuario: Usuario, frase_texto: str) -> bool:
+    """Valida una frase de rescate contra su hash Argon2 sin consumirla.
 
-    Si es válida y no se ha usado antes, la marca como usada e invalida
-    (frase de un solo uso, RF-004). Devuelve True si la validación tuvo éxito.
+    La invalidación (marcado de uso) se delega en la operación de cambio de
+    contraseña para que una frase solo se consuma cuando el nuevo contraseña se
+    establezca correctamente (RF-004 / CG-003).
     """
     try:
         frase = FraseRescate.objects.filter(usuario=usuario, usada=False).latest("creada_en")
     except FraseRescate.DoesNotExist:
         return False
 
-    from django.contrib.auth.hashers import check_password
+    return bool(frase_texto) and check_password(frase_texto, frase.hash_argon2)
 
-    if not check_password(frase_texto, frase.hash_argon2):
-        return False
 
+def _invalidar_frase_rescate(frase: FraseRescate) -> None:
+    """Marca la frase de rescate como usada e inválida (un solo uso, RF-004)."""
     frase.usada = True
     frase.fecha_uso = timezone.now()
     frase.save(update_fields=["usada", "fecha_uso"])
 
-    registrar_evento(
-        "uso_frase_rescate",
-        usuario=usuario,
-        descripcion="Frase de rescate utilizada y invalidada.",
-    )
+
+def cambiar_contrasena_por_frase(
+    usuario: Usuario,
+    frase_texto: str,
+    nueva_password: str,
+) -> bool:
+    """Cambio de contraseña maestra tras validar la frase de rescate.
+
+    Ejecuta el flujo completo de forma atómica: valida la frase, establece la
+    nueva contraseña (Argon2) e invalida la frase solo si todo el proceso tuvo
+    éxito. Si la frase es inválida o ya fue usada, no se modifica nada (la frase
+    no se consume y la contraseña no cambia).
+    """
+    with transaction.atomic():
+        try:
+            frase = FraseRescate.objects.filter(usuario=usuario, usada=False).latest("creada_en")
+        except FraseRescate.DoesNotExist:
+            return False
+
+        if not check_password(frase_texto, frase.hash_argon2):
+            return False
+
+        usuario.set_password(nueva_password)
+        usuario.save(update_fields=["password"])
+
+        _invalidar_frase_rescate(frase)
+
+        registrar_evento(
+            "uso_frase_rescate",
+            usuario=usuario,
+            descripcion="Frase de rescate utilizada e invalidada (un solo uso).",
+            ip=None,
+            user_agent="",
+        )
+
+        registrar_evento(
+            "cambio_contraseña",
+            usuario=usuario,
+            descripcion="Contraseña maestra cambiada mediante frase de rescate.",
+            ip=None,
+            user_agent="",
+        )
     return True
 
 

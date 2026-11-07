@@ -3,6 +3,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from apps.roadmaps.models import (
     CriterioFinalizacion,
@@ -228,3 +229,55 @@ class RoadmapSinDatosTest(TestCase):
         self.assertEqual(respuesta.status_code, 200)
         self.assertContains(respuesta, "cargar_ascenso")
         self.assertFalse(Roadmap.objects.exists())
+
+
+class SesionVencidaOperacionesAcademicasTests(TestCase):
+    """Una sesión vencida no debe modificar el progreso académico (CG-002)."""
+
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="tester", password="ClaveSegura123!"
+        )
+        self.client.force_login(self.usuario)
+        self.roadmap = Roadmap.objects.create(
+            nombre="Roadmap prueba", edicion="1.0", sha256_fuente="abc"
+        )
+        self.etapa = Etapa.objects.create(
+            roadmap=self.roadmap, numero=1, titulo="Etapa de prueba"
+        )
+        self.modulo = Modulo.objects.create(
+            etapa=self.etapa, numero=1, titulo="Modulo de prueba"
+        )
+        self.leccion = Leccion.objects.create(
+            modulo=self.modulo, titulo="Leccion de prueba"
+        )
+
+    def test_sesion_vencida_no_modifica_progreso(self):
+        """POST a marcar_leccion con sesión vencida no crea ni modifica progreso."""
+        sesion = self.client.session
+        sesion["ultima_actividad"] = int(timezone.now().timestamp()) - 2000
+        sesion.save()
+
+        respuesta = self.client.post(
+            reverse("roadmaps:marcar_leccion", args=[self.leccion.pk]),
+            {"completada": "1"},
+        )
+        self.assertEqual(respuesta.status_code, 302)
+        self.assertTrue(respuesta.url.startswith(reverse("accounts:login")))
+        # La operación protegida no se ejecutó: no existe progreso para esta lección.
+        self.assertFalse(
+            Progreso.objects.filter(usuario=self.usuario, leccion=self.leccion).exists()
+        )
+
+    def test_sesion_activa_sí_modifica_progreso(self):
+        """Con sesión activa, marcar una lección crea el progreso correspondiente."""
+        respuesta = self.client.post(
+            reverse("roadmaps:marcar_leccion", args=[self.leccion.pk]),
+            {"completada": "1"},
+        )
+        self.assertEqual(respuesta.status_code, 302)
+        self.assertTrue(
+            Progreso.objects.filter(
+                usuario=self.usuario, leccion=self.leccion, estado="completado"
+            ).exists()
+        )

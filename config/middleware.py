@@ -68,42 +68,50 @@ class SesionInactividadMiddleware:
     sesión del usuario autenticado. Si supera ``usuario.sesion_timeout_minutos``
     (por defecto ``SESSION_TIMEOUT_MINUTES`` = 15), cierra la sesión, registra el
     evento en auditoría y redirige al inicio de sesión.
+
+    La comprobación se realiza **antes** de delegar en la vista (``get_response``)
+    para garantizar que una sesión vencida nunca ejecute operaciones protegidas.
+    Los recursos locales (estáticos y medios) no renuevan la sesión.
     """
 
     def __init__(self, get_response):
         self.get_response = get_response
 
+    @staticmethod
+    def _es_recurso_local(request) -> bool:
+        """Indica si la petición solicita un recurso local (estático/medio)."""
+        return request.path.startswith("/static/") or request.path.startswith("/media/")
+
     def __call__(self, request):
-        response = self.get_response(request)
-
         user = getattr(request, "user", None)
-        if user is None or not user.is_authenticated or not user.is_active:
-            return response
+        if user is not None and user.is_authenticated and user.is_active:
+            if not self._es_recurso_local(request):
+                timeout_min = getattr(user, "sesion_timeout_minutos", None) or getattr(
+                    settings, "SESSION_TIMEOUT_MINUTES", 15
+                )
+                try:
+                    timeout = timedelta(minutes=int(timeout_min))
+                except (TypeError, ValueError):
+                    timeout = timedelta(minutes=15)
 
-        timeout_min = getattr(user, "sesion_timeout_minutos", None) or getattr(
-            settings, "SESSION_TIMEOUT_MINUTES", 15
-        )
-        try:
-            timeout = timedelta(minutes=int(timeout_min))
-        except (TypeError, ValueError):
-            timeout = timedelta(minutes=15)
+                ahora = int(timezone.now().timestamp())
+                ultima = request.session.get("ultima_actividad")
+                if ultima is None:
+                    # Primera actividad registrada de la sesión actual.
+                    request.session["ultima_actividad"] = ahora
+                elif ahora - int(ultima) > int(timeout.total_seconds()):
+                    # Sesión inactiva por encima del umbral: cerrar y redirigir
+                    # ANTES de ejecutar la vista.
+                    logout(request)
+                    registrar_evento(
+                        "logout_inactividad",
+                        usuario=user,
+                        descripcion="Sesión cerrada por inactividad.",
+                        ip=request.META.get("REMOTE_ADDR") or None,
+                        user_agent=request.META.get("HTTP_USER_AGENT", "")[:512],
+                    )
+                    return redirect("accounts:login")
 
-        ahora = int(timezone.now().timestamp())
-        ultima = request.session.get("ultima_actividad")
-        if ultima is None:
-            # Primera actividad registrada de la sesión actual.
-            request.session["ultima_actividad"] = ahora
-            return response
+                request.session["ultima_actividad"] = ahora
 
-        if ahora - int(ultima) > int(timeout.total_seconds()):
-            # Sesión inactiva por encima del umbral: cerrar y redirigir.
-            logout(request)
-            registrar_evento(
-                "logout_inactividad",
-                usuario=user,
-                descripcion="Sesión cerrada por inactividad.",
-            )
-            return redirect("accounts:login")
-
-        request.session["ultima_actividad"] = ahora
-        return response
+        return self.get_response(request)
