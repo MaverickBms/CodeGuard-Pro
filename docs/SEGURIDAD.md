@@ -20,13 +20,13 @@ autenticación, y no se asume que la red local es segura.
 |---|---|---|---|
 | RS-001 | Autenticación local obligatoria | Todas las vistas requieren login; sin acceso anónimo | ✅ |
 | RS-002 | Argon2 para contraseñas | `AUTH_PASSWORD_HASHERS` con Argon2 primero | ✅ |
-| RS-003 | Frase de rescate ≥128 bits, hash, un uso | `generar_frase_rescate()` (32 caracteres, ~201 bits), hash Argon2, `usada` | ✅ |
+| RS-003 | Frase de rescate ≥128 bits, hash, un uso | `generar_frase_rescate()` (32 caracteres, ~201 bits), hash Argon2, `usada`. La frase **no se consume al validar**: solo se invalida al completar exitosamente el cambio de contraseña (flujo atómico en `cambiar_contrasena_por_frase`). | ✅ |
 | RS-004 | Bind 127.0.0.1 | Servidor WSGI local (Waitress) en `127.0.0.1:<puerto>`; `ALLOWED_HOSTS` solo localhost | ✅ |
 | RS-005 | Validación de archivos | Pendiente (incremento de evidencias) | ⏳ |
 | RS-006 | Archivos fuera de web root | Pendiente (incremento de evidencias) | ⏳ |
 | RS-007 | Backup íntegro (hash + validación) | Pendiente (incremento de backups) | ⏳ |
 | RS-008 | Cifrado de backup | Propuesto, no aprobado | ⏳ |
-| RS-009 | Timeout de sesión probado | Middleware `SesionInactividadMiddleware` (15 min defecto) | ✅ |
+| RS-009 | Timeout de sesión probado | Middleware `SesionInactividadMiddleware` (15 min defecto). La comprobación de expiración se realiza **antes** de ejecutar la vista; los recursos estáticos y multimedia no renuevan la sesión. | ✅ |
 | RS-010 | CSRF | `CsrfViewMiddleware` + token en forms | ✅ |
 | RS-011 | XSS | Escape de salida en plantillas + CSP | ✅ |
 | RS-012 | SQLi | ORM de Django (consultas parametrizadas) | ✅ |
@@ -34,7 +34,7 @@ autenticación, y no se asume que la red local es segura.
 | RS-014 | Auditoría de eventos | `AuditLog` + `registrar_evento()` en servicios | ✅ |
 | RS-015 | Documentar límites de LUKS | En este documento y `docs/INSTALACION.md` | ✅ |
 | RS-016 | Política de contraseñas | Mínimo 8 caracteres en `SetupInicialForm` | ✅ |
-| RS-017 | Bloqueo N intentos | PENDIENTE — definir N con el propietario | ⏳ |
+| RS-017 | Bloqueo N intentos | 5 intentos fallidos consecutivos bloquean la cuenta 15 min (`intentos_fallidos`, `bloqueado_hasta` en `Usuario`). Reinicio tras login exitoso. Registro de intentos y bloqueos en auditoría (`acceso_denegado`). Mensajes genéricos sin revelar existencia de usuario. | ✅ |
 | RS-018 | Minimización de datos | Solo campos necesarios; sin telemetría | ✅ |
 | RS-019 | Dependencias actualizadas | `requirements.txt` con versiones exactas | ✅ |
 | RS-020 | Errores no expuestos | `DEBUG=False` por defecto; mensajes genéricos | ✅ |
@@ -44,7 +44,10 @@ autenticación, y no se asume que la red local es segura.
 ## 3. Middlewares de seguridad
 
 - **`SesionInactividadMiddleware`**: expira la sesión tras `sesion_timeout_minutos` de
-  inactividad (RF-002, RS-009). Registra evento `logout_inactividad` en auditoría.
+  inactividad (RF-002, RS-009). La comprobación se realiza **antes** de delegar en la vista
+  (`get_response`) para garantizar que una sesión vencida nunca ejecute operaciones protegidas.
+  Los recursos locales (estáticos y medios) no renuevan la sesión. Registra evento
+  `logout_inactividad` en auditoría.
 - **`CabecerasSeguridadMiddleware`**: añade a cada respuesta `X-Frame-Options: DENY`,
   `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy`
   restrictiva y una CSP estricta (solo recursos propios, sin CDN; scripts locales sin

@@ -42,17 +42,34 @@ Procedimiento de medición de RAM en reposo:
 
 ---
 
-## 2.1 Pruebas funcionales de autenticación (implementadas en esta intervención)
+## 2.1 Pruebas funcionales de autenticación y recuperación (implementadas en esta intervención)
 
 | ID | Prueba | Caso | Resultado esperado | Estado |
 |---|---|---|---|---|
 | T-006 | Login correcto | POST `/accounts/login/` con credenciales válidas | Redirección a panel (302 → `/`) | ✅ Automática |
 | T-007 | Login incorrecto | POST con contraseña inválida | Re-render del login con error (200) | ✅ Automática |
 | T-008 | Login repetido | GET `/accounts/login/` autenticado | Redirección a panel (302) | ✅ Automática |
-| T-009 | Logout | POST `/accounts/logout/` | Redirección a panel + sesión cerrada | ✅ Automática |
+| T-009 | Logout POST | POST `/accounts/logout/` | Redirección a panel + sesión cerrada | ✅ Automática |
+| T-009b | Logout GET | GET `/accounts/logout/` | 405 Method Not Allowed, sesión no cierra | ✅ Automática |
 | T-010 | Cambio de contraseña | POST con datos válidos | Redirección + `check_password` | ✅ Automática |
+| T-010b | Nueva = actual | POST con contraseña idéntica a la actual | Error de validación, sin cambio | ✅ Automática |
 | T-011 | Frase de rescate inválida | POST con frase incorrecta | Re-render con error (200) | ✅ Automática |
-| T-012 | Frase de rescate válida | POST con frase válida | Redirección a `/accounts/rescate/exito/` | ✅ Automática |
+| T-012 | Frase de rescate válida | POST con frase válida | Redirección a `/accounts/rescate/resetear/` | ✅ Automática |
+| T-013 | Frase no se consume al validar | Validar frase sin completar reset | Frase sigue `usada=False` | ✅ Automática |
+| T-014 | Reset completo | Frase válida + nueva contraseña | Contraseña cambia, frase se invalida | ✅ Automática |
+| T-015 | Frase ya usada | Reutilizar frase después del reset | Rechazada, sin cambio de contraseña | ✅ Automática |
+| T-016 | Sesión vencida GET | GET a vista protegida con sesión expirada | Redirección a login, vista no ejecutada | ✅ Automática |
+| T-017 | Sesión vencida POST | POST a vista protegida con sesión expirada | Redirección a login, operación no ejecutada | ✅ Automática |
+| T-018 | Renovación de actividad | Petición válida renueva `ultima_actividad` | Marca de tiempo actualizada | ✅ Automática |
+| T-019 | Setup válido | POST con datos correctos | Usuario creado, frase generada, éxito renderizado | ✅ Automática |
+| T-020 | Setup contraseñas diferentes | POST con contraseñas no coincidentes | Error de formulario, sin usuario | ✅ Automática |
+| T-021 | Setup contraseña corta | POST con < 8 caracteres | Error de formulario, sin usuario | ✅ Automática |
+| T-022 | Setup términos no aceptados | POST sin aceptar términos | Error de formulario, sin usuario | ✅ Automática |
+| T-023 | Bloqueo tras 5 fallos | 5 POST de login con contraseña incorrecta | Cuenta bloqueada 15 min, evento de auditoría | ✅ Automática |
+| T-024 | Login durante bloqueo | POST dentro de ventana de bloqueo | Rechazado sin comprobar contraseña | ✅ Automática |
+| T-025 | Reinicio tras éxito | Login exitoso después de bloqueo vencido | `intentos_fallidos` = 0, `bloqueado_hasta` = null | ✅ Automática |
+| T-026 | Mensaje genérico | Login fallido con usuario inexistente | "Usuario o contraseña incorrectos" sin revelar existencia | ✅ Automática |
+| T-027 | Bloqueo expira | Esperar 15 min, nuevo intento | Se permite nuevo intento de login | ⏳ (manual, requiere espera) |
 
 ---
 
@@ -110,12 +127,20 @@ Procedimiento de medición de RAM en reposo:
 
 ## 6. Pruebas pendientes tras el incremento 1
 
-El incremento 1 se considera terminado con las pruebas manuales verificadas (login, panel,
-logout, acceso protegido, bind 127.0.0.1, sin CDN). Las pruebas automatizadas completas (T-002
-en adelante) se implementarán en `tests/` a medida que avance cada incremento.
+El incremento 1 se considera terminado con las pruebas automatizadas implementadas:
+- Autenticación: login correcto/incorrecto/repetido (T-006 a T-008).
+- Cierre de sesión: POST cierra, GET devuelve 405 (T-009, T-009b).
+- Cambio de contraseña: válido y no-reutilización (T-010, T-010b).
+- Recuperación: frase válida/inválida, no-consumo al validar, reset completo, frase ya usada (T-011 a T-015).
+- Expiración por inactividad: GET y POST en vista protegida (T-016, T-017).
+- Renovación de actividad (T-018).
+- Setup inicial: válido e inválido (contraseñas diferentes, corta, términos) (T-019 a T-022).
+- Bloqueo por intentos fallidos (RS-017): bloqueo tras 5 fallos, rechazo durante bloqueo, reinicio tras éxito, mensaje genérico (T-023 a T-026).
+- Auditoría: login/logout/inactividad/setup/cambio de contraseña/uso de frase/acceso denegado (`apps/audit/tests/test_audit.py`).
+- Operaciones académicas con sesión vencida (`apps/roadmaps/tests/test_roadmaps.py`).
 
-Con la intervención actual se completaron las pruebas automatizadas de autenticación, cierre de
-sesión, cambio de contraseña, frase de rescate y expiración por inactividad (T-006 a T-012 y
-T-002). No se declara un requisito como implementado sin evidencia de prueba. Las pruebas de
-seguridad restantes (CSRF, XSS, validación de archivos, acceso no autorizado, path traversal,
-archivos maliciosos, exposición de secretos) siguen pendientes en sus respectivos incrementos.
+Total: **53 tests automatizados pasando** (`apps.accounts`, `apps.audit`, `apps.core`, `apps.roadmaps`).
+
+Las pruebas de seguridad restantes (CSRF, XSS, validación de archivos, acceso no autorizado, path traversal, archivos maliciosos, exposición de secretos) siguen pendientes en sus respectivos incrementos.
+
+La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida manualmente.

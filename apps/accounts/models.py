@@ -23,6 +23,12 @@ class Usuario(AbstractUser):
     sesion_timeout_minutos = models.PositiveIntegerField(
         default=15, verbose_name="tiempo de sesión por inactividad (minutos)"
     )
+    intentos_fallidos = models.PositiveIntegerField(
+        default=0, verbose_name="intentos fallidos consecutivos"
+    )
+    bloqueado_hasta = models.DateTimeField(
+        null=True, blank=True, verbose_name="bloqueado hasta"
+    )
 
     class Meta:
         verbose_name = "usuario"

@@ -19,6 +19,9 @@
   <link rel="shortcut icon" href="{% static 'icons/icon.svg' %}">
 
   {% block extra_head %}{% endblock %}
+
+  <!-- Script de temas en el head con defer: aplica el tema guardado antes del primer paint -->
+  <script src="{% static 'js/codeguard.js' %}" defer></script>
 </head>
 <body data-theme="light">
   <!-- Barra lateral semántica -->
@@ -122,6 +125,13 @@
             <li><button class="dropdown-item theme-option" data-theme="dark-mage" type="button"><i class="fa-solid fa-skull me-2"></i>Oscuro Mago</button></li>
           </ul>
         </div>
+        <!-- Cierre de sesión: solo POST, protegido por CSRF -->
+        <form method="post" action="{% url 'accounts:logout' %}" class="d-inline" id="formLogout" style="margin-left: 10px;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-secondary" title="Cerrar sesión" aria-label="Cerrar sesión">
+            <i class="fa-solid fa-sign-out-alt me-1"></i>Cerrar sesión
+          </button>
+        </form>
       </div>
     </header>
 
@@ -149,9 +159,6 @@
   <script src="{% static 'js/htmx.min.js' %}"></script>
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'js/sweetalert2.min.js' %}"></script>
-
-  <!-- Script de temas y utilidades -->
-  <script src="{% static 'js/codeguard.js' %}"></script>
 
   {% block extra_js %}{% endblock %}
 </body>

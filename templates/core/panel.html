@@ -3,7 +3,7 @@
 
 {% block title %}Panel principal — CodeGuard Pro{% endblock %}
 {% block page_title %}Panel principal{% endblock %}
-{% block page_subtitle %}Bienvenido de vuelta, {{ user.get_username }}. Aquí tienes el resumen de tu formación y los módulos del MVP.{% endblock %}
+{% block page_subtitle %}Bienvenido de vuelta, {{ user.get_username }}. Resumen de tu formación y progreso académico.{% endblock %}
 
 {% block content %}
 <!-- Tarjeta de bienvenida -->
@@ -12,32 +12,130 @@
     <i class="fa-solid fa-shield-halved fa-3x me-3"></i>
     <div>
       <h1>CodeGuard Pro</h1>
+      <p class="mb-0">Tu plataforma educativa personal, offline y segura.</p>
     </div>
   </div>
-  <p>Tu plataforma educativa personal, offline y segura. Organiza tu aprendizaje, documenta tu progreso y demuestra tus competencias.</p>
 </div>
 
-<!-- Tarjetas de módulos -->
-<div class="modules-grid">
-  {% for modulo in modulos %}
-    <div class="module-card{% if not modulo.implementado %} disabled{% endif %}">
-      <span class="card-icon">{{ modulo.icono }}</span>
-      <h3>{{ modulo.titulo }}</h3>
-      <p>{{ modulo.descripcion }}</p>
-      {% if modulo.implementado %}
-        <span class="card-tag implemented">Disponible</span>
-        <a class="btn-open" href="{% url modulo.url %}">
-          <i class="fa-solid fa-arrow-right me-2"></i>Abrir
-        </a>
-      {% else %}
-        <span class="card-tag">Próximamente</span>
-        <button class="btn-open disabled" disabled>
-          <i class="fa-solid fa-lock me-2"></i>En desarrollo
-        </button>
-      {% endif %}
+<!-- Resumen de progreso académico -->
+{% if roadmap_existe %}
+<section class="progress-summary">
+  <div class="glass-card progress-card">
+    <div class="progress-header">
+      <h2><i class="fa-solid fa-chart-pie me-2"></i>Progreso académico</h2>
+      <span class="progress-big">{{ avance.porcentaje }}%</span>
     </div>
-  {% endfor %}
+    <div class="progress-details">
+      <div class="detail-item">
+        <span class="detail-label">Etapas completadas</span>
+        <span class="detail-value">{{ avance.completadas }} de {{ avance.total }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Módulos completados</span>
+        <span class="detail-value">{{ modulos_completados }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Lecciones completadas</span>
+        <span class="detail-value">{{ lecciones_completadas }}</span>
+      </div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" style="width: {{ avance.porcentaje }}%"></div>
+    </div>
+    <div class="progress-caption">
+      {{ avance.completadas }} de {{ avance.total }} etapas del roadmap ASCENSO
+    </div>
+  </div>
+
+  <!-- Próxima etapa disponible -->
+  {% if proxima_etapa %}
+    <div class="glass-card next-stage-card">
+      <h3><i class="fa-solid fa-arrow-right me-2"></i>Próxima etapa disponible</h3>
+      <p><strong>Etapa {{ proxima_etapa.numero }}:</strong> {{ proxima_etapa.titulo }}</p>
+      {% if proxima_etapa.objetivo %}
+        <p class="text-muted small">{{ proxima_etapa.objetivo|truncatechars:180 }}</p>
+      {% endif %}
+      <a href="{% url 'roadmaps:detalle' proxima_etapa.numero %}" class="btn btn-primary btn-sm mt-2">
+        <i class="fa-solid fa-map me-2"></i>Ver etapa
+      </a>
+    </div>
+  {% elif avance.completadas >= avance.total %}
+    <div class="glass-card next-stage-card">
+      <h3><i class="fa-solid fa-trophy me-2"></i>¡Roadmap completado!</h3>
+      <p>Has completado todas las etapas del roadmap ASCENSO.</p>
+    </div>
+  {% else %}
+    <div class="glass-card next-stage-card">
+      <h3><i class="fa-solid fa-lock me-2"></i>Sin etapa disponible</h3>
+      <p>Todas las etapas disponibles están bloqueadas por prerrequisitos pendientes.</p>
+    </div>
+  {% endif %}
+{% else %}
+  <div class="glass-card empty-state">
+    <i class="fa-solid fa-database fa-3x text-muted"></i>
+    <h3>El roadmap todavía no está cargado</h3>
+    <p>Ejecuta <code>python manage.py cargar_ascenso</code> para importar las 33 etapas oficiales de ASCENSO 3.1.</p>
+  </div>
+{% endif %}
+
+<!-- Próxima actividad sugerida -->
+{% if roadmap_existe and proxima_actividad %}
+<div class="glass-card next-activity-card">
+  <h3><i class="fa-solid fa-play me-2"></i>Próxima actividad sugerida</h3>
+  <p><strong>{% if proxima_actividad.leccion %}{{ proxima_actividad.leccion.titulo }}{% elif proxima_actividad.modulo %}{{ proxima_actividad.modulo.titulo }}{% else %}{{ proxima_actividad.etapa.titulo }}{% endif %}</strong></p>
+  <span class="activity-stage">Etapa {{ proxima_actividad.etapa.numero }} · {{ proxima_actividad.get_estado_display }}</span>
+  <a href="{% url 'roadmaps:detalle' proxima_actividad.etapa.numero %}" class="btn btn-primary btn-sm mt-2">
+    <i class="fa-solid fa-arrow-right me-2"></i>Continuar
+  </a>
 </div>
+{% endif %}
+
+<!-- Actividad reciente -->
+<section class="activity-section">
+  <div class="glass-card activity-card">
+    <h3><i class="fa-solid fa-clock-rotate-left me-2"></i>Actividad reciente</h3>
+    {% if actividad_reciente %}
+      <ul class="activity-list">
+        {% for progreso in actividad_reciente %}
+          <li class="activity-item{% if progreso.estado == 'completado' %} activity-done{% endif %}">
+            <div class="activity-info">
+              <span class="activity-title">{% if progreso.leccion %}{{ progreso.leccion.titulo }}{% elif progreso.modulo %}{{ progreso.modulo.titulo }}{% else %}{{ progreso.etapa.titulo }}{% endif %}</span>
+              <span class="activity-stage">Etapa {{ progreso.etapa.numero }}</span>
+              <span class="activity-badge status-{{ progreso.estado }}">{{ progreso.get_estado_display }}</span>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted text-center">Sin actividad registrada todavía.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Tarjetas de módulos -->
+<section class="modules-section">
+  <h2 class="section-title"><i class="fa-solid fa-layer-group me-2"></i>Módulos del MVP</h2>
+  <div class="modules-grid">
+    {% for modulo in modulos %}
+      <div class="module-card{% if not modulo.implementado %} disabled{% endif %}">
+        <span class="card-icon">{{ modulo.icono }}</span>
+        <h3>{{ modulo.titulo }}</h3>
+        <p>{{ modulo.descripcion }}</p>
+        {% if modulo.implementado %}
+          <span class="card-tag implemented">Disponible</span>
+          <a class="btn-open" href="{% url modulo.url %}">
+            <i class="fa-solid fa-arrow-right me-2"></i>Abrir
+          </a>
+        {% else %}
+          <span class="card-tag">Próximamente</span>
+          <button class="btn-open disabled" disabled>
+            <i class="fa-solid fa-lock me-2"></i>En desarrollo
+          </button>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
 
 <!-- Estado del sistema -->
 <div class="glass-card system-status">
@@ -53,7 +151,7 @@
     </div>
     <div class="status-item">
       <span class="label"><i class="fa-solid fa-clock me-1"></i>Sesión (inactividad)</span>
-      <span class="value">{{ configuracion.sesion_timeout_minutos }} minutos</span>
+      <span class="value">{{ user.sesion_timeout_minutos }} minutos</span>
     </div>
     <div class="status-item">
       <span class="label"><i class="fa-solid fa-server me-1"></i>Servidor</span>

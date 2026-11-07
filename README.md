@@ -23,11 +23,12 @@ Al abrir la aplicación por primera vez se inicia el **asistente de configuraci�
 
 - En el panel ingresas tu **usuario + contraseña maestra** (Argon2).
 - La sesión expira por **inactividad** (15 minutos por defecto) y se registra en auditoría.
-- El cierre de sesión se hace desde la aplicación; el acceso posterior requiere autenticación.
+- **Bloqueo por intentos fallidos (RS-017):** tras 5 intentos fallidos consecutivos, la cuenta se bloquea durante 15 minutos. El contador se reinicia tras un inicio exitoso.
+- El cierre de sesión se hace desde la aplicación (botón "Cerrar sesión", requiere POST); el acceso posterior requiere autenticación.
 
 ### 3. Panel principal
 
-Dashboard con resumen de progreso, módulos del MVP, actividades pendientes, evaluaciones, laboratorios, documentos, evidencias y revisiones.
+Dashboard con resumen de progreso real del roadmap (etapas, módulos y lecciones completadas), próxima actividad sugerida, actividad reciente, módulos del MVP y estado del sistema. Todos los datos provienen de la base de datos.
 
 ### 4. Roadmap ASCENSO
 
@@ -36,17 +37,24 @@ Dashboard con resumen de progreso, módulos del MVP, actividades pendientes, eva
 - Marcado de lecciones y de etapas completas con **recalculo automático de porcentaje**.
 - Bloqueo de etapas cuyos prerrequisitos no estén completados.
 
-### 5. Frase de rescate
+### 5. Recuperación de acceso (frase de rescate)
 
-Si olvidas la contraseña: valida tu frase de rescate en `/accounts/rescate/`. Si es correcta y no se ha usado, recuperas el acceso; la frase queda **invalidada**.
+Si olvidas la contraseña, el flujo tiene dos pasos:
+
+1. **Validar frase:** en `/accounts/rescate/` introduces tu frase de rescate. Si es correcta y no se ha usado, avanzas al paso 2. **La frase no se consume al validar.**
+2. **Establecer nueva contraseña:** en `/accounts/rescate/resetear/` introduces la frase, la nueva contraseña y su confirmación. Se aplican los validadores de Django y la nueva contraseña no puede ser idéntica a la actual. Solo al completar exitosamente el cambio, la frase se invalida y la contraseña se actualiza.
+
+Si el cambio falla en cualquier punto, la frase no se consume y la contraseña no cambia.
 
 ### 6. Cambio de contraseña
 
-Desde la aplicación, con la contraseña actual, actualizas la **contraseña maestra** (Argon2).
+Desde la aplicación, con la contraseña actual, actualizas la **contraseña maestra** (Argon2). La nueva contraseña no puede ser idéntica a la actual y debe superar los validadores de Django.
 
 ### 7. Temas visuales
 
-12 temas (claro, oscuro, alto contraste, retro-pixel, cyberpunk, fantasía, ciencia ficción, guerrero, mago, pícaro, paladín, oscuro mago) con glassmorphism y persistencia.
+12 temas con las 12 paletas oficiales (P01–P12): claro (P01), oscuro (P02), alto contraste (P04), retro-pixel (P05), cyberpunk (P03), fantasía (P07), ciencia ficción (P08), guerrero (P06), mago (P09), pícaro (P10), paladín (P11), oscuro mago (P12).
+
+Cada tema usa variables CSS semánticas con los HEX originales sin modificar. El texto es blanco/negro según la luminancia para garantizar **WCAG AA (4.5:1)** en todos los pares de interfaz (texto/fondo, texto/superficie, botones, bordes, focus). Se respeta `prefers-reduced-motion` y no se usa `transition: all`.
 
 ---
 
