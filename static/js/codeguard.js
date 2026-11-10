@@ -24,14 +24,23 @@ const themeNames = {
 };
 
 function getCurrentTheme() {
-  return localStorage.getItem('cg-theme') || 'light';
+  try {
+    const saved = localStorage.getItem('cg-theme');
+    return themes.includes(saved) ? saved : 'light';
+  } catch (error) {
+    return 'light';
+  }
 }
 
 function applyTheme(theme) {
   if (!themes.includes(theme)) theme = 'light';
   document.documentElement.setAttribute('data-theme', theme);
   document.body.setAttribute('data-theme', theme);
-  localStorage.setItem('cg-theme', theme);
+  try {
+    localStorage.setItem('cg-theme', theme);
+  } catch (error) {
+    // El tema sigue aplicándose aunque el almacenamiento esté restringido.
+  }
   document.body.classList.remove(...themes.map((t) => `theme-${t}`));
   document.body.classList.add(`theme-${theme}`);
 
@@ -45,6 +54,7 @@ function applyTheme(theme) {
     const isActive = option.getAttribute('data-theme') === theme;
     option.classList.toggle('active-theme', isActive);
   });
+  document.dispatchEvent(new CustomEvent('cg:theme-change', { detail: { theme } }));
 }
 
 function setTheme(theme) {
@@ -79,8 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const theme = option.getAttribute('data-theme');
       setTheme(theme);
       showToast(`Tema: ${themeNames[theme]}`, 'info');
-      const dropdown = bootstrap.Dropdown.getInstance(document.getElementById('themeDropdownButton'));
-      if (dropdown) dropdown.hide();
+      if (window.bootstrap && window.bootstrap.Dropdown) {
+        const dropdownButton = document.getElementById('themeDropdownButton');
+        const dropdown = dropdownButton ? window.bootstrap.Dropdown.getInstance(dropdownButton) : null;
+        if (dropdown) dropdown.hide();
+      }
     });
   });
 
