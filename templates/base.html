@@ -23,9 +23,11 @@
   <link rel="shortcut icon" href="{% static 'icons/icon.svg' %}">
 
   {% block extra_head %}{% endblock %}
+  <link rel="stylesheet" href="{% static 'css/v14.css' %}">
 
   <!-- Script de temas en el head con defer: aplica el tema guardado antes del primer paint -->
   <script src="{% static 'js/codeguard.js' %}" defer></script>
+  <script src="{% static 'js/ui-v14.js' %}" defer></script>
 </head>
 <body data-theme="light">
   <!-- Barra lateral semántica -->
@@ -37,7 +39,7 @@
         </div>
         <span class="brand-text">CodeGuard Pro</span>
       </div>
-      <button class="toggle-sidebar" id="toggleSidebar" title="Contraer menú">
+      <button class="toggle-sidebar" id="toggleSidebar" type="button" title="Contraer menú" aria-label="Contraer menú lateral" aria-expanded="true">
         <i class="fa-solid fa-chevron-left"></i>
       </button>
     </div>
@@ -105,6 +107,7 @@
       </button>
     </div>
   </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
 
   <!-- Panel de Ajustes (oculto por defecto) -->
   <div class="ajustes-panel" id="ajustesPanel" role="dialog" aria-modal="true" aria-labelledby="ajustesTitulo">
@@ -176,6 +179,7 @@
   <div class="main-content" id="mainContent">
     <header class="main-header">
       <div class="main-header-left">
+        <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Abrir navegación" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
         <div class="page-title cg-page-title">{% block page_title %}Panel{% endblock %}</div>
         <div class="page-subtitle">{% block page_subtitle %}{% endblock %}</div>
       </div>
