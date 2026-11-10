@@ -111,3 +111,41 @@ body.ajustes-abierto{overflow:hidden}
   .main-content{margin-left:var(--v14-sidebar)}
   .main-content.collapsed{margin-left:var(--v14-rail)}
 }
+
+
+/* ---------- Consistency pass across remaining application screens ---------- */
+.sidebar-brand{color:var(--cg-on-primary);background:linear-gradient(135deg,var(--cg-primary),var(--cg-primary-dark))}
+.sidebar-brand .brand-text{color:inherit}
+.v14-welcome .btn-outline-light{color:var(--cg-on-primary);background:color-mix(in srgb,var(--cg-on-primary) 12%,transparent);border-color:color-mix(in srgb,var(--cg-on-primary) 42%,transparent)}
+.v14-welcome .btn-outline-light:hover{background:color-mix(in srgb,var(--cg-on-primary) 20%,transparent)}
+.user-identity{min-height:42px;display:inline-flex;align-items:center;gap:10px;padding:6px 13px;border:1px solid var(--cg-border);border-radius:13px;background:var(--cg-surface);color:var(--cg-text);font-size:.82rem;font-weight:700}
+.user-identity-avatar{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:color-mix(in srgb,var(--cg-primary) 14%,var(--cg-surface));color:var(--cg-primary)}
+.auth-page{width:100%;min-height:calc(100dvh - 210px);display:grid;place-items:center;padding:clamp(12px,3vw,34px)}
+.auth-card,.form-card{width:min(100%,540px);margin-inline:auto;padding:clamp(22px,4vw,38px);border:1px solid color-mix(in srgb,var(--cg-border) 55%,transparent);border-radius:22px;background:var(--cg-surface);box-shadow:var(--v14-shadow)}
+.auth-header h2,.form-header h2{margin:12px 0 8px;color:var(--cg-text);font:800 1.45rem var(--cg-font-body);letter-spacing:-.04em}
+.auth-header p,.form-header p{color:var(--cg-text-muted);font-size:.86rem;line-height:1.6}
+.auth-logo{width:68px;height:68px;display:grid;place-items:center;margin:0 auto 14px;border-radius:20px;background:color-mix(in srgb,var(--cg-primary) 12%,var(--cg-surface))}
+.auth-card form,.form-card form{display:grid;gap:15px}
+.auth-card .form-group,.form-card .form-group{margin:0}
+.auth-card .cg-input-group,.form-card .input-group{display:flex;align-items:stretch;min-width:0}
+.auth-card .cg-input-group input,.form-card .input-group input{min-width:0;flex:1}
+.auth-card .cg-input-group-text,.form-card .input-group-text{display:grid;place-items:center;min-width:44px;border-radius:11px 0 0 11px!important}
+.auth-card .cg-input-group input,.form-card .input-group input{border-radius:0 11px 11px 0!important}
+.auth-card button[type=submit],.form-card button[type=submit]{width:100%;min-height:46px}
+.auth-footer{padding-top:16px;border-top:1px solid color-mix(in srgb,var(--cg-border) 40%,transparent)}
+.form-text,.text-muted{color:var(--cg-text-muted)!important}
+.form-control:disabled,.form-select:disabled{opacity:.58}
+.table,.table>:not(caption)>*>*{color:var(--cg-text);border-color:var(--cg-border)}
+.table{--bs-table-bg:var(--cg-surface);--bs-table-color:var(--cg-text);--bs-table-hover-bg:var(--cg-surface-hover);--bs-table-hover-color:var(--cg-text)}
+.table thead th{background:var(--cg-surface-hover);color:var(--cg-text-secondary);font-size:.72rem;text-transform:uppercase;letter-spacing:.07em}
+.dropdown-menu{background:var(--cg-surface-elevada);border:1px solid var(--cg-border);box-shadow:var(--v14-shadow)}
+.dropdown-item{color:var(--cg-text)}.dropdown-item:hover,.dropdown-item:focus{background:var(--cg-surface-hover);color:var(--cg-text)}
+.modal-content{background:var(--cg-surface);color:var(--cg-text);border:1px solid var(--cg-border);border-radius:18px;box-shadow:var(--v14-shadow)}
+.modal-header,.modal-footer{border-color:var(--cg-border)}
+.alert{border-radius:13px}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--cg-bg)}
+::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--cg-text-muted) 55%,var(--cg-bg));border:2px solid var(--cg-bg);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:var(--cg-primary)}
+::selection{background:color-mix(in srgb,var(--cg-primary) 32%,transparent);color:var(--cg-text)}
+@media(max-width:620px){.auth-page{min-height:auto;padding:4px}.auth-card,.form-card{border-radius:17px;padding:22px 17px}.user-identity{padding:5px 8px;font-size:.72rem}.user-identity-avatar{width:26px;height:26px}}
