@@ -1,8 +1,9 @@
 /* V14 shell interactions: persisted collapse, accessible mobile drawer. */
 (function(){
 'use strict';
-var side=document.getElementById('sidebar'),main=document.getElementById('mainContent'),toggle=document.getElementById('toggleSidebar'),mobile=document.getElementById('mobileNavToggle'),backdrop=document.getElementById('sidebarBackdrop');
+var side=document.getElementById('sidebar'),main=document.getElementById('mainContent'),toggle=document.getElementById('toggleSidebar'),mobile=document.getElementById('mobileNavToggle'),backdrop=document.getElementById('sidebarBackdrop'),dashboardSettings=document.getElementById('btnAjustesDashboard'),settingsTrigger=document.getElementById('btnAjustes');
 if(!side||!main)return;
+if(dashboardSettings&&settingsTrigger){dashboardSettings.addEventListener('click',function(){settingsTrigger.click();});}
 var key='cg-sidebar-collapsed',small=function(){return window.matchMedia('(max-width:620px)').matches;};
 function setCollapsed(value,save){side.classList.toggle('collapsed',value);main.classList.toggle('collapsed',value);if(toggle){toggle.setAttribute('aria-expanded',String(!value));toggle.setAttribute('aria-label',value?'Expandir menú lateral':'Contraer menú lateral');toggle.title=value?'Expandir menú':'Contraer menú';var i=toggle.querySelector('i');if(i){i.classList.toggle('fa-chevron-left',!value);i.classList.toggle('fa-chevron-right',value);}}if(save){try{localStorage.setItem(key,value?'1':'0');}catch(e){}}}
 function closeMobile(){side.classList.remove('mobile-open');if(backdrop)backdrop.classList.remove('is-visible');if(mobile)mobile.setAttribute('aria-expanded','false');}
