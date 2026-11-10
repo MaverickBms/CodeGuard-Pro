@@ -332,7 +332,7 @@ h1, h2, h3, h4, h5, h6 {
 [data-theme="paladin"] {
   --cg-bg:#F5F2E7; --cg-surface:#FFFDF5; --cg-surface-hover:#EDE8D8; --cg-surface-elevada:#FFFDF5;
   --cg-primary:#A78636; --cg-primary-hover:#896C2B; --cg-primary-dark:#896C2B; --cg-primary-light:color-mix(in srgb,#A78636 48%,white); --cg-accent:#6C9B88;
-  --cg-text:#25251F; --cg-text-on-surface:#25251F; --cg-text-secondary:#68675C; --cg-text-muted:#68675C; --cg-text-inverse:#FFFFFF; --cg-on-primary:#FFFFFF;
+  --cg-text:#25251F; --cg-text-on-surface:#25251F; --cg-text-secondary:#68675C; --cg-text-muted:#68675C; --cg-text-inverse:#FFFFFF; --cg-on-primary:#17150D;
   --cg-border:#BDB59A; --cg-border-light:color-mix(in srgb,#BDB59A 70%,white); --cg-border-focus:#896C2B;
   --cg-shadow-sm:0 1px 3px color-mix(in srgb,black 14%,transparent);
   --cg-shadow:0 6px 18px color-mix(in srgb,black 18%,transparent);
