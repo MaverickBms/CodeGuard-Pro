@@ -11,6 +11,7 @@
   if (!trigger || !closeButton || !doneButton || !panel || !overlay) return;
 
   var previousFocus = null;
+  panel.inert = true;
   var themes = ['light', 'dark', 'high-contrast', 'retro-pixel', 'cyberpunk', 'fantasy', 'sci-fi', 'warrior', 'mage', 'rogue', 'paladin', 'dark-mage'];
 
   function currentTheme() {
@@ -43,7 +44,9 @@
   }
 
   function openPanel() {
+    if (panel.classList.contains('activo')) return;
     previousFocus = document.activeElement;
+    panel.inert = false;
     panel.classList.add('activo');
     panel.setAttribute('aria-hidden', 'false');
     trigger.setAttribute('aria-expanded', 'true');
@@ -55,6 +58,7 @@
     if (!panel.classList.contains('activo')) return;
     panel.classList.remove('activo');
     panel.setAttribute('aria-hidden', 'true');
+    panel.inert = true;
     trigger.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('ajustes-abierto');
     if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
