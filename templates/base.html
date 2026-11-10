@@ -219,9 +219,10 @@
       </div>
       <div class="main-header-right">
         <div class="user-menu" id="userMenu" title="Usuario">
-          <button class="btn cg-btn cg-btn-ghost cg-btn-sm" id="btnUser">
-            <i class="fa-solid fa-user me-2"></i>{{ usuario_nombre|default:"Usuario" }}
-          </button>
+          <div class="user-identity" id="userIdentity" aria-label="Usuario actual">
+            <span class="user-identity-avatar"><i class="fa-solid fa-user"></i></span>
+            <span>{{ usuario_nombre|default:"Usuario" }}</span>
+          </div>
         </div>
       </div>
     </header>
