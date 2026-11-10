@@ -26,7 +26,14 @@ const themeNames = {
 function getCurrentTheme() {
   try {
     const saved = localStorage.getItem('cg-theme');
-    return themes.includes(saved) ? saved : 'light';
+    if (themes.includes(saved)) return saved;
+    const legacy = localStorage.getItem('codeguard-tema');
+    if (themes.includes(legacy)) {
+      localStorage.setItem('cg-theme', legacy);
+      localStorage.removeItem('codeguard-tema');
+      return legacy;
+    }
+    return 'light';
   } catch (error) {
     return 'light';
   }
