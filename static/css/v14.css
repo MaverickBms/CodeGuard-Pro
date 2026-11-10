@@ -149,3 +149,7 @@ body.ajustes-abierto{overflow:hidden}
 ::-webkit-scrollbar-thumb:hover{background:var(--cg-primary)}
 ::selection{background:color-mix(in srgb,var(--cg-primary) 32%,transparent);color:var(--cg-text)}
 @media(max-width:620px){.auth-page{min-height:auto;padding:4px}.auth-card,.form-card{border-radius:17px;padding:22px 17px}.user-identity{padding:5px 8px;font-size:.72rem}.user-identity-avatar{width:26px;height:26px}}
+
+/* Keep text contrast stable across every palette in high-emphasis banners. */
+.sidebar-brand{background:linear-gradient(125deg,var(--cg-primary),color-mix(in srgb,var(--cg-primary) 92%,var(--cg-accent)))}
+.v14-welcome{background:linear-gradient(125deg,var(--cg-primary),color-mix(in srgb,var(--cg-primary) 92%,var(--cg-accent)))}
