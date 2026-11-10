@@ -23,4 +23,4 @@
 <section><div class="v14-section-heading"><div><h2>Espacios de trabajo</h2><p>Accesos a los módulos previstos en la plataforma.</p></div></div><div class="v14-modules-grid">{% for modulo in modulos %}<article class="v14-module cg-card{% if not modulo.implementado %} is-disabled{% endif %} v14-enter"><span class="v14-module-icon"><i class="fa-solid {% if modulo.implementado %}fa-map-location-dot{% else %}fa-cubes{% endif %}"></i></span><h3>{{ modulo.titulo }}</h3><p>{{ modulo.descripcion }}</p>{% if modulo.implementado %}<a class="btn btn-primary btn-sm cg-btn cg-btn-primary" href="{% url modulo.url %}">Abrir módulo <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i></a>{% else %}<button class="btn btn-secondary btn-sm cg-btn" type="button" disabled><i class="fa-solid fa-lock me-2"></i>Próximamente</button>{% endif %}</article>{% endfor %}</div></section>
 </div>
 {% endblock %}
-{% block extra_js %}<script>(function(){var a=document.getElementById('btnAjustesDashboard'),b=document.getElementById('btnAjustes');if(a&&b)a.addEventListener('click',function(){b.click();});})();</script>{% endblock %}
+
