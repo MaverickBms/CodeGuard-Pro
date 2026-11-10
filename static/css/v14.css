@@ -155,3 +155,13 @@ body.ajustes-abierto{overflow:hidden}
 .v14-welcome{background:linear-gradient(125deg,var(--cg-primary),color-mix(in srgb,var(--cg-primary) 92%,var(--cg-accent)))}
 
 .v14-welcome p,.v14-welcome .v14-eyebrow{opacity:1}
+
+
+/* Keep settings reachable when the desktop navigation is collapsed. */
+@media(min-width:621px){
+  .sidebar.collapsed .sidebar-footer .btn{display:grid;width:48px;min-width:48px;height:46px;margin:4px auto;padding:0;place-items:center;font-size:0}
+  .sidebar.collapsed .sidebar-footer .btn i{margin:0!important;font-size:1rem}
+}
+.user-identity{max-width:180px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:620px){.user-identity{max-width:132px}}
+@media(max-width:380px){.user-identity{max-width:108px}}
