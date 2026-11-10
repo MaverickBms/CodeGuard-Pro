@@ -84,33 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  const toggleBtn = document.getElementById('toggleSidebar');
-  const sidebar = document.getElementById('sidebar');
-  const mainContent = document.getElementById('mainContent');
-  if (toggleBtn && sidebar && mainContent) {
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
-      mainContent.classList.toggle('collapsed');
-      const icon = toggleBtn.querySelector('i');
-      if (sidebar.classList.contains('collapsed')) {
-        icon.classList.remove('fa-chevron-left');
-        icon.classList.add('fa-chevron-right');
-      } else {
-        icon.classList.remove('fa-chevron-right');
-        icon.classList.add('fa-chevron-left');
-      }
-    });
+  // La navegación y el colapso del sidebar se gestionan en ui-v14.js.
 
-    document.querySelectorAll('.nav-item[data-url]').forEach((item) => {
-      item.addEventListener('click', (e) => {
-        if (item.classList.contains('disabled')) return;
-        const url = item.getAttribute('data-url');
-        if (url && url !== '#') {
-          window.location.href = url;
-        }
-      });
-    });
-  }
 });
 
 function getPrimaryColor() {
