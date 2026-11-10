@@ -61,6 +61,8 @@
   width: 4px;
   background: linear-gradient(180deg, var(--cg-primary), var(--cg-accent));
 }
+.ajustes-kicker { display:block; margin:0 0 5px; color:var(--cg-primary); font-size:.61rem; font-weight:850; letter-spacing:.16em; }
+.ajustes-heading-copy > p { margin:7px 0 0 52px; color:var(--cg-text-muted); font-size:.73rem; line-height:1.45; }
 .ajustes-header h3 {
   display: flex;
   align-items: center;
