@@ -89,11 +89,11 @@ input,select,textarea,.form-control{min-height:42px;border-radius:11px!important
 .ajustes-accessibility-note>span{width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border-radius:11px;background:color-mix(in srgb,var(--cg-primary) 13%,var(--cg-surface));color:var(--cg-primary)}
 .ajustes-accessibility-note strong{display:block;color:var(--cg-text);font-size:.78rem}
 .ajustes-accessibility-note p{margin:4px 0 0;color:var(--cg-text-muted);font-size:.7rem;line-height:1.55}
-.ajustes-grupo-acciones{position:sticky;bottom:-28px;z-index:2;display:flex;justify-content:flex-end;margin:18px -24px -28px;padding:14px 24px;background:color-mix(in srgb,var(--cg-surface) 94%,transparent);border-top:1px solid var(--cg-border);backdrop-filter:blur(12px)}
+.ajustes-grupo-acciones{position:sticky;bottom:0;z-index:2;display:flex;justify-content:flex-end;margin:18px -24px -28px;padding:14px 24px;background:color-mix(in srgb,var(--cg-surface) 94%,transparent);border-top:1px solid var(--cg-border);backdrop-filter:blur(12px)}
 #btnGuardarAjustes{min-width:112px;justify-content:center}
 body.ajustes-abierto{overflow:hidden}
 .ajustes-tema-btn:focus-visible,#btnCerrarAjustes:focus-visible,#btnGuardarAjustes:focus-visible{outline:3px solid var(--cg-border-focus);outline-offset:3px}
-@media(max-width:480px){.ajustes-contenido{width:100vw;border-radius:0}.ajustes-header{padding:17px}.ajustes-cuerpo{padding:18px 16px 24px}.ajustes-selectores-tema{gap:8px}.ajustes-tema-btn{min-height:68px;padding:8px;gap:8px}.ajustes-tema-btn.activo{padding:7px}.ajustes-theme-preview{width:34px;height:34px;flex-basis:34px}.ajustes-theme-copy strong{font-size:.68rem}.ajustes-theme-copy small{font-size:.55rem}.ajustes-grupo-acciones{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px;bottom:-24px}}
+@media(max-width:480px){.ajustes-contenido{width:100vw;border-radius:0}.ajustes-header{padding:17px}.ajustes-cuerpo{padding:18px 16px 24px}.ajustes-selectores-tema{gap:8px}.ajustes-tema-btn{min-height:68px;padding:8px;gap:8px}.ajustes-tema-btn.activo{padding:7px}.ajustes-theme-preview{width:34px;height:34px;flex-basis:34px}.ajustes-theme-copy strong{font-size:.68rem}.ajustes-theme-copy small{font-size:.55rem}.ajustes-grupo-acciones{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px;bottom:0}}
 @media(prefers-reduced-motion:reduce){.ajustes-panel,.ajustes-contenido,.ajustes-tema-btn{transition:none!important}}
 
 
