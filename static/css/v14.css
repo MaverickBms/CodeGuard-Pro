@@ -153,3 +153,5 @@ body.ajustes-abierto{overflow:hidden}
 /* Keep text contrast stable across every palette in high-emphasis banners. */
 .sidebar-brand{background:linear-gradient(125deg,var(--cg-primary),color-mix(in srgb,var(--cg-primary) 92%,var(--cg-accent)))}
 .v14-welcome{background:linear-gradient(125deg,var(--cg-primary),color-mix(in srgb,var(--cg-primary) 92%,var(--cg-accent)))}
+
+.v14-welcome p,.v14-welcome .v14-eyebrow{opacity:1}
