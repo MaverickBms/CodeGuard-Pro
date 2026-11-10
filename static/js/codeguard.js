@@ -9,18 +9,18 @@ const themes = [
 ];
 
 const themeNames = {
-  'light': 'Claro Diurno',
-  'dark': 'Oscuro Nocturno',
-  'high-contrast': 'Alto Contraste',
-  'retro-pixel': 'Retro Pixel',
+  'light': 'Claro diurno',
+  'dark': 'Oscuro nocturno',
+  'high-contrast': 'Alto contraste',
+  'retro-pixel': 'Retro pixel',
   'cyberpunk': 'Cyberpunk',
-  'fantasy': 'Reino Fantasía',
-  'sci-fi': 'Ciencia Ficción',
+  'fantasy': 'Reino fantasía',
+  'sci-fi': 'Ciencia ficción',
   'warrior': 'Guerrero',
   'mage': 'Mago',
   'rogue': 'Pícaro',
   'paladin': 'Paladín',
-  'dark-mage': 'Oscuro Mago'
+  'dark-mage': 'Mago oscuro'
 };
 
 function getCurrentTheme() {
