@@ -1,0 +1,8 @@
+--- a/templates/base.html
++++ b/templates/base.html
+@@
+   <link rel="stylesheet" href="{% static 'css/themes.css' %}">
+   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
++  <!-- Refinamiento visual responsive; capa aditiva que conserva los 12 temas -->
++  <link rel="stylesheet" href="{% static 'css/polish.css' %}">
+   <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">

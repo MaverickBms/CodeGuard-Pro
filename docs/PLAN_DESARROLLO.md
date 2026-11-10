@@ -19,7 +19,8 @@
 5. Configuración inicial guiada (setup): usuario, contraseña, aceptación de términos.
 6. Frase de rescate de alta entropía (≥128 bits), mostrada una sola vez, hash Argon2, un uso.
 7. Sesiones server-side con timeout de inactividad (15 min defecto).
-8. Panel principal protegido (`@login_required`) con navegación principal.
+8. Panel principal con navegación principal. Acceso directo sin credenciales mientras
+   `AUTH_DISABLED = True`; protegido con `@login_required` cuando `AUTH_DISABLED = False`.
 9. Middleware de seguridad: sesión por inactividad, cabeceras CSP/X-Frame/etc., redirección setup.
 10. Registro de auditoría de accesos (`AuditLog`).
 11. Logging a consola y archivo (`logs/codeguard.log`).

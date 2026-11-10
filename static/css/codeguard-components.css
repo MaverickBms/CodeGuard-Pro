@@ -1,0 +1,225 @@
+/* ==========================================================================
+   CodeGuard Pro — Componentes de UI (WP-UI-01.a)
+   Archivo: static/css/codeguard-components.css
+   
+   Estilos puros de CSS para componentes: botones, formularios, cards.
+   USO EXCLUSIVO de variables CSS del tema (var(--cg-*)).
+   SIN colores hardcodeados (#RRGGBB).
+   SIN JavaScript.
+   
+   Condiciones vinculantes (DECISIÓN 16):
+   - Solo CSS puro: hover, focus, disabled con pseudo-clases.
+   - Validación visual (.is-invalid, .is-valid) también es CSS.
+   - NO se modifica static/css/themes.css.
+   - NO se modifican las 12 paletas P01-P12.
+   ========================================================================== */
+
+/* --- Botones --- */
+.cg-btn {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: var(--cg-radius, 0.25rem);
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.cg-btn:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Botón primario: usa --cg-primary y --cg-primary-hover del tema */
+.cg-btn-primary {
+  color: var(--cg-on-primary);
+  background-color: var(--cg-primary);
+  border-color: var(--cg-primary);
+}
+
+.cg-btn-primary:hover {
+  background-color: var(--cg-primary-hover);
+  border-color: var(--cg-primary-hover);
+}
+
+.cg-btn-primary:focus {
+  outline: 2px solid var(--cg-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cg-primary) 30%, transparent);
+}
+
+/* Botón secundario */
+.cg-btn-secondary {
+  color: var(--cg-text);
+  background-color: var(--cg-surface);
+  border-color: var(--cg-border);
+}
+
+.cg-btn-secondary:hover {
+  background-color: var(--cg-surface-hover);
+  border-color: var(--cg-border-focus);
+}
+
+.cg-btn-secondary:focus {
+  outline: 2px solid var(--cg-border-focus);
+  outline-offset: 2px;
+}
+
+/* Botón deshabilitado (estilo explícito para claridad) */
+.cg-btn-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- Formularios --- */
+.cg-form-group {
+  margin-bottom: 1rem;
+}
+
+.cg-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  color: var(--cg-text);
+}
+
+.cg-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cg-input-group-text {
+  display: flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--cg-text);
+  text-align: center;
+  background-color: var(--cg-surface);
+  border: 1px solid var(--cg-border);
+  border-radius: var(--cg-radius, 0.25rem) 0 0 var(--cg-radius, 0.25rem);
+}
+
+/* Estados de validación visual (CSS puro, sin JS) */
+.cg-input-invalid {
+  border-color: var(--cg-danger);
+}
+
+.cg-input-invalid:focus {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cg-danger) 30%, transparent);
+}
+
+.cg-input-valid {
+  border-color: var(--cg-success);
+}
+
+.cg-input-valid:focus {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cg-success) 30%, transparent);
+}
+
+/* --- Cards --- */
+.cg-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: var(--cg-bg);
+  background-clip: border-box;
+  border: 1px solid var(--cg-border);
+  border-radius: var(--cg-radius, 0.25rem);
+}
+
+/* --- Utilidades de alineación y espaciado --- */
+.cg-text-center {
+  text-align: center;
+}
+
+.cg-d-flex {
+  display: flex;
+}
+
+.cg-align-center {
+  align-items: center;
+}
+
+.cg-justify-center {
+  justify-content: center;
+}
+
+.cg-mt-2 {
+  margin-top: 0.5rem;
+}
+
+.cg-mt-4 {
+  margin-top: 1.5rem;
+}
+
+.cg-mb-3 {
+  margin-bottom: 1rem;
+}
+
+.cg-link {
+  color: var(--cg-primary);
+  text-decoration: underline;
+}
+
+.cg-link:hover {
+  color: var(--cg-primary-hover);
+}
+
+.cg-alert {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--cg-border);
+  border-radius: var(--cg-radius, 0.25rem);
+  background-color: var(--cg-surface);
+  color: var(--cg-text);
+}
+
+/* --- Inputs reales dentro de grupos de formulario --- */
+.cg-input-group input,
+.cg-input-group select,
+.cg-input-group textarea,
+.cg-form-group input,
+.cg-form-group select,
+.cg-form-group textarea {
+    background-color: var(--cg-surface);
+    color: var(--cg-text);
+    border: 1px solid var(--cg-border);
+    border-radius: var(--cg-radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    width: 100%;
+}
+
+.cg-input-group input:focus,
+.cg-input-group select:focus,
+.cg-input-group textarea:focus,
+.cg-form-group input:focus,
+.cg-form-group select:focus,
+.cg-form-group textarea:focus {
+    outline: 2px solid var(--cg-primary);
+    outline-offset: 2px;
+    border-color: var(--cg-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--cg-primary) 30%, transparent);
+}
+
+.cg-input-group input:disabled,
+.cg-input-group select:disabled,
+.cg-input-group textarea:disabled,
+.cg-form-group input:disabled,
+.cg-form-group select:disabled,
+.cg-form-group textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

@@ -74,13 +74,26 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "config.middleware.AccesoLocalMiddleware",
     "config.middleware.CabecerasSeguridadMiddleware",
     "config.middleware.SesionInactividadMiddleware",
 ]
 
 # URL de inicio de sesión usada por @login_required y el middleware de
-# inactividad. El flujo de autenticación aún se encuentra en implementación (CG-001).
+# inactividad cuando la autenticación está activa. El flujo de autenticación se
+# encuentra temporalmente desactivado (ver AUTH_DISABLED y docs/MODO_SIN_AUTENTICACION.md).
 LOGIN_URL = "accounts:login"
+
+# Interruptor único de desactivación temporal del sistema de autenticación.
+# Cuando es True:
+#   - La aplicación abre directamente el panel principal (sin login).
+#   - No se crean sesiones ni se autentica mediante request.user.
+#   - Las rutas de autenticación redirigen al panel principal.
+#   - El progreso se asocia al propietario local existente (request.usuario_local).
+#   - La auditoría registra actor nulo (usuario=None).
+# Cuando es False se recupera el flujo de autenticación original conservado íntegramente.
+# Cambiar solo con autorización expresa del propietario del proyecto.
+AUTH_DISABLED = True
 
 ROOT_URLCONF = "config.urls"
 

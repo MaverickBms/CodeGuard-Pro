@@ -18,7 +18,7 @@ autenticación, y no se asume que la red local es segura.
 
 | ID | Requisito | Cómo se implementa | Estado |
 |---|---|---|---|
-| RS-001 | Autenticación local obligatoria | Todas las vistas requieren login; sin acceso anónimo | ✅ |
+| RS-001 | Autenticación local obligatoria | Todas las vistas requieren login cuando `AUTH_DISABLED = False`. Temporalmente desactivado (`AUTH_DISABLED = True`): la aplicación abre directamente el panel principal sin credenciales. La implementación original se conserva y puede reactivarse. Ver `docs/MODO_SIN_AUTENTICACION.md`. | ⚠️ Temporalmente desactivado |
 | RS-002 | Argon2 para contraseñas | `AUTH_PASSWORD_HASHERS` con Argon2 primero | ✅ |
 | RS-003 | Frase de rescate ≥128 bits, hash, un uso | `generar_frase_rescate()` (32 caracteres, ~201 bits), hash Argon2, `usada`. La frase **no se consume al validar**: solo se invalida al completar exitosamente el cambio de contraseña (flujo atómico en `cambiar_contrasena_por_frase`). | ✅ |
 | RS-004 | Bind 127.0.0.1 | Servidor WSGI local (Waitress) en `127.0.0.1:<puerto>`; `ALLOWED_HOSTS` solo localhost | ✅ |
@@ -84,3 +84,13 @@ autenticación, y no se asume que la red local es segura.
 
 Ver `docs/PLAN_PRUEBAS.md` (CSRF, XSS, validación de archivos, acceso no autorizado,
 path traversal, archivos maliciosos, exposición de secretos).
+
+---
+
+### Autenticación temporalmente desactivada
+
+El sistema de autenticación (RS-001, RS-003, RS-009, RS-010, RS-017 y relacionados)
+está **temporalmente desactivado** (`AUTH_DISABLED = True`). No se han eliminado
+modelos, migraciones ni datos. La implementación original se conserva íntegramente
+y puede reactivarse con autorización expresa del propietario del proyecto.
+Ver `docs/MODO_SIN_AUTENTICACION.md`.

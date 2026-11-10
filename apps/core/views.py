@@ -1,8 +1,10 @@
 """Vistas del módulo core (panel principal y navegación)."""
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+from apps.accounts.identity import obtener_actor_auditoria, obtener_usuario_local, requiere_acceso
 from apps.audit.services import registrar_evento
 from apps.core.models import ConfiguracionSistema
 from apps.roadmaps.models import Etapa, Progreso, Roadmap
@@ -14,12 +16,22 @@ from apps.roadmaps.services import (
 
 
 def get_usuario_actual(request):
-    """Devuelve el usuario autenticado de la petición.
+    """Devuelve el usuario activo para operaciones de progreso.
 
-    No existe creación implícita de usuarios: la identidad proviene del flujo
-    de autenticación (configuración inicial / inicio de sesión). Ver CG-003.
+    En modo sin autenticación devuelve el propietario local existente
+    (``request.usuario_local``). Cuando la autenticación está activa devuelve
+    el usuario autenticado de la petición.
+
+    Si no existe propietario local ni usuario autenticado, devuelve None.
+    Las vistas deben manejar este caso: lectura permitida, escritura bloqueada
+    con mensaje comprensible. No se crea ningún usuario implícitamente.
     """
-    return request.user
+    usuario_local = getattr(request, "usuario_local", None)
+    if usuario_local is not None:
+        return usuario_local
+    if request.user.is_authenticated:
+        return request.user
+    return None
 
 
 def _progreso_reciente(usuario, limite=5):
@@ -47,13 +59,17 @@ def _etapa_siguiente(usuario, roadmap):
     return None
 
 
-@login_required
+@requiere_acceso
 def panel(request):
     """Panel principal (dashboard).
 
     Muestra el progreso general, etapas completadas, lecciones completadas,
     próxima etapa disponible y actividad reciente. Todos los datos provienen
     de la base de datos; no se inventan porcentajes ni estadísticas.
+
+    En modo sin autenticación no se solicitan credenciales y se usa el
+    propietario local existente para asociar el progreso. La auditoría
+    registra actor nulo (usuario=None).
     """
     usuario = get_usuario_actual(request)
     configuracion = ConfiguracionSistema.cargar()
@@ -100,8 +116,14 @@ def panel(request):
 
     registrar_evento(
         "acceso_panel",
-        usuario=usuario,
+        usuario=obtener_actor_auditoria(request),
         descripcion="Acceso al panel principal.",
+    )
+
+    # Tiempo de sesión por inactividad (solo informativo en modo sin autenticación).
+    sesion_timeout_minutos = (
+        getattr(usuario, "sesion_timeout_minutos", None)
+        or getattr(settings, "SESSION_TIMEOUT_MINUTES", 15)
     )
 
     return render(
@@ -182,6 +204,9 @@ def panel(request):
                 },
             ],
             "user": usuario,
+            "usuario_nombre": usuario.get_username() if usuario else "Local",
+            "sesion_timeout_minutos": sesion_timeout_minutos,
+            "auth_disabled": getattr(settings, "AUTH_DISABLED", False),
             "avance": avance,
             "etapas_completadas": len(etapas_completadas_set),
             "lecciones_completadas": lecciones_completadas,

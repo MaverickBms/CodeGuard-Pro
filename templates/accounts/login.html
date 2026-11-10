@@ -6,51 +6,53 @@
 {% block page_subtitle %}Accede a tu cuenta con tu contraseña maestra.{% endblock %}
 
 {% block content %}
-<div class="glass-card form-card">
-  <div class="form-header">
-    <div class="d-flex align-items-center justify-content-center mb-3">
-      <i class="fa-solid fa-sign-in-alt fa-2x text-theme-primary"></i>
-    </div>
-    <h2>Iniciar sesión</h2>
-    <p>Ingresa tu usuario y contraseña maestra para acceder a tu panel.</p>
-  </div>
-
-  <form method="post" novalidate>
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-
-    <div class="form-group">
-      <label class="form-label">Usuario</label>
-      <div class="input-group">
-        <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
-        {{ form.username }}
+<div class="auth-page">
+  <div class="auth-card cg-card">
+    <div class="auth-header cg-text-center cg-mb-5">
+      <div class="auth-logo">
+        <i class="fa-solid fa-shield-halved fa-3x text-theme-primary"></i>
       </div>
-      {{ form.username.errors }}
+      <h2>Iniciar sesión</h2>
+      <p>Ingresa tu usuario y contraseña maestra para acceder a tu panel.</p>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Contraseña maestra</label>
-      <div class="input-group">
-        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
-        {{ form.password }}
+    <form method="post" novalidate id="form-login">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <div class="form-group cg-form-group">
+        <label class="form-label cg-label">{{ form.username.label }}</label>
+        <div class="input-group cg-input-group">
+          <span class="input-group-text cg-input-group-text"><i class="fa-solid fa-user"></i></span>
+          {{ form.username }}
+        </div>
+        {{ form.username.errors }}
       </div>
-      {{ form.password.errors }}
+
+      <div class="form-group cg-form-group">
+        <label class="form-label cg-label">{{ form.password.label }}</label>
+        <div class="input-group cg-input-group">
+          <span class="input-group-text cg-input-group-text"><i class="fa-solid fa-key"></i></span>
+          {{ form.password }}
+        </div>
+        {{ form.password.errors }}
+      </div>
+
+      {% if form.errors %}
+        <div class="alert alert-danger cg-alert">
+          <i class="fa-solid fa-circle-exclamation me-2"></i>
+          Usuario o contraseña incorrectos.
+        </div>
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary cg-btn cg-btn-primary" style="width: 100%;">
+        <i class="fa-solid fa-sign-in me-2"></i>Iniciar sesión
+      </button>
+    </form>
+
+    <div class="auth-footer cg-text-center cg-mt-4">
+      <p class="text-muted small">¿Olvidaste tu contraseña? Usa tu <a href="{% url 'accounts:rescate' %}" class="text-theme-primary cg-link">frase de rescate</a>.</p>
     </div>
-
-    {% if form.errors %}
-      <div class="alert alert-danger">
-        <i class="fa-solid fa-circle-exclamation me-2"></i>
-        Usuario o contraseña incorrectos.
-      </div>
-    {% endif %}
-
-    <button type="submit" class="btn btn-primary" style="width: 100%;">
-      <i class="fa-solid fa-sign-in me-2"></i>Iniciar sesión
-    </button>
-  </form>
-
-  <div class="text-center mt-4">
-    <p class="text-muted small">¿Olvidaste tu contraseña? Usa tu <a href="{% url 'accounts:rescate' %}" class="text-theme-primary">frase de rescate</a>.</p>
   </div>
 </div>
 {% endblock %}

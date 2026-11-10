@@ -10,10 +10,14 @@
 
   <!-- Recursos estáticos locales (sin CDN, offline-first) -->
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-  <!-- Componentes heredados (se cargan antes para que temas y layout tengan prioridad) -->
   <link rel="stylesheet" href="{% static 'css/codeguard.css' %}">
   <link rel="stylesheet" href="{% static 'css/themes.css' %}">
+  <link rel="stylesheet" href="{% static 'css/design-tokens.css' %}">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+  <!-- Refinamiento visual responsive; capa aditiva que conserva los 12 temas -->
+  <link rel="stylesheet" href="{% static 'css/polish.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components-base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/codeguard-components.css' %}">
   <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/sweetalert2.min.css' %}">
   <link rel="shortcut icon" href="{% static 'icons/icon.svg' %}">
@@ -25,7 +29,7 @@
 </head>
 <body data-theme="light">
   <!-- Barra lateral semántica -->
-  <aside class="sidebar" id="sidebar">
+  <aside class="sidebar cg-sidebar" id="sidebar">
     <div class="sidebar-brand">
       <div class="brand-content">
         <div class="brand-icon">
@@ -37,108 +41,157 @@
         <i class="fa-solid fa-chevron-left"></i>
       </button>
     </div>
-    <nav class="sidebar-nav" aria-label="Navegación principal">
+    <nav class="sidebar-nav cg-sidebar-nav" aria-label="Navegación principal">
       <div class="nav-section">
         <div class="nav-section-title">Principal</div>
-        <button class="nav-item{% if request.resolver_match.app_name == 'core' %} active{% endif %}" data-url="{% url 'core:panel' %}">
+        <button class="nav-item cg-nav-item{% if request.resolver_match.app_name == 'core' %} cg-nav-active{% endif %}" data-url="{% url 'core:panel' %}">
           <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
           <span class="nav-label">Panel principal</span>
         </button>
       </div>
       <div class="nav-section">
         <div class="nav-section-title">Academia</div>
-        <button class="nav-item{% if request.resolver_match.app_name == 'roadmaps' %} active{% endif %}" data-url="{% url 'roadmaps:lista' %}">
+        <button class="nav-item cg-nav-item{% if request.resolver_match.app_name == 'roadmaps' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:lista' %}">
           <span class="nav-icon"><i class="fa-solid fa-map"></i></span>
           <span class="nav-label">Roadmap ASCENSO</span>
         </button>
-        <button class="nav-item disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
           <span class="nav-icon"><i class="fa-solid fa-medal"></i></span>
           <span class="nav-label">Competencias</span>
         </button>
-        <button class="nav-item disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
           <span class="nav-icon"><i class="fa-solid fa-book"></i></span>
           <span class="nav-label">Biblioteca</span>
         </button>
-        <button class="nav-item disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
           <span class="nav-icon"><i class="fa-solid fa-brain"></i></span>
           <span class="nav-label">Base de conocimiento</span>
         </button>
-        <button class="nav-item disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
           <span class="nav-icon"><i class="fa-solid fa-pen-nib"></i></span>
           <span class="nav-label">Evaluaciones</span>
         </button>
       </div>
       <div class="nav-section">
         <div class="nav-section-title">Práctica</div>
-        <button class="nav-item disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
           <span class="nav-icon"><i class="fa-solid fa-paperclip"></i></span>
           <span class="nav-label">Evidencias</span>
         </button>
-        <button class="nav-item disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
           <span class="nav-icon"><i class="fa-solid fa-flask"></i></span>
           <span class="nav-label">Laboratorios</span>
         </button>
       </div>
       <div class="nav-section">
         <div class="nav-section-title">Administración</div>
-        <button class="nav-item disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
           <span class="nav-icon"><i class="fa-solid fa-database"></i></span>
           <span class="nav-label">Backups</span>
         </button>
-        <button class="nav-item disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
           <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
           <span class="nav-label">Vigencia</span>
         </button>
-        <button class="nav-item disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
           <span class="nav-icon"><i class="fa-solid fa-scales"></i></span>
           <span class="nav-label">Ética</span>
         </button>
       </div>
     </nav>
+    <div class="sidebar-footer">
+      <button class="btn cg-btn cg-btn-secondary cg-btn-sm" id="btnAjustes" title="Ajustes">
+        <i class="fa-solid fa-gear me-2"></i>Ajustes
+      </button>
+    </div>
   </aside>
+
+  <!-- Panel de Ajustes (oculto por defecto) -->
+  <div class="ajustes-panel" id="ajustesPanel" role="dialog" aria-modal="true" aria-labelledby="ajustesTitulo">
+    <div class="ajustes-overlay" id="ajustesOverlay"></div>
+    <div class="ajustes-contenido">
+      <div class="ajustes-header">
+        <h3 id="ajustesTitulo"><i class="fa-solid fa-gear"></i> Ajustes</h3>
+        <button class="btn cg-btn cg-btn-ghost cg-btn-sm" id="btnCerrarAjustes" title="Cerrar ajustes">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+      <div class="ajustes-cuerpo">
+        <div class="ajustes-grupo">
+          <h4 class="ajustes-grupo-titulo">Apariencia</h4>
+          <div class="ajustes-item">
+            <label class="ajustes-label">Tema visual</label>
+            <div class="ajustes-selectores-tema">
+              <button class="ajustes-tema-btn" data-theme="light" title="Claro Diurno">
+                <i class="fa-solid fa-sun"></i> Claro
+              </button>
+              <button class="ajustes-tema-btn" data-theme="dark" title="Oscuro Nocturno">
+                <i class="fa-solid fa-moon"></i> Oscuro
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="ajustes-grupo">
+          <h4 class="ajustes-grupo-titulo">Preferencias</h4>
+          <div class="ajustes-item">
+            <label class="ajustes-label">Idioma</label>
+            <select class="ajustes-select" id="ajustesIdioma">
+              <option value="es">Español</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+          <div class="ajustes-item">
+            <label class="ajustes-label">Modo de accesibilidad</label>
+            <select class="ajustes-select" id="ajustesAccesibilidad">
+              <option value="normal">Estándar</option>
+              <option value="alto-contraste">Alto contraste</option>
+            </select>
+          </div>
+        </div>
+        <div class="ajustes-grupo">
+          <h4 class="ajustes-grupo-titulo">Legal</h4>
+          <div class="ajustes-item">
+            <label class="ajustes-label">Términos y condiciones</label>
+            <button class="btn cg-btn cg-btn-ghost cg-btn-sm btn-ver-terminos" type="button">
+              Ver términos
+            </button>
+          </div>
+          <div class="ajustes-item">
+            <label class="ajustes-label">Política de privacidad</label>
+            <button class="btn cg-btn cg-btn-ghost cg-btn-sm btn-ver-privacidad" type="button">
+              Ver política
+            </button>
+          </div>
+        </div>
+        <div class="ajustes-grupo ajustes-grupo-acciones">
+          <button class="btn cg-btn cg-btn-secondary" id="btnGuardarAjustes" type="button">
+            <i class="fa-solid fa-save me-2"></i>Guardar cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Área principal semántica -->
   <div class="main-content" id="mainContent">
     <header class="main-header">
       <div class="main-header-left">
-        <div class="page-title">{% block page_title %}Panel{% endblock %}</div>
+        <div class="page-title cg-page-title">{% block page_title %}Panel{% endblock %}</div>
         <div class="page-subtitle">{% block page_subtitle %}{% endblock %}</div>
       </div>
       <div class="main-header-right">
-        <div class="theme-selector dropdown" id="themeSelector" title="Cambiar tema">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="themeDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa-solid fa-palette me-1"></i>Tema
+        <div class="user-menu" id="userMenu" title="Usuario">
+          <button class="btn cg-btn cg-btn-ghost cg-btn-sm" id="btnUser">
+            <i class="fa-solid fa-user me-2"></i>{{ usuario_nombre|default:"Usuario" }}
           </button>
-          <ul class="dropdown-menu dropdown-menu-end theme-list" aria-labelledby="themeDropdownButton">
-            <li><h6 class="dropdown-header">Tema visual</h6></li>
-            <li><button class="dropdown-item theme-option" data-theme="light" type="button"><i class="fa-solid fa-sun me-2"></i>Claro Diurno</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="dark" type="button"><i class="fa-solid fa-moon me-2"></i>Oscuro Nocturno</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="high-contrast" type="button"><i class="fa-solid fa-circle-half-stroke me-2"></i>Alto Contraste</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="retro-pixel" type="button"><i class="fa-solid fa-palette me-2"></i>Retro Pixel</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="cyberpunk" type="button"><i class="fa-solid fa-bolt me-2"></i>Cyberpunk</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="fantasy" type="button"><i class="fa-solid fa-wand-magic-sparkles me-2"></i>Reino Fantasía</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="sci-fi" type="button"><i class="fa-solid fa-robot me-2"></i>Ciencia Ficción</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="warrior" type="button"><i class="fa-solid fa-user-ninja me-2"></i>Guerrero</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="mage" type="button"><i class="fa-solid fa-hat-wizard me-2"></i>Mago</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="rogue" type="button"><i class="fa-solid fa-mask-ventriloquist me-2"></i>Pícaro</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="paladin" type="button"><i class="fa-solid fa-shield-halved me-2"></i>Paladín</button></li>
-            <li><button class="dropdown-item theme-option" data-theme="dark-mage" type="button"><i class="fa-solid fa-skull me-2"></i>Oscuro Mago</button></li>
-          </ul>
         </div>
-        <!-- Cierre de sesión: solo POST, protegido por CSRF -->
-        <form method="post" action="{% url 'accounts:logout' %}" class="d-inline" id="formLogout" style="margin-left: 10px;">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-outline-secondary" title="Cerrar sesión" aria-label="Cerrar sesión">
-            <i class="fa-solid fa-sign-out-alt me-1"></i>Cerrar sesión
-          </button>
-        </form>
       </div>
     </header>
 
     <main class="page-container" role="main">
       {% if messages %}
         {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">
+          <div class="alert alert-{{ message.tags }} cg-alert">
             {{ message }}
           </div>
         {% endfor %}
@@ -159,6 +212,8 @@
   <script src="{% static 'js/htmx.min.js' %}"></script>
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'js/sweetalert2.min.js' %}"></script>
+  <script src="{% static 'js/onboarding.js' %}"></script>
+  <script src="{% static 'js/settings.js' %}"></script>
 
   {% block extra_js %}{% endblock %}
 </body>

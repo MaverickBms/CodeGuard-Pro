@@ -50,7 +50,9 @@ identificadas en el plan maestro (CG-001 a CG-010):
 - **CG-003** — Eliminación de la creación implícita de usuario.
 - **CG-004** — Middlewares de sesión/autenticación.
 - **CG-005** — Middleware de inactividad.
-- **CG-006** — Rutas protegidas con `@login_required`.
+- **CG-006** — Rutas protegidas con `@login_required` cuando `AUTH_DISABLED = False`;
+  acceso directo al panel cuando `AUTH_DISABLED = True` (autenticación temporalmente
+  desactivada, ver `docs/MODO_SIN_AUTENTICACION.md`).
 - **CG-001** — Vistas y URLs de autenticación implementadas.
 - **CG-002** — Modelo de usuario custom `accounts.Usuario` activado (`AUTH_USER_MODEL`) con
   migración de datos que preservó al usuario existente.

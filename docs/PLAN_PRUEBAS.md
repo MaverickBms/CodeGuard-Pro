@@ -4,6 +4,11 @@
 **Versión:** 1.0  
 **Entorno de medida:** HP 240 14 G10, Fedora 44, i3-N305, ~1.3 GB RAM libre, SSD NVMe
 
+> **Nota:** El sistema de autenticación está temporalmente desactivado
+> (`AUTH_DISABLED = True`). Las pruebas de autenticación original se conservan
+> y se verifican con `override_settings(AUTH_DISABLED=False)`. Las nuevas pruebas
+> del modo sin autenticación usan `override_settings(AUTH_DISABLED=True)`.
+
 ---
 
 ## 1. Entorno de medición (RNF-003)
@@ -69,15 +74,29 @@ Procedimiento de medición de RAM en reposo:
 | T-024 | Login durante bloqueo | POST dentro de ventana de bloqueo | Rechazado sin comprobar contraseña | ✅ Automática |
 | T-025 | Reinicio tras éxito | Login exitoso después de bloqueo vencido | `intentos_fallidos` = 0, `bloqueado_hasta` = null | ✅ Automática |
 | T-026 | Mensaje genérico | Login fallido con usuario inexistente | "Usuario o contraseña incorrectos" sin revelar existencia | ✅ Automática |
-| T-027 | Bloqueo expira | Esperar 15 min, nuevo intento | Se permite nuevo intento de login | ⏳ (manual, requiere espera) |
+| T-027 | Bloqueo expira | Simular 15 min (mocking del reloj) | Se permite nuevo intento de login | ✅ Automática (`test_bloqueo_expira_tras_quince_minutos`) |
 
 ---
+
+## 2.2 Pruebas funcionales de modo sin autenticación (esta intervención)
+
+| ID | Prueba | Caso | Resultado esperado | Estado |
+|---|---|---|---|---|
+| T-500 | Panel directo | GET `/` sin credenciales | Panel (200), sin redirección a login | ✅ Automática |
+| T-501 | No redirección a login | Cualquier vista principal | 200, nunca redirige a `/accounts/login/` | ✅ Automática |
+| T-502 | Rutas de auth desactivadas | GET/POST `/accounts/login/`, `/accounts/setup/`, `/accounts/logout/`, `/accounts/rescate/`, `/accounts/rescate/resetear/`, `/accounts/cambiar-contraseña/` | Redirección al panel (302) | ✅ Automática |
+| T-503 | Login POST no autentica | POST `/accounts/login/` con credenciales | Redirección al panel, no inicia sesión | ✅ Automática |
+| T-504 | Sin botón de logout | Navegación visible | No aparece "Cerrar sesión" ni `accounts:logout` | ✅ Automática |
+| T-505 | request.user anónimo | Cualquier petición | `request.user` es `AnonymousUser` | ✅ Automática |
+| T-506 | Auditoría actor nulo | Acceso al panel | Evento `acceso_panel` con `usuario=None` | ✅ Automática |
+| T-507 | Progreso con propietario local | Marcar lección sin login | Progreso guardado con usuario local | ✅ Automática |
+| T-508 | 12 temas presentes | Selector de temas | 12 `data-theme` en el HTML | ✅ Automática |
 
 ## 3. Pruebas de seguridad (pendientes de automatizar)
 
 | ID | Prueba | Caso | Resultado esperado | Estado |
 |---|---|---|---|---|
-| T-300 | Acceso anónimo | GET a vista protegida sin login | Redirección a login (302) | ✅ Verificado |
+| T-300 | Acceso anónimo | GET a vista principal sin login | Panel (200), sin redirección (auth desactivada) | ✅ Verificado (automática: `test_panel_abre_directamente_sin_autenticacion`) |
 | T-301 | Argon2 | Contraseña almacenada | Hash Argon2 (no texto plano) | ✅ Por código |
 | T-302 | Frase de rescate | Usar frase dos veces | Segunda vez rechazada (usada) | ⏳ |
 | T-303 | Bind | Servidor en 0.0.0.0 | No permitido; solo 127.0.0.1 | ✅ Verificado |

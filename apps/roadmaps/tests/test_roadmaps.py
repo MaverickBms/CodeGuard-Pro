@@ -1,7 +1,7 @@
 """Pruebas del módulo académico (Roadmap ASCENSO)."""
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
@@ -130,6 +130,7 @@ class ProgresoTest(TestCase):
         self.assertEqual(avance["porcentaje"], 3)
 
 
+@override_settings(AUTH_DISABLED=False)
 class VistasRoadmapTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -231,6 +232,7 @@ class RoadmapSinDatosTest(TestCase):
         self.assertFalse(Roadmap.objects.exists())
 
 
+@override_settings(AUTH_DISABLED=False)
 class SesionVencidaOperacionesAcademicasTests(TestCase):
     """Una sesión vencida no debe modificar el progreso académico (CG-002)."""
 
@@ -281,3 +283,52 @@ class SesionVencidaOperacionesAcademicasTests(TestCase):
                 usuario=self.usuario, leccion=self.leccion, estado="completado"
             ).exists()
         )
+
+
+@override_settings(AUTH_DISABLED=True)
+class RoadmapAccesoAnonimoTests(TestCase):
+    """Roadmaps accesibles sin autenticación cuando AUTH_DISABLED=True."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.roadmap = cargar_ascenso()
+        cls.usuario = get_user_model().objects.create_user(
+            username="tester", password="ClaveSegura123!"
+        )
+
+    def test_lista_accesible_sin_login(self):
+        """La lista de roadmap se abre sin credenciales."""
+        respuesta = self.client.get(reverse("roadmaps:lista"))
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertEqual(len(respuesta.context["etapas"]), 33)
+        self.assertContains(respuesta, "Roadmap ASCENSO")
+
+    def test_detalle_accesible_sin_login(self):
+        """El detalle de una etapa se abre sin credenciales."""
+        respuesta = self.client.get(reverse("roadmaps:detalle", args=[0]))
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertContains(respuesta, "Preparación y método de aprendizaje")
+
+    def test_marcar_leccion_guarda_progreso_sin_login(self):
+        """Marcar una lección sin login guarda el progreso del propietario local."""
+        leccion = Leccion.objects.filter(modulo__etapa__numero=0).first()
+        respuesta = self.client.post(
+            reverse("roadmaps:marcar_leccion", args=[leccion.pk]),
+            {"completada": "1"},
+        )
+        self.assertEqual(respuesta.status_code, 302)
+        self.assertTrue(
+            Progreso.objects.filter(
+                usuario=self.usuario, leccion=leccion, estado="completado"
+            ).exists()
+        )
+
+    def test_12_temas_presentes_en_selector(self):
+        """El selector de temas mantiene las 12 temáticas visuales."""
+        respuesta = self.client.get(reverse("roadmaps:lista"))
+        self.assertEqual(respuesta.status_code, 200)
+        for tema in [
+            "light", "dark", "high-contrast", "retro-pixel", "cyberpunk",
+            "fantasy", "sci-fi", "warrior", "mage", "rogue", "paladin", "dark-mage",
+        ]:
+            self.assertContains(respuesta, f'data-theme="{tema}"')

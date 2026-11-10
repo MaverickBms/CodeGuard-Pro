@@ -16,20 +16,20 @@
   <span>Etapa {{ etapa.numero }}</span>
 </nav>
 
-<section class="glass-card etapa-hero{% if bloqueada %} etapa-hero-blocked{% endif %}">
+<section class="glass-card etapa-hero cg-card{% if bloqueada %} etapa-hero-blocked{% endif %}">
   <div class="etapa-hero-main">
     <div class="etapa-number etapa-number-xl">{{ etapa.numero }}</div>
     <div class="etapa-hero-copy">
       <div class="etapa-badges">
-        <span class="badge badge-{{ etapa.prioridad|lower }}">{{ etapa.prioridad }}</span>
+        <span class="cg-badge cg-badge-primary">{{ etapa.prioridad }}</span>
         {% if etapa.completada %}
-          <span class="badge badge-success"><i class="fa-solid fa-check"></i> Completada</span>
+          <span class="cg-badge cg-badge-success"><i class="fa-solid fa-check"></i> Completada</span>
         {% elif bloqueada %}
-          <span class="badge badge-locked"><i class="fa-solid fa-lock"></i> Bloqueada</span>
+          <span class="cg-badge cg-badge-danger"><i class="fa-solid fa-lock"></i> Bloqueada</span>
         {% else %}
-          <span class="badge badge-neutral">Disponible</span>
+          <span class="cg-badge cg-badge-primary">Disponible</span>
         {% endif %}
-        <span class="badge badge-neutral">{{ etapa.prioridad_detalle }}</span>
+        <span class="cg-badge cg-badge-primary">{{ etapa.prioridad_detalle }}</span>
       </div>
       <h1>{{ etapa.titulo }}</h1>
       {% if etapa.objetivo %}<p class="etapa-hero-objetivo">{{ etapa.objetivo }}</p>{% endif %}
@@ -71,7 +71,7 @@
 </section>
 
 {% if etapa.nota_mvp %}
-<div class="glass-card roadmap-note">
+<div class="glass-card roadmap-note cg-card">
   <i class="fa-solid fa-circle-info"></i>
   <div>
     <strong>Estado en el MVP</strong>
@@ -88,7 +88,7 @@
     </div>
 
     {% for modulo in modulos %}
-      <section class="glass-card modulo-card">
+      <section class="glass-card modulo-card cg-card">
         <header class="modulo-header">
           <span class="modulo-numero">{{ modulo.numero }}</span>
           <h3>{{ modulo.titulo }}</h3>
@@ -96,7 +96,7 @@
         </header>
         <ul class="lecciones-list">
           {% for leccion in modulo.lecciones_lista %}
-            <li class="leccion-item{% if leccion.completada %} leccion-done{% endif %}">
+            <li class="leccion-item cg-card{% if leccion.completada %} leccion-done{% endif %}">
               <div class="leccion-info">
                 <i class="fa-solid {% if leccion.completada %}fa-circle-check{% else %}fa-circle{% endif %}"></i>
                 <span>{{ leccion.titulo }}</span>
@@ -120,7 +120,7 @@
         </ul>
       </section>
     {% empty %}
-      <div class="glass-card empty-state">
+      <div class="glass-card empty-state cg-card">
         <i class="fa-solid fa-folder-open fa-2x"></i>
         <h3>Esta etapa no tiene módulos registrados</h3>
         <p>El documento maestro no detalla módulos para esta etapa.</p>
@@ -129,7 +129,7 @@
   </div>
 
   <aside class="detalle-side" aria-label="Información de la etapa">
-    <section class="glass-card side-card">
+    <section class="glass-card side-card cg-card">
       <h3><i class="fa-solid fa-diagram-project"></i> {{ etapa.proyecto_titulo|default:"Proyecto de la etapa" }}</h3>
       {% if etapa.proyecto %}
         <p>{{ etapa.proyecto }}</p>
@@ -138,7 +138,7 @@
       {% endif %}
     </section>
 
-    <section class="glass-card side-card">
+    <section class="glass-card side-card cg-card">
       <h3><i class="fa-solid fa-clipboard-check"></i> Criterios de finalización</h3>
       {% for criterio in criterios %}
         <div class="criterio">
@@ -150,7 +150,7 @@
       {% endfor %}
     </section>
 
-    <section class="glass-card side-card">
+    <section class="glass-card side-card cg-card">
       <h3><i class="fa-solid fa-lock"></i> Prerrequisitos</h3>
       {% for pre in prerrequisitos %}
         <a class="prereq-link" href="{% url 'roadmaps:detalle' pre.etapa_requerida.numero %}">
@@ -169,7 +169,7 @@
     </section>
 
     {% if desbloquea %}
-      <section class="glass-card side-card">
+      <section class="glass-card side-card cg-card">
         <h3><i class="fa-solid fa-arrow-right"></i> Desbloquea</h3>
         {% for pre in desbloquea %}
           <a class="prereq-link" href="{% url 'roadmaps:detalle' pre.etapa.numero %}">
@@ -182,7 +182,7 @@
     {% endif %}
 
     {% if etapa.notas %}
-      <section class="glass-card side-card">
+      <section class="glass-card side-card cg-card">
         <h3><i class="fa-solid fa-note-sticky"></i> Notas del documento</h3>
         <p>{{ etapa.notas|linebreaksbr }}</p>
       </section>

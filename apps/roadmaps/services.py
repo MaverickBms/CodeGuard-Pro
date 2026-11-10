@@ -308,7 +308,9 @@ def recalcular_progreso_etapa(usuario, etapa: Etapa) -> Progreso:
     return progreso
 
 
-def marcar_etapa(usuario, etapa: Etapa, *, completada: bool = True) -> Progreso:
+def marcar_etapa(
+    usuario, etapa: Etapa, *, completada: bool = True, actor_auditoria=None
+) -> Progreso:
     """Marca o reabre una etapa completa, respetando los prerrequisitos."""
     completadas = etapas_completadas(usuario, etapa.roadmap)
     if completada and etapa.esta_bloqueada_para(completadas):
@@ -320,13 +322,19 @@ def marcar_etapa(usuario, etapa: Etapa, *, completada: bool = True) -> Progreso:
 
     registrar_evento(
         "roadmap_etapa_completada" if completada else "roadmap_etapa_reabierta",
-        usuario=usuario,
+        usuario=actor_auditoria,
         descripcion=f"Etapa {etapa.numero} — {etapa.titulo}",
     )
     return progreso
 
 
-def marcar_leccion(usuario, leccion: Leccion, *, completada: bool = True) -> Progreso:
+def marcar_leccion(
+    usuario,
+    leccion: Leccion,
+    *,
+    completada: bool = True,
+    actor_auditoria=None,
+) -> Progreso:
     """Marca o desmarca una lección y recalcula el avance de su etapa."""
     etapa = leccion.modulo.etapa
     progreso, _ = Progreso.objects.get_or_create(
@@ -344,7 +352,7 @@ def marcar_leccion(usuario, leccion: Leccion, *, completada: bool = True) -> Pro
 
     registrar_evento(
         "roadmap_leccion_completada" if completada else "roadmap_leccion_reabierta",
-        usuario=usuario,
+        usuario=actor_auditoria,
         descripcion=f"Etapa {etapa.numero} · {leccion.titulo}",
     )
     return progreso

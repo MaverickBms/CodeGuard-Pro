@@ -3,11 +3,19 @@
 
 {% block title %}Panel principal — CodeGuard Pro{% endblock %}
 {% block page_title %}Panel principal{% endblock %}
-{% block page_subtitle %}Bienvenido de vuelta, {{ user.get_username }}. Resumen de tu formación y progreso académico.{% endblock %}
+{% block page_subtitle %}Bienvenido de vuelta, {{ usuario_nombre }}. Resumen de tu formación y progreso académico.{% endblock %}
 
 {% block content %}
+{% if auth_disabled %}
+<div class="alert alert-info cg-alert" role="alert">
+  <i class="fa-solid fa-info-circle me-2"></i>
+  <strong>Acceso local sin autenticación:</strong> CodeGuard Pro se abrió directamente en el panel principal.
+  El sistema de inicio de sesión está temporalmente desactivado. Los modelos, migraciones y datos se conservan íntegros para una futura reactivación.
+</div>
+{% endif %}
+
 <!-- Tarjeta de bienvenida -->
-<div class="glass-card welcome-card">
+<div class="glass-card welcome-card cg-card">
   <div class="d-flex align-items-center mb-3">
     <i class="fa-solid fa-shield-halved fa-3x me-3"></i>
     <div>
@@ -20,7 +28,7 @@
 <!-- Resumen de progreso académico -->
 {% if roadmap_existe %}
 <section class="progress-summary">
-  <div class="glass-card progress-card">
+  <div class="glass-card progress-card cg-card">
     <div class="progress-header">
       <h2><i class="fa-solid fa-chart-pie me-2"></i>Progreso académico</h2>
       <span class="progress-big">{{ avance.porcentaje }}%</span>
@@ -36,7 +44,7 @@
       </div>
       <div class="detail-item">
         <span class="detail-label">Lecciones completadas</span>
-        <span class="detail-value">{{ lecciones_completadas }}</span>
+        <span class="detail-value">{{ lecciones_completados }}</span>
       </div>
     </div>
     <div class="progress-track">
@@ -49,29 +57,29 @@
 
   <!-- Próxima etapa disponible -->
   {% if proxima_etapa %}
-    <div class="glass-card next-stage-card">
+    <div class="glass-card next-stage-card cg-card">
       <h3><i class="fa-solid fa-arrow-right me-2"></i>Próxima etapa disponible</h3>
       <p><strong>Etapa {{ proxima_etapa.numero }}:</strong> {{ proxima_etapa.titulo }}</p>
       {% if proxima_etapa.objetivo %}
         <p class="text-muted small">{{ proxima_etapa.objetivo|truncatechars:180 }}</p>
       {% endif %}
-      <a href="{% url 'roadmaps:detalle' proxima_etapa.numero %}" class="btn btn-primary btn-sm mt-2">
+      <a href="{% url 'roadmaps:detalle' proxima_etapa.numero %}" class="btn btn-primary btn-sm mt-2 cg-btn cg-btn-primary">
         <i class="fa-solid fa-map me-2"></i>Ver etapa
       </a>
     </div>
   {% elif avance.completadas >= avance.total %}
-    <div class="glass-card next-stage-card">
+    <div class="glass-card next-stage-card cg-card">
       <h3><i class="fa-solid fa-trophy me-2"></i>¡Roadmap completado!</h3>
       <p>Has completado todas las etapas del roadmap ASCENSO.</p>
     </div>
   {% else %}
-    <div class="glass-card next-stage-card">
+    <div class="glass-card next-stage-card cg-card">
       <h3><i class="fa-solid fa-lock me-2"></i>Sin etapa disponible</h3>
       <p>Todas las etapas disponibles están bloqueadas por prerrequisitos pendientes.</p>
     </div>
   {% endif %}
 {% else %}
-  <div class="glass-card empty-state">
+  <div class="glass-card empty-state cg-card">
     <i class="fa-solid fa-database fa-3x text-muted"></i>
     <h3>El roadmap todavía no está cargado</h3>
     <p>Ejecuta <code>python manage.py cargar_ascenso</code> para importar las 33 etapas oficiales de ASCENSO 3.1.</p>
@@ -80,11 +88,11 @@
 
 <!-- Próxima actividad sugerida -->
 {% if roadmap_existe and proxima_actividad %}
-<div class="glass-card next-activity-card">
+<div class="glass-card next-activity-card cg-card">
   <h3><i class="fa-solid fa-play me-2"></i>Próxima actividad sugerida</h3>
   <p><strong>{% if proxima_actividad.leccion %}{{ proxima_actividad.leccion.titulo }}{% elif proxima_actividad.modulo %}{{ proxima_actividad.modulo.titulo }}{% else %}{{ proxima_actividad.etapa.titulo }}{% endif %}</strong></p>
   <span class="activity-stage">Etapa {{ proxima_actividad.etapa.numero }} · {{ proxima_actividad.get_estado_display }}</span>
-  <a href="{% url 'roadmaps:detalle' proxima_actividad.etapa.numero %}" class="btn btn-primary btn-sm mt-2">
+  <a href="{% url 'roadmaps:detalle' proxima_actividad.etapa.numero %}" class="btn btn-primary btn-sm mt-2 cg-btn cg-btn-primary">
     <i class="fa-solid fa-arrow-right me-2"></i>Continuar
   </a>
 </div>
@@ -92,7 +100,7 @@
 
 <!-- Actividad reciente -->
 <section class="activity-section">
-  <div class="glass-card activity-card">
+  <div class="glass-card activity-card cg-card">
     <h3><i class="fa-solid fa-clock-rotate-left me-2"></i>Actividad reciente</h3>
     {% if actividad_reciente %}
       <ul class="activity-list">
@@ -117,7 +125,7 @@
   <h2 class="section-title"><i class="fa-solid fa-layer-group me-2"></i>Módulos del MVP</h2>
   <div class="modules-grid">
     {% for modulo in modulos %}
-      <div class="module-card{% if not modulo.implementado %} disabled{% endif %}">
+      <div class="module-card cg-card{% if not modulo.implementado %} disabled{% endif %}">
         <span class="card-icon">{{ modulo.icono }}</span>
         <h3>{{ modulo.titulo }}</h3>
         <p>{{ modulo.descripcion }}</p>
@@ -128,7 +136,7 @@
           </a>
         {% else %}
           <span class="card-tag">Próximamente</span>
-          <button class="btn-open disabled" disabled>
+          <button class="btn-open disabled cg-btn cg-btn-disabled" disabled>
             <i class="fa-solid fa-lock me-2"></i>En desarrollo
           </button>
         {% endif %}
@@ -138,12 +146,12 @@
 </section>
 
 <!-- Estado del sistema -->
-<div class="glass-card system-status">
+<div class="glass-card system-status cg-card">
   <h3><i class="fa-solid fa-info-circle me-2"></i>Estado del sistema</h3>
   <div class="status-list">
     <div class="status-item">
       <span class="label"><i class="fa-solid fa-user me-1"></i>Usuario</span>
-      <span class="value">{{ user.get_username }}</span>
+      <span class="value">{{ usuario_nombre }}</span>
     </div>
     <div class="status-item">
       <span class="label"><i class="fa-solid fa-cog me-1"></i>Configuración inicial</span>
@@ -151,7 +159,7 @@
     </div>
     <div class="status-item">
       <span class="label"><i class="fa-solid fa-clock me-1"></i>Sesión (inactividad)</span>
-      <span class="value">{{ user.sesion_timeout_minutos }} minutos</span>
+      <span class="value">{{ sesion_timeout_minutos }} minutos</span>
     </div>
     <div class="status-item">
       <span class="label"><i class="fa-solid fa-server me-1"></i>Servidor</span>

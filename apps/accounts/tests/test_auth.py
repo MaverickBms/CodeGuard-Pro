@@ -16,7 +16,7 @@ from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
@@ -25,6 +25,7 @@ from apps.accounts.models import FraseRescate
 from apps.accounts.services import generar_frase_rescate
 
 
+@override_settings(AUTH_DISABLED=False)
 class SetupInicialTests(TestCase):
     """Configuración inicial (primer uso): usuario, contraseña y términos."""
 
@@ -123,6 +124,7 @@ class SetupInicialTests(TestCase):
         self.assertFalse(get_user_model().objects.exists())
 
 
+@override_settings(AUTH_DISABLED=False)
 class LoginTests(TestCase):
     def setUp(self):
         self.usuario = get_user_model().objects.create_user(
@@ -148,6 +150,7 @@ class LoginTests(TestCase):
         self.assertRedirects(respuesta, reverse("core:panel"))
 
 
+@override_settings(AUTH_DISABLED=False)
 class LogoutTests(TestCase):
     def setUp(self):
         self.usuario = get_user_model().objects.create_user(
@@ -175,6 +178,7 @@ class LogoutTests(TestCase):
         self.assertEqual(respuesta_panel.status_code, 200)
 
 
+@override_settings(AUTH_DISABLED=False)
 class CambiarContrasenaTests(TestCase):
     def setUp(self):
         self.usuario = get_user_model().objects.create_user(
@@ -214,6 +218,7 @@ class CambiarContrasenaTests(TestCase):
         self.assertTrue(self.usuario.check_password("ClaveSegura123!"))
 
 
+@override_settings(AUTH_DISABLED=False)
 class RescateTests(TestCase):
     def setUp(self):
         self.usuario = get_user_model().objects.create_user(
@@ -301,6 +306,7 @@ class RescateTests(TestCase):
         self.assertFalse(FraseRescate.objects.get(usuario=self.usuario).usada)
 
 
+@override_settings(AUTH_DISABLED=False)
 class SesionInactividadTests(TestCase):
     def setUp(self):
         self.usuario = get_user_model().objects.create_user(
@@ -358,6 +364,7 @@ class SesionInactividadTests(TestCase):
         )
 
 
+@override_settings(AUTH_DISABLED=False)
 class BloqueoIntentosTests(TestCase):
     """Pruebas RS-017: bloqueo por intentos fallidos consecutivos."""
 

@@ -2,6 +2,36 @@
 
 Todos los cambios notables del proyecto se documentan aquí.
 
+## [1.0.2] — 2026-11-07 — Desactivación temporal de autenticación
+
+### Cambiado
+- `AUTH_DISABLED = True` en `config/settings/base.py`: la aplicación abre directamente
+  el panel principal sin solicitar credenciales.
+- Las rutas de autenticación (login, setup, logout, rescate, resetear, cambio de
+  contraseña) redirigen al panel principal (HTTP 302) mientras `AUTH_DISABLED` es True.
+- Eliminado el botón "Cerrar sesión" de la navegación (`templates/base.html`).
+- `SesionInactividadMiddleware` no opera cuando la autenticación está desactivada.
+- `request.user` permanece como `AnonymousUser`; el progreso usa `request.usuario_local`
+  (propietario local existente).
+- La auditoría registra actor nulo (`usuario=None`) en modo sin autenticación.
+
+### Añadido
+- `config/middleware.py`: `AccesoLocalMiddleware` (resuelve el propietario local).
+- `apps/accounts/identity.py`: helpers y decoradores de acceso local (nuevo).
+- `apps/accounts/tests/test_modo_sin_auth.py`: pruebas del modo sin autenticación.
+- `docs/MODO_SIN_AUTENTICACION.md`: guía canónica y procedimiento de reactivación.
+- Pruebas existentes envueltas con `override_settings(AUTH_DISABLED=False)`.
+
+### Conservado (no se eliminó)
+- Modelos `Usuario` y `FraseRescate`; servicios, formularios, vistas y plantillas de
+  autenticación; migración `0002`; campos `intentos_fallidos` y `bloqueado_hasta`;
+  datos existentes en `data/db.sqlite3`.
+
+### Verificado
+- `manage.py check`: sin errores.
+- `makemigrations --check --dry-run`: sin cambios pendientes.
+- Suite de pruebas: OK (`apps.core apps.accounts apps.audit apps.roadmaps`).
+
 ## [1.0.1] — 2026-11-07 — Intervención de auditoría y consolidación técnica
 
 ### Corregido

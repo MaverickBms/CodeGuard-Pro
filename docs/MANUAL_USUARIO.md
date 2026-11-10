@@ -4,6 +4,12 @@
 **Versión:** 1.0 (MVP, primer incremento)  
 **SRS de referencia:** `IEEE830(1).md` v2.0
 
+> **Nota:** El sistema de autenticación está temporalmente desactivado
+> (`AUTH_DISABLED = True`). La aplicación se abre directamente en el panel principal
+> sin solicitar usuario ni contraseña. Los flujos de login, registro, rescate,
+> restablecimiento y cierre de sesión se conservan íntegros y pueden reactivarse con
+> autorización expresa del propietario del proyecto. Ver `docs/MODO_SIN_AUTENTICACION.md`.
+
 ---
 
 ## 1. ¿Qué es CodeGuard Pro?

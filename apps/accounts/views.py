@@ -20,6 +20,7 @@ from django.views.decorators.http import require_POST
 from datetime import timedelta
 
 from apps.accounts.forms import CambiarContraseñaForm, LoginForm, NuevoPasswordForm, SetupInicialForm
+from apps.accounts.identity import solo_con_autenticacion_activa, vista_sin_autenticacion
 from apps.accounts.models import Usuario
 from apps.accounts.services import (
     cambiar_contrasena_por_frase,
@@ -34,6 +35,7 @@ def panel_redirect(request):
     return redirect("core:panel")
 
 
+@solo_con_autenticacion_activa
 def setup_inicial(request):
     """Configuración inicial (primer uso): crea usuario y frase de rescate.
 
@@ -64,6 +66,7 @@ def setup_inicial(request):
     return render(request, "accounts/setup_inicial.html", {"form": form})
 
 
+@vista_sin_autenticacion
 class LoginView(auth_views.LoginView):
     """Inicio de sesión con la contraseña maestra (Argon2).
 
@@ -173,6 +176,7 @@ class LoginView(auth_views.LoginView):
         return super().form_invalid(form)
 
 
+@solo_con_autenticacion_activa
 @require_POST
 def cerrar_sesion(request):
     """Cierre de sesión manual (exige POST y mantiene CSRF)."""
@@ -188,6 +192,7 @@ def cerrar_sesion(request):
     return redirect("core:panel")
 
 
+@solo_con_autenticacion_activa
 def rescate(request):
     """Valida la frase de rescate para recuperar el acceso (un solo uso)."""
     error = False
@@ -202,11 +207,13 @@ def rescate(request):
     return render(request, "accounts/rescue.html", {"error": error})
 
 
+@solo_con_autenticacion_activa
 def rescate_exito(request):
     """Página posterior a una frase de rescate válida."""
     return redirect("accounts:login")
 
 
+@solo_con_autenticacion_activa
 def resetear_contrasena(request):
     """Establece la nueva contraseña maestra tras validar la frase de rescate.
 
@@ -236,6 +243,7 @@ def resetear_contrasena(request):
     return render(request, "accounts/resetear_contrasena.html", {"form": form})
 
 
+@solo_con_autenticacion_activa
 @login_required
 def cambiar_contraseña(request):
     """Cambio de la contraseña maestra autenticado."""

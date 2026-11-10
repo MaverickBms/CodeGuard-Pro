@@ -10,15 +10,15 @@
 {% endblock %}
 
 {% block content %}
-<section class="glass-card roadmap-hero">
+<section class="glass-card roadmap-hero cg-card">
   <div class="roadmap-hero-main">
     <span class="roadmap-kicker"><i class="fa-solid fa-map"></i> PROYECTO ASCENSO</span>
     <h1>{{ roadmap.nombre }}</h1>
     <p>Edición {{ roadmap.edicion }} · Contenido extraído del documento maestro oficial. Las 33 etapas permanecen visibles aunque no estén desarrolladas en el MVP.</p>
     <div class="roadmap-hero-tags">
-      <span class="badge badge-neutral">Edición {{ roadmap.edicion }}</span>
-      {% if roadmap.fecha_consolidacion %}<span class="badge badge-neutral">Consolidado: {{ roadmap.fecha_consolidacion|date:"d/m/Y" }}</span>{% endif %}
-      <span class="badge badge-neutral">Sin CDN · Offline-first</span>
+      <span class="cg-badge cg-badge-primary">Edición {{ roadmap.edicion }}</span>
+      {% if roadmap.fecha_consolidacion %}<span class="cg-badge cg-badge-primary">Consolidado: {{ roadmap.fecha_consolidacion|date:"d/m/Y" }}</span>{% endif %}
+      <span class="cg-badge cg-badge-primary">Sin CDN · Offline-first</span>
     </div>
   </div>
   <div class="roadmap-hero-progress">
@@ -32,29 +32,29 @@
 </section>
 
 <section class="roadmap-stats" aria-label="Resumen del roadmap">
-  <article class="glass-card stat-card">
+  <article class="glass-card stat-card cg-card">
     <span class="stat-icon"><i class="fa-solid fa-flag-checkered"></i></span>
     <div><div class="stat-value">{{ resumen.total_etapas }}</div><div class="stat-label">Etapas</div></div>
   </article>
-  <article class="glass-card stat-card">
+  <article class="glass-card stat-card cg-card">
     <span class="stat-icon"><i class="fa-solid fa-layer-group"></i></span>
     <div><div class="stat-value">{{ resumen.total_modulos }}</div><div class="stat-label">Módulos</div></div>
   </article>
-  <article class="glass-card stat-card">
+  <article class="glass-card stat-card cg-card">
     <span class="stat-icon"><i class="fa-solid fa-book-open"></i></span>
     <div><div class="stat-value">{{ resumen.total_lecciones }}</div><div class="stat-label">Lecciones</div></div>
   </article>
-  <article class="glass-card stat-card">
+  <article class="glass-card stat-card cg-card">
     <span class="stat-icon"><i class="fa-solid fa-diagram-project"></i></span>
     <div><div class="stat-value">{{ resumen.total_proyectos }}</div><div class="stat-label">Proyectos</div></div>
   </article>
-  <article class="glass-card stat-card">
+  <article class="glass-card stat-card cg-card">
     <span class="stat-icon"><i class="fa-solid fa-medal"></i></span>
     <div><div class="stat-value">{{ avance.completadas }}</div><div class="stat-label">Completadas</div></div>
   </article>
 </section>
 
-<form class="glass-card roadmap-filters" method="get" action="{% url 'roadmaps:lista' %}">
+<form class="glass-card roadmap-filters cg-card" method="get" action="{% url 'roadmaps:lista' %}">
   <div class="filter-field">
     <label for="filtro-bloque">Bloque</label>
     <select id="filtro-bloque" name="bloque">
@@ -90,17 +90,17 @@
       <h2 class="roadmap-section-title">{{ seccion.grouper|default:"Etapas" }}</h2>
       <div class="etapas-grid">
         {% for etapa in seccion.list %}
-          <article class="glass-card etapa-card{% if etapa.completada %} etapa-completed{% endif %}{% if etapa.bloqueada %} etapa-blocked{% endif %}">
+          <article class="glass-card etapa-card cg-card{% if etapa.completada %} etapa-completed{% endif %}{% if etapa.bloqueada %} etapa-blocked{% endif %}">
             <header class="etapa-card-header">
               <span class="etapa-number">{{ etapa.numero }}</span>
               <div class="etapa-badges">
-                <span class="badge badge-{{ etapa.prioridad|lower }}">{{ etapa.prioridad }}</span>
+                <span class="cg-badge cg-badge-primary">{{ etapa.prioridad }}</span>
                 {% if etapa.completada %}
-                  <span class="badge badge-success"><i class="fa-solid fa-check"></i> Completada</span>
+                  <span class="cg-badge cg-badge-success"><i class="fa-solid fa-check"></i> Completada</span>
                 {% elif etapa.bloqueada %}
-                  <span class="badge badge-locked"><i class="fa-solid fa-lock"></i> Bloqueada</span>
+                  <span class="cg-badge cg-badge-danger"><i class="fa-solid fa-lock"></i> Bloqueada</span>
                 {% else %}
-                  <span class="badge badge-neutral">Disponible</span>
+                  <span class="cg-badge cg-badge-primary">Disponible</span>
                 {% endif %}
               </div>
             </header>
@@ -147,7 +147,7 @@
     </section>
   {% endfor %}
 {% else %}
-  <div class="glass-card empty-state">
+  <div class="glass-card empty-state cg-card">
     <i class="fa-solid fa-magnifying-glass fa-2x"></i>
     <h3>No hay etapas que coincidan con los filtros</h3>
     <p>Prueba con otro bloque, prioridad o término de búsqueda.</p>
@@ -155,13 +155,13 @@
   </div>
 {% endif %}
 
-<section class="glass-card roadmap-legend">
+<section class="glass-card roadmap-legend cg-card">
   <h3><i class="fa-solid fa-circle-info"></i> Cómo leer el roadmap</h3>
   <div class="legend-grid">
-    <div><span class="badge badge-p1">P1</span> Etapa obligatoria de la ruta principal.</div>
-    <div><span class="badge badge-p2">P2</span> Etapa complementaria o de especialización.</div>
-    <div><span class="badge badge-p3">P3</span> Especialización avanzada.</div>
-    <div><span class="badge badge-locked"><i class="fa-solid fa-lock"></i></span> Tiene prerrequisitos sin completar.</div>
+    <div><span class="cg-badge cg-badge-primary">P1</span> Etapa obligatoria de la ruta principal.</div>
+    <div><span class="cg-badge cg-badge-primary">P2</span> Etapa complementaria o de especialización.</div>
+    <div><span class="cg-badge cg-badge-primary">P3</span> Especialización avanzada.</div>
+    <div><span class="cg-badge cg-badge-danger"><i class="fa-solid fa-lock"></i></span> Tiene prerrequisitos sin completar.</div>
   </div>
   <p class="legend-note">El estado «No desarrollada en MVP» se mantiene hasta que se resuelva la decisión P-002. Ninguna etapa se elimina del roadmap.</p>
 </section>

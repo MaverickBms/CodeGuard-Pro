@@ -1,7 +1,9 @@
 """Vistas del módulo académico (roadmap ASCENSO).
 
 Nota: Aplicación local, monousuario y offline-first. La identidad del usuario
-actual proviene del flujo de autenticación; no se crea identidad implícita.
+actual proviene del flujo de autenticación; cuando la autenticación está
+desactivada se usa el propietario local existente. No se crea identidad
+implícita.
 """
 
 from django.contrib import messages
@@ -9,6 +11,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from apps.accounts.identity import (
+    obtener_actor_auditoria,
+    obtener_usuario_local,
+    requiere_acceso,
+)
 from .models import Etapa, Leccion
 from .services import (
     etapas_completadas,
@@ -23,15 +30,25 @@ from .services import (
 
 
 def get_usuario_actual(request):
-    """Devuelve el usuario autenticado de la petición.
+    """Devuelve el usuario activo para operaciones de progreso.
 
-    No existe creación implícita de usuarios: la identidad proviene del flujo
-    de autenticación (configuración inicial / inicio de sesión). Ver CG-003.
+    En modo sin autenticación devuelve el propietario local existente
+    (``request.usuario_local``). Cuando la autenticación está activa devuelve
+    el usuario autenticado de la petición.
+
+    Si no existe propietario local ni usuario autenticado, devuelve None.
+    Las vistas deben manejar este caso: lectura permitida, escritura bloqueada
+    con mensaje comprensible. No se crea ningún usuario implícitamente.
     """
-    return request.user
+    usuario_local = getattr(request, "usuario_local", None)
+    if usuario_local is not None:
+        return usuario_local
+    if request.user.is_authenticated:
+        return request.user
+    return None
 
 
-@login_required
+@requiere_acceso
 def lista(request):
     """Listado de las 33 etapas con filtros, avance y estado de bloqueo."""
     roadmap = roadmap_activo()
@@ -101,7 +118,7 @@ def lista(request):
     )
 
 
-@login_required
+@requiere_acceso
 def detalle(request, numero):
     """Detalle de una etapa: módulos, lecciones, proyecto y prerrequisitos."""
     roadmap = roadmap_activo()
@@ -144,7 +161,7 @@ def detalle(request, numero):
     )
 
 
-@login_required
+@requiere_acceso
 @require_POST
 def marcar_etapa_view(request, numero):
     """Marca o reabre una etapa completa (POST)."""
@@ -153,12 +170,23 @@ def marcar_etapa_view(request, numero):
         return redirect("roadmaps:lista")
 
     usuario = get_usuario_actual(request)
+    if usuario is None:
+        messages.error(
+            request,
+            "No hay un propietario local configurado. No se puede guardar el progreso.",
+        )
+        return redirect("roadmaps:detalle", numero=numero)
 
     etapa = get_object_or_404(Etapa, roadmap=roadmap, numero=numero)
     completada = request.POST.get("completada") == "1"
 
     try:
-        marcar_etapa(usuario, etapa, completada=completada)
+        marcar_etapa(
+            usuario,
+            etapa,
+            completada=completada,
+            actor_auditoria=obtener_actor_auditoria(request),
+        )
     except ValueError as exc:
         messages.error(request, str(exc))
     else:
@@ -170,17 +198,28 @@ def marcar_etapa_view(request, numero):
     return redirect("roadmaps:detalle", numero=etapa.numero)
 
 
-@login_required
+@requiere_acceso
 @require_POST
 def marcar_leccion_view(request, leccion_id):
     """Marca o desmarca una lección (POST)."""
     usuario = get_usuario_actual(request)
+    if usuario is None:
+        messages.error(
+            request,
+            "No hay un propietario local configurado. No se puede guardar el progreso.",
+        )
+        return redirect("roadmaps:detalle", numero=1)
 
     leccion = get_object_or_404(
         Leccion.objects.select_related("modulo__etapa"), pk=leccion_id
     )
     completada = request.POST.get("completada") == "1"
-    marcar_leccion(usuario, leccion, completada=completada)
+    marcar_leccion(
+        usuario,
+        leccion,
+        completada=completada,
+        actor_auditoria=obtener_actor_auditoria(request),
+    )
 
     if completada:
         messages.success(request, f"Lección completada: {leccion.titulo}")

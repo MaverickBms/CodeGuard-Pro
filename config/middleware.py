@@ -1,8 +1,11 @@
-"""Middlewares de seguridad y sesión para CodeGuard Pro.
+"""Middlewares de seguridad, sesión y acceso local para CodeGuard Pro.
 
 - Cabeceras de seguridad: CSP, X-Frame-Options, X-Content-Type-Options, etc. (RS-013).
 - Restricción de host: solo localhost/127.0.0.1 en ejecución normal.
 - Cierre de sesión por inactividad (RF-002 / CG-005).
+- Identidad local (AccesoLocalMiddleware): resuelve el propietario local existente
+  cuando la autenticación está desactivada (AUTH_DISABLED=True), sin crear sesiones
+  ni autenticar mediante request.user.
 
 Nota: La aplicación es local, monousuario y offline-first. Sin autenticación
 remota ni multiusuario.
@@ -15,7 +18,33 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.utils import timezone
 
+from apps.accounts.identity import obtener_usuario_local
 from apps.audit.services import registrar_evento
+
+
+class AccesoLocalMiddleware:
+    """Resuelve el propietario local existente para el modo sin autenticación.
+
+    Cuando ``AUTH_DISABLED`` es True:
+      - Establece ``request.usuario_local`` con el primer usuario activo de la BD.
+      - No toca la sesión ni la autenticación de Django (request.user sigue
+        siendo AnonymousUser).
+      - No crea cuentas ficticias ni inicia sesión.
+    Cuando es False, no hace nada y el flujo de autenticación original sigue intacto.
+
+    Debe colocarse después de AuthenticationMiddleware en settings.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if getattr(settings, "AUTH_DISABLED", False):
+            request.usuario_local = obtener_usuario_local(request)
+        else:
+            request.usuario_local = None
+
+        return self.get_response(request)
 
 
 class CabecerasSeguridadMiddleware:
@@ -83,6 +112,11 @@ class SesionInactividadMiddleware:
         return request.path.startswith("/static/") or request.path.startswith("/media/")
 
     def __call__(self, request):
+        if getattr(settings, "AUTH_DISABLED", False):
+            # La autenticación está desactivada: no hay sesiones que cerrar ni
+            # redirecciones al login. Delega directamente en la vista.
+            return self.get_response(request)
+
         user = getattr(request, "user", None)
         if user is not None and user.is_authenticated and user.is_active:
             if not self._es_recurso_local(request):

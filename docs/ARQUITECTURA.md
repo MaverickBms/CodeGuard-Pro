@@ -93,9 +93,23 @@ incrementos siguientes sin modificar el núcleo ya implementado.
 7. **Recuperación:** `/accounts/rescate/` valida la frase y redirige a
    `/accounts/rescate/resetear/` para establecer una nueva contraseña (con confirmación,
    validadores de Django y regla de no-reutilización de la actual).
-8. Todas las vistas protegidas requieren autenticación (`@login_required`).
+8. Todas las vistas protegidas requieren autenticación (`@login_required`) cuando
+   `AUTH_DISABLED = False`. Cuando `AUTH_DISABLED = True` (modo temporal sin
+   autenticación), las vistas se abren directamente y el progreso se asocia al
+   propietario local existente. Ver `docs/MODO_SIN_AUTENTICACION.md`.
 9. El middleware de inactividad comprueba la expiración **antes** de ejecutar la vista; una
-   sesión vencida nunca modifica el progreso académico.
+   sesión vencida nunca modifica el progreso académico. En modo sin autenticación
+   este middleware no opera (no hay sesiones que cerrar).
+
+---
+
+### Autenticación temporalmente desactivada
+
+El sistema de autenticación descrito en esta sección está **temporalmente
+desactivado** (`AUTH_DISABLED = True` en `config/settings/base.py`). No se han
+eliminado modelos, migraciones ni datos. La implementación original se conserva
+íntegramente y puede reactivarse con autorización expresa del propietario del
+proyecto. Ver `docs/MODO_SIN_AUTENTICACION.md`.
 
 ---
 
