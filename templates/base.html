@@ -102,7 +102,7 @@
       </div>
     </nav>
     <div class="sidebar-footer">
-      <button class="btn cg-btn cg-btn-secondary cg-btn-sm" id="btnAjustes" title="Ajustes">
+      <button class="btn cg-btn cg-btn-secondary cg-btn-sm" id="btnAjustes" type="button" title="Ajustes" aria-haspopup="dialog" aria-expanded="false">
         <i class="fa-solid fa-gear me-2"></i>Ajustes
       </button>
     </div>
@@ -110,7 +110,7 @@
   <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
 
   <!-- Panel de Ajustes (oculto por defecto) -->
-  <div class="ajustes-panel" id="ajustesPanel" role="dialog" aria-modal="true" aria-labelledby="ajustesTitulo">
+  <div class="ajustes-panel" id="ajustesPanel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="ajustesTitulo" tabindex="-1">
     <div class="ajustes-overlay" id="ajustesOverlay"></div>
     <div class="ajustes-contenido">
       <div class="ajustes-header">
@@ -123,52 +123,86 @@
         <div class="ajustes-grupo">
           <h4 class="ajustes-grupo-titulo">Apariencia</h4>
           <div class="ajustes-item">
-            <label class="ajustes-label">Tema visual</label>
-            <div class="ajustes-selectores-tema">
-              <button class="ajustes-tema-btn" data-theme="light" title="Claro Diurno">
-                <i class="fa-solid fa-sun"></i> Claro
-              </button>
-              <button class="ajustes-tema-btn" data-theme="dark" title="Oscuro Nocturno">
-                <i class="fa-solid fa-moon"></i> Oscuro
-              </button>
+            <label class="ajustes-label" id="ajustesTemaLabel">Selecciona tu ambiente visual</label>
+            <p class="ajustes-hint">El cambio se aplica al instante y se conserva al volver a abrir la aplicación.</p>
+            <div class="ajustes-selectores-tema" role="group" aria-labelledby="ajustesTemaLabel">
+<button class="ajustes-tema-btn" type="button" data-theme="light" aria-pressed="false" title="Claro diurno">
+  <span class="ajustes-theme-preview" style="--preview-bg:#FFBB94;--preview-surface:#FB9590;--preview-primary:#DC586D" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Claro diurno</strong><small>Paleta oficial P01</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="dark" aria-pressed="false" title="Oscuro nocturno">
+  <span class="ajustes-theme-preview" style="--preview-bg:#190019;--preview-surface:#2B124C;--preview-primary:#522B5B" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Oscuro nocturno</strong><small>Paleta oficial P02</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="high-contrast" aria-pressed="false" title="Alto contraste">
+  <span class="ajustes-theme-preview" style="--preview-bg:#000000;--preview-surface:#111111;--preview-primary:#FFFF00" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Alto contraste</strong><small>Paleta alternativa</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="retro-pixel" aria-pressed="false" title="Retro pixel">
+  <span class="ajustes-theme-preview" style="--preview-bg:#101820;--preview-surface:#1E2B36;--preview-primary:#00E5A8" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Retro pixel</strong><small>Paleta alternativa</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="cyberpunk" aria-pressed="false" title="Cyberpunk">
+  <span class="ajustes-theme-preview" style="--preview-bg:#080B1A;--preview-surface:#141A32;--preview-primary:#FF2E88" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Cyberpunk</strong><small>Paleta alternativa</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="fantasy" aria-pressed="false" title="Reino fantasía">
+  <span class="ajustes-theme-preview" style="--preview-bg:#F4EFE2;--preview-surface:#FFFAF0;--preview-primary:#7952A1" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Reino fantasía</strong><small>Paleta alternativa</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="sci-fi" aria-pressed="false" title="Ciencia ficción">
+  <span class="ajustes-theme-preview" style="--preview-bg:#071723;--preview-surface:#0E2939;--preview-primary:#00BCD4" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Ciencia ficción</strong><small>Paleta alternativa</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="warrior" aria-pressed="false" title="Guerrero">
+  <span class="ajustes-theme-preview" style="--preview-bg:#1B1C1A;--preview-surface:#292C28;--preview-primary:#B68B4A" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Guerrero</strong><small>Paleta alternativa</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="mage" aria-pressed="false" title="Mago">
+  <span class="ajustes-theme-preview" style="--preview-bg:#F0EDFF;--preview-surface:#FAF8FF;--preview-primary:#7555D9" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Mago</strong><small>Paleta alternativa</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="rogue" aria-pressed="false" title="Pícaro">
+  <span class="ajustes-theme-preview" style="--preview-bg:#101318;--preview-surface:#1B2028;--preview-primary:#6D8B74" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Pícaro</strong><small>Paleta alternativa</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="paladin" aria-pressed="false" title="Paladín">
+  <span class="ajustes-theme-preview" style="--preview-bg:#F5F2E7;--preview-surface:#FFFDF5;--preview-primary:#A78636" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Paladín</strong><small>Paleta alternativa</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
+<button class="ajustes-tema-btn" type="button" data-theme="dark-mage" aria-pressed="false" title="Mago oscuro">
+  <span class="ajustes-theme-preview" style="--preview-bg:#100C1C;--preview-surface:#211631;--preview-primary:#9B6BDF" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="ajustes-theme-copy"><strong>Mago oscuro</strong><small>Paleta alternativa</small></span>
+  <i class="fa-solid fa-check ajustes-theme-check" aria-hidden="true"></i>
+</button>
             </div>
           </div>
         </div>
-        <div class="ajustes-grupo">
-          <h4 class="ajustes-grupo-titulo">Preferencias</h4>
-          <div class="ajustes-item">
-            <label class="ajustes-label">Idioma</label>
-            <select class="ajustes-select" id="ajustesIdioma">
-              <option value="es">Español</option>
-              <option value="en">English</option>
-            </select>
+        <div class="ajustes-grupo ajustes-accessibility">
+          <h4 class="ajustes-grupo-titulo">Accesibilidad</h4>
+          <div class="ajustes-accessibility-note">
+            <span><i class="fa-solid fa-eye"></i></span>
+            <div><strong>Alto contraste</strong><p>Disponible en la colección de temas. Diseñado para priorizar legibilidad y diferenciación visual.</p></div>
           </div>
-          <div class="ajustes-item">
-            <label class="ajustes-label">Modo de accesibilidad</label>
-            <select class="ajustes-select" id="ajustesAccesibilidad">
-              <option value="normal">Estándar</option>
-              <option value="alto-contraste">Alto contraste</option>
-            </select>
-          </div>
-        </div>
-        <div class="ajustes-grupo">
-          <h4 class="ajustes-grupo-titulo">Legal</h4>
-          <div class="ajustes-item">
-            <label class="ajustes-label">Términos y condiciones</label>
-            <button class="btn cg-btn cg-btn-ghost cg-btn-sm btn-ver-terminos" type="button">
-              Ver términos
-            </button>
-          </div>
-          <div class="ajustes-item">
-            <label class="ajustes-label">Política de privacidad</label>
-            <button class="btn cg-btn cg-btn-ghost cg-btn-sm btn-ver-privacidad" type="button">
-              Ver política
-            </button>
+          <div class="ajustes-accessibility-note">
+            <span><i class="fa-solid fa-person-walking"></i></span>
+            <div><strong>Movimiento reducido</strong><p>La interfaz respeta la preferencia de movimiento configurada en tu sistema operativo.</p></div>
           </div>
         </div>
         <div class="ajustes-grupo ajustes-grupo-acciones">
           <button class="btn cg-btn cg-btn-secondary" id="btnGuardarAjustes" type="button">
-            <i class="fa-solid fa-save me-2"></i>Guardar cambios
+            <i class="fa-solid fa-check me-2"></i>Listo
           </button>
         </div>
       </div>
