@@ -95,4 +95,7 @@
   });
 
   syncThemeButtons(currentTheme());
+  document.addEventListener('cg:theme-change', function (event) {
+    if (event.detail && event.detail.theme) syncThemeButtons(event.detail.theme);
+  });
 })();
