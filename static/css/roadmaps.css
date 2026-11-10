@@ -185,7 +185,7 @@
 .btn-theme:hover:not(:disabled) {
   filter: brightness(1.08);
   transform: translateY(-1px);
-  color: var(--cg-text-inverse);
+  color: var(--cg-on-primary);
 }
 
 .btn-theme:disabled {
