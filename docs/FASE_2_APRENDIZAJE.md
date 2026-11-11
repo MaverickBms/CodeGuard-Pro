@@ -70,12 +70,12 @@ erDiagram
 
 ## 4. Decisiones y límites
 
-1. La visita a una lección no la marca como completada.
+1. Abrir una lección registra el estado «En progreso» (5 % inicial); nunca la marca como completada.
 2. La vista muestra solamente contenidos y ejercicios publicados.
 3. Los ejercicios de este incremento son material didáctico; todavía no reciben código enviado ni se califican.
 4. El editor, la ejecución controlada, la evaluación de respuestas y el tutor local pertenecen a la Fase 3.
 5. Los tres campos de pistas fijan un máximo estructural de tres pistas por ejercicio. La entrega secuencial y el contador de pistas se implementarán junto al sistema de intentos del tutor.
-6. No se deben usar las rutas antiguas de marcado manual como mecanismo definitivo de finalización académica. La finalización verificable se conectará cuando existan intentos y criterios de evaluación.
+6. La ruta antigua de marcado manual ya rechaza solicitudes para completar una lección. La finalización verificable se conectará cuando existan intentos y criterios de evaluación.
 7. El modelo de progreso existente se conserva para no perder compatibilidad con los registros actuales.
 
 ## 5. Flujo previsto
