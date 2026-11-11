@@ -72,11 +72,14 @@ erDiagram
 
 1. Abrir una lección registra el estado «En progreso» (5 % inicial); nunca la marca como completada.
 2. La vista muestra solamente contenidos y ejercicios publicados.
-3. Los ejercicios de este incremento son material didáctico; todavía no reciben código enviado ni se califican.
-4. El editor, el envío de intentos y la evaluación reproducible pertenecen a la Fase 2. El tutor local y sus pistas progresivas pertenecen a la Fase 3.
-5. Los tres campos de pistas fijan un máximo estructural de tres pistas por ejercicio. La entrega secuencial y el contador de pistas se implementarán junto al sistema de intentos del tutor.
-6. La ruta antigua de marcado manual ya rechaza solicitudes para completar una lección. La finalización verificable se conectará cuando existan intentos y criterios de evaluación.
-7. El modelo de progreso existente se conserva para no perder compatibilidad con los registros actuales.
+3. Los ejercicios publicados permiten enviar una respuesta mediante un editor de texto básico. El área de edición conserva el código inicial cuando existe, pero todavía no incorpora resaltado de sintaxis.
+4. Cada entrega se guarda como un intento asociado al ejercicio y al usuario local/autenticado. Se conserva el resultado, la retroalimentación, la puntuación disponible y la versión del evaluador aplicada.
+5. Los evaluadores iniciales son deterministas y estáticos: comparación de respuesta exacta y comprobación de fragmentos requeridos/prohibidos. No ejecutan código ni verifican su comportamiento.
+6. Si un ejercicio no tiene evaluador activo, la entrega se conserva como «Pendiente de revisión» y no concede aprobación.
+7. La finalización automática de una lección exige aprobar todos sus ejercicios obligatorios con la versión activa de un evaluador que tenga habilitada explícitamente la autorización de dominio. Esa autorización está desactivada por defecto; una comprobación estática simple no debe completar una lección por sí sola.
+8. Los tres campos de pistas fijan un máximo estructural de tres pistas por ejercicio. Su entrega secuencial y el contador de pistas corresponden al tutor de la Fase 3.
+9. La ruta antigua de marcado manual continúa rechazando solicitudes para completar lecciones y etapas.
+10. El modelo de progreso existente se conserva para no perder compatibilidad con los registros actuales.
 
 ## 5. Flujo previsto
 
@@ -88,11 +91,13 @@ flowchart TD
     C --> E[Explicación sencilla]
     C --> F[Ejemplos guiados]
     C --> G[Ejercicios]
-    G --> H[Editor y envío de intento — Fase 2]
-    H --> I[Evaluación reproducible — Fase 2]
-    I --> J[Tutor IA y pistas — Fase 3]
-    J --> K[Criterios de dominio]
-    K --> L[Completar lección automáticamente]
+    G --> H[Editor básico y envío de intento — Fase 2]
+    H --> I[Intento persistido]
+    I --> J[Evaluador estático versionado — Fase 2]
+    J --> K{Todos los ejercicios obligatorios aprobados<br/>y evaluadores autorizados?}
+    K -->|Sí| L[Completar lección automáticamente]
+    K -->|No| M[Revisar e intentar de nuevo]
+    I --> N[Tutor IA y pistas progresivas — Fase 3]
 ```
 
 ## 6. Próximos incrementos de la Fase 2
@@ -101,7 +106,9 @@ flowchart TD
 - Diseñar e incorporar un mecanismo versionado para cargar y mantener grandes volúmenes de contenido sin editar directamente la base de datos.
 - Implementar la navegación anterior/siguiente y el índice de secciones de la lección.
 - Definir estados de lectura y progreso parcial sin permitir finalización manual.
-- Implementar el contrato de intentos y evaluación reproducible de ejercicios, y conectar sus resultados con los criterios de finalización automática de lecciones.
+- Incorporar resaltado de sintaxis y una experiencia de edición más completa sin perder compatibilidad offline.
+- Ampliar los evaluadores con contratos de pruebas seguros y verificables. La ejecución de código seguirá bloqueada hasta disponer de un sandbox aislado.
+- Crear un flujo editorial versionado para configurar evaluadores sin editar directamente la base de datos.
 - Añadir pruebas de integración y validar migraciones en una copia de la base de datos local.
 
 ## 7. Validación antes de considerar estable este incremento
@@ -117,7 +124,7 @@ python manage.py test apps.roadmaps
 
 Luego iniciar CodeGuard Pro con `./run.sh`, abrir una etapa y entrar en una lección. La comprobación visual debe repetirse con los temas principales y en escritorio/móvil.
 
-> No se considera completada la Fase 2 con este incremento. Se ha establecido el primer bloque de arquitectura y navegación; falta cargar contenido pedagógico real, implementar interacción con ejercicios y conectar los criterios de finalización.
+> La Fase 2 sigue en progreso. Este incremento incorpora entrega, persistencia de intentos y evaluación estática inicial; no implementa ejecución real de código, resaltado de sintaxis, tutor IA ni cobertura editorial de todas las lecciones.
 
 ## 8. Estado de autoría de contenidos
 
@@ -140,3 +147,35 @@ Correcciones realizadas en esta rama:
 **Límite importante:** este incremento aún no incorpora un mecanismo autorizado para aprobar lecciones o etapas a partir de intentos/evaluaciones, porque ese modelo de evidencia todavía no existe. Tampoco sustituye una auditoría de todos los posibles puntos de escritura directa sobre el modelo `Progreso`. La validación local debe ejecutarse antes de integrar esta rama.
 
 
+
+
+## 10. Intentos y evaluación determinista — rama `phase-2/exercise-attempts`
+
+Este incremento incorpora:
+
+- `ConfiguracionEvaluacion`: contrato por ejercicio, con versiones históricas, una sola versión activa y configuración privada no expuesta en la plantilla.
+- `IntentoEjercicio`: persistencia de la respuesta, resultado, puntuación, retroalimentación, fecha y versión de evaluación aplicada.
+- Endpoint POST protegido por CSRF para recibir entregas, con límite de 20.000 caracteres.
+- Editor de texto básico en la vista de estudio e historial de los tres intentos más recientes.
+- Evaluadores iniciales `respuesta_exacta` y `codigo_contiene`. El segundo comprueba fragmentos de texto; no analiza sintaxis ni ejecuta el programa.
+- Finalización automática únicamente cuando todos los ejercicios obligatorios publicados cuentan con un intento aprobado contra su versión activa y el evaluador tiene habilitada expresamente la opción `permite_completar_leccion`.
+- Registro de auditoría para entregas y finalizaciones basadas en evidencia.
+
+### Límites de seguridad y alcance
+
+El servidor no ejecuta código enviado. Los evaluadores de fragmentos son heurísticas estáticas y pueden producir falsos positivos; por eso su configuración no autoriza completar lecciones por defecto. No deben usarse como prueba suficiente de dominio en ejercicios que requieran comprobar comportamiento, salida o lógica.
+
+Antes de habilitar ejecución real se requiere un sandbox independiente con aislamiento de procesos, límites de CPU/memoria/tiempo, sistema de archivos efímero y red deshabilitada. No se debe implementar esa ejecución dentro de una vista o proceso Django.
+
+### Validación local requerida
+
+```bash
+export CODEGUARD_DATA_DIR="$PWD/data"
+./.venv/bin/python manage.py check
+./.venv/bin/python manage.py makemigrations --check --dry-run
+./.venv/bin/python manage.py migrate
+./.venv/bin/python manage.py test apps.roadmaps --settings=config.settings.development
+./.venv/bin/python manage.py test --settings=config.settings.development
+```
+
+Las pruebas de esta rama cubren evaluación exacta, comprobación estática, configuración inválida, límite de entrega, historial y finalización condicionada a evidencia. La validación de estos comandos todavía debe ejecutarse en el entorno local del proyecto.
