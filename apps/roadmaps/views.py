@@ -317,10 +317,9 @@ def leccion_detalle(request, leccion_id):
     for ejercicio in ejercicios:
         ejercicio.intentos_usuario = intentos_por_ejercicio.get(ejercicio.id, [])
         try:
-            configuracion = ejercicio.configuracion_evaluacion
-            ejercicio.evaluacion_disponible = configuracion.activo
-        except ConfiguracionEvaluacion.DoesNotExist:
-            ejercicio.evaluacion_disponible = False
+            ejercicio.evaluacion_disponible = ejercicio.configuraciones_evaluacion.filter(
+                activo=True
+            ).exists()
 
     return render(
         request,
