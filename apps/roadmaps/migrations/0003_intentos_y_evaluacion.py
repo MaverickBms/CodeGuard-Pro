@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
             fields=[
                 ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 ("respuesta", models.TextField(verbose_name="respuesta enviada")),
-                ("resultado", models.CharField(choices=[("pendiente_revision", "Pendiente de revisión"), ("aprobado", "Aprobado"), ("no_aprobado", "Aún no aprobado")], default="pendiente_revision", max_length=24, verbose_name="resultado")),
+                ("resultado", models.CharField(choices=[("pendiente_revision", "Pendiente de revisión"), ("aprobado", "Aprobado"), ("criterios_cumplidos", "Criterios estáticos cumplidos"), ("no_aprobado", "Aún no aprobado")], default="pendiente_revision", max_length=24, verbose_name="resultado")),
                 ("puntuacion", models.PositiveSmallIntegerField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)], verbose_name="puntuación")),
                 ("retroalimentacion", models.TextField(blank=True, verbose_name="retroalimentación")),
                 ("detalles", models.JSONField(blank=True, default=dict, verbose_name="detalles del resultado")),
