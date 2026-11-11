@@ -18,7 +18,12 @@ from apps.accounts.identity import (
     obtener_usuario_local,
     requiere_acceso,
 )
-from .models import EjercicioLeccion, Etapa, IntentoEjercicio, Leccion
+from .models import (
+    EjercicioLeccion,
+    Etapa,
+    IntentoEjercicio,
+    Leccion,
+)
 from .attempts import registrar_intento_ejercicio
 from .services import (
     etapas_completadas,
@@ -279,6 +284,7 @@ def enviar_intento_view(request, ejercicio_id):
 
     return redirect(destino)
 
+
 @requiere_acceso
 def leccion_detalle(request, leccion_id):
     """Vista de estudio con teoría, explicación sencilla, ejemplos y ejercicios."""
@@ -310,7 +316,9 @@ def leccion_detalle(request, leccion_id):
             usuario=usuario, ejercicio__in=ejercicios
         ).order_by("-creado_en", "-id")
         for intento in filas:
-            lista_intentos = intentos_por_ejercicio.setdefault(intento.ejercicio_id, [])
+            lista_intentos = intentos_por_ejercicio.setdefault(
+                intento.ejercicio_id, []
+            )
             if len(lista_intentos) < 3:
                 lista_intentos.append(intento)
 
