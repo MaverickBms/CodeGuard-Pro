@@ -520,3 +520,147 @@ p { line-height: 1.65; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* ==========================================================================
+   Corrección de layout — pie de página y acciones de la barra lateral
+   El menú conserva su propio scroll; el botón Ajustes permanece completo.
+   ========================================================================== */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar-brand {
+  flex: 0 0 var(--cg-header-height, 76px);
+}
+
+.sidebar-nav {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.sidebar-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px max(12px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--cg-border);
+  background: var(--cg-surface);
+}
+
+.sidebar-footer .btn,
+.sidebar-footer #btnAjustes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  border-radius: 12px;
+  font-size: .9rem;
+  line-height: 1.2;
+}
+
+.sidebar-footer .btn i,
+.sidebar-footer #btnAjustes i {
+  flex: 0 0 auto;
+  margin: 0 !important;
+}
+
+/* El contenido crece con las etapas y el footer queda después del contenido,
+   sin recortar su altura cuando se alcanza el final del documento. */
+.main-content {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.page-container {
+  flex: 1 0 auto;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.main-footer {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  padding-block: 16px;
+}
+
+.footer-content {
+  min-width: 0;
+  flex-wrap: wrap;
+  line-height: 1.5;
+}
+
+.footer-content > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* En pantallas estrechas se mantiene el botón completo y legible. */
+@media (max-width: 900px) {
+  .sidebar-footer {
+    padding: 10px 8px max(10px, env(safe-area-inset-bottom));
+  }
+  .sidebar-footer .btn,
+  .sidebar-footer #btnAjustes {
+    min-height: 42px;
+    padding-inline: 8px;
+    font-size: .78rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-footer {
+    padding: 14px 14px max(14px, env(safe-area-inset-bottom));
+  }
+  .footer-content {
+    align-items: flex-start;
+    gap: 6px;
+    font-size: .72rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebar-nav {
+    scroll-behavior: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar-footer #btnAjustes {
+    font-size: 0;
+  }
+  .sidebar-footer #btnAjustes i {
+    font-size: 1rem;
+  }
+}
+
+.sidebar.collapsed .sidebar-footer #btnAjustes {
+  font-size: 0;
+}
+.sidebar.collapsed .sidebar-footer #btnAjustes i {
+  font-size: 1rem;
+}
