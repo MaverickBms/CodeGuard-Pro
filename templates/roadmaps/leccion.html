@@ -97,7 +97,46 @@
         <div class="lesson-prose">{{ ejercicio.enunciado|linebreaks }}</div>
         {% if ejercicio.instrucciones %}<div class="lesson-exercise-instructions"><strong>Instrucciones</strong><div class="lesson-prose">{{ ejercicio.instrucciones|linebreaks }}</div></div>{% endif %}
         {% if ejercicio.codigo_inicial %}<pre class="lesson-code"><code>{{ ejercicio.codigo_inicial }}</code></pre>{% endif %}
-        <div class="lesson-tutor-notice"><i class="fa-solid fa-wand-magic-sparkles"></i><span>El editor de código, el envío de intentos y la evaluación reproducible se incorporarán durante la Fase 2. Las pistas progresivas del tutor local corresponden a la Fase 3. Esta actividad todavía no registra entregas ni se considera completada.</span></div>
+
+        <form class="lesson-attempt-form" method="post" action="{% url 'roadmaps:enviar_intento' ejercicio.id %}">
+          {% csrf_token %}
+          <label for="respuesta-ejercicio-{{ ejercicio.id }}">Tu respuesta{% if ejercicio.lenguaje %} · {{ ejercicio.lenguaje }}{% endif %}</label>
+          <textarea
+            id="respuesta-ejercicio-{{ ejercicio.id }}"
+            name="respuesta"
+            class="lesson-code-editor"
+            rows="10"
+            maxlength="20000"
+            required
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="off"
+            placeholder="Escribe aquí tu respuesta o código..."
+          >{{ ejercicio.codigo_inicial }}</textarea>
+          <div class="lesson-editor-meta">
+            <span>Máximo 20.000 caracteres</span>
+            <button class="btn-theme" type="submit"><i class="fa-solid fa-paper-plane"></i> Enviar intento</button>
+          </div>
+        </form>
+
+        {% if ejercicio.intentos_usuario %}
+          <div class="lesson-attempt-history">
+            <h4>Últimos intentos</h4>
+            {% for intento in ejercicio.intentos_usuario %}
+              <article class="lesson-attempt-result result-{{ intento.resultado }}">
+                <div class="lesson-attempt-result-head">
+                  <strong>Intento {{ forloop.counter }}</strong>
+                  <span>{{ intento.get_resultado_display }}</span>
+                  {% if intento.puntuacion != None %}<b>{{ intento.puntuacion }}%</b>{% endif %}
+                </div>
+                <p>{{ intento.retroalimentacion }}</p>
+                <time datetime="{{ intento.creado_en|date:'c' }}">{{ intento.creado_en|date:"d/m/Y H:i" }}</time>
+              </article>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="lesson-tutor-notice"><i class="fa-solid fa-shield-halved"></i><span>{% if ejercicio.evaluacion_disponible %}Este ejercicio utiliza una comprobación automática estática configurada. La validación no ejecuta tu código ni sustituye pruebas de comportamiento.{% else %}Tu entrega se guardará, pero este ejercicio todavía no tiene un evaluador automático activo y quedará pendiente de revisión. No se ejecuta código arbitrario en el servidor.{% endif %} El tutor local y sus pistas progresivas corresponden a la Fase 3.</span></div>
       </article>
     {% empty %}
       <p class="lesson-empty">Los ejercicios de esta lección están pendientes de diseño.</p>
