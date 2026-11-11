@@ -206,3 +206,127 @@ input, select, textarea, .form-control {
 @media (prefers-reduced-motion: reduce) {
   .cg-card, .glass-card, .module-card, .v14-enter { animation: none !important; transition: none !important; }
 }
+
+
+/* ==========================================================================
+   Ajuste final de anclaje inferior
+   Esta hoja se carga al final del documento y consolida los overrides del shell.
+   ========================================================================== */
+
+/* Barra lateral: reservar un margen real debajo del botón Ajustes.
+   El menú absorbe el espacio restante y mantiene su propio desplazamiento. */
+.sidebar {
+  box-sizing: border-box;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-brand {
+  flex: 0 0 82px;
+  min-height: 82px;
+  box-sizing: border-box;
+}
+
+.sidebar-nav {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sidebar-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: stretch;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 78px;
+  margin: 0;
+  padding: 10px 14px 20px;
+  border-top: 1px solid var(--cg-border);
+  background: var(--cg-surface);
+}
+
+.sidebar-footer #btnAjustes,
+.sidebar-footer .btn {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 12px;
+  gap: 8px;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.sidebar-footer #btnAjustes i,
+.sidebar-footer .btn i {
+  flex: 0 0 auto;
+  margin: 0 !important;
+}
+
+/* Pie de página: separación inferior suficiente para que el texto no toque
+   el borde de la ventana al llegar al final del documento. */
+.main-footer {
+  position: relative;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 68px;
+  margin-top: auto;
+  padding: 14px clamp(18px, 3vw, 42px) 24px;
+}
+
+.main-footer .footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  min-width: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+.main-footer .footer-content > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .sidebar-footer {
+    min-height: 72px;
+    padding: 8px 8px 16px;
+  }
+  .sidebar-footer #btnAjustes,
+  .sidebar-footer .btn {
+    min-height: 42px;
+    padding-inline: 8px;
+    font-size: .78rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-footer {
+    min-height: 76px;
+    padding: 12px 14px max(22px, env(safe-area-inset-bottom));
+  }
+  .main-footer .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
