@@ -64,6 +64,6 @@
 .lesson-attempt-result time{color:var(--cg-text-muted);font-size:.68rem}
 .lesson-attempt-result.result-aprobado{border-left:3px solid var(--cg-success)}
 .lesson-attempt-result.result-no_aprobado{border-left:3px solid var(--cg-warning)}
-.lesson-attempt-result.result-pendiente_revision{border-left:3px solid var(--cg-info)}
+.lesson-attempt-result.result-pendiente_revision,.lesson-attempt-result.result-criterios_cumplidos{border-left:3px solid var(--cg-info)}
 @media(max-width:640px){.lesson-editor-meta{align-items:stretch;flex-direction:column}.lesson-editor-meta .btn-theme{width:100%}}
 
