@@ -19,6 +19,7 @@ from apps.accounts.identity import (
 from .models import Etapa, Leccion
 from .services import (
     etapas_completadas,
+    iniciar_leccion,
     mapa_progreso_etapas,
     mapa_progreso_lecciones,
     marcar_etapa,
@@ -247,7 +248,11 @@ def leccion_detalle(request, leccion_id):
     usuario = get_usuario_actual(request)
     progreso = None
     if usuario is not None:
-        progreso = mapa_progreso_lecciones(usuario, leccion.modulo.etapa).get(leccion.id)
+        progreso = iniciar_leccion(
+            usuario,
+            leccion,
+            actor_auditoria=obtener_actor_auditoria(request),
+        )
 
     contenido = getattr(leccion, "contenido", None)
     ejemplos = leccion.ejemplos.filter(publicado=True)
