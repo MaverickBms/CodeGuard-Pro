@@ -522,3 +522,6 @@ class EjercicioLeccion(models.Model):
     @property
     def total_pistas_disponibles(self) -> int:
         return sum(bool(pista.strip()) for pista in (self.pista_1, self.pista_2, self.pista_3))
+
+# Registrar los modelos auxiliares del flujo de intentos y evaluación.
+from .models_attempts import ConfiguracionEvaluacion, IntentoEjercicio  # noqa: E402,F401
