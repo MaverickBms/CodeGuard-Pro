@@ -10,7 +10,7 @@
 | Referencia normativa | IEEE Std 830-1998 (estructura adaptada) |
 | Estado | Borrador técnico consolidado para validación del propietario |
 | Repositorio | [MaverickBms/CodeGuard-Pro](https://github.com/MaverickBms/CodeGuard-Pro) |
-| Línea base inspeccionada | Rama \`main\`, commit \`d1528df8aad431cfe6b04192194ab6b543c07286\` |
+| Línea base inspeccionada | Rama `main`, commit `d1528df8aad431cfe6b04192194ab6b543c07286` |
 
 > **Nota de control:** este documento diferencia lo que existe en el código, lo que está aprobado como objetivo del producto y lo que continúa pendiente. La palabra *requisito* no implica por sí sola que una función esté implementada. Ningún requisito futuro debe presentarse como funcionalidad disponible.
 
@@ -85,7 +85,7 @@ La aplicación combina:
 - **Waitress y WhiteNoise:** servidor WSGI y entrega de estáticos en el paquete de escritorio.
 - **PyInstaller y electron-builder:** empaquetado de la aplicación.
 
-El servidor local debe escuchar exclusivamente en \`127.0.0.1\`. La aplicación no requiere una cuenta remota, backend cloud ni conexión permanente a Internet.
+El servidor local debe escuchar exclusivamente en `127.0.0.1`. La aplicación no requiere una cuenta remota, backend cloud ni conexión permanente a Internet.
 
 ### 1.2.1 Alcance implementado en la línea base inspeccionada
 
@@ -102,7 +102,7 @@ El servidor local debe escuchar exclusivamente en \`127.0.0.1\`. La aplicación 
 | Temas | 12 temas visuales seleccionables | IMPLEMENTADO |
 | Persistencia | SQLite y directorio local de datos configurable | IMPLEMENTADO |
 | Autenticación | Código y modelos conservados, pero el flujo está temporalmente desactivado | DESACTIVADO POR CONFIGURACIÓN |
-| Biblioteca documental, competencias, evaluaciones, evidencias y laboratorios | Definidos como evolución del producto; no se encontraron como módulos activos en \`INSTALLED_APPS\` de la línea base | APROBADO — NO IMPLEMENTADO / POR VALIDAR |
+| Biblioteca documental, competencias, evaluaciones, evidencias y laboratorios | Definidos como evolución del producto; no se encontraron como módulos activos en `INSTALLED_APPS` de la línea base | APROBADO — NO IMPLEMENTADO / POR VALIDAR |
 
 **Importante:** la presencia de modelos, rutas o eventos aislados no basta para considerar terminado un módulo. Para cambiar el estado a IMPLEMENTADO se requiere comprobar el flujo completo y sus pruebas.
 
@@ -164,14 +164,14 @@ Su incorporación requiere requisitos, análisis de riesgos y aprobación propio
 
 1. IEEE Std 830-1998, *IEEE Recommended Practice for Software Requirements Specifications*.
 2. Repositorio CodeGuard Pro: [https://github.com/MaverickBms/CodeGuard-Pro](https://github.com/MaverickBms/CodeGuard-Pro).
-3. \`README.md\` — descripción del producto, instalación y uso.
-4. \`docs/ARQUITECTURA.md\` — arquitectura y sistema de diseño.
-5. \`docs/MODELO_DATOS.md\` — entidades y relaciones documentadas.
-6. \`docs/SEGURIDAD.md\` — controles de seguridad.
-7. \`docs/PLAN_PRUEBAS.md\` — estrategia y evidencia de pruebas.
-8. \`docs/MATRIZ_TRAZABILIDAD.md\` — trazabilidad histórica de requisitos.
-9. \`docs/MODO_SIN_AUTENTICACION.md\` — estado de la autenticación.
-10. \`requirements.txt\` y \`package.json\` — dependencias fijadas.
+3. `README.md` — descripción del producto, instalación y uso.
+4. `docs/ARQUITECTURA.md` — arquitectura y sistema de diseño.
+5. `docs/MODELO_DATOS.md` — entidades y relaciones documentadas.
+6. `docs/SEGURIDAD.md` — controles de seguridad.
+7. `docs/PLAN_PRUEBAS.md` — estrategia y evidencia de pruebas.
+8. `docs/MATRIZ_TRAZABILIDAD.md` — trazabilidad histórica de requisitos.
+9. `docs/MODO_SIN_AUTENTICACION.md` — estado de la autenticación.
+10. `requirements.txt` y `package.json` — dependencias fijadas.
 11. Documento maestro **PROYECTO ASCENSO — Roadmap Maestro Consolidado 3.1**, fuente de verdad para el contenido académico.
 12. Documentación oficial de Django, Electron, SQLite, Waitress, PyInstaller y electron-builder.
 13. OWASP ASVS y OWASP Top 10, como referencias para los controles de seguridad.
@@ -202,7 +202,7 @@ La interfaz web interna no es un servicio público: se carga dentro de una venta
 
 ### 2.1.1 Diagrama de contexto del sistema
 
-\`\`\`mermaid
+```mermaid
 flowchart LR
     U["Usuario local"]
     CG["CodeGuard Pro"]
@@ -221,11 +221,11 @@ flowchart LR
     class U actor
     class CG system
     class FS,OS,NET external
-\`\`\`
+```
 
 ### 2.1.2 Diagrama de contenedores
 
-\`\`\`mermaid
+```mermaid
 flowchart TB
     U["Usuario"]
     subgraph DESKTOP["Equipo local"]
@@ -257,7 +257,7 @@ flowchart TB
     class U,W,P ui
     class E,D,ORM,STATIC backend
     class DB,DATA storage
-\`\`\`
+```
 
 ## 2.2 Funciones del producto
 
@@ -304,13 +304,13 @@ El producto actual es monousuario. No se especifican permisos diferenciados ni c
 
 ## 2.4 Restricciones
 
-1. El backend debe escuchar exclusivamente en \`127.0.0.1\`.
+1. El backend debe escuchar exclusivamente en `127.0.0.1`.
 2. La aplicación debe poder operar sin Internet.
 3. Los datos escribibles deben almacenarse en un directorio de datos del usuario, separado del directorio de instalación cuando se ejecuta empaquetada.
 4. Django debe conservar separación entre modelos, vistas, servicios y plantillas.
 5. La base de datos debe ser SQLite para el escenario monousuario actual.
 6. Los recursos estáticos y las dependencias frontend deben servirse localmente.
-7. Electron debe mantener \`contextIsolation: true\`, \`nodeIntegration: false\`, \`sandbox: true\` y \`webSecurity: true\` en la ventana principal.
+7. Electron debe mantener `contextIsolation: true`, `nodeIntegration: false`, `sandbox: true` y `webSecurity: true` en la ventana principal.
 8. La ventana debe bloquear navegación externa no autorizada y nuevas ventanas no controladas.
 9. Los identificadores y las relaciones del roadmap deben proceder del documento ASCENSO oficial.
 10. Los 12 temas visuales existentes deben conservar sus identificadores y su posibilidad de selección.
@@ -331,17 +331,17 @@ El producto actual es monousuario. No se especifican permisos diferenciados ni c
 
 | Capa | Tecnología identificada | Evidencia |
 |---|---|---|
-| Escritorio | Electron | \`package.json\`, \`electron/main.js\` |
-| Motor UI | Chromium integrado en Electron | \`BrowserWindow\` |
-| Backend | Django 5.2.19 | \`requirements.txt\` |
-| Base de datos | SQLite | \`config/settings/base.py\` |
-| Servidor empaquetado | Waitress 3.0.0 | \`server_entry.py\`, \`requirements.txt\` |
-| Estáticos | WhiteNoise 6.9.0 | \`requirements.txt\`, arquitectura |
+| Escritorio | Electron | `package.json`, `electron/main.js` |
+| Motor UI | Chromium integrado en Electron | `BrowserWindow` |
+| Backend | Django 5.2.19 | `requirements.txt` |
+| Base de datos | SQLite | `config/settings/base.py` |
+| Servidor empaquetado | Waitress 3.0.0 | `server_entry.py`, `requirements.txt` |
+| Estáticos | WhiteNoise 6.9.0 | `requirements.txt`, arquitectura |
 | Hash de contraseñas | Argon2 | configuración y módulo accounts |
-| Frontend | HTML, CSS y JavaScript | \`templates/\`, \`static/\` |
+| Frontend | HTML, CSS y JavaScript | `templates/`, `static/` |
 | Componentes UI | Bootstrap, HTMX y SweetAlert2 locales | README y recursos del proyecto |
-| Empaquetado backend | PyInstaller | \`requirements.txt\`, script de construcción |
-| Empaquetado escritorio | electron-builder | \`package.json\` |
+| Empaquetado backend | PyInstaller | `requirements.txt`, script de construcción |
+| Empaquetado escritorio | electron-builder | `package.json` |
 
 Las versiones deben actualizarse en este documento cuando cambien los archivos de dependencias. No se debe asumir compatibilidad con cualquier versión de Python o Node sin ejecutar las pruebas de instalación.
 
@@ -369,7 +369,7 @@ No existe una interfaz especial con hardware externo. El sistema utiliza teclado
 
 | Interfaz | Contrato |
 |---|---|
-| Electron → Django | HTTP local hacia \`127.0.0.1:<puerto>\`. |
+| Electron → Django | HTTP local hacia `127.0.0.1:<puerto>`. |
 | Chromium → Django | Solicitudes HTTP de navegación y formularios. |
 | Electron Main → Renderer | IPC limitado a canales definidos por el proceso principal y el preload. |
 | Django → SQLite | ORM de Django y transacciones. |
@@ -378,10 +378,10 @@ No existe una interfaz especial con hardware externo. El sistema utiliza teclado
 
 ### 3.1.4 Interfaces de comunicación
 
-- El backend no debe escuchar en \`0.0.0.0\`.
+- El backend no debe escuchar en `0.0.0.0`.
 - Electron debe seleccionar un puerto local disponible durante el arranque.
 - La ventana debe cargar la URL local únicamente después de comprobar que el servidor responde.
-- Las llamadas IPC deben limitarse a operaciones explícitas; no se debe exponer \`require\`, Node.js ni acceso arbitrario al sistema de archivos al renderer.
+- Las llamadas IPC deben limitarse a operaciones explícitas; no se debe exponer `require`, Node.js ni acceso arbitrario al sistema de archivos al renderer.
 
 ## 3.2 Requisitos funcionales
 
@@ -390,7 +390,7 @@ No existe una interfaz especial con hardware externo. El sistema utiliza teclado
 | ID | Requisito | Prioridad | Estado |
 |---|---|---:|---|
 | RF-001 | El sistema deberá iniciar el proceso backend local antes de cargar la interfaz principal. | P0 | IMPLEMENTADO |
-| RF-002 | El sistema deberá seleccionar un puerto libre y enlazar el backend a \`127.0.0.1\`. | P0 | IMPLEMENTADO |
+| RF-002 | El sistema deberá seleccionar un puerto libre y enlazar el backend a `127.0.0.1`. | P0 | IMPLEMENTADO |
 | RF-003 | El sistema deberá comprobar la disponibilidad HTTP del backend antes de mostrar la interfaz funcional. | P0 | IMPLEMENTADO |
 | RF-004 | El sistema deberá mostrar una pantalla de inicio mientras el backend se inicializa. | P2 | IMPLEMENTADO |
 | RF-005 | El sistema deberá detener el proceso backend cuando la aplicación de escritorio se cierre. | P0 | IMPLEMENTADO |
@@ -451,11 +451,11 @@ No existe una interfaz especial con hardware externo. El sistema utiliza teclado
 | RF-054 | El tema de alto contraste deberá mantener un tratamiento visual específico. | P1 | IMPLEMENTADO |
 | RF-055 | La interfaz deberá respetar la preferencia de movimiento reducido del sistema operativo. | P1 | IMPLEMENTADO EN LOS ESTILOS DOCUMENTADOS |
 
-Los temas identificados son: \`light\`, \`dark\`, \`high-contrast\`, \`retro-pixel\`, \`cyberpunk\`, \`fantasy\`, \`sci-fi\`, \`warrior\`, \`mage\`, \`rogue\`, \`paladin\` y \`dark-mage\`.
+Los temas identificados son: `light`, `dark`, `high-contrast`, `retro-pixel`, `cyberpunk`, `fantasy`, `sci-fi`, `warrior`, `mage`, `rogue`, `paladin` y `dark-mage`.
 
 ### 3.2.6 Identidad y acceso
 
-El repositorio conserva modelos, formularios, servicios, vistas y pruebas del flujo de autenticación. Sin embargo, el interruptor \`AUTH_DISABLED = True\` se encuentra activo en la línea base revisada.
+El repositorio conserva modelos, formularios, servicios, vistas y pruebas del flujo de autenticación. Sin embargo, el interruptor `AUTH_DISABLED = True` se encuentra activo en la línea base revisada.
 
 | ID | Requisito | Prioridad | Estado |
 |---|---|---:|---|
@@ -465,7 +465,7 @@ El repositorio conserva modelos, formularios, servicios, vistas y pruebas del fl
 | RF-063 | El sistema deberá permitir recuperar el acceso con la frase de rescate y consumirla únicamente al completar el cambio de contraseña. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
 | RF-064 | Cuando la autenticación esté habilitada, el sistema deberá cerrar la sesión mediante POST protegido contra CSRF. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
 | RF-065 | Cuando la autenticación esté habilitada, el sistema deberá aplicar expiración por inactividad. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
-| RF-066 | El sistema deberá mantener el modo sin autenticación claramente identificado mientras \`AUTH_DISABLED = True\`. | P0 | IMPLEMENTADO |
+| RF-066 | El sistema deberá mantener el modo sin autenticación claramente identificado mientras `AUTH_DISABLED = True`. | P0 | IMPLEMENTADO |
 | RF-067 | La reactivación de autenticación deberá requerir autorización expresa del propietario y pruebas de regresión. | P0 | REGLA DE CAMBIO |
 
 **Condición de seguridad:** mientras el modo sin autenticación esté activo, no debe afirmarse que el acceso a la aplicación está protegido por contraseña o sesión. La protección del equipo, del usuario del sistema operativo y del directorio de datos depende de los controles del sistema anfitrión.
@@ -503,23 +503,23 @@ Los identificadores de esta sección son una reorganización temática para la v
 | ID | Requisito | Criterio de aceptación | Prioridad | Estado |
 |---|---|---|---:|---|
 | RNF-001 | El producto deberá operar sin conexión a Internet para sus funciones locales. | Con la red desconectada se inicia Electron, Django y se consulta/modifica el progreso local. | P0 | IMPLEMENTADO POR ARQUITECTURA; PRUEBA DE REGRESIÓN |
-| RNF-002 | El backend deberá escuchar únicamente en loopback. | Inspección del socket muestra \`127.0.0.1\`, nunca \`0.0.0.0\`. | P0 | IMPLEMENTADO |
-| RNF-003 | La aplicación deberá separar datos escribibles del directorio de instalación. | La ejecución empaquetada utiliza \`CODEGUARD_DATA_DIR\` o \`app.getPath('userData')\`. | P0 | IMPLEMENTADO |
+| RNF-002 | El backend deberá escuchar únicamente en loopback. | Inspección del socket muestra `127.0.0.1`, nunca `0.0.0.0`. | P0 | IMPLEMENTADO |
+| RNF-003 | La aplicación deberá separar datos escribibles del directorio de instalación. | La ejecución empaquetada utiliza `CODEGUARD_DATA_DIR` o `app.getPath('userData')`. | P0 | IMPLEMENTADO |
 | RNF-004 | La persistencia deberá mantener integridad referencial y transaccional. | Migraciones y pruebas de integridad pasan sobre una base nueva. | P0 | IMPLEMENTADO EN SQLITE/DJANGO; PRUEBAS CONTINUAS |
 | RNF-005 | La interfaz deberá ser adaptable al tamaño de la ventana. | No se producen solapamientos ni pérdida de controles en resoluciones objetivo. | P1 | REQUIERE VALIDACIÓN VISUAL |
 | RNF-006 | La aplicación deberá ofrecer estados accesibles y navegación por teclado. | Controles con foco visible, etiquetas y orden de tabulación coherente. | P1 | REQUIERE AUDITORÍA DE ACCESIBILIDAD |
 | RNF-007 | La arquitectura deberá separar presentación, lógica de negocio y persistencia. | Vistas delegan reglas de negocio en servicios y modelos; el acceso a datos usa ORM. | P1 | IMPLEMENTADO |
-| RNF-008 | El renderer de Electron no deberá tener acceso directo a Node.js. | \`nodeIntegration=false\`, \`contextIsolation=true\`, \`sandbox=true\`. | P0 | IMPLEMENTADO |
+| RNF-008 | El renderer de Electron no deberá tener acceso directo a Node.js. | `nodeIntegration=false`, `contextIsolation=true`, `sandbox=true`. | P0 | IMPLEMENTADO |
 | RNF-009 | La aplicación deberá bloquear navegación externa no autorizada. | Pruebas de navegación externa y apertura de ventanas son rechazadas. | P0 | IMPLEMENTADO |
 | RNF-010 | La interfaz deberá utilizar recursos locales, sin CDN como dependencia funcional. | La aplicación funciona sin descargar scripts, estilos o fuentes de terceros. | P0 | IMPLEMENTADO SEGÚN DOCUMENTACIÓN; VERIFICAR RED |
-| RNF-011 | La aplicación deberá respetar preferencias de movimiento reducido. | Animaciones no esenciales se reducen o desactivan con \`prefers-reduced-motion\`. | P1 | IMPLEMENTADO EN ESTILOS DOCUMENTADOS |
+| RNF-011 | La aplicación deberá respetar preferencias de movimiento reducido. | Animaciones no esenciales se reducen o desactivan con `prefers-reduced-motion`. | P1 | IMPLEMENTADO EN ESTILOS DOCUMENTADOS |
 | RNF-012 | Las consultas de progreso deberán derivar sus porcentajes de registros persistidos. | Los porcentajes mostrados coinciden con los registros de progreso. | P0 | IMPLEMENTADO |
 | RNF-013 | El sistema deberá manejar errores de arranque y ausencia de datos sin cerrarse abruptamente. | Se muestra un estado o mensaje de error recuperable. | P1 | PARCIAL / PRUEBA PENDIENTE |
 | RNF-014 | El producto deberá mantener dependencias con versiones fijadas. | Los paquetes Python tienen versiones explícitas y el manifiesto npm identifica sus dependencias. | P1 | IMPLEMENTADO |
 | RNF-015 | El sistema deberá evitar telemetría y llamadas externas no justificadas. | Inspección de red en ejecución offline no revela conexiones externas de la aplicación. | P0 | DOCUMENTADO; PRUEBA PENDIENTE |
 | RNF-016 | El sistema deberá mantener tiempos de respuesta adecuados para el escenario monousuario. | Definir conjunto de datos, equipo y percentiles antes de declarar un umbral. | P2 | PENDIENTE DE MEDICIÓN |
 | RNF-017 | El sistema deberá poder instalarse y ejecutarse en los sistemas operativos oficialmente soportados. | Instalación limpia y pruebas de humo por plataforma objetivo. | P1 | PENDIENTE DE MATRIZ DE PLATAFORMAS |
-| RNF-018 | El código deberá ser mantenible y verificable. | \`manage.py check\`, pruebas, comprobación de migraciones y validaciones de empaquetado documentadas. | P1 | PARCIAL |
+| RNF-018 | El código deberá ser mantenible y verificable. | `manage.py check`, pruebas, comprobación de migraciones y validaciones de empaquetado documentadas. | P1 | PARCIAL |
 | RNF-019 | La aplicación deberá conservar los 12 temas sin introducir dependencias de paleta entre ellos. | Cambio de tema no rompe componentes y cada tema conserva su identificador. | P1 | IMPLEMENTADO; PRUEBA VISUAL PENDIENTE |
 | RNF-020 | El sistema deberá evitar que el cierre de Electron deje procesos backend huérfanos. | Al cerrar la ventana y la aplicación, el proceso Django termina. | P0 | IMPLEMENTADO; PRUEBA DE PLATAFORMA PENDIENTE |
 
@@ -579,18 +579,18 @@ Las siguientes entidades son conceptuales y no deben confundirse con tablas ya d
 | RS-004 | Las plantillas deberán escapar contenido dinámico para reducir XSS. | Pruebas con payloads no ejecutan scripts. | IMPLEMENTADO POR FRAMEWORK; PRUEBA PENDIENTE |
 | RS-005 | Las consultas de base de datos deberán utilizar ORM o parámetros seguros. | No se construyen consultas SQL mediante concatenación de entradas. | IMPLEMENTADO POR ORM |
 | RS-006 | La aplicación deberá añadir cabeceras de seguridad y CSP. | Respuestas incluyen las cabeceras definidas por la política del proyecto. | IMPLEMENTADO |
-| RS-007 | Los secretos deberán mantenerse fuera del repositorio. | \`.secret_key\` y variables sensibles no se versionan; permisos locales restrictivos. | IMPLEMENTADO POR CONFIGURACIÓN |
+| RS-007 | Los secretos deberán mantenerse fuera del repositorio. | `.secret_key` y variables sensibles no se versionan; permisos locales restrictivos. | IMPLEMENTADO POR CONFIGURACIÓN |
 | RS-008 | Las contraseñas deberán almacenarse mediante hash seguro Argon2 cuando la autenticación esté habilitada. | No existe contraseña en texto plano en la base de datos. | IMPLEMENTADO EN CÓDIGO; AUTENTICACIÓN DESACTIVADA |
 | RS-009 | La frase de rescate deberá almacenarse como hash y ser de un solo uso. | Se invalida únicamente tras completar correctamente el restablecimiento. | IMPLEMENTADO EN CÓDIGO; AUTENTICACIÓN DESACTIVADA |
 | RS-010 | El sistema deberá evitar revelar si un usuario existe ante errores de autenticación. | Mensaje de error genérico. | IMPLEMENTADO EN CÓDIGO; AUTENTICACIÓN DESACTIVADA |
 | RS-011 | La aplicación deberá registrar eventos relevantes de acceso y progreso. | Los eventos esperados aparecen en AuditLog. | IMPLEMENTADO |
-| RS-012 | El sistema no deberá exponer errores internos ni secretos al usuario final. | \`DEBUG=False\` por defecto y mensajes de error controlados. | IMPLEMENTADO POR CONFIGURACIÓN |
+| RS-012 | El sistema no deberá exponer errores internos ni secretos al usuario final. | `DEBUG=False` por defecto y mensajes de error controlados. | IMPLEMENTADO POR CONFIGURACIÓN |
 | RS-013 | Los datos de usuario deberán almacenarse en un directorio local separado del binario instalado. | Directorio de datos independiente en modo empaquetado. | IMPLEMENTADO |
 | RS-014 | Los archivos de evidencias futuros deberán validarse por tipo, tamaño y contenido, y almacenarse fuera del web root. | Pruebas de MIME, extensión, tamaño, traversal y descarga segura. | APROBADO — NO IMPLEMENTADO |
 | RS-015 | Los backups futuros deberán validarse antes de restaurarse. | Rechazo de rutas, entradas y contenido no permitido. | APROBADO — NO IMPLEMENTADO |
 | RS-016 | El sistema deberá evitar telemetría y transmisión no autorizada de información personal. | Verificación de tráfico de red. | DOCUMENTADO; PRUEBA PENDIENTE |
 | RS-017 | El modo sin autenticación deberá comunicarse como una condición explícita de seguridad. | UI y documentación no afirman que exista protección por login mientras el interruptor esté activo. | IMPLEMENTADO COMO DECISIÓN ACTUAL |
-| RS-018 | La reactivación de autenticación deberá realizarse mediante cambio controlado y pruebas de regresión. | Revisión de configuración, flujos y pruebas con \`AUTH_DISABLED=False\`. | REGLA DE CAMBIO |
+| RS-018 | La reactivación de autenticación deberá realizarse mediante cambio controlado y pruebas de regresión. | Revisión de configuración, flujos y pruebas con `AUTH_DISABLED=False`. | REGLA DE CAMBIO |
 
 ---
 
@@ -600,7 +600,7 @@ Los diagramas de esta sección describen la arquitectura y el dominio observados
 
 ## 4.1 Diagrama de componentes
 
-\`\`\`mermaid
+```mermaid
 flowchart TB
     subgraph ELECTRON["Aplicación de escritorio"]
         MAIN["electron/main.js"]
@@ -641,11 +641,11 @@ flowchart TB
     AUD <--> DB
     DB --> FILES
     DJANGO --> FILES
-\`\`\`
+```
 
 ## 4.2 Diagrama de secuencia — Inicio de la aplicación
 
-\`\`\`mermaid
+```mermaid
 sequenceDiagram
     autonumber
     actor Usuario
@@ -672,11 +672,11 @@ sequenceDiagram
     Django-->>Electron: Respuesta HTTP válida
     Electron->>UI: Cargar URL local
     UI-->>Usuario: Mostrar panel principal
-\`\`\`
+```
 
 ## 4.3 Diagrama de secuencia — Consultar el panel
 
-\`\`\`mermaid
+```mermaid
 sequenceDiagram
     autonumber
     actor Usuario
@@ -701,11 +701,11 @@ sequenceDiagram
     Service-->>View: Resumen calculado
     View-->>UI: HTML renderizado
     UI-->>Usuario: Mostrar indicadores y actividad
-\`\`\`
+```
 
 ## 4.4 Diagrama de secuencia — Completar una lección
 
-\`\`\`mermaid
+```mermaid
 sequenceDiagram
     autonumber
     actor Usuario
@@ -733,11 +733,11 @@ sequenceDiagram
     Service-->>View: Operación finalizada
     View-->>UI: Redirección y mensaje
     UI-->>Usuario: Mostrar nuevo estado
-\`\`\`
+```
 
 ## 4.5 Diagrama de secuencia — Completar una etapa con prerrequisitos
 
-\`\`\`mermaid
+```mermaid
 sequenceDiagram
     autonumber
     actor Usuario
@@ -766,13 +766,13 @@ sequenceDiagram
         View-->>UI: Mensaje de éxito
         UI-->>Usuario: Etapa completada
     end
-\`\`\`
+```
 
 ## 4.6 Diagrama de clases — Modelo implementado
 
-Este diagrama representa las clases persistentes identificadas en \`apps.accounts\`, \`apps.core\`, \`apps.audit\` y \`apps.roadmaps\`. No incluye entidades futuras.
+Este diagrama representa las clases persistentes identificadas en `apps.accounts`, `apps.core`, `apps.audit` y `apps.roadmaps`. No incluye entidades futuras.
 
-\`\`\`mermaid
+```mermaid
 classDiagram
     direction TB
 
@@ -903,13 +903,13 @@ classDiagram
     Modulo "0..1" --> "0..*" Progreso : objetivo opcional
     Leccion "0..1" --> "0..*" Progreso : objetivo opcional
     Actividad "0..1" --> "0..*" Progreso : objetivo opcional
-\`\`\`
+```
 
-**Nota de interpretación:** \`Progreso\` puede referenciar una etapa y, de forma opcional, un módulo, una lección o una actividad. La restricción de unicidad y los campos opcionales deben validarse junto con las migraciones reales de SQLite; el diagrama no sustituye el esquema físico.
+**Nota de interpretación:** `Progreso` puede referenciar una etapa y, de forma opcional, un módulo, una lección o una actividad. La restricción de unicidad y los campos opcionales deben validarse junto con las migraciones reales de SQLite; el diagrama no sustituye el esquema físico.
 
 ## 4.7 Diagrama de estados del progreso
 
-\`\`\`mermaid
+```mermaid
 stateDiagram-v2
     [*] --> NoIniciado
     NoIniciado --> EnProgreso: Se completa una o más lecciones
@@ -919,13 +919,13 @@ stateDiagram-v2
     NoIniciado --> Bloqueado: Hay prerrequisitos pendientes
     Bloqueado --> NoIniciado: Se satisfacen los prerrequisitos
     Completado --> [*]
-\`\`\`
+```
 
-El estado \`bloqueado\` se utiliza como estado de dominio previsto para el progreso, mientras que el bloqueo por prerrequisitos también se calcula a partir de las relaciones entre etapas. La representación visual debe distinguir ambos conceptos.
+El estado `bloqueado` se utiliza como estado de dominio previsto para el progreso, mientras que el bloqueo por prerrequisitos también se calcula a partir de las relaciones entre etapas. La representación visual debe distinguir ambos conceptos.
 
 ## 4.8 Diagrama de despliegue
 
-\`\`\`mermaid
+```mermaid
 flowchart TB
     subgraph HOST["Equipo del usuario"]
         subgraph APP["Aplicación CodeGuard Pro"]
@@ -946,7 +946,7 @@ flowchart TB
         SERVER --> LOGS
         SERVER --> KEY
     end
-\`\`\`
+```
 
 ---
 
@@ -1124,13 +1124,13 @@ Un requisito no se considera verificado solo porque exista una ruta o un modelo.
 
 | Requisito | Componente principal | Método de verificación |
 |---|---|---|
-| RF-001 a RF-008 | \`electron/main.js\`, \`electron/preload.js\` | INS, DEM, TST |
-| RF-010 a RF-015 | \`apps/core/views.py\`, plantillas core | DEM, TST |
-| RF-020 a RF-030 | \`apps/roadmaps/models.py\`, \`services.py\`, \`views.py\`, comando de carga | INS, TST |
-| RF-040 a RF-049 | \`apps/roadmaps/services.py\`, modelos Progreso y AuditLog | TST, INS |
-| RF-050 a RF-055 | \`electron/main.js\`, \`static/css/themes.css\`, JavaScript de temas | DEM, INS |
-| RF-060 a RF-067 | \`apps/accounts\`, \`config/settings/base.py\` | INS, TST con configuración habilitada |
-| RF-070 a RF-074 | \`apps/audit/models.py\`, \`apps/audit/services.py\` | INS, TST |
+| RF-001 a RF-008 | `electron/main.js`, `electron/preload.js` | INS, DEM, TST |
+| RF-010 a RF-015 | `apps/core/views.py`, plantillas core | DEM, TST |
+| RF-020 a RF-030 | `apps/roadmaps/models.py`, `services.py`, `views.py`, comando de carga | INS, TST |
+| RF-040 a RF-049 | `apps/roadmaps/services.py`, modelos Progreso y AuditLog | TST, INS |
+| RF-050 a RF-055 | `electron/main.js`, `static/css/themes.css`, JavaScript de temas | DEM, INS |
+| RF-060 a RF-067 | `apps/accounts`, `config/settings/base.py` | INS, TST con configuración habilitada |
+| RF-070 a RF-074 | `apps/audit/models.py`, `apps/audit/services.py` | INS, TST |
 | RNF-001 a RNF-020 | Configuración Electron/Django, despliegue y frontend | INS, ANA, TST |
 | RS-001 a RS-018 | Electron, middleware Django, accounts, audit | INS, TST de seguridad |
 
@@ -1157,24 +1157,24 @@ Un requisito no se considera verificado solo porque exista una ruta o un modelo.
 
 Los siguientes comandos están documentados en el repositorio y deben ejecutarse desde la raíz del proyecto con el entorno virtual activo:
 
-\`\`\`bash
+```bash
 python manage.py check
 python manage.py makemigrations --check --dry-run
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps
-\`\`\`
+```
 
 Para verificar el frontend de escritorio:
 
-\`\`\`bash
+```bash
 npm install
 npm start
-\`\`\`
+```
 
 Para el empaquetado de Windows:
 
-\`\`\`bat
+```bat
 build_windows.bat
-\`\`\`
+```
 
 La ejecución de estos comandos debe registrarse con fecha, entorno, versión y resultado. Este documento no afirma que las pruebas se hayan ejecutado durante la revisión documental.
 
@@ -1182,15 +1182,15 @@ La ejecución de estos comandos debe registrarse con fecha, entorno, versión y 
 
 | Tema | Documento de referencia |
 |---|---|
-| Arquitectura | \`docs/ARQUITECTURA.md\` |
-| Modelo de datos | \`docs/MODELO_DATOS.md\` |
-| Seguridad | \`docs/SEGURIDAD.md\` |
-| Pruebas | \`docs/PLAN_PRUEBAS.md\` |
-| Matriz histórica | \`docs/MATRIZ_TRAZABILIDAD.md\` |
-| Modo sin autenticación | \`docs/MODO_SIN_AUTENTICACION.md\` |
-| Instalación y uso | \`README.md\` y \`README_WINDOWS.md\` |
+| Arquitectura | `docs/ARQUITECTURA.md` |
+| Modelo de datos | `docs/MODELO_DATOS.md` |
+| Seguridad | `docs/SEGURIDAD.md` |
+| Pruebas | `docs/PLAN_PRUEBAS.md` |
+| Matriz histórica | `docs/MATRIZ_TRAZABILIDAD.md` |
+| Modo sin autenticación | `docs/MODO_SIN_AUTENTICACION.md` |
+| Instalación y uso | `README.md` y `README_WINDOWS.md` |
 
-**Acción documental pendiente:** sincronizar los estados de \`docs/MATRIZ_TRAZABILIDAD.md\` con esta versión. El documento anterior contiene referencias históricas en las que el roadmap figura como pendiente, aunque el código actual ya contiene \`apps.roadmaps\`.
+**Acción documental pendiente:** sincronizar los estados de `docs/MATRIZ_TRAZABILIDAD.md` con esta versión. El documento anterior contiene referencias históricas en las que el roadmap figura como pendiente, aunque el código actual ya contiene `apps.roadmaps`.
 
 ---
 
@@ -1263,30 +1263,30 @@ Una revisión futura deberá:
 
 ## Anexo A. Inventario de archivos inspeccionados
 
-La revisión documental de la versión 3.0 utilizó como mínimo los siguientes archivos de la rama \`main\`:
+La revisión documental de la versión 3.0 utilizó como mínimo los siguientes archivos de la rama `main`:
 
-- \`README.md\`
-- \`requirements.txt\`
-- \`package.json\`
-- \`IEEE830.md\` (versión 2.2, documento de referencia)
-- \`config/settings/base.py\`
-- \`config/urls.py\`
-- \`server_entry.py\`
-- \`electron/main.js\`
-- \`apps/core/views.py\`
-- \`apps/core/models.py\`
-- \`apps/roadmaps/models.py\`
-- \`apps/roadmaps/views.py\`
-- \`apps/roadmaps/services.py\`
-- \`apps/roadmaps/urls.py\`
-- \`apps/accounts/views.py\`
-- \`apps/audit/models.py\`
-- \`docs/ARQUITECTURA.md\`
-- \`docs/MODELO_DATOS.md\`
-- \`docs/SEGURIDAD.md\`
-- \`docs/PLAN_PRUEBAS.md\`
-- \`docs/MATRIZ_TRAZABILIDAD.md\`
-- \`docs/MODO_SIN_AUTENTICACION.md\`
+- `README.md`
+- `requirements.txt`
+- `package.json`
+- `IEEE830.md` (versión 2.2, documento de referencia)
+- `config/settings/base.py`
+- `config/urls.py`
+- `server_entry.py`
+- `electron/main.js`
+- `apps/core/views.py`
+- `apps/core/models.py`
+- `apps/roadmaps/models.py`
+- `apps/roadmaps/views.py`
+- `apps/roadmaps/services.py`
+- `apps/roadmaps/urls.py`
+- `apps/accounts/views.py`
+- `apps/audit/models.py`
+- `docs/ARQUITECTURA.md`
+- `docs/MODELO_DATOS.md`
+- `docs/SEGURIDAD.md`
+- `docs/PLAN_PRUEBAS.md`
+- `docs/MATRIZ_TRAZABILIDAD.md`
+- `docs/MODO_SIN_AUTENTICACION.md`
 
 La revisión fue estática a partir del contenido del repositorio. No equivale a una ejecución de la aplicación, pruebas automatizadas, análisis dinámico de seguridad ni validación visual en navegador.
 
@@ -1296,7 +1296,7 @@ La revisión fue estática a partir del contenido del repositorio. No equivale a
 - Ejecutar los comandos de verificación sobre una instalación limpia.
 - Validar el arranque y cierre de Electron en cada sistema operativo soportado.
 - Validar visualmente los 12 temas y los breakpoints de la interfaz.
-- Revisar el contrato IPC completo de \`electron/preload.js\` y su correspondencia con los canales utilizados por el renderer.
+- Revisar el contrato IPC completo de `electron/preload.js` y su correspondencia con los canales utilizados por el renderer.
 - Confirmar las decisiones P-001 a P-005 con el propietario.
 - Sincronizar la matriz de trazabilidad y los documentos de arquitectura con los estados de este SRS.
 
