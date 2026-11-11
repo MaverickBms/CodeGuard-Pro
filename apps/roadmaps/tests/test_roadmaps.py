@@ -81,16 +81,19 @@ class ProgresoTest(TestCase):
         etapa10 = Etapa.objects.get(roadmap=self.roadmap, numero=10)
         self.assertTrue(etapa10.esta_bloqueada_para(set()))
 
-        etapa9 = Etapa.objects.get(roadmap=self.roadmap, numero=9)
-        marcar_etapa(self.usuario, etapa9, completada=True)
+    def test_no_se_puede_completar_etapa_manualmente(self):
+        etapa0 = Etapa.objects.get(roadmap=self.roadmap, numero=0)
+        with self.assertRaisesMessage(ValueError, "no puede completarse manualmente"):
+            marcar_etapa(self.usuario, etapa0, completada=True)
+        self.assertFalse(
+            Progreso.objects.filter(
+                usuario=self.usuario, etapa=etapa0, estado="completado"
+            ).exists()
+        )
 
-        completadas = etapas_completadas(self.usuario, self.roadmap)
-        self.assertIn(9, completadas)
-        self.assertFalse(etapa10.esta_bloqueada_para(completadas))
-
-    def test_marcar_etapa_bloqueada_falla(self):
+    def test_marcar_etapa_bloqueada_falla_por_prerrequisito(self):
         etapa10 = Etapa.objects.get(roadmap=self.roadmap, numero=10)
-        with self.assertRaises(ValueError):
+        with self.assertRaisesMessage(ValueError, "prerrequisitos sin completar"):
             marcar_etapa(self.usuario, etapa10, completada=True)
         self.assertFalse(
             Progreso.objects.filter(
@@ -98,36 +101,36 @@ class ProgresoTest(TestCase):
             ).exists()
         )
 
-    def test_marcar_leccion_recalcula_porcentaje(self):
+    def test_no_se_puede_completar_leccion_manualmente(self):
         etapa0 = Etapa.objects.get(roadmap=self.roadmap, numero=0)
         leccion = Leccion.objects.filter(modulo__etapa=etapa0).first()
-        marcar_leccion(self.usuario, leccion, completada=True)
-
-        progreso = Progreso.objects.get(
-            usuario=self.usuario, etapa=etapa0, leccion__isnull=True
-        )
-        self.assertGreater(progreso.porcentaje, 0)
-        self.assertEqual(progreso.estado, "en_progreso")
-
-    def test_completar_todas_las_lecciones_completa_etapa(self):
-        etapa0 = Etapa.objects.get(roadmap=self.roadmap, numero=0)
-        for leccion in Leccion.objects.filter(modulo__etapa=etapa0):
+        with self.assertRaisesMessage(ValueError, "no puede completarse manualmente"):
             marcar_leccion(self.usuario, leccion, completada=True)
+        self.assertFalse(
+            Progreso.objects.filter(
+                usuario=self.usuario, leccion=leccion, estado="completado"
+            ).exists()
+        )
 
-        progreso = Progreso.objects.get(
+    def test_reabrir_leccion_recalcula_progreso_sin_aprobar_etapa(self):
+        etapa0 = Etapa.objects.get(roadmap=self.roadmap, numero=0)
+        leccion = Leccion.objects.filter(modulo__etapa=etapa0).first()
+        progreso = marcar_leccion(self.usuario, leccion, completada=False)
+        self.assertEqual(progreso.estado, "no_iniciado")
+        avance = Progreso.objects.get(
             usuario=self.usuario, etapa=etapa0, leccion__isnull=True
         )
-        self.assertEqual(progreso.porcentaje, 100)
-        self.assertEqual(progreso.estado, "completado")
-        self.assertIsNotNone(progreso.fecha_completado)
+        self.assertEqual(avance.porcentaje, 0)
+        self.assertEqual(avance.estado, "no_iniciado")
 
-    def test_progreso_general(self):
+    def test_progreso_general_no_cuenta_aprobaciones_manuales(self):
         etapa0 = Etapa.objects.get(roadmap=self.roadmap, numero=0)
-        marcar_etapa(self.usuario, etapa0, completada=True)
+        with self.assertRaises(ValueError):
+            marcar_etapa(self.usuario, etapa0, completada=True)
         avance = progreso_general(self.usuario, self.roadmap)
-        self.assertEqual(avance["completadas"], 1)
+        self.assertEqual(avance["completadas"], 0)
         self.assertEqual(avance["total"], 33)
-        self.assertEqual(avance["porcentaje"], 3)
+        self.assertEqual(avance["porcentaje"], 0)
 
 
 @override_settings(AUTH_DISABLED=False)
