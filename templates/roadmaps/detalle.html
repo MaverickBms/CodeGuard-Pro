@@ -96,22 +96,33 @@
         </header>
         <ul class="lecciones-list">
           {% for leccion in modulo.lecciones_lista %}
-            <li class="leccion-item cg-card{% if leccion.completada %} leccion-done{% endif %}">
+            <li class="leccion-item{% if leccion.completada %} leccion-done{% endif %}">
               <div class="leccion-info">
-                <i class="fa-solid {% if leccion.completada %}fa-circle-check{% else %}fa-circle{% endif %}"></i>
-                <span>{{ leccion.titulo }}</span>
+                <span class="leccion-marker" aria-hidden="true">
+                  {% if leccion.completada %}
+                    <i class="fa-solid fa-check"></i>
+                  {% else %}
+                    <i class="fa-regular fa-circle"></i>
+                  {% endif %}
+                </span>
+                <div class="leccion-copy">
+                  <span class="leccion-title">{{ leccion.titulo }}</span>
+                  <span class="leccion-status" aria-live="polite">
+                    {% if leccion.completada %}Lección completada{% else %}Pendiente de completar{% endif %}
+                  </span>
+                </div>
               </div>
               <form method="post" action="{% url 'roadmaps:marcar_leccion' leccion.id %}" class="leccion-form">
                 {% csrf_token %}
                 {% if leccion.completada %}
                   <input type="hidden" name="completada" value="0">
-                  <button class="btn-icon" type="submit" title="Reabrir lección" aria-label="Reabrir lección {{ leccion.titulo }}">
-                    <i class="fa-solid fa-rotate-left"></i>
+                  <button class="btn-icon leccion-toggle leccion-toggle-done" type="submit" title="Reabrir lección" aria-label="Reabrir lección {{ leccion.titulo }}">
+                    <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
                   </button>
                 {% else %}
                   <input type="hidden" name="completada" value="1">
-                  <button class="btn-icon" type="submit" title="Marcar lección como completada" aria-label="Marcar lección {{ leccion.titulo }}">
-                    <i class="fa-regular fa-circle-check"></i>
+                  <button class="btn-icon leccion-toggle" type="submit" title="Marcar lección como completada" aria-label="Marcar lección como completada: {{ leccion.titulo }}">
+                    <i class="fa-regular fa-circle-check" aria-hidden="true"></i>
                   </button>
                 {% endif %}
               </form>
