@@ -141,3 +141,17 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
     align-items: flex-start;
   }
 }
+
+
+/* Ajuste fino: separar el texto del borde inferior de la ventana. */
+.main-footer {
+  padding: 12px clamp(18px, 3vw, 38px) 24px;
+}
+.main-footer .footer-content {
+  padding-bottom: 2px;
+}
+@media (max-width: 640px) {
+  .main-footer {
+    padding: 10px 14px 20px;
+  }
+}
