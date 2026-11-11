@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ("version", models.PositiveSmallIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1)], verbose_name="versión del evaluador")),
                 ("activo", models.BooleanField(default=True, verbose_name="activo")),
                 ("actualizado_en", models.DateTimeField(auto_now=True)),
-                ("ejercicio", models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name="configuracion_evaluacion", to="roadmaps.ejercici leccion")),
+                ("ejercicio", models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name="configuracion_evaluacion", to="roadmaps.ejercicioleccion")),
             ],
             options={"verbose_name": "configuración de evaluación", "verbose_name_plural": "configuraciones de evaluación"},
         ),
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ("version_evaluacion", models.PositiveSmallIntegerField(blank=True, null=True, verbose_name="versión del evaluador")),
                 ("creado_en", models.DateTimeField(auto_now_add=True)),
                 ("evaluado_en", models.DateTimeField(blank=True, null=True)),
-                ("ejercicio", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="intentos", to="roadmaps.ejercici leccion")),
+                ("ejercicio", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="intentos", to="roadmaps.ejercicioleccion")),
                 ("usuario", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="intentos_ejercicios", to=settings.AUTH_USER_MODEL, verbose_name="usuario")),
             ],
             options={"verbose_name": "intento de ejercicio", "verbose_name_plural": "intentos de ejercicios", "ordering": ["-creado_en", "-id"]},
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
         migrations.AddConstraint(
             model_name="intentoejercicio",
             constraint=models.CheckConstraint(
-                condition=models.Q(("puntuacion__isnull", True), ("puntuacion__gte", 0), ("puntuacion__lte", 100), _connector="OR"),
+                condition=models.Q(puntuacion__isnull=True) | models.Q(puntuacion__gte=0, puntuacion__lte=100),
                 name="intento_puntuacion_0_100",
             ),
         ),
