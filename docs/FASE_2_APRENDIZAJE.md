@@ -118,6 +118,23 @@ Luego iniciar CodeGuard Pro con `./run.sh`, abrir una etapa y entrar en una lecc
 
 > No se considera completada la Fase 2 con este incremento. Se ha establecido el primer bloque de arquitectura y navegación; falta cargar contenido pedagógico real, implementar interacción con ejercicios y conectar los criterios de finalización.
 
+## 9. Auditoría y centralización de reglas de progreso — incremento en curso
+
+**Rama de trabajo:** `phase-2/progress-domain-rules`
+
+Se detectó que las vistas impedían completar manualmente una lección, pero el servicio `marcar_leccion()` todavía aceptaba `completada=True`. De forma similar, `marcar_etapa()` permitía aprobar una etapa si sus prerrequisitos estaban satisfechos. Esto dejaba una vía interna para conceder progreso sin evidencia académica.
+
+Correcciones realizadas en esta rama:
+
+- `marcar_leccion()` rechaza la finalización manual y conserva únicamente la operación de reapertura.
+- `marcar_etapa()` rechaza la aprobación manual y conserva únicamente la operación de reapertura; primero informa si faltan prerrequisitos.
+- `recalcular_progreso_etapa()` calcula el porcentaje de cobertura, pero no convierte automáticamente el 100 % de lecciones registradas en aprobación de etapa.
+- La aprobación de etapa queda reservada para un futuro servicio que valide evaluaciones y criterios obligatorios.
+- Las pruebas se actualizaron para verificar el rechazo desde los servicios y desde la vista.
+
+**Límite importante:** este incremento aún no incorpora un mecanismo autorizado para aprobar lecciones o etapas a partir de intentos/evaluaciones, porque ese modelo de evidencia todavía no existe. Tampoco sustituye una auditoría de todos los posibles puntos de escritura directa sobre el modelo `Progreso`. La validación local debe ejecutarse antes de integrar esta rama.
+
+
 ## 8. Estado de autoría de contenidos
 
 Los modelos y la vista de estudio ya están preparados, pero el repositorio todavía no contiene teoría, ejemplos y ejercicios editoriales para todas las lecciones. Tampoco debe asumirse que existe un editor disponible en la aplicación: `django.contrib.admin` no está instalado en la configuración actual. La autoría y publicación masiva de contenidos se resolverán mediante un flujo versionado de datos y revisión editorial antes de activar el material para estudiantes.
