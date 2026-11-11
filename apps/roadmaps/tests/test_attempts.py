@@ -89,7 +89,7 @@ class IntentosEjercicioTests(TestCase):
             self.usuario, self.ejercicio, "nombre = 'Ada'\nprint(nombre)"
         )
 
-        self.assertEqual(intento.resultado, "aprobado")
+        self.assertEqual(intento.resultado, "criterios_cumplidos")
         self.assertEqual(intento.detalles["tipo_comprobacion"], "estatica")
         self.assertEqual(intento.puntuacion, 100)
 
@@ -181,7 +181,7 @@ class IntentosEjercicioTests(TestCase):
             self.usuario, self.ejercicio, "nombre = 'Ada'"
         )
 
-        self.assertEqual(intento.resultado, "aprobado")
+        self.assertEqual(intento.resultado, "criterios_cumplidos")
         self.assertFalse(
             Progreso.objects.filter(usuario=self.usuario, leccion=self.leccion).exists()
         )
