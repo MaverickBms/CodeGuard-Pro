@@ -664,3 +664,78 @@ p { line-height: 1.65; }
 .sidebar.collapsed .sidebar-footer #btnAjustes i {
   font-size: 1rem;
 }
+
+
+/* FIX DEFINITIVO — barra lateral: el alto incluye padding y borde. */
+.sidebar {
+  box-sizing: border-box;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar-brand {
+  box-sizing: border-box;
+  flex: 0 0 76px;
+  min-height: 76px;
+}
+
+.sidebar-nav {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 12px;
+}
+
+.sidebar-footer {
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 68px;
+  padding: 10px 14px;
+  margin: 0;
+  overflow: visible;
+}
+
+.sidebar-footer #btnAjustes {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  margin: 0;
+  padding: 10px 14px;
+  gap: 9px;
+  font-size: .9rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.sidebar-footer #btnAjustes i {
+  flex: 0 0 auto;
+  margin: 0 !important;
+}
+
+/* El texto solo se oculta cuando el usuario contrae expresamente el menú. */
+@media (max-width: 900px) {
+  .sidebar-footer #btnAjustes {
+    font-size: .82rem;
+  }
+}
+
+.sidebar.collapsed .sidebar-footer #btnAjustes {
+  font-size: 0;
+  padding-inline: 4px;
+}
+.sidebar.collapsed .sidebar-footer #btnAjustes i {
+  font-size: 1rem;
+}
