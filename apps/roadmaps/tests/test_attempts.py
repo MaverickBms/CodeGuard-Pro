@@ -165,7 +165,7 @@ class IntentosEjercicioTests(TestCase):
         self.assertIsNone(progreso)
 
         registrar_intento_ejercicio(self.usuario, segundo, "print(nombre)")
-        progreso.refresh_from_db()
+        progreso = Progreso.objects.get(usuario=self.usuario, leccion=self.leccion)
         self.assertEqual(progreso.estado, "completado")
         self.assertEqual(progreso.porcentaje, 100)
         self.assertIsNotNone(progreso.fecha_completado)
