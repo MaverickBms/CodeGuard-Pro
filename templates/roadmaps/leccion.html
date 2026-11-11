@@ -91,7 +91,7 @@
   <div class="lesson-section-heading"><span class="lesson-section-icon"><i class="fa-solid fa-laptop-code"></i></span><div><span class="lesson-overline">PON A PRUEBA LO APRENDIDO</span><h2>Ejercicios y talleres</h2><p>Problemas prácticos para aplicar los conceptos de esta lección.</p></div></div>
   <div class="lesson-exercise-list">
     {% for ejercicio in ejercicios %}
-      <article class="lesson-exercise">
+      <article class="lesson-exercise" id="ejercicio-{{ ejercicio.id }}">
         <div class="lesson-exercise-top"><span class="lesson-difficulty difficulty-{{ ejercicio.nivel }}">{{ ejercicio.get_nivel_display }}</span>{% if ejercicio.obligatorio %}<span class="lesson-required">Obligatorio</span>{% else %}<span class="lesson-optional">Complementario</span>{% endif %}</div>
         <h3>{{ forloop.counter }}. {{ ejercicio.titulo }}</h3>
         <div class="lesson-prose">{{ ejercicio.enunciado|linebreaks }}</div>
