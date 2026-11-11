@@ -106,8 +106,16 @@ def _completar_leccion_si_corresponde(usuario, leccion, actor_auditoria=None) ->
         return False
 
     for ejercicio in requeridos:
+        configuracion = ejercicio.configuraciones_evaluacion.filter(
+            activo=True, permite_completar_leccion=True
+        ).order_by("-version").first()
+        if configuracion is None:
+            return False
         if not IntentoEjercicio.objects.filter(
-            usuario=usuario, ejercicio=ejercicio, resultado="aprobado"
+            usuario=usuario,
+            ejercicio=ejercicio,
+            configuracion_evaluacion=configuracion,
+            resultado="aprobado",
         ).exists():
             return False
 
@@ -156,10 +164,9 @@ def registrar_intento_ejercicio(
             f"La respuesta supera el límite de {MAX_RESPUESTA_CARACTERES} caracteres."
         )
 
-    try:
-        configuracion = ejercicio.configuracion_evaluacion
-    except ConfiguracionEvaluacion.DoesNotExist:
-        configuracion = None
+    configuracion = ejercicio.configuraciones_evaluacion.filter(
+        activo=True
+    ).order_by("-version").first()
 
     if configuracion is None or not configuracion.activo:
         evaluacion = {
@@ -183,6 +190,7 @@ def registrar_intento_ejercicio(
         puntuacion=evaluacion["puntuacion"],
         retroalimentacion=evaluacion["retroalimentacion"],
         detalles=evaluacion["detalles"],
+        configuracion_evaluacion=configuracion,
         version_evaluacion=version,
         evaluado_en=evaluado_en,
     )
