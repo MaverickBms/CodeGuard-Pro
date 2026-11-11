@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ leccion.titulo }} — CodeGuard Pro{% endblock %}
+{% block page_title %}Lección{% endblock %}
+{% block page_subtitle %}{{ leccion.titulo }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">
+<link rel="stylesheet" href="{% static 'css/lesson-learning.css' %}">
+{% endblock %}
+
+{% block content %}
+<nav class="roadmap-breadcrumb" aria-label="Migas de pan">
+  <a href="{% url 'roadmaps:detalle' etapa.numero %}"><i class="fa-solid fa-arrow-left"></i> Volver a la etapa {{ etapa.numero }}</a>
+  <span class="breadcrumb-sep">/</span>
+  <span>{{ modulo.numero }} · {{ modulo.titulo }}</span>
+</nav>
+
+<header class="lesson-hero cg-card">
+  <div class="lesson-hero-copy">
+    <div class="lesson-eyebrow"><i class="fa-solid fa-graduation-cap"></i> RUTA ASCENSO · ETAPA {{ etapa.numero }} · MÓDULO {{ modulo.numero }}</div>
+    <h1>{{ leccion.titulo }}</h1>
+    {% if leccion.descripcion %}<p>{{ leccion.descripcion }}</p>{% endif %}
+    <div class="lesson-meta">
+      <span><i class="fa-regular fa-clock"></i> {% if leccion.duracion_estimada_minutos %}{{ leccion.duracion_estimada_minutos }} min estimados{% else %}Duración por definir{% endif %}</span>
+      <span><i class="fa-solid fa-book-open"></i> {{ leccion.get_tipo_display }}</span>
+      {% if progreso.estado == "completado" %}
+        <span class="lesson-state is-done"><i class="fa-solid fa-circle-check"></i> Completada</span>
+      {% elif progreso.estado == "en_progreso" %}
+        <span class="lesson-state is-active"><i class="fa-solid fa-clock"></i> En progreso</span>
+      {% else %}
+        <span class="lesson-state"><i class="fa-regular fa-circle"></i> No iniciada</span>
+      {% endif %}
+    </div>
+  </div>
+  <div class="lesson-hero-index" aria-hidden="true"><i class="fa-solid fa-book-open"></i></div>
+</header>
+
+{% if contenido %}
+  {% if contenido.objetivos_aprendizaje %}
+    <section class="lesson-panel cg-card lesson-objectives">
+      <div class="lesson-section-heading"><span class="lesson-section-icon"><i class="fa-solid fa-bullseye"></i></span><div><span class="lesson-overline">PROPÓSITO</span><h2>Qué aprenderás</h2></div></div>
+      <div class="lesson-prose">{{ contenido.objetivos_aprendizaje|linebreaks }}</div>
+    </section>
+  {% endif %}
+
+  <section class="lesson-panel cg-card" id="teoria-tecnica">
+    <div class="lesson-section-heading"><span class="lesson-section-icon"><i class="fa-solid fa-book"></i></span><div><span class="lesson-overline">FUNDAMENTO</span><h2>Teoría técnica</h2><p>Definiciones, sintaxis, fundamentos y terminología precisa.</p></div></div>
+    {% if contenido.teoria_tecnica %}
+      <div class="lesson-prose">{{ contenido.teoria_tecnica|linebreaks }}</div>
+    {% else %}
+      <p class="lesson-empty">La teoría técnica de esta lección está pendiente de elaboración.</p>
+    {% endif %}
+  </section>
+
+  <section class="lesson-panel cg-card" id="explicacion-sencilla">
+    <div class="lesson-section-heading"><span class="lesson-section-icon"><i class="fa-solid fa-lightbulb"></i></span><div><span class="lesson-overline">EN PALABRAS CLARAS</span><h2>Explicación sencilla</h2><p>Una segunda explicación para comprender el concepto paso a paso.</p></div></div>
+    {% if contenido.explicacion_sencilla %}
+      <div class="lesson-prose">{{ contenido.explicacion_sencilla|linebreaks }}</div>
+    {% else %}
+      <p class="lesson-empty">La explicación sencilla de esta lección está pendiente de elaboración.</p>
+    {% endif %}
+  </section>
+{% else %}
+  <section class="lesson-panel cg-card lesson-empty-state">
+    <span class="lesson-empty-icon"><i class="fa-solid fa-file-circle-question"></i></span>
+    <h2>Contenido en preparación</h2>
+    <p>La estructura de aprendizaje ya está disponible. El material académico de esta lección —teoría técnica y explicación sencilla— se incorporará de forma progresiva y revisada.</p>
+  </section>
+{% endif %}
+
+<section class="lesson-panel cg-card" id="ejemplos">
+  <div class="lesson-section-heading"><span class="lesson-section-icon"><i class="fa-solid fa-code"></i></span><div><span class="lesson-overline">APRENDER OBSERVANDO</span><h2>Ejemplos guiados</h2><p>Casos de uso y código explicado paso a paso.</p></div></div>
+  <div class="lesson-example-list">
+    {% for ejemplo in ejemplos %}
+      <article class="lesson-example">
+        <header><div><span class="lesson-example-number">EJEMPLO {{ forloop.counter|stringformat:"02d" }}</span><h3>{{ ejemplo.titulo }}</h3></div>{% if ejemplo.lenguaje %}<span class="lesson-language">{{ ejemplo.lenguaje }}</span>{% endif %}</header>
+        {% if ejemplo.contexto %}<div class="lesson-prose">{{ ejemplo.contexto|linebreaks }}</div>{% endif %}
+        {% if ejemplo.codigo %}<pre class="lesson-code"><code>{{ ejemplo.codigo }}</code></pre>{% endif %}
+        {% if ejemplo.salida_esperada %}<div class="lesson-output"><strong><i class="fa-solid fa-terminal"></i> Salida esperada</strong><pre><code>{{ ejemplo.salida_esperada }}</code></pre></div>{% endif %}
+        {% if ejemplo.explicacion %}<div class="lesson-prose lesson-example-explanation">{{ ejemplo.explicacion|linebreaks }}</div>{% endif %}
+      </article>
+    {% empty %}
+      <p class="lesson-empty">Todavía no hay ejemplos publicados para esta lección.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="lesson-panel cg-card" id="ejercicios">
+  <div class="lesson-section-heading"><span class="lesson-section-icon"><i class="fa-solid fa-laptop-code"></i></span><div><span class="lesson-overline">PON A PRUEBA LO APRENDIDO</span><h2>Ejercicios y talleres</h2><p>Problemas prácticos para aplicar los conceptos de esta lección.</p></div></div>
+  <div class="lesson-exercise-list">
+    {% for ejercicio in ejercicios %}
+      <article class="lesson-exercise">
+        <div class="lesson-exercise-top"><span class="lesson-difficulty difficulty-{{ ejercicio.nivel }}">{{ ejercicio.get_nivel_display }}</span>{% if ejercicio.obligatorio %}<span class="lesson-required">Obligatorio</span>{% else %}<span class="lesson-optional">Complementario</span>{% endif %}</div>
+        <h3>{{ forloop.counter }}. {{ ejercicio.titulo }}</h3>
+        <div class="lesson-prose">{{ ejercicio.enunciado|linebreaks }}</div>
+        {% if ejercicio.instrucciones %}<div class="lesson-exercise-instructions"><strong>Instrucciones</strong><div class="lesson-prose">{{ ejercicio.instrucciones|linebreaks }}</div></div>{% endif %}
+        {% if ejercicio.codigo_inicial %}<pre class="lesson-code"><code>{{ ejercicio.codigo_inicial }}</code></pre>{% endif %}
+        <div class="lesson-tutor-notice"><i class="fa-solid fa-wand-magic-sparkles"></i><span>El editor de código, la revisión automática y las pistas progresivas del tutor local se incorporarán en la Fase 3. Esta actividad todavía no registra entregas ni se considera completada.</span></div>
+      </article>
+    {% empty %}
+      <p class="lesson-empty">Los ejercicios de esta lección están pendientes de diseño.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<footer class="lesson-footer-nav">
+  <a class="btn-theme btn-theme-ghost" href="{% url 'roadmaps:detalle' etapa.numero %}"><i class="fa-solid fa-arrow-left"></i> Volver a las lecciones</a>
+</footer>
+{% endblock %}
