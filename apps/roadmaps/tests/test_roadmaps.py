@@ -176,13 +176,14 @@ class VistasRoadmapTest(TestCase):
         self.assertContains(respuesta, "Módulos y lecciones")
         self.assertGreater(len(respuesta.context["modulos"]), 0)
 
-    def test_marcar_etapa_desde_vista(self):
+    def test_vista_rechaza_completar_etapa_manualmente(self):
         self.client.force_login(self.usuario)
         respuesta = self.client.post(
-            reverse("roadmaps:marcar_etapa", args=[0]), {"completada": "1"}
+            reverse("roadmaps:marcar_etapa", args=[0]), {"completada": "1"},
+            follow=True,
         )
-        self.assertRedirects(respuesta, reverse("roadmaps:detalle", args=[0]))
-        self.assertTrue(
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertFalse(
             Progreso.objects.filter(
                 usuario=self.usuario,
                 etapa__numero=0,
@@ -190,6 +191,7 @@ class VistasRoadmapTest(TestCase):
                 estado="completado",
             ).exists()
         )
+        self.assertContains(respuesta, "no puede completarse manualmente")
 
     def test_vista_rechaza_etapa_bloqueada(self):
         self.client.force_login(self.usuario)
