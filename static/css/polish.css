@@ -649,3 +649,19 @@ p { line-height: 1.65; }
     scroll-behavior: auto;
   }
 }
+
+@media (max-width: 900px) {
+  .sidebar-footer #btnAjustes {
+    font-size: 0;
+  }
+  .sidebar-footer #btnAjustes i {
+    font-size: 1rem;
+  }
+}
+
+.sidebar.collapsed .sidebar-footer #btnAjustes {
+  font-size: 0;
+}
+.sidebar.collapsed .sidebar-footer #btnAjustes i {
+  font-size: 1rem;
+}
