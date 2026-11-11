@@ -227,3 +227,40 @@ def marcar_leccion_view(request, leccion_id):
         messages.info(request, f"Lección reabierta: {leccion.titulo}")
 
     return redirect("roadmaps:detalle", numero=leccion.modulo.etapa.numero)
+
+@requiere_acceso
+def leccion_detalle(request, leccion_id):
+    """Vista de estudio con teoría, explicación sencilla, ejemplos y ejercicios."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
+
+    leccion = get_object_or_404(
+        Leccion.objects.select_related("modulo__etapa__roadmap")
+        .prefetch_related("ejemplos", "ejercicios"),
+        pk=leccion_id,
+        modulo__etapa__roadmap=roadmap,
+    )
+    usuario = get_usuario_actual(request)
+    progreso = None
+    if usuario is not None:
+        progreso = mapa_progreso_lecciones(usuario, leccion.modulo.etapa).get(leccion.id)
+
+    contenido = getattr(leccion, "contenido", None)
+    ejemplos = leccion.ejemplos.filter(publicado=True)
+    ejercicios = leccion.ejercicios.filter(publicado=True)
+
+    return render(
+        request,
+        "roadmaps/leccion.html",
+        {
+            "roadmap": roadmap,
+            "etapa": leccion.modulo.etapa,
+            "modulo": leccion.modulo,
+            "leccion": leccion,
+            "contenido": contenido if contenido and contenido.publicado else None,
+            "ejemplos": ejemplos,
+            "ejercicios": ejercicios,
+            "progreso": progreso,
+        },
+    )
