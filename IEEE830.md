@@ -496,7 +496,7 @@ Los siguientes requisitos proceden de la línea base funcional anterior y se con
 | RF-FUT-150 a RF-FUT-159 | Vigencia | Revisión y estado de vigencia de contenidos | APROBADO — NO IMPLEMENTADO |
 | RF-FUT-160 a RF-FUT-169 | Ética | Advertencias, aceptación y guías de uso responsable | APROBADO — NO IMPLEMENTADO |
 
-Los identificadores de esta sección son una reorganización temática para la versión 3.0. Los identificadores históricos RF-ACT-020…RF-FUT-123 de la versión 2.2 deberán conservarse en la matriz de migración si se requiere compatibilidad documental estricta.
+Los identificadores RF-ACT y RF-FUT son nuevos identificadores de esta revisión. Los identificadores históricos RF-001…RF-123 de la versión 2.2 quedan reservados y no se reutilizan; su correspondencia debe registrarse en una matriz de migración antes de retirar la versión anterior.
 
 ## 3.3 Requisitos no funcionales
 
