@@ -47,7 +47,7 @@ class ConfiguracionEvaluacion(models.Model):
     class Meta:
         verbose_name = "configuración de evaluación"
         verbose_name_plural = "configuraciones de evaluación"
-        ordering = ["ejercicio_id", "-version"]
+        ordering = ["ejercicio", "-version"]
         constraints = [
             models.UniqueConstraint(fields=["ejercicio", "version"], name="evaluacion_version_unica"),
             models.UniqueConstraint(
