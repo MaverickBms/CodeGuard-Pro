@@ -153,11 +153,11 @@ Correcciones realizadas en esta rama:
 
 Este incremento incorpora:
 
-- `ConfiguracionEvaluacion`: contrato por ejercicio, con versiones históricas, una sola versión activa y configuración privada no expuesta en la plantilla.
+- `ConfiguracionEvaluacion`: contrato por ejercicio, con versiones históricas, una sola versión activa y configuración privada no expuesta en la plantilla. La opción para aportar a la finalización está desactivada por defecto.
 - `IntentoEjercicio`: persistencia de la respuesta, resultado, puntuación, retroalimentación, fecha y versión de evaluación aplicada.
 - Endpoint POST protegido por CSRF para recibir entregas, con límite de 20.000 caracteres.
 - Editor de texto básico en la vista de estudio e historial de los tres intentos más recientes.
-- Evaluadores iniciales `respuesta_exacta` y `codigo_contiene`. El segundo comprueba fragmentos de texto; no analiza sintaxis ni ejecuta el programa.
+- Evaluadores iniciales `respuesta_exacta` y `codigo_contiene`. El segundo comprueba fragmentos de texto y devuelve «Criterios estáticos cumplidos», no una aprobación académica; no analiza sintaxis ni ejecuta el programa.
 - Finalización automática únicamente cuando todos los ejercicios obligatorios publicados cuentan con un intento aprobado contra su versión activa y el evaluador tiene habilitada expresamente la opción `permite_completar_leccion`.
 - Registro de auditoría para entregas y finalizaciones basadas en evidencia.
 
