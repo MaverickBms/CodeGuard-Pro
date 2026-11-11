@@ -18,10 +18,10 @@ class ConfiguracionEvaluacion(models.Model):
         ("codigo_contiene", "Comprobación estática de fragmentos de código"),
     ]
 
-    ejercicio = models.OneToOneField(
+    ejercicio = models.ForeignKey(
         "roadmaps.EjercicioLeccion",
         on_delete=models.CASCADE,
-        related_name="configuracion_evaluacion",
+        related_name="configuraciones_evaluacion",
         verbose_name="ejercicio",
     )
     tipo = models.CharField(max_length=30, choices=TIPOS, verbose_name="tipo de evaluador")
@@ -37,11 +37,25 @@ class ConfiguracionEvaluacion(models.Model):
         verbose_name="versión del evaluador",
     )
     activo = models.BooleanField(default=True, verbose_name="activo")
+    permite_completar_leccion = models.BooleanField(
+        default=False,
+        verbose_name="puede aportar a la finalización de la lección",
+        help_text="Debe habilitarse expresamente; los chequeos estáticos simples no deben aprobar por sí solos una lección.",
+    )
     actualizado_en = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "configuración de evaluación"
         verbose_name_plural = "configuraciones de evaluación"
+        ordering = ["ejercicio_id", "-version"]
+        constraints = [
+            models.UniqueConstraint(fields=["ejercicio", "version"], name="evaluacion_version_unica"),
+            models.UniqueConstraint(
+                fields=["ejercicio"],
+                condition=models.Q(activo=True),
+                name="evaluacion_unica_activa",
+            ),
+        ]
 
     def __str__(self):
         return f"Evaluador v{self.version}: {self.ejercicio}"
@@ -83,6 +97,14 @@ class IntentoEjercicio(models.Model):
     )
     retroalimentacion = models.TextField(blank=True, verbose_name="retroalimentación")
     detalles = models.JSONField(default=dict, blank=True, verbose_name="detalles del resultado")
+    configuracion_evaluacion = models.ForeignKey(
+        ConfiguracionEvaluacion,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="intentos",
+        verbose_name="configuración aplicada",
+    )
     version_evaluacion = models.PositiveSmallIntegerField(
         null=True, blank=True, verbose_name="versión del evaluador"
     )
