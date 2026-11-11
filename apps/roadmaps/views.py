@@ -214,18 +214,21 @@ def marcar_leccion_view(request, leccion_id):
         Leccion.objects.select_related("modulo__etapa"), pk=leccion_id
     )
     completada = request.POST.get("completada") == "1"
+    if completada:
+        messages.warning(
+            request,
+            "Una lección no puede completarse manualmente. "
+            "La finalización se habilitará cuando se verifiquen sus actividades.",
+        )
+        return redirect("roadmaps:leccion_detalle", leccion_id=leccion.id)
+
     marcar_leccion(
         usuario,
         leccion,
-        completada=completada,
+        completada=False,
         actor_auditoria=obtener_actor_auditoria(request),
     )
-
-    if completada:
-        messages.success(request, f"Lección completada: {leccion.titulo}")
-    else:
-        messages.info(request, f"Lección reabierta: {leccion.titulo}")
-
+    messages.info(request, f"Lección reabierta: {leccion.titulo}")
     return redirect("roadmaps:detalle", numero=leccion.modulo.etapa.numero)
 
 @requiere_acceso
