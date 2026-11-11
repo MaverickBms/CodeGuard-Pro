@@ -366,3 +366,32 @@ def etapas_por_bloque(roadmap: Roadmap):
         .annotate(total=Count("id"))
         .order_by("bloque")
     )
+
+def iniciar_leccion(usuario, leccion: Leccion, *, actor_auditoria=None) -> Progreso | None:
+    """Registra el primer acceso de estudio sin marcar la lección como completada."""
+    if not usuario:
+        return None
+
+    etapa = leccion.modulo.etapa
+    progreso, creado = Progreso.objects.get_or_create(
+        usuario=usuario,
+        etapa=etapa,
+        modulo=leccion.modulo,
+        leccion=leccion,
+        actividad=None,
+        defaults={"estado": "en_progreso", "porcentaje": 5},
+    )
+    actualizado = False
+    if progreso.estado == "no_iniciado":
+        progreso.estado = "en_progreso"
+        progreso.porcentaje = 5
+        progreso.save(update_fields=["estado", "porcentaje", "fecha_actualizacion"])
+        actualizado = True
+
+    if creado or actualizado:
+        registrar_evento(
+            "roadmap_leccion_iniciada",
+            usuario=actor_auditoria,
+            descripcion=f"Etapa {etapa.numero} · {leccion.titulo}",
+        )
+    return progreso
