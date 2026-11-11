@@ -212,8 +212,10 @@ class VistasRoadmapTest(TestCase):
         respuesta = self.client.post(
             reverse("roadmaps:marcar_leccion", args=[leccion.pk]), {"completada": "1"}
         )
-        self.assertRedirects(respuesta, reverse("roadmaps:detalle", args=[0]))
-        self.assertTrue(
+        self.assertRedirects(
+            respuesta, reverse("roadmaps:leccion_detalle", args=[leccion.pk])
+        )
+        self.assertFalse(
             Progreso.objects.filter(
                 usuario=self.usuario, leccion=leccion, estado="completado"
             ).exists()
@@ -277,8 +279,10 @@ class SesionVencidaOperacionesAcademicasTests(TestCase):
             reverse("roadmaps:marcar_leccion", args=[self.leccion.pk]),
             {"completada": "1"},
         )
-        self.assertEqual(respuesta.status_code, 302)
-        self.assertTrue(
+        self.assertRedirects(
+            respuesta, reverse("roadmaps:leccion_detalle", args=[self.leccion.pk])
+        )
+        self.assertFalse(
             Progreso.objects.filter(
                 usuario=self.usuario, leccion=self.leccion, estado="completado"
             ).exists()
@@ -316,8 +320,10 @@ class RoadmapAccesoAnonimoTests(TestCase):
             reverse("roadmaps:marcar_leccion", args=[leccion.pk]),
             {"completada": "1"},
         )
-        self.assertEqual(respuesta.status_code, 302)
-        self.assertTrue(
+        self.assertRedirects(
+            respuesta, reverse("roadmaps:leccion_detalle", args=[leccion.pk])
+        )
+        self.assertFalse(
             Progreso.objects.filter(
                 usuario=self.usuario, leccion=leccion, estado="completado"
             ).exists()
