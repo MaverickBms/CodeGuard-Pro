@@ -1,108 +1,105 @@
-/* ==========================================================================
-   CodeGuard Pro — Ajustes JS (WP-REDESIGN-02 / FASE 4)
-   Archivo: static/js/settings.js
-   
-   JavaScript vanilla, sin dependencias externas.
-   Degradación graciosa: si este script falla, el panel de ajustes no se abre
-   pero el resto de la aplicación sigue funcionando.
-   
-   Funcionalidad:
-   - Abrir/cerrar panel de ajustes
-   - Cambiar tema (claro/oscuro) con persistencia en localStorage
-   - Cerrar al hacer clic fuera del panel o en la tecla Esc
-   - No manipula cookies, localStorage salvo el tema seleccionado
-   - No realiza fetch a URLs externas
-   ========================================================================== */
-
+/* CodeGuard Pro — panel de ajustes accesible y sincronizado con el gestor de temas. */
 (function () {
   'use strict';
 
-  var btnAjustes = document.getElementById('btnAjustes');
-  var btnCerrarAjustes = document.getElementById('btnCerrarAjustes');
-  var btnGuardarAjustes = document.getElementById('btnGuardarAjustes');
-  var ajustesPanel = document.getElementById('ajustesPanel');
-  var ajustesOverlay = document.getElementById('ajustesOverlay');
-  var btnsTema = document.querySelectorAll('.ajustes-tema-btn');
-  var btnVerTerminos = document.getElementById('btnVerTerminos');
-  var btnVerPrivacidad = document.getElementById('btnVerPrivacidad');
+  var trigger = document.getElementById('btnAjustes');
+  var closeButton = document.getElementById('btnCerrarAjustes');
+  var doneButton = document.getElementById('btnGuardarAjustes');
+  var panel = document.getElementById('ajustesPanel');
+  var overlay = document.getElementById('ajustesOverlay');
+  var themeButtons = Array.prototype.slice.call(document.querySelectorAll('.ajustes-tema-btn[data-theme]'));
+  if (!trigger || !closeButton || !doneButton || !panel || !overlay) return;
 
-  if (!btnAjustes || !btnCerrarAjustes || !ajustesPanel || !ajustesOverlay) {
-    return;
-  }
+  var previousFocus = null;
+  panel.inert = true;
+  var themes = ['light', 'dark', 'high-contrast', 'retro-pixel', 'cyberpunk', 'fantasy', 'sci-fi', 'warrior', 'mage', 'rogue', 'paladin', 'dark-mage'];
 
-  // Cargar tema guardado al iniciar
-  function cargarTemaGuardado() {
-    var temaGuardado = localStorage.getItem('codeguard-tema');
-    if (temaGuardado && (temaGuardado === 'light' || temaGuardado === 'dark')) {
-      aplicarTema(temaGuardado);
-      marcarTemaSeleccionado(temaGuardado);
+  function currentTheme() {
+    try {
+      var saved = localStorage.getItem('cg-theme');
+      return themes.indexOf(saved) >= 0 ? saved : 'light';
+    } catch (error) {
+      return document.documentElement.getAttribute('data-theme') || 'light';
     }
   }
 
-  // Aplicar tema al documento
-  function aplicarTema(tema) {
-    document.documentElement.setAttribute('data-theme', tema);
-    document.body.setAttribute('data-theme', tema);
-    localStorage.setItem('codeguard-tema', tema);
-  }
-
-  // Marcar botón de tema seleccionado en la UI
-  function marcarTemaSeleccionado(tema) {
-    btnsTema.forEach(function (btn) {
-      if (btn.dataset.theme === tema) {
-        btn.classList.add('activo');
-      } else {
-        btn.classList.remove('activo');
-      }
+  function syncThemeButtons(theme) {
+    themeButtons.forEach(function (button) {
+      var selected = button.getAttribute('data-theme') === theme;
+      button.classList.toggle('activo', selected);
+      button.setAttribute('aria-pressed', selected ? 'true' : 'false');
     });
   }
 
-  // Abrir panel de ajustes
-  function abrirAjustes() {
-    ajustesPanel.classList.add('activo');
-    btnCerrarAjustes.focus();
-  }
-
-  // Cerrar panel de ajustes
-  function cerrarAjustes() {
-    ajustesPanel.classList.remove('activo');
-    btnAjustes.focus();
-  }
-
-  // Cambiar tema
-  function cambiarTema(tema) {
-    aplicarTema(tema);
-    marcarTemaSeleccionado(tema);
-    cerrarAjustes();
-  }
-
-  // Event listeners
-  btnAjustes.addEventListener('click', abrirAjustes);
-
-  btnCerrarAjustes.addEventListener('click', cerrarAjustes);
-
-  btnGuardarAjustes.addEventListener('click', function () {
-    cerrarAjustes();
-  });
-
-  btnsTema.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var tema = btn.dataset.theme;
-      cambiarTema(tema);
-    });
-  });
-
-  // Cerrar al hacer clic fuera del panel (sobre el overlay)
-  ajustesOverlay.addEventListener('click', cerrarAjustes);
-
-  // Cerrar con tecla Esc
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && ajustesPanel.classList.contains('activo')) {
-      cerrarAjustes();
+  function applySelectedTheme(theme) {
+    if (themes.indexOf(theme) < 0) return;
+    if (window.codeguardUI && typeof window.codeguardUI.setTheme === 'function') {
+      window.codeguardUI.setTheme(theme);
+    } else {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.body.setAttribute('data-theme', theme);
+      try { localStorage.setItem('cg-theme', theme); } catch (error) { /* almacenamiento opcional */ }
     }
+    syncThemeButtons(theme);
+  }
+
+  function openPanel() {
+    if (panel.classList.contains('activo')) return;
+    previousFocus = document.activeElement;
+    panel.inert = false;
+    panel.classList.add('activo');
+    panel.setAttribute('aria-hidden', 'false');
+    trigger.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('ajustes-abierto');
+    closeButton.focus();
+  }
+
+  function closePanel() {
+    if (!panel.classList.contains('activo')) return;
+    panel.classList.remove('activo');
+    panel.setAttribute('aria-hidden', 'true');
+    panel.inert = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('ajustes-abierto');
+    if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+    else trigger.focus();
+  }
+
+  function trapFocus(event) {
+    if (event.key !== 'Tab' || !panel.classList.contains('activo')) return;
+    var focusable = panel.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) {
+      event.preventDefault();
+      panel.focus();
+      return;
+    }
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  trigger.addEventListener('click', openPanel);
+  closeButton.addEventListener('click', closePanel);
+  doneButton.addEventListener('click', closePanel);
+  overlay.addEventListener('click', closePanel);
+  themeButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      applySelectedTheme(button.getAttribute('data-theme'));
+    });
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && panel.classList.contains('activo')) closePanel();
+    trapFocus(event);
   });
 
-  // Inicializar
-  cargarTemaGuardado();
-
+  syncThemeButtons(currentTheme());
+  document.addEventListener('cg:theme-change', function (event) {
+    if (event.detail && event.detail.theme) syncThemeButtons(event.detail.theme);
+  });
 })();

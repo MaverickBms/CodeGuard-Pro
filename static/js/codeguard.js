@@ -9,29 +9,45 @@ const themes = [
 ];
 
 const themeNames = {
-  'light': 'Claro Diurno',
-  'dark': 'Oscuro Nocturno',
-  'high-contrast': 'Alto Contraste',
-  'retro-pixel': 'Retro Pixel',
+  'light': 'Claro diurno',
+  'dark': 'Oscuro nocturno',
+  'high-contrast': 'Alto contraste',
+  'retro-pixel': 'Retro pixel',
   'cyberpunk': 'Cyberpunk',
-  'fantasy': 'Reino Fantasía',
-  'sci-fi': 'Ciencia Ficción',
+  'fantasy': 'Reino fantasía',
+  'sci-fi': 'Ciencia ficción',
   'warrior': 'Guerrero',
   'mage': 'Mago',
   'rogue': 'Pícaro',
   'paladin': 'Paladín',
-  'dark-mage': 'Oscuro Mago'
+  'dark-mage': 'Mago oscuro'
 };
 
 function getCurrentTheme() {
-  return localStorage.getItem('cg-theme') || 'light';
+  try {
+    const saved = localStorage.getItem('cg-theme');
+    if (themes.includes(saved)) return saved;
+    const legacy = localStorage.getItem('codeguard-tema');
+    if (themes.includes(legacy)) {
+      localStorage.setItem('cg-theme', legacy);
+      localStorage.removeItem('codeguard-tema');
+      return legacy;
+    }
+    return 'light';
+  } catch (error) {
+    return 'light';
+  }
 }
 
 function applyTheme(theme) {
   if (!themes.includes(theme)) theme = 'light';
   document.documentElement.setAttribute('data-theme', theme);
   document.body.setAttribute('data-theme', theme);
-  localStorage.setItem('cg-theme', theme);
+  try {
+    localStorage.setItem('cg-theme', theme);
+  } catch (error) {
+    // El tema sigue aplicándose aunque el almacenamiento esté restringido.
+  }
   document.body.classList.remove(...themes.map((t) => `theme-${t}`));
   document.body.classList.add(`theme-${theme}`);
 
@@ -45,6 +61,7 @@ function applyTheme(theme) {
     const isActive = option.getAttribute('data-theme') === theme;
     option.classList.toggle('active-theme', isActive);
   });
+  document.dispatchEvent(new CustomEvent('cg:theme-change', { detail: { theme } }));
 }
 
 function setTheme(theme) {
@@ -79,38 +96,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const theme = option.getAttribute('data-theme');
       setTheme(theme);
       showToast(`Tema: ${themeNames[theme]}`, 'info');
-      const dropdown = bootstrap.Dropdown.getInstance(document.getElementById('themeDropdownButton'));
-      if (dropdown) dropdown.hide();
+      if (window.bootstrap && window.bootstrap.Dropdown) {
+        const dropdownButton = document.getElementById('themeDropdownButton');
+        const dropdown = dropdownButton ? window.bootstrap.Dropdown.getInstance(dropdownButton) : null;
+        if (dropdown) dropdown.hide();
+      }
     });
   });
 
-  const toggleBtn = document.getElementById('toggleSidebar');
-  const sidebar = document.getElementById('sidebar');
-  const mainContent = document.getElementById('mainContent');
-  if (toggleBtn && sidebar && mainContent) {
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
-      mainContent.classList.toggle('collapsed');
-      const icon = toggleBtn.querySelector('i');
-      if (sidebar.classList.contains('collapsed')) {
-        icon.classList.remove('fa-chevron-left');
-        icon.classList.add('fa-chevron-right');
-      } else {
-        icon.classList.remove('fa-chevron-right');
-        icon.classList.add('fa-chevron-left');
-      }
-    });
+  // La navegación y el colapso del sidebar se gestionan en ui-v14.js.
 
-    document.querySelectorAll('.nav-item[data-url]').forEach((item) => {
-      item.addEventListener('click', (e) => {
-        if (item.classList.contains('disabled')) return;
-        const url = item.getAttribute('data-url');
-        if (url && url !== '#') {
-          window.location.href = url;
-        }
-      });
-    });
-  }
 });
 
 function getPrimaryColor() {

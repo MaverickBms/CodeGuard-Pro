@@ -174,7 +174,7 @@
   border-radius: var(--cg-radius);
   border: 1px solid var(--cg-primary);
   background: var(--cg-primary);
-  color: var(--cg-text-inverse);
+  color: var(--cg-on-primary);
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
@@ -185,7 +185,7 @@
 .btn-theme:hover:not(:disabled) {
   filter: brightness(1.08);
   transform: translateY(-1px);
-  color: var(--cg-text-inverse);
+  color: var(--cg-on-primary);
 }
 
 .btn-theme:disabled {

@@ -34,3 +34,17 @@ class PanelTests(TestCase):
             respuesta = self.client.get(reverse("core:panel"))
             self.assertEqual(respuesta.status_code, 200)
             self.assertContains(respuesta, "Panel principal")
+
+    def test_panel_expone_los_doce_temas_y_el_panel_de_ajustes(self):
+        """El catálogo completo de temas y el diálogo de ajustes están disponibles."""
+        with override_settings(AUTH_DISABLED=True):
+            respuesta = self.client.get(reverse("core:panel"))
+            self.assertEqual(respuesta.status_code, 200)
+            for tema in (
+                "light", "dark", "high-contrast", "retro-pixel", "cyberpunk",
+                "fantasy", "sci-fi", "warrior", "mage", "rogue", "paladin",
+                "dark-mage",
+            ):
+                self.assertContains(respuesta, f'data-theme="{tema}"')
+            self.assertContains(respuesta, 'id="ajustesPanel"')
+            self.assertContains(respuesta, 'aria-modal="true"')

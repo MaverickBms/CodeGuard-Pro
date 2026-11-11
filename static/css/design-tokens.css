@@ -1,57 +1,44 @@
 /* ==========================================================================
-   CodeGuard Pro — Design Tokens (WP-REDESIGN-02)
-   Archivo: static/css/design-tokens.css
-   
-   Tokens semánticos NUEVOS que extienden themes.css SIN modificarlo.
-   
-   Reglas aplicadas (DECISIÓN 25, correcciones P-30 a P-33):
-   - P-30: No se redefinen tokens que YA existen en themes.css
-     (--cg-bg, --cg-surface, --cg-surface-elevada, --cg-surface-hover,
-      --cg-primary, --cg-primary-hover, --cg-accent, --cg-text,
-      --cg-text-muted, --cg-border, --cg-border-focus, --cg-success,
-      --cg-danger, --cg-warning, --cg-info, --cg-radius,
-      --cg-font-body, --cg-font-heading, --cg-font-mono).
-   - P-30: Las sombras usan var(--cg-text), sin color negro puro.
-   - P-30: Ningún #RRGGBB en este archivo.
-   - P-31: --cg-on-primary se define con var(--cg-bg) (Opción A),
-     documentado como sujeto a ajuste por tema en WP futuro.
-   - P-32: --cg-text-size-btn-lg: 1.125rem.
-   - P-33: Caladea verificado en static/fonts/; --cg-font-heading
-     YA existe en themes.css, no se redefine.
-   
-   Los 12 temas (P01-P12) definen sus propios valores para los tokens
-   de color en sus bloques [data-theme="..."] de themes.css.
+   CodeGuard Pro — Design Tokens
+   Variables globales declaradas en selectores válidos y derivadas del tema.
+   Los tokens de espaciado/tipografía son constantes; las sombras y aliases
+   se recalculan dentro de cada elemento raíz con el tema activo.
    ========================================================================== */
 
-/* --- Sombras (P-30: usan var(--cg-text), sin color negro puro) --- */
---cg-shadow-1: 0 1px 2px 0 color-mix(in srgb, var(--cg-text) 8%, transparent);
---cg-shadow-2: 0 4px 6px -1px color-mix(in srgb, var(--cg-text) 10%, transparent),
-               0 2px 4px -2px color-mix(in srgb, var(--cg-text) 6%, transparent);
---cg-shadow-3: 0 10px 15px -3px color-mix(in srgb, var(--cg-text) 12%, transparent),
-               0 4px 6px -4px color-mix(in srgb, var(--cg-text) 8%, transparent);
+:root {
+  --cg-text-size-h1: 2.5rem;
+  --cg-text-size-h2: 2rem;
+  --cg-text-size-h3: 1.5rem;
+  --cg-text-size-base: 1rem;
+  --cg-text-size-small: .875rem;
+  --cg-text-size-caption: .75rem;
+  --cg-text-size-btn-lg: 1.125rem;
 
-/* --- Tamaños de texto (P-30: tokens nuevos, no existen en themes.css) --- */
---cg-text-size-h1: 2.5rem;
---cg-text-size-h2: 2rem;
---cg-text-size-h3: 1.5rem;
---cg-text-size-base: 1rem;
---cg-text-size-small: 0.875rem;
---cg-text-size-caption: 0.75rem;
+  --cg-space-1: 4px;
+  --cg-space-2: 8px;
+  --cg-space-3: 12px;
+  --cg-space-4: 16px;
+  --cg-space-5: 24px;
+  --cg-space-6: 32px;
+  --cg-space-7: 48px;
+  --cg-space-8: 64px;
+}
 
-/* --- Tamaño de botón grande (P-32) --- */
---cg-text-size-btn-lg: 1.125rem;
+/* Los tokens de color y sombra deben resolverse en el elemento con data-theme,
+   no solamente en :root, para que cada paleta mantenga su propio contraste. */
+[data-theme] {
+  --cg-surface-elevated: var(--cg-surface-elevada);
+  --cg-shadow-1: 0 1px 2px 0 color-mix(in srgb, var(--cg-text) 8%, transparent);
+  --cg-shadow-2: 0 4px 6px -1px color-mix(in srgb, var(--cg-text) 10%, transparent),
+                 0 2px 4px -2px color-mix(in srgb, var(--cg-text) 6%, transparent);
+  --cg-shadow-3: 0 10px 15px -3px color-mix(in srgb, var(--cg-text) 12%, transparent),
+                 0 4px 6px -4px color-mix(in srgb, var(--cg-text) 8%, transparent);
+}
 
-/* --- Espaciado (P-30: tokens nuevos) --- */
---cg-space-1: 4px;
---cg-space-2: 8px;
---cg-space-3: 12px;
---cg-space-4: 16px;
---cg-space-5: 24px;
---cg-space-6: 32px;
---cg-space-7: 48px;
---cg-space-8: 64px;
-
-/* --- Color de texto sobre primario (P-31, Opción A) ---
-     Nota: var(--cg-bg) puede requerir ajuste de contraste por tema
-     en WP-THEME futuro. Se documenta como sujeta a revisión. --- */
---cg-on-primary: var(--cg-bg);
+/* Fallbacks para vistas o componentes renderizados sin data-theme explícito. */
+:root {
+  --cg-surface-elevated: var(--cg-surface-elevada);
+  --cg-shadow-1: var(--cg-shadow-sm);
+  --cg-shadow-2: var(--cg-shadow);
+  --cg-shadow-3: var(--cg-shadow-lg);
+}

@@ -26,7 +26,7 @@
       {{ form.non_field_errors }}
 
       <div class="form-group cg-form-group">
-        <label class="form-label cg-label">{{ form.username.label }}</label>
+        <label class="form-label cg-label" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
         <div class="input-group cg-input-group">
           <span class="input-group-text cg-input-group-text"><i class="fa-solid fa-user"></i></span>
           {{ form.username }}
@@ -35,7 +35,7 @@
       </div>
 
       <div class="form-group cg-form-group">
-        <label class="form-label cg-label">{{ form.password1.label }}</label>
+        <label class="form-label cg-label" for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
         <div class="input-group cg-input-group">
           <span class="input-group-text cg-input-group-text"><i class="fa-solid fa-key"></i></span>
           {{ form.password1 }}
@@ -45,7 +45,7 @@
       </div>
 
       <div class="form-group cg-form-group">
-        <label class="form-label cg-label">{{ form.password2.label }}</label>
+        <label class="form-label cg-label" for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
         <div class="input-group cg-input-group">
           <span class="input-group-text cg-input-group-text"><i class="fa-solid fa-key"></i></span>
           {{ form.password2 }}
@@ -62,7 +62,7 @@
         {{ form.aceptar_terminos.errors }}
       </div>
 
-      <button type="submit" class="btn btn-primary cg-btn cg-btn-primary" style="width: 100%;" id="btn-setup-siguiente">
+      <button type="submit" class="btn btn-primary cg-btn cg-btn-primary" id="btn-setup-siguiente">
         <i class="fa-solid fa-user-plus me-2"></i>Crear cuenta y generar frase de rescate
       </button>
     </form>
@@ -73,5 +73,4 @@
   </div>
 </div>
 
-<script src="{% static 'js/onboarding.js' %}"></script>
 {% endblock %}
