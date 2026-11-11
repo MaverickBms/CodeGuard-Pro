@@ -47,3 +47,23 @@
 .leccion-open-link:hover .leccion-title{color:var(--cg-primary)}
 @media(max-width:640px){.lesson-hero{align-items:flex-start}.lesson-hero-index{width:54px;height:54px;flex-basis:54px;font-size:1.25rem;border-radius:15px}.lesson-meta{flex-direction:column;gap:7px}.lesson-example,.lesson-exercise{padding:14px}}
 @media(prefers-reduced-motion:reduce){.leccion-open-link,.leccion-open-action{transition:none}}
+
+/* Editor básico de entregas: usa tokens del tema activo y no ejecuta código. */
+.lesson-attempt-form{display:grid;gap:9px;margin-top:16px}
+.lesson-attempt-form>label{color:var(--cg-text);font-size:.82rem;font-weight:750}
+.lesson-code-editor{box-sizing:border-box;width:100%;min-height:210px;resize:vertical;padding:14px;border:1px solid var(--cg-border);border-radius:11px;background:var(--cg-bg);color:var(--cg-text);font: .86rem/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:4}
+.lesson-code-editor:focus-visible{outline:2px solid var(--cg-border-focus);outline-offset:2px}
+.lesson-editor-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--cg-text-muted);font-size:.72rem}
+.lesson-attempt-history{display:grid;gap:8px;margin-top:18px}
+.lesson-attempt-history h4{margin:0;color:var(--cg-text);font-size:.86rem}
+.lesson-attempt-result{padding:11px 13px;border:1px solid var(--cg-border);border-radius:10px;background:var(--cg-surface)}
+.lesson-attempt-result-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--cg-text);font-size:.76rem}
+.lesson-attempt-result-head span{color:var(--cg-text-secondary)}
+.lesson-attempt-result-head b{margin-left:auto;color:var(--cg-primary)}
+.lesson-attempt-result p{margin:6px 0 3px;color:var(--cg-text-secondary);font-size:.8rem;line-height:1.5}
+.lesson-attempt-result time{color:var(--cg-text-muted);font-size:.68rem}
+.lesson-attempt-result.result-aprobado{border-left:3px solid var(--cg-success)}
+.lesson-attempt-result.result-no_aprobado{border-left:3px solid var(--cg-warning)}
+.lesson-attempt-result.result-pendiente_revision{border-left:3px solid var(--cg-info)}
+@media(max-width:640px){.lesson-editor-meta{align-items:stretch;flex-direction:column}.lesson-editor-meta .btn-theme{width:100%}}
+
