@@ -389,67 +389,67 @@ No existe una interfaz especial con hardware externo. El sistema utiliza teclado
 
 | ID | Requisito | Prioridad | Estado |
 |---|---|---:|---|
-| RF-001 | El sistema deberá iniciar el proceso backend local antes de cargar la interfaz principal. | P0 | IMPLEMENTADO |
-| RF-002 | El sistema deberá seleccionar un puerto libre y enlazar el backend a `127.0.0.1`. | P0 | IMPLEMENTADO |
-| RF-003 | El sistema deberá comprobar la disponibilidad HTTP del backend antes de mostrar la interfaz funcional. | P0 | IMPLEMENTADO |
-| RF-004 | El sistema deberá mostrar una pantalla de inicio mientras el backend se inicializa. | P2 | IMPLEMENTADO |
-| RF-005 | El sistema deberá detener el proceso backend cuando la aplicación de escritorio se cierre. | P0 | IMPLEMENTADO |
-| RF-006 | El sistema deberá bloquear la apertura de ventanas y navegación hacia destinos no autorizados. | P0 | IMPLEMENTADO |
-| RF-007 | El sistema deberá conservar el aislamiento entre renderer y proceso principal. | P0 | IMPLEMENTADO |
-| RF-008 | El sistema deberá informar un error comprensible si el backend no inicia dentro del tiempo máximo configurado. | P1 | IMPLEMENTADO — PRUEBA PENDIENTE |
+| RF-ACT-001 | El sistema deberá iniciar el proceso backend local antes de cargar la interfaz principal. | P0 | IMPLEMENTADO |
+| RF-ACT-002 | El sistema deberá seleccionar un puerto libre y enlazar el backend a `127.0.0.1`. | P0 | IMPLEMENTADO |
+| RF-ACT-003 | El sistema deberá comprobar la disponibilidad HTTP del backend antes de mostrar la interfaz funcional. | P0 | IMPLEMENTADO |
+| RF-ACT-004 | El sistema deberá mostrar una pantalla de inicio mientras el backend se inicializa. | P2 | IMPLEMENTADO |
+| RF-ACT-005 | El sistema deberá detener el proceso backend cuando la aplicación de escritorio se cierre. | P0 | IMPLEMENTADO |
+| RF-ACT-006 | El sistema deberá bloquear la apertura de ventanas y navegación hacia destinos no autorizados. | P0 | IMPLEMENTADO |
+| RF-ACT-007 | El sistema deberá conservar el aislamiento entre renderer y proceso principal. | P0 | IMPLEMENTADO |
+| RF-ACT-008 | El sistema deberá informar un error comprensible si el backend no inicia dentro del tiempo máximo configurado. | P1 | IMPLEMENTADO — PRUEBA PENDIENTE |
 
 ### 3.2.2 Panel principal
 
 | ID | Requisito | Prioridad | Estado |
 |---|---|---:|---|
-| RF-010 | El sistema deberá mostrar un panel principal al abrir la aplicación. | P0 | IMPLEMENTADO |
-| RF-011 | El panel deberá presentar el resumen del progreso del roadmap activo. | P1 | IMPLEMENTADO |
-| RF-012 | El panel deberá mostrar etapas completadas y porcentaje general calculado desde los registros persistidos. | P1 | IMPLEMENTADO |
-| RF-013 | El panel deberá identificar la siguiente etapa disponible que no esté completada ni bloqueada. | P1 | IMPLEMENTADO |
-| RF-014 | El panel deberá presentar actividad reciente del usuario local. | P2 | IMPLEMENTADO |
-| RF-015 | El panel deberá manejar el escenario en el que no exista un roadmap cargado. | P1 | IMPLEMENTADO |
+| RF-ACT-010 | El sistema deberá mostrar un panel principal al abrir la aplicación. | P0 | IMPLEMENTADO |
+| RF-ACT-011 | El panel deberá presentar el resumen del progreso del roadmap activo. | P1 | IMPLEMENTADO |
+| RF-ACT-012 | El panel deberá mostrar etapas completadas y porcentaje general calculado desde los registros persistidos. | P1 | IMPLEMENTADO |
+| RF-ACT-013 | El panel deberá identificar la siguiente etapa disponible que no esté completada ni bloqueada. | P1 | IMPLEMENTADO |
+| RF-ACT-014 | El panel deberá presentar actividad reciente del usuario local. | P2 | IMPLEMENTADO |
+| RF-ACT-015 | El panel deberá manejar el escenario en el que no exista un roadmap cargado. | P1 | IMPLEMENTADO |
 
 ### 3.2.3 Roadmap académico ASCENSO
 
 | ID | Requisito | Prioridad | Estado |
 |---|---|---:|---|
-| RF-020 | El sistema deberá cargar y representar el roadmap ASCENSO 3.1 a partir de su fuente de datos oficial. | P0 | IMPLEMENTADO |
-| RF-021 | El sistema deberá conservar las 33 etapas numeradas de 0 a 32. | P0 | IMPLEMENTADO |
-| RF-022 | El sistema deberá representar la jerarquía roadmap → etapa → módulo → lección → actividad. | P1 | IMPLEMENTADO |
-| RF-023 | El sistema deberá mostrar título, objetivo, prioridad, bloque, sección y proyecto cuando esos datos estén disponibles. | P1 | IMPLEMENTADO |
-| RF-024 | El sistema deberá permitir filtrar etapas por bloque. | P2 | IMPLEMENTADO |
-| RF-025 | El sistema deberá permitir filtrar etapas por prioridad. | P2 | IMPLEMENTADO |
-| RF-026 | El sistema deberá permitir buscar etapas por texto. | P2 | IMPLEMENTADO |
-| RF-027 | El sistema deberá presentar el detalle de una etapa y su contenido relacionado. | P1 | IMPLEMENTADO |
-| RF-028 | El sistema deberá mostrar los prerrequisitos explícitos de cada etapa. | P1 | IMPLEMENTADO |
-| RF-029 | El sistema no deberá inventar dependencias que no estén documentadas en la fuente oficial. | P0 | IMPLEMENTADO EN LA LÓGICA DE CARGA |
-| RF-030 | El proceso de carga inicial deberá ser idempotente y evitar duplicar el roadmap cuando ya exista. | P0 | IMPLEMENTADO |
+| RF-ACT-020 | El sistema deberá cargar y representar el roadmap ASCENSO 3.1 a partir de su fuente de datos oficial. | P0 | IMPLEMENTADO |
+| RF-ACT-021 | El sistema deberá conservar las 33 etapas numeradas de 0 a 32. | P0 | IMPLEMENTADO |
+| RF-ACT-022 | El sistema deberá representar la jerarquía roadmap → etapa → módulo → lección → actividad. | P1 | IMPLEMENTADO |
+| RF-ACT-023 | El sistema deberá mostrar título, objetivo, prioridad, bloque, sección y proyecto cuando esos datos estén disponibles. | P1 | IMPLEMENTADO |
+| RF-ACT-024 | El sistema deberá permitir filtrar etapas por bloque. | P2 | IMPLEMENTADO |
+| RF-ACT-025 | El sistema deberá permitir filtrar etapas por prioridad. | P2 | IMPLEMENTADO |
+| RF-ACT-026 | El sistema deberá permitir buscar etapas por texto. | P2 | IMPLEMENTADO |
+| RF-ACT-027 | El sistema deberá presentar el detalle de una etapa y su contenido relacionado. | P1 | IMPLEMENTADO |
+| RF-ACT-028 | El sistema deberá mostrar los prerrequisitos explícitos de cada etapa. | P1 | IMPLEMENTADO |
+| RF-ACT-029 | El sistema no deberá inventar dependencias que no estén documentadas en la fuente oficial. | P0 | IMPLEMENTADO EN LA LÓGICA DE CARGA |
+| RF-ACT-030 | El proceso de carga inicial deberá ser idempotente y evitar duplicar el roadmap cuando ya exista. | P0 | IMPLEMENTADO |
 
 ### 3.2.4 Registro y cálculo del progreso
 
 | ID | Requisito | Prioridad | Estado |
 |---|---|---:|---|
-| RF-040 | El sistema deberá permitir marcar una lección como completada mediante una solicitud POST. | P0 | IMPLEMENTADO |
-| RF-041 | El sistema deberá permitir reabrir una lección previamente completada. | P1 | IMPLEMENTADO |
-| RF-042 | El sistema deberá permitir marcar una etapa como completada. | P0 | IMPLEMENTADO |
-| RF-043 | El sistema deberá impedir completar una etapa si alguno de sus prerrequisitos no está completado. | P0 | IMPLEMENTADO |
-| RF-044 | El sistema deberá permitir reabrir una etapa completada. | P1 | IMPLEMENTADO |
-| RF-045 | El sistema deberá recalcular el porcentaje de una etapa a partir de las lecciones completadas. | P0 | IMPLEMENTADO |
-| RF-046 | El sistema deberá calcular el progreso general usando los registros asociados al usuario local y roadmap activo. | P1 | IMPLEMENTADO |
-| RF-047 | El sistema deberá mantener la consistencia entre estado y porcentaje: una entidad completada tendrá 100% y una no iniciada 0%. | P0 | IMPLEMENTADO EN EL MODELO PROGRESO |
-| RF-048 | El sistema deberá impedir operaciones de escritura de progreso cuando no exista un propietario local válido. | P0 | IMPLEMENTADO |
-| RF-049 | El sistema deberá registrar en auditoría la finalización y reapertura de etapas y lecciones. | P1 | IMPLEMENTADO |
+| RF-ACT-040 | El sistema deberá permitir marcar una lección como completada mediante una solicitud POST. | P0 | IMPLEMENTADO |
+| RF-ACT-041 | El sistema deberá permitir reabrir una lección previamente completada. | P1 | IMPLEMENTADO |
+| RF-ACT-042 | El sistema deberá permitir marcar una etapa como completada. | P0 | IMPLEMENTADO |
+| RF-ACT-043 | El sistema deberá impedir completar una etapa si alguno de sus prerrequisitos no está completado. | P0 | IMPLEMENTADO |
+| RF-ACT-044 | El sistema deberá permitir reabrir una etapa completada. | P1 | IMPLEMENTADO |
+| RF-ACT-045 | El sistema deberá recalcular el porcentaje de una etapa a partir de las lecciones completadas. | P0 | IMPLEMENTADO |
+| RF-ACT-046 | El sistema deberá calcular el progreso general usando los registros asociados al usuario local y roadmap activo. | P1 | IMPLEMENTADO |
+| RF-ACT-047 | El sistema deberá mantener la consistencia entre estado y porcentaje: una entidad completada tendrá 100% y una no iniciada 0%. | P0 | IMPLEMENTADO EN EL MODELO PROGRESO |
+| RF-ACT-048 | El sistema deberá impedir operaciones de escritura de progreso cuando no exista un propietario local válido. | P0 | IMPLEMENTADO |
+| RF-ACT-049 | El sistema deberá registrar en auditoría la finalización y reapertura de etapas y lecciones. | P1 | IMPLEMENTADO |
 
 ### 3.2.5 Personalización visual
 
 | ID | Requisito | Prioridad | Estado |
 |---|---|---:|---|
-| RF-050 | El sistema deberá ofrecer los 12 temas visuales definidos por el producto. | P1 | IMPLEMENTADO |
-| RF-051 | El usuario deberá poder seleccionar un tema desde los controles de escritorio disponibles. | P1 | IMPLEMENTADO |
-| RF-052 | El sistema deberá conservar los identificadores de tema utilizados por CSS y Electron. | P0 | IMPLEMENTADO |
-| RF-053 | Los componentes deberán utilizar tokens semánticos para adaptarse al tema activo. | P1 | IMPLEMENTADO |
-| RF-054 | El tema de alto contraste deberá mantener un tratamiento visual específico. | P1 | IMPLEMENTADO |
-| RF-055 | La interfaz deberá respetar la preferencia de movimiento reducido del sistema operativo. | P1 | IMPLEMENTADO EN LOS ESTILOS DOCUMENTADOS |
+| RF-ACT-050 | El sistema deberá ofrecer los 12 temas visuales definidos por el producto. | P1 | IMPLEMENTADO |
+| RF-ACT-051 | El usuario deberá poder seleccionar un tema desde los controles de escritorio disponibles. | P1 | IMPLEMENTADO |
+| RF-ACT-052 | El sistema deberá conservar los identificadores de tema utilizados por CSS y Electron. | P0 | IMPLEMENTADO |
+| RF-ACT-053 | Los componentes deberán utilizar tokens semánticos para adaptarse al tema activo. | P1 | IMPLEMENTADO |
+| RF-ACT-054 | El tema de alto contraste deberá mantener un tratamiento visual específico. | P1 | IMPLEMENTADO |
+| RF-ACT-055 | La interfaz deberá respetar la preferencia de movimiento reducido del sistema operativo. | P1 | IMPLEMENTADO EN LOS ESTILOS DOCUMENTADOS |
 
 Los temas identificados son: `light`, `dark`, `high-contrast`, `retro-pixel`, `cyberpunk`, `fantasy`, `sci-fi`, `warrior`, `mage`, `rogue`, `paladin` y `dark-mage`.
 
@@ -459,14 +459,14 @@ El repositorio conserva modelos, formularios, servicios, vistas y pruebas del fl
 
 | ID | Requisito | Prioridad | Estado |
 |---|---|---:|---|
-| RF-060 | Cuando la autenticación esté habilitada, el sistema deberá permitir configurar el usuario local y la contraseña maestra. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
-| RF-061 | Cuando la autenticación esté habilitada, el sistema deberá validar credenciales locales usando Argon2. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
-| RF-062 | El sistema deberá generar una frase de rescate de alta entropía, mostrarla una sola vez y almacenar únicamente su hash. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
-| RF-063 | El sistema deberá permitir recuperar el acceso con la frase de rescate y consumirla únicamente al completar el cambio de contraseña. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
-| RF-064 | Cuando la autenticación esté habilitada, el sistema deberá cerrar la sesión mediante POST protegido contra CSRF. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
-| RF-065 | Cuando la autenticación esté habilitada, el sistema deberá aplicar expiración por inactividad. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
-| RF-066 | El sistema deberá mantener el modo sin autenticación claramente identificado mientras `AUTH_DISABLED = True`. | P0 | IMPLEMENTADO |
-| RF-067 | La reactivación de autenticación deberá requerir autorización expresa del propietario y pruebas de regresión. | P0 | REGLA DE CAMBIO |
+| RF-ACT-060 | Cuando la autenticación esté habilitada, el sistema deberá permitir configurar el usuario local y la contraseña maestra. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
+| RF-ACT-061 | Cuando la autenticación esté habilitada, el sistema deberá validar credenciales locales usando Argon2. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
+| RF-ACT-062 | El sistema deberá generar una frase de rescate de alta entropía, mostrarla una sola vez y almacenar únicamente su hash. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
+| RF-ACT-063 | El sistema deberá permitir recuperar el acceso con la frase de rescate y consumirla únicamente al completar el cambio de contraseña. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
+| RF-ACT-064 | Cuando la autenticación esté habilitada, el sistema deberá cerrar la sesión mediante POST protegido contra CSRF. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
+| RF-ACT-065 | Cuando la autenticación esté habilitada, el sistema deberá aplicar expiración por inactividad. | P1 | IMPLEMENTADO EN CÓDIGO, DESACTIVADO |
+| RF-ACT-066 | El sistema deberá mantener el modo sin autenticación claramente identificado mientras `AUTH_DISABLED = True`. | P0 | IMPLEMENTADO |
+| RF-ACT-067 | La reactivación de autenticación deberá requerir autorización expresa del propietario y pruebas de regresión. | P0 | REGLA DE CAMBIO |
 
 **Condición de seguridad:** mientras el modo sin autenticación esté activo, no debe afirmarse que el acceso a la aplicación está protegido por contraseña o sesión. La protección del equipo, del usuario del sistema operativo y del directorio de datos depende de los controles del sistema anfitrión.
 
@@ -474,11 +474,11 @@ El repositorio conserva modelos, formularios, servicios, vistas y pruebas del fl
 
 | ID | Requisito | Prioridad | Estado |
 |---|---|---:|---|
-| RF-070 | El sistema deberá almacenar eventos de auditoría con tipo, descripción y fecha de creación. | P1 | IMPLEMENTADO |
-| RF-071 | El sistema deberá permitir asociar un evento a un usuario cuando exista un actor autenticado. | P1 | IMPLEMENTADO |
-| RF-072 | El sistema deberá permitir registrar eventos sin usuario asociado en modo sin autenticación. | P1 | IMPLEMENTADO |
-| RF-073 | El sistema deberá registrar eventos de finalización y reapertura de etapas y lecciones. | P1 | IMPLEMENTADO |
-| RF-074 | El sistema deberá conservar índices que permitan consultar eventos por tipo, usuario y fecha. | P2 | IMPLEMENTADO |
+| RF-ACT-070 | El sistema deberá almacenar eventos de auditoría con tipo, descripción y fecha de creación. | P1 | IMPLEMENTADO |
+| RF-ACT-071 | El sistema deberá permitir asociar un evento a un usuario cuando exista un actor autenticado. | P1 | IMPLEMENTADO |
+| RF-ACT-072 | El sistema deberá permitir registrar eventos sin usuario asociado en modo sin autenticación. | P1 | IMPLEMENTADO |
+| RF-ACT-073 | El sistema deberá registrar eventos de finalización y reapertura de etapas y lecciones. | P1 | IMPLEMENTADO |
+| RF-ACT-074 | El sistema deberá conservar índices que permitan consultar eventos por tipo, usuario y fecha. | P2 | IMPLEMENTADO |
 
 ### 3.2.8 Requisitos de evolución del producto
 
@@ -486,42 +486,42 @@ Los siguientes requisitos proceden de la línea base funcional anterior y se con
 
 | Rango de IDs | Módulo previsto | Alcance resumido | Estado |
 |---|---|---|---|
-| RF-080 a RF-089 | Competencias | Competencias, niveles, criterios, reglas de logro y registro de dominio | APROBADO — NO IMPLEMENTADO |
-| RF-090 a RF-099 | Biblioteca documental | Importación PDF, metadatos, extracción de texto, visor y búsqueda FTS5 | APROBADO — NO IMPLEMENTADO |
-| RF-100 a RF-109 | Conocimiento | Conceptos, relaciones y vínculos con documentos y actividades | APROBADO — NO IMPLEMENTADO |
-| RF-110 a RF-119 | Evaluaciones | Preguntas, intentos, rúbricas, resultados y retroalimentación | APROBADO — NO IMPLEMENTADO |
-| RF-120 a RF-129 | Evidencias | Archivos, asociaciones, SHA-256 e integridad | APROBADO — NO IMPLEMENTADO |
-| RF-130 a RF-139 | Laboratorios | Guías, pasos, comandos, resultados y capturas | APROBADO — NO IMPLEMENTADO |
-| RF-140 a RF-149 | Administración | Backups, restauración, exportación y auditoría administrativa ampliada | APROBADO — NO IMPLEMENTADO |
-| RF-150 a RF-159 | Vigencia | Revisión y estado de vigencia de contenidos | APROBADO — NO IMPLEMENTADO |
-| RF-160 a RF-169 | Ética | Advertencias, aceptación y guías de uso responsable | APROBADO — NO IMPLEMENTADO |
+| RF-FUT-080 a RF-FUT-089 | Competencias | Competencias, niveles, criterios, reglas de logro y registro de dominio | APROBADO — NO IMPLEMENTADO |
+| RF-FUT-090 a RF-FUT-099 | Biblioteca documental | Importación PDF, metadatos, extracción de texto, visor y búsqueda FTS5 | APROBADO — NO IMPLEMENTADO |
+| RF-FUT-100 a RF-FUT-109 | Conocimiento | Conceptos, relaciones y vínculos con documentos y actividades | APROBADO — NO IMPLEMENTADO |
+| RF-FUT-110 a RF-FUT-119 | Evaluaciones | Preguntas, intentos, rúbricas, resultados y retroalimentación | APROBADO — NO IMPLEMENTADO |
+| RF-FUT-120 a RF-FUT-129 | Evidencias | Archivos, asociaciones, SHA-256 e integridad | APROBADO — NO IMPLEMENTADO |
+| RF-FUT-130 a RF-FUT-139 | Laboratorios | Guías, pasos, comandos, resultados y capturas | APROBADO — NO IMPLEMENTADO |
+| RF-FUT-140 a RF-FUT-149 | Administración | Backups, restauración, exportación y auditoría administrativa ampliada | APROBADO — NO IMPLEMENTADO |
+| RF-FUT-150 a RF-FUT-159 | Vigencia | Revisión y estado de vigencia de contenidos | APROBADO — NO IMPLEMENTADO |
+| RF-FUT-160 a RF-FUT-169 | Ética | Advertencias, aceptación y guías de uso responsable | APROBADO — NO IMPLEMENTADO |
 
-Los identificadores de esta sección son una reorganización temática para la versión 3.0. Los identificadores históricos RF-020…RF-123 de la versión 2.2 deberán conservarse en la matriz de migración si se requiere compatibilidad documental estricta.
+Los identificadores de esta sección son una reorganización temática para la versión 3.0. Los identificadores históricos RF-ACT-020…RF-FUT-123 de la versión 2.2 deberán conservarse en la matriz de migración si se requiere compatibilidad documental estricta.
 
 ## 3.3 Requisitos no funcionales
 
 | ID | Requisito | Criterio de aceptación | Prioridad | Estado |
 |---|---|---|---:|---|
-| RNF-001 | El producto deberá operar sin conexión a Internet para sus funciones locales. | Con la red desconectada se inicia Electron, Django y se consulta/modifica el progreso local. | P0 | IMPLEMENTADO POR ARQUITECTURA; PRUEBA DE REGRESIÓN |
-| RNF-002 | El backend deberá escuchar únicamente en loopback. | Inspección del socket muestra `127.0.0.1`, nunca `0.0.0.0`. | P0 | IMPLEMENTADO |
-| RNF-003 | La aplicación deberá separar datos escribibles del directorio de instalación. | La ejecución empaquetada utiliza `CODEGUARD_DATA_DIR` o `app.getPath('userData')`. | P0 | IMPLEMENTADO |
-| RNF-004 | La persistencia deberá mantener integridad referencial y transaccional. | Migraciones y pruebas de integridad pasan sobre una base nueva. | P0 | IMPLEMENTADO EN SQLITE/DJANGO; PRUEBAS CONTINUAS |
-| RNF-005 | La interfaz deberá ser adaptable al tamaño de la ventana. | No se producen solapamientos ni pérdida de controles en resoluciones objetivo. | P1 | REQUIERE VALIDACIÓN VISUAL |
-| RNF-006 | La aplicación deberá ofrecer estados accesibles y navegación por teclado. | Controles con foco visible, etiquetas y orden de tabulación coherente. | P1 | REQUIERE AUDITORÍA DE ACCESIBILIDAD |
-| RNF-007 | La arquitectura deberá separar presentación, lógica de negocio y persistencia. | Vistas delegan reglas de negocio en servicios y modelos; el acceso a datos usa ORM. | P1 | IMPLEMENTADO |
-| RNF-008 | El renderer de Electron no deberá tener acceso directo a Node.js. | `nodeIntegration=false`, `contextIsolation=true`, `sandbox=true`. | P0 | IMPLEMENTADO |
-| RNF-009 | La aplicación deberá bloquear navegación externa no autorizada. | Pruebas de navegación externa y apertura de ventanas son rechazadas. | P0 | IMPLEMENTADO |
-| RNF-010 | La interfaz deberá utilizar recursos locales, sin CDN como dependencia funcional. | La aplicación funciona sin descargar scripts, estilos o fuentes de terceros. | P0 | IMPLEMENTADO SEGÚN DOCUMENTACIÓN; VERIFICAR RED |
-| RNF-011 | La aplicación deberá respetar preferencias de movimiento reducido. | Animaciones no esenciales se reducen o desactivan con `prefers-reduced-motion`. | P1 | IMPLEMENTADO EN ESTILOS DOCUMENTADOS |
-| RNF-012 | Las consultas de progreso deberán derivar sus porcentajes de registros persistidos. | Los porcentajes mostrados coinciden con los registros de progreso. | P0 | IMPLEMENTADO |
-| RNF-013 | El sistema deberá manejar errores de arranque y ausencia de datos sin cerrarse abruptamente. | Se muestra un estado o mensaje de error recuperable. | P1 | PARCIAL / PRUEBA PENDIENTE |
-| RNF-014 | El producto deberá mantener dependencias con versiones fijadas. | Los paquetes Python tienen versiones explícitas y el manifiesto npm identifica sus dependencias. | P1 | IMPLEMENTADO |
-| RNF-015 | El sistema deberá evitar telemetría y llamadas externas no justificadas. | Inspección de red en ejecución offline no revela conexiones externas de la aplicación. | P0 | DOCUMENTADO; PRUEBA PENDIENTE |
-| RNF-016 | El sistema deberá mantener tiempos de respuesta adecuados para el escenario monousuario. | Definir conjunto de datos, equipo y percentiles antes de declarar un umbral. | P2 | PENDIENTE DE MEDICIÓN |
-| RNF-017 | El sistema deberá poder instalarse y ejecutarse en los sistemas operativos oficialmente soportados. | Instalación limpia y pruebas de humo por plataforma objetivo. | P1 | PENDIENTE DE MATRIZ DE PLATAFORMAS |
-| RNF-018 | El código deberá ser mantenible y verificable. | `manage.py check`, pruebas, comprobación de migraciones y validaciones de empaquetado documentadas. | P1 | PARCIAL |
-| RNF-019 | La aplicación deberá conservar los 12 temas sin introducir dependencias de paleta entre ellos. | Cambio de tema no rompe componentes y cada tema conserva su identificador. | P1 | IMPLEMENTADO; PRUEBA VISUAL PENDIENTE |
-| RNF-020 | El sistema deberá evitar que el cierre de Electron deje procesos backend huérfanos. | Al cerrar la ventana y la aplicación, el proceso Django termina. | P0 | IMPLEMENTADO; PRUEBA DE PLATAFORMA PENDIENTE |
+| RNF-ACT-001 | El producto deberá operar sin conexión a Internet para sus funciones locales. | Con la red desconectada se inicia Electron, Django y se consulta/modifica el progreso local. | P0 | IMPLEMENTADO POR ARQUITECTURA; PRUEBA DE REGRESIÓN |
+| RNF-ACT-002 | El backend deberá escuchar únicamente en loopback. | Inspección del socket muestra `127.0.0.1`, nunca `0.0.0.0`. | P0 | IMPLEMENTADO |
+| RNF-ACT-003 | La aplicación deberá separar datos escribibles del directorio de instalación. | La ejecución empaquetada utiliza `CODEGUARD_DATA_DIR` o `app.getPath('userData')`. | P0 | IMPLEMENTADO |
+| RNF-ACT-004 | La persistencia deberá mantener integridad referencial y transaccional. | Migraciones y pruebas de integridad pasan sobre una base nueva. | P0 | IMPLEMENTADO EN SQLITE/DJANGO; PRUEBAS CONTINUAS |
+| RNF-ACT-005 | La interfaz deberá ser adaptable al tamaño de la ventana. | No se producen solapamientos ni pérdida de controles en resoluciones objetivo. | P1 | REQUIERE VALIDACIÓN VISUAL |
+| RNF-ACT-006 | La aplicación deberá ofrecer estados accesibles y navegación por teclado. | Controles con foco visible, etiquetas y orden de tabulación coherente. | P1 | REQUIERE AUDITORÍA DE ACCESIBILIDAD |
+| RNF-ACT-007 | La arquitectura deberá separar presentación, lógica de negocio y persistencia. | Vistas delegan reglas de negocio en servicios y modelos; el acceso a datos usa ORM. | P1 | IMPLEMENTADO |
+| RNF-ACT-008 | El renderer de Electron no deberá tener acceso directo a Node.js. | `nodeIntegration=false`, `contextIsolation=true`, `sandbox=true`. | P0 | IMPLEMENTADO |
+| RNF-ACT-009 | La aplicación deberá bloquear navegación externa no autorizada. | Pruebas de navegación externa y apertura de ventanas son rechazadas. | P0 | IMPLEMENTADO |
+| RNF-ACT-010 | La interfaz deberá utilizar recursos locales, sin CDN como dependencia funcional. | La aplicación funciona sin descargar scripts, estilos o fuentes de terceros. | P0 | IMPLEMENTADO SEGÚN DOCUMENTACIÓN; VERIFICAR RED |
+| RNF-ACT-011 | La aplicación deberá respetar preferencias de movimiento reducido. | Animaciones no esenciales se reducen o desactivan con `prefers-reduced-motion`. | P1 | IMPLEMENTADO EN ESTILOS DOCUMENTADOS |
+| RNF-ACT-012 | Las consultas de progreso deberán derivar sus porcentajes de registros persistidos. | Los porcentajes mostrados coinciden con los registros de progreso. | P0 | IMPLEMENTADO |
+| RNF-ACT-013 | El sistema deberá manejar errores de arranque y ausencia de datos sin cerrarse abruptamente. | Se muestra un estado o mensaje de error recuperable. | P1 | PARCIAL / PRUEBA PENDIENTE |
+| RNF-ACT-014 | El producto deberá mantener dependencias con versiones fijadas. | Los paquetes Python tienen versiones explícitas y el manifiesto npm identifica sus dependencias. | P1 | IMPLEMENTADO |
+| RNF-ACT-015 | El sistema deberá evitar telemetría y llamadas externas no justificadas. | Inspección de red en ejecución offline no revela conexiones externas de la aplicación. | P0 | DOCUMENTADO; PRUEBA PENDIENTE |
+| RNF-ACT-016 | El sistema deberá mantener tiempos de respuesta adecuados para el escenario monousuario. | Definir conjunto de datos, equipo y percentiles antes de declarar un umbral. | P2 | PENDIENTE DE MEDICIÓN |
+| RNF-ACT-017 | El sistema deberá poder instalarse y ejecutarse en los sistemas operativos oficialmente soportados. | Instalación limpia y pruebas de humo por plataforma objetivo. | P1 | PENDIENTE DE MATRIZ DE PLATAFORMAS |
+| RNF-ACT-018 | El código deberá ser mantenible y verificable. | `manage.py check`, pruebas, comprobación de migraciones y validaciones de empaquetado documentadas. | P1 | PARCIAL |
+| RNF-ACT-019 | La aplicación deberá conservar los 12 temas sin introducir dependencias de paleta entre ellos. | Cambio de tema no rompe componentes y cada tema conserva su identificador. | P1 | IMPLEMENTADO; PRUEBA VISUAL PENDIENTE |
+| RNF-ACT-020 | El sistema deberá evitar que el cierre de Electron deje procesos backend huérfanos. | Al cerrar la ventana y la aplicación, el proceso Django termina. | P0 | IMPLEMENTADO; PRUEBA DE PLATAFORMA PENDIENTE |
 
 ## 3.4 Requisitos de datos
 
@@ -529,18 +529,18 @@ Los identificadores de esta sección son una reorganización temática para la v
 
 | ID | Entidad | Responsabilidad | Persistencia |
 |---|---|---|---|
-| RD-001 | Usuario | Propietario local y datos de autenticación conservados. | SQLite |
-| RD-002 | FraseRescate | Hash de frase de recuperación y estado de uso. | SQLite |
-| RD-003 | ConfiguracionSistema | Configuración global singleton. | SQLite |
-| RD-004 | AuditLog | Registro cronológico de eventos. | SQLite |
-| RD-005 | Roadmap | Contenedor de una ruta formativa y su edición. | SQLite |
-| RD-006 | Etapa | Unidad numerada, prioridad, objetivo y proyecto. | SQLite |
-| RD-007 | Modulo | Agrupación de lecciones dentro de una etapa. | SQLite |
-| RD-008 | Leccion | Unidad de aprendizaje. | SQLite |
-| RD-009 | Actividad | Acción concreta asociada a una lección. | SQLite |
-| RD-010 | Prerrequisito | Dependencia explícita entre etapas. | SQLite |
-| RD-011 | CriterioFinalizacion | Criterio asociado a una etapa. | SQLite |
-| RD-012 | Progreso | Estado y porcentaje de avance por objetivo académico. | SQLite |
+| RD-ACT-001 | Usuario | Propietario local y datos de autenticación conservados. | SQLite |
+| RD-ACT-002 | FraseRescate | Hash de frase de recuperación y estado de uso. | SQLite |
+| RD-ACT-003 | ConfiguracionSistema | Configuración global singleton. | SQLite |
+| RD-ACT-004 | AuditLog | Registro cronológico de eventos. | SQLite |
+| RD-ACT-005 | Roadmap | Contenedor de una ruta formativa y su edición. | SQLite |
+| RD-ACT-006 | Etapa | Unidad numerada, prioridad, objetivo y proyecto. | SQLite |
+| RD-ACT-007 | Modulo | Agrupación de lecciones dentro de una etapa. | SQLite |
+| RD-ACT-008 | Leccion | Unidad de aprendizaje. | SQLite |
+| RD-ACT-009 | Actividad | Acción concreta asociada a una lección. | SQLite |
+| RD-ACT-010 | Prerrequisito | Dependencia explícita entre etapas. | SQLite |
+| RD-ACT-011 | CriterioFinalizacion | Criterio asociado a una etapa. | SQLite |
+| RD-ACT-012 | Progreso | Estado y porcentaje de avance por objetivo académico. | SQLite |
 
 ### 3.4.2 Reglas de integridad
 
@@ -573,24 +573,24 @@ Las siguientes entidades son conceptuales y no deben confundirse con tablas ya d
 
 | ID | Requisito | Criterio de aceptación | Estado |
 |---|---|---|---|
-| RS-001 | El servidor deberá enlazarse a localhost exclusivamente. | El socket no es accesible desde otras interfaces de red. | IMPLEMENTADO |
-| RS-002 | El renderer deberá ejecutarse con aislamiento de contexto y sandbox. | Configuración Electron segura inspeccionable. | IMPLEMENTADO |
-| RS-003 | El sistema deberá aplicar protección CSRF a las operaciones que cambian estado. | POST sin token válido es rechazado cuando el middleware está activo. | IMPLEMENTADO EN DJANGO |
-| RS-004 | Las plantillas deberán escapar contenido dinámico para reducir XSS. | Pruebas con payloads no ejecutan scripts. | IMPLEMENTADO POR FRAMEWORK; PRUEBA PENDIENTE |
-| RS-005 | Las consultas de base de datos deberán utilizar ORM o parámetros seguros. | No se construyen consultas SQL mediante concatenación de entradas. | IMPLEMENTADO POR ORM |
-| RS-006 | La aplicación deberá añadir cabeceras de seguridad y CSP. | Respuestas incluyen las cabeceras definidas por la política del proyecto. | IMPLEMENTADO |
-| RS-007 | Los secretos deberán mantenerse fuera del repositorio. | `.secret_key` y variables sensibles no se versionan; permisos locales restrictivos. | IMPLEMENTADO POR CONFIGURACIÓN |
-| RS-008 | Las contraseñas deberán almacenarse mediante hash seguro Argon2 cuando la autenticación esté habilitada. | No existe contraseña en texto plano en la base de datos. | IMPLEMENTADO EN CÓDIGO; AUTENTICACIÓN DESACTIVADA |
-| RS-009 | La frase de rescate deberá almacenarse como hash y ser de un solo uso. | Se invalida únicamente tras completar correctamente el restablecimiento. | IMPLEMENTADO EN CÓDIGO; AUTENTICACIÓN DESACTIVADA |
-| RS-010 | El sistema deberá evitar revelar si un usuario existe ante errores de autenticación. | Mensaje de error genérico. | IMPLEMENTADO EN CÓDIGO; AUTENTICACIÓN DESACTIVADA |
-| RS-011 | La aplicación deberá registrar eventos relevantes de acceso y progreso. | Los eventos esperados aparecen en AuditLog. | IMPLEMENTADO |
-| RS-012 | El sistema no deberá exponer errores internos ni secretos al usuario final. | `DEBUG=False` por defecto y mensajes de error controlados. | IMPLEMENTADO POR CONFIGURACIÓN |
-| RS-013 | Los datos de usuario deberán almacenarse en un directorio local separado del binario instalado. | Directorio de datos independiente en modo empaquetado. | IMPLEMENTADO |
-| RS-014 | Los archivos de evidencias futuros deberán validarse por tipo, tamaño y contenido, y almacenarse fuera del web root. | Pruebas de MIME, extensión, tamaño, traversal y descarga segura. | APROBADO — NO IMPLEMENTADO |
-| RS-015 | Los backups futuros deberán validarse antes de restaurarse. | Rechazo de rutas, entradas y contenido no permitido. | APROBADO — NO IMPLEMENTADO |
-| RS-016 | El sistema deberá evitar telemetría y transmisión no autorizada de información personal. | Verificación de tráfico de red. | DOCUMENTADO; PRUEBA PENDIENTE |
-| RS-017 | El modo sin autenticación deberá comunicarse como una condición explícita de seguridad. | UI y documentación no afirman que exista protección por login mientras el interruptor esté activo. | IMPLEMENTADO COMO DECISIÓN ACTUAL |
-| RS-018 | La reactivación de autenticación deberá realizarse mediante cambio controlado y pruebas de regresión. | Revisión de configuración, flujos y pruebas con `AUTH_DISABLED=False`. | REGLA DE CAMBIO |
+| RS-ACT-001 | El servidor deberá enlazarse a localhost exclusivamente. | El socket no es accesible desde otras interfaces de red. | IMPLEMENTADO |
+| RS-ACT-002 | El renderer deberá ejecutarse con aislamiento de contexto y sandbox. | Configuración Electron segura inspeccionable. | IMPLEMENTADO |
+| RS-ACT-003 | El sistema deberá aplicar protección CSRF a las operaciones que cambian estado. | POST sin token válido es rechazado cuando el middleware está activo. | IMPLEMENTADO EN DJANGO |
+| RS-ACT-004 | Las plantillas deberán escapar contenido dinámico para reducir XSS. | Pruebas con payloads no ejecutan scripts. | IMPLEMENTADO POR FRAMEWORK; PRUEBA PENDIENTE |
+| RS-ACT-005 | Las consultas de base de datos deberán utilizar ORM o parámetros seguros. | No se construyen consultas SQL mediante concatenación de entradas. | IMPLEMENTADO POR ORM |
+| RS-ACT-006 | La aplicación deberá añadir cabeceras de seguridad y CSP. | Respuestas incluyen las cabeceras definidas por la política del proyecto. | IMPLEMENTADO |
+| RS-ACT-007 | Los secretos deberán mantenerse fuera del repositorio. | `.secret_key` y variables sensibles no se versionan; permisos locales restrictivos. | IMPLEMENTADO POR CONFIGURACIÓN |
+| RS-ACT-008 | Las contraseñas deberán almacenarse mediante hash seguro Argon2 cuando la autenticación esté habilitada. | No existe contraseña en texto plano en la base de datos. | IMPLEMENTADO EN CÓDIGO; AUTENTICACIÓN DESACTIVADA |
+| RS-ACT-009 | La frase de rescate deberá almacenarse como hash y ser de un solo uso. | Se invalida únicamente tras completar correctamente el restablecimiento. | IMPLEMENTADO EN CÓDIGO; AUTENTICACIÓN DESACTIVADA |
+| RS-ACT-010 | El sistema deberá evitar revelar si un usuario existe ante errores de autenticación. | Mensaje de error genérico. | IMPLEMENTADO EN CÓDIGO; AUTENTICACIÓN DESACTIVADA |
+| RS-ACT-011 | La aplicación deberá registrar eventos relevantes de acceso y progreso. | Los eventos esperados aparecen en AuditLog. | IMPLEMENTADO |
+| RS-ACT-012 | El sistema no deberá exponer errores internos ni secretos al usuario final. | `DEBUG=False` por defecto y mensajes de error controlados. | IMPLEMENTADO POR CONFIGURACIÓN |
+| RS-ACT-013 | Los datos de usuario deberán almacenarse en un directorio local separado del binario instalado. | Directorio de datos independiente en modo empaquetado. | IMPLEMENTADO |
+| RS-ACT-014 | Los archivos de evidencias futuros deberán validarse por tipo, tamaño y contenido, y almacenarse fuera del web root. | Pruebas de MIME, extensión, tamaño, traversal y descarga segura. | APROBADO — NO IMPLEMENTADO |
+| RS-ACT-015 | Los backups futuros deberán validarse antes de restaurarse. | Rechazo de rutas, entradas y contenido no permitido. | APROBADO — NO IMPLEMENTADO |
+| RS-ACT-016 | El sistema deberá evitar telemetría y transmisión no autorizada de información personal. | Verificación de tráfico de red. | DOCUMENTADO; PRUEBA PENDIENTE |
+| RS-ACT-017 | El modo sin autenticación deberá comunicarse como una condición explícita de seguridad. | UI y documentación no afirman que exista protección por login mientras el interruptor esté activo. | IMPLEMENTADO COMO DECISIÓN ACTUAL |
+| RS-ACT-018 | La reactivación de autenticación deberá realizarse mediante cambio controlado y pruebas de regresión. | Revisión de configuración, flujos y pruebas con `AUTH_DISABLED=False`. | REGLA DE CAMBIO |
 
 ---
 
@@ -1124,34 +1124,34 @@ Un requisito no se considera verificado solo porque exista una ruta o un modelo.
 
 | Requisito | Componente principal | Método de verificación |
 |---|---|---|
-| RF-001 a RF-008 | `electron/main.js`, `electron/preload.js` | INS, DEM, TST |
-| RF-010 a RF-015 | `apps/core/views.py`, plantillas core | DEM, TST |
-| RF-020 a RF-030 | `apps/roadmaps/models.py`, `services.py`, `views.py`, comando de carga | INS, TST |
-| RF-040 a RF-049 | `apps/roadmaps/services.py`, modelos Progreso y AuditLog | TST, INS |
-| RF-050 a RF-055 | `electron/main.js`, `static/css/themes.css`, JavaScript de temas | DEM, INS |
-| RF-060 a RF-067 | `apps/accounts`, `config/settings/base.py` | INS, TST con configuración habilitada |
-| RF-070 a RF-074 | `apps/audit/models.py`, `apps/audit/services.py` | INS, TST |
-| RNF-001 a RNF-020 | Configuración Electron/Django, despliegue y frontend | INS, ANA, TST |
-| RS-001 a RS-018 | Electron, middleware Django, accounts, audit | INS, TST de seguridad |
+| RF-ACT-001 a RF-ACT-008 | `electron/main.js`, `electron/preload.js` | INS, DEM, TST |
+| RF-ACT-010 a RF-ACT-015 | `apps/core/views.py`, plantillas core | DEM, TST |
+| RF-ACT-020 a RF-ACT-030 | `apps/roadmaps/models.py`, `services.py`, `views.py`, comando de carga | INS, TST |
+| RF-ACT-040 a RF-ACT-049 | `apps/roadmaps/services.py`, modelos Progreso y AuditLog | TST, INS |
+| RF-ACT-050 a RF-ACT-055 | `electron/main.js`, `static/css/themes.css`, JavaScript de temas | DEM, INS |
+| RF-ACT-060 a RF-ACT-067 | `apps/accounts`, `config/settings/base.py` | INS, TST con configuración habilitada |
+| RF-ACT-070 a RF-ACT-074 | `apps/audit/models.py`, `apps/audit/services.py` | INS, TST |
+| RNF-ACT-001 a RNF-ACT-020 | Configuración Electron/Django, despliegue y frontend | INS, ANA, TST |
+| RS-ACT-001 a RS-ACT-018 | Electron, middleware Django, accounts, audit | INS, TST de seguridad |
 
 ## 7.3 Pruebas de aceptación mínimas
 
 | ID prueba | Requisito asociado | Escenario | Resultado esperado |
 |---|---|---|---|
-| AT-001 | RF-001…RF-003 | Iniciar aplicación con entorno correcto | Electron inicia Django, espera respuesta y abre la ventana. |
-| AT-002 | RF-002, RS-001 | Inspeccionar puerto del backend | El servidor escucha solo en 127.0.0.1. |
-| AT-003 | RF-010…RF-015 | Abrir panel con datos cargados | Se muestran valores calculados desde SQLite. |
-| AT-004 | RF-020…RF-030 | Cargar ASCENSO en base vacía | Se crea un único roadmap con sus etapas y jerarquía. |
-| AT-005 | RF-024…RF-026 | Filtrar por bloque, prioridad y texto | El listado muestra únicamente las coincidencias. |
-| AT-006 | RF-040, RF-045 | Completar una lección | Se guarda el progreso y se recalcula el porcentaje de etapa. |
-| AT-007 | RF-043 | Completar etapa con prerrequisito pendiente | El sistema rechaza la operación y no persiste el estado completado. |
-| AT-008 | RF-049, RF-073 | Completar y reabrir una lección | Se registra el evento correspondiente en AuditLog. |
-| AT-009 | RF-050…RF-055 | Seleccionar cada tema visual | Los 12 temas se aplican sin romper la interfaz. |
-| AT-010 | RF-066, RS-017 | Inspeccionar modo actual | La interfaz no solicita login y la documentación lo declara desactivado. |
-| AT-011 | RNF-008, RS-002 | Inspeccionar BrowserWindow | Aislamiento, sandbox y nodeIntegration se encuentran configurados correctamente. |
-| AT-012 | RNF-003 | Ejecutar paquete y modificar datos | Los datos se escriben en el directorio de usuario, no en el directorio de instalación. |
-| AT-013 | RNF-001, RNF-010 | Ejecutar con red desconectada | Los flujos locales esenciales siguen disponibles. |
-| AT-014 | RNF-020 | Cerrar aplicación | No queda proceso backend huérfano. |
+| AT-001 | RF-ACT-001…RF-ACT-003 | Iniciar aplicación con entorno correcto | Electron inicia Django, espera respuesta y abre la ventana. |
+| AT-002 | RF-ACT-002, RS-ACT-001 | Inspeccionar puerto del backend | El servidor escucha solo en 127.0.0.1. |
+| AT-003 | RF-ACT-010…RF-ACT-015 | Abrir panel con datos cargados | Se muestran valores calculados desde SQLite. |
+| AT-004 | RF-ACT-020…RF-ACT-030 | Cargar ASCENSO en base vacía | Se crea un único roadmap con sus etapas y jerarquía. |
+| AT-005 | RF-ACT-024…RF-ACT-026 | Filtrar por bloque, prioridad y texto | El listado muestra únicamente las coincidencias. |
+| AT-006 | RF-ACT-040, RF-ACT-045 | Completar una lección | Se guarda el progreso y se recalcula el porcentaje de etapa. |
+| AT-007 | RF-ACT-043 | Completar etapa con prerrequisito pendiente | El sistema rechaza la operación y no persiste el estado completado. |
+| AT-008 | RF-ACT-049, RF-ACT-073 | Completar y reabrir una lección | Se registra el evento correspondiente en AuditLog. |
+| AT-009 | RF-ACT-050…RF-ACT-055 | Seleccionar cada tema visual | Los 12 temas se aplican sin romper la interfaz. |
+| AT-010 | RF-ACT-066, RS-ACT-017 | Inspeccionar modo actual | La interfaz no solicita login y la documentación lo declara desactivado. |
+| AT-011 | RNF-ACT-008, RS-ACT-002 | Inspeccionar BrowserWindow | Aislamiento, sandbox y nodeIntegration se encuentran configurados correctamente. |
+| AT-012 | RNF-ACT-003 | Ejecutar paquete y modificar datos | Los datos se escriben en el directorio de usuario, no en el directorio de instalación. |
+| AT-013 | RNF-ACT-001, RNF-ACT-010 | Ejecutar con red desconectada | Los flujos locales esenciales siguen disponibles. |
+| AT-014 | RNF-ACT-020 | Cerrar aplicación | No queda proceso backend huérfano. |
 
 ## 7.4 Comandos de verificación del proyecto
 
