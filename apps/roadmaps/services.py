@@ -279,15 +279,12 @@ def _progreso_etapa(usuario, etapa: Etapa) -> Progreso:
 
 
 def recalcular_progreso_etapa(usuario, etapa: Etapa) -> Progreso:
-    """Recalcula el porcentaje de etapa a partir de las lecciones completadas.
+    """Calcula cobertura de lecciones sin conceder aprobación académica.
 
-    Si la etapa fue marcada manualmente como completada, se respeta ese estado
-    y no se degrada por alternar lecciones.
+    El 100 % de lecciones registradas no equivale a aprobar una etapa:
+    la aprobación requerirá evaluaciones y criterios verificables.
     """
     progreso = _progreso_etapa(usuario, etapa)
-    if progreso.estado == "completado":
-        return progreso
-
     total = Leccion.objects.filter(modulo__etapa=etapa).count()
     completadas = Progreso.objects.filter(
         usuario=usuario,
@@ -298,30 +295,39 @@ def recalcular_progreso_etapa(usuario, etapa: Etapa) -> Progreso:
     porcentaje = round(100 * completadas / total) if total else 0
 
     progreso.porcentaje = porcentaje
-    if porcentaje == 0:
-        progreso.estado = "no_iniciado"
-    elif porcentaje >= 100:
-        progreso.estado = "completado"
-    else:
-        progreso.estado = "en_progreso"
-    progreso.save()
+    progreso.estado = "en_progreso" if porcentaje > 0 else "no_iniciado"
+    progreso.fecha_completado = None
+    progreso.save(update_fields=[
+        "porcentaje", "estado", "fecha_completado", "fecha_actualizacion"
+    ])
     return progreso
 
 
 def marcar_etapa(
     usuario, etapa: Etapa, *, completada: bool = True, actor_auditoria=None
 ) -> Progreso:
-    """Marca o reabre una etapa completa, respetando los prerrequisitos."""
-    completadas = etapas_completadas(usuario, etapa.roadmap)
-    if completada and etapa.esta_bloqueada_para(completadas):
-        raise ValueError("La etapa tiene prerrequisitos sin completar.")
+    """Permite reabrir una etapa; nunca concede aprobación manual.
+
+    La aprobación se incorporará mediante un servicio específico que valide
+    resultados de evaluación y criterios obligatorios.
+    """
+    if completada:
+        completadas = etapas_completadas(usuario, etapa.roadmap)
+        if etapa.esta_bloqueada_para(completadas):
+            raise ValueError("La etapa tiene prerrequisitos sin completar.")
+        raise ValueError(
+            "Una etapa no puede completarse manualmente. "
+            "Debe aprobarse mediante sus evaluaciones y criterios verificables."
+        )
 
     progreso = _progreso_etapa(usuario, etapa)
-    progreso.estado = "completado" if completada else "no_iniciado"
+    progreso.estado = "no_iniciado"
+    progreso.porcentaje = 0
+    progreso.fecha_completado = None
     progreso.save()
 
     registrar_evento(
-        "roadmap_etapa_completada" if completada else "roadmap_etapa_reabierta",
+        "roadmap_etapa_reabierta",
         usuario=actor_auditoria,
         descripcion=f"Etapa {etapa.numero} — {etapa.titulo}",
     )
@@ -335,7 +341,13 @@ def marcar_leccion(
     completada: bool = True,
     actor_auditoria=None,
 ) -> Progreso:
-    """Marca o desmarca una lección y recalcula el avance de su etapa."""
+    """Permite reabrir una lección; no acepta finalización manual."""
+    if completada:
+        raise ValueError(
+            "Una lección no puede completarse manualmente. "
+            "Debe cumplir sus actividades y criterios verificables."
+        )
+
     etapa = leccion.modulo.etapa
     progreso, _ = Progreso.objects.get_or_create(
         usuario=usuario,
@@ -345,13 +357,14 @@ def marcar_leccion(
         actividad=None,
         defaults={"estado": "no_iniciado", "porcentaje": 0},
     )
-    progreso.estado = "completado" if completada else "no_iniciado"
+    progreso.estado = "no_iniciado"
+    progreso.porcentaje = 0
+    progreso.fecha_completado = None
     progreso.save()
 
     recalcular_progreso_etapa(usuario, etapa)
-
     registrar_evento(
-        "roadmap_leccion_completada" if completada else "roadmap_leccion_reabierta",
+        "roadmap_leccion_reabierta",
         usuario=actor_auditoria,
         descripcion=f"Etapa {etapa.numero} · {leccion.titulo}",
     )
