@@ -1,542 +1,1355 @@
-# Especificación de Requisitos de Software (SRS)
+# CodeGuard Pro — Especificación de Requisitos de Software (SRS)
 
-**Proyecto:** CodeGuard Pro (El arte de crear código. La ciencia de defenderlo.)
-**Versión del Documento:** 2.2 (Revisión Incremento 2 — Electron + Django)
-**Estándar de Referencia:** IEEE Std 830-1998 (Adaptado a prácticas modernas)  
-**Fecha:** 5 de noviembre de 2026  
-**Estado:** Documento base consolidado. Distingue explícitamente requisitos aprobados, decisiones pendientes y propuestas de arquitectura.  
-**Cambios respecto a v1.0:** Incorporación de requisitos faltantes de evaluación, competencias, evidencias, laboratorios y vigencia documental. Precisión de decisiones de seguridad. Corrección y fijación del stack. Validación explícita de la integración ASCENSO. Matriz de trazabilidad completa con estados.
-**Cambios respecto a v2.0 (primera revisión post-MVP):** Cambio de arquitectura de aplicación web en navegador a aplicación desktop independiente (Electron + Django embebido). Registro de versión .exe para Windows. Mejora de estética y estilado profesional.
+> **Documento de referencia del producto.** Esta especificación describe el estado verificable del repositorio y separa explícitamente la funcionalidad existente de la que está planificada. Los diagramas UML representan el código implementado salvo que su título indique «propuesto».
 
-**Cambios respecto a v2.1 (revisión Incremento 2):** Sustitución de PySide6/Qt por Electron como contenedor de escritorio. El servidor Django se empaqueta de forma autónoma con PyInstaller y electron-builder genera el instalador NSIS y la versión portable para Windows. Se incorpora el roadmap ASCENSO 3.1 completo (33 etapas, 212 módulos, 1 946 lecciones, 33 proyectos).
+| Campo | Valor |
+|---|---|
+| Producto | CodeGuard Pro |
+| Tipo de documento | Software Requirements Specification (SRS) |
+| Referencia metodológica | IEEE Std 830-1998 |
+| Versión | 3.0 |
+| Fecha de revisión | 10 de noviembre de 2026 |
+| Estado | Línea base documental en revisión |
+| Repositorio | https://github.com/MaverickBms/CodeGuard-Pro |
+| Rama de referencia | `main` |
+| Idioma | Español |
+| Audiencia | Propietario del producto, analistas, desarrolladores, QA y evaluadores académicos |
 
----
-
-## 1. Introducción
-
-### 1.1. Propósito
-Este documento define formal, estructurada y verificablemente los requisitos funcionales, no funcionales, de datos y de seguridad para la construcción de una plataforma educativa personal monousuario, offline-first. Constituye la línea base técnica para diseño, implementación, pruebas y despliegue del MVP. Se distingue explícitamente entre requisitos aprobados, decisiones pendientes y propuestas de arquitectura.
-
-### 1.2. Alcance del Producto
-Aplicación desktop independiente, local, monousuario y offline-first, para gestionar la formación técnica del usuario mediante el Roadmap ASCENSO, biblioteca documental trazable, evaluaciones por competencias, laboratorios y portafolio de evidencias. La aplicación se ejecuta como un programa nativo de escritorio (no requiere navegador web externo) con servidor Django embebido en `127.0.0.1` y ventana nativa de Electron (Chromium).
-
-*   **Incluye (MVP):** Roadmap ASCENSO (33 etapas representadas), importación y lectura de PDFs con detección de errores, base de conocimiento relacional, evaluaciones teórico-prácticas, registro detallado de resultados e intentos, gestión de competencias, registro de laboratorios, evidencias con integridad verificable, progreso, autenticación local, copias de seguridad protegidas.
-*   **No incluye (Futuro):** IA integrada, ejecución de VMs/contenedores desde la plataforma, multiusuario, foros, sincronización cloud, OCR, videojuegos, multimedia integrada.
-
-### 1.3. Definiciones, Acrónimos y Abreviaturas
-*   **ASCENSO:** Roadmap formativo de 33 etapas (0 a 32).
-*   **MVP:** Minimum Viable Product.
-*   **Offline-first:** Prioridad de funcionamiento sin Internet.
-*   **SRS:** Software Requirements Specification.
-*   **FTS5:** Full-Text Search v5 de SQLite.
-*   **LUKS:** Cifrado de disco Linux.
-*   **HTMX:** Librería JS para interactividad vía atributos HTML.
-*   **Argon2:** Algoritmo de hashing de contraseñas.
-*   **MVT:** Model-View-Template (patrón de Django).
-*   **CSP:** Content Security Policy.
-*   **Aplicación desktop:** Programa nativo de escritorio que se ejecuta sin navegador web externo, con interfaz renderizada en ventana nativa de Electron (Chromium) y servidor Django embebido en localhost.
-
-### 1.4. Referencias
-*   PROYECTO ASCENSO — ROADMAP MAESTRO CONSOLIDADO 3.1 (fuente de verdad académica).
-*   IEEE Std 830-1998.
-*   Documentación oficial de Django, SQLite, PyMuPDF, HTMX, Bootstrap, Electron, PyInstaller y electron-builder.
-*   OWASP ASVS, OWASP Top 10.
-*   Fedora Linux 44 Release Notes.
-
-### 1.5. Visión General del Documento
-Sección 2: descripción general. Sección 3: requisitos específicos (RF, RNF, RD, RS). Sección 4: casos de uso. Sección 5: matriz de trazabilidad completa. Sección 6: decisiones, riesgos y evolución, con estados explícitos.
+**Convención de evidencia:** «Implementado» significa que se identificó código para la capacidad en el repositorio. No equivale por sí solo a una certificación de calidad ni a una prueba ejecutada durante esta revisión. «Verificado por pruebas» solo se utilizará cuando exista evidencia de ejecución satisfactoria.
 
 ---
 
-## 2. Descripción General
+## Control del documento
 
-### 2.1. Perspectiva del Producto
-Aplicación desktop independiente basada en un monolito modular Django con servidor embebido en `127.0.0.1` y ventana nativa de Electron. Sustituye la dispersión de herramientas (lectores, notas, hojas de cálculo) centralizando el proceso educativo. No depende de servicios en la nube ni de navegador web externo.
+### Historial de versiones
 
-### 2.2. Funciones del Producto
-1.  Identidad y acceso local con rescate seguro.
-2.  Gestión académica (roadmap, etapas, módulos, lecciones, actividades, prerrequisitos).
-3.  Gestión de competencias y criterios de finalización configurables.
-4.  Gestión documental (importación, detección de errores, extracción, indexación, visor, anotaciones).
-5.  Base de conocimiento (conceptos, relaciones, trazabilidad precisa).
-6.  Evaluación (teórica, práctica, proyectos, rúbricas, intentos, retroalimentación).
-7.  Gestión de evidencias (integridad, asociaciones múltiples).
-8.  Laboratorios (guías, resultados, comandos, evidencias).
-9.  Administración (backups protegidos, exportación, auditoría).
-10. Vigencia y revisión de contenidos.
-11. Advertencias éticas/legales.
+| Versión | Fecha | Descripción |
+|---|---|---|
+| 2.2 | 05-11-2026 | Versión anterior: requisitos funcionales, no funcionales, datos, seguridad y trazabilidad. |
+| 3.0 | 10-11-2026 | Revisión basada en el código actual. Se separan capacidades implementadas, parcialmente implementadas, desactivadas por configuración y planificadas. Se incorporan diagramas Mermaid de contexto, despliegue, casos de uso, secuencia y clases. |
 
-### 2.3. Características de los Usuarios
-Usuario único: estudiante con perfil técnico (ciberseguridad/backend), capaz de ejecutar comandos, gestionar entornos locales y comprender conceptos avanzados.
+### Criterios de estado
 
-### 2.4. Restricciones
-*   **Hardware:** HP 240 G10, Intel Core i3-N305 (8 núcleos), 8 GB RAM (2.9 GiB disponibles en el entorno actual), SSD NVMe 238.5 GB (108 GB libres).
-*   **SO:** Fedora Linux 44 (Workstation Edition).
-*   **Cifrado de disco:** LUKS activo en la partición principal.
-*   **Entorno:** Entorno de escritorio con Electron (Chromium), Python 3.x y SQLite con FTS5. No requiere navegador web externo.
+| Estado | Significado |
+|---|---|
+| **IMPLEMENTADO** | Existe implementación identificable en el código actual. |
+| **IMPLEMENTADO / DESACTIVADO** | Existe código, pero una configuración impide su uso normal. |
+| **PARCIAL** | Existe una parte de la capacidad; faltan componentes o cobertura. |
+| **PENDIENTE** | Está definido como necesidad, pero no se encontró implementación funcional en el alcance revisado. |
+| **PROPUESTO** | Es una posibilidad futura que requiere aprobación del propietario. |
+| **POR VALIDAR** | Requiere prueba de ejecución, revisión manual o decisión funcional para confirmar su cumplimiento. |
 
-### 2.5. Suposiciones y Dependencias
-*   El usuario posee los PDFs de estudio.
-*   El entorno de escritorio incluye Chromium embebido mediante Electron y Node.js para el proceso principal.
-*   Python y SQLite están disponibles en el entorno Fedora.
-*   Las versiones específicas del stack se fijan en la Sección 6.1.
+### Fuente de verdad y precedencia
 
----
+En caso de contradicción, se aplicará el siguiente orden:
 
-## 3. Requisitos Específicos
+1. Código fuente y configuración de la rama identificada.
+2. Pruebas automatizadas existentes y resultados de ejecución registrados.
+3. Documentación técnica vigente de `docs/`.
+4. Esta especificación.
+5. Documentos históricos y notas de planificación.
 
-**Convenciones:**
-*   **Prioridad:** MVP (imprescindible), IMP (importante, posterior cercano), FUT (futuro).
-*   **Estado:** APROBADO, PENDIENTE, PROPUESTO.
-*   **Módulo:** Identidad, Académico, Competencias, Documental, Conocimiento, Evaluación, Evidencias, Laboratorios, Administración, Vigencia, Ética.
-
-### 3.1. Requisitos de Interfaces Externas
-
-*   **3.1.1. UI:** Ventana desktop nativa de Electron con Chromium embebido. Diseño profesional, responsivo, accesible, Bootstrap 5 y 12 temas CSS con glassmorphism para la capa web interna. Servida localmente sin CDN.
-*   **3.1.2. Hardware:** Sistema de archivos local para lectura de PDFs y escritura de evidencias/backups.
-*   **3.1.3. Software:** Servidor Django embebido en `127.0.0.1`, SQLite con FTS5, PyMuPDF, Electron, PyInstaller y electron-builder.
-*   **3.1.4. Comunicación:** HTTP sobre `127.0.0.1` exclusivamente (servidor embebido, no expuesto a red). No exponer en `0.0.0.0`.
-
-### 3.2. Requisitos Funcionales
-
-#### 3.2.1. Identidad y Acceso (Módulo: Identidad)
-*   **RF-001:** Autenticación local mediante contraseña maestra. [MVP · APROBADO]
-*   **RF-002:** Cierre de sesión por inactividad configurable (defecto 15 min). [MVP · APROBADO]
-*   **RF-003:** Configuración inicial guiada: creación de contraseña, generación de frase de rescate, aceptación de términos. [MVP · APROBADO]
-*   **RF-004:** Generación de frase de rescate de alta entropía (≥128 bits), mostrada una sola vez, almacenada como hash Argon2, uso exclusivo para recuperación, invalidada tras uso. [MVP · APROBADO]
-*   **RF-005:** Registro de auditoría de inicios/cierres de sesión y fallos. [MVP · APROBADO]
-*   **RF-006:** Bloqueo local tras N intentos fallidos (configurable). [MVP · PENDIENTE — definir N]
-
-#### 3.2.2. Gestión Académica (Módulo: Académico)
-*   **RF-010:** Cargar y representar las **33 etapas** de ASCENSO desde el documento maestro 3.1. [MVP · APROBADO]
-*   **RF-011:** Mostrar todas las etapas; las no desarrolladas se marcan como "No desarrollada en MVP" pero permanecen visibles. [MVP · APROBADO]
-*   **RF-012:** Mostrar dependencias entre etapas según el documento maestro. [MVP · APROBADO]
-*   **RF-013:** Definir módulos, lecciones y actividades con objetivos y prerrequisitos. [MVP · APROBADO]
-*   **RF-014:** Configurar prerrequisitos por elemento. [MVP · APROBADO]
-*   **RF-015:** Configurar criterios de finalización por etapa/módulo. [MVP · APROBADO]
-*   **RF-016:** Registrar progreso por etapa, módulo, lección y actividad. [MVP · APROBADO]
-*   **RF-017:** Bloquear contenido con prerrequisitos incumplidos. [MVP · APROBADO]
-*   **RF-018:** Registrar tiempo dedicado por actividad. [MVP · PROPUESTO]
-*   **RF-019:** Permitir crear rutas personalizadas adicionales a ASCENSO. [FUT · PROPUESTO]
-
-#### 3.2.3. Competencias y Criterios de Finalización (Módulo: Competencias)
-*   **RF-020:** Definir competencias con evidencia observable. [MVP · APROBADO]
-*   **RF-021:** Definir niveles de dominio por competencia (ej. básico, intermedio, avanzado). [MVP · APROBADO]
-*   **RF-022:** Definir criterios de evaluación por competencia. [MVP · APROBADO]
-*   **RF-023:** Definir requisitos de evidencia por competencia. [MVP · APROBADO]
-*   **RF-024:** Configurar reglas de finalización combinables (ej. 3 lecciones + 1 examen ≥ 80% + 1 proyecto + 1 evidencia). [MVP · APROBADO]
-*   **RF-025:** Validar automáticamente el cumplimiento de criterios. [MVP · APROBADO]
-*   **RF-026:** Permitir anulación manual de criterios con justificación registrada. [MVP · PROPUESTO]
-*   **RF-027:** Registrar el logro de competencia (fecha, nivel, evidencia). [MVP · APROBADO]
-*   **RF-028:** Panel de competencias con estado por nivel. [MVP · PROPUESTO]
-*   **RF-029:** Generar informe de competencias. [IMP · PROPUESTO]
-
-#### 3.2.4. Gestión Documental (Módulo: Documental)
-*   **RF-030:** Importar PDFs desde el sistema de archivos. [MVP · APROBADO]
-*   **RF-031:** Extraer metadatos (título, autor, páginas, TOC). [MVP · APROBADO]
-*   **RF-032:** Extraer texto nativo. [MVP · APROBADO]
-*   **RF-033:** Detectar PDFs sin texto extraíble (escaneados) y notificar. [MVP · APROBADO]
-*   **RF-034:** Detectar duplicados por hash y notificar antes de importar. [MVP · APROBADO]
-*   **RF-035:** Manejar PDFs dañados o corruptos con mensaje de error explícito. [MVP · APROBADO]
-*   **RF-036:** Manejar PDFs protegidos con contraseña con mensaje explícito. [MVP · APROBADO]
-*   **RF-037:** Procesar PDFs grandes por lotes para controlar memoria. [MVP · APROBADO]
-*   **RF-038:** Almacenar metadatos, licencia y estado de vigencia. [MVP · APROBADO]
-*   **RF-039:** Indexar texto en FTS5. [MVP · APROBADO]
-*   **RF-040:** Visor con navegación, zoom y anotaciones. [MVP · APROBADO]
-*   **RF-041:** Asociar documento o fragmento (página/capítulo) a etapa/lección. [MVP · APROBADO]
-*   **RF-042:** Búsqueda de texto completo. [MVP · APROBADO]
-*   **RF-043:** Navegar desde resultado de búsqueda al documento y página exacta. [MVP · APROBADO]
-*   **RF-044:** Registrar errores de importación en log con detalle. [MVP · APROBADO]
-
-#### 3.2.5. Base de Conocimiento (Módulo: Conocimiento)
-*   **RF-050:** Crear conceptos con definición. [MVP · APROBADO]
-*   **RF-051:** Crear relaciones tipadas entre conceptos. [MVP · APROBADO]
-*   **RF-052:** Vincular concepto a fragmento documental (documento, capítulo, página, posición). [MVP · APROBADO]
-*   **RF-053:** Vincular concepto a actividad/evaluación. [MVP · APROBADO]
-*   **RF-054:** Buscar conceptos. [MVP · APROBADO]
-*   **RF-055:** Detectar duplicados/conflictos de conceptos (manual o asistido). [MVP · PROPUESTO]
-*   **RF-056:** Registrar estado de vigencia del concepto. [MVP · APROBADO]
-
-#### 3.2.6. Evaluación (Módulo: Evaluación)
-*   **RF-060:** Crear preguntas de selección múltiple. [MVP · APROBADO]
-*   **RF-061:** Crear preguntas abiertas. [MVP · APROBADO]
-*   **RF-062:** Crear ejercicios prácticos con rúbrica. [MVP · APROBADO]
-*   **RF-063:** Crear proyectos con rúbrica. [MVP · APROBADO]
-*   **RF-064:** Crear demostraciones de competencia. [MVP · PROPUESTO]
-*   **RF-065:** Configurar instrumentos por actividad. [MVP · APROBADO]
-*   **RF-066:** Registrar resultados con timestamp. [MVP · APROBADO]
-*   **RF-067:** Registrar múltiples intentos por evaluación. [MVP · APROBADO]
-*   **RF-068:** Registrar retroalimentación por evaluación. [MVP · APROBADO]
-*   **RF-069:** Calcular puntuación según rúbrica. [MVP · APROBADO]
-*   **RF-070:** Historial de evaluaciones por actividad. [MVP · APROBADO]
-*   **RF-071:** Informe de evaluación. [MVP · PROPUESTO]
-
-#### 3.2.7. Evidencias (Módulo: Evidencias)
-*   **RF-080:** Subir evidencias (imagen, texto, archivo). [MVP · APROBADO]
-*   **RF-081:** Asociar evidencia a actividad. [MVP · APROBADO]
-*   **RF-082:** Asociar evidencia a competencia. [MVP · APROBADO]
-*   **RF-083:** Asociar evidencia a laboratorio. [MVP · APROBADO]
-*   **RF-084:** Calcular y almacenar SHA-256. [MVP · APROBADO]
-*   **RF-085:** Verificar integridad de evidencias. [MVP · APROBADO]
-*   **RF-086:** Impedir ejecución de archivos subidos (validación MIME/extensión, permisos sin ejecución, servido como adjunto). [MVP · APROBADO]
-*   **RF-087:** Limitar tamaño y tipo de archivo. [MVP · APROBADO]
-*   **RF-088:** Portafolio por etapa/competencia. [MVP · APROBADO]
-*   **RF-089:** Exportar portafolio. [FUT · PROPUESTO]
-
-#### 3.2.8. Laboratorios (Módulo: Laboratorios)
-*   **RF-090:** Crear guías con pasos secuenciales y resultados esperados. [MVP · APROBADO]
-*   **RF-091:** Registrar comandos ejecutados por paso. [MVP · APROBADO]
-*   **RF-092:** Registrar resultados/observaciones por paso. [MVP · APROBADO]
-*   **RF-093:** Adjuntar capturas por paso. [MVP · APROBADO]
-*   **RF-094:** Registrar inicio/fin y duración. [MVP · APROBADO]
-*   **RF-095:** Registrar entorno/contexto del laboratorio. [MVP · PROPUESTO]
-*   **RF-096:** Generar informe de laboratorio. [MVP · PROPUESTO]
-*   **RF-097:** Vincular laboratorio a etapa/competencia. [MVP · APROBADO]
-
-#### 3.2.9. Administración y Backups (Módulo: Administración)
-*   **RF-100:** Crear backup manual (tar.gz: SQLite + archivos). [MVP · APROBADO]
-*   **RF-101:** Programar backup automático. [MVP · PROPUESTO]
-*   **RF-102:** Verificar integridad del backup (hash pre/post, validación de contenido). [MVP · APROBADO]
-*   **RF-103:** Restaurar desde backup. [MVP · APROBADO]
-*   **RF-104:** Validar contenido del backup antes de restaurar (evitar archivos maliciosos). [MVP · APROBADO]
-*   **RF-105:** Ofrecer opción de cifrado del backup. [MVP · PROPUESTO — importante si se traslada a otro dispositivo]
-*   **RF-106:** Exportar datos en formato abierto. [MVP · PROPUESTO]
-*   **RF-107:** Importar datos desde formato abierto. [FUT · PROPUESTO]
-*   **RF-108:** Visor de log de auditoría. [MVP · APROBADO]
-*   **RF-109:** Limpieza de archivos temporales. [MVP · APROBADO]
-
-#### 3.2.10. Vigencia y Revisión (Módulo: Vigencia)
-*   **RF-110:** Registrar estado de vigencia (vigente, obsoleto, pendiente revisión). [MVP · APROBADO]
-*   **RF-111:** Registrar fecha de revisión. [MVP · APROBADO]
-*   **RF-112:** Alertar sobre contenido potencialmente obsoleto según reglas configurables. [MVP · PROPUESTO]
-*   **RF-113:** Flujo de revisión manual. [MVP · APROBADO]
-*   **RF-114:** Registrar decisión de revisión (mantener, actualizar, retirar). [MVP · APROBADO]
-*   **RF-115:** Historial de cambios de contenido. [MVP · PROPUESTO]
-
-#### 3.2.11. Ética y Advertencias (Módulo: Ética)
-*   **RF-120:** Mostrar advertencia en contenido ofensivo. [MVP · APROBADO]
-*   **RF-121:** Requerir aceptación explícita antes de acceder a contenido ofensivo/laboratorios. [MVP · APROBADO]
-*   **RF-122:** Registrar aceptación de términos. [MVP · APROBADO]
-*   **RF-123:** Proveer guías de uso ético. [MVP · APROBADO]
-
-### 3.3. Requisitos No Funcionales
-
-*   **RNF-001:** 100% de funciones del MVP operan sin Internet. [MVP · APROBADO]
-*   **RNF-002:** Servidor local escucha exclusivamente en `127.0.0.1`. [MVP · APROBADO]
-*   **RNF-003:** Prueba de rendimiento formal: medir RAM en reposo, tiempo de respuesta y búsqueda; definir entorno de prueba. [MVP · APROBADO — el umbral de 300 MB queda como objetivo a validar, no como garantía]
-*   **RNF-004:** Búsqueda FTS5 < 2 s para hasta 50 libros. [MVP · APROBADO]
-*   **RNF-005:** Compatibilidad con Fedora 44 y distribuciones con Python 3.10+. [MVP · APROBADO]
-*   **RNF-006:** UI responsiva en 1366x768. [MVP · APROBADO]
-*   **RNF-007:** Arquitectura MVT con separación de responsabilidades. [MVP · APROBADO]
-*   **RNF-008:** Integridad transaccional en SQLite. [MVP · APROBADO]
-*   **RNF-009:** Protección CSRF, XSS, SQLi. [MVP · APROBADO]
-*   **RNF-010:** Timeout de sesión probado; acceso directo a archivos no debe evadir autenticación. [MVP · APROBADO]
-*   **RNF-011:** Integridad de backups verificada. [MVP · APROBADO]
-*   **RNF-012:** Python en versión estable compatible con Django. [MVP · APROBADO — fijar en implementación]
-*   **RNF-013:** Django en versión con soporte vigente (LTS preferente). [MVP · APROBADO — fijar en implementación]
-*   **RNF-014:** SQLite compilado con FTS5 verificado. [MVP · APROBADO]
-*   **RNF-015:** HTMX y Bootstrap servidos localmente, sin CDN. [MVP · APROBADO]
-*   **RNF-016:** PyMuPDF en modo batch para controlar memoria. [MVP · APROBADO]
-*   **RNF-017:** Logging y auditoría. [MVP · APROBADO]
-*   **RNF-018:** Sin telemetría. [MVP · APROBADO]
-*   **RNF-019:** Documentación de instalación y actualización. [MVP · APROBADO]
-*   **RNF-020:** Sesiones con timeout y limpieza de datos sensibles en memoria. [MVP · PROPUESTO]
-
-### 3.4. Requisitos de Datos
-
-*   **RD-001:** Credenciales de usuario (hash Argon2). [APROBADO]
-*   **RD-002:** Frase de rescate (hash Argon2, alta entropía, mostrada una vez, invalidada tras uso). [APROBADO]
-*   **RD-003:** Sesión server-side con timeout. [APROBADO]
-*   **RD-004:** Jerarquía académica (roadmap, etapa, módulo, lección, actividad). [APROBADO]
-*   **RD-005:** Prerrequisitos (relaciones). [APROBADO]
-*   **RD-006:** Criterios de finalización (reglas configurables). [APROBADO]
-*   **RD-007:** Competencias, niveles y criterios. [APROBADO]
-*   **RD-008:** Instrumentos de evaluación y rúbricas. [APROBADO]
-*   **RD-009:** Resultados, intentos y retroalimentación. [APROBADO]
-*   **RD-010:** Metadatos documentales (título, autor, páginas, licencia, hash, estado, errores). [APROBADO]
-*   **RD-011:** Fragmentos documentales (página, capítulo, texto, posición). [APROBADO]
-*   **RD-012:** Índice FTS5. [APROBADO]
-*   **RD-013:** Conceptos y relaciones. [APROBADO]
-*   **RD-014:** Vínculos concepto-fragmento-actividad. [APROBADO]
-*   **RD-015:** Evidencias (ruta, tipo, tamaño, hash, asociaciones). [APROBADO]
-*   **RD-016:** Guías de laboratorio y resultados. [APROBADO]
-*   **RD-017:** Progreso. [APROBADO]
-*   **RD-018:** Vigencia y revisión. [APROBADO]
-*   **RD-019:** Auditoría. [APROBADO]
-*   **RD-020:** Metadatos de backup. [APROBADO]
-*   **RD-021:** Configuración. [APROBADO]
-*   **RD-022:** Log de errores de importación. [APROBADO]
-
-### 3.5. Requisitos de Seguridad
-
-*   **RS-001:** Autenticación local obligatoria. [MVP · APROBADO]
-*   **RS-002:** Argon2 para hash de contraseña y frase de rescate. [MVP · APROBADO]
-*   **RS-003:** Frase de rescate: ≥128 bits de entropía, mostrada una vez, almacenada como hash, de un solo uso. [MVP · APROBADO]
-*   **RS-004:** Servidor bind exclusivo a `127.0.0.1`. [MVP · APROBADO]
-*   **RS-005:** Validación de archivos subidos (MIME, extensión, tamaño). [MVP · APROBADO]
-*   **RS-006:** Archivos subidos fuera del web root; servidos como `Content-Disposition: attachment`; sin permisos de ejecución. [MVP · APROBADO]
-*   **RS-007:** Integridad de backup verificada (hash, validación de contenido). [MVP · APROBADO]
-*   **RS-008:** Opción de cifrado de backup para traslado a otros dispositivos. [MVP · PROPUESTO]
-*   **RS-009:** Timeout de sesión probado; acceso directo a archivos no evade autenticación. [MVP · APROBADO]
-*   **RS-010:** CSRF en todas las peticiones que cambian estado. [MVP · APROBADO]
-*   **RS-011:** XSS: escape de salida y CSP. [MVP · APROBADO]
-*   **RS-012:** SQLi: ORM con consultas parametrizadas. [MVP · APROBADO]
-*   **RS-013:** Cabeceras de seguridad (CSP, X-Frame-Options, etc.). [MVP · APROBADO]
-*   **RS-014:** Auditoría de eventos de seguridad. [MVP · APROBADO]
-*   **RS-015:** Documentar que LUKS protege en reposo con dispositivo apagado; los backups trasladados a otro dispositivo no quedan automáticamente protegidos. [MVP · APROBADO]
-*   **RS-016:** Política de contraseñas (longitud mínima, complejidad). [MVP · APROBADO]
-*   **RS-017:** Bloqueo local tras N intentos fallidos. [MVP · PENDIENTE — definir N]
-*   **RS-018:** Minimización de datos sensibles. [MVP · APROBADO]
-*   **RS-019:** Dependencias actualizadas y documentadas. [MVP · APROBADO]
-*   **RS-020:** No exponer errores internos en la UI. [MVP · APROBADO]
+La documentación no debe convertir una intención en una funcionalidad implementada. Los requisitos futuros se mantienen visibles para orientar la evolución, pero no se describen como capacidades disponibles.
 
 ---
 
-## 4. Casos de Uso Principales
+# 1. Introducción
 
-### CU-001: Configuración Inicial
-*   **Actor:** Usuario (primer arranque).
-*   **Flujo:** Crear contraseña → Generar y mostrar frase de rescate (una vez) → Aceptar términos → Acceso al panel.
+## 1.1 Propósito
 
-### CU-002: Importación y Procesamiento de un Libro
-*   **Actor:** Usuario.
-*   **Flujo:** Seleccionar PDF → Validar (dañado, protegido, duplicado, sin texto) → Extraer metadatos y texto → Indexar FTS5 → Asociar a etapa → Disponible en biblioteca.
-*   **Flujos alternativos:** PDF dañado → mensaje; PDF protegido → mensaje; duplicado → confirmar; sin texto → advertencia.
+Este documento establece los requisitos funcionales, no funcionales, de datos, interfaces y seguridad de **CodeGuard Pro**. Su objetivo es servir como referencia común para:
 
-### CU-003: Completar una Etapa con Competencia
-*   **Actor:** Usuario.
-*   **Flujo:** Revisar contenidos → Aprobar evaluación teórica → Entregar proyecto con rúbrica → Subir evidencias → Sistema valida criterios → Marca etapa y competencia como logradas.
+- Comprender el propósito y los límites del producto.
+- Definir el comportamiento esperado del sistema.
+- Distinguir la implementación actual del roadmap futuro.
+- Guiar el diseño técnico, la programación y las pruebas.
+- Documentar la arquitectura y las relaciones entre componentes.
+- Mantener trazabilidad entre requisitos, módulos, código y casos de prueba.
+- Facilitar la evaluación, mantenimiento y evolución del proyecto.
 
-### CU-004: Búsqueda en la Base de Conocimiento
-*   **Actor:** Usuario.
-*   **Flujo:** Ingresar término → Buscar en conceptos y FTS5 → Mostrar definición, fragmentos de documentos y actividades relacionadas → Navegar al documento y página exacta.
+La estructura toma como referencia IEEE Std 830-1998 y se complementa con diagramas UML expresados en Mermaid para que puedan visualizarse directamente en GitHub.
 
-### CU-005: Registro de Laboratorio
-*   **Actor:** Usuario.
-*   **Flujo:** Abrir guía → Ejecutar pasos → Registrar comandos y resultados → Adjuntar capturas → Finalizar → Generar informe (si aplica) → Vincular a etapa/competencia.
+## 1.2 Alcance del producto
 
-### CU-006: Creación y Restauración de Backup
-*   **Actor:** Usuario.
-*   **Flujo (crear):** Seleccionar "Crear backup" → Empaquetar SQLite + archivos → Calcular hash → Guardar en ruta especificada.
-*   **Flujo (restaurar):** Seleccionar backup → Validar contenido → Verificar hash → Restaurar.
+CodeGuard Pro es una aplicación educativa personal, local, monousuario y orientada al funcionamiento offline-first. Su propósito es organizar el aprendizaje técnico, representar una ruta formativa, registrar el avance del usuario y ofrecer una interfaz de escritorio integrada.
 
-### CU-007: Revisión de Vigencia
-*   **Actor:** Usuario.
-*   **Flujo:** Revisar lista de contenidos marcados como obsoletos o pendientes → Decidir (mantener, actualizar, retirar) → Registrar decisión y fecha.
+La solución actual combina:
 
-### CU-008: Gestión de Contenido Ofensivo
-*   **Actor:** Usuario.
-*   **Flujo:** Acceder a etapa ofensiva → Ver advertencia → Aceptar términos → Registrar aceptación → Acceder al contenido.
+- **Electron:** proceso principal de escritorio, ventana nativa, menú y ciclo de vida de la aplicación.
+- **Django 5.2:** servidor web local, lógica de aplicación, vistas, plantillas y acceso a datos.
+- **SQLite:** persistencia local.
+- **HTML, CSS y JavaScript:** interfaz renderizada en Chromium.
+- **Bootstrap, HTMX, SweetAlert2 y Font Awesome:** bibliotecas frontend distribuidas localmente.
 
----
+El servidor se enlaza a `127.0.0.1`; Electron inicia el proceso Django y carga la interfaz en una ventana propia. En modo de desarrollo, el proceso principal inicia Django mediante Python. En el paquete de escritorio, inicia el ejecutable del servidor generado con PyInstaller y configurado para Waitress.
 
-## 5. Matriz de Trazabilidad Completa
+### 1.2.1 Capacidades identificadas en el código actual
 
-**Columnas:** ID · Descripción breve · Prioridad · Módulo · Criterio de aceptación · Prueba asociada · Estado · Fuente/Referencia.
+1. Panel principal con resumen del avance académico.
+2. Representación del roadmap ASCENSO 3.1.
+3. Listado de etapas con filtros por bloque, prioridad y texto.
+4. Vista de detalle de etapa con módulos, lecciones, proyecto y prerrequisitos.
+5. Registro de progreso por etapa y lección.
+6. Recalculo del porcentaje de avance de una etapa a partir de las lecciones completadas.
+7. Bloqueo de etapas cuando no se han completado los prerrequisitos.
+8. Interfaz con doce temas visuales.
+9. Aplicación de escritorio Electron que inicia y supervisa el servidor local.
+10. Código de autenticación local conservado, aunque desactivado en la configuración actual.
+11. Registro de eventos de auditoría para operaciones de acceso y progreso.
 
-| ID | Descripción | Prioridad | Módulo | Criterio de aceptación | Prueba | Estado | Fuente |
-|:---|:---|:---|:---|:---|:---|:---|:---|
-| RF-001 | Autenticación local | MVP | Identidad | Login con credenciales válidas | T-001 | APROBADO | Necesidad de privacidad |
-| RF-002 | Cierre por inactividad | MVP | Identidad | Sesión expira tras 15 min | T-002 | APROBADO | Seguridad local |
-| RF-003 | Configuración inicial | MVP | Identidad | Wizard completa en primer arranque | T-003 | APROBADO | UX |
-| RF-004 | Frase de rescate | MVP | Identidad | Alta entropía, hash, un uso | T-004 | APROBADO | RS-003 |
-| RF-005 | Auditoría de acceso | MVP | Identidad | Log con eventos | T-005 | APROBADO | RS-014 |
-| RF-006 | Bloqueo tras N fallos | MVP | Identidad | Bloqueo configurable | T-006 | PENDIENTE | RS-017 |
-| RF-010 | Cargar 33 etapas | MVP | Académico | 33 etapas representadas | T-010 | APROBADO | ASCENSO 3.1 |
-| RF-011 | Etapas no desarrolladas visibles | MVP | Académico | Marcadas como "No desarrollada" | T-011 | APROBADO | Validación E |
-| RF-012 | Dependencias de etapas | MVP | Académico | Relaciones del documento maestro | T-012 | APROBADO | ASCENSO 3.1 |
-| RF-013 | Módulos/lecciones/actividades | MVP | Académico | Creación y visualización | T-013 | APROBADO | ASCENSO 3.1 |
-| RF-014 | Prerrequisitos | MVP | Académico | Bloqueo por prerrequisitos | T-014 | APROBADO | Académico |
-| RF-015 | Criterios de finalización | MVP | Académico | Reglas configurables | T-015 | APROBADO | RF-024 |
-| RF-016 | Progreso | MVP | Académico | Estado por elemento | T-016 | APROBADO | Académico |
-| RF-017 | Bloqueo por prerrequisitos | MVP | Académico | Contenido bloqueado | T-017 | APROBADO | Académico |
-| RF-018 | Tiempo por actividad | MVP | Académico | Registro de tiempo | T-018 | PROPUESTO | Analítica |
-| RF-019 | Rutas personalizadas | FUT | Académico | Crear ruta propia | T-019 | PROPUESTO | Extensibilidad |
-| RF-020 | Competencias | MVP | Competencias | Definir con evidencia | T-020 | APROBADO | Aprendizaje por competencias |
-| RF-021 | Niveles de dominio | MVP | Competencias | Básico/intermedio/avanzado | T-021 | APROBADO | Competencias |
-| RF-022 | Criterios por competencia | MVP | Competencias | Criterios verificables | T-022 | APROBADO | Competencias |
-| RF-023 | Requisitos de evidencia | MVP | Competencias | Evidencia exigida | T-023 | APROBADO | Competencias |
-| RF-024 | Reglas combinables | MVP | Competencias | Reglas configurables | T-024 | APROBADO | RF-015 |
-| RF-025 | Validación automática | MVP | Competencias | Validación de criterios | T-025 | APROBADO | Competencias |
-| RF-026 | Anulación manual | MVP | Competencias | Con justificación | T-026 | PROPUESTO | Flexibilidad |
-| RF-027 | Registro de logro | MVP | Competencias | Fecha, nivel, evidencia | T-027 | APROBADO | Competencias |
-| RF-028 | Panel de competencias | MVP | Competencias | Estado por nivel | T-028 | PROPUESTO | UX |
-| RF-029 | Informe de competencias | IMP | Competencias | Generar informe | T-029 | PROPUESTO | Evaluación |
-| RF-030 | Importar PDFs | MVP | Documental | Importación correcta | T-030 | APROBADO | Bibliografía |
-| RF-031 | Metadatos | MVP | Documental | Título, autor, páginas, TOC | T-031 | APROBADO | Bibliografía |
-| RF-032 | Texto nativo | MVP | Documental | Texto extraído | T-032 | APROBADO | Bibliografía |
-| RF-033 | PDFs sin texto | MVP | Documental | Notificación | T-033 | APROBADO | RF-033 |
-| RF-034 | Duplicados | MVP | Documental | Detección por hash | T-034 | APROBADO | Integridad |
-| RF-035 | PDFs dañados | MVP | Documental | Mensaje explícito | T-035 | APROBADO | Robustez |
-| RF-036 | PDFs protegidos | MVP | Documental | Mensaje explícito | T-036 | APROBADO | Robustez |
-| RF-037 | Procesamiento por lotes | MVP | Documental | Memoria controlada | T-037 | APROBADO | RNF-016 |
-| RF-038 | Metadatos y vigencia | MVP | Documental | Estado y licencia | T-038 | APROBADO | Licencias |
-| RF-039 | FTS5 | MVP | Documental | Búsqueda indexada | T-039 | APROBADO | RNF-004 |
-| RF-040 | Visor y anotaciones | MVP | Documental | Lectura y anotación | T-040 | APROBADO | UX |
-| RF-041 | Asociar fragmento | MVP | Documental | Vínculo a etapa/lección | T-041 | APROBADO | Trazabilidad |
-| RF-042 | Búsqueda global | MVP | Documental | Resultados relevantes | T-042 | APROBADO | RNF-004 |
-| RF-043 | Navegar a página | MVP | Documental | Salto a página exacta | T-043 | APROBADO | UX |
-| RF-044 | Log de importación | MVP | Documental | Errores registrados | T-044 | APROBADO | Robustez |
-| RF-050 | Crear conceptos | MVP | Conocimiento | Concepto con definición | T-050 | APROBADO | Modelo híbrido |
-| RF-051 | Relaciones tipadas | MVP | Conocimiento | Relación entre conceptos | T-051 | APROBADO | Modelo híbrido |
-| RF-052 | Vínculo concepto-fragmento | MVP | Conocimiento | Documento, capítulo, página | T-052 | APROBADO | Trazabilidad |
-| RF-053 | Vínculo concepto-actividad | MVP | Conocimiento | Concepto asociado | T-053 | APROBADO | Trazabilidad |
-| RF-054 | Búsqueda de conceptos | MVP | Conocimiento | Resultados | T-054 | APROBADO | UX |
-| RF-055 | Duplicados/conflictos | MVP | Conocimiento | Detección manual/asistida | T-055 | PROPUESTO | Calidad |
-| RF-056 | Vigencia de concepto | MVP | Conocimiento | Estado registrado | T-056 | APROBADO | RF-110 |
-| RF-060 | Preguntas MC | MVP | Evaluación | Crear y evaluar | T-060 | APROBADO | Evaluación |
-| RF-061 | Preguntas abiertas | MVP | Evaluación | Crear y evaluar | T-061 | APROBADO | Evaluación |
-| RF-062 | Ejercicios con rúbrica | MVP | Evaluación | Rúbrica funcional | T-062 | APROBADO | Evaluación |
-| RF-063 | Proyectos con rúbrica | MVP | Evaluación | Rúbrica funcional | T-063 | APROBADO | Evaluación |
-| RF-064 | Demostraciones | MVP | Evaluación | Registro de demostración | T-064 | PROPUESTO | Competencias |
-| RF-065 | Instrumentos por actividad | MVP | Evaluación | Configuración | T-065 | APROBADO | Evaluación |
-| RF-066 | Resultados con timestamp | MVP | Evaluación | Registro temporal | T-066 | APROBADO | Evaluación |
-| RF-067 | Múltiples intentos | MVP | Evaluación | Intentos registrados | T-067 | APROBADO | Evaluación |
-| RF-068 | Retroalimentación | MVP | Evaluación | Feedback registrado | T-068 | APROBADO | Evaluación |
-| RF-069 | Puntuación por rúbrica | MVP | Evaluación | Cálculo correcto | T-069 | APROBADO | Evaluación |
-| RF-070 | Historial | MVP | Evaluación | Historial completo | T-070 | APROBADO | Evaluación |
-| RF-071 | Informe de evaluación | MVP | Evaluación | Informe generado | T-071 | PROPUESTO | Evaluación |
-| RF-080 | Subir evidencias | MVP | Evidencias | Carga correcta | T-080 | APROBADO | Evidencias |
-| RF-081 | Asociar a actividad | MVP | Evidencias | Vínculo | T-081 | APROBADO | Evidencias |
-| RF-082 | Asociar a competencia | MVP | Evidencias | Vínculo | T-082 | APROBADO | Evidencias |
-| RF-083 | Asociar a laboratorio | MVP | Evidencias | Vínculo | T-083 | APROBADO | Evidencias |
-| RF-084 | SHA-256 | MVP | Evidencias | Hash almacenado | T-084 | APROBADO | RS-007 |
-| RF-085 | Verificar integridad | MVP | Evidencias | Verificación | T-085 | APROBADO | RS-007 |
-| RF-086 | Impedir ejecución | MVP | Evidencias | Sin ejecución | T-086 | APROBADO | RS-005/006 |
-| RF-087 | Límite de archivos | MVP | Evidencias | Límite aplicado | T-087 | APROBADO | RS-005 |
-| RF-088 | Portafolio | MVP | Evidencias | Vista por etapa | T-088 | APROBADO | UX |
-| RF-089 | Exportar portafolio | FUT | Evidencias | Exportación | T-089 | PROPUESTO | Extensibilidad |
-| RF-090 | Guías de laboratorio | MVP | Laboratorios | Pasos definidos | T-090 | APROBADO | Laboratorios |
-| RF-091 | Comandos por paso | MVP | Laboratorios | Registro | T-091 | APROBADO | Laboratorios |
-| RF-092 | Resultados por paso | MVP | Laboratorios | Registro | T-092 | APROBADO | Laboratorios |
-| RF-093 | Capturas por paso | MVP | Laboratorios | Adjuntos | T-093 | APROBADO | Laboratorios |
-| RF-094 | Inicio/fin/duración | MVP | Laboratorios | Registro temporal | T-094 | APROBADO | Laboratorios |
-| RF-095 | Entorno/contexto | MVP | Laboratorios | Registro | T-095 | PROPUESTO | Laboratorios |
-| RF-096 | Informe de laboratorio | MVP | Laboratorios | Informe generado | T-096 | PROPUESTO | Laboratorios |
-| RF-097 | Vincular a etapa | MVP | Laboratorios | Vínculo | T-097 | APROBADO | Laboratorios |
-| RF-100 | Backup manual | MVP | Administración | Archivo generado | T-100 | APROBADO | Recuperación |
-| RF-101 | Backup automático | MVP | Administración | Programación | T-101 | PROPUESTO | Recuperación |
-| RF-102 | Integridad de backup | MVP | Administración | Hash verificado | T-102 | APROBADO | RS-007 |
-| RF-103 | Restaurar | MVP | Administración | Restauración correcta | T-103 | APROBADO | Recuperación |
-| RF-104 | Validar contenido | MVP | Administración | Validación previa | T-104 | APROBADO | RS-007 |
-| RF-105 | Cifrar backup | MVP | Administración | Opción disponible | T-105 | PROPUESTO | RS-008 |
-| RF-106 | Exportar abierto | MVP | Administración | Formato abierto | T-106 | PROPUESTO | Portabilidad |
-| RF-107 | Importar abierto | FUT | Administración | Importación | T-107 | PROPUESTO | Portabilidad |
-| RF-108 | Visor de auditoría | MVP | Administración | Visualización | T-108 | APROBADO | RS-014 |
-| RF-109 | Limpieza temporal | MVP | Administración | Limpieza | T-109 | APROBADO | Mantenimiento |
-| RF-110 | Estado de vigencia | MVP | Vigencia | Registro | T-110 | APROBADO | RF-056 |
-| RF-111 | Fecha de revisión | MVP | Vigencia | Registro | T-111 | APROBADO | Vigencia |
-| RF-112 | Alerta de obsolescencia | MVP | Vigencia | Alerta configurable | T-112 | PROPUESTO | Vigencia |
-| RF-113 | Flujo de revisión | MVP | Vigencia | Revisión manual | T-113 | APROBADO | Vigencia |
-| RF-114 | Decisión de revisión | MVP | Vigencia | Decisión registrada | T-114 | APROBADO | Vigencia |
-| RF-115 | Historial de cambios | MVP | Vigencia | Historial | T-115 | PROPUESTO | Vigencia |
-| RF-120 | Advertencia ofensiva | MVP | Ética | Advertencia visible | T-120 | APROBADO | RS-009 |
-| RF-121 | Aceptación explícita | MVP | Ética | Términos aceptados | T-121 | APROBADO | RS-009 |
-| RF-122 | Registro de aceptación | MVP | Ética | Registro | T-122 | APROBADO | RS-014 |
-| RF-123 | Guía ética | MVP | Ética | Guía disponible | T-123 | APROBADO | RS-009 |
-| RNF-001 | Offline | MVP | Global | Sin red funciona | T-200 | APROBADO | Restricción |
-| RNF-002 | Bind 127.0.0.1 | MVP | Global | No expuesto | T-201 | APROBADO | RS-004 |
-| RNF-003 | Prueba de rendimiento | MVP | Global | Entorno definido y medido | T-202 | APROBADO | Medición |
-| RNF-004 | Búsqueda < 2s | MVP | Documental | 50 libros | T-203 | APROBADO | Rendimiento |
-| RNF-005 | Compatibilidad Fedora | MVP | Global | Fedora 44 | T-204 | APROBADO | Entorno |
-| RNF-006 | UI 1366x768 | MVP | UI | Responsiva | T-205 | APROBADO | UX |
-| RNF-007 | MVT | MVP | Global | Separación | T-206 | APROBADO | Mantenibilidad |
-| RNF-008 | Transacciones | MVP | Global | Integridad | T-207 | APROBADO | Datos |
-| RNF-009 | CSRF/XSS/SQLi | MVP | Global | Protecciones | T-208 | APROBADO | RS-010/011/012 |
-| RNF-010 | Timeout probado | MVP | Identidad | Prueba directa | T-209 | APROBADO | RS-009 |
-| RNF-011 | Backup íntegro | MVP | Administración | Verificación | T-210 | APROBADO | RS-007 |
-| RNF-012 | Python estable | MVP | Global | Versión fijada | T-211 | APROBADO | Stack |
-| RNF-013 | Django soportado | MVP | Global | Versión fijada | T-212 | APROBADO | Stack |
-| RNF-014 | FTS5 verificado | MVP | Documental | Compilación | T-213 | APROBADO | Stack |
-| RNF-015 | Assets locales | MVP | UI | Sin CDN | T-214 | APROBADO | Offline |
-| RNF-016 | PyMuPDF batch | MVP | Documental | Memoria controlada | T-215 | APROBADO | RNF-016 |
-| RNF-017 | Logging | MVP | Global | Log generado | T-216 | APROBADO | Auditoría |
-| RNF-018 | Sin telemetría | MVP | Global | Sin llamadas | T-217 | APROBADO | Privacidad |
-| RNF-019 | Documentación | MVP | Global | Guía disponible | T-218 | APROBADO | Mantenibilidad |
-| RNF-020 | Sesión limpia | MVP | Identidad | Memoria limpia | T-219 | PROPUESTO | RS-009 |
-| RS-001 | Auth obligatoria | MVP | Identidad | Sin acceso anónimo | T-300 | APROBADO | Seguridad |
-| RS-002 | Argon2 | MVP | Identidad | Hash Argon2 | T-301 | APROBADO | Seguridad |
-| RS-003 | Frase de rescate | MVP | Identidad | ≥128 bits, hash, un uso | T-302 | APROBADO | Seguridad |
-| RS-004 | Bind 127.0.0.1 | MVP | Global | Sin 0.0.0.0 | T-303 | APROBADO | Seguridad |
-| RS-005 | Validación de archivos | MVP | Evidencias | MIME/extensión/tamaño | T-304 | APROBADO | Seguridad |
-| RS-006 | Archivos fuera de web root | MVP | Evidencias | Servido como adjunto | T-305 | APROBADO | Seguridad |
-| RS-007 | Backup íntegro | MVP | Administración | Hash + validación | T-306 | APROBADO | Seguridad |
-| RS-008 | Cifrado de backup | MVP | Administración | Opción disponible | T-307 | PROPUESTO | Seguridad |
-| RS-009 | Timeout probado | MVP | Identidad | Sin bypass | T-308 | APROBADO | Seguridad |
-| RS-010 | CSRF | MVP | Global | Token en forms | T-309 | APROBADO | Seguridad |
-| RS-011 | XSS | MVP | Global | Escape + CSP | T-310 | APROBADO | Seguridad |
-| RS-012 | SQLi | MVP | Global | ORM parametrizado | T-311 | APROBADO | Seguridad |
-| RS-013 | Cabeceras | MVP | Global | CSP, X-Frame | T-312 | APROBADO | Seguridad |
-| RS-014 | Auditoría | MVP | Global | Log de eventos | T-313 | APROBADO | Seguridad |
-| RS-015 | Documentar LUKS | MVP | Global | Doc. de límites | T-314 | APROBADO | Seguridad |
-| RS-016 | Política de contraseñas | MVP | Identidad | Longitud/complejidad | T-315 | APROBADO | Seguridad |
-| RS-017 | Bloqueo N intentos | MVP | Identidad | Bloqueo configurable | T-316 | PENDIENTE | Seguridad |
-| RS-018 | Minimización | MVP | Global | Datos mínimos | T-317 | APROBADO | Privacidad |
-| RS-019 | Deps actualizadas | MVP | Global | Registro | T-318 | APROBADO | Mantenibilidad |
-| RS-020 | Errores no expuestos | MVP | Global | Mensajes genéricos | T-319 | APROBADO | Seguridad |
+### 1.2.2 Capacidades previstas, no confirmadas como implementadas
 
-*(Nota: Las pruebas T-xxx son referencias a pruebas a definir en el Plan de Pruebas; su existencia en esta matriz no implica que ya estén implementadas.)*
+La especificación anterior contempla biblioteca PDF avanzada, base de conocimiento, evaluaciones, competencias, evidencias, laboratorios, backups gestionados desde la interfaz, revisión de vigencia y advertencias éticas. Estas áreas se consideran **pendientes o planificadas** cuando no existe una aplicación Django funcional correspondiente en el árbol de código actual.
+
+La presencia de enlaces, tarjetas, identificadores de requisitos, modelos conceptuales o eventos preparados no demuestra que un módulo esté terminado.
+
+### 1.2.3 Fuera del alcance confirmado
+
+No se considera implementado, salvo que una versión posterior aporte evidencia:
+
+- Plataforma multiusuario o sincronización en la nube.
+- Servicios de autenticación externos (OAuth, SSO).
+- Ejecución integrada de máquinas virtuales o contenedores.
+- Funcionalidades de inteligencia artificial.
+- OCR y extracción semántica avanzada de documentos.
+- Foros o colaboración entre usuarios.
+- Ejecución automática de comandos de laboratorio desde la aplicación.
+
+## 1.3 Definiciones, acrónimos y abreviaturas
+
+| Término | Definición |
+|---|---|
+| ASCENSO | Roadmap formativo maestro utilizado por CodeGuard Pro. |
+| SRS | Software Requirements Specification; especificación de requisitos de software. |
+| RF | Requisito funcional. |
+| RNF | Requisito no funcional. |
+| RD | Requisito de datos. |
+| RS | Requisito de seguridad. |
+| MVP | Minimum Viable Product; producto mínimo viable. |
+| Offline-first | Diseño que prioriza la operación local sin depender de Internet. |
+| Monousuario | Instancia destinada a un propietario local. |
+| MVT | Model-View-Template, patrón arquitectónico de Django. |
+| ORM | Object-Relational Mapper. |
+| IPC | Inter-Process Communication; comunicación entre procesos de Electron. |
+| FTS5 | Extensión de búsqueda de texto completo de SQLite. |
+| CSP | Content Security Policy. |
+| CSRF | Cross-Site Request Forgery. |
+| XSS | Cross-Site Scripting. |
+| SHA-256 | Función hash criptográfica de 256 bits. |
+| Argon2 | Algoritmo de hashing de contraseñas. |
+| PyInstaller | Herramienta para empaquetar aplicaciones Python. |
+| Waitress | Servidor WSGI usado en el paquete de escritorio. |
+| WhiteNoise | Middleware para servir archivos estáticos desde el proceso Django. |
+
+## 1.4 Referencias
+
+- IEEE Std 830-1998, *IEEE Recommended Practice for Software Requirements Specifications*.
+- Repositorio CodeGuard Pro: https://github.com/MaverickBms/CodeGuard-Pro
+- `README.md`.
+- `docs/ARQUITECTURA.md`.
+- `docs/MODELO_DATOS.md`.
+- `docs/MATRIZ_TRAZABILIDAD.md`.
+- `docs/SEGURIDAD.md`.
+- `docs/MODO_SIN_AUTENTICACION.md`.
+- `docs/PLAN_PRUEBAS.md`.
+- `docs/DECISIONES_PENDIENTES.md`.
+- Django 5.2 documentation: https://docs.djangoproject.com/en/5.2/
+- Electron documentation: https://www.electronjs.org/docs/latest/
+- SQLite documentation: https://www.sqlite.org/docs.html
+- OWASP ASVS: https://owasp.org/www-project-application-security-verification-standard/
+
+## 1.5 Organización del documento
+
+La sección 1 presenta el propósito y alcance; la sección 2 describe el producto y su contexto; la sección 3 especifica requisitos; la sección 4 define interfaces; la sección 5 documenta arquitectura y diagramas; la sección 6 presenta el modelo de datos; la sección 7 establece requisitos de calidad y seguridad; la sección 8 define criterios de verificación; la sección 9 mantiene la trazabilidad; y la sección 10 registra restricciones, riesgos y decisiones pendientes.
 
 ---
 
-## 6. Decisiones, Riesgos y Evolución
+# 2. Descripción general
 
-### 6.1. Stack Tecnológico Fijado
+## 2.1 Perspectiva del producto
 
-| Componente | Decisión | Justificación |
-|:---|:---|:---|
-| **Lenguaje** | Python 3.12+ (versión estable disponible en Fedora 44) | Compatibilidad con Django LTS y librerías de extracción. |
-| **Backend** | Django LTS con soporte vigente (versión a fijar en implementación según disponibilidad y soporte oficial) | ORM seguro, autenticación integrada, admin, protección CSRF/XSS/SQLi, bajo consumo configurable. |
-| **Base de datos** | SQLite con FTS5 verificado en la compilación del sistema | Monousuario, sin proceso servidor, rápido en NVMe. |
-| **Frontend** | Ventana desktop nativa de Electron (Chromium embebido). Capa web interna con HTML5 + HTMX + Bootstrap 5 + 12 temas CSS con glassmorphism (archivos locales, sin CDN). | Interfaz de aplicación independiente, sin navegador externo, offline, responsivo. |
-| **PDF** | PyMuPDF (fitz) en modo batch | Rápido, bajo consumo controlado. |
-| **Hashing** | Argon2 | Recomendación OWASP. |
+CodeGuard Pro es una aplicación de escritorio local construida como un sistema modular. Electron actúa como contenedor de escritorio y Django concentra la lógica de negocio y persistencia.
 
-**Notas:**
-*   Las versiones exactas de Python, Django y librerías se fijarán en el `requirements.txt` al momento de la implementación, verificando compatibilidad con Fedora 44 y soporte vigente.
-*   El objetivo de "menos de 300 MB en reposo" es un **objetivo de rendimiento a validar** mediante prueba formal (RNF-003), no una garantía.
-*   OCR (Tesseract) queda fuera del MVP.
+No se trata de microservicios: las aplicaciones Django comparten configuración, proceso servidor y base de datos SQLite. La separación por aplicaciones responde a dominios funcionales dentro de un **monolito modular**.
 
-### 6.2. Integración ASCENSO — Validación
+### 2.1.1 Contexto del sistema
 
-*   **RF-010** y **RF-011** garantizan que las 33 etapas estén representadas y que las no desarrolladas permanezcan visibles y marcadas.
-*   **RF-012** garantiza que las dependencias se tomen del documento maestro, no inventadas.
-*   La selección de etapas del MVP (0, 1, 2, 3, 8, 17, 21) se mantiene como **propuesta de contenido inicial**, no como modificación de la estructura ASCENSO.
-*   **Regla estricta:** no se inventará contenido de ASCENSO. La fuente de verdad es el documento maestro consolidado 3.1.
+```mermaid
+flowchart LR
+    U[Usuario local] -->|Interacción| E[Aplicación Electron]
+    E -->|Ventana Chromium / HTTP loopback| D[Servidor Django]
+    D -->|ORM| DB[(SQLite)]
+    D -->|Plantillas y estáticos| UI[HTML / CSS / JavaScript]
+    UI -->|Acciones HTTP| D
+    E <-->|IPC controlado| P[Preload API]
+    D --> FS[(Sistema de archivos local)]
+    E --> FS
+```
 
-### 6.3. Distinción entre Requisitos, Decisiones y Propuestas
+**Interpretación:** el usuario opera la ventana Electron. El renderer muestra la interfaz web servida por Django. Las operaciones del dominio se procesan en Django; SQLite conserva los datos estructurados y el sistema de archivos contiene los datos locales asociados. La API preload expone un conjunto limitado de operaciones de escritorio al renderer.
 
-*   **Requisitos APROBADOS:** marcados como tal en la Sección 3 y en la matriz. Constituyen la línea base del MVP.
-*   **Requisitos PENDIENTES:** requieren decisión del usuario antes de implementación (ej. RF-006, RS-017: definir N intentos).
-*   **Requisitos PROPUESTOS:** recomendaciones del equipo técnico para evaluación (ej. cifrado de backup, panel de competencias). No son obligatorios hasta aprobación explícita.
-*   **Decisiones de arquitectura:** documentadas en esta sección; algunas son autónomas del equipo técnico y quedan sujetas a validación final.
+## 2.2 Funciones del producto
 
-### 6.4. Riesgos y Mitigaciones
+| ID | Función | Descripción | Estado |
+|---|---|---|---|
+| FP-01 | Panel principal | Resume progreso, etapas completadas y actividad reciente. | IMPLEMENTADO |
+| FP-02 | Roadmap | Lista las etapas cargadas desde ASCENSO 3.1. | IMPLEMENTADO |
+| FP-03 | Detalle académico | Presenta módulos, lecciones, objetivos, proyecto y prerrequisitos. | IMPLEMENTADO |
+| FP-04 | Seguimiento | Permite marcar o reabrir etapas y lecciones. | IMPLEMENTADO |
+| FP-05 | Cálculo de avance | Recalcula porcentajes y estados de progreso. | IMPLEMENTADO |
+| FP-06 | Restricción por prerrequisitos | Impide completar una etapa bloqueada. | IMPLEMENTADO |
+| FP-07 | Personalización visual | Permite elegir entre doce temas. | IMPLEMENTADO |
+| FP-08 | Escritorio | Inicia Django y muestra la interfaz en Electron. | IMPLEMENTADO |
+| FP-09 | Identidad y acceso | Alta inicial, login, rescate y cambio de contraseña. | IMPLEMENTADO / DESACTIVADO |
+| FP-10 | Auditoría | Registra eventos de autenticación y progreso. | PARCIAL / IMPLEMENTADO |
+| FP-11 | Biblioteca documental | Gestión avanzada, visor, indexación y anotaciones PDF. | PENDIENTE |
+| FP-12 | Competencias y evaluaciones | Rúbricas, intentos, resultados y niveles. | PENDIENTE |
+| FP-13 | Evidencias y laboratorios | Portafolio y registro de prácticas. | PENDIENTE |
+| FP-14 | Administración | Backups, restauración y exportación desde la interfaz. | PENDIENTE |
+| FP-15 | Vigencia y ética | Revisión de contenidos y advertencias contextuales. | PENDIENTE |
 
-| Riesgo | Impacto | Mitigación |
-|:---|:---|:---|
-| RAM limitada (2.9 GiB disponibles) | Ralentización | Django en modo producción local, 1 worker, sin DEBUG, batch en PDFs. |
-| Backups trasladados sin cifrado | Exposición de datos | RS-008: opción de cifrado; documentar límites de LUKS (RS-015). |
-| Contenido ASCENSO inventado | Desviación académica | RF-010/011/012 + regla estricta de fuente de verdad. |
-| Versiones abiertas de stack | Incompatibilidad | RNF-012/013/014: fijar versiones en implementación. |
-| Archivos subidos ejecutables | Ejecución maliciosa | RS-005/006 + RF-086. |
-| Duplicados/dañados en importación | Corrupción de datos | RF-033/034/035/036/044. |
-| Sesión evadida por acceso directo | Exposición | RNF-010/RS-009 + pruebas T-209/T-308. |
-| Pérdida de datos por fallo del SSD | Pérdida total | Backups verificados + recordatorio de copia externa. |
+## 2.3 Características de los usuarios
 
-### 6.5. Evolución Prevista
+### Usuario principal
 
-1.  **Fase 1 (MVP actual):** Aplicación desktop independiente, servidor Django embebido, ventana Electron (Chromium), SQLite, autenticación local, frase de rescate, panel principal, roadmap ASCENSO 3.1 con progreso, seguridad (CSP, CSRF, XSS, SQLi), backups verificados, estilos profesionales y 12 temas.
-2.  **Fase 2:** Cifrado de backup, OCR por lotes, panel de competencias avanzado, informes.
-3.  **Fase 3:** Tutor IA local (LLM cuantizado), búsqueda semántica.
-4.  **Fase 4:** Multiusuario, sincronización, comunidad (solo si se justifica).
+- Persona que estudia programación, desarrollo de software y ciberseguridad.
+- Utiliza un equipo personal y administra su entorno local.
+- Necesita organizar contenidos, rutas de aprendizaje y progreso.
+- Puede ejecutar comandos de instalación y diagnóstico.
+- No requiere conocimientos avanzados de administración para las operaciones habituales de la interfaz.
 
-### 6.6. Empaquetado y Distribución
+### Perfil de administración
 
-La aplicación se distribuye para Windows en formato `.exe` mediante dos etapas: **PyInstaller** empaqueta el servidor Django autónomo (intérprete Python, Django, PyMuPDF, Argon2, plantillas, estáticos y el JSON de ASCENSO) en `dist-server/CodeGuardServer/`; después **electron-builder** integra Electron, el servidor y los recursos en un instalador **NSIS** y una versión **portable**. Ambos artefactos se generan en Windows con `build_windows.bat`.
+En la versión actual, el propietario local administra la instalación, configuración, datos y actualizaciones. No existe un panel multiusuario ni un sistema de roles confirmado.
 
-El servidor Django embebido escucha exclusivamente en `127.0.0.1` y no expone la aplicación a la red local ni a Internet. Electron elige un puerto libre, espera la disponibilidad del servidor y detiene el árbol de procesos al cerrar. Los datos escribibles (base de datos, logs, medios y clave secreta local) se guardan en `%APPDATA%\CodeGuard Pro`, nunca dentro del directorio de instalación.
+## 2.4 Entorno operativo
+
+| Componente | Tecnología / configuración |
+|---|---|
+| Sistema de escritorio | Electron |
+| Renderer | Chromium integrado |
+| Backend | Python + Django 5.2 |
+| Servidor local empaquetado | Waitress + WhiteNoise |
+| Persistencia | SQLite |
+| Frontend | HTML, CSS y JavaScript |
+| UI | Bootstrap, HTMX, SweetAlert2, Font Awesome |
+| Empaquetado Python | PyInstaller |
+| Empaquetado escritorio | electron-builder |
+| Dirección local | `127.0.0.1` |
+| Datos | Directorio local configurable mediante `CODEGUARD_DATA_DIR` |
+
+El repositorio incluye configuraciones para desarrollo y escritorio. El directorio de datos se separa del directorio de instalación en el paquete de escritorio para permitir escritura en la carpeta de datos del usuario.
+
+## 2.5 Restricciones de diseño e implementación
+
+1. La aplicación está orientada a un único usuario local.
+2. El servidor no debe exponerse a interfaces de red públicas ni a la LAN.
+3. La interfaz debe poder operar sin CDN ni servicios externos obligatorios.
+4. La persistencia principal debe seguir siendo local.
+5. La arquitectura backend se mantiene como monolito modular Django.
+6. La interfaz debe conservar los doce temas existentes.
+7. La lógica de negocio debe permanecer en servicios/modelos y no duplicarse en las plantillas.
+8. Las operaciones que modifican progreso deben utilizar métodos HTTP apropiados y protección CSRF.
+9. No se deben documentar como terminados módulos que solo aparecen como accesos futuros en el dashboard.
+10. La autenticación no debe reactivarse sin decisión explícita del propietario, porque actualmente está desactivada por configuración.
+
+## 2.6 Suposiciones y dependencias
+
+- El usuario dispone de permisos de lectura y escritura sobre el directorio de datos.
+- SQLite está disponible mediante la biblioteca incluida en Python.
+- Electron puede iniciar el proceso local Django.
+- El sistema operativo permite ejecutar la aplicación y sus binarios empaquetados.
+- Los contenidos de ASCENSO se cargan desde el JSON versionado en `apps/roadmaps/data/ascenso_3_1.json`.
+- El comportamiento de producción empaquetada y el comportamiento de desarrollo pueden diferir en el arranque y en el servidor WSGI.
+
+## 2.7 Evolución funcional
+
+Los módulos pendientes deberán incorporarse como aplicaciones Django independientes por dominio. Cada incremento debe incluir: requisitos aprobados, modelos y migraciones, servicios, vistas y rutas, interfaz, pruebas, documentación técnica y actualización de trazabilidad.
 
 ---
 
-*Este documento distingue explícitamente requisitos aprobados, pendientes y propuestos. Las decisiones de arquitectura autónomas del equipo técnico quedan sujetas a validación final del usuario antes de la implementación.*
+# 3. Requisitos específicos
+
+## 3.1 Convenciones de especificación
+
+Cada requisito debe ser:
+
+- Identificable mediante un ID único.
+- Atómico y no ambiguo.
+- Verificable mediante inspección, prueba o demostración.
+- Trazable a un módulo y, cuando sea posible, a una prueba.
+- Etiquetado con prioridad y estado.
+
+**Prioridades:**  
+**MUST:** imprescindible para la línea base funcional actual o para la aceptación del requisito.  
+**SHOULD:** importante, pero no bloquea por sí solo el funcionamiento básico.  
+**COULD:** mejora opcional.  
+**FUTURE:** fuera de la línea base actual.
+
+### 3.1.1 Requisitos funcionales implementados
+
+#### A. Panel principal — módulo `apps.core`
+
+| ID | Requisito | Prioridad | Estado | Evidencia principal |
+|---|---|---|---|---|
+| RF-001 | El sistema deberá mostrar un panel principal al acceder a la ruta raíz. | MUST | IMPLEMENTADO | `apps/core/views.py`, `templates/core/panel.html` |
+| RF-002 | El panel deberá presentar un resumen del progreso del roadmap activo. | MUST | IMPLEMENTADO | `apps/core/views.py`, `apps/roadmaps/services.py` |
+| RF-003 | El panel deberá mostrar el número de etapas completadas y el avance general. | MUST | IMPLEMENTADO | `apps/core/views.py` |
+| RF-004 | El panel deberá identificar una próxima etapa o actividad cuando los datos permitan calcularla. | SHOULD | IMPLEMENTADO | `apps/core/views.py` |
+| RF-005 | El panel deberá indicar qué módulos están disponibles y cuáles son accesos futuros. | SHOULD | IMPLEMENTADO | `apps/core/views.py`, plantilla del panel |
+
+#### B. Roadmap académico — módulo `apps.roadmaps`
+
+| ID | Requisito | Prioridad | Estado | Evidencia principal |
+|---|---|---|---|---|
+| RF-010 | El sistema deberá cargar el roadmap ASCENSO desde un archivo JSON versionado. | MUST | IMPLEMENTADO | `apps/roadmaps/data/ascenso_3_1.json`, `services.py` |
+| RF-011 | El sistema deberá permitir consultar el listado de etapas del roadmap activo. | MUST | IMPLEMENTADO | `apps/roadmaps/views.py`, `templates/roadmaps/lista.html` |
+| RF-012 | El listado deberá permitir filtrar etapas por bloque, prioridad y texto. | SHOULD | IMPLEMENTADO | `apps/roadmaps/views.py` |
+| RF-013 | El usuario deberá poder consultar el detalle de una etapa. | MUST | IMPLEMENTADO | `apps/roadmaps/views.py`, `templates/roadmaps/detalle.html` |
+| RF-014 | El detalle deberá presentar módulos, lecciones, proyecto, criterios y prerrequisitos asociados. | MUST | IMPLEMENTADO | `apps/roadmaps/models.py`, vistas y plantillas |
+| RF-015 | El sistema deberá registrar el progreso por etapa y lección para el propietario local. | MUST | IMPLEMENTADO | Modelo `Progreso`, `services.py` |
+| RF-016 | El sistema deberá permitir marcar y reabrir una etapa mediante una petición POST. | MUST | IMPLEMENTADO | `marcar_etapa_view`, `marcar_etapa` |
+| RF-017 | El sistema deberá permitir marcar y reabrir una lección mediante una petición POST. | MUST | IMPLEMENTADO | `marcar_leccion_view`, `marcar_leccion` |
+| RF-018 | El sistema deberá recalcular el porcentaje de una etapa después de modificar el estado de una lección. | MUST | IMPLEMENTADO | `recalcular_progreso_etapa` |
+| RF-019 | El sistema deberá impedir completar una etapa si alguno de sus prerrequisitos no está completado. | MUST | IMPLEMENTADO | `Etapa.esta_bloqueada_para`, `marcar_etapa` |
+| RF-020 | El sistema deberá impedir que una etapa sea prerrequisito de sí misma. | MUST | IMPLEMENTADO | Restricción y validación de `Prerrequisito` |
+| RF-021 | El cargador de ASCENSO deberá poder ejecutarse de forma idempotente sin borrar el progreso por defecto. | SHOULD | IMPLEMENTADO | `cargar_ascenso` |
+| RF-022 | El sistema deberá conservar la fuente y el hash SHA-256 de la fuente del roadmap cuando estén disponibles. | SHOULD | IMPLEMENTADO | Modelo `Roadmap` |
+
+#### C. Identidad y acceso — módulo `apps.accounts`
+
+> El código de autenticación existe, pero el ajuste `AUTH_DISABLED = True` desactiva el flujo en la configuración base actual. Los requisitos de este grupo no deben presentarse como una barrera de acceso activa en la experiencia actual.
+
+| ID | Requisito | Prioridad | Estado | Evidencia principal |
+|---|---|---|---|---|
+| RF-030 | El sistema deberá conservar un modelo de usuario local personalizado. | MUST | IMPLEMENTADO | `apps/accounts/models.py` |
+| RF-031 | El sistema deberá permitir crear el usuario inicial cuando la autenticación esté habilitada. | SHOULD | IMPLEMENTADO / DESACTIVADO | `apps/accounts/views.py`, `services.py` |
+| RF-032 | El sistema deberá almacenar contraseñas mediante los hashers configurados, con Argon2 como opción principal. | MUST | IMPLEMENTADO | `config/settings/base.py` |
+| RF-033 | El sistema deberá generar una frase de rescate y almacenarla como hash, mostrándola una sola vez. | SHOULD | IMPLEMENTADO / DESACTIVADO | `apps/accounts/services.py` |
+| RF-034 | La frase de rescate deberá invalidarse solo después de completar satisfactoriamente el cambio de contraseña. | SHOULD | IMPLEMENTADO / DESACTIVADO | `cambiar_contrasena_por_frase` |
+| RF-035 | El sistema deberá permitir iniciar y cerrar sesión cuando la autenticación esté habilitada. | SHOULD | IMPLEMENTADO / DESACTIVADO | `apps/accounts/views.py` |
+| RF-036 | El sistema deberá bloquear una cuenta después de cinco intentos fallidos consecutivos durante quince minutos. | SHOULD | IMPLEMENTADO / DESACTIVADO | `LoginView`, modelo `Usuario` |
+| RF-037 | El sistema deberá expirar sesiones autenticadas por inactividad según el tiempo configurado. | SHOULD | IMPLEMENTADO / DESACTIVADO | `SesionInactividadMiddleware` |
+
+#### D. Auditoría — módulo `apps.audit`
+
+| ID | Requisito | Prioridad | Estado | Evidencia principal |
+|---|---|---|---|---|
+| RF-040 | El sistema deberá almacenar eventos de auditoría con tipo, descripción y fecha. | MUST | IMPLEMENTADO | `apps/audit/models.py` |
+| RF-041 | El registro de auditoría deberá permitir asociar un usuario cuando exista un actor autenticado. | SHOULD | IMPLEMENTADO | Modelo `AuditLog` |
+| RF-042 | El sistema deberá registrar eventos relevantes del progreso del roadmap. | SHOULD | IMPLEMENTADO | `apps/roadmaps/services.py` |
+| RF-043 | El sistema deberá registrar eventos de autenticación y recuperación cuando esos flujos estén habilitados. | SHOULD | IMPLEMENTADO / DESACTIVADO | `apps/accounts/services.py`, vistas |
+
+### 3.1.2 Requisitos funcionales pendientes o planificados
+
+Los siguientes requisitos mantienen el propósito funcional descrito en la versión anterior, pero no se consideran parte de las capacidades implementadas en la rama revisada.
+
+| ID | Requisito futuro | Prioridad sugerida | Estado |
+|---|---|---|---|
+| RF-050 | Importar archivos PDF y extraer metadatos y texto. | SHOULD | PENDIENTE |
+| RF-051 | Detectar PDFs corruptos, protegidos, escaneados y duplicados. | SHOULD | PENDIENTE |
+| RF-052 | Indexar el contenido documental y permitir búsqueda de texto completo. | SHOULD | PENDIENTE |
+| RF-053 | Asociar documentos y fragmentos a etapas, módulos y lecciones. | SHOULD | PENDIENTE |
+| RF-054 | Crear y relacionar conceptos en una base de conocimiento. | COULD | PENDIENTE |
+| RF-055 | Gestionar competencias, niveles y criterios de dominio. | SHOULD | PENDIENTE |
+| RF-056 | Crear evaluaciones, preguntas, rúbricas e intentos. | SHOULD | PENDIENTE |
+| RF-057 | Registrar resultados y retroalimentación de evaluaciones. | SHOULD | PENDIENTE |
+| RF-058 | Gestionar evidencias y calcular SHA-256 de los archivos. | SHOULD | PENDIENTE |
+| RF-059 | Asociar evidencias a actividades, competencias y laboratorios. | SHOULD | PENDIENTE |
+| RF-060 | Gestionar guías de laboratorio, pasos, comandos y observaciones. | COULD | PENDIENTE |
+| RF-061 | Crear y validar copias de seguridad desde la interfaz. | SHOULD | PENDIENTE |
+| RF-062 | Restaurar copias de seguridad después de validar su contenido. | SHOULD | PENDIENTE |
+| RF-063 | Gestionar vigencia, revisión y obsolescencia de contenidos. | COULD | PENDIENTE |
+| RF-064 | Mostrar advertencias éticas y requerir aceptación contextual. | SHOULD | PENDIENTE |
+
+### 3.2 Requisitos de interfaces externas
+
+#### 3.2.1 Interfaz de usuario
+
+- La aplicación deberá mostrar la interfaz en una ventana Electron.
+- La interfaz web deberá renderizarse con Chromium integrado.
+- Los estilos y scripts de la aplicación deberán servirse localmente.
+- La interfaz deberá conservar los doce temas definidos en el frontend.
+- Los controles de progreso deberán comunicar claramente su estado.
+- Las acciones que modifican datos deberán mostrar confirmación o resultado comprensible.
+- La navegación deberá conservar consistencia entre panel, roadmap y detalle de etapa.
+
+#### 3.2.2 Interfaz de software
+
+| Interfaz | Dirección / mecanismo | Propósito |
+|---|---|---|
+| Electron → Django | HTTP sobre loopback | Cargar la interfaz y enviar acciones del usuario. |
+| Renderer → Preload | API expuesta mediante `contextBridge` | Acceder a funciones de escritorio permitidas. |
+| Preload → Electron main | IPC | Solicitar acciones del proceso principal. |
+| Django → SQLite | Django ORM | Consultar y persistir datos. |
+| Django → sistema de archivos | API local de Python | Leer/escribir base de datos, medios y logs. |
+| Electron → proceso servidor | `child_process.spawn` | Iniciar y detener Django. |
+
+#### 3.2.3 Interfaz de hardware
+
+No se identifica comunicación con hardware especializado. La aplicación depende de recursos convencionales del equipo: CPU, memoria, almacenamiento y pantalla.
+
+#### 3.2.4 Interfaz de comunicación
+
+- El servidor Django deberá escuchar únicamente en `127.0.0.1`.
+- El puerto se selecciona dinámicamente en el arranque de Electron.
+- Electron deberá esperar a que el servidor responda antes de cargar la interfaz principal.
+- Las peticiones que cambian estado deberán respetar CSRF y los métodos HTTP adecuados.
+
+### 3.3 Requisitos no funcionales
+
+Los requisitos cuantitativos que aún no tengan medición se marcan como «por validar» y no como garantías.
+
+| ID | Atributo | Requisito verificable | Estado |
+|---|---|---|---|
+| RNF-001 | Operación local | Las funciones implementadas del MVP deberán operar sin depender de un servicio remoto. | POR VALIDAR en prueba offline integral |
+| RNF-002 | Red | El servidor local deberá enlazarse a `127.0.0.1`, no a `0.0.0.0`. | IMPLEMENTADO en configuración de arranque |
+| RNF-003 | Persistencia | Los datos principales deberán permanecer en SQLite y en el directorio local de datos. | IMPLEMENTADO |
+| RNF-004 | Modularidad | El backend deberá separar dominios en aplicaciones Django. | IMPLEMENTADO |
+| RNF-005 | Consistencia | Las operaciones de escritura deberán utilizar el ORM y respetar integridad referencial. | IMPLEMENTADO; cobertura por validar |
+| RNF-006 | Interfaz | La interfaz deberá ser utilizable en la ventana mínima configurada de Electron (1024 × 720). | POR VALIDAR visualmente |
+| RNF-007 | Temas | El frontend deberá ofrecer doce temas visuales seleccionables. | IMPLEMENTADO |
+| RNF-008 | Accesibilidad | Los estados y controles deberán ser navegables y comprensibles con teclado y tecnologías de asistencia. | POR VALIDAR |
+| RNF-009 | Rendimiento | El panel y el listado del roadmap deberán responder sin bloqueos perceptibles con el conjunto de datos previsto. | POR MEDIR |
+| RNF-010 | Búsqueda | Los filtros de etapa deberán devolver resultados correctos para bloque, prioridad y texto. | IMPLEMENTADO; pruebas de aceptación por validar |
+| RNF-011 | Mantenibilidad | Las reglas de negocio del roadmap deberán centralizarse en `apps/roadmaps/services.py`. | IMPLEMENTADO |
+| RNF-012 | Portabilidad | El paquete de escritorio deberá separar los datos del usuario de los archivos de instalación. | IMPLEMENTADO en configuración Electron |
+| RNF-013 | Dependencias | Las dependencias Python deberán estar fijadas en `requirements.txt`. | IMPLEMENTADO |
+| RNF-014 | Recursos | Las bibliotecas frontend deberán servirse localmente, sin CDN obligatorio. | IMPLEMENTADO |
+| RNF-015 | Recuperación | La base de datos y los datos del usuario deberán poder respaldarse y restaurarse. | PENDIENTE de módulo integrado y validación |
+| RNF-016 | Privacidad | La aplicación no deberá enviar datos del usuario a servicios externos sin consentimiento y especificación explícita. | POR VALIDAR mediante prueba de tráfico |
+| RNF-017 | Movimiento | Las animaciones deberán respetar `prefers-reduced-motion`. | POR VALIDAR en todos los componentes |
+| RNF-018 | Compatibilidad | El proceso de desarrollo deberá ejecutarse en entornos compatibles con las versiones fijadas de Python y Node. | POR VALIDAR por plataforma |
+| RNF-019 | Diagnóstico | Los fallos del proceso Django deberán poder diagnosticarse mediante la salida del proceso y los logs locales. | IMPLEMENTADO parcialmente |
+| RNF-020 | Empaquetado | La aplicación deberá generar instaladores/paquetes según los targets configurados en electron-builder. | CONFIGURADO; build por validar |
+
+### 3.4 Requisitos de datos
+
+#### 3.4.1 Datos persistidos actualmente
+
+| ID | Entidad | Datos principales | Implementación |
+|---|---|---|---|
+| RD-001 | Usuario | Identidad, contraseña hash, email opcional, configuración inicial y bloqueo. | `apps.accounts.Usuario` |
+| RD-002 | FraseRescate | Usuario propietario, hash Argon2, usada, fecha de uso y creación. | `apps.accounts.FraseRescate` |
+| RD-003 | ConfiguracionSistema | Estado de configuración, último backup y versión de BD. | `apps.core.ConfiguracionSistema` |
+| RD-004 | AuditLog | Actor opcional, evento, descripción, IP, user-agent y fecha. | `apps.audit.AuditLog` |
+| RD-005 | Roadmap | Nombre, edición, fuente, hash, estado activo y fechas. | `apps.roadmaps.Roadmap` |
+| RD-006 | Etapa | Número, título, bloque, prioridad, objetivo, proyecto y orden. | `apps.roadmaps.Etapa` |
+| RD-007 | Modulo | Etapa, número, título, objetivo y orden. | `apps.roadmaps.Modulo` |
+| RD-008 | Leccion | Módulo, título, descripción, tipo y orden. | `apps.roadmaps.Leccion` |
+| RD-009 | Actividad | Lección, título, descripción, tipo y obligatoriedad. | `apps.roadmaps.Actividad` |
+| RD-010 | Prerrequisito | Etapa dependiente, etapa requerida y justificación. | `apps.roadmaps.Prerrequisito` |
+| RD-011 | CriterioFinalizacion | Etapa, título, descripción, tipo y obligatoriedad. | `apps.roadmaps.CriterioFinalizacion` |
+| RD-012 | Progreso | Usuario, objetivo académico, estado, porcentaje y fechas. | `apps.roadmaps.Progreso` |
+
+#### 3.4.2 Reglas de integridad identificadas
+
+- Un roadmap no puede repetir la combinación nombre + edición.
+- Una etapa no puede repetir su número dentro del mismo roadmap.
+- Un módulo no puede repetir su número dentro de la misma etapa.
+- Una lección no puede repetir su título dentro del mismo módulo.
+- Una actividad no puede repetir su título dentro de la misma lección.
+- Un prerrequisito no puede duplicar la misma relación etapa-etapa.
+- Una etapa no puede ser prerrequisito de sí misma.
+- El porcentaje de progreso debe permanecer entre 0 y 100.
+- Un progreso completado se normaliza a 100%; uno no iniciado, a 0%.
+- La configuración global utiliza un singleton lógico con clave primaria 1.
+
+#### 3.4.3 Datos previstos
+
+Los modelos de documentos, fragmentos, conceptos, evaluaciones, competencias, evidencias, laboratorios y backups se consideran entidades futuras hasta que exista implementación y migración verificables.
+
+### 3.5 Requisitos de seguridad
+
+| ID | Requisito | Estado actual |
+|---|---|---|
+| RS-001 | Restringir el servidor a loopback. | IMPLEMENTADO |
+| RS-002 | Utilizar Argon2 como hasher principal de contraseñas. | IMPLEMENTADO |
+| RS-003 | Mantener CSRF en formularios y operaciones de escritura. | IMPLEMENTADO en configuración |
+| RS-004 | Aplicar cabeceras de seguridad y CSP. | IMPLEMENTADO |
+| RS-005 | Deshabilitar la integración Node en el renderer y habilitar context isolation. | IMPLEMENTADO en BrowserWindow |
+| RS-006 | Exponer al renderer solo una API explícita mediante preload. | IMPLEMENTADO |
+| RS-007 | Bloquear navegación externa no autorizada dentro de la ventana. | IMPLEMENTADO |
+| RS-008 | Mantener `DEBUG=False` por defecto y en el modo desktop. | IMPLEMENTADO |
+| RS-009 | No almacenar secretos reales en el repositorio. | CONFIGURADO; auditoría de repositorio por validar |
+| RS-010 | Mantener los datos escribibles fuera del directorio de instalación empaquetado. | IMPLEMENTADO |
+| RS-011 | Expirar sesiones por inactividad cuando la autenticación esté activa. | IMPLEMENTADO / DESACTIVADO |
+| RS-012 | Registrar eventos relevantes de autenticación y progreso. | IMPLEMENTADO |
+| RS-013 | Validar tipo, tamaño, ubicación y contenido de archivos cargados. | PENDIENTE para módulo de evidencias/documentos |
+| RS-014 | Validar archivos de backup antes de restaurarlos. | PENDIENTE |
+| RS-015 | Cifrar copias de seguridad exportables. | PROPUESTO; requiere decisión |
+
+**Advertencia operativa:** en la configuración base actual `AUTH_DISABLED = True`. Por tanto, la aplicación no solicita credenciales al abrirse. La existencia del código de autenticación no equivale a que la protección por login esté activa. Este comportamiento debe figurar en cualquier evaluación de seguridad del producto.
+
+---
+
+# 4. Casos de uso
+
+## 4.1 Actores
+
+| Actor | Descripción |
+|---|---|
+| Usuario local | Persona que utiliza CodeGuard Pro y registra su progreso. |
+| Sistema operativo | Proporciona procesos, almacenamiento, ventanas y rutas de datos. |
+| Proceso Electron | Coordina ventana, proceso servidor, menú y API de escritorio. |
+| Servidor Django | Ejecuta la lógica de aplicación y atiende solicitudes HTTP locales. |
+
+## 4.2 Diagrama general de casos de uso
+
+```mermaid
+flowchart TB
+    U[Usuario local]
+    OS[Sistema operativo]
+    subgraph CG[CodeGuard Pro]
+      UC1((Consultar panel))
+      UC2((Consultar roadmap))
+      UC3((Filtrar etapas))
+      UC4((Ver detalle de etapa))
+      UC5((Consultar prerrequisitos))
+      UC6((Marcar / reabrir lección))
+      UC7((Marcar / reabrir etapa))
+      UC8((Cambiar tema visual))
+      UC9((Consultar módulos futuros))
+      UC10((Autenticarse))
+      UC11((Recuperar acceso))
+      UC12((Consultar auditoría))
+    end
+    U --- UC1
+    U --- UC2
+    U --- UC3
+    U --- UC4
+    U --- UC5
+    U --- UC6
+    U --- UC7
+    U --- UC8
+    U --- UC9
+    U -.->|Solo si AUTH_DISABLED=False| UC10
+    U -.->|Solo si AUTH_DISABLED=False| UC11
+    U --- UC12
+    OS --- UC1
+```
+
+Los casos UC10 y UC11 están implementados en el código, pero no forman parte del flujo activo mientras `AUTH_DISABLED=True`.
+
+## 4.3 Especificación resumida de casos de uso
+
+### UC-01 — Consultar panel principal
+
+| Campo | Descripción |
+|---|---|
+| Actor principal | Usuario local |
+| Precondición | Aplicación iniciada y servidor local disponible. |
+| Disparador | El usuario abre la aplicación o navega a la ruta raíz. |
+| Flujo principal | 1. Electron muestra la ventana. 2. Django atiende GET /. 3. La vista obtiene roadmap, progreso y actividad reciente. 4. Django renderiza la plantilla del panel. 5. El usuario visualiza el resumen. |
+| Alternativas | Si no hay roadmap cargado, el panel debe comunicar el estado sin provocar un error no controlado. |
+| Postcondición | No se modifica el progreso. |
+| Requisitos | RF-001 a RF-005. |
+
+### UC-02 — Consultar y filtrar roadmap
+
+| Campo | Descripción |
+|---|---|
+| Actor principal | Usuario local |
+| Precondición | Existe un roadmap activo. |
+| Disparador | El usuario abre la sección Roadmap. |
+| Flujo principal | 1. Django obtiene el roadmap activo. 2. Recupera etapas y relaciones necesarias. 3. Aplica filtros de bloque, prioridad y búsqueda. 4. Calcula estados de progreso y bloqueo. 5. Renderiza el listado. |
+| Alternativas | Si no existe roadmap activo, se presenta la vista sin datos. |
+| Postcondición | Se presenta el listado filtrado; no se altera la base de datos. |
+| Requisitos | RF-010 a RF-012, RF-019. |
+
+### UC-03 — Registrar finalización de lección
+
+| Campo | Descripción |
+|---|---|
+| Actor principal | Usuario local |
+| Precondición | Existe una lección y un propietario local disponible. |
+| Disparador | El usuario marca o reabre una lección. |
+| Flujo principal | 1. La interfaz envía POST. 2. Django valida la petición. 3. La vista resuelve al usuario local. 4. El servicio crea o actualiza el progreso. 5. Recalcula el porcentaje de la etapa. 6. Registra el evento de auditoría. 7. Redirige al detalle de la etapa. |
+| Alternativas | Si no existe propietario local, la escritura se bloquea y se muestra un mensaje. |
+| Postcondición | El progreso de la lección y el agregado de la etapa quedan actualizados. |
+| Requisitos | RF-015, RF-017, RF-018, RF-040 a RF-042. |
+
+### UC-04 — Completar etapa
+
+| Campo | Descripción |
+|---|---|
+| Actor principal | Usuario local |
+| Precondición | Existe etapa, usuario local y sus prerrequisitos están completos. |
+| Disparador | El usuario solicita marcar la etapa como completada. |
+| Flujo principal | 1. La interfaz envía POST. 2. La vista resuelve el usuario y la etapa. 3. El servicio obtiene etapas completadas. 4. Evalúa prerrequisitos. 5. Si se cumplen, actualiza el progreso a completado. 6. Registra auditoría. |
+| Alternativa | Si existe un prerrequisito pendiente, la operación se rechaza y se informa el motivo. |
+| Postcondición | La etapa queda completada o conserva su estado anterior. |
+| Requisitos | RF-016, RF-019, RF-040 a RF-042. |
+
+### UC-05 — Cambiar tema visual
+
+| Campo | Descripción |
+|---|---|
+| Actor principal | Usuario local |
+| Precondición | Interfaz cargada. |
+| Disparador | El usuario elige uno de los temas disponibles. |
+| Flujo principal | 1. El usuario selecciona el tema. 2. La interfaz aplica el identificador del tema. 3. Las variables y estilos correspondientes actualizan la presentación. |
+| Postcondición | La interfaz utiliza el tema seleccionado. |
+| Requisitos | RNF-007. |
+
+### UC-06 — Autenticación local (flujo conservado, desactivado)
+
+| Campo | Descripción |
+|---|---|
+| Actor principal | Usuario local |
+| Precondición | `AUTH_DISABLED=False`. |
+| Disparador | El usuario envía credenciales válidas. |
+| Flujo principal | 1. Django valida el formulario. 2. El backend autentica la contraseña. 3. Reinicia contadores de fallos. 4. Crea la sesión. 5. Registra auditoría. 6. Redirige al panel. |
+| Alternativas | Credenciales incorrectas; cuenta bloqueada; sesión expirada. |
+| Postcondición | Sesión autenticada o rechazo de acceso. |
+| Requisitos | RF-030 a RF-037, RS-002, RS-011, RS-012. |
+| Estado | Implementado en código, desactivado en configuración. |
+
+---
+
+# 5. Arquitectura y diseño del sistema
+
+## 5.1 Estilo arquitectónico
+
+El sistema sigue un **monolito modular con cliente de escritorio**:
+
+- Electron gestiona el ciclo de vida de la aplicación y la ventana.
+- Django organiza el backend por aplicaciones de dominio.
+- Las vistas reciben solicitudes HTTP y coordinan servicios.
+- Los servicios encapsulan operaciones de negocio reutilizables.
+- Los modelos Django representan datos y restricciones.
+- SQLite actúa como almacenamiento persistente local.
+- Las plantillas Django generan HTML; CSS y JavaScript implementan presentación e interacción.
+
+No existe evidencia de una API REST pública ni de microservicios como arquitectura principal.
+
+## 5.2 Componentes backend identificados
+
+| Componente | Responsabilidad | Estado |
+|---|---|---|
+| `apps.core` | Panel principal y configuración global. | IMPLEMENTADO |
+| `apps.accounts` | Usuario, autenticación y recuperación local. | IMPLEMENTADO / DESACTIVADO |
+| `apps.audit` | Registro de eventos. | IMPLEMENTADO |
+| `apps.roadmaps` | Roadmap, etapas, módulos, lecciones, prerrequisitos y progreso. | IMPLEMENTADO |
+| `config.settings` | Configuración base, desarrollo y desktop. | IMPLEMENTADO |
+| `config.middleware` | Acceso local, cabeceras y expiración de sesión. | IMPLEMENTADO |
+| Biblioteca documental | Importación y consulta avanzada de PDFs. | PENDIENTE |
+| Evaluaciones / competencias | Instrumentos y dominio de competencias. | PENDIENTE |
+| Evidencias / laboratorios | Portafolio y prácticas. | PENDIENTE |
+| Backups | Gestión de copias desde el producto. | PENDIENTE |
+
+## 5.3 Diagrama de componentes
+
+```mermaid
+flowchart TB
+    subgraph Desktop["Capa de escritorio"]
+      EM["Electron main.js"]
+      PW["BrowserWindow / Chromium"]
+      PL["preload.js / contextBridge"]
+      EM --> PW
+      PW <--> PL
+    end
+
+    subgraph Backend["Backend Django"]
+      URL["config.urls"]
+      MW["Middlewares"]
+      CORE["apps.core"]
+      ACC["apps.accounts"]
+      ROAD["apps.roadmaps"]
+      AUD["apps.audit"]
+      SVC["Servicios de dominio"]
+      URL --> MW
+      MW --> CORE
+      MW --> ACC
+      MW --> ROAD
+      CORE --> SVC
+      ROAD --> SVC
+      ACC --> SVC
+      SVC --> AUD
+    end
+
+    DB[("SQLite")]
+    FS[("Sistema de archivos local")]
+    PW -->|"HTTP 127.0.0.1"| URL
+    CORE --> DB
+    ACC --> DB
+    ROAD --> DB
+    AUD --> DB
+    EM --> FS
+    Backend --> FS
+```
+
+## 5.4 Diagrama de despliegue
+
+```mermaid
+flowchart TB
+    subgraph Host["Equipo del usuario"]
+      subgraph Electron["Proceso Electron"]
+        MAIN["electron/main.js"]
+        RENDER["BrowserWindow / Chromium"]
+        PRELOAD["electron/preload.js"]
+        MAIN --> RENDER
+        RENDER <--> PRELOAD
+      end
+
+      subgraph LocalServer["Proceso servidor local"]
+        DJ["Django"]
+        WSGI["Waitress (paquete) / runserver (desarrollo)"]
+        DJ --> WSGI
+      end
+
+      DB[("data/db.sqlite3")]
+      MEDIA[("data/media")]
+      LOG[("data/logs")]
+      KEY["data/.secret_key"]
+      RENDER -->|"HTTP loopback"| WSGI
+      WSGI --> DJ
+      DJ --> DB
+      DJ --> MEDIA
+      DJ --> LOG
+      DJ --> KEY
+    end
+```
+
+### 5.4.1 Modo de desarrollo
+
+1. Electron busca el intérprete Python configurado o disponible.
+2. Inicia `manage.py runserver` sobre `127.0.0.1` y un puerto libre.
+3. Espera a que el servidor responda.
+4. Carga la URL local en BrowserWindow.
+
+### 5.4.2 Modo empaquetado
+
+1. Electron localiza el ejecutable del servidor empaquetado.
+2. Define `DJANGO_SETTINGS_MODULE=config.settings.desktop`.
+3. Proporciona `CODEGUARD_PORT` y `CODEGUARD_DATA_DIR`.
+4. Inicia el servidor local.
+5. Espera la respuesta HTTP.
+6. Carga la interfaz en la ventana nativa.
+
+El código de `desktop/` contiene una implementación histórica basada en PySide6; el flujo principal actual se encuentra en `electron/`. No debe confundirse el código histórico con el punto de entrada vigente.
+
+## 5.5 Diagrama de secuencia — arranque de aplicación
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Usuario
+    participant Electron as Electron main
+    participant SO as Sistema operativo
+    participant Django as Servidor Django
+    participant DB as SQLite
+    participant Ventana as BrowserWindow
+
+    Usuario->>Electron: Abrir CodeGuard Pro
+    Electron->>SO: Obtener puerto libre en 127.0.0.1
+    SO-->>Electron: Puerto disponible
+    Electron->>SO: Crear directorio de datos
+    Electron->>Django: spawn(python/servidor empaquetado)
+    Django->>DB: Inicializar acceso a datos
+    Electron->>Django: GET / (comprobación periódica)
+    Django-->>Electron: Respuesta HTTP
+    Electron->>Ventana: Crear ventana y cargar URL local
+    Ventana-->>Usuario: Mostrar panel de CodeGuard Pro
+```
+
+## 5.6 Diagrama de secuencia — consultar roadmap
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Usuario
+    participant UI as Renderer
+    participant Django as Django URL/View
+    participant Servicio as Roadmap Service
+    participant DB as SQLite
+    participant Template as Django Template
+
+    Usuario->>UI: Abrir Roadmap
+    UI->>Django: GET /roadmaps/
+    Django->>Servicio: roadmap_activo()
+    Servicio->>DB: Consultar roadmap activo
+    DB-->>Servicio: Roadmap
+    Django->>DB: Consultar etapas, módulos y lecciones
+    DB-->>Django: Datos académicos
+    Django->>Servicio: Calcular avance y etapas completadas
+    Servicio->>DB: Consultar Progreso
+    DB-->>Servicio: Estados de progreso
+    Servicio-->>Django: Resumen de progreso
+    Django->>Template: Renderizar listado
+    Template-->>UI: HTML de etapas
+    UI-->>Usuario: Mostrar listado y filtros
+```
+
+## 5.7 Diagrama de secuencia — marcar una lección
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Usuario
+    participant UI as Interfaz
+    participant View as marcar_leccion_view
+    participant Identity as Identidad local
+    participant Service as marcar_leccion
+    participant DB as SQLite
+    participant Audit as Audit Service
+
+    Usuario->>UI: Marcar lección
+    UI->>View: POST /roadmaps/leccion/{id}/marcar/
+    View->>Identity: Resolver propietario local
+    Identity-->>View: Usuario local o None
+    alt No existe propietario local
+        View-->>UI: Mensaje y redirección sin escritura
+    else Propietario disponible
+        View->>DB: Obtener lección y etapa
+        DB-->>View: Lección
+        View->>Service: marcar_leccion(usuario, lección)
+        Service->>DB: get_or_create Progreso
+        DB-->>Service: Registro de progreso
+        Service->>DB: Guardar estado de lección
+        Service->>Service: recalcular_progreso_etapa()
+        Service->>DB: Contar lecciones completadas y actualizar etapa
+        Service->>Audit: registrar_evento()
+        Audit->>DB: Insertar AuditLog
+        Service-->>View: Progreso actualizado
+        View-->>UI: Redirección al detalle de etapa
+    end
+    UI-->>Usuario: Mostrar estado actualizado
+```
+
+## 5.8 Diagrama de secuencia — completar una etapa y validar prerrequisitos
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Usuario
+    participant View as Vista de etapa
+    participant Service as marcar_etapa
+    participant Model as Etapa
+    participant DB as SQLite
+    participant Audit as Auditoría
+
+    Usuario->>View: POST marcar etapa como completada
+    View->>DB: Obtener etapa y roadmap
+    View->>Service: marcar_etapa(usuario, etapa)
+    Service->>DB: Consultar etapas completadas
+    DB-->>Service: Conjunto de etapas completadas
+    Service->>Model: esta_bloqueada_para(completadas)
+    Model->>DB: Consultar prerrequisitos
+    DB-->>Model: Dependencias
+    Model-->>Service: Bloqueada / disponible
+    alt Tiene prerrequisitos pendientes
+        Service-->>View: ValueError
+        View-->>Usuario: Informar bloqueo
+    else Prerrequisitos satisfechos
+        Service->>DB: Crear/actualizar Progreso a completado
+        Service->>Audit: Registrar etapa completada
+        Audit->>DB: Insertar AuditLog
+        Service-->>View: Progreso guardado
+        View-->>Usuario: Confirmar finalización
+    end
+```
+
+## 5.9 Diagrama de secuencia — autenticación local (condicional)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Usuario
+    participant UI as Login UI
+    participant Guard as Decorador de acceso
+    participant View as LoginView
+    participant Auth as Django Auth
+    participant DB as SQLite
+    participant Audit as Auditoría
+
+    Usuario->>UI: Enviar usuario y contraseña
+    UI->>Guard: POST /accounts/login/
+    alt AUTH_DISABLED = True
+        Guard-->>UI: HTTP 302 hacia panel
+        Note over UI,View: El flujo activo omite el login
+    else AUTH_DISABLED = False
+        Guard->>View: Procesar POST
+        View->>DB: Consultar bloqueo de cuenta
+        DB-->>View: Estado de bloqueo
+        View->>Auth: Validar credenciales
+        Auth->>DB: Verificar hash de contraseña
+        DB-->>Auth: Resultado
+        alt Credenciales válidas
+            Auth-->>View: Usuario autenticado
+            View->>DB: Reiniciar contador de fallos
+            View->>Audit: Registrar login exitoso
+            View-->>UI: Redirigir al panel
+        else Credenciales inválidas
+            View->>DB: Incrementar intentos fallidos
+            View->>Audit: Registrar fallo o bloqueo
+            View-->>UI: Mostrar error de acceso
+        end
+    end
+```
+
+## 5.10 Diagrama de clases — modelo implementado
+
+El siguiente diagrama representa las entidades Django encontradas en los módulos actuales. Se omiten campos secundarios para mantener legibilidad; el detalle completo se encuentra en los modelos fuente.
+
+```mermaid
+classDiagram
+    class Usuario {
+      +username
+      +password
+      +email
+      +email_verificado
+      +fecha_configuracion_inicial
+      +sesion_timeout_minutos
+      +intentos_fallidos
+      +bloqueado_hasta
+    }
+    class FraseRescate {
+      +hash_argon2
+      +usada
+      +fecha_uso
+      +creada_en
+    }
+    class ConfiguracionSistema {
+      +configuracion_inicial_completada
+      +fecha_ultimo_backup
+      +version_bd
+      +cargar()
+    }
+    class AuditLog {
+      +evento
+      +descripcion
+      +ip
+      +user_agent
+      +creado_en
+    }
+    class Roadmap {
+      +nombre
+      +edicion
+      +fuente
+      +sha256_fuente
+      +activo
+    }
+    class Etapa {
+      +numero
+      +titulo
+      +bloque
+      +prioridad
+      +objetivo
+      +proyecto
+      +desarrollada_en_mvp
+      +esta_bloqueada_para()
+    }
+    class Modulo {
+      +numero
+      +titulo
+      +objetivo
+      +orden
+    }
+    class Leccion {
+      +titulo
+      +descripcion
+      +tipo
+      +orden
+    }
+    class Actividad {
+      +titulo
+      +descripcion
+      +tipo
+      +obligatoria
+    }
+    class Prerrequisito {
+      +justificacion
+      +documentado
+    }
+    class CriterioFinalizacion {
+      +titulo
+      +descripcion
+      +tipo
+      +obligatorio
+    }
+    class Progreso {
+      +estado
+      +porcentaje
+      +tiempo_dedicado_minutos
+      +fecha_inicio
+      +fecha_actualizacion
+      +fecha_completado
+    }
+
+    Usuario "1" --> "0..*" FraseRescate : posee
+    Usuario "1" --> "0..*" AuditLog : actor opcional
+    Usuario "1" --> "0..*" Progreso : registra
+    Roadmap "1" --> "1..*" Etapa : contiene
+    Etapa "1" --> "0..*" Modulo : contiene
+    Modulo "1" --> "0..*" Leccion : contiene
+    Leccion "1" --> "0..*" Actividad : contiene
+    Etapa "1" --> "0..*" Prerrequisito : depende
+    Etapa "1" --> "0..*" CriterioFinalizacion : define
+    Etapa "1" --> "0..*" Progreso : registra
+    Modulo "0..1" --> "0..*" Progreso : agrega
+    Leccion "0..1" --> "0..*" Progreso : agrega
+    Actividad "0..1" --> "0..*" Progreso : agrega
+```
+
+**Nota:** `Prerrequisito` contiene dos referencias a `Etapa`: etapa dependiente y etapa requerida. `Progreso` se vincula a un objetivo académico y admite referencias opcionales a módulo, lección y actividad. La base de datos aplica una restricción única compuesta sobre usuario, etapa y objetivo.
+
+## 5.11 Organización del repositorio
+
+| Ruta | Responsabilidad |
+|---|---|
+| `apps/accounts/` | Identidad local, formularios, vistas y servicios de autenticación. |
+| `apps/audit/` | Modelo y servicio de auditoría. |
+| `apps/core/` | Panel principal y configuración del sistema. |
+| `apps/roadmaps/` | Modelos, vistas, servicios, datos ASCENSO y comando de carga. |
+| `config/settings/` | Configuración base, desarrollo y escritorio. |
+| `config/middleware.py` | Acceso local, cabeceras de seguridad y timeout de sesión. |
+| `electron/` | Proceso principal y preload. |
+| `templates/` | Plantillas HTML de Django. |
+| `static/` | CSS, JavaScript, fuentes e iconos locales. |
+| `desktop/` | Código histórico de integración desktop anterior. |
+| `docs/` | Documentación técnica, pruebas y operación. |
+
+---
+
+# 6. Modelo de datos
+
+## 6.1 Entidades principales
+
+### Identidad
+
+- **Usuario:** identidad local que extiende `AbstractUser`.
+- **FraseRescate:** hash de una frase de recuperación asociada a un usuario.
+
+### Configuración y auditoría
+
+- **ConfiguracionSistema:** registro singleton de configuración global.
+- **AuditLog:** eventos relevantes con actor opcional.
+
+### Dominio académico
+
+- **Roadmap:** ruta formativa versionada.
+- **Etapa:** unidad de nivel superior del roadmap.
+- **Modulo:** agrupación temática dentro de una etapa.
+- **Leccion:** unidad de aprendizaje de un módulo.
+- **Actividad:** tarea asociada a una lección.
+- **Prerrequisito:** dependencia entre dos etapas.
+- **CriterioFinalizacion:** condición documentada para una etapa.
+- **Progreso:** estado de avance del usuario sobre una unidad académica.
+
+## 6.2 Reglas de negocio del progreso
+
+1. Cada registro de progreso pertenece a un usuario y una etapa.
+2. El registro puede referirse a módulo, lección o actividad.
+3. El estado puede ser no iniciado, en progreso, completado o bloqueado.
+4. El porcentaje está limitado entre 0 y 100.
+5. Al marcar como completado, el porcentaje se establece en 100.
+6. Al reabrir o volver a no iniciado, el porcentaje se establece en 0.
+7. Al modificar una lección, el servicio recalcula el progreso agregado de su etapa.
+8. La finalización explícita de una etapa debe comprobar sus prerrequisitos.
+9. Las acciones de progreso registran un evento de auditoría.
+
+## 6.3 Diagrama entidad-relación simplificado
+
+```mermaid
+erDiagram
+    USUARIO ||--o{ FRASE_RESCATE : posee
+    USUARIO ||--o{ AUDIT_LOG : genera
+    USUARIO ||--o{ PROGRESO : registra
+    ROADMAP ||--|{ ETAPA : contiene
+    ETAPA ||--o{ MODULO : contiene
+    MODULO ||--o{ LECCION : contiene
+    LECCION ||--o{ ACTIVIDAD : contiene
+    ETAPA ||--o{ PRERREQUISITO : depende
+    ETAPA ||--o{ CRITERIO_FINALIZACION : define
+    ETAPA ||--o{ PROGRESO : recibe
+
+    USUARIO {
+      bigint id PK
+      string username
+      string password
+      boolean email_verificado
+      datetime fecha_configuracion_inicial
+      int sesion_timeout_minutos
+      int intentos_fallidos
+      datetime bloqueado_hasta
+    }
+    FRASE_RESCATE {
+      bigint id PK
+      bigint usuario_id FK
+      string hash_argon2
+      boolean usada
+      datetime fecha_uso
+      datetime creada_en
+    }
+    AUDIT_LOG {
+      bigint id PK
+      bigint usuario_id FK
+      string evento
+      text descripcion
+      string ip
+      string user_agent
+      datetime creado_en
+    }
+    ROADMAP {
+      bigint id PK
+      string nombre
+      string edicion
+      string fuente
+      string sha256_fuente
+      boolean activo
+    }
+    ETAPA {
+      bigint id PK
+      bigint roadmap_id FK
+      int numero
+      string titulo
+      string prioridad
+    }
+    MODULO {
+      bigint id PK
+      bigint etapa_id FK
+      string numero
+      string titulo
+    }
+    LECCION {
+      bigint id PK
+      bigint modulo_id FK
+      string titulo
+      string tipo
+    }
+    ACTIVIDAD {
+      bigint id PK
+      bigint leccion_id FK
+      string titulo
+      string tipo
+    }
+    PRERREQUISITO {
+      bigint id PK
+      bigint etapa_id FK
+      bigint etapa_requerida_id FK
+      text justificacion
+    }
+    CRITERIO_FINALIZACION {
+      bigint id PK
+      bigint etapa_id FK
+      string titulo
+      string tipo
+      boolean obligatorio
+    }
+    PROGRESO {
+      bigint id PK
+      bigint usuario_id FK
+      bigint etapa_id FK
+      bigint modulo_id FK
+      bigint leccion_id FK
+      bigint actividad_id FK
+      string estado
+      int porcentaje
+    }
+```
+
+---
+
+# 7. Requisitos de calidad y criterios de aceptación
+
+## 7.1 Criterios generales
+
+Un requisito no se considera aceptado únicamente porque exista una función o una vista. Su aceptación debe comprobar el comportamiento observable, los casos alternativos y la persistencia esperada.
+
+### 7.1.1 Criterios del roadmap
+
+- El listado muestra las etapas presentes en el roadmap activo.
+- Los filtros combinados no deben producir resultados incorrectos.
+- El detalle de una etapa presenta los módulos y lecciones asociados.
+- Una etapa con prerrequisitos incompletos no puede marcarse como completada.
+- Una lección marcada como completada debe persistir después de recargar la página.
+- El porcentaje de etapa debe recalcularse al completar o reabrir una lección.
+- Las acciones de escritura deben rechazar métodos HTTP no permitidos.
+- Los eventos de progreso deben registrarse en auditoría.
+
+### 7.1.2 Criterios del escritorio
+
+- Electron debe seleccionar un puerto libre en loopback.
+- Electron debe iniciar el proceso Django y capturar su salida.
+- La ventana principal no debe cargar la aplicación antes de que el servidor responda.
+- La navegación fuera del origen local permitido debe bloquearse.
+- Al cerrar la aplicación, el proceso servidor debe detenerse.
+- Los datos persistentes deben guardarse en el directorio de datos configurado.
+
+### 7.1.3 Criterios visuales
+
+- Los doce temas deben ser seleccionables y presentar una interfaz legible.
+- Los componentes comunes deben utilizar tokens semánticos del tema activo.
+- Los estados de foco, hover, deshabilitado y error deben distinguirse.
+- La interfaz debe probarse en la resolución mínima de ventana y en tamaños superiores.
+- Debe verificarse contraste, navegación por teclado y reducción de movimiento.
+
+## 7.2 Estrategia de pruebas
+
+| Nivel | Alcance | Evidencia esperada |
+|---|---|---|
+| Unitarias | Servicios de progreso, bloqueo, carga idempotente, identidad y auditoría. | Pruebas Django. |
+| Integración | Vistas + ORM + SQLite + servicios. | Django Test Client. |
+| Seguridad | CSRF, cabeceras, acceso local, navegación Electron y configuración auth. | Pruebas automatizadas y revisión. |
+| Interfaz | Panel, filtros, detalle, progreso y temas. | Pruebas manuales o automatizadas de navegador. |
+| Escritorio | Arranque, espera del servidor, cierre y persistencia. | Prueba de empaquetado y ejecución. |
+| Regresión | Flujos existentes después de cambios. | Suite completa ejecutada. |
+
+### 7.2.1 Comandos de comprobación documentados
+
+```bash
+python manage.py check
+python manage.py makemigrations --check --dry-run
+python manage.py test apps.core apps.accounts apps.audit apps.roadmaps
+```
+
+Estos comandos son el procedimiento documentado en el repositorio. Esta revisión documental no ejecutó los comandos ni certifica su resultado en el equipo del usuario.
+
+## 7.3 Métricas pendientes de establecer
+
+| Métrica | Método | Estado |
+|---|---|---|
+| Tiempo de arranque en frío | Medir desde apertura de Electron hasta panel visible. | POR MEDIR |
+| Consumo RAM en reposo | RSS de Electron y Django tras estabilización. | POR MEDIR |
+| Tiempo de carga del roadmap | Medir GET /roadmaps/ con el dataset de referencia. | POR MEDIR |
+| Tiempo de respuesta al marcar progreso | Medir petición POST completa. | POR MEDIR |
+| Compatibilidad de empaquetado | Build y ejecución en cada SO objetivo. | POR VALIDAR |
+| Contraste de los doce temas | Medición WCAG para pares texto/fondo y controles. | POR VALIDAR |
+
+---
+
+# 8. Matriz de trazabilidad
+
+La matriz enlaza requisitos, componente y verificación. Los identificadores de prueba son propuestos para mantener trazabilidad; no implican que todas las pruebas estén implementadas o ejecutadas.
+
+| Requisito | Componente | Caso de uso | Prueba propuesta | Estado |
+|---|---|---|---|---|
+| RF-001 a RF-005 | `apps.core` | UC-01 | T-CORE-01 a T-CORE-05 | IMPLEMENTADO |
+| RF-010 a RF-014 | `apps.roadmaps` | UC-02 | T-ROAD-01 a T-ROAD-05 | IMPLEMENTADO |
+| RF-015, RF-017, RF-018 | `apps.roadmaps.services` | UC-03 | T-PROG-01 a T-PROG-04 | IMPLEMENTADO |
+| RF-016, RF-019 | `apps.roadmaps.services` | UC-04 | T-PROG-05 a T-PROG-07 | IMPLEMENTADO |
+| RF-020 | `Prerrequisito.clean / constraint` | UC-04 | T-ROAD-06 | IMPLEMENTADO |
+| RF-021, RF-022 | `cargar_ascenso`, `Roadmap` | UC-02 | T-ROAD-07 a T-ROAD-09 | IMPLEMENTADO |
+| RF-030 a RF-037 | `apps.accounts` | UC-06 | T-AUTH-01 a T-AUTH-12 | IMPLEMENTADO / DESACTIVADO |
+| RF-040 a RF-043 | `apps.audit` | UC-03, UC-04, UC-06 | T-AUD-01 a T-AUD-05 | IMPLEMENTADO |
+| RNF-002 | Electron / Django | UC-01 | T-SEC-01 | IMPLEMENTADO; prueba de red por ejecutar |
+| RNF-007 | Frontend | UC-05 | T-UI-01 | IMPLEMENTADO |
+| RS-001 a RS-010 | Configuración y Electron | UC-01 | T-SEC-01 a T-SEC-10 | IMPLEMENTADO / POR VALIDAR |
+| RF-050 a RF-064 | Módulos futuros | — | T-FUT-01 en adelante | PENDIENTE |
+
+## 8.1 Evidencia de implementación por archivo
+
+| Área | Archivos de referencia |
+|---|---|
+| Configuración Django | `config/settings/base.py`, `development.py`, `desktop.py` |
+| Rutas | `config/urls.py`, `apps/core/urls.py`, `apps/roadmaps/urls.py`, `apps/accounts/urls.py` |
+| Identidad | `apps/accounts/models.py`, `views.py`, `services.py`, `identity.py` |
+| Auditoría | `apps/audit/models.py`, `apps/audit/services.py` |
+| Dashboard | `apps/core/models.py`, `apps/core/views.py` |
+| Roadmap | `apps/roadmaps/models.py`, `views.py`, `services.py` |
+| Escritorio | `electron/main.js`, `electron/preload.js` |
+| Empaquetado | `package.json`, `build_windows.bat`, `server_entry.py` |
+| UI | `templates/`, `static/css/`, `static/js/` |
+
+---
+
+# 9. Restricciones, riesgos y decisiones pendientes
+
+## 9.1 Riesgos identificados
+
+| ID | Riesgo | Impacto | Tratamiento recomendado |
+|---|---|---|---|
+| R-01 | La autenticación está desactivada en la configuración actual. | Alto si el equipo o los datos son accesibles a terceros. | Mantenerlo explícito en la documentación; decidir cuándo reactivarla y probar el flujo. |
+| R-02 | La documentación histórica declara como implementadas capacidades que ahora están pendientes. | Alto para planificación y evaluación. | Usar esta SRS como línea base y mantener estados con evidencia. |
+| R-03 | La aplicación depende de un proceso servidor local iniciado por Electron. | Medio/alto ante fallos de arranque o cierre. | Probar timeouts, cierre y recuperación del proceso. |
+| R-04 | El paquete de escritorio puede diferir del entorno de desarrollo. | Alto para distribución. | Ejecutar builds y pruebas en cada sistema operativo objetivo. |
+| R-05 | La matriz de pruebas documentada no demuestra por sí sola que la suite se haya ejecutado recientemente. | Medio. | Registrar fecha, entorno, comando y resultado de cada ejecución. |
+| R-06 | Los módulos documentales y de evidencias no están implementados. | Medio para el alcance futuro. | Planificar incrementos con modelos, seguridad y pruebas. |
+| R-07 | La persistencia local no equivale a una estrategia de backup probada. | Alto ante pérdida del equipo. | Definir backup, restauración y validación antes de depender de datos críticos. |
+
+## 9.2 Decisiones pendientes
+
+| ID | Decisión | Situación | Responsable |
+|---|---|---|---|
+| DP-01 | ¿Cuándo se reactivará la autenticación? | `AUTH_DISABLED=True`; cambio requiere autorización explícita. | Propietario |
+| DP-02 | ¿Qué sistemas operativos se consideran oficialmente soportados? | Package configura targets Windows y Linux; validar ejecución real. | Propietario / desarrollo |
+| DP-03 | ¿Se implementará backup cifrado? | Propuesto, no aprobado. | Propietario |
+| DP-04 | ¿Qué módulos académicos se priorizan después del roadmap? | Requiere roadmap de producto. | Propietario |
+| DP-05 | ¿Se mantendrá la biblioteca PDF dentro del alcance del siguiente incremento? | Planificada; implementación pendiente. | Propietario |
+| DP-06 | ¿Cuál será el procedimiento oficial de actualización y migración de datos? | Requiere formalización y pruebas. | Desarrollo |
+
+## 9.3 Cambios controlados
+
+Todo cambio que afecte requisitos deberá:
+
+1. Identificar el requisito y la motivación.
+2. Evaluar impacto sobre arquitectura, modelos, seguridad y datos existentes.
+3. Actualizar el código y las pruebas.
+4. Actualizar esta SRS y la matriz de trazabilidad.
+5. Registrar decisiones relevantes en `docs/DECISIONES_PENDIENTES.md` o un ADR.
+6. Documentar el resultado de validación.
+
+---
+
+# 10. Glosario de módulos y responsabilidades futuras
+
+| Módulo propuesto | Responsabilidad prevista | Dependencias principales |
+|---|---|---|
+| Competencias | Definir competencias, niveles y criterios de dominio. | Roadmaps, evaluaciones y evidencias. |
+| Biblioteca | Importar, catalogar, consultar y asociar documentos. | Sistema de archivos, Roadmaps. |
+| Conocimiento | Relacionar conceptos con documentos y actividades. | Biblioteca, Roadmaps. |
+| Evaluaciones | Preguntas, rúbricas, intentos y resultados. | Roadmaps, Competencias. |
+| Evidencias | Archivos y pruebas de trabajo realizado. | Actividades, Competencias, Laboratorios. |
+| Laboratorios | Guías, pasos, comandos y resultados. | Roadmaps, Evidencias. |
+| Backups | Crear, validar y restaurar copias. | SQLite y archivos locales. |
+| Vigencia | Revisar contenidos y registrar decisiones. | Biblioteca y Conocimiento. |
+| Ética | Advertencias y aceptación contextual. | Laboratorios y contenidos sensibles. |
+
+Estos módulos son una propuesta de organización por dominio, no una afirmación de que existan ya como aplicaciones Django funcionales.
+
+---
+
+# 11. Anexos
+
+## 11.1 Convención de nombres
+
+- Requisitos funcionales: `RF-NNN`.
+- Requisitos no funcionales: `RNF-NNN`.
+- Requisitos de datos: `RD-NNN`.
+- Requisitos de seguridad: `RS-NNN`.
+- Casos de uso: `UC-NN`.
+- Pruebas: `T-AREA-NN`.
+- Riesgos: `R-NN`.
+- Decisiones pendientes: `DP-NN`.
+
+Los identificadores no deben reutilizarse ni cambiar de significado entre versiones.
+
+## 11.2 Reglas para mantener los diagramas
+
+- Los diagramas de clases deben reflejar modelos reales y relaciones declaradas.
+- Los diagramas de secuencia deben corresponder a funciones, vistas y servicios existentes.
+- Las capacidades futuras deben mostrarse en diagramas separados o etiquetarse como propuestas.
+- Si una ruta, clase o servicio cambia de nombre, se actualiza el diagrama en el mismo cambio.
+- Los diagramas Mermaid deben mantenerse renderizables en GitHub.
+
+## 11.3 Lista de verificación para una futura versión
+
+- [ ] Revisar todos los requisitos con el propietario del producto.
+- [ ] Confirmar el alcance oficial del MVP.
+- [ ] Ejecutar la suite de pruebas y registrar resultados.
+- [ ] Validar el flujo Electron + Django empaquetado.
+- [ ] Verificar el comportamiento de la aplicación sin Internet.
+- [ ] Medir rendimiento y consumo de memoria.
+- [ ] Revisar seguridad de archivos y directorios de datos.
+- [ ] Confirmar el estado de los doce temas visuales.
+- [ ] Completar diagramas de secuencia para nuevos módulos.
+- [ ] Actualizar el diagrama de clases después de cada migración relevante.
+- [ ] Sincronizar la matriz de trazabilidad con pruebas reales.
+- [ ] Registrar decisiones aprobadas y ADR asociados.
+
+---
+
+**Fin del documento — CodeGuard Pro SRS v3.0**
+
+> Esta especificación es una línea base documental derivada de la inspección estática del repositorio. Antes de utilizarla como documento contractual o como evidencia de conformidad, deben validarse los requisitos con el propietario y ejecutar las pruebas indicadas en el entorno objetivo.
