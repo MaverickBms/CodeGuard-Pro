@@ -97,35 +97,24 @@
         <ul class="lecciones-list">
           {% for leccion in modulo.lecciones_lista %}
             <li class="leccion-item{% if leccion.completada %} leccion-done{% endif %}">
-              <div class="leccion-info">
+              <a class="leccion-info leccion-open-link" href="{% url 'roadmaps:leccion_detalle' leccion.id %}" aria-label="Abrir lección: {{ leccion.titulo }}">
                 <span class="leccion-marker" aria-hidden="true">
                   {% if leccion.completada %}
                     <i class="fa-solid fa-check"></i>
                   {% else %}
-                    <i class="fa-regular fa-circle"></i>
+                    <i class="fa-solid fa-book-open"></i>
                   {% endif %}
                 </span>
-                <div class="leccion-copy">
+                <span class="leccion-copy">
                   <span class="leccion-title">{{ leccion.titulo }}</span>
                   <span class="leccion-status" aria-live="polite">
-                    {% if leccion.completada %}Lección completada{% else %}Pendiente de completar{% endif %}
+                    {% if leccion.completada %}Lección completada{% elif leccion.progreso_actual.estado == "en_progreso" %}En progreso{% else %}Abrir contenido de aprendizaje{% endif %}
                   </span>
-                </div>
-              </div>
-              <form method="post" action="{% url 'roadmaps:marcar_leccion' leccion.id %}" class="leccion-form">
-                {% csrf_token %}
-                {% if leccion.completada %}
-                  <input type="hidden" name="completada" value="0">
-                  <button class="btn-icon leccion-toggle leccion-toggle-done" type="submit" title="Reabrir lección" aria-label="Reabrir lección {{ leccion.titulo }}">
-                    <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
-                  </button>
-                {% else %}
-                  <input type="hidden" name="completada" value="1">
-                  <button class="btn-icon leccion-toggle" type="submit" title="Marcar lección como completada" aria-label="Marcar lección como completada: {{ leccion.titulo }}">
-                    <i class="fa-regular fa-circle-check" aria-hidden="true"></i>
-                  </button>
-                {% endif %}
-              </form>
+                </span>
+              </a>
+              <a class="btn-icon leccion-toggle leccion-open-action" href="{% url 'roadmaps:leccion_detalle' leccion.id %}" title="Estudiar lección" aria-label="Estudiar lección {{ leccion.titulo }}">
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </a>
             </li>
           {% endfor %}
         </ul>
