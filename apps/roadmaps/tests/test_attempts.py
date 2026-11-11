@@ -151,11 +151,13 @@ class IntentosEjercicioTests(TestCase):
             ejercicio=self.ejercicio,
             tipo="respuesta_exacta",
             configuracion={"respuesta_esperada": "nombre = 'Ada'"},
+            permite_completar_leccion=True,
         )
         ConfiguracionEvaluacion.objects.create(
             ejercicio=segundo,
             tipo="respuesta_exacta",
             configuracion={"respuesta_esperada": "print(nombre)"},
+            permite_completar_leccion=True,
         )
 
         registrar_intento_ejercicio(self.usuario, self.ejercicio, "nombre = 'Ada'")
