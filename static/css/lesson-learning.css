@@ -1,3 +1,8 @@
+/* En la paleta clara, la zona de estudio usa un lienzo neutro y deja
+   el color coral como acento; el resto de la aplicación conserva su tema. */
+body[data-theme="light"] .main-content:has(.lesson-page) {
+  background: color-mix(in srgb, var(--cg-bg) 10%, #fff);
+}
 /* CodeGuard Pro — experiencia de aprendizaje refinada.
    Capa local a la página de lección; consume los tokens del tema activo. */
 .lesson-page {
