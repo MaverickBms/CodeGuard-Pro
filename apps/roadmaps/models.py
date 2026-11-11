@@ -480,7 +480,7 @@ class EjemploLeccion(models.Model):
 
 
 class EjercicioLeccion(models.Model):
-    """Enunciado de práctica; la ejecución y tutoría se incorporan en la fase 3."""
+    """Enunciado de práctica; evaluación en fase 2 y tutoría en fase 3."""
 
     NIVELES = [
         ("basico", "Básico"),

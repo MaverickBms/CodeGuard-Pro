@@ -34,7 +34,7 @@ class ModoSinAutenticacionTests(TestCase):
         respuesta = self.client.get(reverse("core:panel"))
         self.assertEqual(respuesta.status_code, 200)
         self.assertContains(respuesta, "Panel principal")
-        self.assertContains(respuesta, "Acceso local sin autenticación")
+        self.assertContains(respuesta, "Entorno local:")
 
     def test_no_redireccion_obligatoria_al_login(self):
         """No existe redirección obligatoria al inicio de sesión."""
@@ -163,103 +163,71 @@ class ProgresoPersistenciaTests(TestCase):
         self.assertEqual(respuesta.status_code, 200)
         self.assertIsInstance(respuesta.wsgi_request.user, AnonymousUser)
 
-    def test_guardar_y_recuperar_progreso_etapa(self):
-        """Marcar etapa sin login guarda y recupera con el propietario local."""
-        from apps.roadmaps.services import marcar_etapa, etapas_completadas
+    def test_intento_de_completar_etapa_sin_evidencia_es_rechazado(self):
+        """El POST heredado no concede una aprobación académica."""
         from apps.audit.models import AuditLog
 
-        # 1. Marcar etapa como completada sin autenticación.
         respuesta = self.client.post(
             reverse("roadmaps:marcar_etapa", args=[self.etapa0.numero]),
             {"completada": "1"},
         )
         self.assertEqual(respuesta.status_code, 302)
 
-        # 2. Verificar que el progreso está asociado al propietario local.
-        progreso = Progreso.objects.filter(
-            usuario=self.usuario_local,
-            etapa=self.etapa0,
-            modulo__isnull=True,
-            leccion__isnull=True,
-        ).first()
-        self.assertIsNotNone(progreso)
-        self.assertEqual(progreso.estado, "completado")
+        self.assertFalse(
+            Progreso.objects.filter(
+                usuario=self.usuario_local,
+                etapa=self.etapa0,
+                modulo__isnull=True,
+                leccion__isnull=True,
+                estado="completado",
+            ).exists()
+        )
+        self.assertFalse(
+            AuditLog.objects.filter(evento="roadmap_etapa_completada").exists()
+        )
 
-        # 3. Volver a consultar el roadmap: la etapa aparece como completada.
-        respuesta = self.client.get(reverse("roadmaps:detalle", args=[self.etapa0.numero]))
+        respuesta = self.client.get(
+            reverse("roadmaps:detalle", args=[self.etapa0.numero])
+        )
         self.assertEqual(respuesta.status_code, 200)
-        self.assertTrue(respuesta.context["completada"])
+        self.assertFalse(respuesta.context["completada"])
 
-        # 4. La lista de etapas también refleja el completado (a través de avance).
-        respuesta = self.client.get(reverse("roadmaps:lista"))
-        self.assertEqual(respuesta.status_code, 200)
-        self.assertEqual(respuesta.context["avance"]["completadas"], 1)
-        self.assertEqual(respuesta.context["avance"]["total"], 33)
-
-        # 5. La auditoría registra usuario=None (actor nulo), aunque el
-        # progreso esté asociado al propietario local.
-        evento = AuditLog.objects.filter(
-            evento="roadmap_etapa_completada"
-        ).first()
-        self.assertIsNotNone(evento)
-        self.assertIsNone(evento.usuario)
-        self.assertIn(f"Etapa {self.etapa0.numero}", evento.descripcion)
-
-    def test_guardar_y_recuperar_progreso_leccion(self):
-        """Marcar lección sin login guarda y recupera con el propietario local."""
-        from apps.roadmaps.services import marcar_leccion, mapa_progreso_lecciones
+    def test_intento_de_completar_leccion_sin_evidencia_es_rechazado(self):
+        """El POST heredado no crea una finalización de lección."""
         from apps.audit.models import AuditLog
 
-        # 1. Marcar lección como completada sin autenticación.
         respuesta = self.client.post(
             reverse("roadmaps:marcar_leccion", args=[self.leccion0.pk]),
             {"completada": "1"},
         )
         self.assertEqual(respuesta.status_code, 302)
 
-        # 2. Verificar que el progreso está asociado al propietario local.
-        progreso = Progreso.objects.filter(
-            usuario=self.usuario_local,
-            etapa=self.etapa0,
-            modulo=self.modulo0,
-            leccion=self.leccion0,
-        ).first()
-        self.assertIsNotNone(progreso)
-        self.assertEqual(progreso.estado, "completado")
-
-        # 3. Volver a consultar el detalle: la lección aparece como completada.
-        respuesta = self.client.get(reverse("roadmaps:detalle", args=[self.etapa0.numero]))
-        self.assertEqual(respuesta.status_code, 200)
-        lecciones = respuesta.context["modulos"][0].lecciones_lista
-        leccion_en_contexto = next(
-            (l for l in lecciones if l.id == self.leccion0.id), None
+        self.assertFalse(
+            Progreso.objects.filter(
+                usuario=self.usuario_local,
+                etapa=self.etapa0,
+                modulo=self.modulo0,
+                leccion=self.leccion0,
+                estado="completado",
+            ).exists()
         )
-        self.assertIsNotNone(leccion_en_contexto)
-        self.assertTrue(leccion_en_contexto.completada)
-
-        # 4. La auditoría registra usuario=None.
-        evento = AuditLog.objects.filter(
-            evento="roadmap_leccion_completada"
-        ).first()
-        self.assertIsNotNone(evento)
-        self.assertIsNone(evento.usuario)
-        self.assertIn(self.leccion0.titulo, evento.descripcion)
+        self.assertFalse(
+            AuditLog.objects.filter(evento="roadmap_leccion_completada").exists()
+        )
 
     def test_progreso_recuperado_despues_de_marcar_etapa(self):
-        """El progreso marcado previamente se recupera al volver a consultar."""
+        """Un intento manual rechazado no aparece como etapa completada."""
         from apps.roadmaps.services import etapas_completadas
 
-        # 1. Marcar etapa.
         self.client.post(
             reverse("roadmaps:marcar_etapa", args=[self.etapa0.numero]),
             {"completada": "1"},
         )
 
-        # 2. Consultar etapas_completadas con el propietario local.
         completadas = etapas_completadas(self.usuario_local, self.roadmap)
-        self.assertIn(self.etapa0.numero, completadas)
+        self.assertNotIn(self.etapa0.numero, completadas)
 
-        # 3. Consultar la lista por HTTP: la etapa aparece completada.
         respuesta = self.client.get(reverse("roadmaps:lista"))
         self.assertEqual(respuesta.status_code, 200)
-        self.assertEqual(respuesta.context["avance"]["completadas"], 1)
+        self.assertEqual(respuesta.context["avance"]["completadas"], 0)
+        self.assertEqual(respuesta.context["avance"]["total"], 33)

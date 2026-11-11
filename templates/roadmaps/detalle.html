@@ -62,11 +62,11 @@
       {% if completada %}
         <input type="hidden" name="completada" value="0">
         <button class="btn-theme btn-theme-ghost" type="submit"><i class="fa-solid fa-rotate-left"></i> Reabrir etapa</button>
-      {% else %}
-        <input type="hidden" name="completada" value="1">
-        <button class="btn-theme" type="submit" {% if bloqueada %}disabled{% endif %}><i class="fa-solid fa-check"></i> Marcar completada</button>
       {% endif %}
     </form>
+    {% if not completada %}
+      <p class="etapa-lock-note">La aprobación se habilitará cuando se verifiquen las evaluaciones y los criterios académicos de esta etapa.</p>
+    {% endif %}
   </div>
 </section>
 
