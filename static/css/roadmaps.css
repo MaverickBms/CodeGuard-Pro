@@ -851,3 +851,299 @@
     flex: 1;
   }
 }
+
+
+/* ==========================================================================
+   FASE 1 — Refinamiento visual del listado y detalle de ASCENSO
+   Mantiene los tokens semánticos para respetar los doce temas.
+   ========================================================================== */
+
+/* Filtros: cabecera compacta + controles en una sola línea en escritorio. */
+form.roadmap-filters {
+  display: block;
+  width: 100%;
+  padding: clamp(16px, 2vw, 22px);
+  margin: 0 0 26px;
+  border: 1px solid color-mix(in srgb, var(--cg-primary) 22%, var(--cg-border));
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--cg-surface) 96%, var(--cg-bg));
+  box-shadow: var(--cg-modern-shadow, 0 8px 24px color-mix(in srgb, var(--cg-text) 6%, transparent));
+}
+
+.roadmap-filters-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.roadmap-filters-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.roadmap-filters-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 12px;
+  color: var(--cg-primary);
+  background: color-mix(in srgb, var(--cg-primary) 12%, var(--cg-surface));
+  border: 1px solid color-mix(in srgb, var(--cg-primary) 20%, var(--cg-border));
+}
+
+.roadmap-filters-title h2 {
+  margin: 0 0 3px;
+  color: var(--cg-text);
+  font-size: 1rem;
+  font-weight: 750;
+  letter-spacing: -.025em;
+}
+
+.roadmap-filters-title p {
+  margin: 0;
+  color: var(--cg-text-muted);
+  font-size: .78rem;
+}
+
+.roadmap-filters-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--cg-text-muted);
+  font-size: .74rem;
+  white-space: nowrap;
+}
+
+.roadmap-filters-hint i { color: var(--cg-primary); }
+
+.roadmap-filters-controls {
+  display: grid;
+  grid-template-columns: minmax(170px, .9fr) minmax(170px, .85fr) minmax(230px, 1.35fr) auto;
+  align-items: end;
+  gap: 14px;
+}
+
+.roadmap-filters .filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: auto;
+  min-width: 0;
+  margin: 0;
+}
+
+.roadmap-filters .filter-field label {
+  margin: 0;
+  color: var(--cg-text-secondary);
+  font-size: .7rem;
+  font-weight: 750;
+  letter-spacing: .075em;
+}
+
+.roadmap-filters .filter-field select,
+.roadmap-filters .filter-field input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 43px;
+  padding: 9px 12px;
+  border: 1px solid var(--cg-border);
+  border-radius: 11px;
+  background: var(--cg-bg);
+  color: var(--cg-text);
+  font: inherit;
+  font-size: .86rem;
+  box-shadow: none;
+}
+
+.roadmap-filters .filter-field select:focus,
+.roadmap-filters .filter-field input:focus {
+  border-color: var(--cg-border-focus);
+  outline: 2px solid color-mix(in srgb, var(--cg-border-focus) 24%, transparent);
+  outline-offset: 1px;
+}
+
+.filter-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filter-search-wrap > i {
+  position: absolute;
+  left: 13px;
+  z-index: 1;
+  color: var(--cg-text-muted);
+  font-size: .82rem;
+  pointer-events: none;
+}
+
+.roadmap-filters .filter-search-wrap input { padding-left: 36px; }
+
+.roadmap-filters .filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  margin: 0;
+}
+
+.roadmap-filters .filter-actions .btn-theme {
+  min-height: 43px;
+  padding: 9px 14px;
+  border-radius: 11px;
+  white-space: nowrap;
+  font-size: .82rem;
+}
+
+.roadmap-filters .filter-actions .btn-theme-ghost {
+  background: transparent;
+  color: var(--cg-primary);
+}
+
+/* Lecciones: título, estado y acción forman una unidad visual compacta. */
+.lecciones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px 9px;
+}
+
+.lecciones-list .leccion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.lecciones-list .leccion-item:hover {
+  background: color-mix(in srgb, var(--cg-primary) 5%, var(--cg-surface));
+  border-color: color-mix(in srgb, var(--cg-primary) 18%, var(--cg-border));
+  transform: translateX(2px);
+}
+
+.leccion-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--cg-text);
+}
+
+.leccion-marker {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border: 1px solid var(--cg-border);
+  border-radius: 9px;
+  color: var(--cg-text-muted);
+  background: var(--cg-surface);
+  font-size: .78rem;
+}
+
+.leccion-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+}
+
+.leccion-title {
+  color: var(--cg-text);
+  font-size: .88rem;
+  font-weight: 650;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.leccion-status {
+  color: var(--cg-text-muted);
+  font-size: .7rem;
+  line-height: 1.3;
+}
+
+.leccion-done .leccion-marker {
+  color: var(--cg-success);
+  border-color: color-mix(in srgb, var(--cg-success) 38%, var(--cg-border));
+  background: color-mix(in srgb, var(--cg-success) 10%, var(--cg-surface));
+}
+
+.leccion-done .leccion-title { color: var(--cg-text); }
+.leccion-done .leccion-status { color: var(--cg-success); }
+
+.leccion-form {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.leccion-toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  color: var(--cg-primary);
+  border-color: color-mix(in srgb, var(--cg-primary) 35%, var(--cg-border));
+  background: var(--cg-surface);
+}
+
+.leccion-toggle:hover {
+  color: var(--cg-on-primary);
+  border-color: var(--cg-primary);
+  background: var(--cg-primary);
+}
+
+.leccion-toggle-done {
+  color: var(--cg-success);
+  border-color: color-mix(in srgb, var(--cg-success) 38%, var(--cg-border));
+}
+
+/* Tablet: controles en dos columnas; acciones ocupan el ancho disponible. */
+@media (max-width: 1050px) {
+  .roadmap-filters-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .roadmap-filters .filter-field-grow { grid-column: 1 / -1; }
+  .roadmap-filters .filter-actions { grid-column: 1 / -1; justify-content: flex-end; }
+}
+
+/* Móvil: controles apilados y acciones con objetivos táctiles amplios. */
+@media (max-width: 640px) {
+  .roadmap-filters-heading {
+    align-items: flex-start;
+    margin-bottom: 15px;
+  }
+  .roadmap-filters-hint { display: none; }
+  .roadmap-filters-controls { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .roadmap-filters .filter-field-grow,
+  .roadmap-filters .filter-actions { grid-column: auto; }
+  .roadmap-filters .filter-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .roadmap-filters .filter-actions .btn-theme { width: 100%; }
+  .lecciones-list { padding: 6px; }
+  .lecciones-list .leccion-item { padding: 10px 8px; gap: 8px; }
+  .leccion-info { gap: 9px; }
+  .leccion-title { font-size: .84rem; }
+  .leccion-status { font-size: .67rem; }
+}
+
+/* Respeta la preferencia del sistema y la configuración de accesibilidad. */
+@media (prefers-reduced-motion: reduce) {
+  .lecciones-list .leccion-item { transition: none; }
+  .lecciones-list .leccion-item:hover { transform: none; }
+}
