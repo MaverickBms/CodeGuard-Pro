@@ -157,31 +157,38 @@ La finalización funcional no significa que todas las combinaciones de dispositi
 
 La Fase 2 comenzó con el primer incremento del flujo de aprendizaje.
 
-Implementado en la rama principal hasta el último estado validado:
+Implementado en la base de la Fase 2 y ampliado en ramas de trabajo:
 
 - Modelo `ContenidoLeccion` con campos para objetivos, teoría técnica, explicación sencilla, notas y publicación.
 - Modelos `EjemploLeccion` y `EjercicioLeccion`.
 - Página de estudio independiente por lección.
 - Registro de estado **En progreso** al iniciar una lección; el inicio no completa la actividad.
-- Restricción del endpoint heredado para impedir la finalización manual no demostrada.
+- Restricción de los servicios y endpoints heredados para impedir finalizaciones manuales no demostradas.
 - Presentación de contenido publicado y estados de contenido pendiente.
-- Documentación técnica inicial en `docs/FASE_2_APRENDIZAJE.md`.
+- Editor de texto básico para entregar respuestas/código, sin resaltado de sintaxis.
+- Modelos de configuración de evaluación e intentos persistidos, con historial reciente por ejercicio.
+- Evaluadores deterministas iniciales: respuesta exacta y comprobación estática de fragmentos. No ejecutan código.
+- Versiones de evaluadores conservadas y vinculadas a cada intento.
+- Finalización automática condicionada a evidencia aprobada para todos los ejercicios obligatorios y a una autorización explícita del evaluador; dicha autorización está desactivada por defecto.
+- Registro de auditoría de entregas y finalizaciones por evidencia.
 
 Validación registrada:
 
-- La suite `apps.roadmaps` pasó **28 pruebas** después de corregir imports y expectativas del flujo.
+- La suite `apps.roadmaps` pasó **29 pruebas** en la rama `phase-2/progress-domain-rules` antes de este incremento.
+- Las nuevas pruebas de intentos y evaluación están añadidas en `apps/roadmaps/tests/test_attempts.py`, pero todavía requieren ejecución local.
 - Último commit de referencia conocido en `main`: `dee0da9b4444ecabc5fc4dd4263296eef8361a99`.
 
 Pendiente de la Fase 2:
 
 - Cargar y revisar contenido académico real para las lecciones.
 - Validar navegación y presentación de todos los tipos de lección.
-- Añadir editor de código.
-- Implementar intentos, comprobación y evaluación de ejercicios.
-- Incorporar pistas progresivas y diagnóstico.
-- Registrar dominio demostrado y completar lecciones automáticamente según reglas verificables.
+- Incorporar resaltado de sintaxis y mejorar la experiencia del editor.
+- Crear un flujo editorial versionado para configurar y publicar ejercicios/evaluadores.
+- Ampliar la evaluación con pruebas funcionales seguras. No ejecutar código hasta disponer de un sandbox independiente y auditado.
+- Incorporar pistas progresivas y diagnóstico en la Fase 3, no en este incremento.
+- Completar la validación visual y funcional con los 12 temas y distintos tamaños de pantalla.
 
-**No declarar Fase 2 completada** por el hecho de que existan modelos, una plantilla y 28 pruebas aprobadas.
+**No declarar Fase 2 completada** hasta cubrir los criterios académicos, técnicos, de seguridad y de validación definidos en este plan.
 
 ---
 
