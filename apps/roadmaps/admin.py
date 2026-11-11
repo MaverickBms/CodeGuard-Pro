@@ -5,6 +5,9 @@ from django.contrib import admin
 from .models import (
     Actividad,
     CriterioFinalizacion,
+    ContenidoLeccion,
+    EjemploLeccion,
+    EjercicioLeccion,
     Etapa,
     Leccion,
     Modulo,
@@ -74,3 +77,47 @@ class ProgresoAdmin(admin.ModelAdmin):
     list_display = ("usuario", "etapa", "estado", "porcentaje", "fecha_actualizacion")
     list_filter = ("estado", "etapa__roadmap")
     search_fields = ("usuario__username", "etapa__titulo")
+
+class EjemploLeccionInline(admin.TabularInline):
+    model = EjemploLeccion
+    extra = 0
+
+
+class EjercicioLeccionInline(admin.StackedInline):
+    model = EjercicioLeccion
+    extra = 0
+    fields = (
+        "titulo", "enunciado", "instrucciones", "lenguaje", "nivel",
+        "codigo_inicial", "pista_1", "pista_2", "pista_3",
+        "obligatorio", "orden", "publicado",
+    )
+
+
+@admin.register(ContenidoLeccion)
+class ContenidoLeccionAdmin(admin.ModelAdmin):
+    list_display = ("leccion", "publicado", "actualizado_en")
+    list_filter = ("publicado", "leccion__modulo__etapa__roadmap")
+    search_fields = ("leccion__titulo", "teoria_tecnica", "explicacion_sencilla")
+    fieldsets = (
+        ("Lección", {"fields": ("leccion", "publicado")}),
+        ("Aprendizaje", {"fields": ("objetivos_aprendizaje", "teoria_tecnica", "explicacion_sencilla", "notas")}),
+    )
+
+
+@admin.register(EjemploLeccion)
+class EjemploLeccionAdmin(admin.ModelAdmin):
+    list_display = ("titulo", "leccion", "lenguaje", "orden", "publicado")
+    list_filter = ("lenguaje", "publicado")
+    search_fields = ("titulo", "leccion__titulo", "explicacion")
+
+
+@admin.register(EjercicioLeccion)
+class EjercicioLeccionAdmin(admin.ModelAdmin):
+    list_display = ("titulo", "leccion", "nivel", "obligatorio", "publicado")
+    list_filter = ("nivel", "obligatorio", "publicado")
+    search_fields = ("titulo", "enunciado", "leccion__titulo")
+    fields = (
+        "leccion", "titulo", "enunciado", "instrucciones", "lenguaje", "nivel",
+        "codigo_inicial", "pista_1", "pista_2", "pista_3",
+        "obligatorio", "orden", "publicado",
+    )
