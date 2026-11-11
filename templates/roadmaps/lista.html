@@ -54,32 +54,48 @@
   </article>
 </section>
 
-<form class="glass-card roadmap-filters cg-card" method="get" action="{% url 'roadmaps:lista' %}">
-  <div class="filter-field">
-    <label for="filtro-bloque">Bloque</label>
-    <select id="filtro-bloque" name="bloque">
-      <option value="">Todos los bloques</option>
-      {% for valor in bloques %}
-        <option value="{{ valor }}" {% if valor == bloque_seleccionado %}selected{% endif %}>{{ valor|default:"Sin bloque" }}</option>
-      {% endfor %}
-    </select>
+<form class="glass-card roadmap-filters cg-card" method="get" action="{% url 'roadmaps:lista' %}" aria-label="Filtros del roadmap">
+  <div class="roadmap-filters-heading">
+    <div class="roadmap-filters-title">
+      <span class="roadmap-filters-icon" aria-hidden="true"><i class="fa-solid fa-sliders"></i></span>
+      <div>
+        <h2>Filtrar contenido</h2>
+        <p>Encuentra rápidamente una etapa, módulo o lección.</p>
+      </div>
+    </div>
+    <span class="roadmap-filters-hint"><i class="fa-solid fa-filter-circle-dollar" aria-hidden="true"></i> Búsqueda y filtros combinables</span>
   </div>
-  <div class="filter-field">
-    <label for="filtro-prioridad">Prioridad</label>
-    <select id="filtro-prioridad" name="prioridad">
-      <option value="">Todas</option>
-      <option value="P1" {% if prioridad_seleccionada == "P1" %}selected{% endif %}>P1 — Obligatoria</option>
-      <option value="P2" {% if prioridad_seleccionada == "P2" %}selected{% endif %}>P2 — Complementaria</option>
-      <option value="P3" {% if prioridad_seleccionada == "P3" %}selected{% endif %}>P3 — Especialización avanzada</option>
-    </select>
-  </div>
-  <div class="filter-field filter-field-grow">
-    <label for="filtro-busqueda">Buscar</label>
-    <input id="filtro-busqueda" type="search" name="q" value="{{ busqueda }}" placeholder="Etapa, módulo o lección…">
-  </div>
-  <div class="filter-actions">
-    <button class="btn-theme" type="submit"><i class="fa-solid fa-filter"></i> Filtrar</button>
-    <a class="btn-theme btn-theme-ghost" href="{% url 'roadmaps:lista' %}"><i class="fa-solid fa-rotate-left"></i> Limpiar</a>
+
+  <div class="roadmap-filters-controls">
+    <div class="filter-field">
+      <label for="filtro-bloque">Bloque</label>
+      <select id="filtro-bloque" name="bloque">
+        <option value="">Todos los bloques</option>
+        {% for valor in bloques %}
+          <option value="{{ valor }}" {% if valor == bloque_seleccionado %}selected{% endif %}>{{ valor|default:"Sin bloque" }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="filter-field">
+      <label for="filtro-prioridad">Prioridad</label>
+      <select id="filtro-prioridad" name="prioridad">
+        <option value="">Todas</option>
+        <option value="P1" {% if prioridad_seleccionada == "P1" %}selected{% endif %}>P1 — Obligatoria</option>
+        <option value="P2" {% if prioridad_seleccionada == "P2" %}selected{% endif %}>P2 — Complementaria</option>
+        <option value="P3" {% if prioridad_seleccionada == "P3" %}selected{% endif %}>P3 — Especialización avanzada</option>
+      </select>
+    </div>
+    <div class="filter-field filter-field-grow">
+      <label for="filtro-busqueda">Buscar</label>
+      <div class="filter-search-wrap">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input id="filtro-busqueda" type="search" name="q" value="{{ busqueda }}" placeholder="Etapa, módulo o lección…" autocomplete="off">
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="btn-theme" type="submit"><i class="fa-solid fa-filter"></i><span>Aplicar filtros</span></button>
+      <a class="btn-theme btn-theme-ghost" href="{% url 'roadmaps:lista' %}"><i class="fa-solid fa-rotate-left"></i><span>Limpiar</span></a>
+    </div>
   </div>
 </form>
 
