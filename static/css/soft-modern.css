@@ -428,3 +428,104 @@ input, select, textarea, .form-control {
     padding-bottom: max(12px, env(safe-area-inset-bottom));
   }
 }
+
+/* ==========================================================================
+   Ajuste definitivo del área inferior de la barra lateral.
+   El footer vuelve al flujo flex del sidebar: no usar position:absolute,
+   porque puede recortar el botón al calcular la altura disponible.
+   ========================================================================== */
+#sidebar.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#sidebar.sidebar > .sidebar-brand {
+  flex: 0 0 82px;
+  height: 82px;
+  min-height: 82px;
+}
+
+#sidebar.sidebar > .sidebar-nav {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  padding-bottom: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#sidebar.sidebar > .sidebar-footer {
+  position: relative;
+  inset: auto;
+  flex: 0 0 76px;
+  width: 100%;
+  height: 76px;
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 10px 14px;
+  border-top: 1px solid var(--cg-border);
+  background: var(--cg-surface);
+  z-index: 2;
+}
+
+#sidebar.sidebar > .sidebar-footer #btnAjustes {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: none;
+  height: 46px;
+  min-height: 46px;
+  min-width: 0;
+  margin: 0;
+  padding: 10px 14px;
+  gap: 8px;
+  box-sizing: border-box;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+#sidebar.sidebar > .sidebar-footer #btnAjustes .fa-gear {
+  flex: 0 0 auto;
+  margin: 0 !important;
+}
+
+@media (min-width: 621px) {
+  #sidebar.sidebar.collapsed > .sidebar-footer #btnAjustes {
+    display: grid;
+    flex: 0 0 46px;
+    width: 46px;
+    min-width: 46px;
+    height: 46px;
+    margin-inline: auto;
+    padding: 0;
+    place-items: center;
+    font-size: 0;
+  }
+  #sidebar.sidebar.collapsed > .sidebar-footer #btnAjustes .fa-gear {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 620px) {
+  #sidebar.sidebar.mobile-open > .sidebar-footer {
+    flex-basis: 72px;
+    height: 72px;
+    min-height: 72px;
+    padding: 9px 12px max(9px, env(safe-area-inset-bottom));
+  }
+  #sidebar.sidebar.mobile-open > .sidebar-footer #btnAjustes {
+    height: 44px;
+    min-height: 44px;
+  }
+}
