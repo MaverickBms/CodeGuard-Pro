@@ -170,6 +170,22 @@ class IntentosEjercicioTests(TestCase):
         self.assertEqual(progreso.porcentaje, 100)
         self.assertIsNotNone(progreso.fecha_completado)
 
+    def test_comprobacion_estatica_no_completa_la_leccion_por_defecto(self):
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio,
+            tipo="codigo_contiene",
+            configuracion={"fragmentos_requeridos": ["nombre ="]},
+        )
+
+        intento = registrar_intento_ejercicio(
+            self.usuario, self.ejercicio, "nombre = 'Ada'"
+        )
+
+        self.assertEqual(intento.resultado, "aprobado")
+        self.assertFalse(
+            Progreso.objects.filter(usuario=self.usuario, leccion=self.leccion).exists()
+        )
+
     def test_ejercicio_no_publicado_no_admite_entrega(self):
         self.ejercicio.publicado = False
         self.ejercicio.save(update_fields=["publicado"])
