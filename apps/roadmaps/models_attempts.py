@@ -67,6 +67,7 @@ class IntentoEjercicio(models.Model):
     RESULTADOS = [
         ("pendiente_revision", "Pendiente de revisión"),
         ("aprobado", "Aprobado"),
+        ("criterios_cumplidos", "Criterios estáticos cumplidos"),
         ("no_aprobado", "Aún no aprobado"),
     ]
 
