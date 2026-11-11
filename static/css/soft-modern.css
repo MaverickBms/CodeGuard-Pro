@@ -529,3 +529,23 @@ input, select, textarea, .form-control {
     min-height: 44px;
   }
 }
+
+/* Identidad de marca: contraste garantizado en todas las paletas.
+   El nombre usa el token de texto sobre superficie del tema activo,
+   nunca un color fijo que pueda confundirse con el fondo. */
+#sidebar .sidebar-brand .brand-content .brand-text {
+  color: var(--cg-text-on-surface, var(--cg-text)) !important;
+  opacity: 1 !important;
+  visibility: visible;
+  text-shadow: none;
+  font-weight: 800;
+}
+
+#sidebar .sidebar-brand {
+  color: var(--cg-text-on-surface, var(--cg-text));
+}
+
+#sidebar .sidebar-brand .brand-text::selection {
+  color: var(--cg-text-on-surface, var(--cg-text));
+  background: color-mix(in srgb, var(--cg-primary) 28%, transparent);
+}
