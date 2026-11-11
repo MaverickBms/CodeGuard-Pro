@@ -167,7 +167,7 @@ Implementado en la base de la Fase 2 y ampliado en ramas de trabajo:
 - Presentación de contenido publicado y estados de contenido pendiente.
 - Editor de texto básico para entregar respuestas/código, sin resaltado de sintaxis.
 - Modelos de configuración de evaluación e intentos persistidos, con historial reciente por ejercicio.
-- Evaluadores deterministas iniciales: respuesta exacta y comprobación estática de fragmentos. No ejecutan código.
+- Evaluadores deterministas iniciales: respuesta exacta y comprobación estática de fragmentos. La coincidencia estática se distingue de la aprobación académica y no ejecuta código.
 - Versiones de evaluadores conservadas y vinculadas a cada intento.
 - Finalización automática condicionada a evidencia aprobada para todos los ejercicios obligatorios y a una autorización explícita del evaluador; dicha autorización está desactivada por defecto.
 - Registro de auditoría de entregas y finalizaciones por evidencia.
