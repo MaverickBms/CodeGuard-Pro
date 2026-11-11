@@ -62,7 +62,7 @@ class ConfiguracionEvaluacion(models.Model):
 
 
 class IntentoEjercicio(models.Model):
-    """Entrega inmutable del estudiante y resultado reproducible."""
+    """Entrega persistida del estudiante y resultado reproducible."""
 
     RESULTADOS = [
         ("pendiente_revision", "Pendiente de revisión"),
