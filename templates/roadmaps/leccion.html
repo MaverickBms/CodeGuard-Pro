@@ -136,7 +136,7 @@
           </div>
         {% endif %}
 
-        <div class="lesson-tutor-notice"><i class="fa-solid fa-shield-halved"></i><span>{% if ejercicio.evaluacion_disponible %}Este ejercicio utiliza una comprobación automática estática configurada. La validación no ejecuta tu código ni sustituye pruebas de comportamiento.{% else %}Tu entrega se guardará, pero este ejercicio todavía no tiene un evaluador automático activo y quedará pendiente de revisión. No se ejecuta código arbitrario en el servidor.{% endif %} El tutor local y sus pistas progresivas corresponden a la Fase 3.</span></div>
+        <div class="lesson-tutor-notice"><i class="fa-solid fa-shield-halved"></i><span>{% if ejercicio.evaluacion_disponible %}Este ejercicio tiene un evaluador automático configurado. La comprobación es determinista, pero no ejecuta código arbitrario ni sustituye pruebas de comportamiento.{% else %}Tu entrega se guardará, pero este ejercicio todavía no tiene un evaluador automático activo y quedará pendiente de revisión. No se ejecuta código arbitrario en el servidor.{% endif %} El tutor local y sus pistas progresivas corresponden a la Fase 3.</span></div>
       </article>
     {% empty %}
       <p class="lesson-empty">Los ejercicios de esta lección están pendientes de diseño.</p>
