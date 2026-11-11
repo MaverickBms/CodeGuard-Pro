@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ("actualizado_en", models.DateTimeField(auto_now=True)),
                 ("ejercicio", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="configuraciones_evaluacion", to="roadmaps.ejercicioleccion")),
             ],
-            options={"verbose_name": "configuración de evaluación", "verbose_name_plural": "configuraciones de evaluación", "ordering": ["ejercicio_id", "-version"]},
+            options={"verbose_name": "configuración de evaluación", "verbose_name_plural": "configuraciones de evaluación", "ordering": ["ejercicio", "-version"]},
         ),
         migrations.AddConstraint(
             model_name="configuracionevaluacion",
