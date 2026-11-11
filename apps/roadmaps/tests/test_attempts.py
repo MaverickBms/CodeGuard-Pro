@@ -1,0 +1,203 @@
+"""Pruebas del ciclo de entrega y evaluación segura de ejercicios."""
+
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.test import TestCase, override_settings
+from django.urls import reverse
+
+from apps.roadmaps.models import (
+    ConfiguracionEvaluacion,
+    EjercicioLeccion,
+    Etapa,
+    IntentoEjercicio,
+    Leccion,
+    Modulo,
+    Progreso,
+    Roadmap,
+)
+from apps.roadmaps.attempts import registrar_intento_ejercicio
+
+
+@override_settings(AUTH_DISABLED=True)
+class IntentosEjercicioTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="estudiante", password="ClaveSegura123!"
+        )
+        self.roadmap = Roadmap.objects.create(nombre="ASCENSO pruebas", edicion="test")
+        self.etapa = Etapa.objects.create(
+            roadmap=self.roadmap, numero=0, titulo="Fundamentos"
+        )
+        self.modulo = Modulo.objects.create(
+            etapa=self.etapa, numero="0.1", titulo="Introducción"
+        )
+        self.leccion = Leccion.objects.create(
+            modulo=self.modulo, titulo="Variables"
+        )
+        self.ejercicio = EjercicioLeccion.objects.create(
+            leccion=self.leccion,
+            titulo="Declara una variable",
+            enunciado="Declara una variable llamada nombre.",
+            lenguaje="Python",
+            publicado=True,
+        )
+
+    def test_evaluador_exacto_registra_intento_aprobado(self):
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio,
+            tipo="respuesta_exacta",
+            configuracion={
+                "respuesta_esperada": "nombre = 'Ada'",
+                "normalizar_espacios": True,
+            },
+        )
+
+        intento = registrar_intento_ejercicio(
+            self.usuario, self.ejercicio, "nombre   = 'Ada'"
+        )
+
+        self.assertEqual(intento.resultado, "aprobado")
+        self.assertEqual(intento.puntuacion, 100)
+        self.assertEqual(intento.version_evaluacion, 1)
+        self.assertIsNotNone(intento.evaluado_en)
+
+    def test_evaluador_exacto_rechaza_respuesta_incorrecta(self):
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio,
+            tipo="respuesta_exacta",
+            configuracion={"respuesta_esperada": "nombre = 'Ada'"},
+        )
+
+        intento = registrar_intento_ejercicio(
+            self.usuario, self.ejercicio, "nombre = 'Grace'"
+        )
+
+        self.assertEqual(intento.resultado, "no_aprobado")
+        self.assertEqual(intento.puntuacion, 0)
+
+    def test_evaluador_de_codigo_es_estatico_y_reproducible(self):
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio,
+            tipo="codigo_contiene",
+            configuracion={
+                "fragmentos_requeridos": ["nombre =", "print(nombre)"],
+                "fragmentos_prohibidos": ["eval("],
+            },
+        )
+
+        intento = registrar_intento_ejercicio(
+            self.usuario, self.ejercicio, "nombre = 'Ada'\nprint(nombre)"
+        )
+
+        self.assertEqual(intento.resultado, "aprobado")
+        self.assertEqual(intento.detalles["tipo_comprobacion"], "estatica")
+        self.assertEqual(intento.puntuacion, 100)
+
+    def test_fragmento_prohibido_impide_aprobacion(self):
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio,
+            tipo="codigo_contiene",
+            configuracion={
+                "fragmentos_requeridos": ["nombre ="],
+                "fragmentos_prohibidos": ["eval("],
+            },
+        )
+
+        intento = registrar_intento_ejercicio(
+            self.usuario, self.ejercicio, "nombre = eval('Ada')"
+        )
+
+        self.assertEqual(intento.resultado, "no_aprobado")
+        self.assertEqual(intento.puntuacion, 0)
+
+    def test_sin_evaluador_guarda_entrega_pendiente(self):
+        intento = registrar_intento_ejercicio(
+            self.usuario, self.ejercicio, "nombre = 'Ada'"
+        )
+
+        self.assertEqual(intento.resultado, "pendiente_revision")
+        self.assertIsNone(intento.puntuacion)
+        self.assertIsNone(intento.evaluado_en)
+
+    def test_configuracion_invalida_no_crea_intento(self):
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio,
+            tipo="respuesta_exacta",
+            configuracion={"respuesta_esperada": ""},
+        )
+
+        with self.assertRaises(ValidationError):
+            registrar_intento_ejercicio(
+                self.usuario, self.ejercicio, "respuesta cualquiera"
+            )
+
+        self.assertFalse(IntentoEjercicio.objects.filter(ejercicio=self.ejercicio).exists())
+
+    def test_limite_de_caracteres_se_aplica_antes_de_guardar(self):
+        with self.assertRaises(ValidationError):
+            registrar_intento_ejercicio(
+                self.usuario, self.ejercicio, "x" * 20001
+            )
+        self.assertFalse(IntentoEjercicio.objects.filter(ejercicio=self.ejercicio).exists())
+
+    def test_leccion_se_completa_al_aprobar_todos_los_ejercicios_obligatorios(self):
+        segundo = EjercicioLeccion.objects.create(
+            leccion=self.leccion,
+            titulo="Muestra la variable",
+            enunciado="Muestra el valor de nombre.",
+            publicado=True,
+        )
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio,
+            tipo="respuesta_exacta",
+            configuracion={"respuesta_esperada": "nombre = 'Ada'"},
+        )
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=segundo,
+            tipo="respuesta_exacta",
+            configuracion={"respuesta_esperada": "print(nombre)"},
+        )
+
+        registrar_intento_ejercicio(self.usuario, self.ejercicio, "nombre = 'Ada'")
+        progreso = Progreso.objects.filter(usuario=self.usuario, leccion=self.leccion).first()
+        self.assertIsNone(progreso)
+
+        registrar_intento_ejercicio(self.usuario, segundo, "print(nombre)")
+        progreso.refresh_from_db()
+        self.assertEqual(progreso.estado, "completado")
+        self.assertEqual(progreso.porcentaje, 100)
+        self.assertIsNotNone(progreso.fecha_completado)
+
+    def test_ejercicio_no_publicado_no_admite_entrega(self):
+        self.ejercicio.publicado = False
+        self.ejercicio.save(update_fields=["publicado"])
+
+        with self.assertRaises(ValidationError):
+            registrar_intento_ejercicio(self.usuario, self.ejercicio, "respuesta")
+
+        self.assertFalse(IntentoEjercicio.objects.filter(ejercicio=self.ejercicio).exists())
+
+    def test_vista_guarda_intento_y_muestra_historial(self):
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio,
+            tipo="respuesta_exacta",
+            configuracion={"respuesta_esperada": "nombre = 'Ada'"},
+        )
+
+        response = self.client.post(
+            reverse("roadmaps:enviar_intento", args=[self.ejercicio.id]),
+            {"respuesta": "nombre = 'Ada'"},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            IntentoEjercicio.objects.filter(
+                usuario=self.usuario, ejercicio=self.ejercicio, resultado="aprobado"
+            ).exists()
+        )
+        response = self.client.get(
+            reverse("roadmaps:leccion_detalle", args=[self.leccion.id])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Últimos intentos")
+        self.assertContains(response, "Aprobado")
