@@ -18,7 +18,7 @@ from apps.accounts.identity import (
     obtener_usuario_local,
     requiere_acceso,
 )
-from .models import ConfiguracionEvaluacion, EjercicioLeccion, Etapa, IntentoEjercicio, Leccion
+from .models import EjercicioLeccion, Etapa, IntentoEjercicio, Leccion
 from .attempts import registrar_intento_ejercicio
 from .services import (
     etapas_completadas,
@@ -316,10 +316,9 @@ def leccion_detalle(request, leccion_id):
 
     for ejercicio in ejercicios:
         ejercicio.intentos_usuario = intentos_por_ejercicio.get(ejercicio.id, [])
-        try:
-            ejercicio.evaluacion_disponible = ejercicio.configuraciones_evaluacion.filter(
-                activo=True
-            ).exists()
+        ejercicio.evaluacion_disponible = ejercicio.configuraciones_evaluacion.filter(
+            activo=True
+        ).exists()
 
     return render(
         request,
