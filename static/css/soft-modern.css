@@ -251,7 +251,7 @@ input, select, textarea, .form-control {
   width: 100%;
   min-height: 78px;
   margin: 0;
-  padding: 10px 14px 20px;
+  padding: 10px 14px 0;
   border-top: 1px solid var(--cg-border);
   background: var(--cg-surface);
 }
@@ -288,7 +288,7 @@ input, select, textarea, .form-control {
   width: 100%;
   min-height: 68px;
   margin-top: auto;
-  padding: 14px clamp(18px, 3vw, 42px) 24px;
+  padding: 14px clamp(18px, 3vw, 42px) 14px;
 }
 
 .main-footer .footer-content {
