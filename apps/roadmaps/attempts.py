@@ -47,7 +47,7 @@ def _evaluar_configuracion(configuracion: ConfiguracionEvaluacion, respuesta: st
             enviada, correcta = enviada.casefold(), correcta.casefold()
         aprobado = enviada == correcta
         return {
-            "resultado": "aprobado" if aprobado else "no_aprobado",
+            "resultado": "criterios_cumplidos" if aprobado else "no_aprobado",
             "puntuacion": 100 if aprobado else 0,
             "retroalimentacion": (
                 "Respuesta correcta. Has cumplido el criterio configurado."
@@ -84,7 +84,7 @@ def _evaluar_configuracion(configuracion: ConfiguracionEvaluacion, respuesta: st
             "resultado": "aprobado" if aprobado else "no_aprobado",
             "puntuacion": puntuacion,
             "retroalimentacion": (
-                "La comprobación estática encontró todos los elementos requeridos."
+                "La comprobación estática encontró todos los elementos requeridos; esto no constituye una aprobación académica."
                 if aprobado
                 else "La comprobación estática detectó elementos pendientes o no permitidos. Esto no equivale a ejecutar ni verificar el comportamiento del programa."
             ),
