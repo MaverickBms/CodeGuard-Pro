@@ -9,6 +9,7 @@ app_name = "roadmaps"
 urlpatterns = [
     path("", views.lista, name="lista"),
     path("etapa/<int:numero>/", views.detalle, name="detalle"),
+    path("leccion/<int:leccion_id>/", views.leccion_detalle, name="leccion_detalle"),
     path("etapa/<int:numero>/marcar/", views.marcar_etapa_view, name="marcar_etapa"),
     path(
         "leccion/<int:leccion_id>/marcar/",
