@@ -7,8 +7,10 @@ implícita.
 """
 
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from apps.accounts.identity import (
@@ -16,7 +18,8 @@ from apps.accounts.identity import (
     obtener_usuario_local,
     requiere_acceso,
 )
-from .models import Etapa, Leccion
+from .models import EjercicioLeccion, Etapa, IntentoEjercicio, Leccion
+from .attempts import registrar_intento_ejercicio
 from .services import (
     etapas_completadas,
     iniciar_leccion,
@@ -232,6 +235,50 @@ def marcar_leccion_view(request, leccion_id):
     messages.info(request, f"Lección reabierta: {leccion.titulo}")
     return redirect("roadmaps:detalle", numero=leccion.modulo.etapa.numero)
 
+
+@requiere_acceso
+@require_POST
+def enviar_intento_view(request, ejercicio_id):
+    """Registra y evalúa una entrega sin ejecutar código arbitrario."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return redirect("roadmaps:lista")
+
+    ejercicio = get_object_or_404(
+        EjercicioLeccion.objects.select_related("leccion__modulo__etapa"),
+        pk=ejercicio_id,
+        publicado=True,
+        leccion__modulo__etapa__roadmap=roadmap,
+    )
+    destino = f"{reverse('roadmaps:leccion_detalle', args=[ejercicio.leccion_id])}#ejercicio-{ejercicio.id}"
+    usuario = get_usuario_actual(request)
+    if usuario is None:
+        messages.error(
+            request,
+            "No hay un propietario local configurado. No se puede guardar el intento.",
+        )
+        return redirect(destino)
+
+    try:
+        intento = registrar_intento_ejercicio(
+            usuario,
+            ejercicio,
+            request.POST.get("respuesta", ""),
+            actor_auditoria=obtener_actor_auditoria(request),
+        )
+    except ValidationError as exc:
+        mensaje = exc.messages[0] if getattr(exc, "messages", None) else str(exc)
+        messages.error(request, mensaje)
+    else:
+        if intento.resultado == "aprobado":
+            messages.success(request, f"Ejercicio aprobado: {ejercicio.titulo}.")
+        elif intento.resultado == "no_aprobado":
+            messages.warning(request, "El intento quedó registrado. Revisa la retroalimentación y vuelve a intentarlo.")
+        else:
+            messages.info(request, "La entrega quedó guardada y pendiente de revisión/configuración.")
+
+    return redirect(destino)
+
 @requiere_acceso
 def leccion_detalle(request, leccion_id):
     """Vista de estudio con teoría, explicación sencilla, ejemplos y ejercicios."""
@@ -256,7 +303,24 @@ def leccion_detalle(request, leccion_id):
 
     contenido = getattr(leccion, "contenido", None)
     ejemplos = leccion.ejemplos.filter(publicado=True)
-    ejercicios = leccion.ejercicios.filter(publicado=True)
+    ejercicios = list(leccion.ejercicios.filter(publicado=True))
+    intentos_por_ejercicio = {}
+    if usuario is not None and ejercicios:
+        filas = IntentoEjercicio.objects.filter(
+            usuario=usuario, ejercicio__in=ejercicios
+        ).order_by("-creado_en", "-id")
+        for intento in filas:
+            lista_intentos = intentos_por_ejercicio.setdefault(intento.ejercicio_id, [])
+            if len(lista_intentos) < 3:
+                lista_intentos.append(intento)
+
+    for ejercicio in ejercicios:
+        ejercicio.intentos_usuario = intentos_por_ejercicio.get(ejercicio.id, [])
+        try:
+            configuracion = ejercicio.configuracion_evaluacion
+            ejercicio.evaluacion_disponible = configuracion.activo
+        except Exception:
+            ejercicio.evaluacion_disponible = False
 
     return render(
         request,
