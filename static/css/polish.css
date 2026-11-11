@@ -739,3 +739,20 @@ p { line-height: 1.65; }
 .sidebar.collapsed .sidebar-footer #btnAjustes i {
   font-size: 1rem;
 }
+
+
+/* Ajuste fino: elevar el control inferior y reservar espacio bajo el botón. */
+.sidebar-footer {
+  min-height: 86px;
+  padding: 10px 14px 22px;
+  align-items: flex-start;
+}
+.sidebar-footer #btnAjustes {
+  min-height: 46px;
+}
+@media (max-width: 900px) {
+  .sidebar-footer {
+    min-height: 78px;
+    padding: 8px 8px 18px;
+  }
+}
