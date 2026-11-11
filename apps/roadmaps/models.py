@@ -409,3 +409,116 @@ class Progreso(models.Model):
             self.porcentaje = 0
             self.fecha_completado = None
         super().save(*args, **kwargs)
+
+
+class ContenidoLeccion(models.Model):
+    """Contenido didáctico estructurado para una lección del roadmap."""
+
+    leccion = models.OneToOneField(
+        Leccion,
+        on_delete=models.CASCADE,
+        related_name="contenido",
+        verbose_name="lección",
+    )
+    objetivos_aprendizaje = models.TextField(
+        blank=True, verbose_name="objetivos de aprendizaje"
+    )
+    teoria_tecnica = models.TextField(
+        blank=True,
+        verbose_name="teoría técnica",
+        help_text="Explicación rigurosa del concepto, terminología y fundamentos.",
+    )
+    explicacion_sencilla = models.TextField(
+        blank=True,
+        verbose_name="explicación sencilla",
+        help_text="Explicación clara, gradual y sin asumir conocimientos no presentados.",
+    )
+    notas = models.TextField(blank=True, verbose_name="notas complementarias")
+    publicado = models.BooleanField(default=False, verbose_name="publicado")
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "contenido de lección"
+        verbose_name_plural = "contenidos de lecciones"
+
+    def __str__(self) -> str:
+        return f"Contenido: {self.leccion.titulo}"
+
+    @property
+    def esta_completo(self) -> bool:
+        return bool(self.teoria_tecnica.strip() and self.explicacion_sencilla.strip())
+
+
+class EjemploLeccion(models.Model):
+    """Ejemplo explicado que acompaña la teoría de una lección."""
+
+    leccion = models.ForeignKey(
+        Leccion,
+        on_delete=models.CASCADE,
+        related_name="ejemplos",
+        verbose_name="lección",
+    )
+    titulo = models.CharField(max_length=180, verbose_name="título")
+    contexto = models.TextField(blank=True, verbose_name="contexto")
+    lenguaje = models.CharField(max_length=40, blank=True, verbose_name="lenguaje")
+    codigo = models.TextField(blank=True, verbose_name="código")
+    salida_esperada = models.TextField(blank=True, verbose_name="salida esperada")
+    explicacion = models.TextField(blank=True, verbose_name="explicación paso a paso")
+    orden = models.PositiveSmallIntegerField(default=0, verbose_name="orden")
+    publicado = models.BooleanField(default=True, verbose_name="publicado")
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "ejemplo de lección"
+        verbose_name_plural = "ejemplos de lección"
+        ordering = ["orden", "id"]
+
+    def __str__(self) -> str:
+        return f"{self.leccion.titulo}: {self.titulo}"
+
+
+class EjercicioLeccion(models.Model):
+    """Enunciado de práctica; la ejecución y tutoría se incorporan en la fase 3."""
+
+    NIVELES = [
+        ("basico", "Básico"),
+        ("intermedio", "Intermedio"),
+        ("avanzado", "Avanzado"),
+    ]
+
+    leccion = models.ForeignKey(
+        Leccion,
+        on_delete=models.CASCADE,
+        related_name="ejercicios",
+        verbose_name="lección",
+    )
+    titulo = models.CharField(max_length=180, verbose_name="título")
+    enunciado = models.TextField(verbose_name="enunciado")
+    instrucciones = models.TextField(blank=True, verbose_name="instrucciones")
+    lenguaje = models.CharField(max_length=40, blank=True, verbose_name="lenguaje")
+    nivel = models.CharField(
+        max_length=16, choices=NIVELES, default="basico", verbose_name="nivel"
+    )
+    codigo_inicial = models.TextField(blank=True, verbose_name="código inicial")
+    pista_1 = models.TextField(blank=True, verbose_name="pista 1")
+    pista_2 = models.TextField(blank=True, verbose_name="pista 2")
+    pista_3 = models.TextField(blank=True, verbose_name="pista 3")
+    obligatorio = models.BooleanField(default=True, verbose_name="obligatorio")
+    orden = models.PositiveSmallIntegerField(default=0, verbose_name="orden")
+    publicado = models.BooleanField(default=True, verbose_name="publicado")
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "ejercicio de lección"
+        verbose_name_plural = "ejercicios de lección"
+        ordering = ["orden", "id"]
+
+    def __str__(self) -> str:
+        return f"{self.leccion.titulo}: {self.titulo}"
+
+    @property
+    def total_pistas_disponibles(self) -> int:
+        return sum(bool(pista.strip()) for pista in (self.pista_1, self.pista_2, self.pista_3))
