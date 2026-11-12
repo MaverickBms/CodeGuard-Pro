@@ -1,5 +1,6 @@
 """Pruebas de instalación y rollback de paquetes firmados."""
 import base64
+import json
 import os
 import tempfile
 from pathlib import Path
@@ -257,7 +258,7 @@ class InstaladorPaquetesTests(TestCase):
     def test_cliente_http_instala_solo_despues_de_verificar_manifiesto(self):
         artifacts = self.publicar()
         manifest, signature, package_bytes = artifacts
-        package_url = __import__("json").loads(manifest)["package"]["url"]
+        package_url = json.loads(manifest)["package"]["url"]
         requested = []
 
         def fake_fetch(url, **kwargs):
