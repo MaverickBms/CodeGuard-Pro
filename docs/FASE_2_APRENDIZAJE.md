@@ -360,3 +360,22 @@ python manage.py registrar_fuente_conocimiento \
 ```
 
 El flujo de transición editorial utiliza la opción `--version-id` para evitar colisiones con el argumento global `--version` de Django.
+
+## 12. Contrato de importación académica — siguiente incremento
+
+**Diseño documentado:** `docs/CONTRATO_IMPORTACION_CONTENIDO.md`.
+
+La importación se integrará con los modelos y servicios editoriales ya existentes. Recibirá documentos JSON versionados por lección, resolverá identidades mediante UUID estables, validará la alineación con ASCENSO y asociará fuentes previamente registradas. Los datos se convertirán al snapshot interno actual y se crearán únicamente versiones en estado `borrador`.
+
+Reglas obligatorias del incremento:
+
+- Validar el lote completo antes de escribir; la validación debe ser de solo lectura.
+- Rechazar UUID desconocidos, repetidos o asociados a otro recurso; no regenerar identidades.
+- Rechazar campos y versiones de esquema no soportados.
+- Detectar duplicados idempotentes y conflictos sin sobrescribir versiones existentes.
+- No modificar el roadmap, contenido editable actual, progreso, intentos ni evaluadores.
+- No ejecutar código de ejemplos ni aceptar scripts, comandos, migraciones o evaluadores arbitrarios.
+- No publicar desde el importador. La publicación sigue reservada al flujo editorial existente.
+- Incorporar una revisión de licencia auditable y obligatoria en los servicios de revisión/publicación. El registro actual de una fuente no certifica su licencia.
+
+**Estado:** diseño técnico documentado; validador, importador y control formal de licencias aún no implementados. La implementación debe comenzar después de que se ejecuten y revisen las tres pruebas nuevas del comando de registro de fuentes y la suite local completa.
