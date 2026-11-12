@@ -195,6 +195,20 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | KNOW-007 | Eliminar una fuente referenciada | La operación se bloquea por PROTECT |
 | KNOW-008 | Eliminar una versión referenciada | La operación se bloquea por PROTECT |
 
+## 6.3 Pruebas del servicio de snapshots
+
+> **Estado: incorporadas al código; pendientes de ejecución local.**
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| SNAP-001 | Generar snapshot desde contenido completo | Se captura contenido, ejemplos y ejercicios publicados |
+| SNAP-002 | Recurso no publicado | No se incluye en el snapshot |
+| SNAP-003 | Hash canónico | SHA-256 coincide con la serialización determinista |
+| SNAP-004 | Nueva versión | Se incrementa el número sin sobrescribir la anterior |
+| SNAP-005 | Modificar borrador tras snapshot | La versión anterior conserva el contenido original |
+| SNAP-006 | Lección incompleta | Se rechaza la generación |
+| SNAP-007 | Fuente inactiva | Se rechaza su asociación |
+
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
 
 > **Estado: PENDIENTES.** El sincronizador, el servicio central y los paquetes firmados todavía no están implementados. Estas pruebas definen el contrato que deberá verificarse cuando se construyan.
