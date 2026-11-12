@@ -197,6 +197,27 @@ def _validar_version_para_revision(version: VersionContenidoLeccion) -> None:
                 f"La fuente '{fuente.titulo}' solo permite contenido original; "
                 "no se admiten citas, adaptaciones ni reproducciones."
             )
+        if version.estado != "borrador":
+            snapshot_licencia = (
+                referencia.estado_licencia_snapshot,
+                referencia.evidencia_licencia_snapshot,
+                referencia.alcance_licencia_snapshot,
+                referencia.nota_licencia_snapshot,
+                referencia.licencia_revisada_por_snapshot_id,
+                referencia.licencia_revisada_en_snapshot,
+            )
+            licencia_actual = (
+                fuente.estado_revision_licencia,
+                fuente.evidencia_licencia,
+                fuente.alcance_licencia,
+                fuente.nota_revision_licencia,
+                fuente.revisada_por_id,
+                fuente.revisada_en,
+            )
+            if snapshot_licencia != licencia_actual:
+                raise ValidationError(
+                    f"La decisión de licencia de '{fuente.titulo}' cambió después del envío a revisión."
+                )
 
 
 @transaction.atomic
@@ -207,6 +228,19 @@ def enviar_version_a_revision(version_id: int, *, actor) -> VersionContenidoLecc
     if version.estado != "borrador":
         raise ValidationError("Solo una versión en borrador puede enviarse a revisión.")
     _validar_version_para_revision(version)
+    for referencia in version.referencias.select_related("fuente").all():
+        fuente = referencia.fuente
+        referencia.estado_licencia_snapshot = fuente.estado_revision_licencia
+        referencia.evidencia_licencia_snapshot = fuente.evidencia_licencia
+        referencia.alcance_licencia_snapshot = fuente.alcance_licencia
+        referencia.nota_licencia_snapshot = fuente.nota_revision_licencia
+        referencia.licencia_revisada_por_snapshot = fuente.revisada_por
+        referencia.licencia_revisada_en_snapshot = fuente.revisada_en
+        referencia.save(update_fields=[
+            "estado_licencia_snapshot", "evidencia_licencia_snapshot",
+            "alcance_licencia_snapshot", "nota_licencia_snapshot",
+            "licencia_revisada_por_snapshot", "licencia_revisada_en_snapshot",
+        ])
     from django.utils import timezone
 
     version.estado = "revision"
