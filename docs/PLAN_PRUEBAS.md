@@ -374,27 +374,27 @@ Las suites `apps.roadmaps.tests.test_publisher` y `apps.roadmaps.tests.test_dist
 
 La suite `apps.roadmaps.tests.test_installer` cubre instalación y activación, rollback, firma inválida, divergencia curricular, aislamiento de fuentes, idempotencia y entrega contra snapshot instalado. El propietario confirmó 119 pruebas OK en `main` `2c5d441`, junto con `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios.
 
-## 6.13 Cliente HTTP pull-only (implementación inicial; pendiente de validación local)
+## 6.13 Cliente HTTP pull-only (validación local confirmada)
 
 | ID | Prueba | Caso | Resultado esperado | Estado |
 |---|---|---|---|---|
-| HTTP-001 | Allowlist de endpoint | HTTP, host externo, credenciales, puerto no estándar o fragmento | Rechazo antes de abrir conexión | ⏳ Pendiente de validación local |
-| HTTP-002 | Redirecciones | Respuesta 3xx o URL final distinta | Rechazo; no se sigue el destino | ⏳ Pendiente de validación local |
-| HTTP-003 | Límite de descarga | Content-Length o stream excede el máximo | Abortado sin entregar bytes al instalador | ⏳ Pendiente de validación local |
-| HTTP-004 | Tamaño firmado | Longitud real distinta a `package.size_bytes` | Rechazo | ⏳ Pendiente de validación local |
-| HTTP-005 | ETag | Manifiesto responde 304 a `If-None-Match` | No descarga firma ni ZIP y actualiza comprobación local | ⏳ Pendiente de validación local |
-| HTTP-006 | Firma antes del ZIP | Firma Ed25519 inválida o clave desconocida | Rechaza manifiesto y no solicita el ZIP | ⏳ Pendiente de validación local |
-| HTTP-007 | Flujo válido | Manifiesto y firma válidos, paquete íntegro | Invoca el instalador transaccional y guarda ETag | ⏳ Pendiente de validación local |
-| HTTP-008 | Privacidad | Inspeccionar petición saliente | Solo GET sin cookies, token, body ni datos académicos del estudiante | ⏳ Pendiente de validación local |
-| HTTP-009 | Timeout y conectividad | Timeout, error DNS o HTTP 5xx | Error controlado; el contenido instalado permanece disponible | ⏳ Pendiente de validación local |
-| HTTP-010 | Configuración | Falta clave de confianza o allowlist | Falla cerrada; no realiza petición | ⏳ Pendiente de validación local |
+| HTTP-001 | Allowlist de endpoint | HTTP, host externo, credenciales, puerto no estándar o fragmento | Rechazo antes de abrir conexión | ✅ Validado localmente por el propietario dentro de 132 pruebas |
+| HTTP-002 | Redirecciones | Respuesta 3xx o URL final distinta | Rechazo; no se sigue el destino | ✅ Validado localmente por el propietario dentro de 132 pruebas |
+| HTTP-003 | Límite de descarga | Content-Length o stream excede el máximo | Abortado sin entregar bytes al instalador | ✅ Validado localmente por el propietario dentro de 132 pruebas |
+| HTTP-004 | Tamaño firmado | Longitud real distinta a `package.size_bytes` | Rechazo | ✅ Validado localmente por el propietario dentro de 132 pruebas |
+| HTTP-005 | ETag | Manifiesto responde 304 a `If-None-Match` | No descarga firma ni ZIP y actualiza comprobación local | ✅ Validado localmente por el propietario dentro de 132 pruebas |
+| HTTP-006 | Firma antes del ZIP | Firma Ed25519 inválida o clave desconocida | Rechaza manifiesto y no solicita el ZIP | ✅ Validado localmente por el propietario dentro de 132 pruebas |
+| HTTP-007 | Flujo válido | Manifiesto y firma válidos, paquete íntegro | Invoca el instalador transaccional y guarda ETag | ✅ Validado localmente por el propietario dentro de 132 pruebas |
+| HTTP-008 | Privacidad | Inspeccionar petición saliente | Solo GET sin cookies, token, body ni datos académicos del estudiante | ✅ Validado localmente por el propietario dentro de 132 pruebas |
+| HTTP-009 | Timeout y conectividad | Timeout, error DNS o HTTP 5xx | Error controlado; el contenido instalado permanece disponible | ✅ Validado localmente por el propietario dentro de 132 pruebas |
+| HTTP-010 | Configuración | Falta clave de confianza o allowlist | Falla cerrada; no realiza petición | ✅ Validado localmente por el propietario dentro de 132 pruebas |
 
-Cobertura automatizada inicial: `apps.roadmaps.tests.test_sync_client` y pruebas de integración del cliente en `apps.roadmaps.tests.test_installer`. La suite debe ejecutarse localmente antes de marcar HTTP-001 a HTTP-010 como aprobadas.
+Cobertura automatizada: `apps.roadmaps.tests.test_sync_client` y pruebas de integración del cliente en `apps.roadmaps.tests.test_installer`. El propietario confirmó 132 pruebas OK, incluyendo este bloque HTTP. Las pruebas nuevas del scheduler/backoff/bloqueo agregadas después de esa ejecución están pendientes.
 
 
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
 
-> **Estado:** verificador, publicador e instalador están validados en `main`; el cliente HTTP inicial está en rama aislada y sus pruebas HTTP-001 a HTTP-010 requieren validación local. Hosting, endpoint público y ejecución automática aún no están implementados.
+> **Estado:** verificador, publicador e instalador están validados en `main`; el cliente HTTP y HTTP-001 a HTTP-010 fueron validados localmente por el propietario dentro de 132 pruebas en la rama aislada. El scheduler Electron y la ejecución PyInstaller están implementados después de esa validación y requieren pruebas adicionales. Hosting, endpoint público y claves de producción siguen pendientes.
 
 | ID | Prueba | Caso | Resultado esperado |
 |---|---|---|---|
@@ -441,3 +441,18 @@ Cobertura automatizada inicial: `apps.roadmaps.tests.test_sync_client` y pruebas
 | SYNC-041 | Mutación ORM de historial | `QuerySet.update()` o borrado de paquete | Operación rechazada |
 
 La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
+
+## 6.14 Scheduler Electron, backoff y ejecución empaquetada (pendiente de validación)
+
+| ID | Escenario | Preparación / acción | Resultado esperado | Estado |
+|---|---|---|---|---|
+| AUTO-001 | Primera comprobación diferida | Iniciar Electron con configuración válida | La ventana y Django quedan disponibles; la consulta inicia después de 30 segundos sin bloquear la interfaz | ⏳ Pendiente |
+| AUTO-002 | Sondeo local | Mantener Electron abierto con `next_check_after` futuro | El scheduler puede sondear cada cinco minutos, pero no realiza tráfico HTTP antes de la fecha persistida | ⏳ Pendiente |
+| AUTO-003 | Backoff progresivo | Simular fallos consecutivos de red | 15, 30, 60, 120 minutos… hasta 24 horas; intervalo persistido en SQLite | ⏳ Pendiente |
+| AUTO-004 | Bloqueo entre procesos | Iniciar dos procesos de sincronización para el mismo canal | Solo uno adquiere el bloqueo; el otro termina con `sync_in_progress` | ⏳ Pendiente |
+| AUTO-005 | Sin configuración | Omitir URL, allowlist o clave pública | Estado `not-configured`; no se inicia proceso ni se abre conexión de red | ⏳ Pendiente |
+| AUTO-006 | Modo PyInstaller | Ejecutar `CodeGuardServer --sync-knowledge` en un equipo sin Python externo | Se ejecuta solo el comando; no inicia Waitress, no migra ni recrea ASCENSO | ⏳ Pendiente |
+| AUTO-007 | Cierre de aplicación | Cerrar Electron durante una descarga | Se cancelan temporizadores y proceso hijo; el paquete incompleto no se activa | ⏳ Pendiente |
+| AUTO-008 | Operación offline | Ejecutar sin conectividad o con configuración ausente | La plataforma abre y el último conocimiento instalado sigue disponible | ⏳ Pendiente |
+| AUTO-009 | Canal y comprobación forzada | Configurar `beta` y usar la acción manual | El proceso empaquetado recibe canal correcto y omite `next_check_after` solo para esa consulta | ⏳ Pendiente |
+| AUTO-010 | IPC restringido | Invocar handlers desde un frame que no sea la URL local de CodeGuard | La solicitud se rechaza; no se exponen comandos ni argumentos arbitrarios | ⏳ Pendiente |
