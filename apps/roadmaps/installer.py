@@ -215,14 +215,17 @@ def instalar_paquete_firmado(
         raise InstallationError(str(exc)) from exc
 
     if verified["unchanged"]:
-        if latest is None or latest.estado != "activo" or state.active_package_id != latest.pk:
+        if latest is None or latest.estado not in {"activo", "sustituido"}:
             raise InstallationError(
-                "La secuencia ya registrada no está activa; no se puede tratar como una sincronización sin cambios."
+                "La secuencia ya registrada no conserva un paquete instalable."
             )
+        # Un rollback puede mantener activo un paquete anterior. La respuesta
+        # idéntica del servidor no debe deshacer esa decisión local.
         return {
             "installed": False,
             "unchanged": True,
             "package": latest,
+            "active_package": state.active_package,
             "state": state,
             "lesson_count": latest.contenidos_leccion.count(),
         }
