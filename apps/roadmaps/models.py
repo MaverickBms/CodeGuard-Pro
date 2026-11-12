@@ -909,8 +909,29 @@ class EjercicioLeccion(models.Model):
 from .models_attempts import ConfiguracionEvaluacion, IntentoEjercicio  # noqa: E402,F401
 
 
+class PaqueteConocimientoInstaladoQuerySet(models.QuerySet):
+    """Impide alterar el historial de paquetes fuera de sus transiciones."""
+
+    def update(self, **kwargs):
+        raise ValidationError("Los registros de paquetes solo cambian mediante transiciones controladas.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("No se permiten actualizaciones masivas de registros de paquetes.")
+
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        if any(obj.estado != "descargado" for obj in objs):
+            raise ValidationError("Los paquetes deben registrarse inicialmente como descargados.")
+        return super().bulk_create(objs, **kwargs)
+
+    def delete(self):
+        raise ValidationError("El historial de paquetes no se elimina mediante operaciones masivas.")
+
+
 class PaqueteConocimientoInstalado(models.Model):
-    """Registro local e inmutable de identidad de paquetes verificados/instalados."""
+    """Registro local de identidad inmutable y transiciones controladas de paquetes."""
+
+    objects = PaqueteConocimientoInstaladoQuerySet.as_manager()
 
     ESTADOS = [
         ("descargado", "Descargado"),
@@ -959,6 +980,37 @@ class PaqueteConocimientoInstalado(models.Model):
             models.Index(fields=["channel", "-sequence"], name="paquete_canal_seq_idx"),
         ]
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            if self.estado != "descargado":
+                raise ValidationError("Un paquete debe registrarse inicialmente como descargado.")
+        else:
+            anterior = type(self).objects.get(pk=self.pk)
+            identidad = (
+                "package_id", "package_version", "channel", "sequence",
+                "content_schema_version", "sha256", "manifest_sha256",
+                "signature_key_id", "published_at",
+            )
+            if any(getattr(anterior, field) != getattr(self, field) for field in identidad):
+                raise ValidationError("La identidad y los hashes de un paquete registrado son inmutables.")
+            transiciones = {
+                "descargado": {"verificado", "rechazado"},
+                "verificado": {"activo", "rechazado"},
+                "activo": {"sustituido", "rechazado"},
+            }
+            if anterior.estado != self.estado and self.estado not in transiciones.get(anterior.estado, set()):
+                raise ValidationError(f"Transición de paquete no permitida: {anterior.estado} → {self.estado}.")
+            if anterior.installed_at and self.installed_at != anterior.installed_at:
+                raise ValidationError("La fecha de instalación de un paquete no puede modificarse.")
+            if anterior.error_code and self.error_code != anterior.error_code:
+                raise ValidationError("El código de error registrado no puede sobrescribirse.")
+            if self.estado == "activo" and self.installed_at is None:
+                raise ValidationError("Un paquete activo debe registrar su fecha de instalación.")
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("El historial de paquetes no se elimina físicamente.")
+
     def clean(self):
         super().clean()
         for field in ("sha256", "manifest_sha256"):
@@ -988,6 +1040,11 @@ class EstadoSincronizacion(models.Model):
     last_error_code = models.CharField(max_length=80, blank=True, verbose_name="último código de error")
     next_check_after = models.DateTimeField(null=True, blank=True, verbose_name="próxima comprobación permitida")
     updated_at = models.DateTimeField(auto_now=True)
+
+    def clean(self):
+        super().clean()
+        if self.active_package_id and self.active_package.channel != self.channel:
+            raise ValidationError({"active_package": "El paquete activo debe pertenecer al mismo canal."})
 
     class Meta:
         verbose_name = "estado de sincronización"
