@@ -189,6 +189,23 @@ Estado local por canal de sincronización.
 | last_error_code | CharField (nulo) | Último error |
 | next_check_after | DateTimeField (nulo) | Siguiente comprobación |
 
+
+
+### 4.4 Snapshots instalados por paquete (migración 0016)
+
+El contenido distribuido se conserva separado del flujo editorial local.
+
+| Entidad | Campos principales | Invariante |
+|---|---|---|
+| `ContenidoLeccionPaquete` | paquete, lección, documento JSON, SHA-256 | Un snapshot por paquete/lección; documento y hash inmutables; FK protegidas |
+| `FuentePaqueteConocimiento` | paquete, UUID de fuente, metadatos JSON | Catálogo firmado inmutable y aislado de `FuenteConocimiento` |
+| `PaqueteConocimientoInstalado.artifact_storage_key` | clave relativa del ZIP en almacén local | Inmutable; no guarda rutas suministradas por el paquete |
+| `IntentoEjercicio.paquete_contenido` | FK protegida al paquete presentado | Mutuamente excluyente con `version_contenido`; snapshot de ejercicio exacto |
+
+El instalador resuelve UUID de lección, ejemplo y ejercicio contra el roadmap ASCENSO ya instalado. Los paquetes v2 conservan su catálogo de fuentes dentro de `FuentePaqueteConocimiento`; los paquetes v1 requieren que las fuentes ya estén registradas localmente. Ninguna variante sobrescribe el registro editorial de fuentes.
+
+`EstadoSincronizacion.active_package` es el único selector del paquete distribuido activo por canal. No debe confundirse con `ContenidoLeccionActivo`, que sigue siendo el selector de publicación editorial local. La activación y el rollback cambian el estado de los paquetes y el puntero de sincronización dentro de una transacción SQLite; no eliminan intentos, progreso ni snapshots anteriores.
+
 ---
 
 ## 5. Entidades previstas para incrementos posteriores
@@ -223,7 +240,7 @@ Ver `docs/MATRIZ_TRAZABILIDAD.md` para el mapeo requisito → entidad.
 | referencia_fuente_contenido | (version, fuente) | Referencia única versión-fuente |
 | paquete_conocimiento_instalado | (channel, sequence) | Secuencia única por canal |
 | paquete_conocimiento_instalado | (channel) WHERE estado='activo' | Un solo activo por canal |
-| paquete_conocimiento_instalado | (channel, -sequence) | Índice de consulta por canal |
+| paquete_conocimiento_instalado | (channel, -sequence) | Índice de consulta por canal |\n| contenido_leccion_paquete | (paquete, leccion) | Snapshot único por paquete/lección |\n| fuente_paquete_conocimiento | (paquete, source_uuid) | Fuente única por paquete |
 
 ---
 
