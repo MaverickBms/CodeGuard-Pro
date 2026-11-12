@@ -69,7 +69,35 @@ class DistribucionFirmadaTests(SimpleTestCase):
 
     def build_zip(self, *, extra=None, indexed_path=None, symlink=False):
         payload_path = indexed_path or f"payload/lessons/{self.lesson_id}.json"
-        payload = b'{"schema_version":1,"snapshot":{}}'
+        document = {
+            "schema_version": 1,
+            "resumen_cambios": "Versión de prueba.",
+            "snapshot": {
+                "esquema_version": 1,
+                "leccion": {
+                    "clave": self.lesson_id,
+                    "titulo": "Variables",
+                    "descripcion": "Introducción",
+                    "tipo": "concepto",
+                },
+                "contenido": {
+                    "objetivos_aprendizaje": "Comprender variables.",
+                    "teoria_tecnica": "Una variable enlaza un nombre con un objeto.",
+                    "explicacion_sencilla": "Un nombre permite referirse a un valor.",
+                    "notas": "",
+                },
+                "ejemplos": [],
+                "ejercicios": [],
+            },
+            "fuentes": [{
+                "clave": str(uuid.uuid4()),
+                "rol": "principal",
+                "localizador": "Sección de referencia",
+                "nota_atribucion": "Referencia conceptual.",
+                "uso_declarado": "original",
+            }],
+        }
+        payload = json.dumps(document, separators=(",", ":")).encode("utf-8")
         index = {
             "schema_version": 1,
             "package_id": self.package_id,
