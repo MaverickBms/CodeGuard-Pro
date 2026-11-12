@@ -700,7 +700,7 @@ Migraciones `0012_registro_paquetes_sincronizacion` y `0013_un_paquete_activo_po
 - `PaqueteConocimientoInstalado`: identidad, versión, canal, secuencia, esquema, hashes, clave de firma, fecha de publicación, instalación, estado y código de error.
 - `EstadoSincronizacion`: última comprobación/actualización, ETag, paquete activo, siguiente comprobación y último error.
 
-Se exige una secuencia única por canal y como máximo un paquete con estado `activo` por canal. El FK al paquete activo usa `PROTECT`. No se almacenan datos de progreso, respuestas, código del estudiante, secretos ni credenciales.
+Se exige una secuencia única por canal y como máximo un paquete con estado `activo` por canal. El modelo restringe transiciones (`descargado → verificado/rechazado → activo → sustituido`), bloquea cambios de identidad/hash y borrado físico; el FK al paquete activo usa `PROTECT` y valida que el canal coincida. No se almacenan datos de progreso, respuestas, código del estudiante, secretos ni credenciales.
 
 ### 15.4 Dependencia criptográfica
 
