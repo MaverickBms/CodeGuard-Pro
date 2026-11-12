@@ -33,7 +33,10 @@ datas = [
 datas += collect_data_files("django")
 
 hiddenimports = [
+    "config",
+    "config.settings",
     "config.settings.desktop",
+    "config.wsgi",
     "apps.accounts",
     "apps.audit",
     "apps.core",
@@ -57,10 +60,13 @@ hiddenimports = [
     "django.db.backends",
     "django.db.backends.sqlite3",
     "whitenoise",
+    "whitenoise.middleware",
     "waitress",
 ]
 hiddenimports += collect_submodules("apps")
+hiddenimports += collect_submodules("config")
 hiddenimports += collect_submodules("django")
+hiddenimports += collect_submodules("whitenoise")
 
 a = Analysis(
     ["server_entry.py"],
