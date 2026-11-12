@@ -283,3 +283,40 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | SYNC-026 | Sincronización concurrente | Se inician dos comprobaciones simultáneas | Solo una puede instalar; la otra espera o termina sin alterar el contenido activo |
 
 La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
+
+
+## 6.7 Importación académica y revisión de licencias
+
+> **Estado:** pruebas automatizadas incorporadas en la rama; pendientes de ejecución local.
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| IMP-001 | JSON válido | Valida sin escribir filas |
+| IMP-002 | JSON mal formado o UTF-8 inválido | Error controlado |
+| IMP-003 | Versión de esquema desconocida | Rechazo |
+| IMP-004 | Propiedad desconocida o clave JSON duplicada | Rechazo |
+| IMP-005 | UUID de lección inexistente | Rechazo |
+| IMP-006 | UUID de ejemplo/ejercicio inválido | Rechazo |
+| IMP-007 | UUID repetido en documento o lote | Rechazo |
+| IMP-008 | UUID de recurso asociado a otra lección | Rechazo |
+| IMP-009 | Fuente inexistente o inactiva | Rechazo |
+| IMP-010 | Fuente con licencia pendiente | Advertencia; el borrador no puede pasar a revisión |
+| IMP-011 | Teoría, explicación u objetivo vacío | Rechazo |
+| IMP-012 | Tipo, nivel, rol o uso declarado no permitido | Rechazo |
+| IMP-013 | Texto fuera de límite del modelo | Rechazo |
+| IMP-014 | Archivo superior a 2 MiB o JSON demasiado profundo | Rechazo |
+| IMP-015 | Reimportar el mismo hash | No duplica la versión |
+| IMP-016 | Contenido distinto para una lección | Crea una versión nueva, nunca sobrescribe la anterior |
+| IMP-017 | Error al crear una referencia | Rollback completo |
+| IMP-018 | Usuario no editorial intenta importar o revisar licencia | Rechazo |
+| IMP-019 | Importación válida | Solo crea borradores y referencias |
+| IMP-020 | Progreso e intentos preexistentes | Permanecen intactos |
+| IMP-021 | Código malicioso como texto | Se almacena como texto; nunca se ejecuta |
+| IMP-022 | Dos importaciones concurrentes | Sin versiones parciales ni números duplicados |
+| LIC-001 | Fuente pendiente | Bloquea envío a revisión |
+| LIC-002 | Fuente compatible sin evidencia | Rechaza revisión de licencia |
+| LIC-003 | Fuente compatible sin alcance | Rechaza revisión de licencia |
+| LIC-004 | Fuente solo referencia con adaptación/reproducción | Bloquea revisión editorial |
+| LIC-005 | Evidencia HTTP o URL inválida | Rechaza decisión de licencia |
+| LIC-006 | Decisión de licencia por editor activo | Conserva estado, evidencia, alcance, actor y fecha |
+| LIC-007 | Fuente requiere permiso/no reutilizable | Bloquea envío a revisión |
