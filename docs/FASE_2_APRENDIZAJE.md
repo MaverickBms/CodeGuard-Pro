@@ -333,3 +333,8 @@ Django Admin permanece deshabilitado. La interfaz editorial se implementará por
 
 
 La retirada editorial dispone de metadatos propios (`retirada_por`, `retirada_en` y `motivo_retiro`), separados de la identidad y fecha de revisión/aprobación.
+
+
+### Operación editorial mediante comandos
+
+Se añaden los comandos internos `crear_version_leccion` y `gestionar_version_leccion` para crear snapshots y ejecutar transiciones editoriales desde terminal. No se activa Django Admin ni se exponen acciones de publicación en las vistas de estudiante. Los comandos requieren un usuario editorial existente y activo con `is_staff=True`.
