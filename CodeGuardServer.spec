@@ -13,7 +13,11 @@ El resultado se copia a ``dist-server/`` y electron-builder lo incluye en
 ``resources/server`` mediante ``extraResources``.
 """
 
+import os
 from pathlib import Path
+
+# El hook de Django de PyInstaller necesita conocer los settings durante Analysis.
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.desktop")
 
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
