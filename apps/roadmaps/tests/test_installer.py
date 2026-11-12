@@ -29,9 +29,12 @@ from apps.roadmaps.models import (
     Leccion,
     Modulo,
     PaqueteConocimientoInstalado,
+    Progreso,
     Roadmap,
 )
 from apps.roadmaps.publisher import publicar_paquete_conocimiento
+from apps.roadmaps.models_attempts import ConfiguracionEvaluacion, IntentoEjercicio
+from apps.roadmaps.attempts import registrar_intento_ejercicio
 from apps.roadmaps.installer import (
     InstallationError,
     instalar_paquete_firmado,
@@ -189,6 +192,35 @@ class InstaladorPaquetesTests(TestCase):
         self.assertEqual(second.estado, "sustituido")
         self.assertEqual(state.active_package_id, first.pk)
         self.assertEqual(first.contenidos_leccion.count(), 1)
+
+    def test_intento_usa_snapshot_del_paquete_y_conserva_evidencia(self):
+        ejercicio = self.leccion.ejercicios.get()
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=ejercicio,
+            tipo="respuesta_exacta",
+            configuracion={"respuesta_esperada": "total = 5"},
+            permite_completar_leccion=True,
+        )
+        with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
+            package = self.instalar(self.publicar())["package"]
+            intento = registrar_intento_ejercicio(
+                self.editor,
+                ejercicio,
+                "total = 5",
+                actor_auditoria=self.editor,
+            )
+
+        intento.refresh_from_db()
+        self.assertEqual(intento.resultado, "aprobado")
+        self.assertEqual(intento.paquete_contenido_id, package.pk)
+        self.assertIsNone(intento.version_contenido_id)
+        self.assertEqual(
+            intento.snapshot_ejercicio["enunciado"],
+            "Declara una variable llamada total.",
+        )
+        progreso = Progreso.objects.get(usuario=self.editor, leccion=self.leccion)
+        self.assertEqual(progreso.estado, "completado")
+        self.assertTrue(IntentoEjercicio.objects.filter(pk=intento.pk).exists())
 
     def test_firma_invalida_no_crea_registro_ni_activa_contenido(self):
         manifest, signature, package = self.publicar()
