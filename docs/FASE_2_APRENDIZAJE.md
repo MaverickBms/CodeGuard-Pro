@@ -58,21 +58,21 @@ Ver `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` (secciones 1–7: diseño de s
 
 ---
 
-## 6. Publicador central local (implementado en rama correctiva; validación pendiente)
+## 6. Publicador central local y catálogo firmado (validados localmente)
 
 Se añadió el módulo apps/roadmaps/publisher.py, el comando publicar_paquete_conocimiento y el registro inmutable de publicaciones (migración 0015_publicador_central_conocimiento). El generador toma únicamente versiones editoriales publicadas señaladas por ContenidoLeccionActivo, verifica hash e identidad curricular, y bloquea fuentes inactivas, licencias no autorizadas o decisiones de licencia modificadas después de la revisión.
 
 Genera ZIP reproducible por secuencia, índice interno, manifiesto externo y firma Ed25519. La clave privada PEM se carga desde una ruta externa al repositorio, exige permisos POSIX restrictivos y no se guarda en SQLite ni en Git. La secuencia se mantiene por canal (stable/beta) y el registro de publicaciones es inmutable. El comando escribe artefactos localmente; no sube archivos ni crea endpoints.
 
-Límite de esquema: el contrato académico JSON v1 distribuye identificadores y atribución de fuentes, pero no exporta el expediente completo de revisión de licencia. La decisión y evidencia completas permanecen en el repositorio editorial central. Una futura evolución del esquema deberá incorporar esos metadatos de forma versionada.
+El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos bibliográficos, decisión y evidencia de licencia, alcance y fecha de revisión. El verificador conserva compatibilidad con índice v1. No se exporta la identidad personal del revisor.
 
 ## 7. Pendiente (no implementado)
 
 | Elemento | Estado | Documento |
 |---|---|---|
 | Cliente de sincronización de red | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
-| Generador local de paquetes firmados | Implementado en rama correctiva; pendiente validar migración 0015 y pruebas. Hosting y publicación remota pendientes | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
-| Instalación atómica de paquetes y rollback | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Generador local y catálogo firmado v2 | Implementado; migración 0015 y pruebas confirmadas por el propietario. Hosting y publicación remota pendientes | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Instalación transaccional local y rollback | Implementación inicial añadida en rama correctiva; migración 0016 y pruebas pendientes de validación local | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Competencias y evaluaciones | Pendiente (Incremento 3) | `docs/PLAN_DESARROLLO.md` |
 | Biblioteca documental | Pendiente (Incremento 4) | `docs/PLAN_DESARROLLO.md` |
 | Evidencias y laboratorios | Pendiente (Incremento 5) | `docs/PLAN_DESARROLLO.md` |
@@ -92,7 +92,7 @@ Límite de esquema: el contrato académico JSON v1 distribuye identificadores y 
 
 ## 9. Validación
 
-El propietario confirmó que las migraciones 0014 y 0015 y las suites de corrección de snapshots, activación, entregas, registros y publicador funcionan localmente. El contrato de catálogo v2 y sus pruebas se añadieron después y permanecen pendientes de ejecución local. Las 93 pruebas históricas corresponden a un estado anterior y no sustituyen la validación de cada incremento.
+El propietario confirmó 108 pruebas OK, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes para el estado que incluye el catálogo firmado v2. La migración 0016 y las nuevas pruebas del instalador se añadieron después y permanecen pendientes de validación local.
 
 Desde la carpeta local del proyecto:
 
@@ -109,4 +109,14 @@ Luego iniciar CodeGuard Pro con `./run.sh`, abrir una etapa y entrar en una lecc
 
 El índice del paquete firmado incorpora un catálogo normalizado de fuentes con UUID, datos bibliográficos, decisión/evidencia/alcance de licencia y fecha de revisión. Se excluye la identidad personal del revisor. El verificador admite índices v1 anteriores y valida estrictamente v2, incluida la correspondencia exacta entre fuentes declaradas y referencias de las lecciones. La importación y conciliación del catálogo en la base local aún no están implementadas; tampoco se debe sobrescribir una fuente local incompatible sin una política explícita.
 
-La validación local de las nuevas pruebas SRC-001 a SRC-007 y PUB-001 a PUB-012 sigue pendiente.
+Las pruebas SRC-001 a SRC-007 y PUB-001 a PUB-012 quedaron incluidas en las 108 pruebas confirmadas por el propietario.
+
+## 10. Instalador transaccional de paquetes (implementación inicial en rama correctiva)
+
+El servicio `apps/roadmaps/installer.py` recibe bytes de manifiesto, firma y ZIP; no realiza descargas HTTP. Verifica Ed25519, canal, versión mínima, secuencia anti-replay, hash y estructura del ZIP antes de persistir datos.
+
+La migración 0016 añade snapshots de lección y catálogo de fuentes asociados al paquete. Estos registros son inmutables y quedan separados de `VersionContenidoLeccion`, `ContenidoLeccionActivo` y `FuenteConocimiento`: instalar una publicación central no crea borradores editoriales ni sobrescribe fuentes locales. La instalación valida que las identidades estables de lecciones, ejemplos y ejercicios correspondan al ASCENSO local.
+
+El artefacto ZIP se conserva bajo `CODEGUARD_DATA_DIR/knowledge-packages/`. La activación se realiza al final de la transacción: el paquete anterior pasa a sustituido, el nuevo queda activo y `EstadoSincronizacion.active_package` cambia en la misma transacción. El rollback reactiva un paquete sustituido conservando artefactos, snapshots, intentos y progreso. El servicio también resuelve la vista de lección y la entrega de ejercicios contra el snapshot del paquete activo.
+
+**Límites actuales:** no hay cliente HTTP, descarga, ETag remoto, reintentos, endpoint, hosting, almacén de claves de producción ni integración Electron. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado. La migración 0016 y las pruebas `apps.roadmaps.tests.test_installer` deben ejecutarse localmente antes de considerar validado este incremento.
