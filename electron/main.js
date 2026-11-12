@@ -19,6 +19,7 @@ let djangoProcess = null;
 let djangoPort = null;
 let syncProcess = null;
 let syncTimer = null;
+let syncInitialTimer = null;
 let syncStatus = { state: 'idle', message: 'Sin comprobaciones recientes.', checkedAt: null };
 let quitting = false;
 
@@ -233,6 +234,7 @@ function startKnowledgeSync(force = false) {
   }
 
   const env = syncEnvironment();
+  env.CODEGUARD_SYNC_CHANNEL = config.channel;
   let executable;
   let args;
   let cwd;
@@ -318,13 +320,20 @@ function startKnowledgeSync(force = false) {
 function scheduleKnowledgeSync() {
   if (syncTimer) return;
   // La primera consulta ocurre después de que la interfaz y Django estén disponibles.
-  const initial = setTimeout(() => startKnowledgeSync(false), SYNC_INITIAL_DELAY_MS);
-  initial.unref();
+  syncInitialTimer = setTimeout(() => {
+    syncInitialTimer = null;
+    startKnowledgeSync(false);
+  }, SYNC_INITIAL_DELAY_MS);
+  syncInitialTimer.unref();
   syncTimer = setInterval(() => startKnowledgeSync(false), SYNC_POLL_INTERVAL_MS);
   syncTimer.unref();
 }
 
 function stopKnowledgeSync() {
+  if (syncInitialTimer) {
+    clearTimeout(syncInitialTimer);
+    syncInitialTimer = null;
+  }
   if (syncTimer) {
     clearInterval(syncTimer);
     syncTimer = null;
