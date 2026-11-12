@@ -198,6 +198,118 @@ class IntentosEjercicioTests(TestCase):
 
 
 
+
+    def test_ciclo_editorial_revisa_aprueba_y_publica_versiones(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.knowledge import (
+            aprobar_version_contenido,
+            crear_version_contenido_leccion,
+            enviar_version_a_revision,
+            publicar_version_contenido,
+        )
+        from apps.roadmaps.models import ContenidoLeccion, EjemploLeccion, FuenteConocimiento
+
+        editor = get_user_model().objects.create_user(
+            username="editor", password="ClaveSegura123!", is_staff=True, is_active=True
+        )
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            teoria_tecnica="Una variable enlaza un nombre con un objeto.",
+            explicacion_sencilla="Un nombre permite referirse a un valor.",
+        )
+        EjemploLeccion.objects.create(
+            leccion=self.leccion, titulo="Asignación", codigo="nombre = 'Ada'", publicado=True
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url_canonica="https://docs.python.org/3/reference/",
+            edicion="3",
+        )
+
+        primera = crear_version_contenido_leccion(
+            self.leccion, fuentes=[(fuente, "principal", "Assignment statements", "Fuente oficial")]
+        )
+        with self.assertRaises(ValidationError):
+            publicar_version_contenido(primera.pk, actor=editor)
+
+        enviar_version_a_revision(primera.pk, actor=editor)
+        with self.assertRaises(ValidationError):
+            primera.snapshot["contenido"]["teoria_tecnica"] = "Alterado"
+            primera.save()
+
+        aprobar_version_contenido(primera.pk, actor=editor)
+        primera = publicar_version_contenido(primera.pk, actor=editor)
+        self.assertEqual(primera.estado, "publicada")
+        self.assertEqual(primera.revisada_por, editor)
+        self.assertEqual(primera.publicada_por, editor)
+        self.assertIsNotNone(primera.publicada_en)
+
+        ContenidoLeccion.objects.filter(leccion=self.leccion).update(
+            teoria_tecnica="Una variable asocia un identificador con un objeto."
+        )
+        segunda = crear_version_contenido_leccion(
+            self.leccion, fuentes=[(fuente, "principal", "Names", "Fuente oficial")]
+        )
+        enviar_version_a_revision(segunda.pk, actor=editor)
+        aprobar_version_contenido(segunda.pk, actor=editor)
+        segunda = publicar_version_contenido(segunda.pk, actor=editor)
+
+        primera.refresh_from_db()
+        self.assertEqual(segunda.estado, "publicada")
+        self.assertEqual(primera.estado, "sustituida")
+        self.assertEqual(
+            self.leccion.versiones_contenido.filter(estado="publicada").count(), 1
+        )
+
+    def test_transicion_editorial_exige_usuario_staff_activo(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.knowledge import enviar_version_a_revision
+
+        with self.assertRaises(ValidationError):
+            enviar_version_a_revision(1, actor=self.usuario)
+
+    def test_retirada_exige_motivo_y_conserva_snapshot(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.knowledge import (
+            aprobar_version_contenido,
+            crear_version_contenido_leccion,
+            enviar_version_a_revision,
+            publicar_version_contenido,
+            retirar_version_publicada,
+        )
+        from apps.roadmaps.models import ContenidoLeccion, FuenteConocimiento
+
+        editor = get_user_model().objects.create_user(
+            username="editor_retiro", password="ClaveSegura123!", is_staff=True
+        )
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            teoria_tecnica="Teoría técnica.",
+            explicacion_sencilla="Explicación sencilla.",
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Docs",
+            url_canonica="https://docs.python.org/3/",
+        )
+        version = crear_version_contenido_leccion(
+            self.leccion, fuentes=[(fuente, "principal", "", "")]
+        )
+        enviar_version_a_revision(version.pk, actor=editor)
+        aprobar_version_contenido(version.pk, actor=editor)
+        publicar_version_contenido(version.pk, actor=editor)
+        snapshot_original = version.snapshot
+
+        with self.assertRaises(ValidationError):
+            retirar_version_publicada(version.pk, actor=editor, motivo=" ")
+        retirada = retirar_version_publicada(
+            version.pk, actor=editor, motivo="La referencia requiere actualización."
+        )
+        self.assertEqual(retirada.estado, "retirada")
+        self.assertEqual(retirada.snapshot, snapshot_original)
+        self.assertEqual(retirada.motivo_retiro, "La referencia requiere actualización.")
+
     def test_servicio_crea_snapshot_determinista_con_fuentes_y_recursos_publicados(self):
         import hashlib
         import json
