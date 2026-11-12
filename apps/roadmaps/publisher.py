@@ -233,7 +233,7 @@ def publicar_paquete_conocimiento(
     ):
         raise PublicationError("package_version debe usar SemVer MAJOR.MINOR.PATCH.")
     if not re.fullmatch(
-        r"(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?",
+        r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?",
         minimum_app_version or "",
     ):
         raise PublicationError("minimum_app_version debe usar SemVer MAJOR.MINOR.PATCH.")
