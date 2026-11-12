@@ -318,6 +318,7 @@ def leccion_detalle(request, leccion_id):
     contenido = getattr(leccion, "contenido", None)
     ejemplos = list(leccion.ejemplos.filter(publicado=True))
     ejercicios = list(leccion.ejercicios.filter(publicado=True))
+    ejercicios_modelo = ejercicios
 
     if puntero_activo:
         snapshot = puntero_activo.version.snapshot
@@ -349,7 +350,7 @@ def leccion_detalle(request, leccion_id):
     intentos_por_ejercicio = {}
     if usuario is not None and ejercicios:
         filas = IntentoEjercicio.objects.filter(
-            usuario=usuario, ejercicio__in=ejercicios
+            usuario=usuario, ejercicio__in=ejercicios_modelo
         ).order_by("-creado_en", "-id")
         for intento in filas:
             lista_intentos = intentos_por_ejercicio.setdefault(
