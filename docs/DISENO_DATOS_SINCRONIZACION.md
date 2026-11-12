@@ -609,3 +609,6 @@ La retirada registra campos independientes `retirada_por` y `retirada_en`. No re
 ### Protección frente a escrituras masivas
 
 El modelo de versiones usa un QuerySet especializado que rechaza `update()`, `bulk_update()` y eliminaciones masivas, además de impedir la creación masiva en estados distintos de borrador. La modificación de estados debe pasar por los servicios editoriales; la eliminación individual se limita a borradores. Esto reduce las vías accidentales para saltarse las validaciones del ciclo de vida. Como toda protección a nivel ORM, no sustituye controles de acceso a la base de datos ni impide SQL directo ejecutado por código privilegiado.
+
+
+El envío a revisión también conserva `enviada_por` y `enviada_en`, separados de los datos de aprobación, publicación y retirada. Así queda identificada cada responsabilidad del ciclo editorial.
