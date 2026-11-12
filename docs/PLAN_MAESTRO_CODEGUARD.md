@@ -178,23 +178,26 @@ Implementado en la base de la Fase 2 y ampliado en ramas de trabajo:
 - Snapshots JSON de lecciones versionados, con hash SHA-256, número incremental y referencias de atribución.
 - Servicio para generar snapshots deterministas que incluye teoría, objetivos, ejemplos y ejercicios publicados, sin alterar versiones anteriores.
 - Flujo editorial de dominio: borrador → revisión → aprobación → publicación; sustitución atómica de la versión anterior y retirada con motivo.
-- Registro interno de fuentes documentales mediante `registrar_fuente_conocimiento`: URL HTTPS, publicador, edición, licencia y notas; evita duplicados y deja explícita la verificación humana pendiente.
-- Auditoría de remitente, revisor, publicador y responsable/fecha de retirada.
-- Protección ORM contra cambios de snapshots en estados revisados, escrituras masivas y saltos de estados.
-- Comandos internos `crear_version_leccion` y `gestionar_version_leccion`; Django Admin permanece deshabilitado.
-- Migraciones incrementales 0004–0008 aplicadas y verificadas localmente por el usuario en la configuración de desarrollo; `makemigrations --check --dry-run` informó que no hay cambios pendientes.
+- Registro interno de fuentes documentales mediante `registrar_fuente_conocimiento`: URL HTTPS, publicador, edición, licencia y notas; el registro crea fuentes pendientes, no verificadas.
+- Revisión auditable de licencias con estado, evidencia HTTPS, alcance, nota de decisión, editor responsable y fecha; las decisiones no se infieren automáticamente.
+- Uso declarado por referencia de fuente (`original`, `cita_breve`, `adaptacion`, `reproduccion`) y bloqueo editorial para fuentes pendientes, con permiso requerido o no reutilizables. La categoría `solo_referencia` admite solo contenido original.
+- Validador de documentos académicos JSON v1 con validación de esquema, UUID estables, correspondencia curricular, límites de recursos, detección de duplicados y validación sin escrituras.
+- Importador transaccional autorizado a editores activos; crea únicamente borradores inmutables con hash y procedencia, reconoce reimportaciones idempotentes y no modifica progreso ni intentos.
+- Comandos `crear_version_leccion`, `gestionar_version_leccion`, `revisar_licencia_fuente`, `validar_paquete_contenido` e `importar_paquete_contenido`; Django Admin permanece deshabilitado.
+- Migraciones 0004–0008 fueron aplicadas y verificadas localmente en la configuración de desarrollo. La migración 0009 añade revisión de licencias y uso declarado; está incorporada a la rama y pendiente de aplicación/verificación local.
 
 Validación registrada:
 
-- La suite completa reportó **54 pruebas OK** en la validación local del usuario después de corregir las migraciones y los comandos editoriales. Las tres pruebas nuevas del comando `registrar_fuente_conocimiento` se añadieron después de esa ejecución y aún requieren validación local.
+- El usuario confirmó que la ronda anterior de comprobaciones locales funcionó correctamente.
+- La nueva migración 0009, el importador, la revisión de licencias y sus pruebas automatizadas se incorporaron después de esa validación; deben ejecutarse localmente antes de dar por cerrado este incremento.
 - Último commit de referencia conocido en `main`: `dee0da9b4444ecabc5fc4dd4263296eef8361a99`.
 
 Pendiente de la Fase 2:
 
-- Cargar y revisar contenido académico real para las lecciones.
-- Completar los metadatos editoriales de revisión técnica, vigencia y compatibilidad por tecnología/versión, y poblar el catálogo con fuentes reales verificadas.
-- Completar el flujo editorial con permisos granulares, interfaz de autoría/revisión, validadores pedagógicos y carga masiva; el primer flujo por servicios y comandos ya existe en la rama de trabajo.
-- Verificar localmente las pruebas nuevas del registro de fuentes y ampliar la validación editorial para exigir evidencia de licencia/condiciones de reutilización antes de publicar.
+- Cargar y revisar contenido académico real para las lecciones y poblar el catálogo con fuentes oficiales verificadas.
+- Completar metadatos de revisión técnica, vigencia y compatibilidad por tecnología/versión.
+- Construir una interfaz editorial y permisos granulares; los primeros servicios y comandos de revisión e importación ya existen en la rama.
+- Ejecutar localmente migración 0009, nuevas pruebas de importación/licencias y suite completa.
 - Implementar el servicio central de distribución, manifiesto firmado y paquetes académicos inmutables.
 - Implementar el cliente de sincronización pull-only, verificación criptográfica, instalación atómica, historial y rollback. **Este sistema está documentado y aprobado, pero todavía no está implementado.**
 - Validar navegación y presentación de todos los tipos de lección.
@@ -339,7 +342,7 @@ La detección automática de cambios en documentación oficial solo genera alert
 
 1. Registrar la fuente y sus condiciones de uso.
 2. Consultar la versión oficial y detectar cambios relevantes.
-3. Crear o actualizar la explicación, ejemplos y ejercicios de CodeGuard.\n\nLa creación de snapshots y las transiciones de revisión/aprobación/publicación ya cuentan con una primera implementación en la rama de trabajo. La importación masiva, el panel editorial, la validación de licencias y el control de roles por función siguen pendientes.
+3. Crear o actualizar la explicación, ejemplos y ejercicios de CodeGuard. La creación de snapshots, las transiciones editoriales, la revisión auditable de licencias y la importación JSON por lotes ya cuentan con una primera implementación en la rama de trabajo.
 4. Revisar exactitud técnica, claridad pedagógica, vigencia, licencias y enlaces.
 5. Validar ejemplos y evaluadores en el entorno de pruebas correspondiente.
 6. Aprobar y publicar una nueva versión inmutable.
@@ -348,7 +351,7 @@ La detección automática de cambios en documentación oficial solo genera alert
 9. Descargar, verificar, instalar y registrar el resultado de sincronización.
 10. Si falla la validación o instalación, mantener la versión anterior y registrar el error.
 
-La autoría masiva no debe depender de editar manualmente SQLite ni de activar `django.contrib.admin` sin una decisión de diseño. Se debe crear un flujo editorial versionado e importable, con validación previa y trazabilidad.
+La autoría masiva no debe depender de editar manualmente SQLite ni de activar `django.contrib.admin` sin una decisión de diseño. El flujo inicial ya importa lotes JSON validados como borradores; falta construir la interfaz editorial, ampliar validadores pedagógicos y completar las pruebas locales.
 
 ### 2.8 Experiencia offline y vigencia
 
