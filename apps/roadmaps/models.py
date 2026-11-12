@@ -1159,8 +1159,23 @@ class EstadoSincronizacion(models.Model):
 
 
 
+class SecuenciaPublicacionConocimientoQuerySet(models.QuerySet):
+    """Solo admite incrementos unitarios mediante save()."""
+
+    def update(self, **kwargs):
+        raise ValidationError("La secuencia solo se incrementa mediante save().")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("La secuencia no admite actualizaciones masivas.")
+
+    def delete(self):
+        raise ValidationError("No se puede eliminar la secuencia de publicación.")
+
+
 class SecuenciaPublicacionConocimiento(models.Model):
     """Contador monotónico por canal para publicaciones centrales."""
+
+    objects = SecuenciaPublicacionConocimientoQuerySet.as_manager()
 
     channel = models.CharField(
         max_length=16, primary_key=True,
@@ -1176,6 +1191,19 @@ class SecuenciaPublicacionConocimiento(models.Model):
         super().clean()
         if self.siguiente < 1:
             raise ValidationError({"siguiente": "La secuencia debe ser positiva."})
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            anterior = type(self).objects.get(pk=self.pk)
+            if self.siguiente != anterior.siguiente + 1:
+                raise ValidationError("La secuencia solo puede avanzar exactamente una unidad.")
+        elif self.siguiente != 1:
+            raise ValidationError("La secuencia debe inicializarse en uno.")
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("No se puede eliminar la secuencia de publicación.")
 
 
 class PublicacionPaqueteConocimientoQuerySet(models.QuerySet):
