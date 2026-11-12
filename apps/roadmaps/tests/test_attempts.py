@@ -671,3 +671,83 @@ class IntentosEjercicioTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Últimos intentos")
         self.assertContains(response, "Aprobado")
+        self.assertContains(response, "Tu respuesta")
+        self.assertContains(response, "Enviar intento")
+
+
+
+    def test_intento_conserva_snapshot_del_enunciado_presentado(self):
+        intento = registrar_intento_ejercicio(
+            self.usuario, self.ejercicio, "nombre = 'Ada'"
+        )
+        self.assertEqual(
+            intento.snapshot_ejercicio["enunciado"],
+            "Declara una variable llamada nombre.",
+        )
+        self.assertEqual(
+            intento.snapshot_ejercicio["clave"],
+            str(self.ejercicio.clave_contenido),
+        )
+        self.assertIsNone(intento.version_contenido)
+
+        self.ejercicio.enunciado = "Enunciado editado después del intento."
+        self.ejercicio.save(update_fields=["enunciado"])
+        intento.refresh_from_db()
+        self.assertEqual(
+            intento.snapshot_ejercicio["enunciado"],
+            "Declara una variable llamada nombre.",
+        )
+
+    def test_publicacion_activa_snapshot_y_nuevo_intento_lo_referencia(self):
+        from apps.roadmaps.knowledge import (
+            aprobar_version_contenido,
+            crear_version_contenido_leccion,
+            enviar_version_a_revision,
+            publicar_version_contenido,
+            revisar_licencia_fuente,
+        )
+        from apps.roadmaps.models import (
+            ContenidoLeccion,
+            ContenidoLeccionActivo,
+            FuenteConocimiento,
+        )
+
+        editor = get_user_model().objects.create_user(
+            username="editor_snapshot", password="ClaveSegura123!",
+            is_staff=True, is_active=True,
+        )
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            teoria_tecnica="Una variable enlaza un nombre con un objeto.",
+            explicacion_sencilla="Un nombre permite referirse a un valor.",
+            publicado=True,
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url_canonica="https://docs.python.org/3/reference/",
+        )
+        revisar_licencia_fuente(
+            fuente.pk, actor=editor, estado="compatible",
+            evidencia="https://docs.python.org/3/license.html",
+            alcance="Redistribución con atribución.",
+            nota="Revisión manual para prueba.",
+        )
+        version = crear_version_contenido_leccion(
+            self.leccion, fuentes=[(fuente, "principal", "Variables", "Fuente oficial")]
+        )
+        enviar_version_a_revision(version.pk, actor=editor)
+        aprobar_version_contenido(version.pk, actor=editor)
+        publicar_version_contenido(version.pk, actor=editor)
+
+        puntero = ContenidoLeccionActivo.objects.get(leccion=self.leccion)
+        self.assertEqual(puntero.version, version)
+
+        intento = registrar_intento_ejercicio(
+            self.usuario, self.ejercicio, "nombre = 'Ada'"
+        )
+        self.assertEqual(intento.version_contenido, version)
+        self.assertEqual(
+            intento.snapshot_ejercicio["enunciado"],
+            "Declara una variable llamada nombre.",
+        )
