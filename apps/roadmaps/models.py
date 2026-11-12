@@ -453,6 +453,140 @@ class ContenidoLeccion(models.Model):
         return bool(self.teoria_tecnica.strip() and self.explicacion_sencilla.strip())
 
 
+
+class FuenteConocimiento(models.Model):
+    """Fuente técnica consultada para elaborar o revisar contenido académico."""
+
+    clave = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    publicador = models.CharField(max_length=180, verbose_name="publicador")
+    titulo = models.CharField(max_length=240, verbose_name="título de la fuente")
+    url_canonica = models.URLField(max_length=1000, verbose_name="URL canónica")
+    edicion = models.CharField(max_length=100, blank=True, verbose_name="edición o versión")
+    identificador_licencia = models.CharField(
+        max_length=120, blank=True, verbose_name="identificador de licencia"
+    )
+    url_licencia = models.URLField(max_length=1000, blank=True, verbose_name="URL de licencia")
+    consultada_en = models.DateTimeField(null=True, blank=True, verbose_name="consultada el")
+    activa = models.BooleanField(default=True, verbose_name="fuente activa")
+    notas = models.TextField(blank=True, verbose_name="notas editoriales")
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "fuente de conocimiento"
+        verbose_name_plural = "fuentes de conocimiento"
+        ordering = ["publicador", "titulo"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["url_canonica", "edicion"],
+                name="fuente_unica_url_edicion",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.publicador}: {self.titulo}"
+
+
+class VersionContenidoLeccion(models.Model):
+    """Snapshot versionado del contenido de una lección; no reemplaza el borrador editable."""
+
+    ESTADOS = [
+        ("borrador", "Borrador"),
+        ("revision", "En revisión"),
+        ("aprobada", "Aprobada"),
+        ("publicada", "Publicada"),
+        ("sustituida", "Sustituida"),
+        ("retirada", "Retirada"),
+    ]
+
+    clave = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    leccion = models.ForeignKey(
+        Leccion,
+        on_delete=models.PROTECT,
+        related_name="versiones_contenido",
+        verbose_name="lección",
+    )
+    numero_version = models.PositiveIntegerField(verbose_name="número de versión")
+    esquema_version = models.PositiveSmallIntegerField(default=1, verbose_name="versión del esquema")
+    estado = models.CharField(max_length=12, choices=ESTADOS, default="borrador")
+    snapshot = models.JSONField(verbose_name="snapshot académico")
+    sha256 = models.CharField(max_length=64, verbose_name="SHA-256 del snapshot")
+    resumen_cambios = models.TextField(blank=True, verbose_name="resumen de cambios")
+    motivo_retiro = models.TextField(blank=True, verbose_name="motivo de retiro")
+    revisada_en = models.DateTimeField(null=True, blank=True, verbose_name="revisada el")
+    publicada_en = models.DateTimeField(null=True, blank=True, verbose_name="publicada el")
+    fuentes = models.ManyToManyField(
+        FuenteConocimiento,
+        through="ReferenciaFuenteContenido",
+        related_name="versiones",
+        blank=True,
+    )
+    creada_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "versión de contenido de lección"
+        verbose_name_plural = "versiones de contenido de lección"
+        ordering = ["leccion_id", "-numero_version"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["leccion", "numero_version"],
+                name="contenido_version_unica_leccion",
+            ),
+            models.UniqueConstraint(
+                fields=["leccion"],
+                condition=models.Q(estado="publicada"),
+                name="contenido_una_publicada_por_leccion",
+            ),
+        ]
+        indexes = [
+            models.Index(fields=["estado", "publicada_en"], name="contenido_estado_pub_idx")
+        ]
+
+    def clean(self):
+        super().clean()
+        if len(self.sha256) != 64 or any(c not in "0123456789abcdef" for c in self.sha256):
+            raise ValidationError({"sha256": "Debe ser un SHA-256 hexadecimal de 64 caracteres."})
+
+    def __str__(self):
+        return f"{self.leccion} — v{self.numero_version} ({self.estado})"
+
+
+class ReferenciaFuenteContenido(models.Model):
+    """Atribución explícita de una fuente dentro de una versión académica."""
+
+    ROLES = [
+        ("principal", "Fuente principal"),
+        ("complementaria", "Fuente complementaria"),
+        ("normativa", "Especificación o norma"),
+    ]
+
+    version = models.ForeignKey(
+        VersionContenidoLeccion,
+        on_delete=models.PROTECT,
+        related_name="referencias",
+    )
+    fuente = models.ForeignKey(
+        FuenteConocimiento,
+        on_delete=models.PROTECT,
+        related_name="referencias_contenido",
+    )
+    rol = models.CharField(max_length=16, choices=ROLES, default="principal")
+    localizador = models.CharField(max_length=500, blank=True, verbose_name="sección o localizador")
+    nota_atribucion = models.TextField(blank=True, verbose_name="nota de atribución")
+
+    class Meta:
+        verbose_name = "referencia de fuente de contenido"
+        verbose_name_plural = "referencias de fuentes de contenido"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["version", "fuente"],
+                name="referencia_fuente_unica_version",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.fuente} → {self.version}"
+
+
 class EjemploLeccion(models.Model):
     """Ejemplo explicado que acompaña la teoría de una lección."""
 
