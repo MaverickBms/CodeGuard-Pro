@@ -31,6 +31,10 @@ La rama `docs/phase-2-hybrid-knowledge-sync` fue fusionada a `main`. Incluye:
 - **Un solo paquete activo por canal:** restricción parcial y migración de datos (migración 0013).
 - **Estado de sincronización por canal:** `EstadoSincronizacion` (migración 0012).
 - **Verificador de distribución firmada:** `validate_package_archive`, `verify_signed_manifest` (Ed25519, manifiesto, ZIP).
+- **Contenido activo por snapshot:** `ContenidoLeccionActivo` apunta a la versión editorial publicada que debe mostrarse; la publicación y retirada actualizan el puntero dentro de la transacción editorial (migración 0014).
+- **Evidencia histórica de ejercicios:** cada nuevo `IntentoEjercicio` conserva `snapshot_ejercicio` y referencia `version_contenido` cuando existe una versión activa. La migración 0014 conserva el enunciado visible de intentos anteriores.
+- **Interfaz de entregas:** el estudiante ya puede enviar respuestas mediante POST con CSRF, límite de 20.000 caracteres e historial de los tres últimos intentos. No se ejecuta código arbitrario.
+- **Registro local endurecido:** escrituras masivas de paquetes y estado de sincronización validan invariantes o quedan bloqueadas para evitar saltarse el flujo controlado.
 - **Comandos de gestión editoriales:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`.
 - **Pruebas:** 93 pruebas automatizadas pasando (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`).
 
@@ -61,7 +65,7 @@ Ver `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` (secciones 1–7: diseño de s
 | Cliente de sincronización de red | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Servicio central de publicación | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Paquetes firmados y publicación real | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
-| Instalación atómica y rollback | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Instalación atómica de paquetes y rollback | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Competencias y evaluaciones | Pendiente (Incremento 3) | `docs/PLAN_DESARROLLO.md` |
 | Biblioteca documental | Pendiente (Incremento 4) | `docs/PLAN_DESARROLLO.md` |
 | Evidencias y laboratorios | Pendiente (Incremento 5) | `docs/PLAN_DESARROLLO.md` |
@@ -80,6 +84,8 @@ Ver `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` (secciones 1–7: diseño de s
 ---
 
 ## 8. Validación
+
+La migración 0014 y los cambios de esta rama están pendientes de validación local. Las 93 pruebas confirmadas anteriormente corresponden al estado anterior a este incremento; no deben atribuirse a los cambios nuevos. Se añadieron pruebas para snapshots de intentos, activación de versiones y protecciones de escritura masiva.
 
 Desde la carpeta local del proyecto:
 
