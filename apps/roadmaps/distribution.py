@@ -156,6 +156,7 @@ def validate_manifest_structure(raw: bytes, *, allowed_hosts):
         or hostname.lower().rstrip(".") not in hosts
         or parsed.username
         or parsed.password
+        or "@" in parsed.netloc
         or parsed.fragment
         or parsed.port not in {None, 443}
     ):
