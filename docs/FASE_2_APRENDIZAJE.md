@@ -179,3 +179,122 @@ export CODEGUARD_DATA_DIR="$PWD/data"
 ```
 
 Las pruebas de esta rama cubren evaluación exacta, comprobación estática, configuración inválida, límite de entrega, historial y finalización condicionada a evidencia. La validación de estos comandos todavía debe ejecutarse en el entorno local del proyecto.
+
+## 11. Conocimiento académico y sincronización híbrida
+
+**Decisión de producto aprobada:** CodeGuard Pro utilizará un modelo híbrido: un servicio central publica contenido académico revisado y versionado; la aplicación local consulta y descarga actualizaciones automáticamente cuando dispone de conexión; el contenido queda almacenado localmente para continuar trabajando offline. Esta capacidad pertenece a la Fase 2.
+
+**Estado real en `main`: DISEÑO DOCUMENTADO; NO IMPLEMENTADO.** Los modelos actuales de lecciones, ejemplos, ejercicios, intentos y evaluadores no constituyen todavía un sistema de sincronización. No existe en esta revisión evidencia de un cliente de sincronización, un servicio central de publicación, manifiestos firmados ni un instalador local de paquetes.
+
+### 11.1 Principios de arquitectura
+
+- El núcleo de CodeGuard sigue ejecutándose localmente mediante Electron + Django + SQLite.
+- El servicio central es una fuente de distribución de conocimiento, no un servidor de ejecución de la aplicación del estudiante.
+- La comunicación de sincronización será iniciada por el cliente mediante HTTPS (pull-only). No se abrirá el servidor local a Internet ni se aceptarán conexiones entrantes remotas.
+- La conexión es opcional. No se bloquean el arranque, el acceso al contenido descargado, la práctica disponible ni la consulta del progreso.
+- El servicio central distribuye únicamente contenido editorial publicado. No recibe código, intentos, calificaciones, progreso, notas privadas ni telemetría del estudiante.
+- La actualización de conocimiento es independiente de la actualización del programa, sus dependencias o sus binarios.
+- La sincronización entre dispositivos y la subida de progreso quedan fuera de esta decisión.
+
+### 11.2 Componentes previstos
+
+| Componente | Responsabilidad | Estado |
+|---|---|---|
+| Catálogo de fuentes | Registrar documentación oficial, ediciones, URL canónica, licencia y fecha de consulta | Pendiente |
+| Repositorio editorial | Mantener lecciones, ejemplos, ejercicios y referencias revisados | Pendiente |
+| Validador editorial | Comprobar estructura, enlaces, referencias, ejemplos y compatibilidad | Pendiente |
+| Publicador central | Publicar paquetes inmutables y manifiesto firmado | Pendiente |
+| Cliente de sincronización | Consultar versiones y descargar paquetes cuando hay conexión | Pendiente |
+| Verificador local | Validar firma, hash, tamaño, esquema y compatibilidad | Pendiente |
+| Instalador local | Activar paquetes de forma atómica y permitir rollback | Pendiente |
+| Estado de vigencia | Mostrar actualización, última revisión, obsolescencia y retiro | Pendiente |
+
+### 11.3 Metadatos mínimos del contenido
+
+Cada recurso académico debe poder identificar:
+
+- ID estable, tipo de recurso y versión.
+- Lenguaje/tecnología, versión objetivo y nivel formativo.
+- Fuente primaria: publicador, título, URL canónica y edición o versión consultada.
+- Licencia/condiciones de uso y forma de atribución requerida.
+- Fecha de consulta, fecha de revisión técnica y fecha de publicación.
+- Estado editorial: borrador, en revisión, aprobado, publicado, sustituido o retirado.
+- Revisor/responsable y motivo del cambio.
+- Versión del esquema del paquete y versión mínima de CodeGuard compatible.
+- Relaciones con objetivos, lecciones, ejemplos, ejercicios y criterios de evaluación.
+
+Una fuente oficial es evidencia y referencia, no permiso automático para copiar su contenido. CodeGuard debe redactar explicaciones propias, exactas y pedagógicas. Las herramientas automáticas pueden detectar cambios en fuentes, pero no publicar cambios sin revisión.
+
+### 11.4 Flujo de publicación y sincronización
+
+1. Registrar una fuente técnica y verificar su licencia/condiciones.
+2. Consultar la documentación oficial y registrar la edición/versiones relevantes.
+3. Detectar cambios de fuente y crear una propuesta de revisión; no alterar directamente el contenido publicado.
+4. Actualizar la explicación pedagógica, ejemplos y ejercicios de CodeGuard.
+5. Revisar exactitud técnica, claridad, vigencia, licencias y referencias.
+6. Validar ejemplos y contratos de evaluación.
+7. Aprobar una versión inmutable del contenido.
+8. Generar un paquete y manifiesto con identificador, versión, fecha, tamaño, hash, firma, esquema y compatibilidad.
+9. El cliente consulta el manifiesto por HTTPS cuando hay conexión, compara versiones y descarga el paquete compatible.
+10. El cliente descarga a una ubicación temporal y valida firma, hash, estructura, tamaño y compatibilidad.
+11. El cliente activa el paquete de forma atómica, conserva la versión anterior y registra el resultado.
+12. Si ocurre un error, conserva la última versión válida, informa el estado y permite reintentar.
+
+### 11.5 Reglas de integridad, seguridad y privacidad
+
+- TLS/HTTPS para el transporte y firma digital para autenticar los paquetes; el hash por sí solo detecta corrupción, pero no autentica al publicador.
+- La clave privada de publicación permanece exclusivamente en el entorno editorial/servidor. El cliente contiene únicamente la clave pública de verificación.
+- Validar tamaño máximo, tipos de archivo, rutas internas, esquema y referencias antes de procesar un paquete. Prevenir path traversal y archivos comprimidos maliciosos.
+- Los paquetes de contenido no pueden ejecutar código, scripts, migraciones ni comandos.
+- La instalación debe poder revertirse sin modificar la base de datos del progreso.
+- Mantener separados el catálogo académico versionado y los registros personales/locales.
+- Conservar en cada intento la versión de contenido y de evaluación utilizada. No recalificar automáticamente intentos históricos por la llegada de una versión nueva.
+- No subir al servidor central información personal ni datos académicos del estudiante.
+- No confundir contenido que necesita revisión por antigüedad con contenido confirmado como incorrecto.
+
+### 11.6 Política de actualización
+
+- Comprobar actualizaciones al iniciar y en momentos oportunos mientras exista conexión, sin bloquear la interfaz.
+- Aplicar timeout, reintentos con backoff y límites de descarga; evitar conexiones permanentes.
+- Permitir desactivar o posponer la comprobación automática y ofrecer una actualización manual.
+- La última versión válida local siempre está disponible offline.
+- Mostrar estados diferenciados: actualizado, actualización disponible, sin conexión, revisión recomendada, contenido retirado/sustituido y error de sincronización.
+- Una retirada por error crítico debe advertir al estudiante y evitar nuevas asignaciones del contenido afectado, pero no borrar intentos ni evidencias históricas.
+
+### 11.7 Orden de implementación
+
+1. Definir esquema de metadatos y catálogo de fuentes.
+2. Definir formato versionado del paquete y manifiesto.
+3. Crear flujo editorial de importación, validación, revisión y publicación.
+4. Crear publicador central de solo lectura para el cliente.
+5. Crear cliente local de consulta y descarga.
+6. Implementar verificación criptográfica, validación y límites de seguridad.
+7. Implementar instalación atómica, historial de versiones y rollback.
+8. Integrar indicadores de vigencia y estados de sincronización en la interfaz.
+9. Añadir pruebas de desconexión, interrupción, corrupción, firma inválida, incompatibilidad, rollback y preservación del progreso.
+10. Publicar inicialmente un conjunto pequeño de contenidos revisados y ampliar el catálogo por rutas prioritarias.
+
+### 11.8 Criterios de aceptación adicionales
+
+- CodeGuard arranca y permite estudiar sin conexión a Internet.
+- El contenido descargado se consulta sin llamadas de red.
+- El cliente no envía datos del estudiante durante la sincronización.
+- Un manifiesto o paquete con firma/hash inválidos nunca se instala.
+- Un paquete incompatible o mal formado no reemplaza el contenido local.
+- Una descarga interrumpida deja intacta la versión activa.
+- La activación y el rollback no modifican progreso, preferencias ni intentos.
+- Las evidencias conservan las versiones originales de contenido y evaluación.
+- El usuario puede ver la fecha de revisión, fuente y estado de vigencia.
+- Las fuentes modificadas solo generan propuestas hasta completar la revisión editorial.
+- El flujo funciona en la aplicación empaquetada Electron y en el entorno de desarrollo.
+
+---
+
+## 12. Fuera de alcance de esta sincronización
+
+- Sincronizar progreso, cuentas, notas privadas o intentos hacia la nube.
+- Sincronizar el mismo perfil entre varios dispositivos.
+- Actualizar automáticamente el ejecutable, Python, Django o dependencias.
+- Ejecutar código descargado de fuentes externas.
+- Aprobar contenido generado automáticamente sin revisión.
+- Reemplazar el sistema de evaluación o el sandbox de ejecución de ejercicios.
