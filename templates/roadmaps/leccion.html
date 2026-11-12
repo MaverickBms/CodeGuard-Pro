@@ -103,7 +103,38 @@
           <div class="lesson-prose">{{ ejercicio.enunciado|linebreaks }}</div>
           {% if ejercicio.instrucciones %}<div class="lesson-exercise-instructions"><strong>Instrucciones</strong><div class="lesson-prose">{{ ejercicio.instrucciones|linebreaks }}</div></div>{% endif %}
           {% if ejercicio.codigo_inicial %}<pre class="lesson-code"><code>{{ ejercicio.codigo_inicial }}</code></pre>{% endif %}
-          <div class="lesson-tutor-notice"><i class="fa-solid fa-wand-magic-sparkles"></i><span>El editor de código, la revisión automática y las pistas progresivas del tutor local se incorporarán en la Fase 3. Esta actividad todavía no registra entregas ni se considera completada.</span></div>
+
+          {% if ejercicio.id %}
+            <form class="lesson-submission" method="post" action="{% url 'roadmaps:enviar_intento' ejercicio.id %}">
+              {% csrf_token %}
+              <label for="respuesta-{{ ejercicio.id }}">Tu respuesta</label>
+              <textarea id="respuesta-{{ ejercicio.id }}" name="respuesta" rows="7" maxlength="20000" required placeholder="Escribe aquí tu solución o respuesta..."></textarea>
+              <div class="lesson-submission-footer">
+                <span>Máximo 20.000 caracteres. El código enviado no se ejecuta.</span>
+                <button class="btn-theme btn-theme-primary" type="submit"><i class="fa-solid fa-paper-plane"></i> Enviar intento</button>
+              </div>
+            </form>
+          {% else %}
+            <div class="lesson-empty"><i class="fa-solid fa-lock"></i><span>Este ejercicio pertenece a una versión histórica y se conserva para consulta. No admite nuevas entregas.</span></div>
+          {% endif %}
+
+          {% if ejercicio.intentos_usuario %}
+            <div class="lesson-attempt-history">
+              <h4>Últimos intentos</h4>
+              {% for intento in ejercicio.intentos_usuario %}
+                <article class="lesson-attempt">
+                  <div class="lesson-attempt-meta">
+                    <strong>{{ intento.get_resultado_display }}</strong>
+                    <time datetime="{{ intento.creado_en|date:'c' }}">{{ intento.creado_en|date:"d/m/Y H:i" }}</time>
+                    {% if intento.puntuacion != None %}<span>{{ intento.puntuacion }}%</span>{% endif %}
+                  </div>
+                  <p>{{ intento.retroalimentacion }}</p>
+                </article>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="lesson-tutor-notice"><i class="fa-solid fa-shield-halved"></i><span>Las entregas se guardan y se evalúan únicamente con el verificador configurado para este ejercicio. CodeGuard no ejecuta código arbitrario. El editor avanzado y el tutor local corresponden a la Fase 3.</span></div>
         </article>
       {% empty %}
         <div class="lesson-empty"><i class="fa-solid fa-terminal"></i><span>Los ejercicios de esta lección están pendientes de diseño. Esta sección se habilitará cuando se publique la práctica correspondiente.</span></div>
