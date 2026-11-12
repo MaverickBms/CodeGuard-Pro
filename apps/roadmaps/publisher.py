@@ -25,7 +25,9 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.utils import timezone
 
-from .distribution import (\n    validate_manifest_structure, validate_package_archive, verify_signed_manifest,\n)
+from .distribution import (
+    validate_manifest_structure, validate_package_archive, verify_signed_manifest,
+)
 from .models import (
     ContenidoLeccionActivo,
     PublicacionPaqueteConocimiento,
