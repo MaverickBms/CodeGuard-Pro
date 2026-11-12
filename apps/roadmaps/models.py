@@ -667,6 +667,9 @@ class VersionContenidoLeccion(models.Model):
                         "La transición editorial requiere sus metadatos de auditoría."
                     )
 
+            if anterior.creada_por_id != self.creada_por_id:
+                raise ValidationError("El editor que creó la versión no puede modificarse.")
+
             auditoria = (
                 "enviada_por_id", "enviada_en", "revisada_por_id", "revisada_en",
                 "publicada_por_id", "publicada_en", "retirada_por_id", "retirada_en",
