@@ -1,13 +1,13 @@
 # CodeGuard Pro — Control oficial del proyecto
 
 **Documento:** `PROJECT_CONTROL.md`  
-**Versión:** 2.5 — cliente HTTP pull-only inicial  
+**Versión:** 2.6 — integración Electron y scheduler de sincronización  
 **Fecha de actualización:** 2026-11-12  
 **Propietario:** propietario de CodeGuard Pro  
 **Mantenedor:** orquestador  
 **Estado:** vigente, sujeto a autorización expresa para cada acción  
 **Ubicación:** raíz del repositorio  
-**Rama de trabajo autorizada:** `feat/phase-2-http-sync-client` (derivada de `main`; cliente HTTP pull-only inicial)  
+**Rama de trabajo autorizada:** `feat/phase-2-http-sync-client` (derivada de `main`; cliente HTTP, scheduler Electron y ejecución empaquetada)  
 **Línea base:** `main` en `2c5d441`; instalador transaccional validado (119 pruebas OK)
 
 ---
@@ -25,8 +25,8 @@
   - Intentos nuevos vinculados a la versión activa y con snapshot del ejercicio presentado.
   - Interfaz de entrega POST con CSRF, límite de 20.000 caracteres e historial de intentos.
   - Protecciones adicionales para escrituras masivas del registro local de paquetes y sincronización.
-  - El propietario confirmó **119 pruebas OK**, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes para `main` en `2c5d441`; la validación incluye la migración 0016, instalador y rollback.
-- **Sincronización de red:** publicador e instalador transaccional validados en `main`; cliente HTTP inicial en rama aislada; hosting, endpoint y activación automática desde Electron pendientes.
+  - El propietario confirmó **119 pruebas OK** en `main` `2c5d441` y posteriormente **132 pruebas OK** en `feat/phase-2-http-sync-client`, además de `manage.py check` sin problemas y `makemigrations --check --dry-run` sin cambios pendientes. Las modificaciones de scheduler Electron posteriores a esas 132 pruebas aún requieren validación local.
+- **Sincronización de red:** publicador e instalador validados en `main`; cliente HTTP validado localmente en rama aislada; scheduler Electron, backoff y modo PyInstaller implementados después de la validación de 132 pruebas y pendientes de pruebas locales. Hosting, endpoint y claves de producción pendientes.
 - **Validación del cliente HTTP:** pendiente de ejecución local de sus pruebas de transporte e integración; la validación del instalador en `main` ya está confirmada.
 - **Autenticación:** temporalmente desactivada (`AUTH_DISABLED = True`); el sistema original se conserva íntegro y puede reactivarse con autorización expresa.
 
@@ -109,8 +109,8 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Fase | Estado | Observación |
 |---|---|---|
 | **Fase 1 — Núcleo funcional** | ✅ Completada y verificada | Autenticación, panel, auditoría, seguridad, 12 temas, servidor local |
-| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Roadmap, flujo editorial, verificador, publicador, catálogo v2 e instalador transaccional en `main`; cliente HTTP inicial en rama aislada; hosting y scheduler Electron pendientes |
-| **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Publicador e instalador offline validados en `main`; transporte HTTP inicial en rama aislada, pendiente de pruebas locales; endpoint, hosting y Electron pendientes |
+| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Roadmap, flujo editorial, verificador, publicador e instalador en `main`; cliente HTTP validado localmente (132 pruebas); scheduler Electron/backoff/PyInstaller en rama aislada, pendiente de validación; hosting pendiente |
+| **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Cliente HTTP validado localmente; scheduler Electron y ejecución empaquetada implementados pero pendientes de validación; endpoint, hosting y claves de producción pendientes |
 | **Competencias y evaluaciones** | ⏳ Pendiente | Incremento 3 |
 | **Biblioteca documental y base de conocimiento** | ⏳ Pendiente | Incremento 4 |
 | **Evidencias y laboratorios** | ⏳ Pendiente | Incremento 5 |
@@ -151,7 +151,7 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 - Alcance: transporte HTTPS GET, allowlist, TLS validado, rechazo de redirecciones, timeout y límites de tamaño, ETag, verificación del manifiesto antes de descargar el ZIP, integración con el instalador ya validado, comando manual, pruebas y documentación relacionada.
 - Se permiten commits exclusivamente en esta rama como mecanismo de escritura. No se autoriza merge, PR de integración, despliegue, publicación remota de paquetes ni cambios en `main`.
 - El propietario confirmó 119 pruebas OK, `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2c5d441`; esto incluye la migración 0016, instalador y rollback.
-- No se autoriza elegir proveedor/hosting, publicar paquetes reales, incorporar claves públicas de producción ni activar sincronización automática desde Electron en este incremento.
+- Restricción original de este incremento: no elegir proveedor/hosting, publicar paquetes reales ni incorporar claves públicas de producción. La restricción sobre sincronización automática Electron fue sustituida por la autorización específica registrada en §5.4; hosting, publicación y claves de producción siguen sin autorizarse.
 
 ## 6. Pendientes de decisión o autorización del propietario
 
@@ -181,7 +181,8 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | 2.2 | 2026-11-12 | Generador reproducible de ZIP, manifiesto Ed25519, secuencias monotónicas, registro inmutable y comando editorial | Continuación autorizada en rama aislada; validación local confirmada por el propietario |
 | 2.3 | 2026-11-12 | Catálogo normalizado de fuentes y metadatos de licencia en índice de paquete v2; verificación estricta y compatibilidad de lectura v1 | Continuación autorizada en rama aislada; validación local confirmada por el propietario (108 pruebas OK) |
 | 2.4 | 2026-11-12 | Instalador transaccional, snapshots por paquete, catálogo aislado, activación, rollback, integración de lecciones e intentos, migración 0016 y pruebas | Validación local confirmada por el propietario: 119 pruebas OK en `main` `2c5d441` |
-| 2.5 | 2026-11-12 | Cliente HTTP pull-only inicial, comando manual, allowlist HTTPS, TLS, ETag, límites de descarga, rechazo de redirecciones, pruebas y documentación | Continuación autorizada en rama aislada; validación local pendiente |
+| 2.5 | 2026-11-12 | Cliente HTTP pull-only inicial, comando manual, allowlist HTTPS, TLS, ETag, límites de descarga, rechazo de redirecciones, pruebas y documentación | Continuación autorizada en rama aislada; posteriormente validado localmente (132 pruebas OK) |
+| 2.6 | 2026-11-12 | Scheduler Electron, backoff exponencial, bloqueo entre procesos, proceso PyInstaller de una sola tarea, IPC limitado, pruebas y documentación | Autorización expresa del propietario; validación local pendiente |
 
 ### Reglas de actualización
 
@@ -195,3 +196,14 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 ---
 
 **El alcance autorizado continúa únicamente en `feat/phase-2-http-sync-client`; `main` permanece intacta. Detenerse antes de merge, despliegue, publicación remota o ampliación de alcance.**
+### 5.4 Autorización específica vigente — scheduler Electron y sincronización automática
+
+El propietario autorizó expresamente la implementación completa de la integración Electron, scheduler, reintentos progresivos y compatibilidad con PyInstaller, manteniendo `main` intacta.
+
+- Rama autorizada: `feat/phase-2-http-sync-client`.
+- Alcance: temporizador Electron no bloqueante, comprobación inicial diferida, sondeo local, backoff persistente, bloqueo por canal entre procesos, comando de una sola tarea en PyInstaller, IPC limitado, pruebas y documentación.
+- Se permiten commits exclusivamente en la rama autorizada como mecanismo de escritura.
+- No se autoriza merge, PR de integración, despliegue, publicación remota, selección de hosting ni incorporación de URLs/claves públicas de producción.
+- La sincronización debe permanecer inactiva si no hay configuración de distribución completa y confiable.
+- Las 132 pruebas fueron confirmadas por el propietario antes de este incremento; las pruebas nuevas y el empaquetado real requieren una nueva validación local.
+- `main` permanece intacta.
