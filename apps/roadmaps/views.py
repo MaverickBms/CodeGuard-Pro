@@ -359,13 +359,14 @@ def leccion_detalle(request, leccion_id):
             if len(lista_intentos) < 3:
                 lista_intentos.append(intento)
 
+    ejercicios_por_id = {item.id: item for item in ejercicios_modelo}
     for ejercicio in ejercicios:
+        actual = ejercicios_por_id.get(ejercicio.id)
         ejercicio.intentos_usuario = (
-            intentos_por_ejercicio.get(ejercicio.id, []) if ejercicio.id else []
+            intentos_por_ejercicio.get(ejercicio.id, []) if actual else []
         )
         ejercicio.evaluacion_disponible = bool(
-            ejercicio.id
-            and ejercicio.configuraciones_evaluacion.filter(activo=True).exists()
+            actual and actual.configuraciones_evaluacion.filter(activo=True).exists()
         )
 
     return render(
