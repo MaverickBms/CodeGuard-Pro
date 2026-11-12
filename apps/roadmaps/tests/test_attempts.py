@@ -196,6 +196,56 @@ class IntentosEjercicioTests(TestCase):
         self.assertFalse(IntentoEjercicio.objects.filter(ejercicio=self.ejercicio).exists())
 
 
+
+    def test_version_contenido_conserva_snapshot_y_fuente(self):
+        from apps.roadmaps.models import (
+            FuenteConocimiento,
+            ReferenciaFuenteContenido,
+            VersionContenidoLeccion,
+        )
+
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url_canonica="https://docs.python.org/3/reference/",
+            edicion="3",
+            identificador_licencia="PSF-2.0",
+            url_licencia="https://docs.python.org/3/license.html",
+        )
+        version = VersionContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            numero_version=1,
+            estado="revision",
+            snapshot={
+                "objetivos": ["Comprender variables"],
+                "teoria_tecnica": "Una variable enlaza un nombre con un objeto.",
+                "ejemplos": [],
+                "ejercicios": [],
+            },
+            sha256="a" * 64,
+        )
+        referencia = ReferenciaFuenteContenido.objects.create(
+            version=version, fuente=fuente, rol="principal"
+        )
+
+        self.assertEqual(version.fuentes.get(), fuente)
+        self.assertEqual(referencia.version.snapshot["objetivos"][0], "Comprender variables")
+        self.assertEqual(version.sha256, "a" * 64)
+
+    def test_no_se_permiten_dos_versiones_publicadas_para_una_leccion(self):
+        from django.db import IntegrityError, transaction
+        from apps.roadmaps.models import VersionContenidoLeccion
+
+        datos = {
+            "leccion": self.leccion,
+            "estado": "publicada",
+            "snapshot": {"teoria_tecnica": "Contenido aprobado"},
+            "sha256": "b" * 64,
+        }
+        VersionContenidoLeccion.objects.create(numero_version=1, **datos)
+        with self.assertRaises(IntegrityError), transaction.atomic():
+            VersionContenidoLeccion.objects.create(numero_version=2, **datos)
+
     def test_recursos_didacticos_tienen_identificadores_uuid_estables(self):
         from apps.roadmaps.models import EjemploLeccion
 
