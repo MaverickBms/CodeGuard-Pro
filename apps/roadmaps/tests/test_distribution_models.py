@@ -13,7 +13,7 @@ from apps.roadmaps.models import EstadoSincronizacion, PaqueteConocimientoInstal
 class RegistroPaquetesTests(TestCase):
     def crear_paquete(self, *, sequence, estado="verificado"):
         digest = hashlib.sha256(f"package-{sequence}".encode()).hexdigest()
-        return PaqueteConocimientoInstalado.objects.create(
+        package = PaqueteConocimientoInstalado.objects.create(
             package_id=uuid.uuid4(),
             package_version=f"2026.11.{sequence}",
             channel="stable",
