@@ -341,6 +341,20 @@ class InstaladorPaquetesTests(TestCase):
         self.assertIsNotNone(state.last_check_at)
         self.assertEqual(state.last_error_code, "")
 
+    def test_cliente_http_sin_claves_confiables_falla_sin_conectar(self):
+        with patch("apps.roadmaps.sync_client._fetch_bytes") as fetch:
+            with self.assertRaisesRegex(SyncClientError, "claves públicas"):
+                sincronizar_conocimiento(
+                    channel="stable",
+                    manifest_url="https://cdn.codeguard.example/stable/manifest.json",
+                    signature_url="https://cdn.codeguard.example/stable/manifest.ed25519",
+                    trusted_public_keys={},
+                    allowed_hosts={"cdn.codeguard.example"},
+                    app_version="1.0.0",
+                )
+        fetch.assert_not_called()
+        self.assertFalse(EstadoSincronizacion.objects.exists())
+
     def test_cliente_http_rechaza_endpoint_fuera_de_allowlist_sin_conectar(self):
         with patch("apps.roadmaps.sync_client._fetch_bytes") as fetch:
             with self.assertRaisesRegex(SyncClientError, "host autorizado"):
