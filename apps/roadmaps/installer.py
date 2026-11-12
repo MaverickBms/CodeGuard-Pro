@@ -248,16 +248,29 @@ def instalar_paquete_firmado(
                 payload, max_bytes=MAX_DOCUMENT_BYTES
             )["fuentes"]
         }
-        registered_source_ids = {
-            str(value)
-            for value in FuenteConocimiento.objects.filter(
-                clave__in=legacy_source_ids
-            ).values_list("clave", flat=True)
+        legacy_sources = {
+            str(source.clave): source
+            for source in FuenteConocimiento.objects.filter(clave__in=legacy_source_ids)
         }
-        if registered_source_ids != legacy_source_ids:
+        if set(legacy_sources) != legacy_source_ids:
             raise InstallationError(
                 "Los paquetes con índice v1 requieren que todas sus fuentes ya estén registradas localmente."
             )
+        for source in legacy_sources.values():
+            if (
+                not source.activa
+                or source.estado_revision_licencia not in {"compatible", "solo_referencia"}
+                or not source.evidencia_licencia
+                or not source.revisada_en
+                or not source.nota_revision_licencia.strip()
+                or (
+                    source.estado_revision_licencia == "compatible"
+                    and not source.alcance_licencia.strip()
+                )
+            ):
+                raise InstallationError(
+                    f"La fuente local '{source.titulo}' no conserva una revisión de licencia válida para instalar un índice v1."
+                )
     manifest_package = manifest["package"]
     package_id = UUID(manifest_package["package_id"])
     if PaqueteConocimientoInstalado.objects.filter(package_id=package_id).exists():
