@@ -232,6 +232,20 @@ class IntentosEjercicioTests(TestCase):
         self.assertEqual(referencia.version.snapshot["objetivos"][0], "Comprender variables")
         self.assertEqual(version.sha256, "a" * 64)
 
+
+    def test_hash_snapshot_rechaza_formato_invalido(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.models import VersionContenidoLeccion
+
+        version = VersionContenidoLeccion(
+            leccion=self.leccion,
+            numero_version=1,
+            snapshot={"teoria_tecnica": "Contenido"},
+            sha256="no-es-un-hash",
+        )
+        with self.assertRaises(ValidationError):
+            version.full_clean()
+
     def test_no_se_permiten_dos_versiones_publicadas_para_una_leccion(self):
         from django.db import IntegrityError, transaction
         from apps.roadmaps.models import VersionContenidoLeccion
