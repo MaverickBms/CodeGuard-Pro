@@ -241,13 +241,13 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | ID | Prueba | Resultado esperado |
 |---|---|---|
 | CLI-001 | Crear snapshot con lección y fuente existentes | Crea borrador y asocia procedencia |
-| CLI-002 | Registrar fuente HTTPS con metadatos | Persiste publicador, título, edición, licencia, UUID y fecha de consulta |
-| CLI-003 | Registrar URL HTTP o inválida | Rechaza el registro sin crear filas |
-| CLI-004 | Registrar URL + edición duplicada | Rechaza el duplicado sin modificar la fuente existente |
 | CLI-002 | Crear snapshot con ID de lección inexistente | Devuelve error controlado |
 | CLI-003 | Enviar versión a revisión con usuario staff activo | Cambia estado y registra remitente |
 | CLI-004 | Ejecutar transición con usuario sin privilegios | El servicio rechaza la operación |
 | CLI-005 | Retirar sin motivo | El comando exige motivo |
+| CLI-006 | Registrar fuente HTTPS con metadatos | Persiste publicador, título, edición, licencia, UUID y fecha de consulta |
+| CLI-007 | Registrar URL HTTP o inválida | Rechaza el registro sin crear filas |
+| CLI-008 | Registrar URL + edición duplicada | Rechaza el duplicado sin modificar la fuente existente |
 
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
 
