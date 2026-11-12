@@ -329,7 +329,7 @@ def importar_documentos_validados(report, *, actor):
             resumen_cambios=item["document"]["resumen_cambios"],
         )
         for source_data in item["document"]["fuentes"]:
-            ReferenciaFuenteContenido.objects.create(
+            referencia = ReferenciaFuenteContenido(
                 version=version,
                 fuente=item["sources"][source_data["clave"]],
                 rol=source_data["rol"],
@@ -337,5 +337,7 @@ def importar_documentos_validados(report, *, actor):
                 localizador=source_data["localizador"],
                 nota_atribucion=source_data["nota_atribucion"],
             )
+            referencia.full_clean()
+            referencia.save()
         created.append(version)
     return {"created": created, "duplicates": duplicates}
