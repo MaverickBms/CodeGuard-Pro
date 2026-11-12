@@ -28,6 +28,7 @@ MAX_MANIFEST_BYTES = 64 * 1024
 MAX_SIGNATURE_BYTES = 256
 MAX_PACKAGE_BYTES = 100 * 1024 * 1024
 MAX_PACKAGE_FILES = 500
+MAX_PACKAGE_SOURCES = 5000
 MAX_INDEX_BYTES = 1024 * 1024
 MAX_CONTENT_FILE_BYTES = 2 * 1024 * 1024
 MAX_TOTAL_UNCOMPRESSED_BYTES = 100 * 1024 * 1024
@@ -230,6 +231,25 @@ def _version_tuple(value):
     return numbers + ((0, identifiers),)
 
 
+def _validate_https_source_url(value, label):
+    try:
+        parsed = urlsplit(value)
+        hostname = parsed.hostname
+        port = parsed.port
+    except (TypeError, ValueError) as exc:
+        raise DistributionError(f"{label}: URL inválida.") from exc
+    if (
+        parsed.scheme.lower() != "https"
+        or not hostname
+        or parsed.username
+        or parsed.password
+        or "@" in parsed.netloc
+        or parsed.fragment
+        or port not in {None, 443}
+    ):
+        raise DistributionError(f"{label}: se requiere una URL HTTPS sin credenciales ni fragmentos.")
+
+
 def validate_package_archive(package_bytes: bytes, *, manifest: dict):
     """Valida ZIP en memoria; requiere el manifiesto ya verificado criptográficamente."""
     if not isinstance(package_bytes, bytes) or not package_bytes:
@@ -290,9 +310,15 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
             index = load_strict_json(archive.read("package-index.json"), max_bytes=MAX_INDEX_BYTES)
         except (RuntimeError, zipfile.BadZipFile, OSError) as exc:
             raise DistributionError("No se pudo leer el índice del paquete.") from exc
-        _exact_keys(index, {"schema_version", "package_id", "package_version", "content_schema_version", "files"}, "package-index")
-        if type(index["schema_version"]) is not int or index["schema_version"] != 1:
+        if not isinstance(index, dict):
+            raise DistributionError("package-index debe ser un objeto JSON.")
+        index_version = index.get("schema_version")
+        if type(index_version) is not int or index_version not in {1, 2}:
             raise DistributionError("Versión de índice no compatible.")
+        index_keys = {"schema_version", "package_id", "package_version", "content_schema_version", "files"}
+        if index_version == 2:
+            index_keys.add("sources")
+        _exact_keys(index, index_keys, "package-index")
         if (
             index["package_id"] != package_meta["package_id"]
             or index["package_version"] != package_meta["package_version"]
@@ -307,6 +333,7 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
         payloads = {}
         seen_lessons = set()
         seen_resources = set()
+        referenced_sources = set()
         for item in files:
             _exact_keys(item, {"path", "size_bytes", "sha256"}, "package-index.files[]")
             path = item["path"]
@@ -332,6 +359,7 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
                 lesson_uuid = _validate_document(document, path)
             except ImportContentError as exc:
                 raise DistributionError(f"{path}: documento académico incompatible: {exc}") from exc
+            referenced_sources.update(source["clave"] for source in document["fuentes"])
             if str(lesson_uuid) != LESSON_PATH_RE.fullmatch(path).group(1):
                 raise DistributionError(f"{path}: el UUID del archivo no coincide con la identidad de la lección.")
             if lesson_uuid in seen_lessons or str(lesson_uuid) in seen_resources:
@@ -346,4 +374,56 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
 
         if set(by_name) != declared | {"package-index.json"}:
             raise DistributionError("El ZIP contiene archivos no declarados en el índice.")
-        return {"index": index, "payloads": payloads}
+
+        source_catalog = {}
+        if index_version == 2:
+            sources = index["sources"]
+            if not isinstance(sources, list) or len(sources) > MAX_PACKAGE_SOURCES:
+                raise DistributionError("El catálogo de fuentes es inválido o supera el límite.")
+            required_source_keys = {
+                "clave", "publicador", "titulo", "url_canonica", "edicion",
+                "identificador_licencia", "url_licencia", "estado_revision_licencia",
+                "evidencia_licencia", "alcance_licencia", "nota_revision_licencia",
+                "revisada_en",
+            }
+            for source in sources:
+                _exact_keys(source, required_source_keys, "package-index.sources[]")
+                raw_uuid = source["clave"]
+                if not isinstance(raw_uuid, str):
+                    raise DistributionError("El catálogo contiene un UUID de fuente inválido.")
+                try:
+                    source_uuid = UUID(raw_uuid)
+                except (ValueError, TypeError, AttributeError) as exc:
+                    raise DistributionError("El catálogo contiene un UUID de fuente inválido.") from exc
+                if str(source_uuid) != raw_uuid or raw_uuid in source_catalog:
+                    raise DistributionError("El catálogo contiene UUID de fuente duplicados o no canónicos.")
+                text_limits = {
+                    "publicador": 180, "titulo": 240, "url_canonica": 1000,
+                    "edicion": 100, "identificador_licencia": 120,
+                    "url_licencia": 1000, "estado_revision_licencia": 20,
+                    "evidencia_licencia": 1000,
+                }
+                for field, limit in text_limits.items():
+                    value = source[field]
+                    if not isinstance(value, str) or len(value) > limit:
+                        raise DistributionError(f"Fuente {raw_uuid}: campo {field} inválido.")
+                for field in ("alcance_licencia", "nota_revision_licencia"):
+                    if not isinstance(source[field], str) or len(source[field]) > 20000:
+                        raise DistributionError(f"Fuente {raw_uuid}: campo {field} inválido.")
+                if not source["publicador"].strip() or not source["titulo"].strip():
+                    raise DistributionError(f"Fuente {raw_uuid}: publicador y título son obligatorios.")
+                if source["estado_revision_licencia"] not in {"compatible", "solo_referencia"}:
+                    raise DistributionError(f"Fuente {raw_uuid}: decisión de licencia no publicable.")
+                for field in ("url_canonica", "evidencia_licencia"):
+                    _validate_https_source_url(source[field], f"Fuente {raw_uuid}.{field}")
+                if source["url_licencia"]:
+                    _validate_https_source_url(source["url_licencia"], f"Fuente {raw_uuid}.url_licencia")
+                if not source["nota_revision_licencia"].strip():
+                    raise DistributionError(f"Fuente {raw_uuid}: falta la nota de revisión.")
+                if source["estado_revision_licencia"] == "compatible" and not source["alcance_licencia"].strip():
+                    raise DistributionError(f"Fuente {raw_uuid}: falta el alcance autorizado.")
+                _aware_datetime(source["revisada_en"], f"Fuente {raw_uuid}.revisada_en")
+                source_catalog[raw_uuid] = source
+            if set(source_catalog) != referenced_sources:
+                raise DistributionError("El catálogo de fuentes no coincide exactamente con las referencias de las lecciones.")
+        return {"index": index, "payloads": payloads, "sources": source_catalog}
