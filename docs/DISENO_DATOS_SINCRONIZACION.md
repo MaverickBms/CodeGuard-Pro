@@ -655,7 +655,7 @@ El registro no realiza solicitudes HTTP, no importa páginas, no ejecuta recurso
 
 ## 15. Incremento implementado: verificación de manifiestos y paquetes
 
-**Estado:** implementado en la rama `docs/phase-2-hybrid-knowledge-sync`; pendiente de ejecución local de las nuevas pruebas.
+**Estado:** implementado en la rama `docs/phase-2-hybrid-knowledge-sync`; el usuario confirmó la ejecución local satisfactoria de la suite actual: 93 pruebas (`OK`).
 
 ### 15.1 Verificación del manifiesto
 
@@ -718,3 +718,12 @@ Este avance **no** implementa todavía:
 - programación automática desde Electron.
 
 No se debe interpretar la validación criptográfica de artefactos como una sincronización ya operativa. El siguiente incremento debe conectar el verificador con un flujo de publicación controlado y un instalador transaccional, sin tocar progreso ni intentos.
+
+
+## 22. Siguiente componente: publicador central
+
+El diseño detallado del publicador se documenta en `docs/DISENO_PUBLICADOR_CENTRAL.md`. El publicador tomará únicamente snapshots con estado editorial `publicada`, verificará hash y procedencia/licencia congelada, y generará ZIP determinista, índice, manifiesto v1 y firma Ed25519.
+
+Antes de habilitarlo se requiere un registro central de releases que garantice secuencia monotónica y única por canal, impida sobrescritura de artefactos y registre hashes, `key_id`, responsable editorial y fecha. La clave privada se suministrará fuera del repositorio y se validarán tipo y permisos. La primera entrega será una operación local explícita; no realizará upload ni despliegue.
+
+**Estado:** diseño documentado; implementación pendiente. La URL HTTPS, el proveedor/CDN, el dominio y el procedimiento de operación deberán aprobarse antes de publicar paquetes reales.
