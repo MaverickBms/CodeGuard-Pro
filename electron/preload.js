@@ -8,6 +8,15 @@ contextBridge.exposeInMainWorld('codeguardAPI', {
   // Notificaciones
   showNotification: (options) => ipcRenderer.send('show-notification', options),
   
+  // Sincronización de conocimiento (sin exponer argumentos ni procesos).
+  getKnowledgeSyncStatus: () => ipcRenderer.invoke('get-knowledge-sync-status'),
+  checkKnowledgeUpdates: () => ipcRenderer.invoke('check-knowledge-updates'),
+  onKnowledgeSyncStatus: (callback) => {
+    const handler = (_event, status) => callback(status);
+    ipcRenderer.on('knowledge-sync-status', handler);
+    return () => ipcRenderer.removeListener('knowledge-sync-status', handler);
+  },
+
   // Información del sistema
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
   
