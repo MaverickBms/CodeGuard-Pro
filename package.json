@@ -78,22 +78,6 @@
       "buildResources": "static/icons",
       "output": "dist"
     },
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": ["x64"]
-        },
-        {
-          "target": "portable",
-          "arch": ["x64"]
-        }
-      ],
-      "icon": "static/icons/icon.ico",
-      "publisherName": "CodeGuard Pro",
-      "installerHeaderIcon": "static/icons/icon.ico",
-      "artifactName": "CodeGuard-Pro-${version}-${arch}.${ext}"
-    },
     "linux": {
       "target": [
         {
@@ -104,18 +88,6 @@
       "icon": "static/icons/icon.png",
       "category": "Education",
       "artifactName": "CodeGuard-Pro-${version}-${arch}.${ext}"
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "CodeGuard Pro",
-      "deleteAppDataOnUninstall": false
-    },
-    "portable": {
-      "artifactName": "CodeGuard-Pro-${version}-portable.${ext}"
     }
   },
   "devDependencies": {
