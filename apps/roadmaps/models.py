@@ -1021,6 +1021,7 @@ class PaqueteConocimientoInstalado(models.Model):
         verbose_name="SHA-256 del manifiesto",
     )
     signature_key_id = models.CharField(max_length=80, verbose_name="identificador de clave de firma")
+    artifact_storage_key = models.CharField(max_length=255, blank=True, default="", verbose_name="clave relativa del artefacto local")
     published_at = models.DateTimeField(verbose_name="publicado el")
     installed_at = models.DateTimeField(null=True, blank=True, verbose_name="instalado el")
     estado = models.CharField(max_length=16, choices=ESTADOS, default="descargado")
@@ -1054,7 +1055,7 @@ class PaqueteConocimientoInstalado(models.Model):
             identidad = (
                 "package_id", "package_version", "channel", "sequence",
                 "content_schema_version", "sha256", "manifest_sha256",
-                "signature_key_id", "published_at",
+                "signature_key_id", "published_at", "artifact_storage_key",
             )
             if any(getattr(anterior, field) != getattr(self, field) for field in identidad):
                 raise ValidationError("La identidad y los hashes de un paquete registrado son inmutables.")
@@ -1157,6 +1158,146 @@ class EstadoSincronizacion(models.Model):
     def __str__(self):
         return f"Sincronización {self.channel}"
 
+
+
+class ContenidoLeccionPaqueteQuerySet(models.QuerySet):
+    """Snapshots académicos instalados: inmutables y aislados del flujo editorial."""
+
+    def update(self, **kwargs):
+        raise ValidationError("Los snapshots instalados son inmutables.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("Los snapshots instalados son inmutables.")
+
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        for obj in objs:
+            obj.full_clean()
+        return super().bulk_create(objs, **kwargs)
+
+    def delete(self):
+        raise ValidationError("Los snapshots instalados no se eliminan físicamente.")
+
+
+class ContenidoLeccionPaquete(models.Model):
+    """Documento académico exacto instalado desde un paquete firmado."""
+
+    objects = ContenidoLeccionPaqueteQuerySet.as_manager()
+
+    paquete = models.ForeignKey(
+        PaqueteConocimientoInstalado,
+        on_delete=models.PROTECT,
+        related_name="contenidos_leccion",
+    )
+    leccion = models.ForeignKey(
+        Leccion,
+        on_delete=models.PROTECT,
+        related_name="contenidos_paquete",
+    )
+    documento = models.JSONField()
+    sha256 = models.CharField(max_length=64)
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "snapshot de lección instalado"
+        verbose_name_plural = "snapshots de lección instalados"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["paquete", "leccion"],
+                name="contenido_paquete_leccion_unico",
+            ),
+        ]
+
+    def clean(self):
+        super().clean()
+        if not isinstance(self.documento, dict):
+            raise ValidationError({"documento": "El documento instalado debe ser un objeto JSON."})
+        snapshot = self.documento.get("snapshot")
+        identidad = snapshot.get("leccion", {}).get("clave") if isinstance(snapshot, dict) else None
+        if identidad != str(self.leccion.clave_contenido):
+            raise ValidationError({"documento": "El documento no corresponde a la identidad estable de la lección."})
+        if len(self.sha256) != 64 or any(c not in "0123456789abcdef" for c in self.sha256):
+            raise ValidationError({"sha256": "Debe ser un SHA-256 hexadecimal válido."})
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            anterior = type(self).objects.get(pk=self.pk)
+            if (
+                anterior.paquete_id != self.paquete_id
+                or anterior.leccion_id != self.leccion_id
+                or anterior.documento != self.documento
+                or anterior.sha256 != self.sha256
+            ):
+                raise ValidationError("Los snapshots instalados son inmutables.")
+        self.full_clean(validate_unique=False, validate_constraints=False)
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("Los snapshots instalados no se eliminan físicamente.")
+
+
+class FuentePaqueteConocimientoQuerySet(models.QuerySet):
+    """Catálogo de fuentes firmado, conservado por versión de paquete."""
+
+    def update(self, **kwargs):
+        raise ValidationError("El catálogo de fuentes instalado es inmutable.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("El catálogo de fuentes instalado es inmutable.")
+
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        for obj in objs:
+            obj.full_clean()
+        return super().bulk_create(objs, **kwargs)
+
+    def delete(self):
+        raise ValidationError("El catálogo de fuentes instalado no se elimina físicamente.")
+
+
+class FuentePaqueteConocimiento(models.Model):
+    """Metadatos de fuente firmados, aislados del registro editorial local."""
+
+    objects = FuentePaqueteConocimientoQuerySet.as_manager()
+
+    paquete = models.ForeignKey(
+        PaqueteConocimientoInstalado,
+        on_delete=models.PROTECT,
+        related_name="fuentes_catalogo",
+    )
+    source_uuid = models.UUIDField()
+    metadatos = models.JSONField()
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "fuente de paquete de conocimiento"
+        verbose_name_plural = "fuentes de paquetes de conocimiento"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["paquete", "source_uuid"],
+                name="fuente_uuid_paquete_unica",
+            ),
+        ]
+
+    def clean(self):
+        super().clean()
+        if not isinstance(self.metadatos, dict) or self.metadatos.get("clave") != str(self.source_uuid):
+            raise ValidationError({"metadatos": "Los metadatos no corresponden al UUID de la fuente."})
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            anterior = type(self).objects.get(pk=self.pk)
+            if (
+                anterior.paquete_id != self.paquete_id
+                or anterior.source_uuid != self.source_uuid
+                or anterior.metadatos != self.metadatos
+            ):
+                raise ValidationError("El catálogo de fuentes instalado es inmutable.")
+        self.full_clean(validate_unique=False, validate_constraints=False)
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("El catálogo de fuentes instalado no se elimina físicamente.")
 
 
 class SecuenciaPublicacionConocimientoQuerySet(models.QuerySet):
