@@ -16,7 +16,7 @@ recursos limitados (HP 240 G10, i3-N305, ~1.3 GB RAM libre, Fedora 44).
 La arquitectura prioriza: bajo consumo de memoria/CPU, pocas dependencias, arranque rápido,
 fácil mantenimiento y continuidad offline. El funcionamiento académico local no dependerá del servicio central; la sincronización de contenido será una capacidad complementaria, iniciada por el cliente y de solo descarga.
 
-**Estado actual:** el núcleo local está implementado. La sincronización híbrida descrita en la sección 10 es una decisión aprobada y una arquitectura objetivo de la Fase 2; no está implementada en `main`.
+**Estado actual:** el núcleo local está implementado. La sincronización híbrida descrita en la sección 9 es una decisión aprobada y una arquitectura objetivo de la Fase 2; no está implementada en `main`.
 
 ---
 
@@ -199,20 +199,20 @@ sin cambios.
 - No se depende exclusivamente del color para comunicar estados (etiquetas de texto,
   iconos y patrones complementan el código de color).
 
-## 10. Arquitectura objetivo: distribución y sincronización de conocimiento
+## 9. Arquitectura objetivo: distribución y sincronización de conocimiento
 
 El diseño detallado del modelo de datos, las claves estables, el contrato de paquetes y la migración desde los modelos actuales está en `docs/DISENO_DATOS_SINCRONIZACION.md`.
 
 > **Estado: DISEÑO APROBADO; IMPLEMENTACIÓN PENDIENTE EN FASE 2.** Esta sección describe el objetivo y no afirma que existan actualmente el servidor central, el cliente de sincronización o los paquetes firmados.
 
-### 10.1 Límites de confianza y responsabilidades
+### 9.1 Límites de confianza y responsabilidades
 
 - **Aplicación local:** Electron inicia Django en `127.0.0.1`; SQLite conserva contenido instalado, progreso, intentos y preferencias.
 - **Servicio central de conocimiento:** publica manifiestos y paquetes académicos inmutables por HTTPS. No ejecuta la aplicación local ni almacena el progreso del estudiante.
 - **Entorno editorial:** crea, valida, revisa, aprueba y firma paquetes. Sus credenciales y claves privadas nunca se distribuyen al cliente.
 - **Fuentes técnicas externas:** aportan documentación de referencia. Sus cambios se detectan y revisan; no se convierten automáticamente en publicaciones.
 
-### 10.2 Flujo de datos
+### 9.2 Flujo de datos
 
 ```mermaid
 flowchart TD
@@ -229,13 +229,13 @@ flowchart TD
     L[Progreso e intentos locales] -. no se sincronizan .-> L
 ```
 
-### 10.3 Contrato del paquete
+### 9.3 Contrato del paquete
 
 Cada paquete deberá declarar como mínimo: `package_id`, `package_version`, `published_at`, `content_schema_version`, `minimum_app_version`, `size_bytes`, `sha256`, firma digital, lista de recursos incluidos y metadatos de fuente/vigencia por recurso. Se debe definir un formato serializado validable y con límites de tamaño; no se aceptará contenido ejecutable.
 
 El hash detecta corrupción accidental. La firma digital autentica el origen y debe verificarse con una clave pública de confianza integrada en el cliente. La clave privada permanece en el entorno de publicación.
 
-### 10.4 Ciclo local de actualización
+### 9.4 Ciclo local de actualización
 
 1. Consultar el manifiesto con timeout corto y sin bloquear la interfaz.
 2. Comparar las versiones publicadas con las instaladas.
@@ -247,17 +247,17 @@ El hash detecta corrupción accidental. La firma digital autentica el origen y d
 
 La comprobación se podrá realizar al iniciar y en momentos oportunos con conexión; debe admitir reintento manual, backoff y opción de desactivar/posponer la comprobación automática.
 
-### 10.5 Separación de datos y compatibilidad académica
+### 9.5 Separación de datos y compatibilidad académica
 
 El paquete de conocimiento nunca sobrescribe progreso, intentos, preferencias, notas ni datos personales. Los intentos deben conservar la versión de contenido y del evaluador que los originó. Una actualización no recalifica evidencias históricas ni concede dominio retroactivo. Si una lección se retira, se informa al estudiante y se conserva la trazabilidad de sus intentos.
 
 La sincronización de la Fase 2 es pull-only: el cliente descarga contenido y no envía al servidor código, respuestas, puntuaciones, historial ni telemetría. La sincronización entre dispositivos no está incluida.
 
-### 10.6 Fuentes y vigencia
+### 9.6 Fuentes y vigencia
 
 El catálogo editorial registrará publicador, título, URL canónica, edición/versionado, licencia/condiciones, fecha de consulta, fecha de revisión, responsable y estado. Los contenidos tendrán estados editoriales y de vigencia separados. Una fecha de revisión vencida significa que debe revisarse, no que el contenido sea automáticamente incorrecto.
 
-### 10.7 Requisitos de seguridad
+### 9.7 Requisitos de seguridad
 
 - HTTPS/TLS y firma digital de paquetes.
 - Validación estricta de manifiestos y esquemas.
@@ -267,7 +267,7 @@ El catálogo editorial registrará publicador, título, URL canónica, edición/
 - No abrir el servidor local a conexiones remotas ni aceptar peticiones entrantes desde Internet.
 - No incorporar secretos ni claves privadas al cliente.
 
-### 10.8 Estado de implementación
+### 9.8 Estado de implementación
 
 | Capacidad | Estado en `main` |
 |---|---|
@@ -283,10 +283,6 @@ El catálogo editorial registrará publicador, título, URL canónica, edición/
 
 ---
 
-## 11. Próximos incrementos
+## 10. Próximos incrementos
 
-- Incremento 2: Roadmap ASCENSO (33 etapas, dependencias, progreso).
-- Incremento 3: Competencias y evaluaciones.
-- Incremento 4: Biblioteca documental (PDF, FTS5) y base de conocimiento.
-- Incremento 5: Evidencias y laboratorios.
-- Incremento 6: Administración, backups y vigencia.
+El orden vigente de las fases, dependencias y criterios de cierre se mantiene en `docs/PLAN_MAESTRO_CODEGUARD.md`. La implementación de conocimiento versionado y sincronización híbrida pertenece a la Fase 2. El detalle de entidades y migraciones propuestas está en `docs/DISENO_DATOS_SINCRONIZACION.md`.
