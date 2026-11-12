@@ -90,7 +90,7 @@ def _open_url(request, *, timeout):
 
 
 def _read_response(response, *, max_bytes, expected_size=None):
-    status = getattr(response, "status", response.getcode())
+    status = response.status if hasattr(response, "status") else response.getcode()
     if status != 200:
         raise SyncClientError(
             f"El servidor respondió con HTTP {status}.",
@@ -230,6 +230,8 @@ def sincronizar_conocimiento(
             headers=request_headers,
         )
         if manifest_bytes is None:
+            if not request_headers:
+                raise SyncClientError("El servidor devolvió HTTP 304 sin una petición condicional.", code="invalid_response")
             if response_etag and len(response_etag) <= 255:
                 state.manifest_etag = response_etag
             state.last_check_at = now
