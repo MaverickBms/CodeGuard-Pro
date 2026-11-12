@@ -298,6 +298,7 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | SYNC-038 | Registro local | Secuencia duplicada o dos paquetes activos en el mismo canal | Restricción de base de datos |
 | SYNC-039 | Ciclo de vida del paquete | Salto de estado, cambio de hash/identidad o borrado | Rechazo por modelo/ORM |
 | SYNC-040 | Estado por canal | Paquete activo de otro canal o no activo | Rechazo de validación |
+| SYNC-041 | Mutación ORM de historial | `QuerySet.update()` o borrado de paquete | Operación rechazada |
 
 La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
 
