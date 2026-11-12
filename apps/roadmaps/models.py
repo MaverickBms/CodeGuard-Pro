@@ -949,6 +949,11 @@ class PaqueteConocimientoInstalado(models.Model):
         ordering = ["channel", "-sequence"]
         constraints = [
             models.UniqueConstraint(fields=["channel", "sequence"], name="paquete_secuencia_canal_unica"),
+            models.UniqueConstraint(
+                fields=["channel"],
+                condition=models.Q(estado="activo"),
+                name="paquete_un_activo_por_canal",
+            ),
         ]
         indexes = [
             models.Index(fields=["channel", "-sequence"], name="paquete_canal_seq_idx"),
