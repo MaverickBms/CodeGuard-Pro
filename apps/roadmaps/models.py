@@ -524,7 +524,51 @@ class VersionContenidoLeccion(models.Model):
         related_name="versiones",
         blank=True,
     )
+    revisada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="versiones_contenido_revisadas",
+        verbose_name="revisada por",
+    )
+    publicada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="versiones_contenido_publicadas",
+        verbose_name="publicada por",
+    )
     creada_en = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            anterior = type(self).objects.only(
+                "estado", "leccion_id", "numero_version", "esquema_version",
+                "snapshot", "sha256", "resumen_cambios",
+            ).get(pk=self.pk)
+            estados_bloqueados = {"revision", "aprobada", "publicada", "sustituida", "retirada"}
+            campos_inmutables = (
+                "leccion_id", "numero_version", "esquema_version",
+                "snapshot", "sha256", "resumen_cambios",
+            )
+            if anterior.estado in estados_bloqueados:
+                modificados = [
+                    campo for campo in campos_inmutables
+                    if getattr(anterior, campo) != getattr(self, campo)
+                ]
+                if modificados:
+                    raise ValidationError(
+                        "Una versión enviada a revisión no puede modificar su snapshot, "
+                        "hash, identidad ni resumen de cambios."
+                    )
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.estado != "borrador":
+            raise ValidationError("Solo se pueden eliminar versiones que sigan en borrador.")
+        return super().delete(*args, **kwargs)
 
     class Meta:
         verbose_name = "versión de contenido de lección"
