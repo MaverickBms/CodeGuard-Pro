@@ -73,6 +73,17 @@ class RegistroPaquetesTests(TestCase):
         with self.assertRaisesMessage(ValidationError, "Transición"):
             package.save()
 
+
+    def test_estado_solo_acepta_paquete_activo_del_mismo_canal(self):
+        package = self.crear_paquete(sequence=1, estado="verificado")
+        with self.assertRaisesMessage(ValidationError, "debe estar activo"):
+            EstadoSincronizacion.objects.create(channel="stable", active_package=package)
+
+    def test_queryset_no_permite_actualizar_historial(self):
+        package = self.crear_paquete(sequence=1)
+        with self.assertRaisesMessage(ValidationError, "transiciones controladas"):
+            PaqueteConocimientoInstalado.objects.filter(pk=package.pk).update(error_code="manual")
+
     def test_estado_de_sincronizacion_no_puede_borrar_paquete_referenciado(self):
         package = self.crear_paquete(sequence=1, estado="activo")
         EstadoSincronizacion.objects.create(channel="stable", active_package=package)
