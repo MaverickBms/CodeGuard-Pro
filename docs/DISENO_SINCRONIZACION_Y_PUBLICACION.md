@@ -2,7 +2,7 @@
 
 **Producto:** CodeGuard Pro  
 **Fase:** 2 — Motor de aprendizaje y contenido interactivo  
-**Estado:** Diseño aprobado (ADR-004). Verificador, publicador local, snapshots por paquete e instalador transaccional validados en `main` `2c5d441`. El propietario confirmó 132 pruebas OK en `feat/phase-2-http-sync-client`, junto con `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios. La integración automática Electron, el backoff y el modo PyInstaller están en implementación en esa rama; su nueva validación local está pendiente. Hosting, endpoint público y publicación remota siguen pendientes.  
+**Estado:** Diseño aprobado (ADR-004). Verificador, publicador local, snapshots por paquete e instalador transaccional validados en `main` `2c5d441`. El propietario confirmó 132 pruebas OK en `feat/phase-2-http-sync-client`, junto con `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios. La integración Electron y el backoff están implementados; las pruebas unitarias locales de backoff/bloqueo fueron confirmadas como satisfactorias por el propietario. La compilación real PyInstaller y la ejecución integrada siguen pendientes. Hosting, endpoint público y publicación remota siguen pendientes.  
 **Fecha:** 12 de noviembre de 2026  
 **ADR relacionada:** `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`  
 **Unifica:** `docs/DISENO_DATOS_SINCRONIZACION.md` + `docs/DISENO_PUBLICADOR_CENTRAL.md`
@@ -973,7 +973,7 @@ La vista de lección prioriza el paquete activo del canal configurado (por defec
 
 ## 18. Integración automática Electron y ejecución empaquetada
 
-**Estado:** implementación inicial en `feat/phase-2-http-sync-client`; pendiente de validación local del propietario y de una compilación real PyInstaller/Electron.
+**Estado:** implementación en `feat/phase-2-http-sync-client`; pruebas unitarias de backoff/bloqueo y chequeos sintácticos confirmados localmente. Pendiente compilación real PyInstaller y prueba integrada Electron.
 
 ### 18.1 Ciclo de vida
 
