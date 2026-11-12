@@ -1193,7 +1193,7 @@ class SecuenciaPublicacionConocimiento(models.Model):
             raise ValidationError({"siguiente": "La secuencia debe ser positiva."})
 
     def save(self, *args, **kwargs):
-        if self.pk:
+        if not self._state.adding:
             anterior = type(self).objects.get(pk=self.pk)
             if self.siguiente != anterior.siguiente + 1:
                 raise ValidationError("La secuencia solo puede avanzar exactamente una unidad.")
