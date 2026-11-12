@@ -4,8 +4,8 @@
 **Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada)  
 **Estado:** Núcleo funcional verificado; motor de aprendizaje y conocimiento versionado en curso  
 **SRS de referencia:** `IEEE830(1).md` v2.0  
-**Línea base integrada:** `main` (`c2ec604`); correcciones en `fix/phase-2-integrity-learning`  
-**HEAD de referencia de main:** `c2ec604`
+**Línea base integrada:** `main` (`2c5d441`); cliente HTTP inicial en `feat/phase-2-http-sync-client`  
+**HEAD de referencia de main:** `2c5d441`
 
 ---
 
@@ -22,10 +22,7 @@ fácil mantenimiento y continuidad offline. El funcionamiento académico local n
 servicio central; la sincronización de contenido será una capacidad complementaria, iniciada por
 el cliente y de solo descarga.
 
-**Estado actual:** el núcleo local está implementado y verificado (incremento 1). La Fase 2
-(motor de aprendizaje y conocimiento versionado) está implementada parcialmente en `main` y en la rama aislada de correcciones `fix/phase-2-integrity-learning`: roadmap ASCENSO 3.1, flujo editorial de versiones,
-registro local de paquetes y verificador de distribución firmada (Ed25519). El cliente de
-sincronización de red y el servicio central siguen pendientes. La versión editorial publicada ya dispone de un puntero local de contenido activo y los intentos nuevos conservan el snapshot académico presentado (migración 0014, pendiente de validación local).
+**Estado actual:** el núcleo local está implementado y verificado (incremento 1). La Fase 2 (motor de aprendizaje y conocimiento versionado) está implementada parcialmente en `main`: roadmap ASCENSO 3.1, flujo editorial, publicador, catálogo firmado v2 e instalador transaccional con rollback. El propietario confirmó 119 pruebas OK, `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios en `main` `2c5d441`. El cliente HTTP pull-only inicial está en `feat/phase-2-http-sync-client`; sus pruebas nuevas aún requieren validación local. Hosting, endpoint público y scheduler Electron siguen pendientes.
 
 ---
 
@@ -221,9 +218,9 @@ flowchart TD
 | Comandos de gestión editorial y distribución | Implementados; incluye publicar_paquete_conocimiento |
 | Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado; migración 0015 y pruebas del generador validadas localmente por el propietario |
 | Catálogo firmado de fuentes (índice v2) | Implementado y validado localmente por el propietario (108 pruebas OK) |
-| Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementación inicial en rama correctiva; migración 0016 y pruebas pendientes de validación local |
-| Cliente de sincronización de red | Pendiente |
-| Hosting, endpoint y publicación remota | Pendiente |
+| Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementado y validado en `main` (119 pruebas OK; migración 0016) |
+| Cliente de sincronización HTTP pull-only | Implementación inicial en `feat/phase-2-http-sync-client`; pruebas pendientes de validación local |
+| Hosting, endpoint y publicación remota | Pendiente; no se ha seleccionado proveedor ni configurado URL/key de producción |
 
 ---
 
