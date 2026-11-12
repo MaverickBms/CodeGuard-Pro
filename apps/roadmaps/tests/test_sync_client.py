@@ -52,7 +52,7 @@ class TransporteSyncTests(SimpleTestCase):
                     _validate_endpoint(url, allowed_hosts=self.allowed_hosts, label="test")
 
     def test_descarga_respeta_limite_de_bytes(self):
-        response = FakeResponse(b"12345", headers={"Content-Length": "5"})
+        response = FakeResponse(b"12345", headers={"Content-Length": "5"}, url="https://cdn.codeguard.example/package.zip")
         with patch("apps.roadmaps.sync_client._open_url", return_value=response):
             with self.assertRaisesRegex(SyncClientError, "límite"):
                 _fetch_bytes(
@@ -63,7 +63,7 @@ class TransporteSyncTests(SimpleTestCase):
                 )
 
     def test_descarga_exige_tamano_firmado(self):
-        response = FakeResponse(b"1234", headers={"Content-Length": "4"})
+        response = FakeResponse(b"1234", headers={"Content-Length": "4"}, url="https://cdn.codeguard.example/package.zip")
         with patch("apps.roadmaps.sync_client._open_url", return_value=response):
             with self.assertRaisesRegex(SyncClientError, "tamaño"):
                 _fetch_bytes(
