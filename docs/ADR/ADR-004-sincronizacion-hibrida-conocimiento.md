@@ -75,3 +75,9 @@ Se adopta un **modelo híbrido de distribución de conocimiento** dentro de la F
 La decisión se considerará implementada cuando las pruebas `SYNC-001` a `SYNC-020` de `docs/PLAN_PRUEBAS.md` estén cubiertas, el flujo editorial y el cliente estén integrados, y se demuestre que las actualizaciones no alteran el progreso ni las evidencias del estudiante.
 
 **Importante:** aprobar esta ADR registra la dirección arquitectónica; no significa que la sincronización ya esté construida o validada.
+
+## Aclaración técnica del contrato de distribución
+
+El manifiesto firmado se publica fuera del ZIP. No debe incluirse dentro del mismo archivo cuyo SHA-256 declara, porque produciría una referencia circular imposible de verificar. El manifiesto externo contiene URL permitida, tamaño, SHA-256 y un contador monotónico por canal (`sequence`); la firma Ed25519 cubre los bytes exactos del manifiesto. El ZIP contiene un índice interno y los recursos editoriales, sin scripts ni ejecutables.
+
+La auditoría también establece que los intentos deben protegerse frente al borrado en cascada, que los evaluadores locales no son secretos frente al propietario del equipo y que los snapshots publicados deben separar inmutabilidad de estado de vigencia. Estos detalles se especifican en `docs/DISENO_DATOS_SINCRONIZACION.md`.
