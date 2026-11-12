@@ -297,6 +297,13 @@ def revisar_licencia_fuente(
     nota = (nota or "").strip()
     if not evidencia or not nota:
         raise ValidationError("La revisión exige URL de evidencia y nota de decisión.")
+    from urllib.parse import urlsplit
+    try:
+        parsed_evidence = urlsplit(evidencia)
+    except ValueError as exc:
+        raise ValidationError("La evidencia debe ser una URL HTTPS válida.") from exc
+    if parsed_evidence.scheme.lower() != "https" or not parsed_evidence.hostname:
+        raise ValidationError("La evidencia debe ser una URL HTTPS absoluta.")
     if estado == "compatible" and not alcance:
         raise ValidationError("La reutilización compatible exige documentar su alcance.")
     fuente = FuenteConocimiento.objects.select_for_update().get(pk=fuente_id)
