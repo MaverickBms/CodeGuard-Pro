@@ -66,7 +66,9 @@ def load_strict_json(raw: bytes, *, max_bytes: int):
             object_pairs_hook=_unique_object,
             parse_constant=_reject_constant,
         )
-    except (UnicodeDecodeError, json.JSONDecodeError, RecursionError) as exc:
+    except DistributionError:
+        raise
+    except (UnicodeDecodeError, ValueError, RecursionError) as exc:
         raise DistributionError("El documento no contiene JSON UTF-8 válido.") from exc
 
 
@@ -177,7 +179,7 @@ def verify_signed_manifest(
     expected_channel: str,
     current_sequence: int = 0,
     current_manifest_sha256: str | None = None,
-    app_version: str | None = None,
+    app_version: str,
 ):
     """Verifica firma Ed25519, canal, compatibilidad y protección anti-replay."""
     manifest = validate_manifest_structure(manifest_bytes, allowed_hosts=allowed_hosts)
@@ -210,10 +212,9 @@ def verify_signed_manifest(
             raise DistributionError("La secuencia ya instalada presenta un manifiesto diferente.")
         return {"manifest": manifest, "manifest_sha256": manifest_digest, "unchanged": True}
 
-    if app_version is not None:
-        _semver(app_version, "app_version")
-        if _version_tuple(app_version) < _version_tuple(manifest["minimum_app_version"]):
-            raise DistributionError("El paquete requiere una versión más reciente de CodeGuard.")
+    _semver(app_version, "app_version")
+    if _version_tuple(app_version) < _version_tuple(manifest["minimum_app_version"]):
+        raise DistributionError("El paquete requiere una versión más reciente de CodeGuard.")
     return {"manifest": manifest, "manifest_sha256": manifest_digest, "unchanged": False}
 
 
@@ -230,7 +231,7 @@ def _version_tuple(value):
 
 
 def validate_package_archive(package_bytes: bytes, *, manifest: dict):
-    """Valida ZIP en memoria; nunca extrae rutas suministradas por el paquete."""
+    """Valida ZIP en memoria; requiere el manifiesto ya verificado criptográficamente."""
     if not isinstance(package_bytes, bytes) or not package_bytes:
         raise DistributionError("El paquete está vacío.")
     package_meta = manifest["package"]
