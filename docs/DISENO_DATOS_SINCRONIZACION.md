@@ -604,3 +604,8 @@ Las operaciones exigen un usuario autenticado, activo y con `is_staff=True`. Las
 ### Auditoría de retirada
 
 La retirada registra campos independientes `retirada_por` y `retirada_en`. No reutiliza los metadatos de revisión/aprobación, para preservar quién aprobó originalmente el contenido y quién ordenó su retirada. La causa queda en `motivo_retiro`.
+
+
+### Protección frente a escrituras masivas
+
+El modelo de versiones usa un QuerySet especializado que rechaza `update()`, `bulk_update()` y eliminaciones masivas, además de impedir la creación masiva en estados distintos de borrador. La modificación de estados debe pasar por los servicios editoriales; la eliminación individual se limita a borradores. Esto reduce las vías accidentales para saltarse las validaciones del ciclo de vida. Como toda protección a nivel ORM, no sustituye controles de acceso a la base de datos ni impide SQL directo ejecutado por código privilegiado.
