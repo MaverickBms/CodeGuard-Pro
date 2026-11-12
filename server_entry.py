@@ -27,7 +27,8 @@ def main() -> int:
     # las migraciones ni el roadmap. El servidor principal ya administra esos pasos.
     if sys.argv[1:] == ["--sync-knowledge"]:
         try:
-            channel = os.environ.get("CODEGUARD_SYNC_CHANNEL", "stable").strip()
+            channel_raw = os.environ.get("CODEGUARD_SYNC_CHANNEL", "").strip()
+            channel = channel_raw if channel_raw else "stable"
             force = os.environ.get("CODEGUARD_SYNC_FORCE", "").strip().lower() in {"1", "true", "yes"}
             call_command(
                 "sincronizar_conocimiento",
