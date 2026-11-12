@@ -567,3 +567,21 @@ Restricciones:
 - El hash debe validarse como hexadecimal SHA-256 en la validación del modelo.
 
 **Límite de este incremento:** los snapshots se almacenan, pero aún no se generan automáticamente desde `ContenidoLeccion`, ejemplos y ejercicios; tampoco se ha implementado el flujo editorial, la firma de paquetes ni el cliente de sincronización. La inmutabilidad completa deberá centralizarse en servicios de publicación y reforzarse en el siguiente incremento; no se debe editar una versión publicada desde interfaces ordinarias.
+
+
+## 18. Servicio de generación de snapshots
+
+El servicio `apps/roadmaps/knowledge.py` genera snapshots deterministas desde el borrador editorial actual:
+
+- Incluye los datos estables de la lección, teoría, explicación, objetivos y notas.
+- Incluye únicamente ejemplos y ejercicios publicados.
+- Ordena los recursos por orden editorial e ID local como desempate.
+- Serializa JSON con claves ordenadas, UTF-8 y separadores estables; calcula SHA-256 sobre esa representación canónica.
+- Asigna el siguiente número de versión dentro de una transacción y bloquea la fila de lección durante la operación.
+- Asocia fuentes y datos de atribución.
+- Crea siempre una versión en estado `borrador`; no publica ni modifica el contenido editorial activo.
+- Rechaza lecciones sin contenido, sin teoría técnica o sin explicación sencilla, así como fuentes inactivas.
+
+La prueba verifica que el snapshot no cambia cuando el borrador editorial se modifica después y que el siguiente snapshot recibe la versión siguiente.
+
+**Límite:** el servicio crea snapshots, pero todavía no aplica una política completa de aprobación/publicación, no congela por sí mismo las filas de versiones frente a escrituras directas y no produce paquetes firmados.
