@@ -300,7 +300,7 @@ function startKnowledgeSync(force = false) {
   }
 
   if (force && !app.isPackaged) args.push('--force');
-  if (force && app.isPackaged) env.CODEGUARD_SYNC_FORCE = '1';
+  env.CODEGUARD_SYNC_FORCE = force ? '1' : '0';
 
   const startedAt = new Date().toISOString();
   emitKnowledgeSyncStatus('running', 'Comprobando actualizaciones de conocimiento…', startedAt);
