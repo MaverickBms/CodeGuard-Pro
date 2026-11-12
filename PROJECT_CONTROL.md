@@ -158,7 +158,8 @@ El propietario autorizó ejecutar las correcciones de consistencia identificadas
 |---|---|
 | **Hosting/endpoint público de distribución** | Pendiente de selección de proveedor y autorización |
 | **Generador central y catálogo firmado v2** | Generador, migración 0015 y catálogo v2 validados localmente por el propietario (108 pruebas OK) |
-| **Instalador transaccional (migración 0016)** | Implementado inicialmente en rama correctiva; pendiente de migración y pruebas locales |\n| **Cliente de sincronización HTTP / hosting** | Pendiente de selección técnica y autorización específica |
+| **Instalador transaccional (migración 0016)** | Implementado inicialmente en rama correctiva; pendiente de migración y pruebas locales |
+| **Cliente de sincronización HTTP / hosting** | Pendiente de selección técnica y autorización específica |
 | **Competencias y evaluaciones (Incremento 3)** | Pendiente de decisión |
 | **Biblioteca documental (Incremento 4)** | Pendiente de decisión |
 | **Evidencias y laboratorios (Incremento 5)** | Pendiente de decisión |
@@ -177,7 +178,8 @@ El propietario autorizó ejecutar las correcciones de consistencia identificadas
 | 2.0 | 2026-11-11 | Revisión completa tras avance de Fase 2: estado real de rama, HEAD, migraciones, comandos, pruebas y pendientes | Revisión de estado verificado |
 | 2.1 | 2026-11-12 | Corrección de línea base tras fusión a main; puntero de contenido activo, snapshots de intentos, interfaz de entregas y hardening de registros | Autorización expresa del propietario; validación local confirmada por el propietario |
 | 2.2 | 2026-11-12 | Generador reproducible de ZIP, manifiesto Ed25519, secuencias monotónicas, registro inmutable y comando editorial | Continuación autorizada en rama aislada; validación local confirmada por el propietario |
-| 2.3 | 2026-11-12 | Catálogo normalizado de fuentes y metadatos de licencia en índice de paquete v2; verificación estricta y compatibilidad de lectura v1 | Continuación autorizada en rama aislada; validación local confirmada por el propietario (108 pruebas OK) |\n| 2.4 | 2026-11-12 | Instalador transaccional, snapshots por paquete, catálogo aislado, activación, rollback, integración de lecciones e intentos, migración 0016 y pruebas | Continuación autorizada en rama aislada; validación local pendiente |
+| 2.3 | 2026-11-12 | Catálogo normalizado de fuentes y metadatos de licencia en índice de paquete v2; verificación estricta y compatibilidad de lectura v1 | Continuación autorizada en rama aislada; validación local confirmada por el propietario (108 pruebas OK) |
+| 2.4 | 2026-11-12 | Instalador transaccional, snapshots por paquete, catálogo aislado, activación, rollback, integración de lecciones e intentos, migración 0016 y pruebas | Continuación autorizada en rama aislada; validación local pendiente |
 
 ### Reglas de actualización
 
