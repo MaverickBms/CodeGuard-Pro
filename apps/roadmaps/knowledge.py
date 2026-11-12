@@ -174,8 +174,12 @@ def enviar_version_a_revision(version_id: int, *, actor) -> VersionContenidoLecc
     if version.estado != "borrador":
         raise ValidationError("Solo una versión en borrador puede enviarse a revisión.")
     _validar_version_para_revision(version)
+    from django.utils import timezone
+
     version.estado = "revision"
-    version.save(update_fields=["estado"])
+    version.enviada_por = actor
+    version.enviada_en = timezone.now()
+    version.save(update_fields=["estado", "enviada_por", "enviada_en"])
     return version
 
 
