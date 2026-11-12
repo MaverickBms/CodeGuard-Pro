@@ -2,7 +2,7 @@
 
 **Producto:** CodeGuard Pro  
 **Fase:** 2 — Motor de aprendizaje y contenido interactivo  
-**Estado:** Diseño aprobado (ADR-004). Verificador, publicador local, snapshots por paquete e instalador transaccional validados en `main` `2c5d441` (119 pruebas confirmadas por el propietario). El cliente HTTP pull-only tiene una implementación inicial en `feat/phase-2-http-sync-client`; transporte y pruebas nuevas pendientes de validación local. Hosting, endpoint público y publicación remota siguen pendientes.  
+**Estado:** Diseño aprobado (ADR-004). Verificador, publicador local, snapshots por paquete e instalador transaccional validados en `main` `2c5d441`. El propietario confirmó 132 pruebas OK en `feat/phase-2-http-sync-client`, junto con `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios. La integración automática Electron, el backoff y el modo PyInstaller están en implementación en esa rama; su nueva validación local está pendiente. Hosting, endpoint público y publicación remota siguen pendientes.  
 **Fecha:** 12 de noviembre de 2026  
 **ADR relacionada:** `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`  
 **Unifica:** `docs/DISENO_DATOS_SINCRONIZACION.md` + `docs/DISENO_PUBLICADOR_CENTRAL.md`
@@ -13,7 +13,7 @@
 
 Definir cómo CodeGuard Pro podrá distribuir contenido académico revisado, mantenerlo versionado y actualizarlo de forma opcional cuando exista conexión, sin depender de Internet para estudiar.
 
-El sincronizador está dividido en componentes. El cliente HTTP inicial (`apps/roadmaps/sync_client.py`) y el comando manual `sincronizar_conocimiento` ya están implementados en la rama indicada; todavía no existe ejecución automática en segundo plano ni integración Electron. El endpoint real, las claves públicas de producción y el hosting aún no están configurados.
+El sincronizador está dividido en componentes. El cliente HTTP (`apps/roadmaps/sync_client.py`) y el comando `sincronizar_conocimiento` están implementados en la rama indicada. La integración Electron añade una comprobación inicial diferida, un scheduler de consulta cada cinco minutos que respeta `next_check_after`, ejecución como proceso independiente y un modo de sincronización de una sola tarea en el binario PyInstaller. El endpoint real, las claves públicas de producción y el hosting aún no están configurados; por ello el scheduler falla cerrado y no realiza peticiones mientras falte la configuración.
 
 Incluye:
 - Auditoría del modelo actual de contenido y evidencias.
@@ -968,3 +968,53 @@ La vista de lección prioriza el paquete activo del canal configurado (por defec
 - La escritura atómica del ZIP en filesystem y el commit de SQLite no forman una transacción distribuida. Una caída abrupta puede dejar archivos huérfanos, que no se activan sin registro. Se requiere reconciliación/limpieza controlada antes de automatizar sincronizaciones.
 - El rollback conserva la secuencia máxima conocida para impedir que el servidor vuelva a imponer automáticamente una publicación antigua o la misma publicación revertida.
 - La migración 0016 y las pruebas de `apps.roadmaps.tests.test_installer` están pendientes de validación local. No declarar este incremento listo hasta ejecutar migraciones, pruebas específicas y suite completa.
+
+---
+
+## 18. Integración automática Electron y ejecución empaquetada
+
+**Estado:** implementación inicial en `feat/phase-2-http-sync-client`; pendiente de validación local del propietario y de una compilación real PyInstaller/Electron.
+
+### 18.1 Ciclo de vida
+
+- Electron espera a que Django local responda y a que la ventana principal haya cargado antes de programar la primera comprobación.
+- La primera comprobación se difiere 30 segundos para no competir con el arranque ni bloquear la interfaz.
+- El proceso principal revisa cada cinco minutos si corresponde consultar. La decisión final la toma el cliente Python leyendo `EstadoSincronizacion.next_check_after`; una consulta diferida no genera tráfico HTTP.
+- El intervalo de cinco minutos es un sondeo local del scheduler, no una consulta HTTP cada cinco minutos.
+- Una ejecución activa impide iniciar otra desde Electron. Además, el cliente Python usa un bloqueo de archivo por canal en el directorio de datos para impedir concurrencia entre procesos.
+- Al cerrar la aplicación se cancelan los temporizadores y se solicita terminar el proceso hijo de sincronización.
+
+### 18.2 Política de comprobación y backoff
+
+- Después de una respuesta válida sin cambios (HTTP 304 o mismo manifiesto) se programa la siguiente comprobación para 24 horas.
+- Después de instalar una publicación válida también se programa la siguiente comprobación para 24 horas.
+- El primer fallo de red, descarga o validación programa un reintento en 15 minutos.
+- Cada fallo consecutivo duplica el intervalo anterior hasta un máximo de 24 horas.
+- El intervalo se deriva de `last_check_at` y `next_check_after`; no requiere una migración adicional.
+- Una comprobación manual puede ignorar temporalmente `next_check_after`, pero conserva el bloqueo de concurrencia y todas las verificaciones criptográficas.
+
+### 18.3 Proceso de sincronización
+
+En desarrollo, Electron ejecuta el comando Django con el intérprete del entorno virtual. En producción, inicia el mismo ejecutable PyInstaller con `--sync-knowledge`.
+
+El modo `--sync-knowledge` inicializa Django y ejecuta exclusivamente el comando de sincronización; no inicia Waitress, no ejecuta migraciones ni vuelve a cargar/recrear ASCENSO. Finaliza con código 0 si la comprobación termina correctamente y con código distinto de cero si falla.
+
+`CodeGuardServer.spec` incluye explícitamente el comando y los módulos del sincronizador. Debe comprobarse el ejecutable real de Windows y Linux durante el empaquetado; el análisis del spec no sustituye una compilación ni una prueba de extremo a extremo.
+
+### 18.4 Configuración y cierre seguro
+
+Electron hereda la configuración de distribución desde su entorno: `CODEGUARD_SYNC_MANIFEST_URL`, `CODEGUARD_SYNC_SIGNATURE_URL`, `CODEGUARD_SYNC_ALLOWED_HOSTS`, `CODEGUARD_SYNC_TRUSTED_PUBLIC_KEYS`, `CODEGUARD_SYNC_CHANNEL` (opcional; `stable` por defecto) y `CODEGUARD_SYNC_TIMEOUT` (opcional; 12 segundos por defecto). La versión de aplicación se obtiene de `app.getVersion()`.
+
+Si faltan URLs, allowlist o claves públicas, el scheduler registra `not-configured` y no inicia el proceso ni realiza conexiones. No se incluyen claves de producción ni endpoints ficticios en el repositorio. La publicación remota y el mecanismo definitivo de provisión de esta configuración son tareas pendientes.
+
+El renderer solo recibe estado descriptivo mediante IPC limitado; no puede proporcionar rutas, URLs, claves, comandos ni argumentos de proceso. Se expone una función para solicitar una comprobación manual y un listener para cambios de estado.
+
+### 18.5 Criterios de aceptación pendientes
+
+1. Validar la política de backoff y la persistencia de `next_check_after`.
+2. Validar que dos procesos no pueden sincronizar el mismo canal simultáneamente.
+3. Validar que el scheduler no bloquea el arranque ni la interfaz.
+4. Validar que sin configuración no se crea tráfico de red.
+5. Ejecutar `--sync-knowledge` con el binario PyInstaller, sin Python instalado en el sistema.
+6. Cerrar Electron durante una descarga y comprobar que no queda un proceso hijo huérfano ni se activa un paquete parcial.
+7. Confirmar que la aplicación continúa abriendo y estudiando offline cuando el servicio remoto no responde.
