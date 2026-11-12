@@ -364,6 +364,7 @@ def importar_documentos_validados(report, *, actor):
             snapshot=item["document"]["snapshot"],
             sha256=item["sha256"],
             resumen_cambios=item["document"]["resumen_cambios"],
+            creada_por=actor,
         )
         for source_data in item["document"]["fuentes"]:
             referencia = ReferenciaFuenteContenido(
