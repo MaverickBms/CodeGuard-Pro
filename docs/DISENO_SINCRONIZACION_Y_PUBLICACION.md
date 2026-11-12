@@ -857,3 +857,57 @@ Este avance **no** implementa todavía:
 El puntero editorial local `ContenidoLeccionActivo` ya existe para publicaciones gestionadas dentro de la aplicación; todavía no es un instalador de paquetes remotos ni debe confundirse con la activación transaccional de un paquete de distribución.
 
 No se debe interpretar la validación criptográfica de artefactos como una sincronización ya operativa. El siguiente incremento debe conectar el verificador con un flujo de publicación controlado y un instalador transaccional, sin tocar progreso ni intentos.
+---
+
+## 25. Generador central de paquetes (rama correctiva)
+
+**Estado:** implementación añadida en `fix/phase-2-integrity-learning`; migración `0015_publicador_central_conocimiento` y pruebas nuevas pendientes de validación local.
+
+### 25.1 Selección y controles editoriales
+
+- Solo se incluyen versiones en estado `publicada` enlazadas desde `ContenidoLeccionActivo`.
+- Se recalcula SHA-256 del snapshot y se comprueba la identidad UUID de la lección.
+- Se exige procedencia documentada y fuentes activas.
+- Se compara la decisión de licencia actual con la congelada al enviar a revisión; cualquier cambio posterior bloquea la publicación.
+- Solo se admiten decisiones `compatible` o `solo_referencia` con evidencia, nota y auditoría. Para `solo_referencia` se exige uso declarado `original`.
+
+### 25.2 Artefactos y reproducibilidad
+
+El publicador genera un ZIP con `package-index.json` y `payload/lessons/<uuid>.json`. Las entradas se ordenan, usan timestamp ZIP fijo, permisos regulares normalizados y compresión determinista. La identidad del paquete se deriva del canal, secuencia, versión y digest del contenido. El manifiesto y la firma se publican como archivos externos y llevan nombres versionados por secuencia; no se sobrescriben releases anteriores.
+
+La firma cubre los bytes exactos del manifiesto. Antes de registrar el release, el servicio vuelve a verificar la firma con la clave pública derivada de la clave privada y ejecuta la validación estructural del manifiesto.
+
+### 25.3 Gestión de claves
+
+La clave privada Ed25519 se carga desde un archivo PEM externo al repositorio. En sistemas POSIX se rechazan permisos de grupo/otros; se rechazan symlinks y claves de tipo distinto. Se permite contraseña mediante variable de entorno. La clave privada no se almacena en la base de datos ni se incorpora a los artefactos. La clave pública de confianza y el host de producción siguen pendientes de configuración del cliente.
+
+### 25.4 Secuencias y registro
+
+La migración 0015 crea contadores iniciales por canal y un registro inmutable `PublicacionPaqueteConocimiento`. La secuencia se incrementa de una en una dentro de una transacción; existe una restricción única `(channel, sequence)`. El registro conserva UUID, versión, hashes, `key_id`, URL y nombres de artefactos.
+
+### 25.5 Ejecución local
+
+El comando `publicar_paquete_conocimiento` requiere `--channel`, `--package-version`, `--minimum-app-version`, `--base-url`, uno o más `--allowed-host`, `--key-id`, `--private-key` y `--output-directory`. La contraseña puede recibirse mediante `--key-password-env`. Los artefactos se generan localmente; el comando no realiza despliegue ni subida HTTP.
+
+Ejemplo (rutas y dominio ilustrativos; no usar una clave de prueba en producción):
+
+```bash
+python manage.py publicar_paquete_conocimiento \
+  --channel stable \
+  --package-version 1.0.0 \
+  --minimum-app-version 1.0.0 \
+  --base-url https://cdn.example.invalid/codeguard/stable \
+  --allowed-host cdn.example.invalid \
+  --key-id codeguard-release-2026 \
+  --private-key /ruta-segura/codeguard-ed25519.pem \
+  --output-directory /ruta-de-publicacion/codeguard/stable
+```
+
+### 25.6 Límites conocidos
+
+- No se selecciona ni contrata proveedor de hosting.
+- No se crea endpoint HTTP ni URL estable de manifiesto.
+- No se suben artefactos ni se configura CDN.
+- El JSON académico v1 conserva UUID y atribución de fuentes, pero no incluye el expediente detallado de licencia; esa evidencia permanece en el repositorio editorial. Su exportación requiere una evolución versionada del contrato.
+- La escritura de artefactos y el commit de SQLite no forman una transacción distribuida; un cierre abrupto puede dejar archivos huérfanos, que son inocuos y no se anuncian sin registro. Debe existir un proceso de reconciliación antes de automatizar publicaciones.
+- Las pruebas del publicador y la migración 0015 deben ejecutarse en el entorno local antes de considerar validado este incremento.
