@@ -63,8 +63,8 @@ Ver `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` (secciones 1–7: diseño de s
 | Elemento | Estado | Documento |
 |---|---|---|
 | Cliente de sincronización de red | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
-| Servicio central de publicación | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
-| Paquetes firmados y publicación real | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Generador local de paquetes firmados | Implementado en rama correctiva; pendiente validar migración 0015 y pruebas | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Generación local de paquetes firmados | Implementada; hosting y publicación remota pendientes | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Instalación atómica de paquetes y rollback | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Competencias y evaluaciones | Pendiente (Incremento 3) | `docs/PLAN_DESARROLLO.md` |
 | Biblioteca documental | Pendiente (Incremento 4) | `docs/PLAN_DESARROLLO.md` |
