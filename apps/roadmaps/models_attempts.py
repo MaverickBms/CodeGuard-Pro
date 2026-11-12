@@ -196,12 +196,16 @@ class IntentoEjercicio(models.Model):
                 raise ValidationError({
                     "paquete_contenido": "El ejercicio no pertenece al snapshot instalado."
                 })
-            if (
-                not isinstance(self.snapshot_ejercicio, dict)
-                or self.snapshot_ejercicio.get("clave") != str(self.ejercicio.clave_contenido)
-            ):
+            esperado = next(
+                (
+                    item for item in ejercicios_paquete
+                    if item.get("clave") == str(self.ejercicio.clave_contenido)
+                ),
+                None,
+            )
+            if not isinstance(self.snapshot_ejercicio, dict) or self.snapshot_ejercicio != esperado:
                 raise ValidationError({
-                    "snapshot_ejercicio": "El snapshot debe identificar el ejercicio presentado."
+                    "snapshot_ejercicio": "La evidencia debe conservar exactamente el ejercicio del paquete instalado."
                 })
         if self.version_contenido_id:
             if self.version_contenido.leccion_id != self.ejercicio.leccion_id:
