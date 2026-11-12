@@ -72,20 +72,30 @@ Registro de eventos de seguridad y acceso (RF-005, RS-014).
 
 ---
 
-## 3. Entidades planificadas (incrementos futuros)
+## 3. Entidades académicas implementadas en la Fase 2
 
-Según RD-004 a RD-022 del SRS, se modelarán en los siguientes incrementos:
+La siguiente parte del dominio académico ya existe en `apps.roadmaps` y sus migraciones:
 
-- **Académico:** Roadmap, Etapa, Modulo, Leccion, Actividad, Prerrequisito, CriterioFinalizacion, Progreso.
+- **Estructura curricular:** `Roadmap`, `Etapa`, `Modulo`, `Leccion`, `Actividad`, `Prerrequisito` y `CriterioFinalizacion`.
+- **Progreso:** `Progreso`.
+- **Contenido editable:** `ContenidoLeccion`, `EjemploLeccion` y `EjercicioLeccion`.
+- **Evaluación inicial:** `ConfiguracionEvaluacion` e `IntentoEjercicio`.
+
+Estas entidades representan la estructura y el primer flujo de contenido/evaluación, pero todavía no implementan fuentes trazables, snapshots inmutables de contenido, paquetes instalados ni sincronización.
+
+## 4. Entidades previstas para incrementos posteriores
+
+Según RD-004 a RD-022 del SRS y el plan maestro, quedan previstas, según su fase y alcance:
+
 - **Competencias:** Competencia, NivelDominio, CriterioEvaluacion, RequisitoEvidencia, ReglaFinalizacion, LogroCompetencia.
-- **Evaluacion:** Evaluacion, Pregunta, Opcion, Intento, Resultado, Retroalimentacion, Rubrica.
+- **Evaluaciones académicas:** Evaluacion, Pregunta, Opcion, Intento, Resultado, Retroalimentacion, Rubrica.
 - **Documental:** Documento, Metadato, FragmentoDocumental, IndiceFTS5, ErrorImportacion.
-- **Conocimiento:** Concepto, RelacionConcepto, VínculoConceptoFragmento, VínculoConceptoActividad.
+- **Conocimiento semántico:** Concepto, RelacionConcepto, VínculoConceptoFragmento, VínculoConceptoActividad.
 - **Evidencias:** Evidencia, ArchivoEvidencia, HashSHA256.
 - **Laboratorios:** Laboratorio, Paso, Comando, Resultado, Captura.
 - **Vigencia:** Revision, DecisionRevision.
 - **Backups:** BackupOperacion, HashBackup.
-- **Configuracion:** ParametroSistema.
+- **Configuración:** ParametroSistema.
 
 Ver `docs/MATRIZ_TRAZABILIDAD.md` para el mapeo requisito → entidad.
 
@@ -115,3 +125,41 @@ vacía (RNF-008: integridad transaccional en SQLite).
 El modelo está diseñado para agregar nuevas aplicaciones sin modificar las existentes.
 Cada nueva entidad vivirá en su propia app Django con su propia migración, evitando modelos
 monolíticos y dependencias circulares.
+
+
+---
+
+## 7. Modelo objetivo de conocimiento versionado y sincronización
+
+> **Estado: diseño documentado; no implementado.** No se deben interpretar estas entidades como tablas que ya existan en las migraciones actuales.
+
+La propuesta separa estructura curricular, snapshots de conocimiento y datos privados del estudiante.
+
+### 7.1 Entidades objetivo
+
+| Entidad propuesta | Responsabilidad | Relación principal |
+|---|---|---|
+| `FuenteConocimiento` | Identificar publicador, URL canónica, licencia y atribución | Una fuente puede respaldar varias versiones de lección |
+| `ReferenciaFuenteContenido` | Registrar qué versión/fragmento de fuente respalda un contenido | N:M entre fuente y versión de contenido, con metadatos de consulta |
+| `VersionContenidoLeccion` | Snapshot inmutable de teoría, ejemplos, ejercicios y evaluadores declarativos | N versiones por `Leccion` |
+| `ContenidoLeccionActivo` | Puntero a la versión publicada que debe mostrarse | Una versión activa por lección |
+| `PaqueteConocimientoInstalado` | Historial local de paquetes verificados/instalados | N paquetes por instalación |
+| `EstadoSincronizacion` | Última consulta, éxito, ETag, canal y error | Estado local por canal |
+
+### 7.2 Identidad estable
+
+Los paquetes no deben depender de PK autoincrementales de SQLite. Se propone añadir claves UUID estables a `Leccion`, `EjemploLeccion` y `EjercicioLeccion`, mantenidas en el catálogo curricular canónico y preservadas entre instalaciones. Una migración de datos asignará claves a los registros existentes una sola vez.
+
+### 7.3 Evidencia académica
+
+Antes de actualizar contenido:
+- Los intentos deben conservar la clave estable del ejercicio, snapshot del enunciado y referencia a la versión de contenido presentada.
+- Debe revisarse `IntentoEjercicio.ejercicio` (`CASCADE`) porque borrar un ejercicio puede borrar intentos.
+- Debe revisarse `IntentoEjercicio.configuracion_evaluacion` (`SET_NULL`) porque borrar un evaluador elimina su referencia histórica.
+- Una versión publicada y usada por intentos debe quedar protegida frente a modificación o eliminación.
+
+### 7.4 Contrato y documentación técnica
+
+El payload, manifiesto, firma Ed25519, hash SHA-256, validación, instalación atómica, rollback y estrategia de migración se especifican en `docs/DISENO_DATOS_SINCRONIZACION.md`.
+
+No crear migraciones hasta aprobar el modelo y completar la estrategia de claves estables.
