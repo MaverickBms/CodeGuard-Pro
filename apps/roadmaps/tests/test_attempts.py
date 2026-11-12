@@ -309,6 +309,9 @@ class IntentosEjercicioTests(TestCase):
         self.assertEqual(retirada.estado, "retirada")
         self.assertEqual(retirada.snapshot, snapshot_original)
         self.assertEqual(retirada.motivo_retiro, "La referencia requiere actualización.")
+        self.assertEqual(retirada.retirada_por, editor)
+        self.assertIsNotNone(retirada.retirada_en)
+        self.assertEqual(retirada.revisada_por, editor)
 
     def test_servicio_crea_snapshot_determinista_con_fuentes_y_recursos_publicados(self):
         import hashlib
