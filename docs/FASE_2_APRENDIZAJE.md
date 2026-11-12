@@ -36,7 +36,7 @@ La rama `docs/phase-2-hybrid-knowledge-sync` fue fusionada a `main`. Incluye:
 - **Interfaz de entregas:** el estudiante ya puede enviar respuestas mediante POST con CSRF, límite de 20.000 caracteres e historial de los tres últimos intentos. No se ejecuta código arbitrario.
 - **Registro local endurecido:** escrituras masivas de paquetes y estado de sincronización validan invariantes o quedan bloqueadas para evitar saltarse el flujo controlado.
 - **Comandos de gestión editoriales:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`.
-- **Pruebas base:** 93 pruebas automatizadas confirmadas por el usuario antes de este incremento. Las pruebas nuevas de la migración 0014 siguen pendientes de ejecución local.
+- **Validación de la línea base:** el propietario confirmó 119 pruebas OK, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2c5d441`. La validación local cubre el instalador transaccional y rollback.
 
 ---
 
@@ -70,15 +70,22 @@ El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos 
 
 | Elemento | Estado | Documento |
 |---|---|---|
-| Cliente de sincronización de red | Pendiente | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Cliente de sincronización de red | Implementación inicial en `feat/phase-2-http-sync-client`; pruebas nuevas pendientes de validación local. Sin scheduler Electron ni endpoint configurado | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Generador local y catálogo firmado v2 | Implementado; migración 0015 y pruebas confirmadas por el propietario. Hosting y publicación remota pendientes | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
-| Instalación transaccional local y rollback | Implementación inicial añadida en rama correctiva; migración 0016 y pruebas pendientes de validación local | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Instalación transaccional local y rollback | Validada por el propietario en `main` `2c5d441` (119 pruebas OK; migración 0016 incluida) | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Competencias y evaluaciones | Pendiente (Incremento 3) | `docs/PLAN_DESARROLLO.md` |
 | Biblioteca documental | Pendiente (Incremento 4) | `docs/PLAN_DESARROLLO.md` |
 | Evidencias y laboratorios | Pendiente (Incremento 5) | `docs/PLAN_DESARROLLO.md` |
 | Backups y administración | Pendiente (Incremento 6) | `docs/PLAN_DESARROLLO.md` |
 
 ---
+
+
+## 11. Cliente HTTP pull-only (implementación inicial en rama aislada)
+
+El módulo `apps/roadmaps/sync_client.py` realiza GET HTTPS al manifiesto, firma y ZIP. Verifica el manifiesto Ed25519 y su compatibilidad antes de descargar el paquete; el ZIP se entrega al instalador ya validado en `main`. Se aplican allowlist de hosts, TLS validado, rechazo de redirecciones, timeout y límites de bytes, ETag y verificación del tamaño/hash. No se envían datos del estudiante.
+
+El comando manual es `python manage.py sincronizar_conocimiento --channel stable`. Requiere configurar URLs, allowlist, clave(s) pública(s) confiables y versión de aplicación mediante variables de entorno. No se ha elegido proveedor ni publicado un endpoint real. La ejecución automática en segundo plano y la integración Electron permanecen pendientes. Las pruebas `test_sync_client.py` y las nuevas pruebas de integración del cliente deben ejecutarse en el entorno local antes de considerar validado este incremento.
 
 ## 8. Reglas de operación
 
@@ -92,7 +99,7 @@ El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos 
 
 ## 9. Validación
 
-El propietario confirmó 108 pruebas OK, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes para el estado que incluye el catálogo firmado v2. La migración 0016 y las nuevas pruebas del instalador se añadieron después y permanecen pendientes de validación local.
+El propietario confirmó 119 pruebas OK, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2c5d441`; esa validación incluye el catálogo v2 y el instalador transaccional.
 
 Desde la carpeta local del proyecto:
 
@@ -109,9 +116,9 @@ Luego iniciar CodeGuard Pro con `./run.sh`, abrir una etapa y entrar en una lecc
 
 El índice del paquete firmado incorpora un catálogo normalizado de fuentes con UUID, datos bibliográficos, decisión/evidencia/alcance de licencia y fecha de revisión. Se excluye la identidad personal del revisor. El verificador admite índices v1 anteriores y valida estrictamente v2, incluida la correspondencia exacta entre fuentes declaradas y referencias de las lecciones. El instalador conserva el catálogo firmado en `FuentePaqueteConocimiento`, asociado al paquete. No modifica ni sobrescribe `FuenteConocimiento`, por lo que cada versión instalada mantiene su propio expediente de fuentes.
 
-Las pruebas SRC-001 a SRC-007 y PUB-001 a PUB-012 quedaron incluidas en las 108 pruebas confirmadas por el propietario.
+Las pruebas SRC-001 a SRC-007, PUB-001 a PUB-012 y las pruebas del instalador quedaron incluidas en las 119 pruebas confirmadas por el propietario. SRC-008 y las pruebas del cliente HTTP se añadieron después y requieren validación específica.
 
-## 10. Instalador transaccional de paquetes (implementación inicial en rama correctiva)
+## 10. Instalador transaccional de paquetes (validado en main)
 
 El servicio `apps/roadmaps/installer.py` recibe bytes de manifiesto, firma y ZIP; no realiza descargas HTTP. Verifica Ed25519, canal, versión mínima, secuencia anti-replay, hash y estructura del ZIP antes de persistir datos.
 
@@ -119,4 +126,4 @@ La migración 0016 añade snapshots de lección y catálogo de fuentes asociados
 
 El artefacto ZIP se conserva bajo `CODEGUARD_DATA_DIR/knowledge-packages/`. La activación se realiza al final de la transacción: el paquete anterior pasa a sustituido, el nuevo queda activo y `EstadoSincronizacion.active_package` cambia en la misma transacción. El rollback reactiva un paquete sustituido conservando artefactos, snapshots, intentos y progreso. El servicio también resuelve la vista de lección y la entrega de ejercicios contra el snapshot del paquete activo.
 
-**Límites actuales:** no hay cliente HTTP, descarga, ETag remoto, reintentos, endpoint, hosting, almacén de claves de producción ni integración Electron. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado. La migración 0016 y las pruebas `apps.roadmaps.tests.test_installer` deben ejecutarse localmente antes de considerar validado este incremento.
+**Límites actuales:** el cliente HTTP inicial y su comando manual se añadieron en `feat/phase-2-http-sync-client`; sus pruebas nuevas aún no están validadas localmente. No hay endpoint, hosting, claves públicas de producción, scheduler automático ni integración Electron. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado.
