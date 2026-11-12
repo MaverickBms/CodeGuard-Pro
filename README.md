@@ -4,7 +4,7 @@
 
 **CodeGuard Pro** es una plataforma educativa personal, local y **offline-first** que organiza tu roadmap de aprendizaje, gestiona etapas y lecciones, registra tu progreso verificado y documenta tus evidencias.
 
-Todo corre en tu propio equipo: un servidor **Django** local + una aplicación de escritorio **Electron**, con **SQLite** de por medio. Sin Internet obligatorio, sin servidores externos, sin nube, sin telemetría.
+El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicación de escritorio **Electron**, con **SQLite**. CodeGuard es **offline-first**: no requiere Internet para abrir la aplicación, estudiar con el contenido disponible ni consultar el progreso local. La sincronización opcional con un servicio central de conocimiento revisado está aprobada como parte de la Fase 2, pero **todavía no está implementada**. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
 
 ---
 
@@ -102,12 +102,24 @@ O vía script: `./run.sh`.
 
 ---
 
+## 🌐 Funcionamiento offline y actualizaciones de conocimiento
+
+- El servidor de la aplicación escucha únicamente en `127.0.0.1`.
+- El contenido instalado y los datos del estudiante se conservan localmente.
+- La conexión no es requisito para estudiar con los recursos descargados.
+- La Fase 2 contempla un servicio central que distribuirá paquetes académicos revisados y versionados mediante HTTPS.
+- La sincronización será iniciada por el cliente, de solo descarga y no bloqueará el uso offline.
+- Las actualizaciones deberán validar firma, integridad y compatibilidad antes de instalarse, con conservación de la versión anterior.
+- El diseño no contempla enviar intentos, código, calificaciones, progreso ni datos personales al servidor central.
+- **Estado actual:** la sincronización todavía no está implementada; estas reglas describen el alcance aprobado.
+
 ## 🔒 Privacidad
 
 - Servidor local en `127.0.0.1` (nunca `0.0.0.0`).
 - CSP estricta, cabeceras de seguridad, `DEBUG=False`.
 - Contraseñas y frases con Argon2, un solo uso.
-- Sin CDN, sin telemetría, sin servicios externos.
+- Recursos estáticos locales, sin CDN ni telemetría.
+- Cualquier futura conexión de actualización se limitará a descargar conocimiento publicado y no habilitará acceso remoto a la aplicación local.
 
 ## 🗄️ Dónde están tus datos
 
