@@ -17,9 +17,14 @@ const net = require('net');
 let mainWindow = null;
 let djangoProcess = null;
 let djangoPort = null;
+let syncProcess = null;
+let syncTimer = null;
+let syncStatus = { state: 'idle', message: 'Sin comprobaciones recientes.', checkedAt: null };
 let quitting = false;
 
 const DJANGO_HOST = '127.0.0.1';
+const SYNC_POLL_INTERVAL_MS = 5 * 60 * 1000;
+const SYNC_INITIAL_DELAY_MS = 30 * 1000;
 const THEMES = [
   ['light', 'Claro Diurno'],
   ['dark', 'Oscuro Nocturno'],
@@ -178,6 +183,163 @@ async function startDjango() {
   return `http://${DJANGO_HOST}:${djangoPort}`;
 }
 
+function emitKnowledgeSyncStatus(state, message, checkedAt = syncStatus.checkedAt) {
+  syncStatus = { state, message, checkedAt };
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send('knowledge-sync-status', syncStatus);
+  }
+}
+
+function syncConfiguration() {
+  const channel = (process.env.CODEGUARD_SYNC_CHANNEL || 'stable').trim();
+  const required = [
+    process.env.CODEGUARD_SYNC_MANIFEST_URL,
+    process.env.CODEGUARD_SYNC_SIGNATURE_URL,
+    process.env.CODEGUARD_SYNC_ALLOWED_HOSTS,
+    process.env.CODEGUARD_SYNC_TRUSTED_PUBLIC_KEYS
+  ];
+  if (!['stable', 'beta'].includes(channel) || required.some(value => !value || !value.trim())) {
+    return null;
+  }
+  return { channel };
+}
+
+function syncEnvironment() {
+  return {
+    ...process.env,
+    DJANGO_SETTINGS_MODULE: app.isPackaged
+      ? 'config.settings.desktop'
+      : 'config.settings.development',
+    CODEGUARD_DATA_DIR: dataDir(),
+    CODEGUARD_APP_VERSION: app.getVersion(),
+    PYTHONUNBUFFERED: '1'
+  };
+}
+
+function startKnowledgeSync(force = false) {
+  if (quitting) return false;
+  if (syncProcess) {
+    emitKnowledgeSyncStatus('running', 'Ya hay una sincronización en curso.');
+    return false;
+  }
+
+  const config = syncConfiguration();
+  if (!config) {
+    emitKnowledgeSyncStatus(
+      'not-configured',
+      'Actualizaciones automáticas desactivadas: falta la configuración de distribución de confianza.'
+    );
+    return false;
+  }
+
+  const env = syncEnvironment();
+  let executable;
+  let args;
+  let cwd;
+
+  if (app.isPackaged) {
+    const serverDir = path.join(process.resourcesPath, 'server');
+    executable = path.join(
+      serverDir,
+      process.platform === 'win32' ? 'CodeGuardServer.exe' : 'CodeGuardServer'
+    );
+    if (!fs.existsSync(executable)) {
+      emitKnowledgeSyncStatus('error', 'No se encontró el ejecutable local de sincronización.', new Date().toISOString());
+      return false;
+    }
+    args = ['--sync-knowledge'];
+    cwd = serverDir;
+  } else {
+    executable = process.env.CODEGUARD_PYTHON || (
+      process.platform === 'win32'
+        ? path.join(projectRoot(), '.venv', 'Scripts', 'python.exe')
+        : path.join(projectRoot(), '.venv', 'bin', 'python')
+    );
+    if (!fs.existsSync(executable)) {
+      executable = process.platform === 'win32' ? 'python' : 'python3';
+    }
+    args = [
+      path.join(projectRoot(), 'manage.py'),
+      'sincronizar_conocimiento',
+      '--channel',
+      config.channel
+    ];
+    cwd = projectRoot();
+  }
+
+  if (force && !app.isPackaged) args.push('--force');
+  if (force && app.isPackaged) env.CODEGUARD_SYNC_FORCE = '1';
+
+  const startedAt = new Date().toISOString();
+  emitKnowledgeSyncStatus('running', 'Comprobando actualizaciones de conocimiento…', startedAt);
+
+  try {
+    syncProcess = spawn(executable, args, {
+      cwd,
+      env,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      windowsHide: true
+    });
+  } catch (error) {
+    syncProcess = null;
+    console.error('[Knowledge Sync] No se pudo iniciar el proceso:', error);
+    emitKnowledgeSyncStatus('error', 'No se pudo iniciar la comprobación de actualizaciones.', startedAt);
+    return false;
+  }
+
+  let stderr = '';
+  syncProcess.stdout.on('data', data => {
+    const line = data.toString().trim();
+    if (line) console.log('[Knowledge Sync]', line.slice(0, 1000));
+  });
+  syncProcess.stderr.on('data', data => {
+    stderr = (stderr + data.toString()).slice(-3000);
+    console.error('[Knowledge Sync ERR]', data.toString().trim().slice(0, 1000));
+  });
+  syncProcess.on('error', error => {
+    console.error('[Knowledge Sync] Error de proceso:', error);
+    emitKnowledgeSyncStatus('error', 'No se pudo completar la comprobación de actualizaciones.', startedAt);
+  });
+  syncProcess.on('close', code => {
+    syncProcess = null;
+    if (quitting) return;
+    if (code === 0) {
+      emitKnowledgeSyncStatus('success', 'Comprobación de conocimiento completada.', startedAt);
+    } else {
+      const safeDetail = stderr.includes('Sincronización no completada')
+        ? 'El servicio de conocimiento no pudo completar la actualización.'
+        : 'No fue posible comprobar las actualizaciones; se conserva el contenido local.';
+      emitKnowledgeSyncStatus('error', safeDetail, startedAt);
+    }
+  });
+  return true;
+}
+
+function scheduleKnowledgeSync() {
+  if (syncTimer) return;
+  // La primera consulta ocurre después de que la interfaz y Django estén disponibles.
+  const initial = setTimeout(() => startKnowledgeSync(false), SYNC_INITIAL_DELAY_MS);
+  initial.unref();
+  syncTimer = setInterval(() => startKnowledgeSync(false), SYNC_POLL_INTERVAL_MS);
+  syncTimer.unref();
+}
+
+function stopKnowledgeSync() {
+  if (syncTimer) {
+    clearInterval(syncTimer);
+    syncTimer = null;
+  }
+  if (syncProcess) {
+    const child = syncProcess;
+    syncProcess = null;
+    try {
+      child.kill('SIGTERM');
+    } catch (_error) {
+      // El proceso puede haber terminado durante el cierre.
+    }
+  }
+}
+
 function stopDjango() {
   if (!djangoProcess) return;
   const child = djangoProcess;
@@ -314,6 +476,7 @@ function buildMenu() {
         { label: 'Acerca de', click: showAbout },
         { type: 'separator' },
         { label: 'Abrir carpeta de datos', click: () => shell.openPath(dataDir()) },
+        { label: 'Comprobar actualizaciones de conocimiento', click: () => startKnowledgeSync(true) },
         { type: 'separator' },
         { label: 'Salir', accelerator: 'CmdOrCtrl+Q', click: () => app.quit() }
       ]
@@ -366,7 +529,7 @@ function showAbout() {
       'Plataforma educativa personal, offline-first.\n' +
       'Arquitectura: Electron + Django API local.\n' +
       `Versión: ${app.getVersion()}\n\n` +
-      'Servidor local en 127.0.0.1 · Sin CDN · Sin telemetría\n' +
+      'Servidor local en 127.0.0.1 · Sin telemetría\n' +
       '© 2026 CodeGuard Pro'
   });
 }
@@ -396,7 +559,7 @@ function showVersion() {
       `Chromium: ${process.versions.chrome}\n` +
       `Node.js: ${process.versions.node}\n` +
       `Plataforma: ${process.platform} ${process.arch}\n\n` +
-      'Aplicación local, sin telemetría ni comprobaciones de red.'
+      'Aplicación local, sin telemetría. La consulta de conocimiento es opcional y no transmite datos del estudiante.'
   });
 }
 
@@ -416,6 +579,24 @@ ipcMain.on('show-notification', (_event, options = {}) => {
     icon: options.icon || iconPath()
   });
   notification.show();
+});
+
+// IPC: estado de sincronización; solo se acepta desde la ventana local de CodeGuard.
+ipcMain.handle('get-knowledge-sync-status', event => {
+  const trustedUrl = `http://${DJANGO_HOST}:${djangoPort}/`;
+  if (!djangoPort || !event.senderFrame?.url?.startsWith(trustedUrl)) {
+    throw new Error('Origen IPC no autorizado.');
+  }
+  return syncStatus;
+});
+
+ipcMain.handle('check-knowledge-updates', event => {
+  const trustedUrl = `http://${DJANGO_HOST}:${djangoPort}/`;
+  if (!djangoPort || !event.senderFrame?.url?.startsWith(trustedUrl)) {
+    throw new Error('Origen IPC no autorizado.');
+  }
+  startKnowledgeSync(true);
+  return syncStatus;
 });
 
 // IPC: información del sistema (sin datos sensibles).
@@ -457,6 +638,7 @@ if (!gotLock) {
       if (mainWindow) {
         await mainWindow.loadURL(url);
       }
+      scheduleKnowledgeSync();
     } catch (error) {
       console.error('No se pudo iniciar la aplicación:', error);
       dialog.showErrorBox(
@@ -477,6 +659,7 @@ if (!gotLock) {
 }
 
 app.on('window-all-closed', () => {
+  stopKnowledgeSync();
   stopDjango();
   if (process.platform !== 'darwin') {
     app.quit();
@@ -485,6 +668,7 @@ app.on('window-all-closed', () => {
 
 app.on('before-quit', () => {
   quitting = true;
+  stopKnowledgeSync();
   stopDjango();
 });
 
