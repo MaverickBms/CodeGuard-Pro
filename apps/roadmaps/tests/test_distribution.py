@@ -250,9 +250,15 @@ class DistribucionFirmadaTests(SimpleTestCase):
         with self.assertRaisesMessage(DistributionError, "no declarados"):
             validate_package_archive(package_bytes, manifest=manifest)
 
-    def build_zip_with_source_catalog(self, *, include_source=True, source_url="https://docs.python.org/3/reference/"):
+    def build_zip_with_source_catalog(
+        self,
+        *,
+        include_source=True,
+        source_url="https://docs.python.org/3/reference/",
+        license_state="compatible",
+        usage="original",
+    ):
         original = self.build_zip()
-        source_uuid = None
         buffer = io.BytesIO()
         with zipfile.ZipFile(io.BytesIO(original), "r") as source_archive:
             payload_info = next(
@@ -261,12 +267,18 @@ class DistribucionFirmadaTests(SimpleTestCase):
             )
             document = json.loads(source_archive.read(payload_info.filename))
             source_uuid = document["fuentes"][0]["clave"]
+            document["fuentes"][0]["uso_declarado"] = usage
+            updated_payload = json.dumps(
+                document, separators=(",", ":")
+            ).encode("utf-8")
             with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as target:
                 for info in source_archive.infolist():
                     payload = source_archive.read(info.filename)
                     if info.filename == "package-index.json":
                         index = json.loads(payload)
                         index["schema_version"] = 2
+                        index["files"][0]["size_bytes"] = len(updated_payload)
+                        index["files"][0]["sha256"] = hashlib.sha256(updated_payload).hexdigest()
                         if include_source:
                             index["sources"] = [{
                                 "clave": source_uuid,
@@ -276,13 +288,15 @@ class DistribucionFirmadaTests(SimpleTestCase):
                                 "edicion": "3",
                                 "identificador_licencia": "PSF-2.0",
                                 "url_licencia": "https://docs.python.org/3/license.html",
-                                "estado_revision_licencia": "compatible",
+                                "estado_revision_licencia": license_state,
                                 "evidencia_licencia": "https://docs.python.org/3/license.html",
-                                "alcance_licencia": "Redistribución con atribución.",
+                                "alcance_licencia": "Redistribución con atribución." if license_state == "compatible" else "",
                                 "nota_revision_licencia": "Revisión editorial documentada.",
                                 "revisada_en": "2026-11-12T10:00:00+00:00",
                             }]
                         payload = json.dumps(index, separators=(",", ":")).encode("utf-8")
+                    elif info.filename == payload_info.filename:
+                        payload = updated_payload
                     target.writestr(info.filename, payload)
         return buffer.getvalue()
 
@@ -300,6 +314,16 @@ class DistribucionFirmadaTests(SimpleTestCase):
     def test_indice_v2_rechaza_catalogo_incompleto(self):
         package_bytes = self.build_zip_with_source_catalog(include_source=False)
         with self.assertRaisesMessage(DistributionError, "no coincide exactamente"):
+            validate_package_archive(
+                package_bytes, manifest=self.manifest_for_zip(package_bytes)
+            )
+
+    def test_indice_v2_rechaza_solo_referencia_con_uso_adaptado(self):
+        package_bytes = self.build_zip_with_source_catalog(
+            license_state="solo_referencia",
+            usage="adaptacion",
+        )
+        with self.assertRaisesMessage(DistributionError, "solo permite contenido original"):
             validate_package_archive(
                 package_bytes, manifest=self.manifest_for_zip(package_bytes)
             )
