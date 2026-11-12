@@ -21,6 +21,8 @@ from uuid import UUID
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
+from .content_import import ImportContentError, _validate_document
+
 
 MAX_MANIFEST_BYTES = 64 * 1024
 MAX_SIGNATURE_BYTES = 256
@@ -311,7 +313,15 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
                 raise DistributionError(f"No se pudo leer {path}.") from exc
             if hashlib.sha256(payload).hexdigest() != item["sha256"]:
                 raise DistributionError(f"Hash incorrecto para {path}.")
-            load_strict_json(payload, max_bytes=MAX_CONTENT_FILE_BYTES)
+            document = load_strict_json(payload, max_bytes=MAX_CONTENT_FILE_BYTES)
+            if not isinstance(document, dict):
+                raise DistributionError(f"{path}: cada recurso debe ser un documento JSON objeto.")
+            try:
+                lesson_uuid = _validate_document(document, path)
+            except ImportContentError as exc:
+                raise DistributionError(f"{path}: documento académico incompatible: {exc}") from exc
+            if str(lesson_uuid) != LESSON_PATH_RE.fullmatch(path).group(1):
+                raise DistributionError(f"{path}: el UUID del archivo no coincide con la identidad de la lección.")
             payloads[path] = payload
 
         if set(by_name) != declared | {"package-index.json"}:
