@@ -1,13 +1,20 @@
 """Pruebas del transporte HTTPS del cliente de sincronización."""
 import io
+import tempfile
 import urllib.error
+from datetime import timedelta
+from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase, override_settings
+from django.utils import timezone
 
 from apps.roadmaps.sync_client import (
     SyncClientError,
     _fetch_bytes,
+    _retry_delay_for_state,
+    _channel_sync_lock,
     _validate_endpoint,
 )
 
@@ -171,3 +178,40 @@ class TransporteSyncTests(SimpleTestCase):
                 allow_not_modified=True,
             )
         self.assertEqual(result, (None, '"v1"'))
+
+
+
+class PoliticaReintentosTests(SimpleTestCase):
+    def test_backoff_inicia_en_quince_minutos_y_duplica(self):
+        now = timezone.now()
+        state = SimpleNamespace(
+            last_error_code="",
+            last_check_at=None,
+            next_check_after=None,
+        )
+        self.assertEqual(_retry_delay_for_state(state), timedelta(minutes=15))
+
+        state.last_error_code = "network_error"
+        state.last_check_at = now
+        state.next_check_after = now + timedelta(minutes=15)
+        self.assertEqual(_retry_delay_for_state(state), timedelta(minutes=30))
+
+    def test_backoff_no_supera_veinticuatro_horas(self):
+        now = timezone.now()
+        state = SimpleNamespace(
+            last_error_code="network_error",
+            last_check_at=now,
+            next_check_after=now + timedelta(hours=20),
+        )
+        self.assertEqual(_retry_delay_for_state(state), timedelta(hours=24))
+
+
+class BloqueoSincronizacionTests(TestCase):
+    def test_un_solo_proceso_puede_sincronizar_el_mismo_canal(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with override_settings(DATA_DIR=Path(directory)):
+                with _channel_sync_lock("stable"):
+                    with self.assertRaises(SyncClientError) as context:
+                        with _channel_sync_lock("stable"):
+                            pass
+                self.assertEqual(context.exception.code, "sync_in_progress")
