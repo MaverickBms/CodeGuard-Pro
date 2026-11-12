@@ -36,7 +36,7 @@ La rama `docs/phase-2-hybrid-knowledge-sync` fue fusionada a `main`. Incluye:
 - **Interfaz de entregas:** el estudiante ya puede enviar respuestas mediante POST con CSRF, límite de 20.000 caracteres e historial de los tres últimos intentos. No se ejecuta código arbitrario.
 - **Registro local endurecido:** escrituras masivas de paquetes y estado de sincronización validan invariantes o quedan bloqueadas para evitar saltarse el flujo controlado.
 - **Comandos de gestión:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`, `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (cliente HTTP), scheduler Electron y backoff. El propietario confirmó 136 pruebas OK, build PyInstaller y AppImage Linux; el binario carga Django y alcanza el comando de sincronización con el error esperado por configuración ausente. Dos pruebas adicionales del despacho empaquetado y la prueba GUI de ciclo de vida Electron están pendientes.
-- **Validación de la línea base:** el propietario confirmó 119 pruebas OK, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2906abc`. El propietario confirmó después 136 pruebas OK y la generación de PyInstaller/AppImage.
+- **Validación de la línea base:** el propietario confirmó 119 pruebas OK para el instalador transaccional en `main` `2c5d441`; posteriormente, tras integrar HTTP/Electron y corregir el empaquetado, confirmó 136 pruebas OK en `main` `2906abc`, además de la generación de PyInstaller y AppImage.
 
 ---
 
