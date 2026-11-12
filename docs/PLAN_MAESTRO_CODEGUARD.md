@@ -197,7 +197,7 @@ Pendiente de la Fase 2:
 - Cargar y revisar contenido académico real para las lecciones y poblar el catálogo con fuentes oficiales verificadas.
 - Completar metadatos de revisión técnica, vigencia y compatibilidad por tecnología/versión.
 - Construir una interfaz editorial y permisos granulares; los primeros servicios y comandos de revisión e importación ya existen en la rama.
-- Ejecutar localmente migración 0009, nuevas pruebas de importación/licencias y suite completa.
+- Ejecutar localmente las migraciones 0009–0011, nuevas pruebas de importación/licencias y suite completa.
 - Implementar el servicio central de distribución, manifiesto firmado y paquetes académicos inmutables.
 - Implementar el cliente de sincronización pull-only, verificación criptográfica, instalación atómica, historial y rollback. **Este sistema está documentado y aprobado, pero todavía no está implementado.**
 - Validar navegación y presentación de todos los tipos de lección.
