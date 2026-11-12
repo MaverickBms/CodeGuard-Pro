@@ -45,7 +45,8 @@ La experiencia debe sentirse como un producto de software educativo profesional,
 - **IA como tutor:** orientar, diagnosticar y explicar; no entregar directamente las respuestas de los ejercicios.
 - **Gamificación subordinada:** monedas, logros y objetos no pueden otorgar aprobaciones académicas.
 - **Personalización conservada:** mantener los 12 temas visuales y permitir que cada usuario elija su apariencia.
-- **Offline-first:** las funciones esenciales deben poder utilizarse sin depender permanentemente de servicios externos.
+- **Offline-first con sincronización opcional:** el núcleo académico y el progreso residen localmente. La conexión se utiliza para consultar y descargar paquetes de conocimiento aprobados; nunca debe ser requisito para estudiar ni para abrir el historial local.
+- **Conocimiento trazable y vigente:** cada contenido publicado debe identificar fuentes, versión, fecha de revisión, licencia/condiciones de uso y estado de vigencia. Los cambios detectados en fuentes externas no se publican automáticamente sin revisión editorial.
 - **Seguridad por diseño:** no ejecutar código arbitrario de usuarios directamente en el proceso principal del servidor o de escritorio.
 - **Accesibilidad y claridad:** interfaz legible, navegación por teclado, estados comprensibles y movimiento reducido cuando se solicite.
 - **Cambios incrementales:** modificar el menor alcance posible y validar antes de avanzar.
@@ -269,6 +270,79 @@ El contenido debe revisarse técnicamente. No rellenar lecciones con texto gené
 - Una lección se completa cuando se satisfacen sus criterios académicos.
 - El estudiante no puede marcar manualmente una etapa como aprobada.
 - El progreso debe ser recuperable y coherente después de cerrar y volver a abrir la aplicación.
+- Cada intento debe conservar la versión del contenido y del evaluador que se utilizó, para que una actualización posterior no reescriba la evidencia histórica.
+
+### 2.5 Sistema de conocimiento académico y fuentes
+
+El contenido de CodeGuard no se debe improvisar ni depender de que el estudiante aporte documentación. El proyecto debe mantener un catálogo editorial propio, construido a partir de fuentes técnicas confiables y de uso permitido.
+
+Cada unidad de conocimiento debe registrar, como mínimo:
+
+- Identificador estable y tipo de recurso (lección, ejemplo, ejercicio, referencia, aviso de obsolescencia).
+- Tecnología, lenguaje, versión y nivel al que aplica.
+- Fuente primaria: entidad/publicador, título, URL canónica y versión o edición consultada.
+- Licencia o condiciones de reutilización; no asumir que consultar una fuente autoriza copiarla.
+- Fecha de consulta, fecha de revisión técnica, responsable/revisor y estado editorial.
+- Versión del contenido, fecha de publicación y compatibilidad mínima con el esquema de contenido de CodeGuard.
+- Relación con objetivos de aprendizaje, lecciones, ejercicios y evaluadores correspondientes.
+
+El contenido para estudiantes debe ser una explicación pedagógica original y revisada, apoyada por referencias. No se copiará íntegramente documentación de terceros ni se completarán lecciones con texto genérico. Las fuentes externas pueden ser consultadas automáticamente para detectar cambios, pero una persona o proceso editorial autorizado debe revisar y aprobar las modificaciones antes de publicarlas.
+
+### 2.6 Sincronización híbrida de conocimiento (decisión aprobada)
+
+**Modelo elegido:** servidor central de distribución de contenido revisado + sincronización automática opcional + almacenamiento local persistente. Esta capacidad forma parte de la Fase 2 y no constituye una fase adicional.
+
+Arquitectura lógica:
+
+1. **Equipo editorial / repositorio maestro:** crea, revisa, versiona y aprueba los paquetes académicos.
+2. **Servicio central de publicación:** expone un manifiesto firmado y paquetes inmutables por HTTPS. Distribuye contenido publicado, no el progreso privado del estudiante.
+3. **Cliente CodeGuard local:** consulta el manifiesto cuando hay conexión, compara versiones y descarga solo paquetes compatibles.
+4. **Validador local:** verifica firma, hash, tamaño, esquema, versión mínima de aplicación y relaciones internas antes de instalar.
+5. **Almacén local:** conserva la versión activa y las versiones anteriores necesarias para recuperación; la base de datos académica local y los datos del estudiante permanecen separados del paquete remoto.
+
+Reglas obligatorias:
+
+- La aplicación debe iniciar, estudiar, consultar lecciones descargadas, practicar con los recursos disponibles y consultar el progreso sin conexión.
+- La sincronización no bloquea el arranque ni la navegación. Si falla, se conserva la última versión válida y se informa el estado sin interrumpir el estudio.
+- La comprobación puede realizarse al iniciar y en momentos oportunos mientras exista conexión, con timeout, backoff y límites de consumo configurables. No se debe mantener una conexión permanente.
+- El cliente solo descarga paquetes publicados y compatibles. No ejecuta scripts, migraciones ni código recibido como contenido.
+- Cada paquete debe tener identificador, versión, fecha de publicación, hash criptográfico, firma verificable, versión de esquema, tamaño y requisitos de compatibilidad.
+- La instalación debe ser atómica: descargar a una zona temporal, validar, activar en una transacción/control de versión y conservar rollback.
+- Actualizar contenido no modifica intentos, progreso, preferencias, notas ni datos personales del estudiante.
+- La evidencia académica conserva la versión del contenido y del evaluador con la que fue generada. Una actualización no convierte aprobaciones antiguas en nuevas ni elimina el historial.
+- Los contenidos retirados por error crítico deben poder marcarse como retirados/sustituidos, sin borrar evidencia histórica.
+- No se enviarán al servidor central código del estudiante, intentos, calificaciones, historial, identificadores personales ni telemetría. La sincronización de esta fase es de descarga de conocimiento (pull-only).
+- Las credenciales, claves de firma y claves privadas de publicación nunca se distribuyen en el cliente.
+
+La detección automática de cambios en documentación oficial solo genera alertas o propuestas para revisión. No se debe convertir una modificación de una página externa en una modificación automática de la lección publicada.
+
+### 2.7 Flujo editorial y ciclo de vida del contenido
+
+1. Registrar la fuente y sus condiciones de uso.
+2. Consultar la versión oficial y detectar cambios relevantes.
+3. Crear o actualizar la explicación, ejemplos y ejercicios de CodeGuard.
+4. Revisar exactitud técnica, claridad pedagógica, vigencia, licencias y enlaces.
+5. Validar ejemplos y evaluadores en el entorno de pruebas correspondiente.
+6. Aprobar y publicar una nueva versión inmutable.
+7. Generar manifiesto, hash y firma del paquete.
+8. Distribuirlo al cliente.
+9. Descargar, verificar, instalar y registrar el resultado de sincronización.
+10. Si falla la validación o instalación, mantener la versión anterior y registrar el error.
+
+La autoría masiva no debe depender de editar manualmente SQLite ni de activar `django.contrib.admin` sin una decisión de diseño. Se debe crear un flujo editorial versionado e importable, con validación previa y trazabilidad.
+
+### 2.8 Experiencia offline y vigencia
+
+La interfaz debe diferenciar, sin alarmismo:
+
+- **Actualizado:** contenido local coincide con la última versión publicada conocida.
+- **Actualización disponible:** existe una versión nueva que puede descargarse.
+- **Sin conexión:** se usa la última versión válida local.
+- **Revisión recomendada:** el contenido superó su fecha objetivo de revisión, pero no se ha confirmado que sea incorrecto.
+- **Retirado o sustituido:** existe una advertencia editorial que debe mostrarse al estudiante.
+- **Error de sincronización:** la versión local se conserva y el usuario puede reintentar.
+
+La fecha de revisión no debe confundirse con la fecha de publicación ni usarse por sí sola para declarar falso un contenido. La vigencia depende también de la tecnología y versión a la que aplica.
 
 ### Criterios de aceptación de la Fase 2
 - Se puede navegar desde etapa hasta lección.
@@ -280,6 +354,14 @@ El contenido debe revisarse técnicamente. No rellenar lecciones con texto gené
 - No se otorga finalización por abrir una lección ni por pulsar un botón manual.
 - La suite de pruebas cubre el flujo y los casos límite.
 - La interfaz funciona con los 12 temas y en tamaños de pantalla habituales.
+- Las lecciones publicadas tienen fuentes trazables, versión, fecha de revisión y estado editorial.
+- El flujo editorial valida y publica paquetes versionados sin editar directamente la base de datos de producción.
+- El cliente consulta un manifiesto central únicamente cuando hay conexión y no depende de él para arrancar o estudiar.
+- Los paquetes se validan criptográficamente y por esquema antes de activarse.
+- Una descarga incompleta, firma inválida, versión incompatible o error de instalación no reemplaza el contenido local válido.
+- La actualización no modifica el progreso, los intentos ni las preferencias del estudiante.
+- Los intentos mantienen la versión de contenido/evaluador que los originó.
+- Se puede demostrar el flujo de actualización, rollback y continuidad offline mediante pruebas.
 
 ## Fase 3 — Tutor inteligente local
 
@@ -490,10 +572,13 @@ Consolidar el producto completo para que sea estable, seguro, accesible, eficien
 - Comportamiento responsive.
 - Estados de carga, vacío, éxito y error consistentes.
 
-**Offline-first**
-- Definir qué funciones funcionan sin conexión.
-- Persistir progreso y datos locales de forma segura.
-- Resolver sincronización y conflictos si se añade sincronización entre dispositivos.
+**Offline-first y sincronización de conocimiento**
+- Definir y probar qué funciones funcionan sin conexión.
+- Persistir progreso, intentos, preferencias y contenido local de forma segura.
+- Verificar manifiestos, firmas, hashes, compatibilidad y límites de descarga.
+- Probar instalaciones atómicas, interrupciones, reintentos, rollback y recuperación.
+- Garantizar que la sincronización de contenido no suba datos personales ni académicos del estudiante.
+- Resolver sincronización y conflictos entre dispositivos solo si se aprueba en una decisión futura; no forma parte del sincronizador de contenido de la Fase 2.
 - Comunicar claramente las funciones que sí requieren conexión.
 
 **Compatibilidad**
@@ -553,13 +638,15 @@ Orden inmediato recomendado:
 
 1. Revisar visual y funcionalmente la página de lección existente.
 2. Consolidar su diseño para escritorio, tablet y móvil, manteniendo los 12 temas.
-3. Revisar la estructura y publicación de contenido académico.
-4. Definir el contrato de ejecución y evaluación segura de ejercicios.
-5. Implementar editor y flujo de intentos.
-6. Crear validadores automáticos y pruebas.
-7. Conectar resultados con la finalización automática de lecciones.
-8. Cerrar Fase 2 mediante criterios de aceptación y documentación.
-9. Comenzar Fase 3: tutor local.
+3. Definir el modelo editorial, las fuentes y los metadatos de vigencia.
+4. Diseñar e implementar la publicación central y la sincronización híbrida de paquetes académicos.
+5. Producir contenido real, revisado y trazable para las rutas prioritarias.
+6. Definir el contrato de ejecución y evaluación segura de ejercicios.
+7. Implementar editor, navegación y flujo de intentos.
+8. Crear validadores automáticos y pruebas, incluyendo offline, integridad, rollback y compatibilidad.
+9. Conectar resultados con la finalización automática de lecciones.
+10. Cerrar Fase 2 mediante criterios de aceptación y documentación.
+11. Comenzar Fase 3: tutor local.
 
 ### Nota sobre el rediseño visual de la página de lección
 
