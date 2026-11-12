@@ -127,3 +127,16 @@ La migración 0016 añade snapshots de lección y catálogo de fuentes asociados
 El artefacto ZIP se conserva bajo `CODEGUARD_DATA_DIR/knowledge-packages/`. La activación se realiza al final de la transacción: el paquete anterior pasa a sustituido, el nuevo queda activo y `EstadoSincronizacion.active_package` cambia en la misma transacción. El rollback reactiva un paquete sustituido conservando artefactos, snapshots, intentos y progreso. El servicio también resuelve la vista de lección y la entrega de ejercicios contra el snapshot del paquete activo.
 
 **Límites actuales:** el cliente HTTP y el scheduler fueron validados por el propietario dentro de una suite de 136 pruebas. El scheduler Electron, el backoff y el bloqueo de concurrencia ya superaron las pruebas unitarias locales confirmadas por el propietario; PyInstaller y AppImage fueron generados; la prueba integrada GUI de Electron sigue pendiente. No hay endpoint, hosting ni claves públicas de producción; por ello la sincronización automática permanece inactiva hasta configurar una distribución confiable. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado.
+
+
+## 6.15 Validación de integración Electron/PyInstaller — estado al 12-11-2026
+
+El propietario confirmó en la rama `test/phase-2-electron-integration`:
+
+- 138 pruebas Django aprobadas.
+- `manage.py check` sin problemas.
+- `makemigrations --check --dry-run` sin cambios.
+- `node --check` correcto para `electron/main.js` y `electron/preload.js`.
+- Reconstrucción de PyInstaller y smoke test Linux satisfactorios; el binario carga Django y alcanza el comando `sincronizar_conocimiento`, con fallo controlado si faltan endpoints y claves.
+
+**Pendiente:** reconstruir el AppImage mediante `npm run build:linux` para incluir el binario PyInstaller actualizado y ejecutar la aceptación gráfica: inicio, carga de contenido offline, bind exclusivo a `127.0.0.1`, preservación de datos y cierre sin procesos huérfanos. No se han configurado endpoints, hosting ni claves de producción. `main` permanece sin modificar.
