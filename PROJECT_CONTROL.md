@@ -79,14 +79,14 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 |---|---|
 | Repositorio | `/home/mvxbms/Documentos/CodeGuard` |
 | Línea base | `main` en `2c5d441` (incluye catálogo v2 e instalador transaccional) |
-| Rama de correcciones | `feat/phase-2-http-sync-client` |
+| Rama de trabajo | `feat/phase-2-http-sync-client` |
 | HEAD de trabajo | Último commit de `feat/phase-2-http-sync-client`; no fusionado |
-| Diferencia respecto a `main` | Rama correctiva por delante de `main`, sin divergencia de base; `main` sin modificar |
+| Diferencia respecto a `main` | Rama de trabajo con commits no fusionados; `main` sin modificar |
 | Remoto | `origin/feat/phase-2-http-sync-client` |
 | Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
-| Migraciones roadmaps | 0014 y 0015 validadas localmente por el propietario; 0016 añadida en la rama correctiva y pendiente de ejecución local |
-| Comandos de gestión | 9 (`cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`) |
-| Pruebas automatizadas | 108 OK confirmadas en `main` antes del instalador; pruebas de `test_installer` pendientes de ejecución local |
+| Migraciones roadmaps | 0014, 0015 y 0016 validadas localmente por el propietario en `main` `2c5d441` |
+| Comandos de gestión | 9; incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (este último en rama de trabajo) |
+| Pruebas automatizadas | 119 OK confirmadas en `main`; pruebas HTTP nuevas pendientes de ejecución local |
 | Autenticación | `AUTH_DISABLED = True` (temporal, conservada íntegra) |
 | Base de datos | SQLite, `data/db.sqlite3` |
 | Servidor local | Waitress + WhiteNoise en `127.0.0.1` |
