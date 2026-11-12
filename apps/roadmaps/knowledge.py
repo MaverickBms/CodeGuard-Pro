@@ -115,7 +115,11 @@ def crear_version_contenido_leccion(
             resumen_cambios=resumen_cambios,
         )
 
-        for fuente, rol, localizador, nota_atribucion in fuentes:
+        for referencia in fuentes:
+            if len(referencia) not in (4, 5):
+                raise ValidationError("Cada referencia debe contener 4 o 5 elementos.")
+            fuente, rol, localizador, nota_atribucion = referencia[:4]
+            uso_declarado = referencia[4] if len(referencia) == 5 else "original"
             if not fuente.activa:
                 raise ValidationError(
                     f"La fuente '{fuente}' está inactiva y no puede asociarse a una versión nueva."
@@ -126,6 +130,7 @@ def crear_version_contenido_leccion(
                 rol=rol,
                 localizador=localizador,
                 nota_atribucion=nota_atribucion,
+                uso_declarado=uso_declarado,
             )
 
         return version
@@ -164,6 +169,28 @@ def _validar_version_para_revision(version: VersionContenidoLeccion) -> None:
 
     if version.referencias.filter(fuente__activa=False).exists():
         raise ValidationError("La versión contiene fuentes inactivas; actualiza su procedencia.")
+
+    for referencia in version.referencias.select_related("fuente").all():
+        fuente = referencia.fuente
+        estado = fuente.estado_revision_licencia
+        if estado in {"pendiente", "requiere_permiso", "no_reutilizable"}:
+            raise ValidationError(
+                f"La fuente '{fuente.titulo}' no está autorizada para avanzar: "
+                f"estado de licencia '{estado}'."
+            )
+        if not (fuente.revisada_por_id and fuente.revisada_en and fuente.evidencia_licencia):
+            raise ValidationError(
+                f"La fuente '{fuente.titulo}' carece de evidencia y auditoría de licencia."
+            )
+        if estado == "compatible" and not fuente.alcance_licencia.strip():
+            raise ValidationError(
+                f"La fuente '{fuente.titulo}' no documenta el alcance de reutilización."
+            )
+        if estado == "solo_referencia" and referencia.uso_declarado != "original":
+            raise ValidationError(
+                f"La fuente '{fuente.titulo}' solo permite contenido original; "
+                "no se admiten citas, adaptaciones ni reproducciones."
+            )
 
 
 @transaction.atomic
@@ -250,3 +277,38 @@ def retirar_version_publicada(
     version.retirada_por = actor
     version.save(update_fields=["estado", "motivo_retiro", "retirada_en", "retirada_por"])
     return version
+
+
+
+@transaction.atomic
+def revisar_licencia_fuente(
+    fuente_id: int, *, actor, estado: str, evidencia: str,
+    alcance: str = "", nota: str = "",
+) -> FuenteConocimiento:
+    """Registra una decisión de licencia auditable; no infiere derechos automáticamente."""
+    from django.utils import timezone
+
+    _validar_actor_editorial(actor)
+    estados = {opcion[0] for opcion in FuenteConocimiento.ESTADOS_LICENCIA}
+    if estado not in estados or estado == "pendiente":
+        raise ValidationError("La decisión de licencia indicada no es válida.")
+    evidencia = (evidencia or "").strip()
+    alcance = (alcance or "").strip()
+    nota = (nota or "").strip()
+    if not evidencia or not nota:
+        raise ValidationError("La revisión exige URL de evidencia y nota de decisión.")
+    if estado == "compatible" and not alcance:
+        raise ValidationError("La reutilización compatible exige documentar su alcance.")
+    fuente = FuenteConocimiento.objects.select_for_update().get(pk=fuente_id)
+    fuente.estado_revision_licencia = estado
+    fuente.evidencia_licencia = evidencia
+    fuente.alcance_licencia = alcance
+    fuente.nota_revision_licencia = nota
+    fuente.revisada_por = actor
+    fuente.revisada_en = timezone.now()
+    fuente.full_clean()
+    fuente.save(update_fields=[
+        "estado_revision_licencia", "evidencia_licencia", "alcance_licencia",
+        "nota_revision_licencia", "revisada_por", "revisada_en",
+    ])
+    return fuente
