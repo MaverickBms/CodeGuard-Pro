@@ -708,8 +708,29 @@ class VersionContenidoLeccion(models.Model):
         return f"{self.leccion} — v{self.numero_version} ({self.estado})"
 
 
+class ReferenciaFuenteContenidoQuerySet(models.QuerySet):
+    """Evita alterar referencias asociadas a versiones que ya entraron en revisión."""
+
+    def update(self, **kwargs):
+        if self.exclude(version__estado="borrador").exists():
+            raise ValidationError("No se pueden modificar referencias de versiones congeladas.")
+        return super().update(**kwargs)
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        if any(obj.version.estado != "borrador" for obj in objs):
+            raise ValidationError("No se pueden modificar referencias de versiones congeladas.")
+        return super().bulk_update(objs, fields, batch_size=batch_size)
+
+    def delete(self):
+        if self.exclude(version__estado="borrador").exists():
+            raise ValidationError("No se pueden eliminar referencias de versiones congeladas.")
+        return super().delete()
+
+
 class ReferenciaFuenteContenido(models.Model):
     """Atribución explícita de una fuente dentro de una versión académica."""
+
+    objects = ReferenciaFuenteContenidoQuerySet.as_manager()
 
     ROLES = [
         ("principal", "Fuente principal"),
@@ -757,6 +778,26 @@ class ReferenciaFuenteContenido(models.Model):
     licencia_revisada_en_snapshot = models.DateTimeField(
         null=True, blank=True, verbose_name="fecha de revisión de licencia al enviar a revisión",
     )
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            original = type(self).objects.select_related("version").get(pk=self.pk)
+            if original.version.estado != "borrador":
+                campos = (
+                    "version_id", "fuente_id", "rol", "uso_declarado", "localizador",
+                    "nota_atribucion", "estado_licencia_snapshot",
+                    "evidencia_licencia_snapshot", "alcance_licencia_snapshot",
+                    "nota_licencia_snapshot", "licencia_revisada_por_snapshot_id",
+                    "licencia_revisada_en_snapshot",
+                )
+                if any(getattr(original, campo) != getattr(self, campo) for campo in campos):
+                    raise ValidationError("La procedencia de una versión en revisión es inmutable.")
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.version.estado != "borrador":
+            raise ValidationError("No se pueden eliminar referencias de versiones congeladas.")
+        return super().delete(*args, **kwargs)
 
     class Meta:
         verbose_name = "referencia de fuente de contenido"
