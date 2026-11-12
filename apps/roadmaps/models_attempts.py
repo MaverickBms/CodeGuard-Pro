@@ -71,6 +71,12 @@ class IntentoEjercicioQuerySet(models.QuerySet):
     def bulk_update(self, objs, fields, batch_size=None):
         raise ValidationError("Los intentos son evidencia histórica y no admiten bulk_update().")
 
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        for obj in objs:
+            obj.full_clean(validate_unique=False, validate_constraints=False)
+        return super().bulk_create(objs, **kwargs)
+
     def delete(self):
         raise ValidationError("Los intentos académicos no se eliminan mediante operaciones masivas.")
 
