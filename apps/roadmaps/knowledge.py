@@ -124,7 +124,11 @@ def crear_version_contenido_leccion(
                 raise ValidationError(
                     f"La fuente '{fuente}' está inactiva y no puede asociarse a una versión nueva."
                 )
-            ReferenciaFuenteContenido.objects.create(
+            if rol not in {choice[0] for choice in ReferenciaFuenteContenido.ROLES}:
+                raise ValidationError("El rol de referencia no está permitido.")
+            if uso_declarado not in {choice[0] for choice in ReferenciaFuenteContenido.USOS_DECLARADOS}:
+                raise ValidationError("El uso declarado de la fuente no está permitido.")
+            referencia = ReferenciaFuenteContenido(
                 version=version,
                 fuente=fuente,
                 rol=rol,
@@ -132,6 +136,8 @@ def crear_version_contenido_leccion(
                 nota_atribucion=nota_atribucion,
                 uso_declarado=uso_declarado,
             )
+            referencia.full_clean()
+            referencia.save()
 
         return version
 
