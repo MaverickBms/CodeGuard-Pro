@@ -133,9 +133,11 @@ def validate_manifest_structure(raw: bytes, *, allowed_hosts):
     if not isinstance(package["package_id"], str):
         raise DistributionError("package_id debe ser un UUID válido.")
     try:
-        UUID(package["package_id"])
+        parsed_package_id = UUID(package["package_id"])
     except (ValueError, TypeError, AttributeError) as exc:
         raise DistributionError("package_id debe ser un UUID válido.") from exc
+    if str(parsed_package_id) != package["package_id"]:
+        raise DistributionError("package_id debe usar UUID canónico en minúsculas.")
     _semver(package["package_version"], "package_version")
     _positive_int(package["size_bytes"], "package.size_bytes", MAX_PACKAGE_BYTES)
     _sha256(package["sha256"], "package.sha256")
@@ -295,6 +297,8 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
             raise DistributionError("El índice debe declarar entre 1 y 500 lecciones.")
         declared = set()
         payloads = {}
+        seen_lessons = set()
+        seen_resources = set()
         for item in files:
             _exact_keys(item, {"path", "size_bytes", "sha256"}, "package-index.files[]")
             path = item["path"]
@@ -322,6 +326,14 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
                 raise DistributionError(f"{path}: documento académico incompatible: {exc}") from exc
             if str(lesson_uuid) != LESSON_PATH_RE.fullmatch(path).group(1):
                 raise DistributionError(f"{path}: el UUID del archivo no coincide con la identidad de la lección.")
+            if lesson_uuid in seen_lessons or str(lesson_uuid) in seen_resources:
+                raise DistributionError("El paquete repite o reasigna el UUID de una lección.")
+            seen_lessons.add(lesson_uuid)
+            for resource in document["snapshot"]["ejemplos"] + document["snapshot"]["ejercicios"]:
+                resource_id = UUID(resource["clave"])
+                if resource_id in seen_resources or resource_id in seen_lessons:
+                    raise DistributionError("El paquete repite o reasigna un UUID de ejemplo/ejercicio.")
+                seen_resources.add(resource_id)
             payloads[path] = payload
 
         if set(by_name) != declared | {"package-index.json"}:
