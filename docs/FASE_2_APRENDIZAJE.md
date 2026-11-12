@@ -104,3 +104,9 @@ python manage.py test apps.core apps.accounts apps.audit apps.roadmaps
 ```
 
 Luego iniciar CodeGuard Pro con `./run.sh`, abrir una etapa y entrar en una lección.
+
+### Catálogo de fuentes de distribución (índice v2)
+
+El índice del paquete firmado incorpora un catálogo normalizado de fuentes con UUID, datos bibliográficos, decisión/evidencia/alcance de licencia y fecha de revisión. Se excluye la identidad personal del revisor. El verificador admite índices v1 anteriores y valida estrictamente v2, incluida la correspondencia exacta entre fuentes declaradas y referencias de las lecciones. La importación y conciliación del catálogo en la base local aún no están implementadas; tampoco se debe sobrescribir una fuente local incompatible sin una política explícita.
+
+La validación local de las nuevas pruebas SRC-001 a SRC-007 y PUB-001 a PUB-012 sigue pendiente.
