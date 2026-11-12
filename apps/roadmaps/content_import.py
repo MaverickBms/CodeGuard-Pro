@@ -112,6 +112,8 @@ def _load_json(path):
         raise ImportContentError(f"{path.name}: el archivo no es UTF-8 válido.") from exc
     except json.JSONDecodeError as exc:
         raise ImportContentError(f"{path.name}: JSON inválido en línea {exc.lineno}, columna {exc.colno}.") from exc
+    except (OSError, RecursionError) as exc:
+        raise ImportContentError(f"{path.name}: no se pudo leer o procesar el documento de forma segura.") from exc
 
 
 def _validate_document(document, filename):
@@ -246,6 +248,16 @@ def _validate_against_database(document, filename):
     return lesson, sources, warnings
 
 
+def _same_provenance(version, item):
+    expected = {
+        (source["clave"], source["rol"], source["uso_declarado"], source["localizador"], source["nota_atribucion"])
+        for source in item["document"]["fuentes"]
+    }
+    existing = set(version.referencias.values_list(
+        "fuente__clave", "rol", "uso_declarado", "localizador", "nota_atribucion"
+    ))
+    return expected == {(str(key), role, usage, locator, note) for key, role, usage, locator, note in existing}
+
 def validar_directorio_contenido(directory):
     """Valida el lote completo sin escribir en la base de datos."""
     supplied_root = Path(directory).expanduser()
@@ -282,7 +294,10 @@ def validar_directorio_contenido(directory):
             lesson, sources, doc_warnings = _validate_against_database(document, path.name)
             canonical = json.dumps(document["snapshot"], ensure_ascii=False, sort_keys=True, separators=(",", ":"))
             digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
-            duplicate = VersionContenidoLeccion.objects.filter(leccion=lesson, sha256=digest).exists()
+            duplicate = any(
+                _same_provenance(version, {"document": document})
+                for version in VersionContenidoLeccion.objects.filter(leccion=lesson, sha256=digest)
+            )
             validated.append({
                 "filename": path.name,
                 "document": document,
@@ -316,7 +331,8 @@ def importar_documentos_validados(report, *, actor):
     duplicates = []
     for item in report["items"]:
         lesson = Leccion.objects.select_for_update().get(pk=item["lesson"].pk)
-        existing = VersionContenidoLeccion.objects.filter(leccion=lesson, sha256=item["sha256"]).first()
+        candidates = VersionContenidoLeccion.objects.filter(leccion=lesson, sha256=item["sha256"])
+        existing = next((version for version in candidates if _same_provenance(version, item)), None)
         if existing:
             duplicates.append(existing)
             continue
