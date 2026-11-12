@@ -182,6 +182,10 @@ Validación registrada:
 Pendiente de la Fase 2:
 
 - Cargar y revisar contenido académico real para las lecciones.
+- Crear el catálogo de fuentes, metadatos de versión, licencia, fecha de revisión y estado de vigencia.
+- Diseñar e implementar el flujo editorial de importación, validación, revisión y publicación de contenido versionado.
+- Implementar el servicio central de distribución, manifiesto firmado y paquetes académicos inmutables.
+- Implementar el cliente de sincronización pull-only, verificación criptográfica, instalación atómica, historial y rollback. **Este sistema está documentado y aprobado, pero todavía no está implementado.**
 - Validar navegación y presentación de todos los tipos de lección.
 - Incorporar resaltado de sintaxis y mejorar la experiencia del editor.
 - Crear un flujo editorial versionado para configurar y publicar ejercicios/evaluadores.
