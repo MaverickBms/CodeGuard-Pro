@@ -172,18 +172,28 @@ Implementado en la base de la Fase 2 y ampliado en ramas de trabajo:
 - Versiones de evaluadores conservadas y vinculadas a cada intento.
 - Finalización automática condicionada a evidencia aprobada para todos los ejercicios obligatorios y a una autorización explícita del evaluador; dicha autorización está desactivada por defecto.
 - Registro de auditoría de entregas y finalizaciones por evidencia.
+- Claves UUID estables para lecciones, ejemplos y ejercicios, asignadas mediante migración de datos.
+- Protección de intentos históricos y configuraciones de evaluación frente a eliminaciones en cascada.
+- Catálogo de fuentes académicas con publicador, URL canónica, edición y metadatos de licencia.
+- Snapshots JSON de lecciones versionados, con hash SHA-256, número incremental y referencias de atribución.
+- Servicio para generar snapshots deterministas que incluye teoría, objetivos, ejemplos y ejercicios publicados, sin alterar versiones anteriores.
+- Flujo editorial de dominio: borrador → revisión → aprobación → publicación; sustitución atómica de la versión anterior y retirada con motivo.
+- Auditoría de remitente, revisor, publicador y responsable/fecha de retirada.
+- Protección ORM contra cambios de snapshots en estados revisados, escrituras masivas y saltos de estados.
+- Comandos internos `crear_version_leccion` y `gestionar_version_leccion`; Django Admin permanece deshabilitado.
+- Migraciones incrementales 0004–0008 preparadas en la rama `docs/phase-2-hybrid-knowledge-sync`; no aplicadas ni validadas aún en la base local.
 
 Validación registrada:
 
 - La suite `apps.roadmaps` pasó **29 pruebas** en la rama `phase-2/progress-domain-rules` antes de este incremento.
-- Las nuevas pruebas de intentos y evaluación están añadidas en `apps/roadmaps/tests/test_attempts.py`, pero todavía requieren ejecución local.
+- Las pruebas de intentos, evaluación, snapshots, flujo editorial, protección ORM y comandos están añadidas en `apps/roadmaps/tests/test_attempts.py`, pero todavía requieren ejecución local.
 - Último commit de referencia conocido en `main`: `dee0da9b4444ecabc5fc4dd4263296eef8361a99`.
 
 Pendiente de la Fase 2:
 
 - Cargar y revisar contenido académico real para las lecciones.
-- Crear el catálogo de fuentes, metadatos de versión, licencia, fecha de revisión y estado de vigencia.
-- Diseñar e implementar el flujo editorial de importación, validación, revisión y publicación de contenido versionado.
+- Completar los metadatos editoriales de revisión técnica, vigencia y compatibilidad por tecnología/versión, y poblar el catálogo con fuentes reales verificadas.
+- Completar el flujo editorial con permisos granulares, interfaz de autoría/revisión, validadores pedagógicos y carga masiva; el primer flujo por servicios y comandos ya existe en la rama de trabajo.
 - Implementar el servicio central de distribución, manifiesto firmado y paquetes académicos inmutables.
 - Implementar el cliente de sincronización pull-only, verificación criptográfica, instalación atómica, historial y rollback. **Este sistema está documentado y aprobado, pero todavía no está implementado.**
 - Validar navegación y presentación de todos los tipos de lección.
@@ -324,9 +334,11 @@ La detección automática de cambios en documentación oficial solo genera alert
 
 ### 2.7 Flujo editorial y ciclo de vida del contenido
 
+**Estado de implementación en la rama de trabajo:** existen modelos de fuentes y snapshots, generación determinista, transiciones controladas por servicios y comandos de gestión. Las transiciones registran responsables y fechas; los snapshots revisados no se modifican mediante el ORM normal. Esto todavía no equivale a un editor visual ni a permisos editoriales granulares.
+
 1. Registrar la fuente y sus condiciones de uso.
 2. Consultar la versión oficial y detectar cambios relevantes.
-3. Crear o actualizar la explicación, ejemplos y ejercicios de CodeGuard.
+3. Crear o actualizar la explicación, ejemplos y ejercicios de CodeGuard.\n\nLa creación de snapshots y las transiciones de revisión/aprobación/publicación ya cuentan con una primera implementación en la rama de trabajo. La importación masiva, el panel editorial, la validación de licencias y el control de roles por función siguen pendientes.
 4. Revisar exactitud técnica, claridad pedagógica, vigencia, licencias y enlaces.
 5. Validar ejemplos y evaluadores en el entorno de pruebas correspondiente.
 6. Aprobar y publicar una nueva versión inmutable.
@@ -642,15 +654,15 @@ La siguiente tarea no es construir el tutor ni añadir recompensas. Es cerrar co
 
 Orden inmediato recomendado:
 
-1. Revisar visual y funcionalmente la página de lección existente.
-2. Consolidar su diseño para escritorio, tablet y móvil, manteniendo los 12 temas.
-3. Definir el modelo editorial, las fuentes y los metadatos de vigencia.
-4. Diseñar e implementar la publicación central y la sincronización híbrida de paquetes académicos.
+1. Validar en el entorno local las migraciones 0004–0008 y ejecutar la suite de pruebas completa.
+2. Corregir cualquier incompatibilidad detectada antes de seguir ampliando el esquema.
+3. Completar permisos editoriales granulares, importación masiva y validación técnica/pedagógica de contenido.
+4. Revisar visual y funcionalmente la página de lección en escritorio, tablet y móvil, manteniendo los 12 temas.
 5. Producir contenido real, revisado y trazable para las rutas prioritarias.
-6. Definir el contrato de ejecución y evaluación segura de ejercicios.
-7. Implementar editor, navegación y flujo de intentos.
-8. Crear validadores automáticos y pruebas, incluyendo offline, integridad, rollback y compatibilidad.
-9. Conectar resultados con la finalización automática de lecciones.
+6. Definir el contrato de paquete académico y el manifiesto firmado.
+7. Implementar el servicio central de publicación y el cliente local de sincronización.
+8. Implementar verificación criptográfica, instalación atómica, historial y rollback offline.
+9. Completar el editor, navegación y evaluación segura; no ejecutar código hasta disponer de sandbox independiente.
 10. Cerrar Fase 2 mediante criterios de aceptación y documentación.
 11. Comenzar Fase 3: tutor local.
 
