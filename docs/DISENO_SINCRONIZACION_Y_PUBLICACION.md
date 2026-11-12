@@ -908,7 +908,18 @@ python manage.py publicar_paquete_conocimiento \
 - No se selecciona ni contrata proveedor de hosting.
 - No se crea endpoint HTTP ni URL estable de manifiesto.
 - No se suben artefactos ni se configura CDN.
-- El JSON académico v1 conserva UUID y atribución de fuentes, pero no incluye el expediente detallado de licencia; esa evidencia permanece en el repositorio editorial. Su exportación requiere una evolución versionada del contrato.
-- El paquete v1 tampoco transporta todavía un catálogo autónomo de fuentes: conserva sus UUID y atribuciones, pero el importador académico puede requerir que esos registros ya existan en la base local. Por tanto, el paquete generado se valida con el verificador de distribución, pero no debe considerarse directamente instalable hasta diseñar y probar la distribución/resolución del catálogo de fuentes.
+- El JSON académico v1 conserva UUID y atribución de fuentes. El índice de paquete v2 añade un catálogo normalizado con metadatos y evidencia de licencia, sin exportar identidades personales de revisores.
+- El catálogo ya se valida criptográficamente como parte del ZIP, pero todavía no se importa en la base local: la conciliación segura de fuentes existentes y nuevas forma parte del instalador transaccional pendiente.
 - La escritura de artefactos y el commit de SQLite no forman una transacción distribuida; un cierre abrupto puede dejar archivos huérfanos, que son inocuos y no se anuncian sin registro. Debe existir un proceso de reconciliación antes de automatizar publicaciones.
 - Las pruebas del publicador y la migración 0015 deben ejecutarse en el entorno local antes de considerar validado este incremento.
+## 26. Catálogo de fuentes firmado (índice de paquete v2)
+
+El generador produce ahora `package-index.json` con `schema_version: 2` e incluye un catálogo normalizado de fuentes. El manifiesto Ed25519 firma indirectamente ese catálogo porque el SHA-256 del ZIP forma parte del manifiesto firmado.
+
+Cada registro incluye UUID estable, publicador, título, URL canónica, edición, identificador y URL de licencia, decisión de licencia, evidencia, alcance, nota editorial y fecha de revisión. No se exporta el identificador ni el nombre del usuario revisor: el paquete distribuye evidencia editorial y no datos personales del equipo central.
+
+El verificador mantiene compatibilidad de lectura con índice v1 y valida v2 con reglas estrictas: claves exactas, UUID canónicos únicos, URLs HTTPS sin credenciales ni fragmentos, decisiones publicables, evidencia y fecha con zona horaria. Además, exige que el conjunto de fuentes del catálogo coincida exactamente con las fuentes referenciadas por todas las lecciones; no admite fuentes omitidas, sobrantes ni duplicadas.
+
+Este catálogo permite que el futuro instalador registre las fuentes ausentes sin depender de una preinstalación manual. No autoriza a sobrescribir silenciosamente fuentes locales existentes: si un UUID ya existe con metadatos incompatibles, el instalador deberá abortar o aplicar una política explícita de conciliación. La importación del catálogo no debe disparar por sí sola un flujo editorial ni modificar una decisión de licencia local.
+
+**Estado:** generación y validación de catálogo v2 implementadas en la rama correctiva; pruebas nuevas pendientes de ejecución local. La instalación transaccional de fuentes, snapshots y punteros activos sigue pendiente.
