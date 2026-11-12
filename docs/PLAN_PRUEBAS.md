@@ -372,3 +372,23 @@ Esta confirmación acredita la suite ejecutada en el entorno del usuario. No equ
 | F2-ACT-006 | Inmutabilidad de evidencia | Modificar snapshot/respuesta de un intento o borrarlo mediante ORM | Operación rechazada; la evidencia original se conserva | ⏳ Pendiente |
 
 **Nota:** estas pruebas se añadieron después de las 93 pruebas confirmadas previamente. No marcar este bloque como aprobado hasta que el propietario ejecute la migración y la suite completa en su entorno local.
+
+
+## 6.10 Publicador central de conocimiento (pendiente de validación local)
+
+| ID | Prueba | Caso | Resultado esperado | Estado |
+|---|---|---|---|---|
+| PUB-001 | Selección editorial | Solo existen versiones publicadas con puntero activo | El paquete incluye únicamente snapshots activos | ⏳ Pendiente |
+| PUB-002 | Hash de snapshot | Alterar snapshot o hash | Publicación rechazada | ⏳ Pendiente |
+| PUB-003 | Procedencia | Versión sin fuentes o con fuente inactiva | Publicación rechazada | ⏳ Pendiente |
+| PUB-004 | Licencia | Fuente pendiente, requiere permiso o no reutilizable | Publicación rechazada | ⏳ Pendiente |
+| PUB-005 | Licencia congelada | Cambiar decisión después de revisión | Publicación rechazada | ⏳ Pendiente |
+| PUB-006 | Clave privada | Archivo ausente, symlink, permisos abiertos, PEM inválido o tipo distinto de Ed25519 | Publicación rechazada sin exponer secretos | ⏳ Pendiente |
+| PUB-007 | ZIP reproducible | Mismos UUID, package_id, versión y payloads | Bytes del ZIP idénticos | ⏳ Pendiente |
+| PUB-008 | Firma | Verificar manifiesto con clave pública derivada | Firma Ed25519 válida y ZIP aceptado por el verificador | ⏳ Pendiente |
+| PUB-009 | Secuencia | Dos publicaciones consecutivas en el mismo canal | Secuencias consecutivas, artefactos inmutables | ⏳ Pendiente |
+| PUB-010 | Canales | Publicar stable y beta | Contadores independientes por canal | ⏳ Pendiente |
+| PUB-011 | URL | Host no permitido o URL no HTTPS | Publicación rechazada | ⏳ Pendiente |
+| PUB-012 | Historial | Intentar modificar o borrar un release | Operación rechazada | ⏳ Pendiente |
+
+La suite `apps.roadmaps.tests.test_publisher` cubre los casos automatizados añadidos. Ejecutar primero migraciones y después esa suite; no marcar estos casos como aprobados hasta disponer del resultado local.
