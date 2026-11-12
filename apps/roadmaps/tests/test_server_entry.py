@@ -54,7 +54,7 @@ class ServerEntrySyncModeTests(SimpleTestCase):
         ):
             result = server_entry.main()
 
-        assert result == 0
+        self.assertEqual(result, 0)
         call_command.assert_called_once_with(
             "sincronizar_conocimiento",
             channel="stable",
