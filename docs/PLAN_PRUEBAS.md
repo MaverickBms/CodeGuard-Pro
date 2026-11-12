@@ -406,3 +406,22 @@ La suite `apps.roadmaps.tests.test_publisher` cubre los casos automatizados aña
 | SRC-007 | Compatibilidad | Índice v1 preexistente | El verificador conserva lectura de v1 | ⏳ Pendiente |
 
 La suite `apps.roadmaps.tests.test_publisher` y `apps.roadmaps.tests.test_distribution` contienen las pruebas automatizadas añadidas para este contrato.
+
+## 6.12 Instalador transaccional y rollback (pendiente de validación local)
+
+| ID | Prueba | Caso | Resultado esperado | Estado |
+|---|---|---|---|---|
+| INS-001 | Instalación válida | Manifiesto firmado, ZIP íntegro, curriculum y catálogo válidos | Registra paquete, snapshots y fuentes; activa el paquete al final | ⏳ Pendiente |
+| INS-002 | Firma inválida | Alterar o sustituir la firma | Rechazo sin registro, snapshots ni cambio del paquete activo | ⏳ Pendiente |
+| INS-003 | Integridad del artefacto | Tamaño o SHA-256 del ZIP incorrectos | Rechazo antes de persistir contenido | ⏳ Pendiente |
+| INS-004 | Identidad curricular | Lección inexistente, título/tipo/descripcion divergente o UUID de recurso ajeno | Aborta toda la instalación; no modifica el contenido activo | ⏳ Pendiente |
+| INS-005 | Aislamiento de fuentes | UUID de fuente existente con metadatos locales diferentes | Conserva el registro editorial local y almacena catálogo firmado por paquete | ⏳ Pendiente |
+| INS-006 | Activación transaccional | Error durante persistencia de snapshots o fuentes | Rollback SQLite; el paquete anterior permanece activo | ⏳ Pendiente |
+| INS-007 | Sustitución | Instalar secuencia posterior | El paquete previo pasa a sustituido y el nuevo queda activo | ⏳ Pendiente |
+| INS-008 | Rollback | Reactivar paquete sustituido | Revalida hash del ZIP y restaura el puntero sin borrar snapshots ni intentos | ⏳ Pendiente |
+| INS-009 | Anti-replay | Secuencia inferior o misma secuencia con manifiesto distinto | Rechazo sin modificar el estado activo | ⏳ Pendiente |
+| INS-010 | Idempotencia | Reinstalar exactamente el mismo manifiesto activo | No duplica paquete, snapshots ni fuentes | ⏳ Pendiente |
+| INS-011 | Intentos | Enviar ejercicio desde paquete activo | Guarda FK al paquete y snapshot exacto; no ejecuta código | ⏳ Pendiente |
+| INS-012 | Finalización | Todos los ejercicios obligatorios aprobados con configuración habilitada | Completa únicamente con evidencia asociada al paquete activo | ⏳ Pendiente |
+
+La suite añadida es `apps.roadmaps.tests.test_installer`. Incluye instalación y activación, rollback, firma inválida, divergencia curricular, aislamiento de fuentes, idempotencia y entrega contra snapshot instalado. Ejecutar primero la migración 0016 y la suite específica; después ejecutar toda la suite y `makemigrations --check --dry-run`. No marcar los casos como aprobados hasta recibir el resultado local.
