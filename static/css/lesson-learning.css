@@ -309,6 +309,75 @@ body[data-theme="light"] .main-content:has(.lesson-page) {
   .lesson-example, .lesson-exercise { padding: 14px; }
   .lesson-example > header { flex-direction: column; }
 }
+.lesson-submission {
+  display: grid;
+  gap: 9px;
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px solid color-mix(in srgb, var(--cg-border) 48%, transparent);
+  border-radius: 12px;
+  background: var(--lesson-card);
+}
+.lesson-submission label {
+  color: var(--cg-text);
+  font-size: .82rem;
+  font-weight: 750;
+}
+.lesson-submission textarea {
+  width: 100%;
+  min-height: 145px;
+  resize: vertical;
+  padding: 12px;
+  border: 1px solid var(--cg-border);
+  border-radius: 9px;
+  color: var(--cg-text);
+  background: var(--lesson-inset);
+  font: .84rem/1.65 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.lesson-submission textarea:focus-visible {
+  outline: 3px solid var(--cg-border-focus);
+  outline-offset: 2px;
+}
+.lesson-submission-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--cg-text-muted);
+  font-size: .72rem;
+}
+.lesson-attempt-history { margin-top: 16px; }
+.lesson-attempt-history h4 {
+  margin: 0 0 9px;
+  color: var(--cg-text);
+  font-size: .82rem;
+  font-weight: 750;
+}
+.lesson-attempt {
+  padding: 11px 12px;
+  border: 1px solid color-mix(in srgb, var(--cg-border) 42%, transparent);
+  border-radius: 10px;
+  background: var(--lesson-card);
+}
+.lesson-attempt + .lesson-attempt { margin-top: 7px; }
+.lesson-attempt-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  color: var(--cg-text-secondary);
+  font-size: .72rem;
+}
+.lesson-attempt-meta strong { color: var(--cg-primary); }
+.lesson-attempt-meta time { color: var(--cg-text-muted); }
+.lesson-attempt p {
+  margin: 7px 0 0;
+  color: var(--cg-text-secondary);
+  font-size: .8rem;
+  line-height: 1.55;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lesson-page * { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
