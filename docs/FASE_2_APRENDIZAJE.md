@@ -32,11 +32,11 @@ La rama `docs/phase-2-hybrid-knowledge-sync` fue fusionada a `main`. Incluye:
 - **Estado de sincronización por canal:** `EstadoSincronizacion` (migración 0012).
 - **Verificador de distribución firmada:** `validate_package_archive`, `verify_signed_manifest` (Ed25519, manifiesto, ZIP).
 - **Contenido activo por snapshot:** `ContenidoLeccionActivo` apunta a la versión editorial publicada que debe mostrarse; la publicación y retirada actualizan el puntero dentro de la transacción editorial (migración 0014).
-- **Evidencia histórica de ejercicios:** cada nuevo `IntentoEjercicio` conserva `snapshot_ejercicio` y referencia `version_contenido` cuando existe una versión activa. La migración 0014 conserva el enunciado visible de intentos anteriores.
+- **Evidencia histórica de ejercicios:** cada nuevo `IntentoEjercicio` conserva `snapshot_ejercicio` y referencia `version_contenido` cuando existe una versión activa. La migración 0014 conserva el enunciado visible de intentos anteriores. La evidencia original queda protegida frente a cambios y borrados ORM.
 - **Interfaz de entregas:** el estudiante ya puede enviar respuestas mediante POST con CSRF, límite de 20.000 caracteres e historial de los tres últimos intentos. No se ejecuta código arbitrario.
 - **Registro local endurecido:** escrituras masivas de paquetes y estado de sincronización validan invariantes o quedan bloqueadas para evitar saltarse el flujo controlado.
 - **Comandos de gestión editoriales:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`.
-- **Pruebas:** 93 pruebas automatizadas pasando (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`).
+- **Pruebas base:** 93 pruebas automatizadas confirmadas por el usuario antes de este incremento. Las pruebas nuevas de la migración 0014 siguen pendientes de ejecución local.
 
 ---
 
