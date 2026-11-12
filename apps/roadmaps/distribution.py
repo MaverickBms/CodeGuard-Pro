@@ -33,9 +33,9 @@ MAX_COMPRESSION_RATIO = 100
 SUPPORTED_MANIFEST_VERSION = 1
 SUPPORTED_CONTENT_SCHEMA_VERSION = 1
 ALLOWED_CHANNELS = {"stable", "beta"}
-SEMVER_RE = re.compile(r"^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?$")
+SEMVER_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
-LESSON_PATH_RE = re.compile(r"^payload/lessons/([0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})\\.json$")
+LESSON_PATH_RE = re.compile(r"^payload/lessons/([0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})\.json$")
 
 
 class DistributionError(ValueError):
@@ -114,9 +114,9 @@ def validate_manifest_structure(raw: bytes, *, allowed_hosts):
         },
         "manifest",
     )
-    if manifest["manifest_version"] != SUPPORTED_MANIFEST_VERSION:
+    if type(manifest["manifest_version"]) is not int or manifest["manifest_version"] != SUPPORTED_MANIFEST_VERSION:
         raise DistributionError("Versión de manifiesto no compatible.")
-    if manifest["channel"] not in ALLOWED_CHANNELS:
+    if not isinstance(manifest["channel"], str) or manifest["channel"] not in ALLOWED_CHANNELS:
         raise DistributionError("Canal de distribución no permitido.")
     _positive_int(manifest["sequence"], "sequence")
     _aware_datetime(manifest["published_at"], "published_at")
@@ -128,6 +128,8 @@ def validate_manifest_structure(raw: bytes, *, allowed_hosts):
 
     package = manifest["package"]
     _exact_keys(package, {"package_id", "package_version", "url", "size_bytes", "sha256"}, "package")
+    if not isinstance(package["package_id"], str):
+        raise DistributionError("package_id debe ser un UUID válido.")
     try:
         UUID(package["package_id"])
     except (ValueError, TypeError, AttributeError) as exc:
@@ -171,7 +173,7 @@ def verify_signed_manifest(
     manifest = validate_manifest_structure(manifest_bytes, allowed_hosts=allowed_hosts)
     if manifest["channel"] != expected_channel:
         raise DistributionError("El manifiesto pertenece a otro canal.")
-    if len(signature_bytes) > MAX_SIGNATURE_BYTES:
+    if not isinstance(signature_bytes, bytes) or not signature_bytes or len(signature_bytes) > MAX_SIGNATURE_BYTES:
         raise DistributionError("La firma supera el tamaño permitido.")
     try:
         signature = base64.b64decode(signature_bytes.strip(), validate=True)
@@ -206,9 +208,15 @@ def verify_signed_manifest(
 
 
 def _version_tuple(value):
-    core, _, prerelease = value.partition("-")
+    core, separator, prerelease = value.partition("-")
     numbers = tuple(int(part) for part in core.split("."))
-    return numbers + ((-1,) if prerelease else (0,))
+    if not separator:
+        return numbers + ((1, ()),)
+    identifiers = tuple(
+        (0, int(part)) if part.isdigit() else (1, part)
+        for part in prerelease.split(".")
+    )
+    return numbers + ((0, identifiers),)
 
 
 def validate_package_archive(package_bytes: bytes, *, manifest: dict):
@@ -237,8 +245,8 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
             name = info.filename
             if (
                 not name
-                or name.startswith(("/", "\\\\"))
-                or "\\\\" in name
+                or name.startswith(("/", "\\"))
+                or "\\" in name
                 or "\x00" in name
                 or any(part in {"", ".", ".."} for part in name.split("/"))
                 or info.is_dir()
@@ -249,7 +257,9 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
             by_name[name] = info
             casefolded.add(name.casefold())
             mode = (info.external_attr >> 16) & 0xFFFF
-            if stat.S_ISLNK(mode) or (mode and not (stat.S_ISREG(mode) or stat.S_ISDIR(mode))):
+            file_type = stat.S_IFMT(mode)
+            if stat.S_ISLNK(mode) or file_type not in {0, stat.S_IFREG}:
+                raise DistributionError("El ZIP contiene un tipo de archivo no permitido.")
                 raise DistributionError("El ZIP contiene un tipo de archivo no permitido.")
             if info.compress_type not in {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED}:
                 raise DistributionError("El ZIP utiliza un método de compresión no permitido.")
