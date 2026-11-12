@@ -219,9 +219,9 @@ flowchart TD
 | Un solo activo por canal + estado de sincronización | Implementado (migración 0013) |
 | Verificador de distribución firmada (Ed25519, manifiesto, ZIP) | Implementado |
 | Comandos de gestión editoriales | 9 comandos implementados |
-| Servicio central de publicación | Pendiente |
+| Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado en rama correctiva; migración 0015 y pruebas pendientes |
 | Cliente de sincronización de red | Pendiente |
-| Paquetes firmados y publicación real | Pendiente |
+| Generación local de paquetes firmados | Implementada en rama correctiva; no desplegada |\n| Hosting, endpoint y publicación remota | Pendiente |
 
 ---
 
