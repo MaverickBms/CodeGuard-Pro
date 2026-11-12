@@ -216,7 +216,7 @@ flowchart TD
 | Comandos de gestión editorial y distribución | Incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento`; scheduler Electron integrado en `main` |
 | Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado; migración 0015 y pruebas del generador validadas localmente por el propietario |
 | Catálogo firmado de fuentes (índice v2) | Implementado y validado localmente por el propietario (119 pruebas OK en `main`; 132 en rama cliente HTTP) |
-| Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementado y validado en `main` (119 pruebas OK; migración 0016); cliente HTTP validado en rama (132 pruebas) |
+| Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementado; migración 0016 incluida. La suite integrada posterior fue confirmada con 138 pruebas OK en `main` |
 | Cliente de sincronización HTTP pull-only | Integrado; 138 pruebas OK confirmadas por el propietario |
 | Hosting, endpoint y publicación remota | Pendiente; no se ha seleccionado proveedor ni configurado URL/clave de producción |
 

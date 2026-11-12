@@ -199,7 +199,9 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 ---
 
 **Nota de vigencia:** las autorizaciones históricas de ramas aisladas descritas en §5.3–§5.5 documentan intervenciones anteriores y no describen el estado actual de Git. Para esta actualización documental, el propietario autorizó expresamente modificar únicamente los cinco documentos enumerados y crear un commit en `main`. No se autoriza con ello modificar código, desplegar, publicar paquetes, elegir hosting ni configurar claves de producción.
-### 5.4 Autorización específica vigente — scheduler Electron y sincronización automática
+### 5.4 Registro histórico — autorización del scheduler Electron y sincronización automática
+
+**Vigencia:** autorización histórica de implementación; sus restricciones de rama y estado de `main` fueron superadas por la integración posterior. La evidencia actual se registra en §3 y §5.6.
 
 El propietario autorizó expresamente la implementación completa de la integración Electron, scheduler, reintentos progresivos y compatibilidad con PyInstaller, manteniendo `main` intacta.
 
@@ -208,10 +210,12 @@ El propietario autorizó expresamente la implementación completa de la integrac
 - Se permiten commits exclusivamente en la rama autorizada como mecanismo de escritura.
 - No se autoriza merge, PR de integración, despliegue, publicación remota, selección de hosting ni incorporación de URLs/claves públicas de producción.
 - La sincronización debe permanecer inactiva si no hay configuración de distribución completa y confiable.
-- El propietario confirmó 136 pruebas OK, generación PyInstaller y AppImage Linux, y que el binario alcanza el comando `sincronizar_conocimiento` con el error esperado por variables ausentes. La ejecución GUI completa con Electron aún debe validarse.
+- En esa intervención se confirmó una línea base de 136 pruebas, generación PyInstaller y AppImage, y despacho del comando `sincronizar_conocimiento`. La validación posterior elevó la suite confirmada a 138 pruebas; la GUI completa sigue pendiente.
 - `main` permanece intacta.
 
-### 5.5 Autorización vigente — validación de integración empaquetada
+### 5.5 Registro histórico — autorización de validación de integración empaquetada
+
+**Vigencia:** autorización de la intervención de pruebas en rama aislada. La autorización documental posterior para `main` está registrada en §5.6; el estado de Git actual se describe en §3.
 
 El propietario autorizó crear una rama desde el `main` actualizado y completar las pruebas de integración de Electron, corregir incidencias dentro del alcance y actualizar la documentación de Fase 2.
 
