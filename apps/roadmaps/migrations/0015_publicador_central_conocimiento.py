@@ -2,6 +2,12 @@
 from django.db import migrations, models
 
 
+def crear_contadores_iniciales(apps, schema_editor):
+    Secuencia = apps.get_model("roadmaps", "SecuenciaPublicacionConocimiento")
+    Secuencia.objects.get_or_create(channel="stable", defaults={"siguiente": 1})
+    Secuencia.objects.get_or_create(channel="beta", defaults={"siguiente": 1})
+
+
 class Migration(migrations.Migration):
     dependencies = [
         ("roadmaps", "0014_contenido_activo_y_snapshot_intentos"),
@@ -47,6 +53,7 @@ class Migration(migrations.Migration):
                 "ordering": ["channel", "-sequence"],
             },
         ),
+        migrations.RunPython(crear_contadores_iniciales, migrations.RunPython.noop),
         migrations.AddConstraint(
             model_name="publicacionpaqueteconocimiento",
             constraint=models.UniqueConstraint(
