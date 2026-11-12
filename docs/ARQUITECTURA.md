@@ -23,8 +23,7 @@ servicio central; la sincronización de contenido será una capacidad complement
 el cliente y de solo descarga.
 
 **Estado actual:** el núcleo local está implementado y verificado (incremento 1). La Fase 2
-(motor de aprendizaje y conocimiento versionado) está implementada parcialmente en la rama
-`docs/phase-2-hybrid-knowledge-sync`: roadmap ASCENSO 3.1, flujo editorial de versiones,
+(motor de aprendizaje y conocimiento versionado) está implementada parcialmente en `main` y en la rama aislada de correcciones `fix/phase-2-integrity-learning`: roadmap ASCENSO 3.1, flujo editorial de versiones,
 registro local de paquetes y verificador de distribución firmada (Ed25519). El cliente de
 sincronización de red y el servicio central siguen pendientes. La versión editorial publicada ya dispone de un puntero local de contenido activo y los intentos nuevos conservan el snapshot académico presentado (migración 0014, pendiente de validación local).
 
