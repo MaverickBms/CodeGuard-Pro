@@ -500,6 +500,7 @@ class VersionContenidoLeccionQuerySet(models.QuerySet):
         )
 
     def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
         if any(obj.estado != "borrador" for obj in objs):
             raise ValidationError("Las versiones deben crearse inicialmente como borrador.")
         return super().bulk_create(objs, **kwargs)
@@ -550,6 +551,15 @@ class VersionContenidoLeccion(models.Model):
         related_name="versiones",
         blank=True,
     )
+    enviada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="versiones_contenido_enviadas",
+        verbose_name="enviada por",
+    )
+    enviada_en = models.DateTimeField(null=True, blank=True, verbose_name="enviada a revisión el")
     revisada_por = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT,
