@@ -25,7 +25,7 @@
   - Intentos nuevos vinculados a la versión activa y con snapshot del ejercicio presentado.
   - Interfaz de entrega POST con CSRF, límite de 20.000 caracteres e historial de intentos.
   - Protecciones adicionales para escrituras masivas del registro local de paquetes y sincronización.
-  - El propietario confirmó **108 pruebas OK**, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes para el estado de `main` en `cd7e18e`. La migración 0016 y las pruebas del instalador añadidas después están pendientes de validación local.
+  - El propietario confirmó **119 pruebas OK**, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes para `main` en `2c5d441`; la validación incluye la migración 0016, instalador y rollback.
 - **Sincronización de red:** publicador e instalador transaccional validados en `main`; cliente HTTP inicial en rama aislada; hosting, endpoint y activación automática desde Electron pendientes.
 - **Validación del cliente HTTP:** pendiente de ejecución local de sus pruebas de transporte e integración; la validación del instalador en `main` ya está confirmada.
 - **Autenticación:** temporalmente desactivada (`AUTH_DISABLED = True`); el sistema original se conserva íntegro y puede reactivarse con autorización expresa.
@@ -147,9 +147,8 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 
 El propietario confirmó la validación del instalador en `main` y autorizó continuar con el siguiente componente de Fase 2: cliente de sincronización HTTP pull-only, en una rama aislada derivada de `main`.
 
-- Rama autorizada: `fix/phase-2-integrity-learning`.
-- Alcance: interfaz de entregas, snapshots de intentos, puntero editorial activo, protecciones del registro local, publicador central, catálogo v2, instalador transaccional, snapshots de paquete, intentos vinculados al paquete, activación, rollback, pruebas y documentación relacionada.
-- Se permiten commits exclusivamente en esa rama como mecanismo de escritura del repositorio.
+- Rama autorizada: `feat/phase-2-http-sync-client`.
+- Alcance: transporte HTTPS GET, allowlist, TLS validado, rechazo de redirecciones, timeout y límites de tamaño, ETag, verificación del manifiesto antes de descargar el ZIP, integración con el instalador ya validado, comando manual, pruebas y documentación relacionada.
 - Se permiten commits exclusivamente en esta rama como mecanismo de escritura. No se autoriza merge, PR de integración, despliegue, publicación remota de paquetes ni cambios en `main`.
 - El propietario confirmó 119 pruebas OK, `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2c5d441`; esto incluye la migración 0016, instalador y rollback.
 - No se autoriza elegir proveedor/hosting, publicar paquetes reales, incorporar claves públicas de producción ni activar sincronización automática desde Electron en este incremento.
@@ -159,7 +158,7 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | Elemento | Estado |
 |---|---|
 | **Hosting/endpoint público de distribución** | Pendiente de seleccionar proveedor y autorizar publicación; no se configura en esta rama |
-| **Generador central y catálogo firmado v2** | Generador, migración 0015 y catálogo v2 validados localmente por el propietario (108 pruebas OK) |
+| **Generador central y catálogo firmado v2** | Generador, migración 0015 y catálogo v2 validados localmente por el propietario (119 pruebas OK) |
 | **Instalador transaccional (migración 0016)** | Validado en `main` `2c5d441` (119 pruebas OK) |
 | **Cliente de sincronización HTTP** | Implementación inicial en `feat/phase-2-http-sync-client`; pruebas nuevas pendientes de validación local |
 | **Competencias y evaluaciones (Incremento 3)** | Pendiente de decisión |
@@ -195,4 +194,4 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 
 ---
 
-**El alcance autorizado continúa únicamente en `fix/phase-2-integrity-learning`; `main` permanece intacta. Detenerse antes de merge, despliegue, publicación remota o ampliación de alcance.**
+**El alcance autorizado continúa únicamente en `feat/phase-2-http-sync-client`; `main` permanece intacta. Detenerse antes de merge, despliegue, publicación remota o ampliación de alcance.**
