@@ -25,6 +25,7 @@ from apps.roadmaps.models import (
     Leccion,
     Modulo,
     Roadmap,
+    SecuenciaPublicacionConocimiento,
 )
 from apps.roadmaps.publisher import (
     PublicationError,
@@ -165,3 +166,26 @@ class PublicadorConocimientoTests(TestCase):
         first = _build_deterministic_zip(package_id, "1.0.0", documents)
         second = _build_deterministic_zip(package_id, "1.0.0", documents)
         self.assertEqual(first, second)
+
+    def test_contador_rechaza_saltos_manuales(self):
+        counter = SecuenciaPublicacionConocimiento.objects.get(channel="stable")
+        counter.siguiente += 5
+        with self.assertRaises(ValidationError):
+            counter.save()
+        counter.refresh_from_db()
+        self.assertEqual(counter.siguiente, 1)
+
+    def test_canales_mantienen_secuencias_independientes(self):
+        stable = self.publish()
+        beta = publicar_paquete_conocimiento(
+            channel="beta",
+            package_version="1.0.0",
+            minimum_app_version="1.0.0",
+            base_url="https://cdn.codeguard.example/beta",
+            allowed_hosts={"cdn.codeguard.example"},
+            key_id="test-ed25519",
+            private_key_path=self.key_path,
+            output_directory=self.output,
+        )
+        self.assertEqual(stable["release"].sequence, 1)
+        self.assertEqual(beta["release"].sequence, 1)
