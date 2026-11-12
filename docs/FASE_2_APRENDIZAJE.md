@@ -60,7 +60,11 @@ Ver `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` (secciones 1–7: diseño de s
 
 ## 6. Publicador central local (implementado en rama correctiva; validación pendiente)
 
-Se añadió el módulo apps/roadmaps/publisher.py, el comando publicar_paquete_conocimiento y el registro inmutable de publicaciones (migración 0015_publicador_central_conocimiento). El generador toma únicamente versiones editoriales publicadas señaladas por ContenidoLeccionActivo, verifica hash e identidad curricular, y bloquea fuentes inactivas, licencias no autorizadas o decisiones de licencia modificadas después de la revisión.\n\nGenera ZIP reproducible por secuencia, índice interno, manifiesto externo y firma Ed25519. La clave privada PEM se carga desde una ruta externa al repositorio, exige permisos POSIX restrictivos y no se guarda en SQLite ni en Git. La secuencia se mantiene por canal (stable/beta) y el registro de publicaciones es inmutable. El comando escribe artefactos localmente; no sube archivos ni crea endpoints.\n\nLímite de esquema: el contrato académico JSON v1 distribuye identificadores y atribución de fuentes, pero no exporta el expediente completo de revisión de licencia. La decisión y evidencia completas permanecen en el repositorio editorial central. Una futura evolución del esquema deberá incorporar esos metadatos de forma versionada.
+Se añadió el módulo apps/roadmaps/publisher.py, el comando publicar_paquete_conocimiento y el registro inmutable de publicaciones (migración 0015_publicador_central_conocimiento). El generador toma únicamente versiones editoriales publicadas señaladas por ContenidoLeccionActivo, verifica hash e identidad curricular, y bloquea fuentes inactivas, licencias no autorizadas o decisiones de licencia modificadas después de la revisión.
+
+Genera ZIP reproducible por secuencia, índice interno, manifiesto externo y firma Ed25519. La clave privada PEM se carga desde una ruta externa al repositorio, exige permisos POSIX restrictivos y no se guarda en SQLite ni en Git. La secuencia se mantiene por canal (stable/beta) y el registro de publicaciones es inmutable. El comando escribe artefactos localmente; no sube archivos ni crea endpoints.
+
+Límite de esquema: el contrato académico JSON v1 distribuye identificadores y atribución de fuentes, pero no exporta el expediente completo de revisión de licencia. La decisión y evidencia completas permanecen en el repositorio editorial central. Una futura evolución del esquema deberá incorporar esos metadatos de forma versionada.
 
 ## 7. Pendiente (no implementado)
 
