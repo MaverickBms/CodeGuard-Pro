@@ -184,12 +184,12 @@ Implementado en la base de la Fase 2 y ampliado en ramas de trabajo:
 - Validador de documentos académicos JSON v1 con validación de esquema, UUID estables, correspondencia curricular, límites de recursos, detección de duplicados y validación sin escrituras.
 - Importador transaccional autorizado a editores activos; crea únicamente borradores inmutables con hash y procedencia, reconoce reimportaciones idempotentes y no modifica progreso ni intentos.
 - Comandos `crear_version_leccion`, `gestionar_version_leccion`, `revisar_licencia_fuente`, `validar_paquete_contenido` e `importar_paquete_contenido`; Django Admin permanece deshabilitado.
-- Migraciones 0004–0008 fueron aplicadas y verificadas localmente en la configuración de desarrollo. Las migraciones 0009–0011 añaden revisión de licencias, uso declarado, snapshot histórico de evidencia y autoría de creación por versión; están incorporadas a la rama y pendientes de aplicación/verificación local.
+- Migraciones 0004–0008 aplicadas y verificadas localmente. El usuario confirmó que las migraciones 0009–0011, las pruebas de importación/licencias y la suite ejecutada localmente finalizaron satisfactoriamente.
 
 Validación registrada:
 
-- El usuario confirmó que la ronda anterior de comprobaciones locales funcionó correctamente.
-- Las migraciones 0009–0011, el importador, la revisión de licencias y sus pruebas automatizadas se incorporaron después de esa validación; deben ejecutarse localmente antes de dar por cerrado este incremento.
+- El usuario confirmó como satisfactorias las comprobaciones locales del incremento de importación y revisión de licencias (migraciones 0009–0011).
+- El nuevo incremento de distribución (migraciones 0012–0013, dependencia `cryptography==46.0.3`, verificador Ed25519/ZIP y pruebas asociadas) se incorporó después de esa validación; todavía requiere ejecución local.
 - Último commit de referencia conocido en `main`: `dee0da9b4444ecabc5fc4dd4263296eef8361a99`.
 
 Pendiente de la Fase 2:
@@ -198,8 +198,10 @@ Pendiente de la Fase 2:
 - Completar metadatos de revisión técnica, vigencia y compatibilidad por tecnología/versión.
 - Construir una interfaz editorial y permisos granulares; los primeros servicios y comandos de revisión e importación ya existen en la rama.
 - Ejecutar localmente las migraciones 0009–0011, nuevas pruebas de importación/licencias y suite completa.
-- Implementar el servicio central de distribución, manifiesto firmado y paquetes académicos inmutables.
-- Implementar el cliente de sincronización pull-only, verificación criptográfica, instalación atómica, historial y rollback. **Este sistema está documentado y aprobado, pero todavía no está implementado.**
+- Completar el publicador central de paquetes inmutables y manifiestos firmados; el contrato y el verificador local parcial ya están implementados en la rama de trabajo.
+- Integrar almacén de claves públicas/rotación y allowlist de producción; aún no están configurados.
+- Implementar cliente HTTP pull-only, descarga, ETag/backoff, instalación transaccional de snapshots, punteros activos, historial y rollback.
+- Ejecutar localmente migraciones 0012–0013, pruebas de distribución y suite completa antes de aceptar este incremento.
 - Validar navegación y presentación de todos los tipos de lección.
 - Incorporar resaltado de sintaxis y mejorar la experiencia del editor.
 - Crear un flujo editorial versionado para configurar y publicar ejercicios/evaluadores.
@@ -743,3 +745,15 @@ Actualizar este plan cuando cambie el estado real de una fase. No marcar una fas
 La prioridad actual es completar la **Fase 2** con contenido de calidad, práctica verificable y progreso automático. Las fases posteriores deben construirse sobre ese núcleo, sin perder seguridad, accesibilidad, funcionamiento local ni personalización visual.
 
 Ante cualquier duda o conflicto entre una mejora llamativa y la integridad del aprendizaje, debe prevalecer la integridad del aprendizaje.
+
+
+### Estado de implementación del protocolo firmado (11-11-2026)
+
+En la rama `docs/phase-2-hybrid-knowledge-sync` se incorporaron:
+
+- Verificación Ed25519 del manifiesto externo sobre bytes exactos, validación JSON estricta, canal, secuencia anti-replay, SemVer, fecha, URL HTTPS y allowlist inyectada.
+- Validación ZIP en memoria sin extracción, con límites de tamaño/ratio, índice cerrado, hashes por recurso, validación del contrato académico v1 y control de UUID.
+- Modelos `PaqueteConocimientoInstalado` y `EstadoSincronizacion`, con unicidad de secuencia y un solo paquete activo por canal.
+- Migraciones 0012–0013, dependencia criptográfica fijada y pruebas unitarias de verificación y persistencia.
+
+Este es un núcleo de verificación, no una sincronización funcional. No se ha configurado todavía una clave pública real, allowlist de producción, proveedor de distribución ni cliente HTTP; tampoco se instala o activa contenido publicado. Las pruebas nuevas y migraciones 0012–0013 requieren validación local.
