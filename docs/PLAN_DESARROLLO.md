@@ -8,7 +8,7 @@
 
 ## Estado actual: Incremento 1 — Núcleo funcional ✅ y Incremento 2 — Roadmap académico y conocimiento versionado 🔄
 
-**Estado:** Incremento 1 implementado y verificado. Incremento 2 parcialmente implementado en la rama `docs/phase-2-hybrid-knowledge-sync`.
+**Estado:** Incremento 1 implementado y verificado. Incremento 2 parcialmente implementado en `main`; correcciones de consistencia en curso en `fix/phase-2-integrity-learning`, derivada de `main` en `c2ec604`.
 
 ---
 
@@ -61,7 +61,7 @@
 
 ## Incremento 2 — Roadmap académico y conocimiento versionado (Fase 2)
 
-**Estado:** 🔄 En curso (rama `docs/phase-2-hybrid-knowledge-sync`)
+**Estado:** 🔄 En curso (base integrada en `main`; correcciones en `fix/phase-2-integrity-learning`)
 
 ### Qué se implementó (incremento 2, en rama de trabajo)
 
@@ -80,7 +80,11 @@
 13. **Un solo paquete activo por canal:** restricción parcial por `estado=activo` y migración de datos para garantizar unicidad (migración 0013).
 14. **Estado de sincronización por canal:** `EstadoSincronizacion` para rastrear la última consulta, éxito, ETag, canal y error (migración 0012).
 15. **Verificador de distribución firmada:** validación de manifiesto, firma Ed25519, hash SHA-256, estructura de ZIP, rutas prohibidas y symlinks (`validate_package_archive`, `verify_signed_manifest`).
-16. **Pruebas:** 93 pruebas automatizadas pasando (modo sin autenticación, flujo editorial, registro de paquetes, distribución firmada).
+16. **Pruebas:** 93 pruebas automatizadas confirmadas por el usuario en el estado previo a las correcciones actuales.
+17. **Contenido activo:** puntero `ContenidoLeccionActivo` para seleccionar snapshots editoriales publicados sin sobrescribir contenido histórico (migración 0014).
+18. **Evidencia de entrega:** cada intento conserva el snapshot del ejercicio presentado y referencia la versión editorial activa cuando corresponde.
+19. **Interfaz de ejercicios:** formulario CSRF de entrega, límite de 20.000 caracteres e historial de los últimos tres intentos.
+20. **Hardening del registro local:** validación de escrituras masivas y bloqueo de actualizaciones masivas del estado de sincronización.
 
 ### Qué sigue pendiente (incremento 2, Fase 2)
 
@@ -88,6 +92,7 @@
 - Servicio central de publicación de paquetes académicos.
 - Paquetes firmados Ed25519 y manifiestos v1.
 - Sincronización pull-only, sin envío de progreso ni datos personales.
+- Validación local de la migración 0014 y de las pruebas nuevas; las 93 pruebas anteriores no validan este incremento.
 
 ---
 
