@@ -96,6 +96,25 @@ def _load_signing_key(private_key_path, password=None):
     return key
 
 
+def _require_https_url(value, label):
+    try:
+        parsed = urlsplit(value or "")
+        hostname = parsed.hostname
+        _ = parsed.port
+    except ValueError as exc:
+        raise PublicationError(f"{label}: URL inválida.") from exc
+    if (
+        parsed.scheme.lower() != "https"
+        or not hostname
+        or parsed.username
+        or parsed.password
+        or "@" in parsed.netloc
+        or parsed.fragment
+        or parsed.port not in {None, 443}
+    ):
+        raise PublicationError(f"{label}: se requiere una URL HTTPS válida sin credenciales ni fragmentos.")
+
+
 def _validate_published_version(version):
     if version.estado != "publicada":
         raise PublicationError("Solo se empaquetan versiones editoriales publicadas.")
@@ -145,6 +164,12 @@ def _validate_published_version(version):
             )
         if not reference.evidencia_licencia_snapshot or not reference.nota_licencia_snapshot:
             raise PublicationError(f"La fuente '{source.titulo}' carece de evidencia de licencia.")
+        if not reference.licencia_revisada_por_snapshot_id or not reference.licencia_revisada_en_snapshot:
+            raise PublicationError(f"La fuente '{source.titulo}' carece de auditoría de revisión de licencia.")
+        _require_https_url(source.url_canonica, f"Fuente '{source.titulo}'")
+        _require_https_url(reference.evidencia_licencia_snapshot, f"Evidencia de licencia de '{source.titulo}'")
+        if source.url_licencia:
+            _require_https_url(source.url_licencia, f"Licencia de '{source.titulo}'")
         if state == "compatible" and not reference.alcance_licencia_snapshot.strip():
             raise PublicationError(f"La fuente '{source.titulo}' carece del alcance autorizado.")
         if state == "solo_referencia" and reference.uso_declarado != "original":
