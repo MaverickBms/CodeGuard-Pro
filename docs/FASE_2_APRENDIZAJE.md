@@ -137,3 +137,34 @@ El artefacto ZIP se conserva bajo `CODEGUARD_DATA_DIR/knowledge-packages/`. La a
 - La navegación gráfica a través de ASCENSO y la apertura de una lección no han sido verificadas.
 - `server_entry.py` no carga automáticamente ASCENSO. En una base nueva, el contenido curricular debe cargarse explícitamente con `manage.py cargar_ascenso`; verificar esta operación en el perfil aislado antes de aceptar la experiencia de usuario.
 - No se ha configurado hosting, endpoint, allowlist ni claves de producción. La sincronización remota debe permanecer inactiva sin configuración confiable.
+
+### 11. Validación de integración de escritorio (resultados definitivos — 12-11-2026)
+
+### 11.1 Servidor Django empaquetado (PyInstaller + CodeGuardServer.spec)
+
+| Elemento | Resultado |
+|---|---|
+| `CodeGuardServer.spec` | `config`, `config.settings.desktop`, `config.wsgi`, `whitenoise.middleware` añadidos a `hiddenimports`; `collect_submodules` para `config`, `django` y `whitenoise` |
+| `server_entry.py` | Manejo de errores en `migrate` y `waitress`; `_find_ascenso_json()` localiza el JSON de ASCENSO dentro del binario; salida informativa de cada paso |
+| Build PyInstaller | ✅ Completado sin errores |
+| Smoke test (`scripts/smoke-test-packaged-server-linux.sh`) | ✅ Django se importa dentro del binario; `sincronizar_conocimiento` ejecuta; falla de forma controlada sin endpoints/configuración |
+
+### 11.2 AppImage de Linux
+
+| Elemento | Resultado |
+|---|---|
+| `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage` | ✅ Generado (123 MB) |
+| Ejecución con `CODEGUARD_DATA_DIR` temporal | ✅ Se mantiene activo sin cerrarse inmediatamente |
+| Cierre del proceso | ✅ Código 143 (SIGTERM, cierre limpio) |
+| Servidor Django dentro del AppImage | ✅ Migraciones aplicadas, roadmap cargado, puerto impreso |
+| Navegación visual (panel, roadmap, módulos, lecciones) | ⚠️ Requiere verificación manual en entorno con servidor gráfico (X11/Wayland) |
+| Puerto de Django accesible desde fuera del AppImage | ⚠️ No accesible (corre aislado dentro de Electron; puerto dinámico) |
+| Procesos remanentes tras cierre | ✅ `pkill` elimina procesos; `ss` no muestra listeners remanentes |
+
+### 11.3 Verificación de datos (12-11-2026)
+
+| Verificación | Resultado |
+|---|---|
+| `manage.py migrate` | ✅ Todas las migraciones 0001–0016 aplicadas |
+| `manage.py cargar_ascenso` | ✅ 33 etapas, 212 módulos, 1.946 lecciones, 7 prerrequisitos |
+| `manage.py test` | ✅ 138 pruebas pasando (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`) |

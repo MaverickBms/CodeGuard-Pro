@@ -80,12 +80,35 @@
 13. **Un solo paquete activo por canal:** restricción parcial por `estado=activo` y migración de datos para garantizar unicidad (migración 0013).
 14. **Estado de sincronización por canal:** `EstadoSincronizacion` para rastrear la última consulta, éxito, ETag, canal y error (migración 0012).
 15. **Verificador de distribución firmada:** validación de manifiesto, firma Ed25519, hash SHA-256, estructura de ZIP, rutas prohibidas y symlinks (`validate_package_archive`, `verify_signed_manifest`).
-16. **Pruebas:** 138 pruebas automatizadas aprobadas, según ejecución local confirmada por el propietario el 12-11-2026.
+16. **Pruebas:** 138 pruebas automatizadas pasando, confirmada por el propietario el 12-11-2026 (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`).
 17. **Contenido activo:** puntero `ContenidoLeccionActivo` para seleccionar snapshots editoriales publicados sin sobrescribir contenido histórico (migración 0014).
 18. **Evidencia de entrega:** cada intento conserva el snapshot del ejercicio presentado y referencia la versión editorial activa cuando corresponde.
 19. **Interfaz de ejercicios:** formulario CSRF de entrega, límite de 20.000 caracteres e historial de los últimos tres intentos.
 20. **Hardening del registro local:** validación de escrituras masivas y bloqueo de actualizaciones masivas del estado de sincronización.
 21. **Generador de paquetes:** ZIP reproducible, índice interno, manifiesto externo y firma Ed25519 desde snapshots activos; migración 0015 con secuencias por canal y registro inmutable. Validación local confirmada por el propietario.
+
+### Validación de integración de escritorio (Fase 2 — actualizado 12-11-2026)
+
+#### Servidor Django empaquetado (PyInstaller)
+
+| Elemento | Resultado |
+|---|---|
+| `CodeGuardServer.spec` | Corregido: `config`, `config.settings.desktop`, `config.wsgi`, `whitenoise.middleware` añadidos a `hiddenimports` |
+| `server_entry.py` | Corregido: manejo de errores en `migrate` y `waitress`; `_find_ascenso_json()` para localizar el JSON de ASCENSO dentro del binario |
+| Build PyInstaller | ✅ Completado sin errores |
+| Smoke test (`scripts/smoke-test-packaged-server-linux.sh`) | ✅ Django se importa dentro del binario; `sincronizar_conocimiento` ejecuta; falla de forma controlada sin endpoints |
+| Código de salida smoke test | 0 (éxito) |
+
+#### AppImage de Linux
+
+| Elemento | Resultado |
+|---|---|
+| `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage` | ✅ Generado (123 MB) |
+| Ejecución con `CODEGUARD_DATA_DIR` temporal | ✅ Se mantiene activo sin cerrarse inmediatamente |
+| Cierre del proceso | ✅ Código 143 (SIGTERM, cierre limpio) |
+| Servidor Django dentro del AppImage | ✅ Funciona (migraciones aplicadas, roadmap cargado, puerto impreso) |
+| Navegación visual (panel, roadmap, módulos, lecciones) | ⚠️ Requiere verificación manual en entorno con servidor gráfico (X11/Wayland) |
+| Puerto de Django accesible desde fuera del AppImage | ⚠️ No accesible (corre aislado dentro de Electron; puerto dinámico) |
 
 ### Qué sigue pendiente (incremento 2, Fase 2)
 
