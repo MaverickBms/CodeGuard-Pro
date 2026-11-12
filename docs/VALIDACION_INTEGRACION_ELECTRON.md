@@ -8,12 +8,12 @@
 
 El propietario confirmó:
 
-- 136 pruebas automatizadas OK después de corregir los imports ocultos de Django en PyInstaller y la configuración de electron-builder.
+- 138 pruebas automatizadas OK en esta rama, incluidas las dos pruebas de despacho de `server_entry`.
 - Generación correcta de `dist-server/CodeGuardServer/CodeGuardServer`.
 - Generación correcta de `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage` (Linux x86_64).
-- El binario PyInstaller carga Django y alcanza `sincronizar_conocimiento`. El error por variables de sincronización ausentes es el resultado esperado cuando no se han configurado URLs, allowlist y claves.
+- Reconstrucción de PyInstaller y smoke test Linux confirmados como satisfactorios por el propietario. El binario carga Django y ejecuta el comando de sincronización; la falta de endpoints y claves produce el error controlado esperado.
 
-Esta rama añade dos pruebas unitarias del modo `--sync-knowledge` y un smoke test repetible para el binario. Esas nuevas pruebas todavía deben ejecutarse localmente; por ello no se afirma que la suite tenga ya 138 pruebas aprobadas.
+Las dos pruebas unitarias del modo `--sync-knowledge` y el smoke test repetible del binario ya fueron ejecutados y confirmados por el propietario. El AppImage debe reconstruirse después de la nueva compilación PyInstaller para garantizar que empaqueta el binario actualizado.
 
 ## 2. Actualizar la rama
 
@@ -64,7 +64,7 @@ node --check electron/preload.js
 bash -n scripts/smoke-test-packaged-server-linux.sh
 ```
 
-La base previamente confirmada es de 136 pruebas. Las dos nuevas pruebas elevan el resultado esperado a 138 si no hay cambios adicionales en el descubrimiento de pruebas.
+Resultado confirmado por el propietario: 138 pruebas OK.
 
 ## 4. Smoke test del binario PyInstaller en Linux
 
@@ -85,6 +85,8 @@ Resultado esperado:
 El smoke test crea un directorio temporal para los datos y no usa claves reales ni realiza una descarga. La salida de configuración incompleta es deliberada.
 
 ## 5. Prueba de aceptación de la GUI empaquetada
+
+**Estado:** pendiente. Antes de ejecutar esta sección, reconstruir el AppImage con `npm run build:linux` para incluir el último contenido de `dist-server/CodeGuardServer`.
 
 Ejecutar en una sesión gráfica Linux. No se requiere configurar el servicio central.
 
