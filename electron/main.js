@@ -205,12 +205,13 @@ function syncConfiguration() {
   } catch (_error) {
     return null;
   }
-  const allowedHosts = new Set(hosts.map(host => host.toLowerCase().replace(/\\.$/, '')));
+  const normalizeHost = host => host.toLowerCase().endsWith('.') ? host.slice(0, -1).toLowerCase() : host.toLowerCase();
+  const allowedHosts = new Set(hosts.map(normalizeHost));
   const validEndpoint = value => {
     try {
       const parsed = new URL(value);
       return parsed.protocol === 'https:' &&
-        allowedHosts.has(parsed.hostname.toLowerCase().replace(/\\.$/, '')) &&
+        allowedHosts.has(normalizeHost(parsed.hostname)) &&
         !parsed.username &&
         !parsed.password &&
         (!parsed.port || parsed.port === '443') &&
