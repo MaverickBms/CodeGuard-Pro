@@ -6,9 +6,11 @@ El contenido de las 33 etapas se carga desde el documento maestro oficial
 ASCENSO 3.1; este módulo no inventa etapas ni dependencias.
 """
 
+import uuid
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from django.utils import timezone
 
@@ -167,6 +169,8 @@ class Modulo(models.Model):
 
 class Leccion(models.Model):
     """Unidad de aprendizaje extraída del documento maestro."""
+
+    clave_contenido = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, verbose_name="clave estable de contenido")
 
     TIPOS = [
         ("concepto", "Concepto"),
@@ -450,8 +454,384 @@ class ContenidoLeccion(models.Model):
         return bool(self.teoria_tecnica.strip() and self.explicacion_sencilla.strip())
 
 
+
+class FuenteConocimiento(models.Model):
+    """Fuente técnica consultada para elaborar o revisar contenido académico."""
+
+    ESTADOS_LICENCIA = [
+        ("pendiente", "Pendiente de revisión"),
+        ("compatible", "Reutilización compatible"),
+        ("solo_referencia", "Solo consulta; contenido original"),
+        ("requiere_permiso", "Requiere permiso"),
+        ("no_reutilizable", "No reutilizable"),
+    ]
+
+    clave = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    publicador = models.CharField(max_length=180, verbose_name="publicador")
+    titulo = models.CharField(max_length=240, verbose_name="título de la fuente")
+    url_canonica = models.URLField(max_length=1000, verbose_name="URL canónica")
+    edicion = models.CharField(max_length=100, blank=True, verbose_name="edición o versión")
+    identificador_licencia = models.CharField(
+        max_length=120, blank=True, verbose_name="identificador de licencia"
+    )
+    url_licencia = models.URLField(max_length=1000, blank=True, verbose_name="URL de licencia")
+    estado_revision_licencia = models.CharField(
+        max_length=20, choices=ESTADOS_LICENCIA, default="pendiente",
+        verbose_name="estado de revisión de licencia",
+    )
+    evidencia_licencia = models.URLField(
+        max_length=1000, blank=True, verbose_name="evidencia de revisión de licencia"
+    )
+    alcance_licencia = models.TextField(blank=True, verbose_name="alcance autorizado")
+    nota_revision_licencia = models.TextField(blank=True, verbose_name="decisión editorial de licencia")
+    revisada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, blank=True,
+        related_name="fuentes_licencia_revisadas", verbose_name="licencia revisada por",
+    )
+    revisada_en = models.DateTimeField(null=True, blank=True, verbose_name="licencia revisada el")
+    consultada_en = models.DateTimeField(null=True, blank=True, verbose_name="consultada el")
+    activa = models.BooleanField(default=True, verbose_name="fuente activa")
+    notas = models.TextField(blank=True, verbose_name="notas editoriales")
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "fuente de conocimiento"
+        verbose_name_plural = "fuentes de conocimiento"
+        ordering = ["publicador", "titulo"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["url_canonica", "edicion"],
+                name="fuente_unica_url_edicion",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.publicador}: {self.titulo}"
+
+
+class VersionContenidoLeccionQuerySet(models.QuerySet):
+    """Impide mutaciones masivas que omitan el flujo editorial."""
+
+    def update(self, **kwargs):
+        raise ValidationError(
+            "Las versiones de contenido solo pueden cambiar mediante servicios editoriales."
+        )
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError(
+            "Las versiones de contenido solo pueden cambiar mediante servicios editoriales."
+        )
+
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        if any(obj.estado != "borrador" for obj in objs):
+            raise ValidationError("Las versiones deben crearse inicialmente como borrador.")
+        return super().bulk_create(objs, **kwargs)
+
+    def delete(self):
+        raise ValidationError(
+            "No se permite eliminar versiones mediante operaciones masivas."
+        )
+
+
+class VersionContenidoLeccion(models.Model):
+    """Snapshot versionado del contenido de una lección; no reemplaza el borrador editable."""
+
+    ESTADOS = [
+        ("borrador", "Borrador"),
+        ("revision", "En revisión"),
+        ("aprobada", "Aprobada"),
+        ("publicada", "Publicada"),
+        ("sustituida", "Sustituida"),
+        ("retirada", "Retirada"),
+    ]
+
+    objects = VersionContenidoLeccionQuerySet.as_manager()
+
+    clave = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    leccion = models.ForeignKey(
+        Leccion,
+        on_delete=models.PROTECT,
+        related_name="versiones_contenido",
+        verbose_name="lección",
+    )
+    numero_version = models.PositiveIntegerField(verbose_name="número de versión")
+    esquema_version = models.PositiveSmallIntegerField(default=1, verbose_name="versión del esquema")
+    estado = models.CharField(max_length=12, choices=ESTADOS, default="borrador")
+    snapshot = models.JSONField(verbose_name="snapshot académico")
+    sha256 = models.CharField(
+        max_length=64,
+        validators=[RegexValidator(r"^[0-9a-f]{64}$", "Debe ser un SHA-256 hexadecimal en minúsculas.")],
+        verbose_name="SHA-256 del snapshot",
+    )
+    resumen_cambios = models.TextField(blank=True, verbose_name="resumen de cambios")
+    motivo_retiro = models.TextField(blank=True, verbose_name="motivo de retiro")
+    revisada_en = models.DateTimeField(null=True, blank=True, verbose_name="revisada el")
+    publicada_en = models.DateTimeField(null=True, blank=True, verbose_name="publicada el")
+    fuentes = models.ManyToManyField(
+        FuenteConocimiento,
+        through="ReferenciaFuenteContenido",
+        related_name="versiones",
+        blank=True,
+    )
+    enviada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="versiones_contenido_enviadas",
+        verbose_name="enviada por",
+    )
+    enviada_en = models.DateTimeField(null=True, blank=True, verbose_name="enviada a revisión el")
+    revisada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="versiones_contenido_revisadas",
+        verbose_name="revisada por",
+    )
+    publicada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="versiones_contenido_publicadas",
+        verbose_name="publicada por",
+    )
+    retirada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="versiones_contenido_retiradas",
+        verbose_name="retirada por",
+    )
+    retirada_en = models.DateTimeField(null=True, blank=True, verbose_name="retirada el")
+    creada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, blank=True,
+        related_name="versiones_contenido_creadas", verbose_name="creada por",
+    )
+    creada_en = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk and self.estado != "borrador":
+            raise ValidationError("Una versión debe crearse inicialmente como borrador.")
+        if self.pk:
+            anterior = type(self).objects.only(
+                "estado", "leccion_id", "numero_version", "esquema_version",
+                "snapshot", "sha256", "resumen_cambios",
+                "enviada_por_id", "enviada_en", "revisada_por_id", "revisada_en",
+                "publicada_por_id", "publicada_en", "retirada_por_id", "retirada_en",
+                "motivo_retiro", "creada_por_id",
+            ).get(pk=self.pk)
+            estados_bloqueados = {"revision", "aprobada", "publicada", "sustituida", "retirada"}
+            campos_inmutables = (
+                "leccion_id", "numero_version", "esquema_version",
+                "snapshot", "sha256", "resumen_cambios",
+            )
+            if anterior.estado in estados_bloqueados:
+                modificados = [
+                    campo for campo in campos_inmutables
+                    if getattr(anterior, campo) != getattr(self, campo)
+                ]
+                if modificados:
+                    raise ValidationError(
+                        "Una versión enviada a revisión no puede modificar su snapshot, "
+                        "hash, identidad ni resumen de cambios."
+                    )
+
+            transiciones = {
+                "borrador": {"revision"},
+                "revision": {"aprobada"},
+                "aprobada": {"publicada"},
+                "publicada": {"sustituida", "retirada"},
+            }
+            if anterior.estado != self.estado:
+                if self.estado not in transiciones.get(anterior.estado, set()):
+                    raise ValidationError(
+                        f"Transición editorial no permitida: {anterior.estado} → {self.estado}."
+                    )
+                requisitos = {
+                    "revision": (self.enviada_por_id, self.enviada_en),
+                    "aprobada": (self.revisada_por_id, self.revisada_en),
+                    "publicada": (self.publicada_por_id, self.publicada_en),
+                    "retirada": (
+                        self.retirada_por_id,
+                        self.retirada_en,
+                        self.motivo_retiro.strip(),
+                    ),
+                }
+                if self.estado in requisitos and not all(requisitos[self.estado]):
+                    raise ValidationError(
+                        "La transición editorial requiere sus metadatos de auditoría."
+                    )
+
+            if anterior.creada_por_id != self.creada_por_id:
+                raise ValidationError("El editor que creó la versión no puede modificarse.")
+
+            auditoria = (
+                "enviada_por_id", "enviada_en", "revisada_por_id", "revisada_en",
+                "publicada_por_id", "publicada_en", "retirada_por_id", "retirada_en",
+                "creada_por_id",
+            )
+            for campo in auditoria:
+                valor_anterior = getattr(anterior, campo)
+                if valor_anterior is not None and getattr(self, campo) != valor_anterior:
+                    raise ValidationError(
+                        "Los metadatos de auditoría editorial no se pueden sobrescribir."
+                    )
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.estado != "borrador":
+            raise ValidationError("Solo se pueden eliminar versiones que sigan en borrador.")
+        return super().delete(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "versión de contenido de lección"
+        verbose_name_plural = "versiones de contenido de lección"
+        ordering = ["leccion_id", "-numero_version"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["leccion", "numero_version"],
+                name="contenido_version_unica_leccion",
+            ),
+            models.UniqueConstraint(
+                fields=["leccion"],
+                condition=models.Q(estado="publicada"),
+                name="contenido_una_publicada_por_leccion",
+            ),
+        ]
+        indexes = [
+            models.Index(fields=["estado", "publicada_en"], name="contenido_estado_pub_idx")
+        ]
+
+    def clean(self):
+        super().clean()
+        if len(self.sha256) != 64 or any(c not in "0123456789abcdef" for c in self.sha256):
+            raise ValidationError({"sha256": "Debe ser un SHA-256 hexadecimal de 64 caracteres."})
+
+    def __str__(self):
+        return f"{self.leccion} — v{self.numero_version} ({self.estado})"
+
+
+class ReferenciaFuenteContenidoQuerySet(models.QuerySet):
+    """Evita alterar referencias asociadas a versiones que ya entraron en revisión."""
+
+    def update(self, **kwargs):
+        if self.exclude(version__estado="borrador").exists():
+            raise ValidationError("No se pueden modificar referencias de versiones congeladas.")
+        return super().update(**kwargs)
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        objs = list(objs)
+        if any(obj.version.estado != "borrador" for obj in objs):
+            raise ValidationError("No se pueden modificar referencias de versiones congeladas.")
+        return super().bulk_update(objs, fields, batch_size=batch_size)
+
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        if any(obj.version.estado != "borrador" for obj in objs):
+            raise ValidationError("No se pueden crear referencias en versiones congeladas.")
+        return super().bulk_create(objs, **kwargs)
+
+    def delete(self):
+        if self.exclude(version__estado="borrador").exists():
+            raise ValidationError("No se pueden eliminar referencias de versiones congeladas.")
+        return super().delete()
+
+
+class ReferenciaFuenteContenido(models.Model):
+    """Atribución explícita de una fuente dentro de una versión académica."""
+
+    objects = ReferenciaFuenteContenidoQuerySet.as_manager()
+
+    ROLES = [
+        ("principal", "Fuente principal"),
+        ("complementaria", "Fuente complementaria"),
+        ("normativa", "Especificación o norma"),
+    ]
+
+    version = models.ForeignKey(
+        VersionContenidoLeccion,
+        on_delete=models.PROTECT,
+        related_name="referencias",
+    )
+    fuente = models.ForeignKey(
+        FuenteConocimiento,
+        on_delete=models.PROTECT,
+        related_name="referencias_contenido",
+    )
+    USOS_DECLARADOS = [
+        ("original", "Contenido original de CodeGuard"),
+        ("cita_breve", "Cita breve atribuida"),
+        ("adaptacion", "Adaptación de la fuente"),
+        ("reproduccion", "Reproducción de material"),
+    ]
+
+    rol = models.CharField(max_length=16, choices=ROLES, default="principal")
+    uso_declarado = models.CharField(
+        max_length=16, choices=USOS_DECLARADOS, default="original",
+        verbose_name="uso declarado de la fuente",
+    )
+    localizador = models.CharField(max_length=500, blank=True, verbose_name="sección o localizador")
+    nota_atribucion = models.TextField(blank=True, verbose_name="nota de atribución")
+    estado_licencia_snapshot = models.CharField(
+        max_length=20, choices=FuenteConocimiento.ESTADOS_LICENCIA,
+        default="pendiente", verbose_name="estado de licencia al enviar a revisión",
+    )
+    evidencia_licencia_snapshot = models.URLField(
+        max_length=1000, blank=True, verbose_name="evidencia de licencia al enviar a revisión",
+    )
+    alcance_licencia_snapshot = models.TextField(blank=True, verbose_name="alcance de licencia al enviar a revisión")
+    nota_licencia_snapshot = models.TextField(blank=True, verbose_name="decisión de licencia al enviar a revisión")
+    licencia_revisada_por_snapshot = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, blank=True,
+        related_name="referencias_licencia_congeladas", verbose_name="editor de licencia al enviar a revisión",
+    )
+    licencia_revisada_en_snapshot = models.DateTimeField(
+        null=True, blank=True, verbose_name="fecha de revisión de licencia al enviar a revisión",
+    )
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            original = type(self).objects.select_related("version").get(pk=self.pk)
+            if original.version.estado != "borrador":
+                campos = (
+                    "version_id", "fuente_id", "rol", "uso_declarado", "localizador",
+                    "nota_atribucion", "estado_licencia_snapshot",
+                    "evidencia_licencia_snapshot", "alcance_licencia_snapshot",
+                    "nota_licencia_snapshot", "licencia_revisada_por_snapshot_id",
+                    "licencia_revisada_en_snapshot",
+                )
+                if any(getattr(original, campo) != getattr(self, campo) for campo in campos):
+                    raise ValidationError("La procedencia de una versión en revisión es inmutable.")
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.version.estado != "borrador":
+            raise ValidationError("No se pueden eliminar referencias de versiones congeladas.")
+        return super().delete(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "referencia de fuente de contenido"
+        verbose_name_plural = "referencias de fuentes de contenido"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["version", "fuente"],
+                name="referencia_fuente_unica_version",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.fuente} → {self.version}"
+
+
 class EjemploLeccion(models.Model):
     """Ejemplo explicado que acompaña la teoría de una lección."""
+
+    clave_contenido = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, verbose_name="clave estable de contenido")
 
     leccion = models.ForeignKey(
         Leccion,
@@ -481,6 +861,8 @@ class EjemploLeccion(models.Model):
 
 class EjercicioLeccion(models.Model):
     """Enunciado de práctica; evaluación en fase 2 y tutoría en fase 3."""
+
+    clave_contenido = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, verbose_name="clave estable de contenido")
 
     NIVELES = [
         ("basico", "Básico"),
@@ -525,3 +907,161 @@ class EjercicioLeccion(models.Model):
 
 # Registrar los modelos auxiliares del flujo de intentos y evaluación.
 from .models_attempts import ConfiguracionEvaluacion, IntentoEjercicio  # noqa: E402,F401
+
+
+class PaqueteConocimientoInstaladoQuerySet(models.QuerySet):
+    """Impide alterar el historial de paquetes fuera de sus transiciones."""
+
+    def update(self, **kwargs):
+        raise ValidationError("Los registros de paquetes solo cambian mediante transiciones controladas.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("No se permiten actualizaciones masivas de registros de paquetes.")
+
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        if any(obj.estado != "descargado" for obj in objs):
+            raise ValidationError("Los paquetes deben registrarse inicialmente como descargados.")
+        return super().bulk_create(objs, **kwargs)
+
+    def delete(self):
+        raise ValidationError("El historial de paquetes no se elimina mediante operaciones masivas.")
+
+
+class PaqueteConocimientoInstalado(models.Model):
+    """Registro local de identidad inmutable y transiciones controladas de paquetes."""
+
+    objects = PaqueteConocimientoInstaladoQuerySet.as_manager()
+
+    ESTADOS = [
+        ("descargado", "Descargado"),
+        ("verificado", "Verificado"),
+        ("activo", "Activo"),
+        ("rechazado", "Rechazado"),
+        ("sustituido", "Sustituido"),
+    ]
+    CANALES = [("stable", "Stable"), ("beta", "Beta")]
+
+    package_id = models.UUIDField(unique=True, verbose_name="UUID del paquete")
+    package_version = models.CharField(max_length=40, verbose_name="versión del paquete")
+    channel = models.CharField(max_length=16, choices=CANALES, verbose_name="canal")
+    sequence = models.PositiveBigIntegerField(verbose_name="secuencia monotónica")
+    content_schema_version = models.PositiveSmallIntegerField(verbose_name="versión del esquema")
+    sha256 = models.CharField(
+        max_length=64,
+        validators=[RegexValidator(r"^[0-9a-f]{64}$", "Debe ser un SHA-256 hexadecimal en minúsculas.")],
+        verbose_name="SHA-256 del ZIP",
+    )
+    manifest_sha256 = models.CharField(
+        max_length=64,
+        validators=[RegexValidator(r"^[0-9a-f]{64}$", "Debe ser un SHA-256 hexadecimal en minúsculas.")],
+        verbose_name="SHA-256 del manifiesto",
+    )
+    signature_key_id = models.CharField(max_length=80, verbose_name="identificador de clave de firma")
+    published_at = models.DateTimeField(verbose_name="publicado el")
+    installed_at = models.DateTimeField(null=True, blank=True, verbose_name="instalado el")
+    estado = models.CharField(max_length=16, choices=ESTADOS, default="descargado")
+    error_code = models.CharField(max_length=80, blank=True, verbose_name="código de error")
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "paquete de conocimiento instalado"
+        verbose_name_plural = "paquetes de conocimiento instalados"
+        ordering = ["channel", "-sequence"]
+        constraints = [
+            models.UniqueConstraint(fields=["channel", "sequence"], name="paquete_secuencia_canal_unica"),
+            models.UniqueConstraint(
+                fields=["channel"],
+                condition=models.Q(estado="activo"),
+                name="paquete_un_activo_por_canal",
+            ),
+        ]
+        indexes = [
+            models.Index(fields=["channel", "-sequence"], name="paquete_canal_seq_idx"),
+        ]
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            if self.estado != "descargado" or self.installed_at is not None or self.error_code:
+                raise ValidationError(
+                    "Un paquete debe registrarse como descargado, sin fecha de instalación ni error."
+                )
+        else:
+            anterior = type(self).objects.get(pk=self.pk)
+            identidad = (
+                "package_id", "package_version", "channel", "sequence",
+                "content_schema_version", "sha256", "manifest_sha256",
+                "signature_key_id", "published_at",
+            )
+            if any(getattr(anterior, field) != getattr(self, field) for field in identidad):
+                raise ValidationError("La identidad y los hashes de un paquete registrado son inmutables.")
+            transiciones = {
+                "descargado": {"verificado", "rechazado"},
+                "verificado": {"activo", "rechazado"},
+                "activo": {"sustituido"},
+            }
+            if anterior.estado != self.estado and self.estado not in transiciones.get(anterior.estado, set()):
+                raise ValidationError(f"Transición de paquete no permitida: {anterior.estado} → {self.estado}.")
+            if anterior.installed_at and self.installed_at != anterior.installed_at:
+                raise ValidationError("La fecha de instalación de un paquete no puede modificarse.")
+            if anterior.error_code and self.error_code != anterior.error_code:
+                raise ValidationError("El código de error registrado no puede sobrescribirse.")
+            if self.estado == "activo" and self.installed_at is None:
+                raise ValidationError("Un paquete activo debe registrar su fecha de instalación.")
+            if self.installed_at and self.estado not in {"activo", "sustituido"}:
+                raise ValidationError("Solo paquetes activos o sustituidos pueden tener fecha de instalación.")
+            if self.error_code and self.estado != "rechazado":
+                raise ValidationError("El código de error solo se conserva en paquetes rechazados.")
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("El historial de paquetes no se elimina físicamente.")
+
+    def clean(self):
+        super().clean()
+        for field in ("sha256", "manifest_sha256"):
+            value = getattr(self, field)
+            if len(value) != 64 or any(char not in "0123456789abcdef" for char in value):
+                raise ValidationError({field: "Debe ser un SHA-256 hexadecimal de 64 caracteres."})
+
+    def __str__(self):
+        return f"{self.channel} #{self.sequence} — {self.package_version} ({self.estado})"
+
+
+class EstadoSincronizacion(models.Model):
+    """Estado operativo local por canal; nunca contiene progreso ni datos personales."""
+
+    channel = models.CharField(max_length=16, choices=PaqueteConocimientoInstalado.CANALES, unique=True)
+    last_check_at = models.DateTimeField(null=True, blank=True, verbose_name="última comprobación")
+    last_success_at = models.DateTimeField(null=True, blank=True, verbose_name="última sincronización correcta")
+    manifest_etag = models.CharField(max_length=255, blank=True, verbose_name="ETag del manifiesto")
+    active_package = models.ForeignKey(
+        PaqueteConocimientoInstalado,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="canales_activos",
+        verbose_name="paquete activo",
+    )
+    last_error_code = models.CharField(max_length=80, blank=True, verbose_name="último código de error")
+    next_check_after = models.DateTimeField(null=True, blank=True, verbose_name="próxima comprobación permitida")
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def clean(self):
+        super().clean()
+        if self.active_package_id:
+            if self.active_package.channel != self.channel:
+                raise ValidationError({"active_package": "El paquete activo debe pertenecer al mismo canal."})
+            if self.active_package.estado != "activo":
+                raise ValidationError({"active_package": "El paquete referenciado debe estar activo."})
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "estado de sincronización"
+        verbose_name_plural = "estados de sincronización"
+
+    def __str__(self):
+        return f"Sincronización {self.channel}"

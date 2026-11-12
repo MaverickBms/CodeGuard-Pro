@@ -20,7 +20,7 @@ class ConfiguracionEvaluacion(models.Model):
 
     ejercicio = models.ForeignKey(
         "roadmaps.EjercicioLeccion",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="configuraciones_evaluacion",
         verbose_name="ejercicio",
     )
@@ -73,7 +73,7 @@ class IntentoEjercicio(models.Model):
 
     ejercicio = models.ForeignKey(
         "roadmaps.EjercicioLeccion",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="intentos",
         verbose_name="ejercicio",
     )
@@ -100,7 +100,7 @@ class IntentoEjercicio(models.Model):
     detalles = models.JSONField(default=dict, blank=True, verbose_name="detalles del resultado")
     configuracion_evaluacion = models.ForeignKey(
         ConfiguracionEvaluacion,
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         null=True,
         blank=True,
         related_name="intentos",

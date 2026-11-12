@@ -1,7 +1,7 @@
 # CodeGuard Pro — Manual de usuario
 
 **Producto:** CodeGuard Pro  
-**Versión:** 1.0 (MVP, primer incremento)  
+**Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada)  
 **SRS de referencia:** `IEEE830(1).md` v2.0
 
 > **Nota:** El sistema de autenticación está temporalmente desactivado
@@ -24,34 +24,37 @@ No requiere conexión a Internet para sus funcionalidades esenciales.
 
 ---
 
-## 2. Primer arranque y configuración inicial
+## 2. Primer arranque y apertura de la aplicación
 
 Al iniciar la aplicación por primera vez:
 
-1. Se te pedirá crear un **usuario** y una **contraseña maestra** (mínimo 8 caracteres).
-2. Se generará una **frase de rescate** de alta entropía. Esta frase se muestra **una sola
-   vez**. Cópiala y guárdala en un lugar seguro.
-3. Acepta los términos de uso y el código de ética.
-4. Accederás al panel principal.
+1. Se abre directamente el **panel principal** (autenticación temporalmente desactivada).
+2. Si el roadmap ASCENSO aún no está cargado, ejecuta:
+   ```bash
+   python manage.py cargar_ascenso
+   ```
+3. Accederás al panel principal con el resumen de progreso, próximas actividades y módulos
+   disponibles.
 
-La frase de rescate se almacena como hash (nunca en texto plano) y es de un solo uso: si la
-usas para recuperar el acceso, se invalida.
+No se solicita usuario ni contraseña mientras la autenticación esté desactivada.
 
 ---
 
-## 3. Inicio de sesión
+## 3. Panel principal
 
-Ingresa tu usuario y contraseña maestra en la ventana de la aplicación (el servidor local
-escucha en `127.0.0.1` en el puerto definido por `CODEGUARD_PORT`, por defecto `8000`).
+El panel muestra datos reales de la base de datos:
 
-La sesión expira por inactividad tras el tiempo configurado (15 minutos por defecto). Al
-cerrar sesión o al expirar, se registra un evento de auditoría.
+- Tu usuario y estado de la configuración inicial.
+- Tiempo de sesión y modo de ejecución.
+- Progreso académico: porcentaje de avance, etapas completadas, módulos y lecciones
+  completadas.
+- Próxima actividad sugerida (etapa o lección para continuar).
+- Actividad reciente (últimos progresos registrados).
+- Módulos disponibles del MVP (roadmap, competencias, biblioteca, evaluaciones,
+  evidencias, laboratorios, administración, vigencia, ética).
 
-**Bloqueo por intentos fallidos (RS-017):** tras 5 intentos fallidos consecutivos, la cuenta
-se bloquea durante 15 minutos. El contador se reinicia tras un inicio de sesión exitoso.
-
-El cierre de sesión se hace desde la aplicación con el botón **"Cerrar sesión"** (esquina
-superior derecha). Requiere envío POST y mantiene la protección CSRF.
+En este incremento, los módulos académicos están en desarrollo y se desbloquearán en
+los siguientes incrementos.
 
 ---
 
@@ -87,36 +90,64 @@ gráficos. Se respeta `prefers-reduced-motion` y no se usa `transition: all`.
 
 ---
 
-## 5. Panel principal
+## 5. Roadmap ASCENSO
 
-El panel muestra datos reales de la base de datos:
+El roadmap ASCENSO 3.1 incluye las **33 etapas oficiales** (0 a 32) con filtros (bloque,
+prioridad, búsqueda), detalle de etapa (módulos, lecciones, proyecto, criterios,
+prerrequisitos) y marcado de lecciones y etapas completas con recalculo automático de
+porcentaje.
 
-- Tu usuario y estado de la configuración inicial.
-- Tiempo de sesión y modo de ejecución.
-- Progreso académico: porcentaje de avance, etapas completadas, módulos y lecciones
-  completadas.
-- Próxima actividad sugerida (etapa o lección para continuar).
-- Actividad reciente (últimos progresos registrados).
-- Módulos disponibles del MVP (roadmap, competencias, biblioteca, evaluaciones,
-  evidencias, laboratorios, administración, vigencia, ética).
+Para cargar o actualizar el roadmap:
 
-En este primer incremento, los módulos académicos están en desarrollo y se desbloquearán en
-los siguientes incrementos.
+```bash
+python manage.py cargar_ascenso
+```
 
 ---
 
-## 6. Cambio de contraseña
+## 6. Contenido académico y flujo editorial (Fase 2)
 
-Desde el menú del usuario (esquina superior derecha) puedes cambiar tu contraseña maestra.
-Se requiere la contraseña actual. La nueva contraseña no puede ser idéntica a la actual y
-debe superar los validadores de Django (mínimo 8 caracteres, no reutilización, similitud,
-etc.). El cambio se registra en auditoría.
+Cada lección puede contar con contenido académico estructurado:
+
+- **Teoría técnica** y **explicación sencilla**.
+- **Objetivos de aprendizaje** y notas.
+- **Ejemplos guiados** con código, lenguaje y salida esperada.
+- **Ejercicios** con enunciado, instrucciones, nivel, código inicial y pistas.
+
+El flujo editorial permite crear snapshots versionados de una lección, enviarlos a revisión,
+aprobarlos, publicarlos, sustituirlos o retirarlos. Las operaciones se ejecutan mediante
+comandos de gestión (no hay panel de administración):
+
+| Comando | Propósito |
+|---|---|
+| `crear_version_leccion --leccion <id>` | Genera un snapshot versionado borrador de una lección |
+| `gestionar_version_leccion enviar-revision --version-id <id> --usuario <editor>` | Envía una versión a revisión |
+| `gestionar_version_leccion aprobar --version-id <id> --usuario <revisor>` | Aprueba una versión en revisión |
+| `gestionar_version_leccion publicar --version-id <id> --usuario <publicador>` | Publica una versión aprobada |
+| `gestionar_version_leccion retirar --version-id <id> --usuario <revisor> --motivo <texto>` | Retira una versión publicada (exige motivo) |
+| `registrar_fuente_conocimiento --publicador <org> --titulo <título> --url <https://...>` | Registra una fuente documental |
+| `revisar_licencia_fuente --fuente-id <id> --usuario <editor> --estado <estado>` | Registra una decisión editorial de licencia |
+| `importar_paquete_contenido --directorio <ruta> --confirmar --usuario <editor>` | Importa un lote validado como borradores |
+| `validar_paquete_contenido --directorio <ruta>` | Valida documentos académicos sin escribir datos |
+
+Una versión publicada es inmutable: no se edita, se crea una nueva versión. Solo puede haber
+una versión publicada por lección.
 
 ---
 
-## 7. Recuperación de acceso (frase de rescate)
+## 7. Cambio de contraseña
 
-Si olvidas tu contraseña, el proceso tiene dos pasos:
+Cuando la autenticación está reactivada (`AUTH_DISABLED = False`), desde el menú del usuario
+(esquina superior derecha) puedes cambiar tu contraseña maestra. Se requiere la contraseña
+actual. La nueva contraseña no puede ser idéntica a la actual y debe superar los validadores
+de Django (mínimo 8 caracteres, no reutilización, similitud, etc.). El cambio se registra en
+auditoría.
+
+---
+
+## 8. Recuperación de acceso (frase de rescate)
+
+Si olvidas tu contraseña (autenticación reactivada), el proceso tiene dos pasos:
 
 **Paso 1 — Validar frase:** ve a `/accounts/rescate/` e ingresa tu frase de rescate. Si es
 correcta y no se ha usado antes, avanzas al paso 2. **La frase no se consume al validar.**
@@ -130,7 +161,7 @@ Si el cambio falla en cualquier punto, la frase no se consume y la contraseña n
 
 ---
 
-## 8. Seguridad
+## 9. Seguridad
 
 - La aplicación solo es accesible desde tu equipo (`127.0.0.1`). Nunca se expone a la red.
 - Tu contraseña y frase de rescate están hasheadas con Argon2.
@@ -140,7 +171,7 @@ Si el cambio falla en cualquier punto, la frase no se consume y la contraseña n
 
 ---
 
-## 9. Copias de seguridad (próximos incrementos)
+## 10. Copias de seguridad (próximos incrementos)
 
 En futuros incrementos podrás crear y restaurar copias de seguridad en formato `tar.gz` que
 incluyan la base de datos y tus archivos, con verificación de integridad mediante hash
@@ -148,9 +179,10 @@ SHA-256.
 
 ---
 
-## 10. Límites del MVP (incremento 1)
+## 11. Límites del MVP (incremento 1)
 
-- Las 33 etapas del roadmap ASCENSO se representarán en el incremento 2.
+- Las 33 etapas del roadmap ASCENSO se representan en el incremento 2 (ya implementado en la
+  rama de trabajo).
 - La importación de PDFs y la biblioteca documental estarán disponibles en el incremento 4.
 - Las evaluaciones, competencias, evidencias y laboratorios en incrementos 3 y 5.
 - Los backups y la administración en el incremento 6.

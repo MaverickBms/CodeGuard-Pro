@@ -158,8 +158,199 @@ El incremento 1 se considera terminado con las pruebas automatizadas implementad
 - Auditoría: login/logout/inactividad/setup/cambio de contraseña/uso de frase/acceso denegado (`apps/audit/tests/test_audit.py`).
 - Operaciones académicas con sesión vencida (`apps/roadmaps/tests/test_roadmaps.py`).
 
-Total: **53 tests automatizados pasando** (`apps.accounts`, `apps.audit`, `apps.core`, `apps.roadmaps`).
+Total: **93 tests automatizados pasando** (`apps.accounts`, `apps.audit`, `apps.core`, `apps.roadmaps`).
 
-Las pruebas de seguridad restantes (CSRF, XSS, validación de archivos, acceso no autorizado, path traversal, archivos maliciosos, exposición de secretos) siguen pendientes en sus respectivos incrementos.
+Las pruebas cubren:
+- Autenticación y modo sin autenticación (T-001 a T-027, T-500 a T-508).
+- Seguridad (CSRF, XSS, CSP, headers, Argon2, frase de rescate, bloqueo por intentos).
+- Panel, roadmap, progreso académico.
+- Flujo editorial de versiones (crear, enviar a revisión, aprobar, publicar, retirar, proteger).
+- Registro local de paquetes de conocimiento (transiciones, identidad inmutable, un activo por canal).
+- Distribución firmada (Ed25519, validación de manifiesto, validación de ZIP, límites de compresión/traversal/symlinks).
+- Importación académica y revisión de licencias (IMP-001 a IMP-022, LIC-001 a LIC-009).
 
-La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida manualmente.
+---
+
+## 6.1 Pruebas del incremento de identidad y evidencias
+
+> **Estado: implementadas en código; pendientes de ejecución en el entorno local.**
+
+| ID | Prueba | Caso | Resultado esperado |
+|---|---|---|---|
+| DATA-001 | UUID de lección | Crear una lección | Se asigna una clave UUID no nula, única e inmutable |
+| DATA-002 | UUID de ejemplo | Crear un ejemplo | Se asigna una clave UUID propia |
+| DATA-003 | UUID de ejercicio | Crear ejercicios distintos | Cada ejercicio recibe una clave UUID distinta |
+| DATA-004 | Migración de claves | Actualizar una BD con registros existentes | Cada registro obtiene un UUID antes de imponer unicidad y NOT NULL |
+| DATA-005 | Protección de ejercicio | Eliminar ejercicio con intentos | La operación se rechaza y los intentos permanecen |
+| DATA-006 | Protección de evaluador | Eliminar configuración referenciada por intento | La operación se rechaza y la configuración histórica permanece |
+| DATA-007 | Intento sin evaluador | Guardar entrega pendiente | La referencia a configuración puede permanecer nula |
+
+## 6.2 Pruebas del catálogo de fuentes y snapshots
+
+> **Estado: incorporadas al código; pendientes de ejecución local.**
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| KNOW-001 | Registrar fuente con URL canónica y licencia | Se conserva publicador, edición, licencia y fecha de consulta |
+| KNOW-002 | Crear snapshot versionado | Se conserva JSON, UUID, versión y hash |
+| KNOW-003 | Asociar fuentes a un snapshot | La atribución identifica fuente, rol y localizador |
+| KNOW-004 | Repetir número de versión de una lección | La restricción única rechaza el duplicado |
+| KNOW-005 | Publicar dos versiones de una lección | La restricción parcial permite solo una publicada |
+| KNOW-006 | Hash con formato inválido | La validación rechaza valores que no sean SHA-256 hexadecimal |
+| KNOW-007 | Eliminar una fuente referenciada | La operación se bloquea por PROTECT |
+| KNOW-008 | Eliminar una versión referenciada | La operación se bloquea por PROTECT |
+
+## 6.3 Pruebas del servicio de snapshots
+
+> **Estado: incorporadas al código; pendientes de ejecución local.**
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| SNAP-001 | Generar snapshot desde contenido completo | Se captura contenido, ejemplos y ejercicios publicados |
+| SNAP-002 | Recurso no publicado | No se incluye en el snapshot |
+| SNAP-003 | Hash canónico | SHA-256 coincide con la serialización determinista |
+| SNAP-004 | Nueva versión | Se incrementa el número sin sobrescribir la anterior |
+| SNAP-005 | Modificar borrador tras snapshot | La versión anterior conserva el contenido original |
+| SNAP-006 | Lección incompleta | Se rechaza la generación |
+| SNAP-007 | Fuente inactiva | Se rechaza su asociación |
+
+## 6.4 Pruebas del flujo editorial
+
+> **Estado: incorporadas al código; pendientes de ejecución local.**
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| EDIT-001 | Publicar un borrador directamente | Se rechaza la transición |
+| EDIT-002 | Enviar versión sin fuente o con hash alterado | Se rechaza el envío a revisión |
+| EDIT-003 | Transición con usuario no editorial | Se rechaza la operación |
+| EDIT-004 | Enviar a revisión | Se registra remitente y fecha |
+| EDIT-005 | Aprobar una versión en revisión | Se registra revisor y fecha |
+| EDIT-006 | Modificar snapshot tras enviar a revisión | El modelo rechaza el cambio |
+| EDIT-007 | Publicar una versión aprobada | Se registra publicador y fecha |
+| EDIT-008 | Publicar una nueva versión | La anterior pasa a sustituida en la misma transacción |
+| EDIT-009 | Retirar publicación sin motivo | Se rechaza la operación |
+| EDIT-010 | Retirar publicación con motivo | Se conserva snapshot, motivo, responsable y fecha de retirada |
+| EDIT-011 | Publicar dos versiones simultáneas | Solo una versión queda publicada por lección |
+
+## 6.5 Pruebas de protección de versiones
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| IMM-001 | `QuerySet.update()` sobre snapshot | Se rechaza |
+| IMM-002 | `QuerySet.bulk_update()` sobre versión | Se rechaza |
+| IMM-003 | Eliminación masiva de versiones | Se rechaza |
+| IMM-004 | Crear versión masiva en estado publicado | Se rechaza |
+| IMM-005 | Eliminar versión individual en revisión/publicada | Se rechaza |
+| IMM-006 | Saltar directamente de borrador a publicada | Se rechaza por transición inválida |
+| IMM-007 | Sobrescribir metadatos de auditoría | Se rechaza |
+
+## 6.6 Pruebas de comandos editoriales
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| CLI-001 | Crear snapshot con lección y fuente existentes | Crea borrador y asocia procedencia |
+| CLI-002 | Crear snapshot con ID de lección inexistente | Devuelve error controlado |
+| CLI-003 | Enviar versión a revisión con usuario staff activo | Cambia estado y registra remitente |
+| CLI-004 | Ejecutar transición con usuario sin privilegios | El servicio rechaza la operación |
+| CLI-005 | Retirar sin motivo | El comando exige motivo |
+| CLI-006 | Registrar fuente HTTPS con metadatos | Persiste publicador, título, edición, licencia, UUID y fecha de consulta |
+| CLI-007 | Registrar URL HTTP o inválida | Rechaza el registro sin crear filas |
+| CLI-008 | Registrar URL + edición duplicada | Rechaza el duplicado sin modificar la fuente existente |
+
+## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
+
+> **Estado: PENDIENTES.** El sincronizador, el servicio central y los paquetes firmados todavía no están implementados. Estas pruebas definen el contrato que deberá verificarse cuando se construyan.
+
+| ID | Prueba | Caso | Resultado esperado |
+|---|---|---|---|
+| SYNC-001 | Arranque offline | Iniciar la aplicación sin conexión | El núcleo local abre sin esperar al servicio central |
+| SYNC-002 | Consulta offline | Abrir una lección instalada sin red | Contenido y recursos disponibles desde almacenamiento local |
+| SYNC-003 | Manifiesto disponible | Conexión activa y nueva versión publicada | Se detecta una actualización compatible sin bloquear la interfaz |
+| SYNC-004 | Sin cambios | Manifiesto y versión local coinciden | No se descarga ni reinstala contenido innecesariamente |
+| SYNC-005 | Timeout | Servicio central no responde | Se conserva la versión local y el estudio continúa |
+| SYNC-006 | Descarga interrumpida | Cortar conexión durante descarga | Paquete temporal incompleto no se activa; se puede reintentar |
+| SYNC-007 | Hash inválido | Alterar un byte del paquete | Rechazo de instalación y registro del error |
+| SYNC-008 | Firma inválida | Firma no verificable o clave desconocida | Rechazo del paquete |
+| SYNC-009 | Esquema incompatible | Paquete con versión de esquema no soportada | Rechazo seguro sin reemplazar el contenido actual |
+| SYNC-010 | Aplicación incompatible | Paquete exige versión de app superior | No se instala; se informa la incompatibilidad |
+| SYNC-011 | Tamaño/rutas maliciosas | Paquete excede límites o contiene path traversal | Rechazo antes de escribir fuera del área temporal |
+| SYNC-012 | Instalación atómica | Fallo durante activación | La versión anterior permanece activa |
+| SYNC-013 | Rollback | Restaurar versión previa | Contenido anterior vuelve a estar disponible y se registra la operación |
+| SYNC-014 | Preservación de progreso | Actualizar una lección con intentos existentes | Progreso, intentos, preferencias y notas permanecen intactos |
+| SYNC-015 | Trazabilidad de intentos | Revisar intento creado antes de actualización | Se conserva versión de contenido y evaluador originales |
+| SYNC-016 | Privacidad | Inspeccionar tráfico de sincronización | No se transmiten respuestas, código, calificaciones ni datos personales |
+| SYNC-017 | Retiro de contenido | Publicar aviso de retirada/sustitución | Se advierte al estudiante sin borrar evidencias históricas |
+| SYNC-018 | Detección editorial | Cambiar fuente externa sin aprobación editorial | Se genera propuesta/aviso; no se publica automáticamente |
+| SYNC-019 | Reintento/backoff | Servicio intermitente | Reintentos limitados sin bucle agresivo ni bloqueo del usuario |
+| SYNC-020 | Electron y desarrollo | Ejecutar en ambos modos | Mismo comportamiento de sincronización y almacenamiento local |
+| SYNC-021 | Firma y hash sin circularidad | Manifiesto externo firmado declara hash del ZIP | Firma y hash se verifican sin que el manifiesto forme parte del ZIP hasheado |
+| SYNC-022 | Anti-replay/downgrade | Se presenta manifiesto válido con sequence inferior o repetida con contenido distinto | Cliente rechaza la publicación antigua o inconsistente |
+| SYNC-023 | Redirección de host | URL o redirección apunta a host no permitido | Descarga rechazada |
+| SYNC-024 | ZIP malicioso | Entradas con traversal, symlink, duplicados o ratio/tamaño excesivo | Rechazo antes de escribir fuera del staging |
+| SYNC-025 | Reanudación segura | Descarga incompleta o archivo temporal previo alterado | Se descarta o valida de nuevo; nunca se activa parcialmente |
+| SYNC-026 | Sincronización concurrente | Se inician dos comprobaciones simultáneas | Solo una puede instalar; la otra espera o termina sin alterar el contenido activo |
+| SYNC-027 | JSON de manifiesto estricto | Claves duplicadas, constantes no estándar o propiedades adicionales | Rechazo antes de confiar en el contenido |
+| SYNC-028 | Firma Ed25519 | Firma alterada, clave desconocida o firma con longitud inválida | Rechazo criptográfico |
+| SYNC-029 | Anti-replay por canal | Secuencia inferior o igual con hash distinto | Rechazo; misma secuencia y mismo manifiesto se considera no-op |
+| SYNC-030 | Compatibilidad de aplicación | Manifiesto exige versión superior a la instalada | No se descarga ni instala |
+| SYNC-031 | Allowlist de distribución | URL HTTP, credenciales, puerto no estándar o host no permitido | Rechazo |
+| SYNC-032 | Índice de paquete | Índice ausente, esquema incorrecto, entrada duplicada o archivo no declarado | Rechazo |
+| SYNC-033 | Integridad de recurso | Tamaño o SHA-256 de una lección no coincide | Rechazo del paquete completo |
+| SYNC-034 | Esquema académico | Documento no cumple JSON v1 o su UUID no coincide con la ruta | Rechazo del paquete completo |
+| SYNC-035 | Colisión de identidad | UUID de lección, ejemplo o ejercicio repetido/reasignado en el paquete | Rechazo |
+| SYNC-036 | Archivo ZIP especial | Symlink, ruta absoluta, traversal, directorio o tipo especial | Rechazo sin extracción |
+| SYNC-037 | ZIP bomb | Tamaño descomprimido o ratio supera límites | Rechazo antes de activar |
+| SYNC-038 | Registro local | Secuencia duplicada o dos paquetes activos en el mismo canal | Restricción de base de datos |
+| SYNC-039 | Ciclo de vida del paquete | Salto de estado, cambio de hash/identidad o borrado | Rechazo por modelo/ORM |
+| SYNC-040 | Estado por canal | Paquete activo de otro canal o no activo | Rechazo de validación |
+| SYNC-041 | Mutación ORM de historial | `QuerySet.update()` o borrado de paquete | Operación rechazada |
+
+La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
+
+
+## 6.7 Importación académica y revisión de licencias
+
+> **Estado:** el usuario confirmó que la suite local actual finaliza con **93 pruebas: OK**. Esto incluye SYNC-027–SYNC-041 (verificador de manifiestos, ZIP y registro local). La instalación de `cryptography==46.0.3` en `.venv` resolvió el fallo de importación; el test de transición se corrigió para intentar el salto inválido `descargado → activo`.
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| IMP-001 | JSON válido | Valida sin escribir filas |
+| IMP-002 | JSON mal formado o UTF-8 inválido | Error controlado |
+| IMP-003 | Versión de esquema desconocida | Rechazo |
+| IMP-004 | Propiedad desconocida o clave JSON duplicada | Rechazo |
+| IMP-005 | UUID de lección inexistente | Rechazo |
+| IMP-006 | UUID de ejemplo/ejercicio inválido | Rechazo |
+| IMP-007 | UUID repetido en documento o lote | Rechazo |
+| IMP-008 | UUID de recurso asociado a otra lección | Rechazo |
+| IMP-009 | Fuente inexistente o inactiva | Rechazo |
+| IMP-010 | Fuente con licencia pendiente | Advertencia; el borrador no puede pasar a revisión |
+| IMP-011 | Teoría, explicación u objetivo vacío | Rechazo |
+| IMP-012 | Tipo, nivel, rol o uso declarado no permitido | Rechazo |
+| IMP-013 | Texto fuera de límite del modelo | Rechazo |
+| IMP-014 | Archivo superior a 2 MiB o JSON demasiado profundo | Rechazo |
+| IMP-015 | Reimportar el mismo hash | No duplica la versión |
+| IMP-016 | Contenido distinto para una lección | Crea una versión nueva, nunca sobrescribe la anterior |
+| IMP-017 | Error al crear una referencia | Rollback completo |
+| IMP-018 | Usuario no editorial intenta importar o revisar licencia | Rechazo |
+| IMP-019 | Importación válida | Solo crea borradores y referencias |
+| IMP-020 | Progreso e intentos preexistentes | Permanecen intactos |
+| IMP-021 | Código malicioso como texto | Se almacena como texto; nunca se ejecuta |
+| IMP-022 | Dos importaciones concurrentes | Sin versiones parciales ni números duplicados |
+| LIC-001 | Fuente pendiente | Bloquea envío a revisión |
+| LIC-002 | Fuente compatible sin evidencia | Rechaza revisión de licencia |
+| LIC-003 | Fuente compatible sin alcance | Rechaza revisión de licencia |
+| LIC-004 | Fuente solo referencia con adaptación/reproducción | Bloquea revisión editorial |
+| LIC-005 | Evidencia HTTP o URL inválida | Rechaza decisión de licencia |
+| LIC-006 | Decisión de licencia por editor activo | Conserva estado, evidencia, alcance, actor y fecha |
+| LIC-007 | Fuente requiere permiso/no reutilizable | Bloquea envío a revisión |
+| LIC-008 | Decisión de licencia cambia después de enviar a revisión | Bloquea aprobación/publicación y conserva snapshot histórico |
+| LIC-009 | Modificar/eliminar referencias de versión en revisión | Operación rechazada por protección ORM |
+
+
+### 6.8 Validación confirmada — distribución firmada y registro local
+
+El usuario reportó la ejecución satisfactoria de **93 pruebas (OK)** en el entorno local después de:
+- Instalar `cryptography==46.0.3` en el entorno virtual del proyecto.
+- Corregir `test_no_se_puede_saltar_transicion_de_paquete`: el caso parte de `descargado` e intenta `activo`, transición no permitida por el ciclo de vida.
+
+Esta confirmación acredita la suite ejecutada en el entorno del usuario. No equivale a una ejecución independiente en CI ni valida componentes aún no implementados, como publicador central, cliente HTTP, instalador, activación y rollback.

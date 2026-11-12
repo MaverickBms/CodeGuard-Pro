@@ -2,6 +2,7 @@
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.db.models import ProtectedError
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -194,6 +195,457 @@ class IntentosEjercicioTests(TestCase):
             registrar_intento_ejercicio(self.usuario, self.ejercicio, "respuesta")
 
         self.assertFalse(IntentoEjercicio.objects.filter(ejercicio=self.ejercicio).exists())
+
+
+
+
+
+    def test_ciclo_editorial_revisa_aprueba_y_publica_versiones(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.knowledge import (
+            aprobar_version_contenido,
+            crear_version_contenido_leccion,
+            enviar_version_a_revision,
+            publicar_version_contenido,
+        )
+        from apps.roadmaps.models import ContenidoLeccion, EjemploLeccion, FuenteConocimiento
+
+        editor = get_user_model().objects.create_user(
+            username="editor", password="ClaveSegura123!", is_staff=True, is_active=True
+        )
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            teoria_tecnica="Una variable enlaza un nombre con un objeto.",
+            explicacion_sencilla="Un nombre permite referirse a un valor.",
+        )
+        EjemploLeccion.objects.create(
+            leccion=self.leccion, titulo="Asignación", codigo="nombre = 'Ada'", publicado=True
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url_canonica="https://docs.python.org/3/reference/",
+            edicion="3",
+        )
+        from apps.roadmaps.knowledge import revisar_licencia_fuente
+        revisar_licencia_fuente(
+            fuente.pk, actor=editor, estado="compatible",
+            evidencia="https://docs.python.org/3/license.html",
+            alcance="Redistribución con atribución.",
+            nota="Revisión manual de licencia para la prueba.",
+        )
+
+        primera = crear_version_contenido_leccion(
+            self.leccion, fuentes=[(fuente, "principal", "Assignment statements", "Fuente oficial")]
+        )
+        with self.assertRaises(ValidationError):
+            publicar_version_contenido(primera.pk, actor=editor)
+
+        primera = enviar_version_a_revision(primera.pk, actor=editor)
+        self.assertEqual(primera.enviada_por, editor)
+        self.assertIsNotNone(primera.enviada_en)
+        with self.assertRaises(ValidationError):
+            primera.snapshot["contenido"]["teoria_tecnica"] = "Alterado"
+            primera.save()
+
+        aprobar_version_contenido(primera.pk, actor=editor)
+        primera = publicar_version_contenido(primera.pk, actor=editor)
+        self.assertEqual(primera.estado, "publicada")
+        self.assertEqual(primera.revisada_por, editor)
+        self.assertEqual(primera.publicada_por, editor)
+        self.assertIsNotNone(primera.publicada_en)
+
+        ContenidoLeccion.objects.filter(leccion=self.leccion).update(
+            teoria_tecnica="Una variable asocia un identificador con un objeto."
+        )
+        segunda = crear_version_contenido_leccion(
+            self.leccion, fuentes=[(fuente, "principal", "Names", "Fuente oficial")]
+        )
+        enviar_version_a_revision(segunda.pk, actor=editor)
+        aprobar_version_contenido(segunda.pk, actor=editor)
+        segunda = publicar_version_contenido(segunda.pk, actor=editor)
+
+        primera.refresh_from_db()
+        self.assertEqual(segunda.estado, "publicada")
+        self.assertEqual(primera.estado, "sustituida")
+        self.assertEqual(
+            self.leccion.versiones_contenido.filter(estado="publicada").count(), 1
+        )
+
+
+    def test_modelo_impide_saltar_transiciones_editoriales(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.models import VersionContenidoLeccion
+
+        version = VersionContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            numero_version=1,
+            snapshot={"contenido": "borrador"},
+            sha256="d" * 64,
+        )
+        version.estado = "publicada"
+        with self.assertRaises(ValidationError):
+            version.save()
+
+    def test_transicion_editorial_exige_usuario_staff_activo(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.knowledge import enviar_version_a_revision
+
+        with self.assertRaises(ValidationError):
+            enviar_version_a_revision(1, actor=self.usuario)
+
+    def test_retirada_exige_motivo_y_conserva_snapshot(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.knowledge import (
+            aprobar_version_contenido,
+            crear_version_contenido_leccion,
+            enviar_version_a_revision,
+            publicar_version_contenido,
+            retirar_version_publicada,
+        )
+        from apps.roadmaps.models import ContenidoLeccion, FuenteConocimiento
+
+        editor = get_user_model().objects.create_user(
+            username="editor_retiro", password="ClaveSegura123!", is_staff=True
+        )
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            teoria_tecnica="Teoría técnica.",
+            explicacion_sencilla="Explicación sencilla.",
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Docs",
+            url_canonica="https://docs.python.org/3/",
+        )
+        from apps.roadmaps.knowledge import revisar_licencia_fuente
+        revisar_licencia_fuente(
+            fuente.pk, actor=editor, estado="compatible",
+            evidencia="https://docs.python.org/3/license.html",
+            alcance="Redistribución con atribución.",
+            nota="Revisión manual de licencia para la prueba.",
+        )
+        version = crear_version_contenido_leccion(
+            self.leccion, fuentes=[(fuente, "principal", "", "")]
+        )
+        enviar_version_a_revision(version.pk, actor=editor)
+        aprobar_version_contenido(version.pk, actor=editor)
+        publicar_version_contenido(version.pk, actor=editor)
+        snapshot_original = version.snapshot
+
+        with self.assertRaises(ValidationError):
+            retirar_version_publicada(version.pk, actor=editor, motivo=" ")
+        retirada = retirar_version_publicada(
+            version.pk, actor=editor, motivo="La referencia requiere actualización."
+        )
+        self.assertEqual(retirada.estado, "retirada")
+        self.assertEqual(retirada.snapshot, snapshot_original)
+        self.assertEqual(retirada.motivo_retiro, "La referencia requiere actualización.")
+        self.assertEqual(retirada.retirada_por, editor)
+        self.assertIsNotNone(retirada.retirada_en)
+        self.assertEqual(retirada.revisada_por, editor)
+
+    def test_servicio_crea_snapshot_determinista_con_fuentes_y_recursos_publicados(self):
+        import hashlib
+        import json
+        from apps.roadmaps.knowledge import crear_version_contenido_leccion
+        from apps.roadmaps.models import (
+            ContenidoLeccion,
+            EjemploLeccion,
+            FuenteConocimiento,
+        )
+
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            objetivos_aprendizaje="Comprender variables",
+            teoria_tecnica="Una variable enlaza un nombre con un objeto.",
+            explicacion_sencilla="Un nombre permite referirse a un valor.",
+            publicado=True,
+        )
+        EjemploLeccion.objects.create(
+            leccion=self.leccion,
+            titulo="Asignación",
+            codigo="nombre = 'Ada'",
+            publicado=True,
+        )
+        EjemploLeccion.objects.create(
+            leccion=self.leccion,
+            titulo="Borrador no publicado",
+            codigo="secreto = True",
+            publicado=False,
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url_canonica="https://docs.python.org/3/reference/",
+            edicion="3",
+        )
+
+        version = crear_version_contenido_leccion(
+            self.leccion,
+            resumen_cambios="Primera versión editorial",
+            fuentes=[(fuente, "principal", "Assignment statements", "Referencia del lenguaje")],
+        )
+        serializado = json.dumps(
+            version.snapshot, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        )
+
+        self.assertEqual(version.numero_version, 1)
+        self.assertEqual(version.estado, "borrador")
+        self.assertEqual(version.sha256, hashlib.sha256(serializado.encode("utf-8")).hexdigest())
+        self.assertEqual(len(version.snapshot["ejemplos"]), 1)
+        self.assertEqual(version.fuentes.get(), fuente)
+
+        ContenidoLeccion.objects.filter(leccion=self.leccion).update(
+            teoria_tecnica="Texto revisado posteriormente."
+        )
+        segunda = crear_version_contenido_leccion(self.leccion)
+        self.assertEqual(segunda.numero_version, 2)
+        self.assertIn("Una variable enlaza", version.snapshot["contenido"]["teoria_tecnica"])
+
+    def test_servicio_no_versiona_leccion_sin_contenido_completo(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.knowledge import crear_version_contenido_leccion
+        from apps.roadmaps.models import ContenidoLeccion
+
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            teoria_tecnica="Solo teoría, falta explicación sencilla.",
+        )
+        with self.assertRaises(ValidationError):
+            crear_version_contenido_leccion(self.leccion)
+
+    def test_version_contenido_conserva_snapshot_y_fuente(self):
+        from apps.roadmaps.models import (
+            FuenteConocimiento,
+            ReferenciaFuenteContenido,
+            VersionContenidoLeccion,
+        )
+
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url_canonica="https://docs.python.org/3/reference/",
+            edicion="3",
+            identificador_licencia="PSF-2.0",
+            url_licencia="https://docs.python.org/3/license.html",
+        )
+        version = VersionContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            numero_version=1,
+            estado="borrador",
+            snapshot={
+                "objetivos": ["Comprender variables"],
+                "teoria_tecnica": "Una variable enlaza un nombre con un objeto.",
+                "ejemplos": [],
+                "ejercicios": [],
+            },
+            sha256="a" * 64,
+        )
+        referencia = ReferenciaFuenteContenido.objects.create(
+            version=version, fuente=fuente, rol="principal"
+        )
+
+        self.assertEqual(version.fuentes.get(), fuente)
+        self.assertEqual(referencia.version.snapshot["objetivos"][0], "Comprender variables")
+        self.assertEqual(version.sha256, "a" * 64)
+
+
+    def test_hash_snapshot_rechaza_formato_invalido(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.models import VersionContenidoLeccion
+
+        version = VersionContenidoLeccion(
+            leccion=self.leccion,
+            numero_version=1,
+            snapshot={"teoria_tecnica": "Contenido"},
+            sha256="no-es-un-hash",
+        )
+        with self.assertRaises(ValidationError):
+            version.full_clean()
+
+    def test_versiones_no_admiten_mutaciones_masivas(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.models import VersionContenidoLeccion
+
+        version = VersionContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            numero_version=1,
+            snapshot={"contenido": "original"},
+            sha256="b" * 64,
+        )
+        with self.assertRaises(ValidationError):
+            VersionContenidoLeccion.objects.filter(pk=version.pk).update(
+                snapshot={"contenido": "alterado"}
+            )
+        with self.assertRaises(ValidationError):
+            VersionContenidoLeccion.objects.filter(pk=version.pk).delete()
+        with self.assertRaises(ValidationError):
+            VersionContenidoLeccion.objects.bulk_create([
+                VersionContenidoLeccion(
+                    leccion=self.leccion,
+                    numero_version=2,
+                    estado="publicada",
+                    snapshot={"contenido": "no permitido"},
+                    sha256="c" * 64,
+                )
+            ])
+
+    def test_recursos_didacticos_tienen_identificadores_uuid_estables(self):
+        from apps.roadmaps.models import EjemploLeccion
+
+        ejemplo = EjemploLeccion.objects.create(
+            leccion=self.leccion, titulo="Ejemplo de variable", codigo="nombre = 'Ada'"
+        )
+        segundo = EjercicioLeccion.objects.create(
+            leccion=self.leccion, titulo="Segundo ejercicio", enunciado="Declara otra variable."
+        )
+        for recurso in (self.leccion, ejemplo, self.ejercicio, segundo):
+            with self.subTest(recurso=recurso):
+                self.assertIsNotNone(recurso.clave_contenido)
+                self.assertEqual(recurso.clave_contenido.version, 4)
+        self.assertNotEqual(self.ejercicio.clave_contenido, segundo.clave_contenido)
+
+    def test_no_se_puede_eliminar_ejercicio_con_intentos_historicos(self):
+        IntentoEjercicio.objects.create(
+            ejercicio=self.ejercicio, usuario=self.usuario, respuesta="nombre = 'Ada'"
+        )
+        with self.assertRaises(ProtectedError):
+            self.ejercicio.delete()
+        self.assertTrue(IntentoEjercicio.objects.filter(ejercicio=self.ejercicio).exists())
+
+    def test_no_se_puede_eliminar_evaluador_referenciado_por_intento(self):
+        evaluador = ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio, tipo="respuesta_exacta",
+            configuracion={"respuesta_esperada": "nombre = 'Ada'"},
+        )
+        IntentoEjercicio.objects.create(
+            ejercicio=self.ejercicio, usuario=self.usuario, respuesta="nombre = 'Ada'",
+            configuracion_evaluacion=evaluador, version_evaluacion=evaluador.version,
+        )
+        with self.assertRaises(ProtectedError):
+            evaluador.delete()
+        self.assertTrue(ConfiguracionEvaluacion.objects.filter(pk=evaluador.pk).exists())
+
+
+    def test_comando_crear_version_genera_borrador_con_fuente(self):
+        from io import StringIO
+        from django.core.management import call_command
+        from apps.roadmaps.models import ContenidoLeccion, FuenteConocimiento, VersionContenidoLeccion
+
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion, teoria_tecnica="Teoría técnica.",
+            explicacion_sencilla="Explicación sencilla.",
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation", titulo="Python Docs",
+            url_canonica="https://docs.python.org/3/",
+        )
+        salida = StringIO()
+        call_command(
+            "crear_version_leccion", leccion=self.leccion.pk,
+            fuente_id=[fuente.pk], resumen="Primera versión", stdout=salida,
+        )
+        version = VersionContenidoLeccion.objects.get(leccion=self.leccion)
+        self.assertEqual(version.estado, "borrador")
+        self.assertEqual(version.fuentes.get(), fuente)
+        self.assertIn("Versión borrador creada", salida.getvalue())
+
+    def test_comando_gestionar_version_envia_a_revision(self):
+        from io import StringIO
+        from django.core.management import call_command
+        from apps.roadmaps.models import ContenidoLeccion, FuenteConocimiento
+        from apps.roadmaps.knowledge import crear_version_contenido_leccion
+
+        editor = get_user_model().objects.create_user(
+            username="editor_cli", password="ClaveSegura123!", is_staff=True
+        )
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion, teoria_tecnica="Teoría técnica.",
+            explicacion_sencilla="Explicación sencilla.",
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation", titulo="Python Docs",
+            url_canonica="https://docs.python.org/3/",
+        )
+        from apps.roadmaps.knowledge import revisar_licencia_fuente
+        revisar_licencia_fuente(
+            fuente.pk, actor=editor, estado="compatible",
+            evidencia="https://docs.python.org/3/license.html",
+            alcance="Redistribución con atribución.",
+            nota="Revisión manual de licencia para la prueba.",
+        )
+        version = crear_version_contenido_leccion(
+            self.leccion, fuentes=[(fuente, "principal", "", "")]
+        )
+        salida = StringIO()
+        call_command(
+            "gestionar_version_leccion", "enviar-revision",
+            version_id=version.pk, usuario=editor.username, stdout=salida,
+        )
+        version.refresh_from_db()
+        self.assertEqual(version.estado, "revision")
+        self.assertEqual(version.enviada_por, editor)
+        self.assertIn("estado=revision", salida.getvalue())
+
+    def test_comando_registrar_fuente_guarda_metadatos_y_fecha_consulta(self):
+        from io import StringIO
+        from django.core.management import call_command
+        from apps.roadmaps.models import FuenteConocimiento
+
+        salida = StringIO()
+        call_command(
+            "registrar_fuente_conocimiento",
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url="https://docs.python.org/3/reference/",
+            edicion="Python 3",
+            licencia_id="PSF-2.0",
+            licencia_url="https://docs.python.org/3/license.html",
+            notas="Revisar la sección aplicable a la lección.",
+            stdout=salida,
+        )
+        fuente = FuenteConocimiento.objects.get(
+            url_canonica="https://docs.python.org/3/reference/", edicion="Python 3"
+        )
+        self.assertEqual(fuente.publicador, "Python Software Foundation")
+        self.assertEqual(fuente.identificador_licencia, "PSF-2.0")
+        self.assertIsNotNone(fuente.consultada_en)
+        self.assertTrue(fuente.activa)
+        self.assertIn("Fuente registrada", salida.getvalue())
+        self.assertIn("no verificado", salida.getvalue())
+
+    def test_comando_registrar_fuente_rechaza_url_no_https(self):
+        from django.core.management import call_command
+        from django.core.management.base import CommandError
+
+        with self.assertRaisesMessage(CommandError, "URL HTTPS"):
+            call_command(
+                "registrar_fuente_conocimiento",
+                publicador="Organización",
+                titulo="Documentación",
+                url="http://example.org/docs",
+            )
+
+    def test_comando_registrar_fuente_rechaza_duplicado(self):
+        from django.core.management import call_command
+        from django.core.management.base import CommandError
+        from apps.roadmaps.models import FuenteConocimiento
+
+        FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url_canonica="https://docs.python.org/3/reference/",
+            edicion="Python 3",
+        )
+        with self.assertRaisesMessage(CommandError, "Ya existe una fuente"):
+            call_command(
+                "registrar_fuente_conocimiento",
+                publicador="Python Software Foundation",
+                titulo="Python Language Reference",
+                url="https://docs.python.org/3/reference/",
+                edicion="Python 3",
+            )
 
     def test_vista_guarda_intento_y_muestra_historial(self):
         ConfiguracionEvaluacion.objects.create(
