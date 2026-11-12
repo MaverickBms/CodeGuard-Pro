@@ -113,6 +113,14 @@ class IntentoEjercicio(models.Model):
         related_name="intentos",
         verbose_name="versión académica presentada",
     )
+    paquete_contenido = models.ForeignKey(
+        "roadmaps.PaqueteConocimientoInstalado",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="intentos",
+        verbose_name="paquete académico presentado",
+    )
     snapshot_ejercicio = models.JSONField(
         default=dict,
         blank=True,
@@ -170,6 +178,22 @@ class IntentoEjercicio(models.Model):
 
     def clean(self):
         super().clean()
+        if self.version_contenido_id and self.paquete_contenido_id:
+            raise ValidationError("Un intento no puede vincularse simultáneamente a una versión editorial y a un paquete.")
+        if self.paquete_contenido_id:
+            if not self.paquete_contenido.contenidos_leccion.filter(
+                leccion_id=self.ejercicio.leccion_id
+            ).exists():
+                raise ValidationError({
+                    "paquete_contenido": "El paquete no contiene un snapshot para la lección del ejercicio."
+                })
+            if (
+                not isinstance(self.snapshot_ejercicio, dict)
+                or self.snapshot_ejercicio.get("clave") != str(self.ejercicio.clave_contenido)
+            ):
+                raise ValidationError({
+                    "snapshot_ejercicio": "El snapshot debe identificar el ejercicio presentado."
+                })
         if self.version_contenido_id:
             if self.version_contenido.leccion_id != self.ejercicio.leccion_id:
                 raise ValidationError({
@@ -187,7 +211,7 @@ class IntentoEjercicio(models.Model):
         if self.pk:
             anterior = type(self).objects.get(pk=self.pk)
             campos_inmutables = (
-                "ejercicio_id", "usuario_id", "version_contenido_id",
+                "ejercicio_id", "usuario_id", "version_contenido_id", "paquete_contenido_id",
                 "snapshot_ejercicio", "respuesta", "configuracion_evaluacion_id",
                 "version_evaluacion", "creado_en",
             )
