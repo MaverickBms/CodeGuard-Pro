@@ -244,3 +244,14 @@ El modelo está diseñado para agregar nuevas aplicaciones sin modificar las exi
 ## 9. Contrato y documentación técnica
 
 El payload, manifiesto, firma Ed25519, hash SHA-256, validación, instalación atómica, rollback y estrategia de migración se especifican en `docs/DISENO_DATOS_SINCRONIZACION.md`.
+
+---
+
+## Anexo — Contenido activo y evidencia de intentos (migración 0014)
+
+- `ContenidoLeccionActivo`: relación 1:1 entre una lección y su `VersionContenidoLeccion` actualmente publicada. No copia ni modifica el snapshot; únicamente selecciona cuál debe leer la vista de estudio.
+- La publicación editorial actualiza el puntero dentro de la misma transacción que publica la versión. La retirada elimina el puntero después de retirar la versión, sin borrar snapshots ni intentos.
+- `IntentoEjercicio.version_contenido`: FK protegida y nullable para conservar compatibilidad con intentos históricos que no pueden asociarse retroactivamente a una versión exacta.
+- `IntentoEjercicio.snapshot_ejercicio`: JSON inmutable por convención de servicio que conserva el enunciado, instrucciones, lenguaje, nivel, código inicial, obligatoriedad y clave estable del ejercicio presentado.
+- La migración 0014 rellena snapshots para intentos anteriores con el contenido disponible durante la migración y crea punteros para versiones que ya estaban publicadas. No inventa una FK histórica cuando no hay evidencia suficiente para determinar qué versión vio el estudiante.
+- Los modelos validan el puntero y los servicios editoriales controlan su ciclo de vida. Estas protecciones ORM no equivalen a restricciones completas frente a SQL directo.
