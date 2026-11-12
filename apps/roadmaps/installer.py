@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import os
 import tempfile
+from datetime import timedelta
 from datetime import datetime
 from pathlib import Path
 from uuid import UUID
@@ -341,6 +342,7 @@ def instalar_paquete_firmado(
         state.active_package = package
         state.last_check_at = timezone.now()
         state.last_success_at = state.last_check_at
+        state.next_check_after = state.last_check_at + timedelta(hours=24)
         state.last_error_code = ""
         state.manifest_etag = manifest_etag
         state.save()
