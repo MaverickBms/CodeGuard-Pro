@@ -1,0 +1,467 @@
+# Diseño técnico — Modelo de datos y contrato de sincronización de conocimiento
+
+**Producto:** CodeGuard Pro  
+**Fase:** 2 — Motor de aprendizaje y contenido interactivo  
+**Estado:** Propuesta técnica basada en auditoría de `main`; pendiente de implementación  
+**Fecha:** 11 de noviembre de 2026  
+**ADR relacionada:** `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`
+
+---
+
+## 1. Objetivo y límites
+
+Definir cómo CodeGuard Pro podrá distribuir contenido académico revisado, mantenerlo versionado y actualizarlo de forma opcional cuando exista conexión, sin depender de Internet para estudiar.
+
+Este documento no afirma que el sincronizador exista. Describe el diseño recomendado antes de modificar modelos, migraciones, vistas o Electron.
+
+Incluye:
+- Auditoría del modelo actual de contenido y evidencias.
+- Separación entre estructura curricular, contenido versionado y datos del estudiante.
+- Entidades locales y metadatos editoriales.
+- Contrato del paquete y del manifiesto.
+- Flujo de publicación, descarga, validación, activación y rollback.
+- Estrategia de migración compatible con los registros existentes.
+- Requisitos de seguridad, privacidad y pruebas.
+
+No incluye sincronización de progreso entre dispositivos, cuentas en la nube, actualización del ejecutable ni ejecución remota/local de código descargado.
+
+## 2. Auditoría del estado actual
+
+La revisión de la rama `docs/phase-2-hybrid-knowledge-sync` encontró:
+
+| Archivo / componente | Estado comprobado | Limitación para versionado |
+|---|---|---|
+| `apps/roadmaps/models.py` — `Roadmap`, `Etapa`, `Modulo`, `Leccion` | Estructura curricular relacional | No se encontró una clave pública/estable de contenido para resolver recursos de paquetes entre instalaciones. |
+| `ContenidoLeccion` | Relación `OneToOneField` con `Leccion`; teoría, explicación y `publicado` | Solo existe un registro editable por lección; no conserva versiones históricas ni referencias a fuentes. |
+| `EjemploLeccion` | FK a `Leccion`; campos editables; `publicado=True` por defecto | No tiene clave externa estable ni versión editorial. |
+| `EjercicioLeccion` | FK a `Leccion`; campos editables; `publicado=True` por defecto | Enunciado y pistas pueden cambiar sin snapshot histórico. |
+| `ConfiguracionEvaluacion` | Versionado numérico por ejercicio y una sola configuración activa | La configuración histórica permanece como fila, pero no está vinculada a una versión del contenido. |
+| `IntentoEjercicio` | Guarda respuesta, resultado, puntuación, detalles y versión numérica del evaluador | No identifica la versión exacta del enunciado/teoría que vio el estudiante. |
+| `views.leccion_detalle` | Lee directamente los modelos editables publicados | No resuelve una versión inmutable activa. |
+| `attempts.py` | Evalúa con el evaluador activo al registrar el intento | El intento no guarda snapshot del contenido presentado. |
+| `electron/main.js` / `preload.js` | Arranque del servidor local y API IPC de temas/funciones de escritorio | No se encontró flujo de consulta/descarga de paquetes. |
+| `config/settings/base.py` | Aplicaciones instaladas: accounts, audit, core y roadmaps | No se encontró una app de conocimiento/sincronización instalada. |
+| `apps/roadmaps/migrations` | Migraciones `0001_initial`, `0002_contenido_leccion`, `0003_intentos_y_evaluacion` | No hay todavía tablas para fuentes, versiones de contenido o paquetes instalados. |
+
+### 2.1 Riesgos que deben resolverse
+
+1. **Borrado en cascada de evidencias:** `IntentoEjercicio.ejercicio` usa `on_delete=CASCADE`. Eliminar un ejercicio elimina también sus intentos.
+2. **Pérdida de vínculo histórico:** `IntentoEjercicio.configuracion_evaluacion` usa `SET_NULL`. Si se elimina una configuración, queda el número de versión, pero no la configuración aplicada.
+3. **Contenido mutable:** las vistas leen directamente `ContenidoLeccion`, `EjemploLeccion` y `EjercicioLeccion`; una edición puede cambiar lo que se muestra sin conservar la versión anterior.
+4. **Publicación inconsistente:** `ContenidoLeccion.publicado` inicia en falso, pero ejemplos y ejercicios inician publicados. El futuro flujo editorial debe validar la publicación de la lección como una unidad coherente.
+5. **Identidad de contenido:** los IDs numéricos de SQLite no deben ser identificadores del paquete, porque no son una identidad portátil garantizada entre instalaciones.
+6. **Configuración de evaluación en cliente:** los evaluadores necesarios para operar localmente no deben tratarse como secretos inviolables. Un propietario con acceso al equipo puede inspeccionar sus datos locales; no almacenar secretos ni credenciales dentro de esas configuraciones.
+
+## 3. Principio de diseño: tres dominios separados
+
+La arquitectura de datos debe separar:
+
+### A. Estructura curricular
+
+Contiene la ruta, etapas, módulos y lecciones: qué debe aprender el estudiante y en qué orden.
+
+- Identidad estable de cada elemento curricular.
+- Prerrequisitos y orden.
+- No se reemplaza al actualizar una explicación o un ejercicio.
+- Los cambios estructurales del roadmap requieren una publicación curricular explícita y una política de compatibilidad propia.
+
+### B. Conocimiento académico versionado
+
+Contiene el material que se puede actualizar:
+
+- Teoría técnica y explicación pedagógica.
+- Objetivos de aprendizaje.
+- Ejemplos, código, salidas esperadas y explicaciones.
+- Enunciados, instrucciones, pistas y criterios/evaluadores asociados.
+- Fuentes, licencias, versiones consultadas y fechas de revisión.
+- Estado editorial y versión publicada.
+
+Cada publicación es inmutable. Una corrección produce una nueva versión; no sobrescribe la versión anterior.
+
+### C. Evidencias y datos locales del estudiante
+
+Contiene progreso, intentos, respuestas, resultados, preferencias y configuración local.
+
+- No se distribuye dentro de paquetes de conocimiento.
+- No se sobrescribe al instalar contenido.
+- Los intentos conservan la versión del contenido y del evaluador que los originó.
+- El historial académico se conserva aunque una lección sea sustituida o retirada.
+
+## 4. Modelo de datos local recomendado
+
+Los siguientes modelos son una propuesta conceptual. Los nombres pueden ajustarse al estilo del código antes de crear migraciones.
+
+### 4.1 Identificadores estables
+
+Agregar una clave estable UUID a los elementos que deben resolverse desde paquetes externos:
+
+- `Leccion.clave_contenido`: UUID único e inmutable.
+- `EjemploLeccion.clave_contenido`: UUID único e inmutable.
+- `EjercicioLeccion.clave_contenido`: UUID único e inmutable.
+
+Los paquetes referencian estas claves, no los PK autoincrementales de SQLite. La clave no cambia si se modifica el título, la redacción o el orden.
+
+La fuente maestra del roadmap debe incluir esas claves para que una instalación nueva pueda resolver los mismos recursos. Para registros existentes, una migración de datos asignará UUID una sola vez y un export controlado los incorporará al catálogo curricular canónico. No generar claves nuevas en cada arranque ni al importar un paquete.
+
+### 4.2 `FuenteConocimiento`
+
+Representa una fuente técnica externa.
+
+| Campo propuesto | Tipo conceptual | Uso |
+|---|---|---|
+| `id` | UUID | Identidad estable |
+| `nombre` | texto | Nombre del publicador/documentación |
+| `editor` | texto | Organización responsable |
+| `url_canonica` | URL | Página/documentación principal |
+| `identificador_licencia` | texto | SPDX u otra identificación, si aplica |
+| `url_licencia` | URL | Condiciones de reutilización |
+| `atribucion_requerida` | texto | Atribución que debe mostrarse |
+| `tipo_fuente` | choice | Documentación oficial, estándar, especificación, etc. |
+| `activa` | boolean | Si se sigue consultando |
+
+Una fuente no se considera reutilizable solo por ser pública. La licencia y las condiciones deben revisarse.
+
+### 4.3 `VersionContenidoLeccion`
+
+Snapshot inmutable de una lección publicada.
+
+| Campo propuesto | Tipo conceptual | Uso |
+|---|---|---|
+| `id` | UUID | Identidad de la versión |
+| `leccion` | FK protegida | Lección curricular estable |
+| `version` | entero | Secuencia por lección |
+| `schema_version` | texto | Versión del esquema de payload |
+| `payload` | JSON validado | Snapshot completo de teoría, ejemplos y ejercicios |
+| `sha256` | texto de 64 caracteres | Integridad del payload canónico |
+| `estado_editorial` | choice | borrador, revisión, aprobado, publicado, sustituido, retirado |
+| `creado_en` | fecha/hora | Creación del snapshot |
+| `revisado_en` | fecha/hora nullable | Última revisión técnica/pedagógica |
+| `publicado_en` | fecha/hora nullable | Publicación |
+| `responsable_revision` | texto/identidad editorial | Trazabilidad |
+| `motivo_cambio` | texto | Por qué se creó esta versión |
+
+Restricciones:
+- Único por (`leccion`, `version`).
+- Una versión publicada nunca se edita; se crea otra.
+- El payload se valida contra un esquema conocido.
+- Las referencias a fuentes se registran mediante una relación explícita, no solo en texto libre.
+
+### 4.4 `ReferenciaFuenteContenido`
+
+Relación entre una versión de lección y una fuente consultada.
+
+| Campo propuesto | Tipo conceptual | Uso |
+|---|---|---|
+| `version_contenido` | FK protegida | Snapshot académico respaldado |
+| `fuente` | FK protegida | Fuente registrada |
+| `version_fuente` | texto | Versión/edición/tag/fecha de la fuente consultada |
+| `url_seccion` | URL | Sección exacta usada como referencia |
+| `consultada_en` | fecha/hora | Momento de consulta |
+| `nota` | texto | Qué afirmación o parte respalda |
+
+La relación permite que una lección cite varias fuentes y que una fuente respalde varias lecciones.
+
+### 4.5 `ContenidoLeccionActivo`
+
+Puntero a la versión que debe presentar la aplicación.
+
+| Campo propuesto | Tipo conceptual | Uso |
+|---|---|---|
+| `leccion` | OneToOne/FK única | Lección curricular |
+| `version_contenido` | FK protegida | Versión publicada activa |
+| `activado_en` | fecha/hora | Momento de activación |
+
+Separar el puntero de activación del snapshot permite cambiar muchas lecciones dentro de una transacción al instalar un paquete. Si falla la activación, se revierte la transacción y permanece el conjunto anterior.
+
+### 4.6 `PaqueteConocimientoInstalado`
+
+Registro local de paquetes recibidos y validados.
+
+| Campo propuesto | Tipo conceptual | Uso |
+|---|---|---|
+| `package_id` | UUID | Identidad del paquete |
+| `package_version` | texto/semver | Versión publicada |
+| `channel` | texto | stable/beta u otro canal explícito |
+| `content_schema_version` | texto | Esquema requerido |
+| `sha256` | texto | Hash verificado |
+| `signature_key_id` | texto | Clave pública usada para verificar |
+| `published_at` | fecha/hora | Publicación central |
+| `installed_at` | fecha/hora nullable | Instalación local |
+| `status` | choice | descargado, verificado, activo, rechazado, sustituido |
+| `error_code` | texto nullable | Diagnóstico técnico sin datos privados |
+
+La tabla conserva historial de paquetes y permite diagnosticar instalaciones.
+
+### 4.7 `EstadoSincronizacion`
+
+Estado local de la comprobación, idealmente una fila por canal.
+
+| Campo propuesto | Tipo conceptual | Uso |
+|---|---|---|
+| `channel` | texto único | Canal consultado |
+| `last_check_at` | fecha/hora nullable | Última comprobación |
+| `last_success_at` | fecha/hora nullable | Última sincronización exitosa |
+| `manifest_etag` | texto nullable | Cache condicional HTTP |
+| `active_package` | FK nullable | Paquete local activo |
+| `last_error_code` | texto nullable | Último error |
+| `next_check_after` | fecha/hora nullable | Evitar consultas repetitivas |
+
+No almacenar tokens personales ni progreso del estudiante en este registro.
+
+## 5. Snapshot de contenido: forma del payload
+
+El payload de una versión de lección debe ser autocontenido y validable. Ejemplo ilustrativo (no es contenido académico real):
+
+```json
+{
+  "schema_version": "1.0",
+  "lesson_key": "uuid-estable-de-leccion",
+  "version": 3,
+  "locale": "es-CO",
+  "title": "Variables",
+  "objectives": ["Declarar y asignar variables"],
+  "technical_theory": "Contenido técnico revisado...",
+  "simple_explanation": "Explicación pedagógica original...",
+  "notes": [],
+  "examples": [
+    {
+      "key": "uuid-estable-de-ejemplo",
+      "title": "Asignación",
+      "language": "python",
+      "code": "nombre = 'Ada'",
+      "expected_output": "",
+      "explanation": "..."
+    }
+  ],
+  "exercises": [
+    {
+      "key": "uuid-estable-de-ejercicio",
+      "title": "Declara una variable",
+      "prompt": "Enunciado revisado...",
+      "instructions": [],
+      "language": "python",
+      "level": "basico",
+      "starter_code": "",
+      "hints": [],
+      "required": true,
+      "evaluator": {
+        "type": "respuesta_exacta",
+        "version": 2,
+        "config": {}
+      }
+    }
+  ],
+  "references": ["source-uuid-1"]
+}
+```
+
+Reglas del payload:
+- No incluir HTML arbitrario, JavaScript ejecutable, SQL, comandos de sistema ni migraciones.
+- El contenido enriquecido debe usar un formato permitido y sanitizable (por ejemplo Markdown con un subconjunto documentado).
+- Validar longitudes, número de ejemplos/ejercicios, tipos, URLs, UUIDs y campos permitidos.
+- Los identificadores de ejercicio deben ser estables entre versiones si representan el mismo ejercicio.
+- Si un ejercicio cambia sustancialmente de objetivo o criterio, crear una nueva identidad de ejercicio y no reciclar su clave.
+- Las configuraciones de evaluación deben ser declarativas y validadas por tipo. No se acepta código Python/JS arbitrario como evaluador.
+- Las configuraciones que el cliente necesita para evaluar localmente no son secretos frente al propietario del dispositivo. No colocar claves ni datos sensibles en ellas.
+
+## 6. Contrato del paquete de distribución
+
+### 6.1 Formato recomendado
+
+Paquete comprimido versionado, por ejemplo `codeguard-knowledge-<channel>-<version>.zip`, con estructura conceptual:
+
+```text
+package/
+  manifest.json
+  manifest.ed25519
+  payload/
+    lessons/
+      <lesson-uuid>.json
+  checksums.txt
+```
+
+El paquete contiene solo recursos editoriales publicados. No incluye base de datos del estudiante, intentos, respuestas, progreso, preferencias, secretos ni ejecutables.
+
+### 6.2 Manifiesto mínimo
+
+```json
+{
+  "manifest_version": "1",
+  "package_id": "uuid-del-paquete",
+  "package_version": "2026.11.1",
+  "channel": "stable",
+  "published_at": "2026-11-11T18:00:00Z",
+  "minimum_app_version": "0.1.0",
+  "content_schema_version": "1.0",
+  "package_file": "codeguard-knowledge-stable-2026.11.1.zip",
+  "size_bytes": 123456,
+  "sha256": "64-caracteres-hexadecimales",
+  "key_id": "codeguard-release-2026",
+  "resources": [
+    {
+      "key": "uuid-estable-de-leccion",
+      "version": 3,
+      "sha256": "64-caracteres-hexadecimales",
+      "status": "published"
+    }
+  ]
+}
+```
+
+Los valores son ilustrativos, no un paquete real.
+
+### 6.3 Firma e integridad
+
+- Usar firma digital Ed25519 para autenticar el manifiesto.
+- Firmar los bytes exactos de `manifest.json` mediante archivo de firma separado, evitando ambigüedad de canonicalización.
+- El manifiesto contiene SHA-256 del archivo de paquete; tras verificar la firma del manifiesto, el cliente calcula y compara el hash del paquete.
+- El cliente integra una o varias claves públicas de confianza identificadas por `key_id`.
+- La clave privada solo existe en el entorno editorial de publicación.
+- La rotación de claves requiere un procedimiento explícito y una versión de aplicación que reconozca la nueva clave.
+- Rechazar firmas desconocidas, hashes incorrectos, downgrade no autorizado, tamaños excesivos y esquemas no compatibles.
+
+TLS protege el transporte; la firma permite verificar el origen aunque el paquete se descargue desde una caché o espejo. El hash detecta corrupción, pero no sustituye la firma.
+
+## 7. Flujo editorial y de sincronización
+
+### 7.1 Publicación central
+
+1. Registrar la fuente, licencia, atribución y versión consultada.
+2. Detectar cambios en fuentes técnicas y crear una alerta/propuesta de revisión.
+3. Redactar o corregir contenido propio de CodeGuard.
+4. Validar exactitud técnica, claridad pedagógica, ejemplos, ejercicios y evaluadores.
+5. Aprobar la revisión mediante el flujo editorial.
+6. Generar snapshots inmutables por lección.
+7. Construir el paquete y el manifiesto.
+8. Firmar el manifiesto con la clave privada de publicación.
+9. Publicar archivos inmutables en el canal correspondiente.
+10. Registrar la versión publicada y su historial.
+
+### 7.2 Cliente local
+
+1. La aplicación arranca normalmente desde el almacenamiento local.
+2. Un comprobador en segundo plano consulta el manifiesto si hay conexión y si la política local permite comprobar.
+3. Usa timeout, límites de tamaño, caché HTTP/ETag y backoff.
+4. Compara las versiones instaladas con el manifiesto.
+5. Descarga solo paquetes compatibles a una zona temporal.
+6. Verifica firma del manifiesto, hash del paquete, esquema, claves y límites.
+7. Valida todo el contenido antes de modificar las tablas activas.
+8. Importa snapshots en una transacción.
+9. Actualiza los punteros de contenido activo en una transacción.
+10. Registra el paquete y conserva la versión anterior para rollback.
+11. Si cualquier paso falla, conserva el contenido previo y muestra un estado recuperable.
+
+### 7.3 Política de ejecución
+
+Recomendación para la primera implementación:
+- Comprobar al iniciar, pero después de que la ventana principal esté disponible.
+- No hacer llamadas de red desde `AppConfig.ready()`, migraciones ni durante el arranque crítico de Django.
+- Ejecutar la comprobación como tarea independiente/no bloqueante.
+- Permitir comprobación manual y opción para desactivar/posponer la automática.
+- Usar intervalo configurable y backoff; no crear un temporizador agresivo.
+- No mantener WebSocket ni conexión permanente.
+- La ausencia del servicio, timeout o falta de red nunca debe impedir estudiar.
+
+## 8. Distribución central: recomendación de infraestructura
+
+Para el primer incremento se recomienda que el endpoint central sea de distribución estática por HTTPS (almacenamiento de objetos o publicación estática con control de versiones), en lugar de crear de inmediato una API dinámica y una base de datos central.
+
+Motivos:
+- CodeGuard es una aplicación local monousuario.
+- El cliente solo necesita leer un manifiesto y descargar paquetes.
+- No se requieren cuentas cloud ni sincronización de progreso.
+- Los paquetes son inmutables y se pueden almacenar en caché.
+- Reduce infraestructura, superficie de ataque y mantenimiento.
+
+El proceso editorial puede publicar artefactos mediante un flujo controlado. El endpoint estático sigue siendo el servicio central de distribución aprobado por la ADR-004. La selección del proveedor y dominio se hará antes de implementar la publicación, no se presupone un proveedor concreto.
+
+## 9. Estrategia de compatibilidad y migración
+
+No reemplazar las tablas existentes de forma abrupta.
+
+### Incremento A — Identidad y protección de evidencia
+1. Añadir claves estables UUID a lecciones, ejemplos y ejercicios.
+2. Crear una migración de datos para asignar claves a filas existentes una sola vez.
+3. Exportar y versionar las claves en el catálogo curricular canónico.
+4. Añadir referencia a versión de contenido en los intentos futuros.
+5. Añadir snapshot mínimo del ejercicio presentado (clave, enunciado y versión) para preservar evidencia.
+6. Revisar las reglas `on_delete` de ejercicio y configuración de evaluación para que no se destruyan evidencias; usar protección y/o snapshots según el caso.
+
+### Incremento B — Fuentes y snapshots
+1. Crear `FuenteConocimiento` y relaciones de referencia.
+2. Crear `VersionContenidoLeccion` con payload validado e inmutable.
+3. Crear `ContenidoLeccionActivo` como puntero independiente.
+4. Crear importador desde los modelos actuales a una primera versión, sin borrar ni alterar IDs.
+5. Añadir pruebas de equivalencia entre contenido anterior y snapshot importado.
+
+### Incremento C — Registro de paquetes y sincronizador
+1. Crear `PaqueteConocimientoInstalado` y `EstadoSincronizacion`.
+2. Implementar cliente HTTP con allowlist de host, TLS validado, timeout, tamaño máximo y ETag.
+3. Implementar verificación Ed25519 y SHA-256.
+4. Implementar importación transaccional y activación atómica.
+5. Implementar rollback y estados visibles.
+
+### Incremento D — Cambio de lectura
+1. Adaptar `leccion_detalle` para leer la versión activa.
+2. Mantener compatibilidad de URLs y progreso por IDs curriculares.
+3. Adaptar envío de intentos para registrar la versión de contenido presentada.
+4. Mantener las versiones previas accesibles para el historial.
+5. Retirar gradualmente la lectura directa de los campos editables solo después de verificar equivalencia.
+
+No borrar los modelos actuales ni ejecutar migraciones destructivas durante la primera integración.
+
+## 10. Invariantes obligatorias
+
+1. La estructura curricular no cambia al instalar una actualización de contenido.
+2. Una versión publicada es inmutable.
+3. Cada versión de lección identifica sus fuentes, revisión, estado y esquema.
+4. La activación del paquete es atómica.
+5. Una instalación fallida nunca sustituye la versión local válida.
+6. El progreso, intentos, respuestas, preferencias y datos personales nunca se sobrescriben por sincronización.
+7. Cada intento conserva la versión de contenido y el evaluador aplicados.
+8. Las evidencias históricas sobreviven a la retirada de un ejercicio o una lección.
+9. El contenido no ejecuta código ni comandos.
+10. Ningún cambio detectado en una fuente externa se publica sin revisión.
+11. La última versión válida permanece disponible offline.
+12. La sincronización de esta fase es pull-only: el cliente descarga conocimiento y no transmite datos académicos del estudiante.
+
+## 11. Pruebas técnicas derivadas
+
+Además de SYNC-001 a SYNC-020 en `docs/PLAN_PRUEBAS.md`, añadir:
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| DATA-001 | Asignación UUID a registros existentes | Cada recurso recibe una clave estable y única, sin alterar PK ni relaciones. |
+| DATA-002 | Repetir migración/backfill | No cambia UUID previamente asignados. |
+| DATA-003 | Snapshot inicial | El payload conserva teoría, ejemplos, ejercicios y orden de la versión original. |
+| DATA-004 | Inmutabilidad | Una versión publicada no se modifica; se crea otra versión. |
+| DATA-005 | Referencias | Cada fuente mantiene licencia, URL, versión y fecha consultada. |
+| DATA-006 | Puntero activo | Una transacción activa el conjunto nuevo o mantiene íntegro el anterior. |
+| DATA-007 | Historial de intento | Un intento antiguo conserva snapshot del enunciado y versión del contenido/evaluador. |
+| DATA-008 | Eliminación de ejercicio | No se borran intentos históricos asociados. |
+| DATA-009 | Retirada | Un recurso retirado se oculta de nuevas asignaciones sin borrar evidencias. |
+| DATA-010 | Instalación limpia | Una base nueva resuelve las claves estables incluidas en el catálogo curricular. |
+
+## 12. Decisiones pendientes antes de implementar
+
+Estas decisiones no invalidan la arquitectura híbrida ya aprobada; concretan detalles operativos que deben cerrarse antes de escribir código:
+
+1. **Proveedor de distribución:** dominio/almacenamiento estático HTTPS. No seleccionar proveedor sin revisar coste, disponibilidad y facilidad de operación.
+2. **Canales:** comenzar con `stable`; `beta` solo si se necesita probar publicaciones antes de producción.
+3. **Frecuencia:** valor inicial recomendado de comprobación diaria, con comprobación manual y backoff. Debe poder cambiarse desde configuración.
+4. **Tamaño máximo:** definir límite de paquete y de recurso antes de implementar el descargador.
+5. **Política de versiones retiradas:** decidir cuánto tiempo conservar versiones antiguas localmente y cómo informar retiros críticos.
+6. **Catálogo curricular canónico:** definir el archivo/flujo que transporta las claves UUID de las lecciones entre instalaciones.
+7. **Editorial:** determinar dónde se redacta y revisa el contenido (repositorio controlado, herramienta interna o flujo editorial propio). No habilitar Django Admin por defecto como sustituto de este diseño.
+
+## 13. Criterio de cierre del diseño
+
+El diseño estará listo para implementación cuando:
+- Los nombres y relaciones de los modelos hayan sido aprobados.
+- El esquema del payload y manifiesto tenga validación automatizada.
+- La estrategia de claves estables esté definida.
+- La política de preservación de intentos/evaluadores esté definida.
+- Se haya seleccionado el endpoint de distribución.
+- La migración desde los registros actuales tenga pruebas de ida/compatibilidad y no sea destructiva.
+
+**Estado al 11-11-2026:** auditoría y propuesta documentadas; no se han modificado modelos, migraciones, vistas, Electron ni datos de estudiantes.
