@@ -1,14 +1,14 @@
 # CodeGuard Pro — Control oficial del proyecto
 
 **Documento:** `PROJECT_CONTROL.md`  
-**Versión:** 2.0 — revisado tras avance de la Fase 2 (motor de aprendizaje y conocimiento versionado)  
-**Fecha de actualización:** 2026-11-11  
+**Versión:** 2.1 — correcciones de consistencia académica y sincronización  
+**Fecha de actualización:** 2026-11-12  
 **Propietario:** propietario de CodeGuard Pro  
 **Mantenedor:** orquestador  
 **Estado:** vigente, sujeto a autorización expresa para cada acción  
 **Ubicación:** raíz del repositorio  
-**Rama actual:** `docs/phase-2-hybrid-knowledge-sync`  
-**HEAD:** `6a16f93` (sincronizado con `origin/docs/phase-2-hybrid-knowledge-sync`)
+**Rama de correcciones autorizada:** `fix/phase-2-integrity-learning` (derivada de `main`)  
+**Línea base:** `main` en `c2ec604`; los commits de corrección permanecen en la rama autorizada
 
 ---
 
@@ -21,8 +21,13 @@
   - Flujo editorial de versiones (`VersionContenidoLeccion`, `ReferenciaFuenteContenido`, `FuenteConocimiento`) implementado con comandos de gestión.
   - Registro local de paquetes de conocimiento (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`) implementado con transiciones controladas e identidad inmutable.
   - Verificador de distribución firmada (Ed25519, manifiesto, ZIP) implementado (`validate_package_archive`, `verify_signed_manifest`).
+  - Puntero editorial `ContenidoLeccionActivo` para seleccionar snapshots publicados y mantener el borrador editable separado.
+  - Intentos nuevos vinculados a la versión activa y con snapshot del ejercicio presentado.
+  - Interfaz de entrega POST con CSRF, límite de 20.000 caracteres e historial de intentos.
+  - Protecciones adicionales para escrituras masivas del registro local de paquetes y sincronización.
   - Suite de pruebas: **93 pruebas pasando** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`).
-- **Sincronización de red, servicio central y cliente de sincronización:** pendientes (Fase 2, no implementados en la rama principal).
+- **Sincronización de red, servicio central y cliente de sincronización:** pendientes (Fase 2).
+- **Validación del incremento 0014:** pendiente de ejecución local; las 93 pruebas anteriores no validan las nuevas migraciones ni pruebas añadidas.
 - **Autenticación:** temporalmente desactivada (`AUTH_DISABLED = True`); el sistema original se conserva íntegro y puede reactivarse con autorización expresa.
 
 ---
@@ -73,13 +78,14 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Elemento | Estado |
 |---|---|
 | Repositorio | `/home/mvxbms/Documentos/CodeGuard` |
-| Rama | `docs/phase-2-hybrid-knowledge-sync` |
-| HEAD | `6a16f93` |
-| Remoto | `origin/docs/phase-2-hybrid-knowledge-sync` |
+| Línea base | `main` en `c2ec604` |
+| Rama de correcciones | `fix/phase-2-integrity-learning` |
+| HEAD de correcciones | Ver último commit de la rama; no fusionado |
+| Remoto | `origin/fix/phase-2-integrity-learning` |
 | Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
-| Migraciones roadmaps | 0001 a 0013 (todas aplicadas) |
+| Migraciones roadmaps | 0001 a 0013 aplicadas según validación previa; 0014 creada y pendiente de ejecución local |
 | Comandos de gestión | 9 (`cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`) |
-| Pruebas automatizadas | 93 OK (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`) |
+| Pruebas automatizadas | 93 OK confirmadas antes de las correcciones; pruebas nuevas del incremento 0014 pendientes |
 | Autenticación | `AUTH_DISABLED = True` (temporal, conservada íntegra) |
 | Base de datos | SQLite, `data/db.sqlite3` |
 | Servidor local | Waitress + WhiteNoise en `127.0.0.1` |
@@ -102,7 +108,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Fase | Estado | Observación |
 |---|---|---|
 | **Fase 1 — Núcleo funcional** | ✅ Completada y verificada | Autenticación, panel, auditoría, seguridad, 12 temas, servidor local |
-| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso (rama de trabajo) | Roadmap ASCENSO, contenido académico, flujo editorial, registro de paquetes, verificador de distribución |
+| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Roadmap ASCENSO, contenido académico, flujo editorial, snapshots activos, registro de paquetes y verificador; publicador y cliente de sync pendientes |
 | **Sincronización de red / servicio central / cliente de sync** | ⏳ Pendiente | Fase 2, no implementados en rama principal |
 | **Competencias y evaluaciones** | ⏳ Pendiente | Incremento 3 |
 | **Biblioteca documental y base de conocimiento** | ⏳ Pendiente | Incremento 4 |
@@ -136,6 +142,16 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 
 ---
 
+### 5.3 Autorización específica vigente — correcciones de Fase 2
+
+El propietario autorizó ejecutar las correcciones de consistencia identificadas en la auditoría, en una rama nueva derivada de `main`, incluyendo cambios de código, migraciones, pruebas y documentación.
+
+- Rama autorizada: `fix/phase-2-integrity-learning`.
+- Alcance: interfaz de entregas, snapshots de intentos, puntero editorial activo, protecciones del registro local y documentación relacionada.
+- Se permiten commits exclusivamente en esa rama como mecanismo de escritura del repositorio.
+- No se autoriza merge, PR de integración, despliegue, publicación de paquetes, cambios en `main`, instalaciones ni migraciones sobre la base de datos local.
+- La migración 0014 y las pruebas añadidas requieren validación explícita en el entorno local del propietario antes de ampliar el alcance.
+
 ## 6. Pendientes de decisión o autorización del propietario
 
 | Elemento | Estado |
@@ -159,6 +175,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 |---|---|---|---|
 | 1.0 | 2026-11-07 | Creación inicial a partir de la base revisada v0.4 | D-001 |
 | 2.0 | 2026-11-11 | Revisión completa tras avance de Fase 2: estado real de rama, HEAD, migraciones, comandos, pruebas y pendientes | Revisión de estado verificado |
+| 2.1 | 2026-11-12 | Corrección de línea base tras fusión a main; registro de autorización de rama; puntero de contenido activo, snapshots de intentos, interfaz de entregas y hardening de registros | Autorización expresa del propietario para correcciones en rama aislada; validación local pendiente |
 
 ### Reglas de actualización
 
@@ -171,4 +188,4 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 
 ---
 
-**El trabajo se detiene aquí a la espera de nuevas instrucciones.**
+**El alcance autorizado continúa únicamente en `fix/phase-2-integrity-learning`; detenerse antes de merge, despliegue o ampliación de alcance.**
