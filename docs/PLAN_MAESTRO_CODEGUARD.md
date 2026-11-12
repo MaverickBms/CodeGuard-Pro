@@ -188,8 +188,8 @@ Implementado en la base de la Fase 2 y ampliado en ramas de trabajo:
 
 Validación registrada:
 
-- El usuario confirmó como satisfactorias las comprobaciones locales del incremento de importación y revisión de licencias (migraciones 0009–0011).
-- El nuevo incremento de distribución (migraciones 0012–0013, dependencia `cryptography==46.0.3`, verificador Ed25519/ZIP y pruebas asociadas) se incorporó después de esa validación; todavía requiere ejecución local.
+- El usuario confirmó que la suite local actual de la rama de sincronización finaliza con **93 pruebas: OK**. Para resolver dos fallos iniciales, instaló `cryptography==46.0.3` en `.venv` y corrigió `test_no_se_puede_saltar_transicion_de_paquete` para intentar el salto inválido `descargado → activo`.
+- Esta confirmación cubre el incremento de distribución (migraciones 0012–0013, verificador Ed25519/ZIP y registro local de paquetes), además de los incrementos anteriores.
 - Último commit de referencia conocido en `main`: `dee0da9b4444ecabc5fc4dd4263296eef8361a99`.
 
 Pendiente de la Fase 2:
@@ -197,11 +197,10 @@ Pendiente de la Fase 2:
 - Cargar y revisar contenido académico real para las lecciones y poblar el catálogo con fuentes oficiales verificadas.
 - Completar metadatos de revisión técnica, vigencia y compatibilidad por tecnología/versión.
 - Construir una interfaz editorial y permisos granulares; los primeros servicios y comandos de revisión e importación ya existen en la rama.
-- Ejecutar localmente las migraciones 0009–0011, nuevas pruebas de importación/licencias y suite completa.
-- Completar el publicador central de paquetes inmutables y manifiestos firmados; el contrato y el verificador local parcial ya están implementados en la rama de trabajo.
+- Completar el publicador central de paquetes inmutables y manifiestos firmados. Diseño técnico: `docs/DISENO_PUBLICADOR_CENTRAL.md`; primero requiere registro central de releases con secuencia única y monotónica por canal.
 - Integrar almacén de claves públicas/rotación y allowlist de producción; aún no están configurados.
 - Implementar cliente HTTP pull-only, descarga, ETag/backoff, instalación transaccional de snapshots, punteros activos, historial y rollback.
-- Ejecutar localmente migraciones 0012–0013, pruebas de distribución y suite completa antes de aceptar este incremento.
+- Configurar posteriormente el almacén de claves públicas/rotación y la allowlist de producción, una vez aprobada la infraestructura de distribución.
 - Validar navegación y presentación de todos los tipos de lección.
 - Incorporar resaltado de sintaxis y mejorar la experiencia del editor.
 - Crear un flujo editorial versionado para configurar y publicar ejercicios/evaluadores.
