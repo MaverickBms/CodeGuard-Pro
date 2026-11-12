@@ -233,7 +233,9 @@ def sincronizar_conocimiento(
         if manifest_bytes is None:
             if not request_headers:
                 raise SyncClientError("El servidor devolvió HTTP 304 sin una petición condicional.", code="invalid_response")
-            if response_etag and len(response_etag) <= 255:
+            if response_etag and len(response_etag) > 255:
+                raise SyncClientError("ETag demasiado largo.", code="invalid_response")
+            if response_etag:
                 state.manifest_etag = response_etag
             state.last_check_at = now
             state.last_error_code = ""
