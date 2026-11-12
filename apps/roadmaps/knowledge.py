@@ -321,7 +321,9 @@ def retirar_version_publicada(
     version.retirada_en = timezone.now()
     version.retirada_por = actor
     version.save(update_fields=["estado", "motivo_retiro", "retirada_en", "retirada_por"])
-    ContenidoLeccionActivo.objects.filter(version=version).delete()
+    puntero = ContenidoLeccionActivo.objects.filter(version=version).first()
+    if puntero:
+        puntero.delete()
     return version
 
 
