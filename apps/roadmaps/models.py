@@ -1075,7 +1075,7 @@ class PaqueteConocimientoInstalado(models.Model):
                 raise ValidationError("Solo paquetes activos o sustituidos pueden tener fecha de instalación.")
             if self.error_code and self.estado != "rechazado":
                 raise ValidationError("El código de error solo se conserva en paquetes rechazados.")
-        self.full_clean()
+        self.full_clean(validate_unique=False, validate_constraints=False)
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
