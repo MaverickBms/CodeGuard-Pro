@@ -259,14 +259,22 @@ class InstaladorPaquetesTests(TestCase):
     def test_cliente_http_instala_solo_despues_de_verificar_manifiesto(self):
         artifacts = self.publicar()
         manifest, signature, package_bytes = artifacts
-        package_url = json.loads(manifest)["package"]["url"]
+        manifest_data = json.loads(manifest)
+        package_url = manifest_data["package"]["url"]
+        sequence = manifest_data["sequence"]
+        manifest_url = (
+            f"https://cdn.codeguard.example/stable/manifest-stable-{sequence}.json"
+        )
+        signature_url = (
+            f"https://cdn.codeguard.example/stable/manifest-stable-{sequence}.ed25519"
+        )
         requested = []
 
         def fake_fetch(url, **kwargs):
             requested.append(url)
-            if url.endswith("/manifest.json"):
+            if url == manifest_url:
                 return manifest, '"release-1"'
-            if url.endswith("/manifest.ed25519"):
+            if url == signature_url:
                 return signature, ""
             if url == package_url:
                 return package_bytes, ""
@@ -276,8 +284,8 @@ class InstaladorPaquetesTests(TestCase):
             with patch("apps.roadmaps.sync_client._fetch_bytes", side_effect=fake_fetch):
                 result = sincronizar_conocimiento(
                     channel="stable",
-                    manifest_url="https://cdn.codeguard.example/stable/manifest.json",
-                    signature_url="https://cdn.codeguard.example/stable/manifest.ed25519",
+                    manifest_url=manifest_url,
+                    signature_url=signature_url,
                     trusted_public_keys=self.trusted_keys,
                     allowed_hosts={"cdn.codeguard.example"},
                     app_version="1.0.0",
@@ -285,8 +293,8 @@ class InstaladorPaquetesTests(TestCase):
 
         self.assertEqual(result["status"], "installed")
         self.assertEqual(requested, [
-            "https://cdn.codeguard.example/stable/manifest.json",
-            "https://cdn.codeguard.example/stable/manifest.ed25519",
+            manifest_url,
+            signature_url,
             package_url,
         ])
         state = EstadoSincronizacion.objects.get(channel="stable")
