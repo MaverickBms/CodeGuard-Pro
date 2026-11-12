@@ -197,6 +197,77 @@ class IntentosEjercicioTests(TestCase):
 
 
 
+
+    def test_servicio_crea_snapshot_determinista_con_fuentes_y_recursos_publicados(self):
+        import hashlib
+        import json
+        from apps.roadmaps.knowledge import crear_version_contenido_leccion
+        from apps.roadmaps.models import (
+            ContenidoLeccion,
+            EjemploLeccion,
+            FuenteConocimiento,
+        )
+
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            objetivos_aprendizaje="Comprender variables",
+            teoria_tecnica="Una variable enlaza un nombre con un objeto.",
+            explicacion_sencilla="Un nombre permite referirse a un valor.",
+            publicado=True,
+        )
+        EjemploLeccion.objects.create(
+            leccion=self.leccion,
+            titulo="Asignación",
+            codigo="nombre = 'Ada'",
+            publicado=True,
+        )
+        EjemploLeccion.objects.create(
+            leccion=self.leccion,
+            titulo="Borrador no publicado",
+            codigo="secreto = True",
+            publicado=False,
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url_canonica="https://docs.python.org/3/reference/",
+            edicion="3",
+        )
+
+        version = crear_version_contenido_leccion(
+            self.leccion,
+            resumen_cambios="Primera versión editorial",
+            fuentes=[(fuente, "principal", "Assignment statements", "Referencia del lenguaje")],
+        )
+        serializado = json.dumps(
+            version.snapshot, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        )
+
+        self.assertEqual(version.numero_version, 1)
+        self.assertEqual(version.estado, "borrador")
+        self.assertEqual(version.sha256, hashlib.sha256(serializado.encode("utf-8")).hexdigest())
+        self.assertEqual(len(version.snapshot["ejemplos"]), 1)
+        self.assertEqual(version.fuentes.get(), fuente)
+
+        ContenidoLeccion.objects.filter(leccion=self.leccion).update(
+            teoria_tecnica="Texto revisado posteriormente."
+        )
+        segunda = crear_version_contenido_leccion(self.leccion)
+        self.assertEqual(segunda.numero_version, 2)
+        self.assertIn("Una variable enlaza", version.snapshot["contenido"]["teoria_tecnica"])
+
+    def test_servicio_no_versiona_leccion_sin_contenido_completo(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.knowledge import crear_version_contenido_leccion
+        from apps.roadmaps.models import ContenidoLeccion
+
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            teoria_tecnica="Solo teoría, falta explicación sencilla.",
+        )
+        with self.assertRaises(ValidationError):
+            crear_version_contenido_leccion(self.leccion)
+
     def test_version_contenido_conserva_snapshot_y_fuente(self):
         from apps.roadmaps.models import (
             FuenteConocimiento,
