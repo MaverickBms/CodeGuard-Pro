@@ -15,7 +15,7 @@ from django.utils import timezone
 
 from apps.audit.services import registrar_evento
 
-from .models import EjercicioLeccion, Progreso
+from .models import ContenidoLeccionActivo, EjercicioLeccion, Progreso
 from .models_attempts import ConfiguracionEvaluacion, IntentoEjercicio
 from .services import recalcular_progreso_etapa
 
@@ -164,6 +164,38 @@ def registrar_intento_ejercicio(
             f"La respuesta supera el límite de {MAX_RESPUESTA_CARACTERES} caracteres."
         )
 
+    puntero_activo = (
+        ContenidoLeccionActivo.objects.select_related("version")
+        .filter(leccion=ejercicio.leccion)
+        .first()
+    )
+    version_contenido = puntero_activo.version if puntero_activo else None
+    if version_contenido is not None:
+        snapshot_ejercicio = next(
+            (
+                item for item in version_contenido.snapshot.get("ejercicios", [])
+                if item.get("clave") == str(ejercicio.clave_contenido)
+            ),
+            None,
+        )
+        if snapshot_ejercicio is None:
+            raise ValidationError(
+                "El ejercicio no pertenece a la versión académica activa de esta lección."
+            )
+    else:
+        # Compatibilidad: conserva el enunciado exacto de ejercicios anteriores al versionado activo.
+        snapshot_ejercicio = {
+            "clave": str(ejercicio.clave_contenido),
+            "titulo": ejercicio.titulo,
+            "enunciado": ejercicio.enunciado,
+            "instrucciones": ejercicio.instrucciones,
+            "lenguaje": ejercicio.lenguaje,
+            "nivel": ejercicio.nivel,
+            "codigo_inicial": ejercicio.codigo_inicial,
+            "obligatorio": ejercicio.obligatorio,
+            "orden": ejercicio.orden,
+        }
+
     configuracion = ejercicio.configuraciones_evaluacion.filter(
         activo=True
     ).order_by("-version").first()
@@ -186,6 +218,8 @@ def registrar_intento_ejercicio(
         ejercicio=ejercicio,
         usuario=usuario,
         respuesta=respuesta,
+        version_contenido=version_contenido,
+        snapshot_ejercicio=snapshot_ejercicio,
         resultado=evaluacion["resultado"],
         puntuacion=evaluacion["puntuacion"],
         retroalimentacion=evaluacion["retroalimentacion"],
