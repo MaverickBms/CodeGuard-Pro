@@ -1,7 +1,7 @@
 # Fase 2 — Sistema de aprendizaje interactivo
 
 **Producto:** CodeGuard Pro  
-**Estado:** Motor de aprendizaje y control editorial en desarrollo; importador académico y revisión auditable de licencias implementados en la rama de trabajo, pendientes de validación local.  
+**Estado:** Motor de aprendizaje y control editorial en desarrollo. El usuario confirmó la validación local satisfactoria del incremento de importación/licencias (migraciones 0009–0011). El verificador de distribución firmado y el registro local de paquetes se incorporaron después y están pendientes de validación local.  
 **Línea base:** rama `main`.
 
 ## 1. Objetivo
@@ -186,7 +186,7 @@ Las pruebas de esta rama cubren evaluación exacta, comprobación estática, con
 
 **Decisión de producto aprobada:** CodeGuard Pro utilizará un modelo híbrido: un servicio central publica contenido académico revisado y versionado; la aplicación local consulta y descarga actualizaciones automáticamente cuando dispone de conexión; el contenido queda almacenado localmente para continuar trabajando offline. Esta capacidad pertenece a la Fase 2.
 
-**Estado real en `main`: DISEÑO DOCUMENTADO; NO IMPLEMENTADO.** Los modelos actuales de lecciones, ejemplos, ejercicios, intentos y evaluadores no constituyen todavía un sistema de sincronización. No existe en esta revisión evidencia de un cliente de sincronización, un servicio central de publicación, manifiestos firmados ni un instalador local de paquetes.
+**Estado real en `main`: DISEÑO DOCUMENTADO; NO IMPLEMENTADO.** La rama de trabajo contiene ahora un verificador Ed25519 de manifiestos, validador ZIP sin extracción y registro local de paquetes/canales. Esto no constituye todavía un sincronizador operativo: siguen pendientes el publicador, las claves/hosts de producción, el cliente HTTP, el instalador, la activación de contenido y el rollback.
 
 ### 11.1 Principios de arquitectura
 
@@ -207,7 +207,7 @@ Las pruebas de esta rama cubren evaluación exacta, comprobación estática, con
 | Validador editorial | Comprobar estructura, enlaces, referencias, ejemplos y compatibilidad | Pendiente |
 | Publicador central | Publicar paquetes inmutables y manifiesto firmado | Pendiente |
 | Cliente de sincronización | Consultar versiones y descargar paquetes cuando hay conexión | Pendiente |
-| Verificador local | Validar firma, hash, tamaño, esquema y compatibilidad | Pendiente |
+| Verificador local | Validar firma, hash, tamaño, esquema y compatibilidad | Parcial: núcleo Ed25519/ZIP implementado en rama; falta configuración de confianza y conexión al cliente |
 | Instalador local | Activar paquetes de forma atómica y permitir rollback | Pendiente |
 | Estado de vigencia | Mostrar actualización, última revisión, obsolescencia y retiro | Pendiente |
 
@@ -402,4 +402,18 @@ python manage.py revisar_licencia_fuente --fuente-id 1 --usuario EDITOR --estado
 
 El ejemplo de URL es ilustrativo: el editor debe proporcionar la evidencia real de la licencia y evaluar sus condiciones.
 
-**Pendiente:** ejecutar las migraciones 0009–0011, revisar el estado de migraciones y ejecutar las pruebas nuevas y la suite completa en el entorno local. No se declara el incremento como validado hasta recibir ese resultado.
+**Validación confirmada por el usuario:** migraciones 0009–0011, pruebas nuevas de importación/licencias y suite solicitada reportadas satisfactorias. El siguiente incremento (migraciones 0012–0013, dependencia criptográfica y pruebas de distribución) se incorporó después y requiere su propia validación local.
+
+
+## 13. Verificación de distribución firmada — incremento en curso
+
+Se implementó parcialmente el núcleo de confianza del protocolo híbrido:
+
+- `apps/roadmaps/distribution.py` valida manifiestos JSON estrictos, firma Ed25519 detached, clave identificada por `key_id`, canal, secuencia anti-replay, SemVer, fecha, URL HTTPS/allowlist, hash y tamaño.
+- El ZIP se valida en memoria, sin extracción de rutas externas. Se comprueban índice, recursos declarados, SHA-256, límites de tamaño/compresión, symlinks, traversal, nombres duplicados, esquema académico v1 y colisiones UUID.
+- `PaqueteConocimientoInstalado` y `EstadoSincronizacion` conservan el historial técnico local por canal sin datos del estudiante.
+- Migraciones `0012_registro_paquetes_sincronizacion` y `0013_un_paquete_activo_por_canal`.
+- Dependencia fijada: `cryptography==46.0.3`.
+- Pruebas: `apps/roadmaps/tests/test_distribution.py` y `test_distribution_models.py`.
+
+**No implementado todavía:** publicador, gestión/rotación de claves públicas, allowlist de producción, cliente HTTP, ETag/backoff, comando de sincronización, instalación transaccional de snapshots publicados, punteros de contenido activo, rollback e integración Electron. Las pruebas de este incremento aún no han sido ejecutadas localmente.
