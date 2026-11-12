@@ -10,11 +10,14 @@ from unittest.mock import patch
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.utils import timezone
 
+from apps.roadmaps.models import EstadoSincronizacion
+
 from apps.roadmaps.sync_client import (
     SyncClientError,
     _fetch_bytes,
     _retry_delay_for_state,
     _channel_sync_lock,
+    _record_failure,
     _validate_endpoint,
 )
 
@@ -215,3 +218,26 @@ class BloqueoSincronizacionTests(TestCase):
                         with _channel_sync_lock("stable"):
                             pass
                 self.assertEqual(context.exception.code, "sync_in_progress")
+
+
+
+class PersistenciaBackoffTests(TestCase):
+    def test_persistencia_duplica_intervalo_tras_fallos_consecutivos(self):
+        from unittest.mock import patch
+
+        from django.utils import timezone
+
+        now = timezone.now()
+        EstadoSincronizacion.objects.create(channel="stable")
+        with patch("apps.roadmaps.sync_client.timezone.now", return_value=now):
+            _record_failure("stable", "network_error")
+
+        state = EstadoSincronizacion.objects.get(channel="stable")
+        self.assertEqual(state.next_check_after, now + timedelta(minutes=15))
+
+        second_attempt = now + timedelta(minutes=15)
+        with patch("apps.roadmaps.sync_client.timezone.now", return_value=second_attempt):
+            _record_failure("stable", "network_error")
+
+        state.refresh_from_db()
+        self.assertEqual(state.next_check_after, second_attempt + timedelta(minutes=30))
