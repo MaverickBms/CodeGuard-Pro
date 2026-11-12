@@ -354,3 +354,20 @@ El usuario reportó la ejecución satisfactoria de **93 pruebas (OK)** en el ent
 - Corregir `test_no_se_puede_saltar_transicion_de_paquete`: el caso parte de `descargado` e intenta `activo`, transición no permitida por el ciclo de vida.
 
 Esta confirmación acredita la suite ejecutada en el entorno del usuario. No equivale a una ejecución independiente en CI ni valida componentes aún no implementados, como publicador central, cliente HTTP, instalador, activación y rollback.
+
+
+---
+
+## 6.9 Pruebas añadidas — consistencia de contenido activo e intentos (pendientes de ejecución local)
+
+| ID | Prueba | Caso | Resultado esperado | Estado |
+|---|---|---|---|---|
+| F2-ACT-001 | Snapshot de intento legado | Crear intento sin puntero activo y modificar después el ejercicio | El snapshot conserva el enunciado original | ⏳ Pendiente |
+| F2-ACT-002 | Activación editorial | Publicar una versión aprobada | `ContenidoLeccionActivo` apunta a la versión publicada | ⏳ Pendiente |
+| F2-ACT-003 | Vinculación de intento | Entregar ejercicio de versión activa | El intento conserva FK a la versión y snapshot del ejercicio | ⏳ Pendiente |
+| F2-ACT-004 | Interfaz de entregas | Abrir lección y enviar respuesta | Formulario CSRF disponible e historial visible | ⏳ Pendiente |
+| F2-SYNC-001 | Bulk create de paquetes | Intentar insertar paquete descargado con error/fecha de instalación | Operación rechazada por validación de modelo | ⏳ Pendiente |
+| F2-SYNC-002 | Estado de sincronización | Ejecutar `QuerySet.update()` | Operación masiva rechazada; usar `save()` validado | ⏳ Pendiente |
+| F2-ACT-005 | Snapshot activo tras editar borrador | Modificar ejercicio editable después de publicación | Vista e intento siguen usando el snapshot publicado | ⏳ Pendiente |
+
+**Nota:** estas pruebas se añadieron después de las 93 pruebas confirmadas previamente. No marcar este bloque como aprobado hasta que el propietario ejecute la migración y la suite completa en su entorno local.
