@@ -458,6 +458,14 @@ class ContenidoLeccion(models.Model):
 class FuenteConocimiento(models.Model):
     """Fuente técnica consultada para elaborar o revisar contenido académico."""
 
+    ESTADOS_LICENCIA = [
+        ("pendiente", "Pendiente de revisión"),
+        ("compatible", "Reutilización compatible"),
+        ("solo_referencia", "Solo consulta; contenido original"),
+        ("requiere_permiso", "Requiere permiso"),
+        ("no_reutilizable", "No reutilizable"),
+    ]
+
     clave = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     publicador = models.CharField(max_length=180, verbose_name="publicador")
     titulo = models.CharField(max_length=240, verbose_name="título de la fuente")
@@ -467,6 +475,20 @@ class FuenteConocimiento(models.Model):
         max_length=120, blank=True, verbose_name="identificador de licencia"
     )
     url_licencia = models.URLField(max_length=1000, blank=True, verbose_name="URL de licencia")
+    estado_revision_licencia = models.CharField(
+        max_length=20, choices=ESTADOS_LICENCIA, default="pendiente",
+        verbose_name="estado de revisión de licencia",
+    )
+    evidencia_licencia = models.URLField(
+        max_length=1000, blank=True, verbose_name="evidencia de revisión de licencia"
+    )
+    alcance_licencia = models.TextField(blank=True, verbose_name="alcance autorizado")
+    nota_revision_licencia = models.TextField(blank=True, verbose_name="decisión editorial de licencia")
+    revisada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, blank=True,
+        related_name="fuentes_licencia_revisadas", verbose_name="licencia revisada por",
+    )
+    revisada_en = models.DateTimeField(null=True, blank=True, verbose_name="licencia revisada el")
     consultada_en = models.DateTimeField(null=True, blank=True, verbose_name="consultada el")
     activa = models.BooleanField(default=True, verbose_name="fuente activa")
     notas = models.TextField(blank=True, verbose_name="notas editoriales")
@@ -705,7 +727,18 @@ class ReferenciaFuenteContenido(models.Model):
         on_delete=models.PROTECT,
         related_name="referencias_contenido",
     )
+    USOS_DECLARADOS = [
+        ("original", "Contenido original de CodeGuard"),
+        ("cita_breve", "Cita breve atribuida"),
+        ("adaptacion", "Adaptación de la fuente"),
+        ("reproduccion", "Reproducción de material"),
+    ]
+
     rol = models.CharField(max_length=16, choices=ROLES, default="principal")
+    uso_declarado = models.CharField(
+        max_length=16, choices=USOS_DECLARADOS, default="original",
+        verbose_name="uso declarado de la fuente",
+    )
     localizador = models.CharField(max_length=500, blank=True, verbose_name="sección o localizador")
     nota_atribucion = models.TextField(blank=True, verbose_name="nota de atribución")
 
