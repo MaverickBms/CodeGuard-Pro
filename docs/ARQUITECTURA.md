@@ -286,3 +286,10 @@ El catálogo editorial registrará publicador, título, URL canónica, edición/
 ## 10. Próximos incrementos
 
 El orden vigente de las fases, dependencias y criterios de cierre se mantiene en `docs/PLAN_MAESTRO_CODEGUARD.md`. La implementación de conocimiento versionado y sincronización híbrida pertenece a la Fase 2. El detalle de entidades y migraciones propuestas está en `docs/DISENO_DATOS_SINCRONIZACION.md`.
+
+
+### Integración con el ejecutable de escritorio
+
+La aplicación empaquetada inicia Django desde el binario PyInstaller `CodeGuardServer`. La futura sincronización se ejecutará como comando de una sola ejecución soportado por ese mismo binario y será invocada por Electron después de mostrar la ventana principal. No se exigirá Python externo en el equipo instalado, no se creará un daemon permanente y no se bloqueará el arranque local. El renderer solo recibirá estado mediante IPC limitado.
+
+El cargador `cargar_ascenso` queda fuera del flujo de sincronización. En particular, `--recrear` puede eliminar progreso por las relaciones en cascada y nunca debe utilizarse para actualizar contenido pedagógico.
