@@ -1055,6 +1055,10 @@ class EstadoSincronizacion(models.Model):
             if self.active_package.estado != "activo":
                 raise ValidationError({"active_package": "El paquete referenciado debe estar activo."})
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = "estado de sincronización"
         verbose_name_plural = "estados de sincronización"
