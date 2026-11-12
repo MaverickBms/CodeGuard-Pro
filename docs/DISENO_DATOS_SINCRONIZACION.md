@@ -627,3 +627,6 @@ python manage.py gestionar_version_leccion retirar --version 17 --usuario reviso
 ```
 
 Los IDs numéricos son locales y solo se usan para operación; los UUID son las identidades estables para distribución. Los comandos no crean usuarios ni conceden privilegios: el usuario debe existir, estar activo y tener `is_staff=True`.
+
+
+El propio modelo también valida la secuencia de estados y exige los metadatos correspondientes para cada transición. No permite saltar de borrador directamente a publicación ni sobrescribir una vez asignados los responsables/fechas de envío, revisión, publicación o retirada.
