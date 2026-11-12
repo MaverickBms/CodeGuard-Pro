@@ -92,7 +92,7 @@ Límite de esquema: el contrato académico JSON v1 distribuye identificadores y 
 
 ## 9. Validación
 
-El propietario confirmó que la migración 0014 y las pruebas de snapshots, activación, entregas y protecciones de escritura masiva funcionan localmente. La migración 0015 y apps.roadmaps.tests.test_publisher se añadieron después y permanecen pendientes de ejecución local. Las 93 pruebas históricas no deben atribuirse a estos componentes nuevos.
+El propietario confirmó que las migraciones 0014 y 0015 y las suites de corrección de snapshots, activación, entregas, registros y publicador funcionan localmente. El contrato de catálogo v2 y sus pruebas se añadieron después y permanecen pendientes de ejecución local. Las 93 pruebas históricas corresponden a un estado anterior y no sustituyen la validación de cada incremento.
 
 Desde la carpeta local del proyecto:
 
