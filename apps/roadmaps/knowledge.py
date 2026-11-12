@@ -340,10 +340,16 @@ def revisar_licencia_fuente(
     from urllib.parse import urlsplit
     try:
         parsed_evidence = urlsplit(evidencia)
+        evidence_host = parsed_evidence.hostname
     except ValueError as exc:
         raise ValidationError("La evidencia debe ser una URL HTTPS válida.") from exc
-    if parsed_evidence.scheme.lower() != "https" or not parsed_evidence.hostname:
-        raise ValidationError("La evidencia debe ser una URL HTTPS absoluta.")
+    if (
+        parsed_evidence.scheme.lower() != "https"
+        or not evidence_host
+        or parsed_evidence.username
+        or parsed_evidence.password
+    ):
+        raise ValidationError("La evidencia debe ser una URL HTTPS absoluta sin credenciales.")
     if estado == "compatible" and not alcance:
         raise ValidationError("La reutilización compatible exige documentar su alcance.")
     fuente = FuenteConocimiento.objects.select_for_update().get(pk=fuente_id)
