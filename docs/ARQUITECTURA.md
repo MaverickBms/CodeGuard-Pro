@@ -222,7 +222,6 @@ flowchart TD
 | Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado; migración 0015 y pruebas del generador validadas localmente por el propietario |
 | Catálogo firmado de fuentes (índice v2) | Implementado en rama correctiva; pruebas pendientes de validación local |
 | Cliente de sincronización de red | Pendiente |
-| Generación local de paquetes firmados | Implementada en rama correctiva; no desplegada |
 | Hosting, endpoint y publicación remota | Pendiente |
 
 ---
