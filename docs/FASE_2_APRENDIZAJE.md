@@ -300,3 +300,11 @@ Una fuente oficial es evidencia y referencia, no permiso automático para copiar
 - Ejecutar código descargado de fuentes externas.
 - Aprobar contenido generado automáticamente sin revisión.
 - Reemplazar el sistema de evaluación o el sandbox de ejecución de ejercicios.
+
+### 11.4 Integración con Electron y cargador ASCENSO
+
+La sincronización debe ejecutarse como tarea no bloqueante después de que Electron muestre la ventana principal. En producción, Electron inicia el binario PyInstaller `CodeGuardServer`; por ello, el futuro comando de sincronización debe poder ejecutarse también desde ese binario en modo de una sola ejecución. En desarrollo se utilizará el mismo comando Django desde el entorno virtual.
+
+El comando comparte la base de datos local y no debe modificar el roadmap curricular. El cargador actual `cargar_ascenso` no es un importador de contenido: trabaja con títulos, reconstruye prerrequisitos y su opción `--recrear` puede borrar progreso por cascada. El sincronizador no debe llamarlo ni recrear etapas, módulos o lecciones. La identidad UUID del catálogo debe incorporarse mediante una migración/exportación controlada.
+
+La descarga y verificación ocurren fuera de la transacción; la activación local se realiza en una transacción corta y protegida contra ejecuciones simultáneas. Si la conexión falla, el servicio no responde o SQLite está ocupado, la versión local activa permanece disponible.
