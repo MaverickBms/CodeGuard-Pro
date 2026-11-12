@@ -73,10 +73,15 @@ def _string(value, path, *, required=False, max_length=None):
 
 
 def _uuid(value, path):
+    if not isinstance(value, str):
+        raise ImportContentError(f"{path}: UUID debe ser texto canónico.")
     try:
-        return uuid.UUID(str(value))
+        parsed = uuid.UUID(value)
     except (ValueError, TypeError, AttributeError) as exc:
         raise ImportContentError(f"{path}: UUID inválido.") from exc
+    if str(parsed) != value:
+        raise ImportContentError(f"{path}: use el UUID canónico en minúsculas.")
+    return parsed
 
 
 def _integer(value, path):
@@ -93,7 +98,16 @@ def _load_json(path):
         raise ImportContentError(f"{path.name}: supera el límite de 2 MiB.")
     try:
         raw = path.read_text(encoding="utf-8")
-        return json.loads(raw, object_pairs_hook=_pairs_without_duplicates)
+        parsed = json.loads(raw, object_pairs_hook=_pairs_without_duplicates)
+        def depth(value):
+            if isinstance(value, dict):
+                return 1 + max((depth(item) for item in value.values()), default=0)
+            if isinstance(value, list):
+                return 1 + max((depth(item) for item in value), default=0)
+            return 0
+        if depth(parsed) > 8:
+            raise ImportContentError(f"{path.name}: profundidad JSON superior a 8.")
+        return parsed
     except UnicodeDecodeError as exc:
         raise ImportContentError(f"{path.name}: el archivo no es UTF-8 válido.") from exc
     except json.JSONDecodeError as exc:
@@ -161,6 +175,7 @@ def _validate_document(document, filename):
         _string(exercise["enunciado"], f"{path}.enunciado", required=True)
         for field in ("instrucciones", "lenguaje", "codigo_inicial"):
             _string(exercise[field], f"{path}.{field}", max_length=40 if field == "lenguaje" else None)
+        _string(exercise["nivel"], f"{path}.nivel", required=True, max_length=16)
         if exercise["nivel"] not in {item[0] for item in EjercicioLeccion.NIVELES}:
             raise ImportContentError(f"{path}.nivel: nivel no permitido.")
         if type(exercise["obligatorio"]) is not bool:
@@ -175,6 +190,8 @@ def _validate_document(document, filename):
         if source_uuid in source_ids:
             raise ImportContentError(f"{path}.clave: fuente repetida.")
         source_ids.add(source_uuid)
+        _string(source["rol"], f"{path}.rol", required=True, max_length=16)
+        _string(source["uso_declarado"], f"{path}.uso_declarado", required=True, max_length=16)
         if source["rol"] not in SOURCE_ROLES:
             raise ImportContentError(f"{path}.rol: rol no permitido.")
         if source["uso_declarado"] not in SOURCE_USES:
@@ -231,8 +248,11 @@ def _validate_against_database(document, filename):
 
 def validar_directorio_contenido(directory):
     """Valida el lote completo sin escribir en la base de datos."""
-    root = Path(directory).expanduser().resolve()
-    if not root.exists() or not root.is_dir() or root.is_symlink():
+    supplied_root = Path(directory).expanduser()
+    if supplied_root.is_symlink():
+        raise ImportContentError("El directorio de entrada no puede ser un symlink.")
+    root = supplied_root.resolve()
+    if not root.exists() or not root.is_dir():
         raise ImportContentError("El directorio de entrada no existe o no es un directorio regular.")
     paths = sorted(root.iterdir(), key=lambda item: item.name)
     if not paths or len(paths) > MAX_DOCUMENTS:
