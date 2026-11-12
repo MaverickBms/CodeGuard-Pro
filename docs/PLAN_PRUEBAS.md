@@ -226,6 +226,16 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | EDIT-009 | Retirar publicación con motivo | Se conserva snapshot, motivo, responsable y fecha de retirada |
 | EDIT-010 | Publicar dos versiones simultáneas | Solo una versión queda publicada por lección |
 
+## 6.5 Pruebas de protección de versiones
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| IMM-001 | `QuerySet.update()` sobre snapshot | Se rechaza |
+| IMM-002 | `QuerySet.bulk_update()` sobre versión | Se rechaza |
+| IMM-003 | Eliminación masiva de versiones | Se rechaza |
+| IMM-004 | Crear versión masiva en estado publicado | Se rechaza |
+| IMM-005 | Eliminar versión individual en revisión/publicada | Se rechaza |
+
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
 
 > **Estado: PENDIENTES.** El sincronizador, el servicio central y los paquetes firmados todavía no están implementados. Estas pruebas definen el contrato que deberá verificarse cuando se construyan.
