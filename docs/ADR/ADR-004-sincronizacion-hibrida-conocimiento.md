@@ -72,7 +72,7 @@ Se adopta un **modelo híbrido de distribución de conocimiento** dentro de la F
 
 ## Criterios de cumplimiento
 
-La decisión se considerará implementada cuando las pruebas `SYNC-001` a `SYNC-020` de `docs/PLAN_PRUEBAS.md` estén cubiertas, el flujo editorial y el cliente estén integrados, y se demuestre que las actualizaciones no alteran el progreso ni las evidencias del estudiante.
+La decisión se considerará implementada cuando las pruebas `SYNC-001` a `SYNC-025` de `docs/PLAN_PRUEBAS.md` estén cubiertas, el flujo editorial y el cliente estén integrados, y se demuestre que las actualizaciones no alteran el progreso ni las evidencias del estudiante.
 
 **Importante:** aprobar esta ADR registra la dirección arquitectónica; no significa que la sincronización ya esté construida o validada.
 
