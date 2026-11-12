@@ -150,14 +150,14 @@ El propietario autorizó ejecutar las correcciones de consistencia identificadas
 - Alcance: interfaz de entregas, snapshots de intentos, puntero editorial activo, protecciones del registro local y documentación relacionada.
 - Se permiten commits exclusivamente en esa rama como mecanismo de escritura del repositorio.
 - No se autoriza merge, PR de integración, despliegue, publicación de paquetes, cambios en `main`, instalaciones ni migraciones sobre la base de datos local.
-- La migración 0014 y las pruebas añadidas requieren validación explícita en el entorno local del propietario antes de ampliar el alcance.
+- El propietario confirmó que la migración 0014 y las pruebas de la corrección anterior funcionan localmente. La migración 0015 y el publicador central recién añadidos siguen pendientes de validación local.
 
 ## 6. Pendientes de decisión o autorización del propietario
 
 | Elemento | Estado |
 |---|---|
-| **Sincronización de red** | Pendiente de decisión y autorización |
-| **Servicio central de publicación** | Pendiente de decisión y autorización |
+| **Hosting/endpoint público de distribución** | Pendiente de selección de proveedor y autorización |
+| **Generador central de paquetes firmados** | Implementado en rama correctiva; migración 0015 y pruebas pendientes de validación local |
 | **Cliente de sincronización** | Pendiente de decisión y autorización |
 | **Competencias y evaluaciones (Incremento 3)** | Pendiente de decisión |
 | **Biblioteca documental (Incremento 4)** | Pendiente de decisión |
@@ -175,7 +175,7 @@ El propietario autorizó ejecutar las correcciones de consistencia identificadas
 |---|---|---|---|
 | 1.0 | 2026-11-07 | Creación inicial a partir de la base revisada v0.4 | D-001 |
 | 2.0 | 2026-11-11 | Revisión completa tras avance de Fase 2: estado real de rama, HEAD, migraciones, comandos, pruebas y pendientes | Revisión de estado verificado |
-| 2.1 | 2026-11-12 | Corrección de línea base tras fusión a main; registro de autorización de rama; puntero de contenido activo, snapshots de intentos, interfaz de entregas y hardening de registros | Autorización expresa del propietario para correcciones en rama aislada; validación local pendiente |
+| 2.1 | 2026-11-12 | Corrección de línea base tras fusión a main; puntero de contenido activo, snapshots de intentos, interfaz de entregas y hardening de registros | Autorización expresa del propietario; validación local confirmada por el propietario |\n| 2.2 | 2026-11-12 | Generador reproducible de ZIP, manifiesto Ed25519, secuencias monotónicas, registro inmutable y comando editorial | Continuación autorizada en rama aislada; migración 0015 y pruebas pendientes de validación local |
 
 ### Reglas de actualización
 
