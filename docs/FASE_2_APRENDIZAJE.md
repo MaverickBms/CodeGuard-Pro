@@ -81,7 +81,7 @@ El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos 
 ---
 
 
-## 11. Cliente HTTP pull-only (implementación inicial en rama aislada)
+### 7.1 Cliente HTTP pull-only (implementación inicial en rama aislada)
 
 El módulo `apps/roadmaps/sync_client.py` realiza GET HTTPS al manifiesto, firma y ZIP. Verifica el manifiesto Ed25519 y su compatibilidad antes de descargar el paquete; el ZIP se entrega al instalador ya validado en `main`. Se aplican allowlist de hosts, TLS validado, rechazo de redirecciones, timeout y límites de bytes, ETag y verificación del tamaño/hash. No se envían datos del estudiante.
 
