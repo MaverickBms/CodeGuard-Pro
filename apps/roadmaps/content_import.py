@@ -94,7 +94,10 @@ def _integer(value, path):
 def _load_json(path):
     if path.is_symlink() or not path.is_file() or path.suffix.lower() != ".json":
         raise ImportContentError(f"{path.name}: solo se admiten archivos JSON regulares, sin symlinks.")
-    size = path.stat().st_size
+    try:
+        size = path.stat().st_size
+    except OSError as exc:
+        raise ImportContentError(f"{path.name}: no se pudo inspeccionar el archivo.") from exc
     if size > MAX_DOCUMENT_BYTES:
         raise ImportContentError(f"{path.name}: supera el límite de 2 MiB.")
     try:
@@ -267,7 +270,10 @@ def validar_directorio_contenido(directory):
     root = supplied_root.resolve()
     if not root.exists() or not root.is_dir():
         raise ImportContentError("El directorio de entrada no existe o no es un directorio regular.")
-    paths = sorted(root.iterdir(), key=lambda item: item.name)
+    try:
+        paths = sorted(root.iterdir(), key=lambda item: item.name)
+    except OSError as exc:
+        raise ImportContentError("No se pudo leer el directorio de importación.") from exc
     if not paths or len(paths) > MAX_DOCUMENTS:
         raise ImportContentError(f"El lote debe contener entre 1 y {MAX_DOCUMENTS} archivos.")
     if any(path.is_symlink() or not path.is_file() or path.suffix.lower() != ".json" for path in paths):
