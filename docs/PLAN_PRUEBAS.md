@@ -402,6 +402,7 @@ La suite `apps.roadmaps.tests.test_publisher` cubre los casos automatizados aña
 | SRC-005 | URL | HTTP, credenciales, puerto alterno o fragmento | El verificador rechaza el paquete | OK — suite 108 confirmada por el propietario |
 | SRC-006 | Privacidad | Catálogo firmado | No se exporta identidad del revisor | OK — suite 108 confirmada por el propietario |
 | SRC-007 | Compatibilidad | Índice v1 preexistente | El verificador conserva lectura de v1 | OK — suite 108 confirmada por el propietario |
+| SRC-008 | Licencia solo referencia | Fuente `solo_referencia` con uso declarado `adaptacion` | El verificador rechaza el documento; solo admite `original` | ⏳ Pendiente de validación local |
 
 Las suites `apps.roadmaps.tests.test_publisher` y `apps.roadmaps.tests.test_distribution` contienen las pruebas automatizadas añadidas para este contrato; el propietario confirmó 108 pruebas OK en `main` `cd7e18e`.
 
