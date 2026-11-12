@@ -91,7 +91,6 @@
 
 - Cliente de sincronización de red (consulta de manifiesto, descarga, instalación atómica, rollback).
 - Hosting y endpoint HTTPS del distribuidor; el generador local ya produce ZIP, manifiesto y firma, pero no despliega.
-- Cliente de sincronización pull-only, descarga, instalación atómica y rollback.
 - Integración del almacén de claves públicas y allowlist de producción en el cliente.
 - Validación local de la migración 0015 y de las pruebas del publicador; las pruebas históricas no validan estos componentes.
 
