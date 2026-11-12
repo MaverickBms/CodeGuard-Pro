@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="intento ejercicio".replace(" ", ""),
+            model_name="intentoejercicio",
             name="snapshot_ejercicio",
             field=models.JSONField(
                 blank=True,
