@@ -271,10 +271,9 @@ def sincronizar_conocimiento(
             state.last_success_at = now
             state.last_error_code = ""
             state.next_check_after = None
-            if response_etag:
-                if len(response_etag) > 255:
-                    raise SyncClientError("ETag demasiado largo.", code="invalid_response")
-                state.manifest_etag = response_etag
+            if len(response_etag) > 255:
+                raise SyncClientError("ETag demasiado largo.", code="invalid_response")
+            state.manifest_etag = response_etag
             state.save()
             return {
                 "status": "unchanged",
