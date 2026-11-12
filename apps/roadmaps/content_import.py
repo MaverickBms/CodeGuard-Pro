@@ -21,6 +21,7 @@ from .models import (
 )
 
 MAX_DOCUMENT_BYTES = 2 * 1024 * 1024
+MAX_BATCH_BYTES = 100 * 1024 * 1024
 MAX_DOCUMENTS = 500
 MAX_EXAMPLES = 50
 MAX_EXERCISES = 50
@@ -271,6 +272,12 @@ def validar_directorio_contenido(directory):
         raise ImportContentError(f"El lote debe contener entre 1 y {MAX_DOCUMENTS} archivos.")
     if any(path.is_symlink() or not path.is_file() or path.suffix.lower() != ".json" for path in paths):
         raise ImportContentError("El directorio solo puede contener archivos JSON regulares; no se admiten subdirectorios ni symlinks.")
+    try:
+        total_bytes = sum(path.stat().st_size for path in paths)
+    except OSError as exc:
+        raise ImportContentError("No se pudo inspeccionar el tamaño total del lote.") from exc
+    if total_bytes > MAX_BATCH_BYTES:
+        raise ImportContentError("El lote supera el límite total de 100 MiB.")
 
     validated = []
     errors = []
