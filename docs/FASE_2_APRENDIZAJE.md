@@ -330,3 +330,6 @@ Se añade `apps/roadmaps/knowledge.py` para generar snapshots deterministas a pa
 Se incorporan servicios de dominio para enviar snapshots a revisión, aprobarlos, publicarlos y retirar publicaciones. Cada transición exige un usuario activo con privilegios editoriales. La aprobación registra al revisor; la publicación registra al publicador y sustituye la versión anterior en una transacción. Una versión en revisión o en estados posteriores no permite modificar su snapshot, hash, identidad o resumen de cambios. La retirada exige motivo y no elimina evidencias históricas.
 
 Django Admin permanece deshabilitado. La interfaz editorial se implementará por separado cuando se defina el esquema de autenticación y permisos de CodeGuard.
+
+
+La retirada editorial dispone de metadatos propios (`retirada_por`, `retirada_en` y `motivo_retiro`), separados de la identidad y fecha de revisión/aprobación.
