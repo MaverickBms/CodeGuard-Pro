@@ -200,6 +200,59 @@ class InstaladorPaquetesTests(TestCase):
         self.assertEqual(self.fuente.titulo, "Título local actualizado")
         self.assertEqual(catalog_entry.metadatos["titulo"], "Python Language Reference")
 
+    def test_fallo_al_persistir_catalogo_revierte_paquete_y_mantiene_activo_anterior(self):
+        with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
+            first = self.instalar(self.publicar())["package"]
+            second_artifacts = self.publicar()
+            with patch(
+                "apps.roadmaps.installer.FuentePaqueteConocimiento.objects.create",
+                side_effect=RuntimeError("fallo simulado de persistencia"),
+            ):
+                with self.assertRaisesRegex(RuntimeError, "fallo simulado"):
+                    self.instalar(second_artifacts)
+
+        first.refresh_from_db()
+        state = EstadoSincronizacion.objects.get(channel="stable")
+        self.assertEqual(first.estado, "activo")
+        self.assertEqual(state.active_package_id, first.pk)
+        self.assertEqual(PaqueteConocimientoInstalado.objects.count(), 1)
+        self.assertEqual(ContenidoLeccionPaquete.objects.count(), 1)
+        self.assertEqual(FuentePaqueteConocimiento.objects.count(), 1)
+
+    def test_secuencia_anterior_se_rechaza_sin_cambiar_paquete_activo(self):
+        with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
+            first_artifacts = self.publicar()
+            second_artifacts = self.publicar()
+            first = self.instalar(first_artifacts)["package"]
+            second = self.instalar(second_artifacts)["package"]
+            with self.assertRaisesMessage(InstallationError, "manifiesto antiguo"):
+                self.instalar(first_artifacts)
+
+        state = EstadoSincronizacion.objects.get(channel="stable")
+        self.assertEqual(state.active_package_id, second.pk)
+        self.assertEqual(first.estado, "sustituido")
+        self.assertEqual(second.estado, "activo")
+        self.assertEqual(PaqueteConocimientoInstalado.objects.count(), 2)
+
+    def test_hash_de_zip_incorrecto_no_deja_registros(self):
+        manifest, signature, package = self.publicar()
+        altered_package = package[:-1] + bytes([package[-1] ^ 0x01])
+        with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
+            with self.assertRaisesMessage(InstallationError, "SHA-256 del paquete"):
+                instalar_paquete_firmado(
+                    manifest,
+                    signature,
+                    altered_package,
+                    trusted_public_keys=self.trusted_keys,
+                    allowed_hosts={"cdn.codeguard.example"},
+                    expected_channel="stable",
+                    app_version="1.0.0",
+                )
+
+        self.assertEqual(PaqueteConocimientoInstalado.objects.count(), 0)
+        self.assertEqual(ContenidoLeccionPaquete.objects.count(), 0)
+        self.assertFalse((self.data / "knowledge-packages").exists())
+
     def test_rollback_reactiva_paquete_anterior_sin_eliminar_evidencia(self):
         with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
             first = self.instalar(self.publicar())["package"]
