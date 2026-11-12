@@ -612,3 +612,18 @@ El modelo de versiones usa un QuerySet especializado que rechaza `update()`, `bu
 
 
 El envío a revisión también conserva `enviada_por` y `enviada_en`, separados de los datos de aprobación, publicación y retirada. Así queda identificada cada responsabilidad del ciclo editorial.
+
+
+## 20. Operación editorial local mediante comandos de gestión
+
+Como Django Admin no está habilitado, se incorporan comandos internos para operar el flujo sin exponerlo a estudiantes:
+
+```bash
+python manage.py crear_version_leccion --leccion 123 --fuente-id 4 --resumen "Primera revisión"
+python manage.py gestionar_version_leccion enviar-revision --version 17 --usuario editor
+python manage.py gestionar_version_leccion aprobar --version 17 --usuario revisor
+python manage.py gestionar_version_leccion publicar --version 17 --usuario publicador
+python manage.py gestionar_version_leccion retirar --version 17 --usuario revisor --motivo "La referencia quedó obsoleta"
+```
+
+Los IDs numéricos son locales y solo se usan para operación; los UUID son las identidades estables para distribución. Los comandos no crean usuarios ni conceden privilegios: el usuario debe existir, estar activo y tener `is_staff=True`.
