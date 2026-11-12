@@ -6,12 +6,13 @@ El contenido de las 33 etapas se carga desde el documento maestro oficial
 ASCENSO 3.1; este módulo no inventa etapas ni dependencias.
 """
 
+import uuid
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from django.utils import timezone
-import uuid
 
 
 class Roadmap(models.Model):
@@ -594,6 +595,9 @@ class VersionContenidoLeccion(models.Model):
             anterior = type(self).objects.only(
                 "estado", "leccion_id", "numero_version", "esquema_version",
                 "snapshot", "sha256", "resumen_cambios",
+                "enviada_por_id", "enviada_en", "revisada_por_id", "revisada_en",
+                "publicada_por_id", "publicada_en", "retirada_por_id", "retirada_en",
+                "motivo_retiro",
             ).get(pk=self.pk)
             estados_bloqueados = {"revision", "aprobada", "publicada", "sustituida", "retirada"}
             campos_inmutables = (
