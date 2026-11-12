@@ -219,9 +219,11 @@ flowchart TD
 | Un solo activo por canal + estado de sincronización | Implementado (migración 0013) |
 | Verificador de distribución firmada (Ed25519, manifiesto, ZIP) | Implementado |
 | Comandos de gestión editorial y distribución | Implementados; incluye publicar_paquete_conocimiento |
-| Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado; migración 0015 y pruebas del generador validadas localmente por el propietario |\n| Catálogo firmado de fuentes (índice v2) | Implementado en rama correctiva; pruebas pendientes de validación local |
+| Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado; migración 0015 y pruebas del generador validadas localmente por el propietario |
+| Catálogo firmado de fuentes (índice v2) | Implementado en rama correctiva; pruebas pendientes de validación local |
 | Cliente de sincronización de red | Pendiente |
-| Generación local de paquetes firmados | Implementada en rama correctiva; no desplegada |\n| Hosting, endpoint y publicación remota | Pendiente |
+| Generación local de paquetes firmados | Implementada en rama correctiva; no desplegada |
+| Hosting, endpoint y publicación remota | Pendiente |
 
 ---
 
