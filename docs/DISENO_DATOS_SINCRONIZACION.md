@@ -599,3 +599,8 @@ Se implementan servicios explícitos para las transiciones de estado:
 Las operaciones exigen un usuario autenticado, activo y con `is_staff=True`. Las versiones enviadas a revisión bloquean cambios en su identidad, snapshot, hash y resumen de cambios; solo los borradores pueden eliminarse mediante el método de instancia del modelo.
 
 **Importante:** Django Admin continúa deshabilitado. Estos servicios son la capa de dominio para una futura interfaz editorial segura o un comando de gestión; no se habilita un panel administrativo ni se expone publicación desde vistas de estudiante.
+
+
+### Auditoría de retirada
+
+La retirada registra campos independientes `retirada_por` y `retirada_en`. No reutiliza los metadatos de revisión/aprobación, para preservar quién aprobó originalmente el contenido y quién ordenó su retirada. La causa queda en `motivo_retiro`.
