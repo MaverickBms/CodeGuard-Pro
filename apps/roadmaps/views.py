@@ -255,7 +255,6 @@ def enviar_intento_view(request, ejercicio_id):
     ejercicio = get_object_or_404(
         EjercicioLeccion.objects.select_related("leccion__modulo__etapa"),
         pk=ejercicio_id,
-        publicado=True,
         leccion__modulo__etapa__roadmap=roadmap,
     )
     destino = f"{reverse('roadmaps:leccion_detalle', args=[ejercicio.leccion_id])}#ejercicio-{ejercicio.id}"
@@ -317,8 +316,8 @@ def leccion_detalle(request, leccion_id):
     )
     contenido = getattr(leccion, "contenido", None)
     ejemplos = list(leccion.ejemplos.filter(publicado=True))
-    ejercicios = list(leccion.ejercicios.filter(publicado=True))
-    ejercicios_modelo = ejercicios
+    ejercicios_modelo = list(leccion.ejercicios.all())
+    ejercicios = [item for item in ejercicios_modelo if item.publicado]
 
     if puntero_activo:
         snapshot = puntero_activo.version.snapshot
