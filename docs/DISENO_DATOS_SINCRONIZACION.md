@@ -585,3 +585,17 @@ El servicio `apps/roadmaps/knowledge.py` genera snapshots deterministas desde el
 La prueba verifica que el snapshot no cambia cuando el borrador editorial se modifica después y que el siguiente snapshot recibe la versión siguiente.
 
 **Límite:** el servicio crea snapshots, pero todavía no aplica una política completa de aprobación/publicación, no congela por sí mismo las filas de versiones frente a escrituras directas y no produce paquetes firmados.
+
+
+## 19. Flujo editorial controlado
+
+Se implementan servicios explícitos para las transiciones de estado:
+
+- `enviar_version_a_revision`: solo admite borradores con hash íntegro, estructura mínima válida, identidad de lección coincidente y al menos una fuente activa.
+- `aprobar_version_contenido`: solo admite versiones en revisión y registra fecha y usuario revisor.
+- `publicar_version_contenido`: solo admite versiones aprobadas; sustituye la publicación anterior y activa la nueva dentro de una única transacción.
+- `retirar_version_publicada`: exige motivo documentado y conserva el snapshot histórico.
+
+Las operaciones exigen un usuario autenticado, activo y con `is_staff=True`. Las versiones enviadas a revisión bloquean cambios en su identidad, snapshot, hash y resumen de cambios; solo los borradores pueden eliminarse mediante el método de instancia del modelo.
+
+**Importante:** Django Admin continúa deshabilitado. Estos servicios son la capa de dominio para una futura interfaz editorial segura o un comando de gestión; no se habilita un panel administrativo ni se expone publicación desde vistas de estudiante.
