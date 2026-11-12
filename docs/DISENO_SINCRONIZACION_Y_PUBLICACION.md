@@ -2,7 +2,7 @@
 
 **Producto:** CodeGuard Pro  
 **Fase:** 2 — Motor de aprendizaje y contenido interactivo  
-**Estado:** Diseño aprobado (ADR-004); núcleo de verificación criptográfica y registro local implementado en rama de trabajo. Cliente HTTP, publicación central e instalación atómica siguen pendientes.  
+**Estado:** Diseño aprobado (ADR-004); verificador criptográfico y registro local implementados en `main`. La rama correctiva añade snapshots activos y evidencia de intentos. Cliente HTTP, publicación central e instalación atómica de paquetes siguen pendientes.  
 **Fecha:** 12 de noviembre de 2026  
 **ADR relacionada:** `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`  
 **Unifica:** `docs/DISENO_DATOS_SINCRONIZACION.md` + `docs/DISENO_PUBLICADOR_CENTRAL.md`
@@ -13,7 +13,7 @@
 
 Definir cómo CodeGuard Pro podrá distribuir contenido académico revisado, mantenerlo versionado y actualizarlo de forma opcional cuando exista conexión, sin depender de Internet para estudiar.
 
-Este documento no afirma que el sincronizador exista. Describe el diseño recomendado antes de modificar modelos, migraciones, vistas o Electron.
+Este documento no afirma que el sincronizador exista. Describe el diseño y los contratos de la sincronización; algunos componentes locales (versionado editorial, puntero de contenido activo y evidencia de intentos) ya están implementados, mientras que el cliente remoto y el instalador siguen pendientes.
 
 Incluye:
 - Auditoría del modelo actual de contenido y evidencias.
