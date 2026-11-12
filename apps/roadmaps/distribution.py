@@ -177,9 +177,9 @@ def verify_signed_manifest(
     trusted_public_keys: dict,
     allowed_hosts,
     expected_channel: str,
+    app_version: str,
     current_sequence: int = 0,
     current_manifest_sha256: str | None = None,
-    app_version: str,
 ):
     """Verifica firma Ed25519, canal, compatibilidad y protección anti-replay."""
     manifest = validate_manifest_structure(manifest_bytes, allowed_hosts=allowed_hosts)
