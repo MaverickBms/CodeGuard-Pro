@@ -259,7 +259,7 @@ Las pruebas cubren:
 
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
 
-> **Estado: PENDIENTES.** El sincronizador, el servicio central y los paquetes firmados todavía no están implementados. Estas pruebas definen el contrato que deberá verificarse cuando se construyan.
+> **Estado:** verificador, publicador e instalador están validados en `main`; el cliente HTTP inicial está en rama aislada y sus pruebas HTTP-001 a HTTP-010 requieren validación local. Hosting, endpoint público y ejecución automática aún no están implementados.
 
 | ID | Prueba | Caso | Resultado esperado |
 |---|---|---|---|
@@ -349,7 +349,7 @@ La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que 
 
 ### 6.8 Validación confirmada — distribución firmada y registro local
 
-El propietario reportó inicialmente **93 pruebas OK** tras instalar `cryptography==46.0.3` y corregir `test_no_se_puede_saltar_transicion_de_paquete`. Esa cifra fue posteriormente superada por la confirmación de **108 pruebas OK** en `main` `cd7e18e`, junto con `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes. La suite de 108 incluye las correcciones de snapshots, publicador y catálogo firmado v2 descritas en las secciones siguientes.
+El propietario reportó inicialmente **93 pruebas OK** tras instalar `cryptography==46.0.3` y corregir `test_no_se_puede_saltar_transicion_de_paquete`. Esa cifra fue posteriormente superada por la confirmación de **119 pruebas OK** en `main` `2c5d441`, junto con `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes. La suite de 108 incluye las correcciones de snapshots, publicador y catálogo firmado v2 descritas en las secciones siguientes.
 
 La confirmación corresponde al entorno local del propietario y no equivale a una ejecución independiente en CI. No valida la migración 0016 ni el instalador/rollback incorporados después en la rama correctiva.
 
@@ -369,7 +369,7 @@ La confirmación corresponde al entorno local del propietario y no equivale a un
 | F2-ACT-005 | Snapshot activo tras editar borrador | Modificar ejercicio editable después de publicación | Vista e intento siguen usando el snapshot publicado | OK — suite 108 confirmada por el propietario |
 | F2-ACT-006 | Inmutabilidad de evidencia | Modificar snapshot/respuesta de un intento o borrarlo mediante ORM | Operación rechazada; la evidencia original se conserva | OK — suite 108 confirmada por el propietario |
 
-**Validación:** el propietario confirmó la suite completa de 108 pruebas OK en `main` `cd7e18e`, incluyendo las pruebas de este bloque.
+**Validación:** el propietario confirmó la suite completa de 119 pruebas OK en `main` `2c5d441`, incluyendo las pruebas de este bloque.
 
 
 ## 6.10 Publicador central de conocimiento (validado localmente)
@@ -389,9 +389,9 @@ La confirmación corresponde al entorno local del propietario y no equivale a un
 | PUB-011 | URL | Host no permitido o URL no HTTPS | Publicación rechazada | OK — suite 108 confirmada por el propietario |
 | PUB-012 | Historial | Intentar modificar o borrar un release | Operación rechazada | OK — suite 108 confirmada por el propietario |
 
-La suite `apps.roadmaps.tests.test_publisher` cubre los casos automatizados añadidos. El propietario confirmó su ejecución correcta dentro de las 108 pruebas en `main` `cd7e18e`.
+La suite `apps.roadmaps.tests.test_publisher` cubre los casos automatizados añadidos. El propietario confirmó su ejecución correcta dentro de las 119 pruebas en `main` `2c5d441`.
 
-## 6.11 Catálogo de fuentes en índice v2 (validado en main; ampliación SRC-008 pendiente)
+## 6.11 Catálogo de fuentes en índice v2 (validado localmente)
 
 | ID | Prueba | Caso | Resultado esperado | Estado |
 |---|---|---|---|---|
@@ -402,25 +402,42 @@ La suite `apps.roadmaps.tests.test_publisher` cubre los casos automatizados aña
 | SRC-005 | URL | HTTP, credenciales, puerto alterno o fragmento | El verificador rechaza el paquete | OK — suite 108 confirmada por el propietario |
 | SRC-006 | Privacidad | Catálogo firmado | No se exporta identidad del revisor | OK — suite 108 confirmada por el propietario |
 | SRC-007 | Compatibilidad | Índice v1 preexistente | El verificador conserva lectura de v1 | OK — suite 108 confirmada por el propietario |
-| SRC-008 | Licencia solo referencia | Fuente `solo_referencia` con uso declarado `adaptacion` | El verificador rechaza el documento; solo admite `original` | ⏳ Pendiente de validación local |
+| SRC-008 | Licencia solo referencia | Fuente `solo_referencia` con uso declarado `adaptacion` | El verificador rechaza el documento; solo admite `original` | OK — suite 119 confirmada por el propietario |
 
-Las suites `apps.roadmaps.tests.test_publisher` y `apps.roadmaps.tests.test_distribution` contienen las pruebas automatizadas añadidas para este contrato; el propietario confirmó 108 pruebas OK en `main` `cd7e18e`.
+Las suites `apps.roadmaps.tests.test_publisher` y `apps.roadmaps.tests.test_distribution` contienen las pruebas automatizadas añadidas para este contrato; el propietario confirmó 119 pruebas OK en `main` `2c5d441`.
 
-## 6.12 Instalador transaccional y rollback (pendiente de validación local)
+## 6.12 Instalador transaccional y rollback (validado localmente)
 
 | ID | Prueba | Caso | Resultado esperado | Estado |
 |---|---|---|---|---|
-| INS-001 | Instalación válida | Manifiesto firmado, ZIP íntegro, curriculum y catálogo válidos | Registra paquete, snapshots y fuentes; activa el paquete al final | ⏳ Pendiente |
-| INS-002 | Firma inválida | Alterar o sustituir la firma | Rechazo sin registro, snapshots ni cambio del paquete activo | ⏳ Pendiente |
-| INS-003 | Integridad del artefacto | Tamaño o SHA-256 del ZIP incorrectos | Rechazo antes de persistir contenido | ⏳ Pendiente |
-| INS-004 | Identidad curricular | Lección inexistente, título/tipo/descripcion divergente o UUID de recurso ajeno | Aborta toda la instalación; no modifica el contenido activo | ⏳ Pendiente |
-| INS-005 | Aislamiento de fuentes | UUID de fuente existente con metadatos locales diferentes | Conserva el registro editorial local y almacena catálogo firmado por paquete | ⏳ Pendiente |
-| INS-006 | Activación transaccional | Error durante persistencia de snapshots o fuentes | Rollback SQLite; el paquete anterior permanece activo | ⏳ Pendiente |
-| INS-007 | Sustitución | Instalar secuencia posterior | El paquete previo pasa a sustituido y el nuevo queda activo | ⏳ Pendiente |
-| INS-008 | Rollback | Reactivar paquete sustituido | Revalida hash del ZIP y restaura el puntero sin borrar snapshots ni intentos | ⏳ Pendiente |
-| INS-009 | Anti-replay | Secuencia inferior o misma secuencia con manifiesto distinto | Rechazo sin modificar el estado activo | ⏳ Pendiente |
-| INS-010 | Idempotencia | Reinstalar exactamente el mismo manifiesto activo | No duplica paquete, snapshots ni fuentes | ⏳ Pendiente |
-| INS-011 | Intentos | Enviar ejercicio desde paquete activo | Guarda FK al paquete y snapshot exacto; no ejecuta código | ⏳ Pendiente |
-| INS-012 | Finalización | Todos los ejercicios obligatorios aprobados con configuración habilitada | Completa únicamente con evidencia asociada al paquete activo | ⏳ Pendiente |
+| INS-001 | Instalación válida | Manifiesto firmado, ZIP íntegro, curriculum y catálogo válidos | Registra paquete, snapshots y fuentes; activa el paquete al final | OK — suite 119 confirmada por el propietario |
+| INS-002 | Firma inválida | Alterar o sustituir la firma | Rechazo sin registro, snapshots ni cambio del paquete activo | OK — suite 119 confirmada por el propietario |
+| INS-003 | Integridad del artefacto | Tamaño o SHA-256 del ZIP incorrectos | Rechazo antes de persistir contenido | OK — suite 119 confirmada por el propietario |
+| INS-004 | Identidad curricular | Lección inexistente, título/tipo/descripcion divergente o UUID de recurso ajeno | Aborta toda la instalación; no modifica el contenido activo | OK — suite 119 confirmada por el propietario |
+| INS-005 | Aislamiento de fuentes | UUID de fuente existente con metadatos locales diferentes | Conserva el registro editorial local y almacena catálogo firmado por paquete | OK — suite 119 confirmada por el propietario |
+| INS-006 | Activación transaccional | Error durante persistencia de snapshots o fuentes | Rollback SQLite; el paquete anterior permanece activo | OK — suite 119 confirmada por el propietario |
+| INS-007 | Sustitución | Instalar secuencia posterior | El paquete previo pasa a sustituido y el nuevo queda activo | OK — suite 119 confirmada por el propietario |
+| INS-008 | Rollback | Reactivar paquete sustituido | Revalida hash del ZIP y restaura el puntero sin borrar snapshots ni intentos | OK — suite 119 confirmada por el propietario |
+| INS-009 | Anti-replay | Secuencia inferior o misma secuencia con manifiesto distinto | Rechazo sin modificar el estado activo | OK — suite 119 confirmada por el propietario |
+| INS-010 | Idempotencia | Reinstalar exactamente el mismo manifiesto activo | No duplica paquete, snapshots ni fuentes | OK — suite 119 confirmada por el propietario |
+| INS-011 | Intentos | Enviar ejercicio desde paquete activo | Guarda FK al paquete y snapshot exacto; no ejecuta código | OK — suite 119 confirmada por el propietario |
+| INS-012 | Finalización | Todos los ejercicios obligatorios aprobados con configuración habilitada | Completa únicamente con evidencia asociada al paquete activo | OK — suite 119 confirmada por el propietario |
 
-La suite añadida es `apps.roadmaps.tests.test_installer`. Incluye instalación y activación, rollback, firma inválida, divergencia curricular, aislamiento de fuentes, idempotencia y entrega contra snapshot instalado. Ejecutar primero la migración 0016 y la suite específica; después ejecutar toda la suite y `makemigrations --check --dry-run`. No marcar los casos como aprobados hasta recibir el resultado local.
+La suite `apps.roadmaps.tests.test_installer` cubre instalación y activación, rollback, firma inválida, divergencia curricular, aislamiento de fuentes, idempotencia y entrega contra snapshot instalado. El propietario confirmó 119 pruebas OK en `main` `2c5d441`, junto con `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios.
+
+## 6.13 Cliente HTTP pull-only (implementación inicial; pendiente de validación local)
+
+| ID | Prueba | Caso | Resultado esperado | Estado |
+|---|---|---|---|---|
+| HTTP-001 | Allowlist de endpoint | HTTP, host externo, credenciales, puerto no estándar o fragmento | Rechazo antes de abrir conexión | ⏳ Pendiente de validación local |
+| HTTP-002 | Redirecciones | Respuesta 3xx o URL final distinta | Rechazo; no se sigue el destino | ⏳ Pendiente de validación local |
+| HTTP-003 | Límite de descarga | Content-Length o stream excede el máximo | Abortado sin entregar bytes al instalador | ⏳ Pendiente de validación local |
+| HTTP-004 | Tamaño firmado | Longitud real distinta a `package.size_bytes` | Rechazo | ⏳ Pendiente de validación local |
+| HTTP-005 | ETag | Manifiesto responde 304 a `If-None-Match` | No descarga firma ni ZIP y actualiza comprobación local | ⏳ Pendiente de validación local |
+| HTTP-006 | Firma antes del ZIP | Firma Ed25519 inválida o clave desconocida | Rechaza manifiesto y no solicita el ZIP | ⏳ Pendiente de validación local |
+| HTTP-007 | Flujo válido | Manifiesto y firma válidos, paquete íntegro | Invoca el instalador transaccional y guarda ETag | ⏳ Pendiente de validación local |
+| HTTP-008 | Privacidad | Inspeccionar petición saliente | Solo GET sin cookies, token, body ni datos académicos del estudiante | ⏳ Pendiente de validación local |
+| HTTP-009 | Timeout y conectividad | Timeout, error DNS o HTTP 5xx | Error controlado; el contenido instalado permanece disponible | ⏳ Pendiente de validación local |
+| HTTP-010 | Configuración | Falta clave de confianza o allowlist | Falla cerrada; no realiza petición | ⏳ Pendiente de validación local |
+
+Cobertura automatizada inicial: `apps.roadmaps.tests.test_sync_client` y pruebas de integración del cliente en `apps.roadmaps.tests.test_installer`. La suite debe ejecutarse localmente antes de marcar HTTP-001 a HTTP-010 como aprobadas.
