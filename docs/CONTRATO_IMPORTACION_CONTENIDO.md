@@ -163,7 +163,7 @@ La validación se ejecutará en memoria antes de crear cualquier fila. Si un doc
 - La referencia debe incluir rol válido (`principal`, `complementaria` o `normativa`), localizador, nota de atribución y `uso_declarado` (`original`, `cita_breve`, `adaptacion` o `reproduccion`).
 - No considerar que HTTPS, dominio oficial o acceso público equivalen a permiso de reutilización.
 - No permitir que el importador marque una fuente como verificada ni modifique su licencia.
-- La versión importada debe quedar en borrador si alguna fuente está pendiente de revisión de licencia.
+- La versión importada siempre queda en borrador. Las fuentes pendientes se registran como advertencia y bloquean el envío a revisión hasta resolver la licencia.
 
 ### 4.5 Límites de recursos
 
@@ -193,8 +193,8 @@ El validador debe producir un informe determinista con errores, advertencias y r
 | UUID asociado a otro padre o tipo de recurso | Error bloqueante |
 | Fuente inexistente o inactiva | Error bloqueante |
 | Fuente con licencia sin revisar | Advertencia editorial; no se permite avanzar a revisión/publicación |
-| Mismo hash y misma lección/versionado lógico ya importado | Informar como duplicado idempotente; no crear otra versión |
-| Mismo identificador lógico con contenido/hash diferente | Conflicto; requiere nueva versión o corrección editorial explícita |
+| Mismo hash y misma lección con las mismas referencias | Duplicado idempotente; no crear otra versión |
+| Misma lección con hash diferente | Crear una nueva versión borrador mediante importación explícita; nunca sobrescribir la anterior. UUID de recurso ligado a otro padre/tipo sí es conflicto |
 | Título curricular distinto al de ASCENSO | Error; no renombrar la lección desde el paquete |
 | Campo desconocido o versión de esquema no soportada | Error bloqueante |
 
@@ -226,7 +226,7 @@ La validación y la importación deben separar sus operaciones:
 
 ### 6.1 Idempotencia y concurrencia
 
-- El hash se calcula con JSON canónico UTF-8, claves ordenadas y separadores deterministas, siguiendo la estrategia ya usada por `knowledge.py`.
+- El hash del snapshot se calcula con JSON canónico UTF-8, claves ordenadas y separadores deterministas, siguiendo la estrategia ya usada por `knowledge.py`. La idempotencia compara además las referencias de fuente (rol, uso, localizador y atribución), porque la procedencia no forma parte del hash del snapshot.
 - Una segunda importación del mismo contenido no debe crear versiones duplicadas.
 - El cálculo del siguiente número de versión y la creación del borrador deben ejecutarse bajo transacción y bloqueo de la fila de lección.
 - Las restricciones únicas de base de datos siguen siendo la última defensa ante carreras.
@@ -253,11 +253,11 @@ Reglas de publicación:
 4. `requiere_permiso` bloquea la publicación hasta registrar evidencia del permiso y revisar su alcance.
 5. `no_reutilizable` no puede respaldar material copiado/adaptado; el editor debe retirar ese material o sustituir la fuente.
 6. La decisión no se infiere por dominio, protocolo HTTPS ni disponibilidad pública.
-7. Las versiones ya publicadas conservan la evidencia de licencia y la decisión vigentes al momento de su aprobación.
+7. Al enviar a revisión, cada referencia congela el estado, evidencia, alcance, nota, editor y fecha de revisión de licencia. Esos datos quedan asociados a la versión y no pueden cambiar después; si la decisión de la fuente cambia durante la revisión, aprobación o publicación se bloquea hasta crear/revisar una versión coherente.
 
 La validación de licencia debe residir en el servicio de dominio que envía una versión a revisión y que la publica, no solo en el comando de importación. Así se evita eludir el control mediante otra interfaz o llamada interna.
 
-Este control requiere migración y pruebas propias. No se considera implementado por el presente documento.
+Este control se implementó inicialmente en las migraciones 0009 y 0010 y requiere validación local de migraciones y pruebas antes de considerarse cerrado.
 
 ## 8. Seguridad y privacidad
 
@@ -313,8 +313,8 @@ Salida mínima del validador:
 | IMP-012 | Tipo o nivel no permitido | Rechazo |
 | IMP-013 | Texto que supera el modelo | Rechazo antes de escribir |
 | IMP-014 | Documento superior al tamaño máximo | Rechazo antes de parsear completo |
-| IMP-015 | Mismo hash importado dos veces | Idempotencia; no duplica versión |
-| IMP-016 | Mismo identificador con contenido distinto | Conflicto; no sobrescribe |
+| IMP-015 | Mismo snapshot y procedencia importados dos veces | Idempotencia; no duplica versión |
+| IMP-016 | Misma lección con snapshot distinto | Nueva versión borrador; no sobrescribe versiones previas |
 | IMP-017 | Error al crear una referencia | Rollback completo del lote |
 | IMP-018 | Usuario sin privilegios intenta importar | Rechazo |
 | IMP-019 | Importación válida | Crea solo borradores y referencias |
@@ -334,7 +334,7 @@ El importador podrá considerarse implementado cuando:
 - La importación cree únicamente borradores inmutables con hash y referencias.
 - Se rechacen identidades, relaciones, campos y esquemas desconocidos.
 - Se detecten duplicados y conflictos sin sobrescritura.
-- La revisión de licencia sea auditable y obligatoria antes de publicación.
+- La revisión de licencia sea auditable y obligatoria antes de publicación, con evidencia congelada por versión.
 - Un fallo revierta el lote completo.
 - Los datos de estudiantes permanezcan intactos.
 - Todos los casos IMP-001 a IMP-025 tengan pruebas automatizadas.
