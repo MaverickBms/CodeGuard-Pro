@@ -369,5 +369,6 @@ Esta confirmación acredita la suite ejecutada en el entorno del usuario. No equ
 | F2-SYNC-001 | Bulk create de paquetes | Intentar insertar paquete descargado con error/fecha de instalación | Operación rechazada por validación de modelo | ⏳ Pendiente |
 | F2-SYNC-002 | Estado de sincronización | Ejecutar `QuerySet.update()` | Operación masiva rechazada; usar `save()` validado | ⏳ Pendiente |
 | F2-ACT-005 | Snapshot activo tras editar borrador | Modificar ejercicio editable después de publicación | Vista e intento siguen usando el snapshot publicado | ⏳ Pendiente |
+| F2-ACT-006 | Inmutabilidad de evidencia | Modificar snapshot/respuesta de un intento o borrarlo mediante ORM | Operación rechazada; la evidencia original se conserva | ⏳ Pendiente |
 
 **Nota:** estas pruebas se añadieron después de las 93 pruebas confirmadas previamente. No marcar este bloque como aprobado hasta que el propietario ejecute la migración y la suite completa en su entorno local.
