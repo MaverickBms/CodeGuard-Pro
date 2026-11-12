@@ -182,6 +182,8 @@ Las pruebas de esta rama cubren evaluación exacta, comprobación estática, con
 
 ## 11. Conocimiento académico y sincronización híbrida
 
+**Diseño de datos y contrato técnico:** consultar `docs/DISENO_DATOS_SINCRONIZACION.md`. El documento contiene la auditoría de modelos/migraciones, entidades propuestas, payload, manifiesto, firma, estrategia de migración y pruebas derivadas.
+
 **Decisión de producto aprobada:** CodeGuard Pro utilizará un modelo híbrido: un servicio central publica contenido académico revisado y versionado; la aplicación local consulta y descarga actualizaciones automáticamente cuando dispone de conexión; el contenido queda almacenado localmente para continuar trabajando offline. Esta capacidad pertenece a la Fase 2.
 
 **Estado real en `main`: DISEÑO DOCUMENTADO; NO IMPLEMENTADO.** Los modelos actuales de lecciones, ejemplos, ejercicios, intentos y evaluadores no constituyen todavía un sistema de sincronización. No existe en esta revisión evidencia de un cliente de sincronización, un servicio central de publicación, manifiestos firmados ni un instalador local de paquetes.
