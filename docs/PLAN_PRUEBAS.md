@@ -236,6 +236,16 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | IMM-004 | Crear versión masiva en estado publicado | Se rechaza |
 | IMM-005 | Eliminar versión individual en revisión/publicada | Se rechaza |
 
+## 6.6 Pruebas de comandos editoriales
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| CLI-001 | Crear snapshot con lección y fuente existentes | Crea borrador y asocia procedencia |
+| CLI-002 | Crear snapshot con ID de lección inexistente | Devuelve error controlado |
+| CLI-003 | Enviar versión a revisión con usuario staff activo | Cambia estado y registra remitente |
+| CLI-004 | Ejecutar transición con usuario sin privilegios | El servicio rechaza la operación |
+| CLI-005 | Retirar sin motivo | El comando exige motivo |
+
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
 
 > **Estado: PENDIENTES.** El sincronizador, el servicio central y los paquetes firmados todavía no están implementados. Estas pruebas definen el contrato que deberá verificarse cuando se construyan.
