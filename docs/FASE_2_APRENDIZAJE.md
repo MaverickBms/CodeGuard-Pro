@@ -387,7 +387,7 @@ Reglas obligatorias del incremento:
 
 ### Implementado en la rama de trabajo
 
-- Migración `0009_revision_licencias_fuentes`: añade estado de revisión de licencia, evidencia, alcance, decisión, responsable y fecha; cada referencia registra el uso declarado.
+- Migraciones `0009_revision_licencias_fuentes` y `0010_snapshot_auditoria_licencia`: añaden estado de revisión de licencia, evidencia, alcance, decisión, responsable y fecha; cada referencia registra el uso declarado y congela la evidencia de licencia al entrar en revisión.
 - Servicio `revisar_licencia_fuente()` y comando `revisar_licencia_fuente`, restringidos a editores activos.
 - El flujo editorial bloquea fuentes pendientes, con permiso requerido o no reutilizables. Una licencia compatible exige evidencia HTTPS y alcance documentado. La opción solo referencia permite contenido original, no adaptación ni reproducción.
 - `apps/roadmaps/content_import.py`: validador de JSON v1 e importador transaccional.
