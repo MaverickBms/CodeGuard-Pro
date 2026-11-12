@@ -389,12 +389,12 @@ La suite `apps.roadmaps.tests.test_installer` cubre instalación y activación, 
 | HTTP-009 | Timeout y conectividad | Timeout, error DNS o HTTP 5xx | Error controlado; el contenido instalado permanece disponible | ✅ Validado localmente por el propietario dentro de 132 pruebas |
 | HTTP-010 | Configuración | Falta clave de confianza o allowlist | Falla cerrada; no realiza petición | ✅ Validado localmente por el propietario dentro de 132 pruebas |
 
-Cobertura automatizada: `apps.roadmaps.tests.test_sync_client` y pruebas de integración del cliente en `apps.roadmaps.tests.test_installer`. El propietario confirmó 132 pruebas OK, incluyendo este bloque HTTP. Las pruebas nuevas del scheduler/backoff/bloqueo agregadas después de esa ejecución están pendientes.
+Cobertura automatizada: `apps.roadmaps.tests.test_sync_client` y pruebas de integración del cliente en `apps.roadmaps.tests.test_installer`. El propietario confirmó 132 pruebas OK para el cliente HTTP y, posteriormente, la ejecución satisfactoria de la suite ampliada con las pruebas unitarias de backoff y bloqueo entre procesos. El build real de PyInstaller y la integración ejecutada con Electron permanecen pendientes.
 
 
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
 
-> **Estado:** verificador, publicador e instalador están validados en `main`; el cliente HTTP y HTTP-001 a HTTP-010 fueron validados localmente por el propietario dentro de 132 pruebas en la rama aislada. El scheduler Electron y la ejecución PyInstaller están implementados después de esa validación y requieren pruebas adicionales. Hosting, endpoint público y claves de producción siguen pendientes.
+> **Estado:** verificador, publicador e instalador están validados en `main`; el cliente HTTP y las pruebas unitarias de backoff/bloqueo están validados localmente en la rama aislada. Falta completar el build real de PyInstaller y la prueba de ejecución integrada con Electron. Hosting, endpoint público y claves de producción siguen pendientes.
 
 | ID | Prueba | Caso | Resultado esperado |
 |---|---|---|---|
@@ -442,14 +442,14 @@ Cobertura automatizada: `apps.roadmaps.tests.test_sync_client` y pruebas de inte
 
 La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
 
-## 6.14 Scheduler Electron, backoff y ejecución empaquetada (pendiente de validación)
+## 6.14 Scheduler Electron, backoff y ejecución empaquetada (validación parcial)
 
 | ID | Escenario | Preparación / acción | Resultado esperado | Estado |
 |---|---|---|---|---|
 | AUTO-001 | Primera comprobación diferida | Iniciar Electron con configuración válida | La ventana y Django quedan disponibles; la consulta inicia después de 30 segundos sin bloquear la interfaz | ⏳ Pendiente |
 | AUTO-002 | Sondeo local | Mantener Electron abierto con `next_check_after` futuro | El scheduler puede sondear cada cinco minutos, pero no realiza tráfico HTTP antes de la fecha persistida | ⏳ Pendiente |
-| AUTO-003 | Backoff progresivo | Simular fallos consecutivos de red | 15, 30, 60, 120 minutos… hasta 24 horas; intervalo persistido en SQLite | ⏳ Pendiente |
-| AUTO-004 | Bloqueo entre procesos | Iniciar dos procesos de sincronización para el mismo canal | Solo uno adquiere el bloqueo; el otro termina con `sync_in_progress` | ⏳ Pendiente |
+| AUTO-003 | Backoff progresivo | Simular fallos consecutivos de red | 15, 30, 60, 120 minutos… hasta 24 horas; intervalo persistido en SQLite | ✅ Validado localmente por el propietario (pruebas unitarias) |
+| AUTO-004 | Bloqueo entre procesos | Iniciar dos procesos de sincronización para el mismo canal | Solo uno adquiere el bloqueo; el otro termina con `sync_in_progress` | ✅ Validado localmente por el propietario (prueba de bloqueo) |
 | AUTO-005 | Sin configuración | Omitir URL, allowlist o clave pública | Estado `not-configured`; no se inicia proceso ni se abre conexión de red | ⏳ Pendiente |
 | AUTO-006 | Modo PyInstaller | Ejecutar `CodeGuardServer --sync-knowledge` en un equipo sin Python externo | Se ejecuta solo el comando; no inicia Waitress, no migra ni recrea ASCENSO | ⏳ Pendiente |
 | AUTO-007 | Cierre de aplicación | Cerrar Electron durante una descarga | Se cancelan temporizadores y proceso hijo; el paquete incompleto no se activa | ⏳ Pendiente |
