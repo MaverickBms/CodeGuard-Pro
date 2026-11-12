@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import os
 import tempfile
+from datetime import datetime
 from pathlib import Path
 from uuid import UUID
 
@@ -239,7 +240,7 @@ def instalar_paquete_firmado(
         digest=manifest_package["sha256"],
     )
     try:
-        published_at = timezone.datetime.fromisoformat(
+        published_at = datetime.fromisoformat(
             manifest["published_at"].replace("Z", "+00:00")
         )
         package = PaqueteConocimientoInstalado.objects.create(
