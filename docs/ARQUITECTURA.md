@@ -201,6 +201,8 @@ sin cambios.
 
 ## 10. Arquitectura objetivo: distribución y sincronización de conocimiento
 
+El diseño detallado del modelo de datos, las claves estables, el contrato de paquetes y la migración desde los modelos actuales está en `docs/DISENO_DATOS_SINCRONIZACION.md`.
+
 > **Estado: DISEÑO APROBADO; IMPLEMENTACIÓN PENDIENTE EN FASE 2.** Esta sección describe el objetivo y no afirma que existan actualmente el servidor central, el cliente de sincronización o los paquetes firmados.
 
 ### 10.1 Límites de confianza y responsabilidades
