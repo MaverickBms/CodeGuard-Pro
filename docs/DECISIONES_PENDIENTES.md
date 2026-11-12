@@ -30,7 +30,13 @@
 
 ---
 
-## 3. Cómo resolver una decisión pendiente
+## 3. Decisiones de arquitectura/producto aprobadas para la Fase 2
+
+| ID | Decisión | Resolución | Alcance y límites |
+|---|---|---|---|
+| P-004 | Actualización del conocimiento académico | **RESUELTA por el propietario (11-11-2026): modelo híbrido.** Un servidor central distribuye contenido revisado y versionado; el cliente sincroniza automáticamente cuando hay conexión y conserva el contenido local. | Forma parte de la Fase 2. Sincronización pull-only por HTTPS; el cliente valida firma, hash, esquema y compatibilidad; instalación atómica y rollback. No se suben progreso, intentos, código, calificaciones ni datos personales. La detección de cambios en fuentes no publica contenido sin revisión editorial. Véase `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`. |
+
+## 4. Cómo resolver una decisión pendiente
 
 1. El propietario define el valor o la opción.
 2. Se registra en este archivo (marcar como resuelta).
