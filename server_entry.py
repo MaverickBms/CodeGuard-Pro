@@ -30,7 +30,14 @@ def main() -> int:
     # las migraciones ni el roadmap. El servidor principal ya administra esos pasos.
     if sys.argv[1:] == ["--sync-knowledge"]:
         try:
-            call_command("sincronizar_conocimiento", verbosity=1)
+            channel = os.environ.get("CODEGUARD_SYNC_CHANNEL", "stable").strip()
+            force = os.environ.get("CODEGUARD_SYNC_FORCE", "").strip().lower() in {"1", "true", "yes"}
+            call_command(
+                "sincronizar_conocimiento",
+                channel=channel,
+                force=force,
+                verbosity=1,
+            )
             return 0
         except Exception as exc:
             print(f"[CodeGuard Sync] {exc}", file=sys.stderr, flush=True)
