@@ -80,7 +80,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Repositorio | `/home/mvxbms/Documentos/CodeGuard` |
 | Línea base | `main` en `c2ec604` |
 | Rama de correcciones | `fix/phase-2-integrity-learning` |
-| HEAD de correcciones | Ver último commit de la rama; no fusionado |
+| HEAD de correcciones | `3c07e9b` (no fusionado) |
 | Remoto | `origin/fix/phase-2-integrity-learning` |
 | Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
 | Migraciones roadmaps | 0001 a 0013 aplicadas según validación previa; 0014 creada y pendiente de ejecución local |
