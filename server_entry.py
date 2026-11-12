@@ -26,6 +26,16 @@ def main() -> int:
 
     from django.core.management import call_command
 
+    # El sincronizador se ejecuta en un proceso separado y no toca el servidor,
+    # las migraciones ni el roadmap. El servidor principal ya administra esos pasos.
+    if sys.argv[1:] == ["--sync-knowledge"]:
+        try:
+            call_command("sincronizar_conocimiento", verbosity=1)
+            return 0
+        except Exception as exc:
+            print(f"[CodeGuard Sync] {exc}", file=sys.stderr, flush=True)
+            return 1
+
     # Migraciones idempotentes: no destruyen datos del usuario.
     call_command("migrate", interactive=False, verbosity=0)
 
@@ -38,6 +48,10 @@ def main() -> int:
             cargar_ascenso()
     except Exception as exc:  # pragma: no cover - defensivo en el binario
         print(f"[CodeGuard] No se pudo cargar el roadmap inicial: {exc}", file=sys.stderr)
+
+    if sys.argv[1:]:
+        print("[CodeGuard] Argumentos de ejecución no reconocidos.", file=sys.stderr)
+        return 2
 
     port = os.environ.get("CODEGUARD_PORT", "8000").strip() or "8000"
     print(f"[CodeGuard] Servidor local en http://127.0.0.1:{port}/", flush=True)
