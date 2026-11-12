@@ -1,8 +1,9 @@
 # CodeGuard Pro — Decisiones pendientes
 
 **Producto:** CodeGuard Pro  
-**Versión:** 1.0  
-**Estado:** Decisiones técnicas y de producto pendientes de definición
+**Versión:** 1.1  
+**Estado:** Decisiones técnicas y de producto pendientes de definición  
+**Rama de trabajo:** `docs/phase-2-hybrid-knowledge-sync`
 
 ---
 

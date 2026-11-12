@@ -1,8 +1,9 @@
 # CodeGuard Pro — Matriz de trazabilidad
 
 **Producto:** CodeGuard Pro  
-**Versión:** 1.0 (MVP, primer incremento)  
-**SRS de referencia:** `IEEE830(1).md` v2.0 — Sección 5
+**Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada)  
+**SRS de referencia:** `IEEE830(1).md` v2.0 — Sección 5  
+**Rama de trabajo:** `docs/phase-2-hybrid-knowledge-sync`
 
 ---
 
@@ -49,14 +50,14 @@ prueba que pasa).
 
 ---
 
-## 3. Requisitos pendientes de implementación (próximos incrementos)
+## 3. Requisitos del incremento 2 (motor de aprendizaje y conocimiento versionado)
 
 | ID | Descripción | Módulo | Estado | Nota |
 |---|---|---|---|---|
-| RF-010 a RF-017 | Roadmap ASCENSO | Académico | ⏳ Pendiente | Incremento 2 |
+| RF-010 a RF-017 | Roadmap ASCENSO (33 etapas, módulos, lecciones, prerrequisitos) | Académico | ✅ Implementado | Rama `docs/phase-2-hybrid-knowledge-sync`; cargable con `cargar_ascenso` |
 | RF-020 a RF-029 | Competencias | Competencias | ⏳ Pendiente | Incremento 3 |
 | RF-030 a RF-044 | Biblioteca documental | Documental | ⏳ Pendiente | Incremento 4 |
-| RF-050 a RF-056 | Base de conocimiento | Conocimiento | ⏳ Pendiente | Incremento 4 |
+| RF-050 a RF-056 | Base de conocimiento (fuentes, snapshots, versionado) | Conocimiento | ✅ Implementado (parte) | `FuenteConocimiento`, `VersionContenidoLeccion`, `ReferenciaFuenteContenido` en rama de trabajo |
 | RF-060 a RF-071 | Evaluaciones | Evaluación | ⏳ Pendiente | Incremento 3 |
 | RF-080 a RF-089 | Evidencias | Evidencias | ⏳ Pendiente | Incremento 5 |
 | RF-090 a RF-097 | Laboratorios | Laboratorios | ⏳ Pendiente | Incremento 5 |
@@ -64,7 +65,25 @@ prueba que pasa).
 | RF-110 a RF-115 | Vigencia y revisión | Vigencia | ⏳ Pendiente | Incremento 6 |
 | RF-120 a RF-123 | Ética | Ética | ⏳ Pendiente | Incremento 6 |
 
+### 3.1 Requisitos de Fase 2 implementados (rama de trabajo)
+
+| ID | Descripción | Módulo | Componente | Prueba | Estado |
+|---|---|---|---|---|---|
+| RF-010 | Roadmap ASCENSO 3.1 | Académico | `apps.roadmaps` (Roadmap, Etapa, Modulo, Leccion, Prerrequisito) | `test_roadmaps.py` | ✅ Implementado |
+| RF-011 | Claves UUID estables (lección, ejemplo, ejercicio) | Académico | `apps.roadmaps` (migración 0004) | DATA-001 a DATA-004 | ✅ Implementado |
+| RF-050 | Catálogo de fuentes documentales | Conocimiento | `apps.roadmaps` (FuenteConocimiento, migración 0005) | KNOW-001, KNOW-007 | ✅ Implementado |
+| RF-051 | Snapshots inmutables de versión de lección | Conocimiento | `apps.roadmaps` (VersionContenidoLeccion, migración 0005) | KNOW-002, IMM-001 a IMM-007 | ✅ Implementado |
+| RF-052 | Referencias de fuente por versión | Conocimiento | `apps.roadmaps` (ReferenciaFuenteContenido, migración 0005) | KNOW-003 | ✅ Implementado |
+| RF-053 | Flujo editorial (revisión, aprobación, publicación, retirada) | Conocimiento | `apps.roadmaps` (migraciones 0006–0008) | EDIT-001 a EDIT-011 | ✅ Implementado |
+| RF-054 | Revisión de licencias de fuentes | Conocimiento | `apps.roadmaps` (migraciones 0009–0010) | LIC-001 a LIC-009 | ✅ Implementado |
+| RF-055 | Registro local de paquetes de conocimiento | Conocimiento | `apps.roadmaps` (PaqueteConocimientoInstalado, migración 0012) | SYNC-038 a SYNC-041 | ✅ Implementado |
+| RF-056 | Estado de sincronización por canal | Conocimiento | `apps.roadmaps` (EstadoSincronizacion, migración 0012) | SYNC-040 | ✅ Implementado |
+| RF-057 | Verificador de distribución firmada (Ed25519) | Conocimiento | `apps.roadmaps.distribution` | test_distribution.py | ✅ Implementado |
+| RF-058 | Validación de paquetes ZIP | Conocimiento | `apps.roadmaps.distribution` | test_distribution.py | ✅ Implementado |
+| RF-059 | Comandos de gestión editoriales | Conocimiento | 9 comandos (`crear_version_leccion`, `gestionar_version_leccion`, etc.) | CLI-001 a CLI-008 | ✅ Implementado |
+
 ---
+
 
 ## 4. Requisitos propuestos (no aprobados para implementar)
 

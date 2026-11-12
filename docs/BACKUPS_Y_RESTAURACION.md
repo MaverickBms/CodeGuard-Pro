@@ -2,7 +2,8 @@
 
 **Producto:** CodeGuard Pro  
 **Versión:** 1.0  
-**SRS de referencia:** `IEEE830(1).md` v2.0 — RF-100 a RF-109, RS-007, RS-008
+**SRS de referencia:** `IEEE830(1).md` v2.0 — RF-100 a RF-109, RS-007, RS-008  
+**Estado:** Diseño documentado; implementación pendiente (incremento 6)
 
 ---
 

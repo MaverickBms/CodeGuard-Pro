@@ -1,22 +1,32 @@
 # CodeGuard Pro — Documentación de arquitectura
 
 **Producto:** CodeGuard Pro  
-**Versión:** 1.0 (MVP, primer incremento)  
-**Estado:** Implementado y verificado (incremento 1)  
-**SRS de referencia:** `IEEE830(1).md` v2.0
+**Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada)  
+**Estado:** Núcleo funcional verificado; motor de aprendizaje y conocimiento versionado en curso  
+**SRS de referencia:** `IEEE830(1).md` v2.0  
+**Rama de trabajo:** `docs/phase-2-hybrid-knowledge-sync`  
+**HEAD:** `6a16f93`
 
 ---
 
 ## 1. Visión general
 
 CodeGuard Pro es un **monolito modular** basado en Django (patrón MVT), ejecutado localmente
-en `127.0.0.1`, con núcleo local y funcionamiento offline-first. La conexión a Internet es opcional y se reservará para consultar y descargar paquetes de conocimiento académico aprobados. Está diseñado para un único usuario en un equipo con
-recursos limitados (HP 240 G10, i3-N305, ~1.3 GB RAM libre, Fedora 44).
+en `127.0.0.1`, con núcleo local y funcionamiento offline-first. La conexión a Internet es opcional
+y se reserva para consultar y descargar paquetes de conocimiento académico aprobados. Está diseñado
+para un único usuario en un equipo con recursos limitados (HP 240 G10, i3-N305, ~1.3 GB RAM libre,
+Fedora 44).
 
 La arquitectura prioriza: bajo consumo de memoria/CPU, pocas dependencias, arranque rápido,
-fácil mantenimiento y continuidad offline. El funcionamiento académico local no dependerá del servicio central; la sincronización de contenido será una capacidad complementaria, iniciada por el cliente y de solo descarga.
+fácil mantenimiento y continuidad offline. El funcionamiento académico local no dependerá del
+servicio central; la sincronización de contenido será una capacidad complementaria, iniciada por
+el cliente y de solo descarga.
 
-**Estado actual:** el núcleo local está implementado. La sincronización híbrida descrita en la sección 9 es una decisión aprobada y una arquitectura objetivo de la Fase 2; no está implementada en `main`.
+**Estado actual:** el núcleo local está implementado y verificado (incremento 1). La Fase 2
+(motor de aprendizaje y conocimiento versionado) está implementada parcialmente en la rama
+`docs/phase-2-hybrid-knowledge-sync`: roadmap ASCENSO 3.1, flujo editorial de versiones,
+registro local de paquetes y verificador de distribución firmada (Ed25519). El cliente de
+sincronización de red y el servicio central siguen pendientes.
 
 ---
 
@@ -29,12 +39,14 @@ codeguard-pro/
 ├── .env.example              # variables de entorno (sin secretos reales)
 ├── .gitignore
 ├── README.md
+├── PROJECT_CONTROL.md        # estado oficial del proyecto
 │
 ├── config/                   # configuración del proyecto Django
 │   ├── settings/
 │   │   ├── __init__.py
 │   │   ├── base.py           # settings base
-│   │   └── development.py    # settings de desarrollo local
+│   │   ├── development.py    # settings de desarrollo local
+│   │   └── desktop.py        # settings para aplicación empaquetada
 │   ├── urls.py
 │   ├── wsgi.py
 │   ├── asgi.py
@@ -42,22 +54,26 @@ codeguard-pro/
 │
 ├── apps/                     # aplicaciones Django (monolito modular)
 │   ├── __init__.py
-│   ├── core/                 # panel principal, navegación, configuración sistema
+│   ├── core/                 # panel principal, navegación, configuración sistema (singleton)
 │   ├── accounts/             # identidad y acceso (login, setup, frase rescate, contraseña)
-│   └── audit/                # registro de eventos de seguridad y acceso
-│   ├── roadmaps/             # ruta ASCENSO, lecciones, intentos y conocimiento versionado\n│   [otras apps académicas futuras: competencies, library, ...]
+│   ├── audit/                # registro de eventos de seguridad y acceso (auditoría)
+│   └── roadmaps/             # roadmap ASCENSO, contenido académico, flujo editorial,
+│   │                         # registro de paquetes, distribución firmada, importación
 │
 ├── templates/                # plantillas base y por app (Django MVT)
 ├── static/                   # recursos estáticos locales (sin CDN)
-│   ├── css/                  # Bootstrap 5.3.3 + estilos propios
+│   ├── css/                  # Bootstrap 5.3.3 + estilos propios (12 temas)
 │   └── js/                   # HTMX 2.0.4 + Bootstrap bundle
-│
 ├── media/                    # archivos subidos (fuera del web root)
-├── data/                     # datos adicionales
+├── data/                     # datos adicionales (SQLite, .secret_key, logs)
 ├── logs/                     # registros de ejecución
 ├── scripts/                  # scripts de utilidad
-├── tests/                    # pruebas automatizadas
-└── docs/                     # documentación del proyecto
+├── tests/                    # pruebas automatizadas (por app)
+├── docs/                     # documentación del proyecto
+├── electron/                 # aplicación de escritorio Electron
+├── dist/                     # salida de compilación
+├── build/                    # archivos intermedios de compilación
+└── node_modules/             # dependencias de Electron
 ```
 
 Cada aplicación Django tiene responsabilidades delimitadas y evita acoplamiento entre módulos.
@@ -69,56 +85,39 @@ Cada aplicación Django tiene responsabilidades delimitadas y evita acoplamiento
 | Componente | Responsabilidad | Estado |
 |---|---|---|
 | `apps.core` | Panel principal, navegación, configuración global (singleton) | Implementado (inc. 1) |
-| `apps.accounts` | Identidad y acceso: login, logout, setup inicial, frase de rescate, cambio de contraseña | Implementado (inc. 1) |
+| `apps.accounts` | Identidad y acceso: login, logout, setup inicial, frase de rescate, cambio de contraseña | Implementado (inc. 1, auth temporalmente desactivada) |
 | `apps.audit` | Registro de eventos de seguridad y acceso (auditoría) | Implementado (inc. 1) |
-| `config.middleware` | Sesión por inactividad, cabeceras de seguridad, redirección setup inicial | Implementado (inc. 1) |
-| `config.settings` | Configuración Django (base + desarrollo) | Implementado (inc. 1) |
-
-Las aplicaciones académicas (`roadmaps`, `competencies`, `library`, `knowledge`, `assessments`,
-`evidence`, `labs`, `progress`, `backups`, `vigencia`, `ethics`) se irán añadiendo en los
-incrementos siguientes sin modificar el núcleo ya implementado.
+| `apps.roadmaps` | Roadmap ASCENSO, contenido académico, flujo editorial, paquetes, distribución | Implementado parcialmente (Fase 2) |
+| `config.middleware` | Sesión por inactividad, cabeceras de seguridad, acceso local | Implementado (inc. 1) |
+| `config.settings` | Configuración Django (base + desarrollo + desktop) | Implementado (inc. 1) |
+| Electron | Contenedor de escritorio que inicia Django local (Waitress) | Implementado |
 
 ---
 
 ## 4. Flujo de autenticación
 
-1. **Primera vez:** no existe usuario → redirección a `/accounts/setup/` (configuración inicial:
-   usuario, contraseña maestra ≥8 caracteres, aceptación de términos).
-2. La frase de rescate se genera (alta entropía ≥128 bits), se muestra **una sola vez** y se
-   almacena como hash Argon2. Nunca en texto plano. Es de un solo uso: **no se consume al
-   validar**, solo al completar exitosamente el cambio de contraseña (flujo atómico en
-   `cambiar_contrasena_por_frase`). Si el cambio falla, la frase no se consume.
-3. Tras el setup, se accede a `/accounts/login/` con usuario y contraseña maestra (Argon2).
-4. La sesión es server-side con timeout de inactividad (defecto 15 min, configurable).
-5. El cierre de sesión exige **POST** (protegido por CSRF). GET devuelve 405.
-6. Al cerrar sesión o expirar por inactividad, se registra evento de auditoría.
-7. **Recuperación:** `/accounts/rescate/` valida la frase y redirige a
-   `/accounts/rescate/resetear/` para establecer una nueva contraseña (con confirmación,
-   validadores de Django y regla de no-reutilización de la actual).
-8. Todas las vistas protegidas requieren autenticación (`@login_required`) cuando
-   `AUTH_DISABLED = False`. Cuando `AUTH_DISABLED = True` (modo temporal sin
-   autenticación), las vistas se abren directamente y el progreso se asocia al
-   propietario local existente. Ver `docs/MODO_SIN_AUTENTICACION.md`.
-9. El middleware de inactividad comprueba la expiración **antes** de ejecutar la vista; una
-   sesión vencida nunca modifica el progreso académico. En modo sin autenticación
-   este middleware no opera (no hay sesiones que cerrar).
+El sistema de autenticación original se conserva íntegro pero está **temporal y opcionalmente
+desactivado** (`AUTH_DISABLED = True` en `config/settings/base.py`):
 
----
+1. **Modo sin autenticación (actual):** la aplicación abre directamente el panel principal.
+   No se solicita usuario ni contraseña. `request.user` es `AnonymousUser`. El progreso se
+   asocia al propietario local existente (`request.usuario_local`). La auditoría registra
+   actor nulo (`usuario=None`).
+2. **Modo con autenticación (desactivado temporalmente):** setup inicial → login con
+   contraseña maestra (Argon2) → sesión server-side con timeout de inactividad → logout vía
+   POST → recuperación por frase de rescate.
 
-### Autenticación temporalmente desactivada
-
-El sistema de autenticación descrito en esta sección está **temporalmente
-desactivado** (`AUTH_DISABLED = True` en `config/settings/base.py`). No se han
-eliminado modelos, migraciones ni datos. La implementación original se conserva
-íntegramente y puede reactivarse con autorización expresa del propietario del
-proyecto. Ver `docs/MODO_SIN_AUTENTICACION.md`.
+Cuando `AUTH_DISABLED = False`, el flujo original recupera su funcionamiento completo sin
+requerir migraciones ni cambios de esquema. Ver `docs/MODO_SIN_AUTENTICACION.md`.
 
 ---
 
 ## 5. Seguridad por diseño
 
 - **Bind exclusivo:** `127.0.0.1` (nunca `0.0.0.0`).
-- **CSP:** `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self';`
+- **CSP:** `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';
+  img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';
+  base-uri 'self';`
 - **Cabeceras:** `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`,
   `Referrer-Policy: no-referrer`, `Permissions-Policy` restrictiva.
 - **CSRF:** token en todas las peticiones que cambian estado.
@@ -127,6 +126,8 @@ proyecto. Ver `docs/MODO_SIN_AUTENTICACION.md`.
   excluye `.env`.
 - **DEBUG:** `False` por defecto; `True` solo en desarrollo explícito.
 - **Recursos estáticos:** servidos localmente, sin CDN, sin dependencia de Internet.
+- **Criptografía:** `cryptography==46.0.3` para verificación Ed25519 de manifiestos de
+  conocimiento (distribución firmada).
 
 Ver `docs/SEGURIDAD.md` para el detalle completo.
 
@@ -158,59 +159,31 @@ El frontend adopta un sistema visual unificado basado en variables CSS semántic
 en `static/css/themes.css`. Cada tema consume exclusivamente sus propias variables; no
 existen colores de marca hardcodeados fuera de dicho archivo.
 
-### 8.1 Variables semánticas
+Ver `docs/ARQUITECTURA.md` (sección 8 original) para la tabla completa de los 12 temas con
+sus códigos HEX oficiales (P01–P12) y reglas de accesibilidad cromática (WCAG AA).
 
-`--cg-bg`, `--cg-surface`, `--cg-surface-hover`, `--cg-surface-elevated`,
-`--cg-primary`, `--cg-primary-hover`, `--cg-primary-dark`, `--cg-accent`,
-`--cg-text`, `--cg-text-secondary`, `--cg-text-muted`, `--cg-text-inverse`,
-`--cg-border`, `--cg-border-focus`, `--cg-success`, `--cg-warning`,
-`--cg-danger`, `--cg-info`, `--cg-shadow`, `--cg-radius`, `--cg-transition`.
-
-Las transiciones usan propiedades concretas (no `all`). Se respeta `prefers-reduced-motion`.
-
-### 8.2 Asignación de paletas oficiales a los 12 temas
-
-Cada paleta utiliza exactamente los seis códigos HEX oficiales, mapeados en orden a
-fondo, superficie, superficie-hover, superficie-elevada, primario, acento y texto.
-
-| Tema | Paleta oficial | Códigos HEX |
-|---|---|---|
-| `light` | P01 — Coral y vino | `#FFBB94`, `#FB9590`, `#852E4E`, `#FB9590`, `#DC586D`, `#A33757`, `#4C1D3D` |
-| `dark` | P02 — Ciruela y malva | `#190019`, `#2B124C`, `#DFB6B2`, `#2B124C`, `#522B5B`, `#854F6C`, `#FBE4DB` |
-| `high-contrast` | P04 — Monocromática | `#000000`, `#1A1A1A`, `#333333`, `#000000`, `#FFFFFF`, `#D9D9D9`, `#FFFFFF` |
-| `retro-pixel` | P05 — Rosa y frambuesa | `#E11D48`, `#F472B6`, `#FDE1E7`, `#F472B6`, `#FB7185`, `#FDBA74`, `#FFF7F9` |
-| `cyberpunk` | P03 — Violeta eléctrico | `#0B0720`, `#25134D`, `#D1B8FF`, `#25134D`, `#6A2FC8`, `#9D71E8`, `#F2E9FF` |
-| `fantasy` | P07 — Rosa empolvado | `#4B0F1F`, `#7A3F56`, `#F7EFEF`, `#7A3F56`, `#B78793`, `#E8C9D0`, `#FFFCFA` |
-| `sci-fi` | P08 — Pizarra | `#0F172A`, `#334155`, `#E2E8F0`, `#334155`, `#64748B`, `#94A3B8`, `#F8FAFC` |
-| `warrior` | P06 — Fuego y naranja | `#7F1D1D`, `#DC2626`, `#FFE4C7`, `#DC2626`, `#F97316`, `#FDBA74`, `#FFF7ED` |
-| `mage` | P09 — Violeta y dorado | `#1A1A1F`, `#2D2B55`, `#F0D9B5`, `#2D2B55`, `#6A5ACD`, `#A678B9`, `#F4A62A` |
-| `rogue` | P10 — Verde petróleo | `#0A0F14`, `#0F3D3E`, `#EADCC8`, `#0F3D3E`, `#2E6F73`, `#7FB3B8`, `#C6601F` |
-| `paladin` | P11 — Azul y turquesa | `#0B132B`, `#1C2541`, `#F4D6B0`, `#1C2541`, `#3A506B`, `#5BC0BE`, `#D97706` |
-| `dark-mage` | P12 — Tierra y madera | `#1A120E`, `#3A2418`, `#D5C4AE`, `#3A2418`, `#6B4A2E`, `#A88462`, `#4A4A46` |
-
-Los identificadores de tema (`data-theme`, `localStorage`, menú de Electron) se conservan
-sin cambios.
-
-### 8.3 Accesibilidad cromática
-
-- WCAG AA para texto normal en todos los temas.
-- Alto contraste funcional en `high-contrast` (fondo negro, texto blanco, bordes blancos).
-- Estados de foco visibles (`focus-visible` con `outline` en `--cg-border-focus`).
-- No se depende exclusivamente del color para comunicar estados (etiquetas de texto,
-  iconos y patrones complementan el código de color).
+---
 
 ## 9. Arquitectura objetivo: distribución y sincronización de conocimiento
 
-El diseño detallado del modelo de datos, las claves estables, el contrato de paquetes y la migración desde los modelos actuales está en `docs/DISENO_DATOS_SINCRONIZACION.md`.
+El diseño detallado está en `docs/DISENO_DATOS_SINCRONIZACION.md` y
+`docs/DISENO_PUBLICADOR_CENTRAL.md`.
 
-> **Estado: DISEÑO APROBADO; IMPLEMENTACIÓN PENDIENTE EN FASE 2.** Esta sección describe el objetivo y no afirma que existan actualmente el servidor central, el cliente de sincronización o los paquetes firmados.
+> **Estado: DISEÑO APROBADO (ADR-004); implementación parcial en la rama de trabajo.**
+> El registro local de paquetes (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`) y el
+> verificador de distribución firmada (Ed25519) están implementados. El cliente de sincronización
+> de red, el servicio central y el publicador siguen pendientes.
 
 ### 9.1 Límites de confianza y responsabilidades
 
-- **Aplicación local:** Electron inicia Django en `127.0.0.1`; SQLite conserva contenido instalado, progreso, intentos y preferencias.
-- **Servicio central de conocimiento:** publica manifiestos y paquetes académicos inmutables por HTTPS. No ejecuta la aplicación local ni almacena el progreso del estudiante.
-- **Entorno editorial:** crea, valida, revisa, aprueba y firma paquetes. Sus credenciales y claves privadas nunca se distribuyen al cliente.
-- **Fuentes técnicas externas:** aportan documentación de referencia. Sus cambios se detectan y revisan; no se convierten automáticamente en publicaciones.
+- **Aplicación local:** Electron inicia Django en `127.0.0.1`; SQLite conserva contenido
+  instalado, progreso, intentos y preferencias.
+- **Servicio central de conocimiento:** publica manifiestos y paquetes académicos inmutables
+  por HTTPS. No ejecuta la aplicación local ni almacena el progreso del estudiante.
+- **Entorno editorial:** crea, valida, revisa, aprueba y firma paquetes. Sus credenciales y
+  claves privadas nunca se distribuyen al cliente.
+- **Fuentes técnicas externas:** aportan documentación de referencia. Sus cambios se detectan
+  y revisan; no se convierten automáticamente en publicaciones.
 
 ### 9.2 Flujo de datos
 
@@ -229,82 +202,48 @@ flowchart TD
     L[Progreso e intentos locales] -. no se sincronizan .-> L
 ```
 
-### 9.3 Contrato del paquete
+### 9.3 Estado de implementación
 
-Cada paquete deberá declarar como mínimo: `package_id`, `package_version`, `published_at`, `content_schema_version`, `minimum_app_version`, `size_bytes`, `sha256`, firma digital, lista de recursos incluidos y metadatos de fuente/vigencia por recurso. Se debe definir un formato serializado validable y con límites de tamaño; no se aceptará contenido ejecutable.
-
-El hash detecta corrupción accidental. La firma digital autentica el origen y debe verificarse con una clave pública de confianza integrada en el cliente. La clave privada permanece en el entorno de publicación.
-
-### 9.4 Ciclo local de actualización
-
-1. Consultar el manifiesto con timeout corto y sin bloquear la interfaz.
-2. Comparar las versiones publicadas con las instaladas.
-3. Descargar el paquete compatible a almacenamiento temporal.
-4. Verificar firma, hash, tamaño, esquema, compatibilidad y estructura.
-5. Instalar de forma atómica y registrar versión activa.
-6. Mantener la versión anterior para rollback.
-7. Si falla cualquier paso, conservar el contenido activo y registrar un error recuperable.
-
-La comprobación se podrá realizar al iniciar y en momentos oportunos con conexión; debe admitir reintento manual, backoff y opción de desactivar/posponer la comprobación automática.
-
-### 9.5 Separación de datos y compatibilidad académica
-
-El paquete de conocimiento nunca sobrescribe progreso, intentos, preferencias, notas ni datos personales. Los intentos deben conservar la versión de contenido y del evaluador que los originó. Una actualización no recalifica evidencias históricas ni concede dominio retroactivo. Si una lección se retira, se informa al estudiante y se conserva la trazabilidad de sus intentos.
-
-La sincronización de la Fase 2 es pull-only: el cliente descarga contenido y no envía al servidor código, respuestas, puntuaciones, historial ni telemetría. La sincronización entre dispositivos no está incluida.
-
-### 9.6 Fuentes y vigencia
-
-El catálogo editorial registrará publicador, título, URL canónica, edición/versionado, licencia/condiciones, fecha de consulta, fecha de revisión, responsable y estado. Los contenidos tendrán estados editoriales y de vigencia separados. Una fecha de revisión vencida significa que debe revisarse, no que el contenido sea automáticamente incorrecto.
-
-### 9.7 Requisitos de seguridad
-
-- HTTPS/TLS y firma digital de paquetes.
-- Validación estricta de manifiestos y esquemas.
-- Límites de tamaño, cantidad de archivos y rutas permitidas; prevención de path traversal y zip bombs.
-- Ningún script, migración ni comando se ejecuta desde un paquete de contenido.
-- Descarga temporal, instalación atómica, registro de errores y rollback.
-- No abrir el servidor local a conexiones remotas ni aceptar peticiones entrantes desde Internet.
-- No incorporar secretos ni claves privadas al cliente.
-
-### 9.8 Estado de implementación
-
-| Capacidad | Estado en `main` |
+| Capacidad | Estado en `main` / rama de trabajo |
 |---|---|
 | Aplicación local Electron + Django + SQLite | Implementada |
-| Contenido de lección, ejemplos y ejercicios | Modelos/vista iniciales implementados |
-| Metadatos completos de fuentes y vigencia | Pendiente |
-| Flujo editorial versionado | Pendiente |
+| Roadmap ASCENSO 3.1 (33 etapas) | Implementado (cargar_ascenso) |
+| Contenido académico editable | Implementado |
+| Claves UUID estables (lección, ejemplo, ejercicio) | Implementado (migración 0004) |
+| Catálogo de fuentes (`FuenteConocimiento`) | Implementado (migración 0005) |
+| Snapshots inmutables (`VersionContenidoLeccion`) | Implementado (migración 0005) |
+| Referencias de fuente (`ReferenciaFuenteContenido`) | Implementado (migración 0005) |
+| Flujo editorial (revisión, aprobación, publicación, retirada) | Implementado (migraciones 0006–0008) |
+| Revisión de licencias de fuentes | Implementado (migraciones 0009–0010) |
+| Autoría de versiones | Implementado (migración 0011) |
+| Registro local de paquetes (`PaqueteConocimientoInstalado`) | Implementado (migración 0012) |
+| Un solo activo por canal + estado de sincronización | Implementado (migración 0013) |
+| Verificador de distribución firmada (Ed25519, manifiesto, ZIP) | Implementado |
+| Comandos de gestión editoriales | 9 comandos implementados |
 | Servicio central de publicación | Pendiente |
-| Manifiesto y paquetes firmados | Pendiente |
-| Cliente de sincronización | Pendiente |
-| Verificación, instalación atómica y rollback | Pendiente |
-| Pruebas de sincronización y continuidad offline | Pendiente |
+| Cliente de sincronización de red | Pendiente |
+| Paquetes firmados y publicación real | Pendiente |
 
 ---
 
 ## 10. Próximos incrementos
 
-### Estado de la implementación editorial en la rama de trabajo
+La implementación de conocimiento versionado y sincronización híbrida pertenece a la Fase 2.
+El detalle de entidades y migraciones propuestas está en `docs/DISENO_DATOS_SINCRONIZACION.md`.
 
-La rama `docs/phase-2-hybrid-knowledge-sync` añade a `apps.roadmaps`:
+El orden vigente de las fases, dependencias y criterios de cierre se mantiene en
+`docs/PLAN_MAESTRO_CODEGUARD.md` y `docs/PLAN_DESARROLLO.md`.
 
-- Identificadores UUID estables para recursos didácticos y protección de evidencias históricas.
-- Catálogo de fuentes, snapshots de lección y referencias de atribución.
-- Servicio determinista de generación de versiones.
-- Flujo editorial con envío a revisión, aprobación, publicación, sustitución y retirada.
-- Metadatos de auditoría de responsables y fechas.
-- Comandos de gestión para operar el flujo sin habilitar Django Admin.
-- Migraciones 0004–0008 y pruebas asociadas, pendientes de ejecución local.
+---
 
-La sincronización de red, el paquete firmado, la publicación central y la instalación offline siguen pendientes.
+## 11. Integración con el ejecutable de escritorio
 
+La aplicación empaquetada inicia Django desde el binario PyInstaller `CodeGuardServer`.
+La futura sincronización se ejecutará como comando de una sola ejecución soportado por ese
+mismo binario y será invocada por Electron después de mostrar la ventana principal. No se
+exigirá Python externo en el equipo instalado, no se creará un daemon permanente y no se
+bloqueará el arranque local. El renderer solo recibirá estado mediante IPC limitado.
 
-El orden vigente de las fases, dependencias y criterios de cierre se mantiene en `docs/PLAN_MAESTRO_CODEGUARD.md`. La implementación de conocimiento versionado y sincronización híbrida pertenece a la Fase 2. El detalle de entidades y migraciones propuestas está en `docs/DISENO_DATOS_SINCRONIZACION.md`.
-
-
-### Integración con el ejecutable de escritorio
-
-La aplicación empaquetada inicia Django desde el binario PyInstaller `CodeGuardServer`. La futura sincronización se ejecutará como comando de una sola ejecución soportado por ese mismo binario y será invocada por Electron después de mostrar la ventana principal. No se exigirá Python externo en el equipo instalado, no se creará un daemon permanente y no se bloqueará el arranque local. El renderer solo recibirá estado mediante IPC limitado.
-
-El cargador `cargar_ascenso` queda fuera del flujo de sincronización. En particular, `--recrear` puede eliminar progreso por las relaciones en cascada y nunca debe utilizarse para actualizar contenido pedagógico.
+El cargador `cargar_ascenso` queda fuera del flujo de sincronización. En particular,
+`--recrear` puede eliminar progreso por las relaciones en cascada y nunca debe utilizarse
+para actualizar contenido pedagógico.

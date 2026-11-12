@@ -158,11 +158,16 @@ El incremento 1 se considera terminado con las pruebas automatizadas implementad
 - Auditoría: login/logout/inactividad/setup/cambio de contraseña/uso de frase/acceso denegado (`apps/audit/tests/test_audit.py`).
 - Operaciones académicas con sesión vencida (`apps/roadmaps/tests/test_roadmaps.py`).
 
-Total: **53 tests automatizados pasando** (`apps.accounts`, `apps.audit`, `apps.core`, `apps.roadmaps`).
+Total: **93 tests automatizados pasando** (`apps.accounts`, `apps.audit`, `apps.core`, `apps.roadmaps`).
 
-Las pruebas de seguridad restantes (CSRF, XSS, validación de archivos, acceso no autorizado, path traversal, archivos maliciosos, exposición de secretos) siguen pendientes en sus respectivos incrementos.
-
-La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida manualmente.
+Las pruebas cubren:
+- Autenticación y modo sin autenticación (T-001 a T-027, T-500 a T-508).
+- Seguridad (CSRF, XSS, CSP, headers, Argon2, frase de rescate, bloqueo por intentos).
+- Panel, roadmap, progreso académico.
+- Flujo editorial de versiones (crear, enviar a revisión, aprobar, publicar, retirar, proteger).
+- Registro local de paquetes de conocimiento (transiciones, identidad inmutable, un activo por canal).
+- Distribución firmada (Ed25519, validación de manifiesto, validación de ZIP, límites de compresión/traversal/symlinks).
+- Importación académica y revisión de licencias (IMP-001 a IMP-022, LIC-001 a LIC-009).
 
 ---
 
