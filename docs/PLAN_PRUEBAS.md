@@ -305,7 +305,7 @@ La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que 
 
 ## 6.7 Importación académica y revisión de licencias
 
-> **Estado:** pruebas automatizadas incorporadas en la rama; pendientes de ejecución local.
+> **Estado:** el usuario confirmó que las pruebas de importación/licencias y la suite local ejecutada fueron satisfactorias. Las pruebas SYNC-027–SYNC-041 pertenecen al incremento posterior y aún requieren ejecución local.
 
 | ID | Prueba | Resultado esperado |
 |---|---|---|
