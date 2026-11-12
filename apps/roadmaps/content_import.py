@@ -324,12 +324,31 @@ def importar_documentos_validados(report, *, actor):
     """Crea borradores y referencias; no modifica el contenido activo ni publica."""
     if not getattr(actor, "is_authenticated", False) or not getattr(actor, "is_active", False) or not getattr(actor, "is_staff", False):
         raise ValidationError("La importación requiere un editor activo (is_staff).")
-    if report["errors"] or len(report["items"]) != report["documents"]:
+    if report["errors"] or len(report["items"]) != report["documents"] or report["valid"] != report["documents"]:
         raise ValidationError("El lote tiene errores o no fue validado íntegramente.")
+
+    # Revalidar los documentos y las relaciones dentro de la transacción para evitar
+    # confiar en informes fabricados o en datos que cambiaron tras la prevalidación.
+    items = []
+    for previous in report["items"]:
+        document = previous["document"]
+        filename = previous["filename"]
+        try:
+            lesson, sources, warnings = _validate_against_database(document, filename)
+        except ImportContentError as exc:
+            raise ValidationError(str(exc)) from exc
+        canonical = json.dumps(document["snapshot"], ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+        if digest != previous["sha256"]:
+            raise ValidationError(f"{filename}: el snapshot cambió después de la validación.")
+        items.append({
+            "filename": filename, "document": document, "lesson": lesson,
+            "sources": sources, "sha256": digest, "warnings": warnings,
+        })
 
     created = []
     duplicates = []
-    for item in report["items"]:
+    for item in items:
         lesson = Leccion.objects.select_for_update().get(pk=item["lesson"].pk)
         candidates = VersionContenidoLeccion.objects.filter(leccion=lesson, sha256=item["sha256"])
         existing = next((version for version in candidates if _same_provenance(version, item)), None)
