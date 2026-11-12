@@ -392,3 +392,17 @@ Esta confirmación acredita la suite ejecutada en el entorno del usuario. No equ
 | PUB-012 | Historial | Intentar modificar o borrar un release | Operación rechazada | ⏳ Pendiente |
 
 La suite `apps.roadmaps.tests.test_publisher` cubre los casos automatizados añadidos. Ejecutar primero migraciones y después esa suite; no marcar estos casos como aprobados hasta disponer del resultado local.
+
+## 6.11 Catálogo de fuentes en índice v2 (pendiente de validación local)
+
+| ID | Prueba | Caso | Resultado esperado | Estado |
+|---|---|---|---|---|
+| SRC-001 | Exportación | Publicar lecciones con fuentes aprobadas | El índice v2 incluye metadatos de fuente y licencia | ⏳ Pendiente |
+| SRC-002 | Integridad | Fuente omitida, sobrante o duplicada | El verificador rechaza el paquete | ⏳ Pendiente |
+| SRC-003 | UUID | UUID no canónico o repetido | El verificador rechaza el paquete | ⏳ Pendiente |
+| SRC-004 | Licencia | Decisión no publicable, falta de evidencia o alcance | El verificador rechaza el paquete | ⏳ Pendiente |
+| SRC-005 | URL | HTTP, credenciales, puerto alterno o fragmento | El verificador rechaza el paquete | ⏳ Pendiente |
+| SRC-006 | Privacidad | Catálogo firmado | No se exporta identidad del revisor | ⏳ Pendiente |
+| SRC-007 | Compatibilidad | Índice v1 preexistente | El verificador conserva lectura de v1 | ⏳ Pendiente |
+
+La suite `apps.roadmaps.tests.test_publisher` y `apps.roadmaps.tests.test_distribution` contienen las pruebas automatizadas añadidas para este contrato.
