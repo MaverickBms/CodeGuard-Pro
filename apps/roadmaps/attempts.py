@@ -186,8 +186,13 @@ def registrar_intento_ejercicio(
         .first()
     )
     version_contenido = puntero_activo.version if puntero_activo else None
-    if version_contenido is None and not ejercicio.publicado:
-        raise ValidationError("Este ejercicio no está publicado.")
+    if version_contenido is None:
+        if ejercicio.leccion.versiones_contenido.filter(
+            estado__in=["publicada", "sustituida", "retirada"]
+        ).exists():
+            raise ValidationError("La lección no tiene una versión académica activa.")
+        if not ejercicio.publicado:
+            raise ValidationError("Este ejercicio no está publicado.")
     if version_contenido is not None:
         snapshot_ejercicio = next(
             (
