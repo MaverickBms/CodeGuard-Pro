@@ -106,7 +106,7 @@ class RegistroPaquetesTests(TestCase):
             estado="descargado",
             error_code="NO_DEBE_EXISTIR",
         )
-        with self.assertRaisesMessage(ValidationError, "paquete nuevo"):
+        with self.assertRaisesMessage(ValidationError, "sin fecha de instalación ni error"):
             PaqueteConocimientoInstalado.objects.bulk_create([paquete])
 
     def test_queryset_estado_sincronizacion_no_permite_update_masivo(self):
