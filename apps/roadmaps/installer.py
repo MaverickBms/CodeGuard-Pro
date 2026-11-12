@@ -342,8 +342,7 @@ def instalar_paquete_firmado(
         state.last_check_at = timezone.now()
         state.last_success_at = state.last_check_at
         state.last_error_code = ""
-        if manifest_etag:
-            state.manifest_etag = manifest_etag
+        state.manifest_etag = manifest_etag
         state.save()
 
         return {
