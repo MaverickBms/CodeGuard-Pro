@@ -1,21 +1,21 @@
 # CodeGuard Pro — Control oficial del proyecto
 
 **Documento:** `PROJECT_CONTROL.md`  
-**Versión:** 2.7 — validación local del scheduler y backoff  
+**Versión:** 2.8 — empaquetado PyInstaller/AppImage validado; integración de escritorio en verificación  
 **Fecha de actualización:** 2026-11-12  
 **Propietario:** propietario de CodeGuard Pro  
 **Mantenedor:** orquestador  
 **Estado:** vigente, sujeto a autorización expresa para cada acción  
 **Ubicación:** raíz del repositorio  
-**Rama de trabajo autorizada:** `feat/phase-2-http-sync-client` (derivada de `main`; cliente HTTP, scheduler Electron y ejecución empaquetada)  
-**Línea base:** `main` en `2c5d441`; instalador transaccional validado (119 pruebas OK)
+**Rama de trabajo autorizada:** `test/phase-2-electron-integration` (derivada de `main` `2906abc`; pruebas de integración empaquetada y documentación)  
+**Línea base:** `main` en `2906abc`; incluye correcciones PyInstaller/Django y electron-builder/Linux
 
 ---
 
 ## 0. Resumen ejecutivo
 
 - **Fase 1 (núcleo funcional):** completada, verificada y aprobada documentalmente. Autenticación local, panel, roadmap, auditoría y seguridad operativos.
-- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso; `main` contiene el verificador, publicador, catálogo firmado v2 e instalador transaccional con rollback, validados por el propietario (119 pruebas OK). El cliente HTTP y las pruebas unitarias de backoff/bloqueo del scheduler fueron validados localmente por el propietario en `feat/phase-2-http-sync-client`. La compilación real de PyInstaller y la prueba de ejecución integrada con Electron siguen pendientes.
+- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso; `main` contiene el verificador, publicador, catálogo firmado v2 e instalador transaccional con rollback, validados por el propietario (119 pruebas OK). El cliente HTTP y las pruebas unitarias de backoff/bloqueo del scheduler fueron validados localmente por el propietario en `feat/phase-2-http-sync-client`. El propietario confirmó la generación del ejecutable PyInstaller y del AppImage Linux. El binario ya carga Django y alcanza `sincronizar_conocimiento`; la ejecución GUI completa con Electron y el ciclo de vida de procesos siguen pendientes de una prueba de aceptación.
   - Roadmap ASCENSO 3.1 (33 etapas, módulos, lecciones, prerrequisitos) implementado y cargable con `cargar_ascenso`.
   - Contenido académico editable (`ContenidoLeccion`, `EjemploLeccion`, `EjercicioLeccion`) implementado.
   - Flujo editorial de versiones (`VersionContenidoLeccion`, `ReferenciaFuenteContenido`, `FuenteConocimiento`) implementado con comandos de gestión.
@@ -25,9 +25,9 @@
   - Intentos nuevos vinculados a la versión activa y con snapshot del ejercicio presentado.
   - Interfaz de entrega POST con CSRF, límite de 20.000 caracteres e historial de intentos.
   - Protecciones adicionales para escrituras masivas del registro local de paquetes y sincronización.
-  - El propietario confirmó **119 pruebas OK** en `main` `2c5d441` y posteriormente **132 pruebas OK** en `feat/phase-2-http-sync-client`, además de `manage.py check` sin problemas y `makemigrations --check --dry-run` sin cambios pendientes. Las pruebas locales posteriores del scheduler/backoff y los chequeos de sintaxis fueron confirmados como satisfactorios por el propietario; el empaquetado real y la ejecución integrada siguen pendientes.
-- **Sincronización de red:** publicador e instalador validados en `main`; cliente HTTP validado localmente en rama aislada; scheduler Electron, backoff y bloqueo entre procesos con pruebas locales satisfactorias; compilación PyInstaller y ejecución integrada pendientes. Hosting, endpoint y claves de producción pendientes.
-- **Validación del cliente HTTP:** pendiente de ejecución local de sus pruebas de transporte e integración; la validación del instalador en `main` ya está confirmada.
+  - El propietario confirmó **136 pruebas OK** después de corregir PyInstaller y electron-builder. En esta rama se agregaron dos pruebas del despacho `--sync-knowledge` (la nueva suite debe confirmar 138 pruebas); también se añadió un smoke test reproducible del binario Linux. La generación de PyInstaller y AppImage fue confirmada por el propietario; falta ejecutar las nuevas pruebas y validar el ciclo de vida de la aplicación Electron empaquetada.
+- **Sincronización de red:** cliente HTTP, backoff y bloqueo entre procesos implementados; PyInstaller y AppImage Linux generados; el binario alcanza el comando de sincronización y devuelve el error de configuración esperado cuando faltan variables. La integración GUI completa y las pruebas añadidas están pendientes de ejecución local. Hosting, endpoint y claves de producción siguen pendientes.
+- **Validación de pruebas:** el propietario reportó 136 pruebas OK. Las dos pruebas nuevas de `server_entry` y el smoke test del binario deben ejecutarse en el entorno local para cerrar esta intervención.
 - **Autenticación:** temporalmente desactivada (`AUTH_DISABLED = True`); el sistema original se conserva íntegro y puede reactivarse con autorización expresa.
 
 ---
@@ -78,15 +78,15 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Elemento | Estado |
 |---|---|
 | Repositorio | `/home/mvxbms/Documentos/CodeGuard` |
-| Línea base | `main` en `2c5d441` (incluye catálogo v2 e instalador transaccional) |
-| Rama de trabajo | `feat/phase-2-http-sync-client` |
-| HEAD de trabajo | Último commit de `feat/phase-2-http-sync-client`; no fusionado |
+| Línea base | `main` en `2906abc` (incluye catálogo v2, instalador, correcciones PyInstaller y electron-builder) |
+| Rama de trabajo | `test/phase-2-electron-integration` |
+| HEAD de trabajo | Rama de pruebas derivada de `main`; no fusionada |
 | Diferencia respecto a `main` | Rama de trabajo con commits no fusionados; `main` sin modificar |
-| Remoto | `origin/feat/phase-2-http-sync-client` |
+| Remoto | `origin/test/phase-2-electron-integration` |
 | Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
-| Migraciones roadmaps | 0014, 0015 y 0016 validadas localmente por el propietario en `main` `2c5d441` |
+| Migraciones roadmaps | 0014, 0015 y 0016 validadas por el propietario; esta intervención no añade migraciones |
 | Comandos de gestión | 9; incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (este último en rama de trabajo) |
-| Pruebas automatizadas | 119 OK en `main`; 132 OK confirmadas para el cliente HTTP; pruebas locales de backoff/bloqueo y chequeos sintácticos del scheduler confirmados; build PyInstaller e integración Electron pendientes |
+| Pruebas automatizadas | 136 OK confirmadas por el propietario; dos pruebas nuevas de `server_entry` añadidas en esta rama (objetivo: 138); ejecución local pendiente. Smoke test Linux añadido. Integración GUI Electron pendiente |
 | Autenticación | `AUTH_DISABLED = True` (temporal, conservada íntegra) |
 | Base de datos | SQLite, `data/db.sqlite3` |
 | Servidor local | Waitress + WhiteNoise en `127.0.0.1` |
@@ -109,7 +109,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Fase | Estado | Observación |
 |---|---|---|
 | **Fase 1 — Núcleo funcional** | ✅ Completada y verificada | Autenticación, panel, auditoría, seguridad, 12 temas, servidor local |
-| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Roadmap, flujo editorial, verificador, publicador e instalador en `main`; cliente HTTP validado localmente (132 pruebas); scheduler Electron y backoff con pruebas locales satisfactorias; build PyInstaller e integración Electron pendientes; hosting pendiente |
+| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Motor, cliente HTTP, scheduler y empaquetado implementados; PyInstaller y AppImage generados; prueba GUI integrada pendiente; hosting y claves de producción pendientes |
 | **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Cliente HTTP validado localmente; scheduler Electron y backoff con pruebas unitarias locales satisfactorias; ejecución empaquetada, endpoint, hosting y claves de producción pendientes |
 | **Competencias y evaluaciones** | ⏳ Pendiente | Incremento 3 |
 | **Biblioteca documental y base de conocimiento** | ⏳ Pendiente | Incremento 4 |
@@ -147,7 +147,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 
 El propietario confirmó la validación del instalador en `main` y autorizó continuar con el siguiente componente de Fase 2: cliente de sincronización HTTP pull-only, en una rama aislada derivada de `main`.
 
-- Rama autorizada: `feat/phase-2-http-sync-client`.
+- Rama de trabajo anterior: `feat/phase-2-http-sync-client` (histórica; ya no es la rama activa).
 - Alcance: transporte HTTPS GET, allowlist, TLS validado, rechazo de redirecciones, timeout y límites de tamaño, ETag, verificación del manifiesto antes de descargar el ZIP, integración con el instalador ya validado, comando manual, pruebas y documentación relacionada.
 - Se permiten commits exclusivamente en esta rama como mecanismo de escritura. No se autoriza merge, PR de integración, despliegue, publicación remota de paquetes ni cambios en `main`.
 - El propietario confirmó 119 pruebas OK, `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2c5d441`; esto incluye la migración 0016, instalador y rollback.
@@ -160,7 +160,7 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | **Hosting/endpoint público de distribución** | Pendiente de seleccionar proveedor y autorizar publicación; no se configura en esta rama |
 | **Generador central y catálogo firmado v2** | Generador, migración 0015 y catálogo v2 validados localmente por el propietario (119 pruebas OK) |
 | **Instalador transaccional (migración 0016)** | Validado en `main` `2c5d441` (119 pruebas OK) |
-| **Cliente de sincronización HTTP** | Validado localmente por el propietario dentro de 132 pruebas en `feat/phase-2-http-sync-client`; pruebas unitarias de backoff/bloqueo validadas; build PyInstaller e integración Electron pendientes |
+| **Cliente de sincronización HTTP** | Validado por el propietario; 136 pruebas de la base confirmadas. PyInstaller/AppImage generados; el binario alcanza el comando de sync con error de configuración esperado. Nuevas pruebas `server_entry` pendientes de ejecutar |
 | **Competencias y evaluaciones (Incremento 3)** | Pendiente de decisión |
 | **Biblioteca documental (Incremento 4)** | Pendiente de decisión |
 | **Evidencias y laboratorios (Incremento 5)** | Pendiente de decisión |
@@ -183,7 +183,7 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | 2.4 | 2026-11-12 | Instalador transaccional, snapshots por paquete, catálogo aislado, activación, rollback, integración de lecciones e intentos, migración 0016 y pruebas | Validación local confirmada por el propietario: 119 pruebas OK en `main` `2c5d441` |
 | 2.5 | 2026-11-12 | Cliente HTTP pull-only inicial, comando manual, allowlist HTTPS, TLS, ETag, límites de descarga, rechazo de redirecciones, pruebas y documentación | Continuación autorizada en rama aislada; posteriormente validado localmente (132 pruebas OK) |
 | 2.6 | 2026-11-12 | Scheduler Electron, backoff exponencial, bloqueo entre procesos, proceso PyInstaller de una sola tarea, IPC limitado, pruebas y documentación | Autorización expresa del propietario |
-| 2.7 | 2026-11-12 | Validación local satisfactoria de las pruebas de backoff/bloqueo y chequeos sintácticos; se mantiene pendiente el build real PyInstaller y la integración ejecutada con Electron | Confirmación del propietario; `main` sin cambios |
+| 2.7 | 2026-11-12 | Validación local satisfactoria de las pruebas de backoff/bloqueo y chequeos sintácticos | Confirmación del propietario |\n| 2.8 | 2026-11-12 | Corrección PyInstaller (Django hidden imports) y electron-builder; propietario confirma 136 pruebas, build PyInstaller y AppImage; nueva rama con pruebas de despacho y smoke test Linux | Autorización expresa para validación de integración en rama aislada |
 
 ### Reglas de actualización
 
@@ -196,15 +196,26 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 
 ---
 
-**El alcance autorizado continúa únicamente en `feat/phase-2-http-sync-client`; `main` permanece intacta. Detenerse antes de merge, despliegue, publicación remota o ampliación de alcance.**
+**El alcance autorizado de esta intervención se limita a `test/phase-2-electron-integration`, derivada de `main` `2906abc`. `main` no debe modificarse. Detenerse antes de merge, despliegue, publicación remota o configuración de claves/hosting.**
 ### 5.4 Autorización específica vigente — scheduler Electron y sincronización automática
 
 El propietario autorizó expresamente la implementación completa de la integración Electron, scheduler, reintentos progresivos y compatibilidad con PyInstaller, manteniendo `main` intacta.
 
-- Rama autorizada: `feat/phase-2-http-sync-client`.
+- Rama autorizada en la intervención anterior: `feat/phase-2-http-sync-client` (no usar para nuevos cambios de esta intervención).
 - Alcance: temporizador Electron no bloqueante, comprobación inicial diferida, sondeo local, backoff persistente, bloqueo por canal entre procesos, comando de una sola tarea en PyInstaller, IPC limitado, pruebas y documentación.
 - Se permiten commits exclusivamente en la rama autorizada como mecanismo de escritura.
 - No se autoriza merge, PR de integración, despliegue, publicación remota, selección de hosting ni incorporación de URLs/claves públicas de producción.
 - La sincronización debe permanecer inactiva si no hay configuración de distribución completa y confiable.
-- El propietario confirmó que las pruebas locales del incremento de scheduler/backoff y los chequeos sintácticos finalizaron correctamente. El build real de PyInstaller y la ejecución integrada con Electron siguen pendientes.
+- El propietario confirmó 136 pruebas OK, generación PyInstaller y AppImage Linux, y que el binario alcanza el comando `sincronizar_conocimiento` con el error esperado por variables ausentes. La ejecución GUI completa con Electron aún debe validarse.
 - `main` permanece intacta.
+
+### 5.5 Autorización vigente — validación de integración empaquetada
+
+El propietario autorizó crear una rama desde el `main` actualizado y completar las pruebas de integración de Electron, corregir incidencias dentro del alcance y actualizar la documentación de Fase 2.
+
+- Rama: `test/phase-2-electron-integration`.
+- Base: `main` en `2906abc922044670c029d7ff73345fdb5657dd2b`.
+- Alcance: pruebas del modo `CodeGuardServer --sync-knowledge`, smoke test Linux, validación del arranque y cierre de Electron empaquetado, correcciones necesarias y documentación.
+- Se permiten commits en esta rama.
+- No se autoriza modificar `main`, fusionar, desplegar, publicar paquetes, elegir hosting ni configurar claves públicas/privadas de producción.
+- La sincronización remota permanece desactivada mientras no exista configuración confiable.
