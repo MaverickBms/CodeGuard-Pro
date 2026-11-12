@@ -1063,6 +1063,7 @@ class PaqueteConocimientoInstalado(models.Model):
                 "descargado": {"verificado", "rechazado"},
                 "verificado": {"activo", "rechazado"},
                 "activo": {"sustituido"},
+                "sustituido": {"activo"},
             }
             if anterior.estado != self.estado and self.estado not in transiciones.get(anterior.estado, set()):
                 raise ValidationError(f"Transición de paquete no permitida: {anterior.estado} → {self.estado}.")
