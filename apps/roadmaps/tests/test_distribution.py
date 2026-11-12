@@ -6,7 +6,6 @@ import json
 import stat
 import uuid
 import zipfile
-from datetime import datetime, timezone
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -195,6 +194,28 @@ class DistribucionFirmadaTests(SimpleTestCase):
         result = validate_package_archive(package_bytes, manifest=manifest)
         self.assertEqual(len(result["payloads"]), 1)
         self.assertIn(f"payload/lessons/{self.lesson_id}.json", result["payloads"])
+
+
+    def test_manifiesto_rechaza_esquema_transporte_y_credenciales(self):
+        for url in (
+            "http://cdn.codeguard.example/package.zip",
+            "https://user:secret@cdn.codeguard.example/package.zip",
+            "https://@cdn.codeguard.example/package.zip",
+            "https://cdn.codeguard.example:8443/package.zip",
+        ):
+            with self.subTest(url=url):
+                manifest = self.manifest_dict()
+                manifest["package"]["url"] = url
+                raw, signature = self.sign(manifest)
+                with self.assertRaises(DistributionError):
+                    self.verify(raw, signature)
+
+    def test_paquete_rechaza_uuid_de_archivo_distinto_al_snapshot(self):
+        other_lesson = str(uuid.uuid4())
+        package_bytes = self.build_zip(indexed_path=f"payload/lessons/{other_lesson}.json")
+        manifest = self.manifest_for_zip(package_bytes)
+        with self.assertRaisesMessage(DistributionError, "no coincide"):
+            validate_package_archive(package_bytes, manifest=manifest)
 
     def test_paquete_rechaza_hash_incorrecto(self):
         package_bytes = self.build_zip()
