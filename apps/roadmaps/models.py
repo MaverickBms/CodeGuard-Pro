@@ -907,3 +907,86 @@ class EjercicioLeccion(models.Model):
 
 # Registrar los modelos auxiliares del flujo de intentos y evaluación.
 from .models_attempts import ConfiguracionEvaluacion, IntentoEjercicio  # noqa: E402,F401
+
+
+class PaqueteConocimientoInstalado(models.Model):
+    """Registro local e inmutable de identidad de paquetes verificados/instalados."""
+
+    ESTADOS = [
+        ("descargado", "Descargado"),
+        ("verificado", "Verificado"),
+        ("activo", "Activo"),
+        ("rechazado", "Rechazado"),
+        ("sustituido", "Sustituido"),
+    ]
+    CANALES = [("stable", "Stable"), ("beta", "Beta")]
+
+    package_id = models.UUIDField(unique=True, verbose_name="UUID del paquete")
+    package_version = models.CharField(max_length=40, verbose_name="versión del paquete")
+    channel = models.CharField(max_length=16, choices=CANALES, verbose_name="canal")
+    sequence = models.PositiveBigIntegerField(verbose_name="secuencia monotónica")
+    content_schema_version = models.PositiveSmallIntegerField(verbose_name="versión del esquema")
+    sha256 = models.CharField(
+        max_length=64,
+        validators=[RegexValidator(r"^[0-9a-f]{64}$", "Debe ser un SHA-256 hexadecimal en minúsculas.")],
+        verbose_name="SHA-256 del ZIP",
+    )
+    manifest_sha256 = models.CharField(
+        max_length=64,
+        validators=[RegexValidator(r"^[0-9a-f]{64}$", "Debe ser un SHA-256 hexadecimal en minúsculas.")],
+        verbose_name="SHA-256 del manifiesto",
+    )
+    signature_key_id = models.CharField(max_length=80, verbose_name="identificador de clave de firma")
+    published_at = models.DateTimeField(verbose_name="publicado el")
+    installed_at = models.DateTimeField(null=True, blank=True, verbose_name="instalado el")
+    estado = models.CharField(max_length=16, choices=ESTADOS, default="descargado")
+    error_code = models.CharField(max_length=80, blank=True, verbose_name="código de error")
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "paquete de conocimiento instalado"
+        verbose_name_plural = "paquetes de conocimiento instalados"
+        ordering = ["channel", "-sequence"]
+        constraints = [
+            models.UniqueConstraint(fields=["channel", "sequence"], name="paquete_secuencia_canal_unica"),
+        ]
+        indexes = [
+            models.Index(fields=["channel", "-sequence"], name="paquete_canal_seq_idx"),
+        ]
+
+    def clean(self):
+        super().clean()
+        for field in ("sha256", "manifest_sha256"):
+            value = getattr(self, field)
+            if len(value) != 64 or any(char not in "0123456789abcdef" for char in value):
+                raise ValidationError({field: "Debe ser un SHA-256 hexadecimal de 64 caracteres."})
+
+    def __str__(self):
+        return f"{self.channel} #{self.sequence} — {self.package_version} ({self.estado})"
+
+
+class EstadoSincronizacion(models.Model):
+    """Estado operativo local por canal; nunca contiene progreso ni datos personales."""
+
+    channel = models.CharField(max_length=16, choices=PaqueteConocimientoInstalado.CANALES, unique=True)
+    last_check_at = models.DateTimeField(null=True, blank=True, verbose_name="última comprobación")
+    last_success_at = models.DateTimeField(null=True, blank=True, verbose_name="última sincronización correcta")
+    manifest_etag = models.CharField(max_length=255, blank=True, verbose_name="ETag del manifiesto")
+    active_package = models.ForeignKey(
+        PaqueteConocimientoInstalado,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="canales_activos",
+        verbose_name="paquete activo",
+    )
+    last_error_code = models.CharField(max_length=80, blank=True, verbose_name="último código de error")
+    next_check_after = models.DateTimeField(null=True, blank=True, verbose_name="próxima comprobación permitida")
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "estado de sincronización"
+        verbose_name_plural = "estados de sincronización"
+
+    def __str__(self):
+        return f"Sincronización {self.channel}"
