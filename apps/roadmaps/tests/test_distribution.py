@@ -250,7 +250,7 @@ class DistribucionFirmadaTests(SimpleTestCase):
         with self.assertRaisesMessage(DistributionError, "no declarados"):
             validate_package_archive(package_bytes, manifest=manifest)
 
-    def build_zip_with_source_catalog(self, *, include_source=True):
+    def build_zip_with_source_catalog(self, *, include_source=True, source_url="https://docs.python.org/3/reference/"):
         original = self.build_zip()
         source_uuid = None
         buffer = io.BytesIO()
@@ -272,7 +272,7 @@ class DistribucionFirmadaTests(SimpleTestCase):
                                 "clave": source_uuid,
                                 "publicador": "Python Software Foundation",
                                 "titulo": "Python Language Reference",
-                                "url_canonica": "https://docs.python.org/3/reference/",
+                                "url_canonica": source_url,
                                 "edicion": "3",
                                 "identificador_licencia": "PSF-2.0",
                                 "url_licencia": "https://docs.python.org/3/license.html",
@@ -300,6 +300,15 @@ class DistribucionFirmadaTests(SimpleTestCase):
     def test_indice_v2_rechaza_catalogo_incompleto(self):
         package_bytes = self.build_zip_with_source_catalog(include_source=False)
         with self.assertRaisesMessage(DistributionError, "no coincide exactamente"):
+            validate_package_archive(
+                package_bytes, manifest=self.manifest_for_zip(package_bytes)
+            )
+
+    def test_indice_v2_rechaza_url_http_en_catalogo(self):
+        package_bytes = self.build_zip_with_source_catalog(
+            source_url="http://docs.python.org/3/reference/"
+        )
+        with self.assertRaisesMessage(DistributionError, "URL HTTPS"):
             validate_package_archive(
                 package_bytes, manifest=self.manifest_for_zip(package_bytes)
             )
