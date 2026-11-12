@@ -12,6 +12,7 @@ from django.db.models import Max
 
 from .models import (
     ContenidoLeccion,
+    ContenidoLeccionActivo,
     EjemploLeccion,
     EjercicioLeccion,
     FuenteConocimiento,
@@ -294,6 +295,10 @@ def publicar_version_contenido(version_id: int, *, actor) -> VersionContenidoLec
     version.publicada_en = timezone.now()
     version.publicada_por = actor
     version.save(update_fields=["estado", "publicada_en", "publicada_por"])
+    ContenidoLeccionActivo.objects.update_or_create(
+        leccion=version.leccion,
+        defaults={"version": version},
+    )
     return version
 
 
@@ -316,6 +321,7 @@ def retirar_version_publicada(
     version.retirada_en = timezone.now()
     version.retirada_por = actor
     version.save(update_fields=["estado", "motivo_retiro", "retirada_en", "retirada_por"])
+    ContenidoLeccionActivo.objects.filter(version=version).delete()
     return version
 
 
