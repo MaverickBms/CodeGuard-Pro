@@ -8,6 +8,7 @@ implícita.
 
 from types import SimpleNamespace
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -22,6 +23,8 @@ from apps.accounts.identity import (
 )
 from .models import (
     ContenidoLeccionActivo,
+    ContenidoLeccionPaquete,
+    EstadoSincronizacion,
     EjercicioLeccion,
     Etapa,
     IntentoEjercicio,
@@ -309,54 +312,98 @@ def leccion_detalle(request, leccion_id):
             actor_auditoria=obtener_actor_auditoria(request),
         )
 
-    puntero_activo = (
-        ContenidoLeccionActivo.objects.select_related("version")
-        .filter(leccion=leccion, version__estado="publicada")
+    channel = getattr(settings, "CODEGUARD_KNOWLEDGE_CHANNEL", "stable")
+    sync_state = (
+        EstadoSincronizacion.objects.select_related("active_package")
+        .filter(channel=channel, active_package__isnull=False)
         .first()
     )
+    paquete_activo = sync_state.active_package if sync_state else None
+    contenido_paquete = None
+    puntero_activo = None
     contenido = getattr(leccion, "contenido", None)
     ejemplos = list(leccion.ejemplos.filter(publicado=True))
     ejercicios_modelo = list(leccion.ejercicios.all())
     ejercicios = [item for item in ejercicios_modelo if item.publicado]
-    versiones_historicas = leccion.versiones_contenido.filter(
-        estado__in=["publicada", "sustituida", "retirada"]
-    ).exists()
-    if not puntero_activo and versiones_historicas:
-        # Una retirada no debe hacer reaparecer el borrador editable como si estuviera publicado.
-        contenido = None
-        ejemplos = []
-        ejercicios = []
 
-    if puntero_activo:
-        snapshot = puntero_activo.version.snapshot
-        datos_leccion = snapshot.get("leccion", {})
-        leccion.titulo = datos_leccion.get("titulo", leccion.titulo)
-        leccion.descripcion = datos_leccion.get("descripcion", leccion.descripcion)
-        leccion.tipo = datos_leccion.get("tipo", leccion.tipo)
-        datos_contenido = snapshot.get("contenido", {})
-        contenido = SimpleNamespace(
-            objetivos_aprendizaje=datos_contenido.get("objetivos_aprendizaje", ""),
-            teoria_tecnica=datos_contenido.get("teoria_tecnica", ""),
-            explicacion_sencilla=datos_contenido.get("explicacion_sencilla", ""),
-            notas=datos_contenido.get("notas", ""),
-            publicado=True,
+    if paquete_activo:
+        contenido_paquete = ContenidoLeccionPaquete.objects.filter(
+            paquete=paquete_activo, leccion=leccion
+        ).first()
+        if contenido_paquete is None:
+            # Un paquete estable activo es la fuente de verdad: no se mezclan
+            # borradores ni publicaciones editoriales locales ausentes del paquete.
+            contenido = None
+            ejemplos = []
+            ejercicios = []
+        else:
+            snapshot = contenido_paquete.documento.get("snapshot", {})
+            datos_leccion = snapshot.get("leccion", {})
+            leccion.titulo = datos_leccion.get("titulo", leccion.titulo)
+            leccion.descripcion = datos_leccion.get("descripcion", leccion.descripcion)
+            leccion.tipo = datos_leccion.get("tipo", leccion.tipo)
+            datos_contenido = snapshot.get("contenido", {})
+            contenido = SimpleNamespace(
+                objetivos_aprendizaje=datos_contenido.get("objetivos_aprendizaje", ""),
+                teoria_tecnica=datos_contenido.get("teoria_tecnica", ""),
+                explicacion_sencilla=datos_contenido.get("explicacion_sencilla", ""),
+                notas=datos_contenido.get("notas", ""),
+                publicado=True,
+            )
+            ejemplos = [SimpleNamespace(**item) for item in snapshot.get("ejemplos", [])]
+            ejercicios_actuales = {
+                str(item.clave_contenido): item for item in ejercicios_modelo
+            }
+            ejercicios = []
+            for item in snapshot.get("ejercicios", []):
+                actual = ejercicios_actuales.get(item.get("clave"))
+                nivel = item.get("nivel", "basico")
+                ejercicios.append(SimpleNamespace(
+                    **item,
+                    id=actual.id if actual else None,
+                    get_nivel_display=lambda nivel=nivel: dict(EjercicioLeccion.NIVELES).get(nivel, nivel),
+                ))
+    else:
+        puntero_activo = (
+            ContenidoLeccionActivo.objects.select_related("version")
+            .filter(leccion=leccion, version__estado="publicada")
+            .first()
         )
-        ejemplos = [
-            SimpleNamespace(**item)
-            for item in snapshot.get("ejemplos", [])
-        ]
-        ejercicios_actuales = {
-            str(item.clave_contenido): item for item in ejercicios_modelo
-        }
-        ejercicios = []
-        for item in snapshot.get("ejercicios", []):
-            actual = ejercicios_actuales.get(item.get("clave"))
-            nivel = item.get("nivel", "basico")
-            ejercicios.append(SimpleNamespace(
-                **item,
-                id=actual.id if actual else None,
-                get_nivel_display=lambda nivel=nivel: dict(EjercicioLeccion.NIVELES).get(nivel, nivel),
-            ))
+        versiones_historicas = leccion.versiones_contenido.filter(
+            estado__in=["publicada", "sustituida", "retirada"]
+        ).exists()
+        if not puntero_activo and versiones_historicas:
+            contenido = None
+            ejemplos = []
+            ejercicios = []
+
+        if puntero_activo:
+            snapshot = puntero_activo.version.snapshot
+            datos_leccion = snapshot.get("leccion", {})
+            leccion.titulo = datos_leccion.get("titulo", leccion.titulo)
+            leccion.descripcion = datos_leccion.get("descripcion", leccion.descripcion)
+            leccion.tipo = datos_leccion.get("tipo", leccion.tipo)
+            datos_contenido = snapshot.get("contenido", {})
+            contenido = SimpleNamespace(
+                objetivos_aprendizaje=datos_contenido.get("objetivos_aprendizaje", ""),
+                teoria_tecnica=datos_contenido.get("teoria_tecnica", ""),
+                explicacion_sencilla=datos_contenido.get("explicacion_sencilla", ""),
+                notas=datos_contenido.get("notas", ""),
+                publicado=True,
+            )
+            ejemplos = [SimpleNamespace(**item) for item in snapshot.get("ejemplos", [])]
+            ejercicios_actuales = {
+                str(item.clave_contenido): item for item in ejercicios_modelo
+            }
+            ejercicios = []
+            for item in snapshot.get("ejercicios", []):
+                actual = ejercicios_actuales.get(item.get("clave"))
+                nivel = item.get("nivel", "basico")
+                ejercicios.append(SimpleNamespace(
+                    **item,
+                    id=actual.id if actual else None,
+                    get_nivel_display=lambda nivel=nivel: dict(EjercicioLeccion.NIVELES).get(nivel, nivel),
+                ))
 
     intentos_por_ejercicio = {}
     if usuario is not None and ejercicios:
@@ -393,5 +440,7 @@ def leccion_detalle(request, leccion_id):
             "ejercicios": ejercicios,
             "progreso": progreso,
             "version_contenido_activa": puntero_activo.version if puntero_activo else None,
+            "paquete_contenido_activo": paquete_activo,
+            "fuentes_paquete": list(paquete_activo.fuentes_catalogo.all()) if contenido_paquete else [],
         },
     )
