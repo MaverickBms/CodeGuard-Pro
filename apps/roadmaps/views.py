@@ -6,11 +6,11 @@ desactivada se usa el propietario local existente. No se crea identidad
 implícita.
 """
 
-from django.contrib import messages
-from django.core.exceptions import ValidationError
-from django.contrib.auth.decorators import login_required
 from types import SimpleNamespace
 
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
