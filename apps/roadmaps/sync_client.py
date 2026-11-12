@@ -7,11 +7,15 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import os
 import ssl
+from contextlib import contextmanager
+from datetime import timedelta
 import urllib.error
 import urllib.request
 from urllib.parse import urlsplit
 
+from django.conf import settings
 from django.utils import timezone
 
 from .distribution import (
@@ -29,6 +33,9 @@ logger = logging.getLogger("codeguard.sync")
 
 DEFAULT_TIMEOUT_SECONDS = 12
 MAX_TIMEOUT_SECONDS = 60
+INITIAL_RETRY_DELAY = timedelta(minutes=15)
+MAX_RETRY_DELAY = timedelta(hours=24)
+SUCCESS_CHECK_INTERVAL = timedelta(hours=24)
 DOWNLOAD_CHUNK_BYTES = 64 * 1024
 
 
@@ -164,17 +171,79 @@ def _get_sync_state(channel):
     return state
 
 
+def _retry_delay_for_state(state):
+    """Calcula backoff exponencial usando el intervalo persistido, sin migración."""
+    if state.last_error_code and state.last_check_at and state.next_check_after:
+        previous_delay = state.next_check_after - state.last_check_at
+        if previous_delay > timedelta(0):
+            return min(previous_delay * 2, MAX_RETRY_DELAY)
+    return INITIAL_RETRY_DELAY
+
+
 def _record_failure(channel, code):
     try:
         state = _get_sync_state(channel)
-        state.last_check_at = timezone.now()
+        now = timezone.now()
+        delay = _retry_delay_for_state(state)
+        state.last_check_at = now
         state.last_error_code = code[:80]
+        state.next_check_after = now + delay
         state.save()
     except Exception:
         logger.exception("No fue posible registrar el error de sincronización (%s).", code)
 
 
-def sincronizar_conocimiento(
+@contextmanager
+def _channel_sync_lock(channel):
+    """Bloqueo entre procesos, válido en Windows y POSIX, dentro del directorio de datos."""
+    lock_path = settings.DATA_DIR / f".knowledge-sync-{channel}.lock"
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    handle = open(lock_path, "a+b")
+    locked = False
+    try:
+        if os.name == "nt":
+            import msvcrt
+
+            handle.seek(0, os.SEEK_END)
+            if handle.tell() == 0:
+                handle.write(b"0")
+                handle.flush()
+            handle.seek(0)
+            try:
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+                locked = True
+            except OSError as exc:
+                raise SyncClientError(
+                    "Ya existe una sincronización activa para este canal.",
+                    code="sync_in_progress",
+                ) from exc
+        else:
+            import fcntl
+
+            try:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                locked = True
+            except BlockingIOError as exc:
+                raise SyncClientError(
+                    "Ya existe una sincronización activa para este canal.",
+                    code="sync_in_progress",
+                ) from exc
+        yield
+    finally:
+        if locked:
+            if os.name == "nt":
+                import msvcrt
+
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                import fcntl
+
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        handle.close()
+
+
+def _sincronizar_conocimiento_sin_bloqueo(
     *,
     channel,
     manifest_url,
@@ -238,8 +307,9 @@ def sincronizar_conocimiento(
             if response_etag:
                 state.manifest_etag = response_etag
             state.last_check_at = now
+            state.last_success_at = now
             state.last_error_code = ""
-            state.next_check_after = None
+            state.next_check_after = now + SUCCESS_CHECK_INTERVAL
             state.save()
             return {
                 "status": "not_modified",
@@ -270,7 +340,7 @@ def sincronizar_conocimiento(
             state.last_check_at = now
             state.last_success_at = now
             state.last_error_code = ""
-            state.next_check_after = None
+            state.next_check_after = now + SUCCESS_CHECK_INTERVAL
             if len(response_etag) > 255:
                 raise SyncClientError("ETag demasiado largo.", code="invalid_response")
             state.manifest_etag = response_etag
@@ -318,3 +388,13 @@ def sincronizar_conocimiento(
             "La sincronización terminó con un error interno; el contenido local se conserva.",
             code="sync_internal_error",
         )
+
+
+
+def sincronizar_conocimiento(**kwargs):
+    """Ejecuta una sola sincronización por canal y directorio de datos."""
+    channel = kwargs.get("channel")
+    if channel not in {"stable", "beta"}:
+        raise SyncClientError("Canal de sincronización no permitido.", code="configuration_error")
+    with _channel_sync_lock(channel):
+        return _sincronizar_conocimiento_sin_bloqueo(**kwargs)
