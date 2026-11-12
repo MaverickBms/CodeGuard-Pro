@@ -44,10 +44,10 @@ class Command(BaseCommand):
                 timeout=timeout,
                 force=options["force"],
             )
-        except (ValueError, TypeError, json.JSONDecodeError) as exc:
-            raise CommandError(f"Configuración de sincronización inválida: {exc}") from exc
         except SyncClientError as exc:
             raise CommandError(f"Sincronización no completada [{exc.code}]: {exc}") from exc
+        except (ValueError, TypeError, json.JSONDecodeError) as exc:
+            raise CommandError(f"Configuración de sincronización inválida: {exc}") from exc
 
         status = result.get("status", "unknown")
         if status == "installed":
