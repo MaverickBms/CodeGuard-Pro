@@ -391,7 +391,7 @@ La confirmación corresponde al entorno local del propietario y no equivale a un
 
 La suite `apps.roadmaps.tests.test_publisher` cubre los casos automatizados añadidos. El propietario confirmó su ejecución correcta dentro de las 108 pruebas en `main` `cd7e18e`.
 
-## 6.11 Catálogo de fuentes en índice v2 (validado localmente)
+## 6.11 Catálogo de fuentes en índice v2 (validado en main; ampliación SRC-008 pendiente)
 
 | ID | Prueba | Caso | Resultado esperado | Estado |
 |---|---|---|---|---|
