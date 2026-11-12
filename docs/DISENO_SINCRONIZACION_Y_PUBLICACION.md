@@ -2,7 +2,7 @@
 
 **Producto:** CodeGuard Pro  
 **Fase:** 2 — Motor de aprendizaje y contenido interactivo  
-**Estado:** Diseño aprobado (ADR-004). Verificador, publicador local, snapshots por paquete e instalador transaccional validados en `main` `2c5d441`. El propietario confirmó 132 pruebas OK en `feat/phase-2-http-sync-client`, junto con `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios. La integración Electron y el backoff están implementados; las pruebas unitarias locales de backoff/bloqueo fueron confirmadas como satisfactorias por el propietario. La compilación real PyInstaller y la ejecución integrada siguen pendientes. Hosting, endpoint público y publicación remota siguen pendientes.  
+**Estado:** Diseño aprobado (ADR-004). El propietario reportó 136 pruebas OK, generación exitosa del ejecutable PyInstaller y del AppImage Linux. El binario empaquetado ya supera la carga de Django y alcanza el comando `sincronizar_conocimiento`; la salida por variables de sincronización ausentes es esperada. Esta rama añade dos pruebas automatizadas del despacho y un smoke test Linux; su ejecución local y la prueba de ciclo de vida de la GUI Electron siguen pendientes. Hosting, endpoint público y publicación remota siguen pendientes.  
 **Fecha:** 12 de noviembre de 2026  
 **ADR relacionada:** `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`  
 **Unifica:** `docs/DISENO_DATOS_SINCRONIZACION.md` + `docs/DISENO_PUBLICADOR_CENTRAL.md`
@@ -461,7 +461,7 @@ El cliente local seguirá siendo pull-only. La implementación del publicador no
 10. Registra el paquete y conserva la versión anterior para rollback.
 11. Si cualquier paso falla, conserva el contenido previo y muestra un estado recuperable.
 
-**Implementación inicial en rama `feat/phase-2-http-sync-client`:** el comando `python manage.py sincronizar_conocimiento --channel stable` obtiene manifiesto y firma mediante GET HTTPS, valida el manifiesto Ed25519 antes de solicitar el ZIP y entrega los bytes al instalador transaccional. El cliente aplica allowlist exacta de hosts, TLS con validación de certificados, timeout máximo de 60 s, límites de tamaño, rechazo de redirecciones, comprobación de URL final, ETag condicional y verificación del tamaño/hash del paquete. Un HTTP 304 evita descargar firma y ZIP. La descarga no envía cookies, credenciales, progreso, intentos ni respuestas.
+**Implementación en `main` a partir de `2906abc`:** el comando `python manage.py sincronizar_conocimiento --channel stable` obtiene manifiesto y firma mediante GET HTTPS, valida el manifiesto Ed25519 antes de solicitar el ZIP y entrega los bytes al instalador transaccional. El cliente aplica allowlist exacta de hosts, TLS con validación de certificados, timeout máximo de 60 s, límites de tamaño, rechazo de redirecciones, comprobación de URL final, ETag condicional y verificación del tamaño/hash del paquete. Un HTTP 304 evita descargar firma y ZIP. La descarga no envía cookies, credenciales, progreso, intentos ni respuestas.
 
 La configuración se inyecta mediante variables de entorno: `CODEGUARD_SYNC_MANIFEST_URL`, `CODEGUARD_SYNC_SIGNATURE_URL`, `CODEGUARD_SYNC_ALLOWED_HOSTS` (lista separada por comas), `CODEGUARD_SYNC_TRUSTED_PUBLIC_KEYS` (objeto JSON de `key_id` a clave Ed25519 pública Base64), `CODEGUARD_APP_VERSION` y `CODEGUARD_SYNC_TIMEOUT` (opcional; 12 s por defecto). No se incorpora ninguna clave privada ni una clave pública de producción al repositorio.
 
@@ -474,7 +474,7 @@ Estado actual y siguiente paso:
 - No hacer llamadas de red desde `AppConfig.ready()`, migraciones ni durante el arranque crítico de Django.
 - La invocación automática deberá ejecutarse como tarea independiente/no bloqueante desde Electron, después de mostrar la ventana principal; esa integración aún no está implementada.
 - Permitir comprobación manual y opción para desactivar/posponer la automática.
-- La programación periódica, intervalo configurable y backoff progresivo quedan para el incremento de integración Electron; el comando admite `--force` y respeta `EstadoSincronizacion.next_check_after` si otro componente lo establece.
+- La programación periódica y el backoff progresivo están integrados en Electron; el comando admite `--force` y respeta `EstadoSincronizacion.next_check_after`.
 - No mantener WebSocket ni conexión permanente.
 - La ausencia del servicio, timeout o falta de red nunca debe impedir estudiar.
 
@@ -973,7 +973,7 @@ La vista de lección prioriza el paquete activo del canal configurado (por defec
 
 ## 18. Integración automática Electron y ejecución empaquetada
 
-**Estado:** implementación en `feat/phase-2-http-sync-client`; pruebas unitarias de backoff/bloqueo y chequeos sintácticos confirmados localmente. Pendiente compilación real PyInstaller y prueba integrada Electron.
+**Estado:** implementación de sincronización automática y ejecución empaquetada integrada. El propietario confirmó build PyInstaller y AppImage, y que el binario llega al comando de sincronización con configuración ausente. Las pruebas de despacho añadidas y la prueba GUI completa de Electron quedan pendientes de ejecución local.
 
 ### 18.1 Ciclo de vida
 
@@ -999,7 +999,7 @@ En desarrollo, Electron ejecuta el comando Django con el intérprete del entorno
 
 El modo `--sync-knowledge` inicializa Django y ejecuta exclusivamente el comando de sincronización; no inicia Waitress, no ejecuta migraciones ni vuelve a cargar/recrear ASCENSO. Finaliza con código 0 si la comprobación termina correctamente y con código distinto de cero si falla.
 
-`CodeGuardServer.spec` incluye explícitamente el comando y los módulos del sincronizador. Debe comprobarse el ejecutable real de Windows y Linux durante el empaquetado; el análisis del spec no sustituye una compilación ni una prueba de extremo a extremo.
+`CodeGuardServer.spec` incluye Django, sus submódulos, el comando y los módulos del sincronizador; establece `DJANGO_SETTINGS_MODULE=config.settings.desktop` durante el análisis. El propietario confirmó el ejecutable Linux y el AppImage. El smoke test `bash scripts/smoke-test-packaged-server-linux.sh` comprueba que el binario carga Django y alcanza la validación de configuración sin requerir claves reales. Esta prueba no sustituye la aceptación GUI de Electron.
 
 ### 18.4 Configuración y cierre seguro
 
@@ -1009,12 +1009,18 @@ Si faltan URLs, allowlist o claves públicas, el scheduler registra `not-configu
 
 El renderer solo recibe estado descriptivo mediante IPC limitado; no puede proporcionar rutas, URLs, claves, comandos ni argumentos de proceso. Se expone una función para solicitar una comprobación manual y un listener para cambios de estado.
 
-### 18.5 Criterios de aceptación pendientes
+### 18.5 Criterios de aceptación y estado
 
-1. Validar la política de backoff y la persistencia de `next_check_after`.
-2. Validar que dos procesos no pueden sincronizar el mismo canal simultáneamente.
-3. Validar que el scheduler no bloquea el arranque ni la interfaz.
-4. Validar que sin configuración no se crea tráfico de red.
-5. Ejecutar `--sync-knowledge` con el binario PyInstaller, sin Python instalado en el sistema.
-6. Cerrar Electron durante una descarga y comprobar que no queda un proceso hijo huérfano ni se activa un paquete parcial.
-7. Confirmar que la aplicación continúa abriendo y estudiando offline cuando el servicio remoto no responde.
+1. Validar la política de backoff y la persistencia de `next_check_after` (pruebas unitarias confirmadas por el propietario).
+2. Validar que dos procesos no pueden sincronizar el mismo canal simultáneamente (prueba unitaria confirmada por el propietario).
+3. Validar que el scheduler no bloquea el arranque ni la interfaz mediante la prueba GUI de aceptación (pendiente).
+4. Validar que sin configuración no se crea tráfico de red (la validación previa de Electron evita iniciar el proceso; falta observarlo en ejecución empaquetada).
+5. Ejecutar `--sync-knowledge` con el binario PyInstaller, sin Python instalado en el sistema (el propietario confirmó que el binario carga Django y llega al comando; falta repetir mediante smoke test documentado).
+6. Cerrar Electron durante una descarga y comprobar que no queda un proceso hijo huérfano ni se activa un paquete parcial (pendiente; requiere endpoint de prueba o simulación de descarga).
+7. Confirmar que la aplicación continúa abriendo y estudiando offline cuando el servicio remoto no responde (pendiente de prueba GUI).
+
+### 18.6 Pruebas automatizadas añadidas en esta rama
+
+- `apps/roadmaps/tests/test_server_entry.py`: comprueba que `--sync-knowledge` despacha únicamente el comando Django, respeta canal y `force`, y no inicia Waitress ni ejecuta migraciones.
+- `scripts/smoke-test-packaged-server-linux.sh`: ejecuta el binario PyInstaller con variables de distribución ausentes; espera el error controlado de configuración y falla ante `ModuleNotFoundError`, `ImportError` o ausencia de Django.
+- La base reportada por el propietario es de 136 pruebas. Las dos pruebas nuevas elevan el objetivo esperado a 138; no se marcarán como validadas hasta recibir el resultado de ejecución local.
