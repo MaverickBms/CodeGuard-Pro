@@ -218,7 +218,8 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | EDIT-001 | Publicar un borrador directamente | Se rechaza la transición |
 | EDIT-002 | Enviar versión sin fuente o con hash alterado | Se rechaza el envío a revisión |
 | EDIT-003 | Transición con usuario no editorial | Se rechaza la operación |
-| EDIT-004 | Enviar a revisión | Se registra remitente y fecha |\n| EDIT-005 | Aprobar una versión en revisión | Se registra revisor y fecha |
+| EDIT-004 | Enviar a revisión | Se registra remitente y fecha |
+| EDIT-005 | Aprobar una versión en revisión | Se registra revisor y fecha |
 | EDIT-006 | Modificar snapshot tras enviar a revisión | El modelo rechaza el cambio |
 | EDIT-007 | Publicar una versión aprobada | Se registra publicador y fecha |
 | EDIT-008 | Publicar una nueva versión | La anterior pasa a sustituida en la misma transacción |
@@ -234,7 +235,9 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | IMM-002 | `QuerySet.bulk_update()` sobre versión | Se rechaza |
 | IMM-003 | Eliminación masiva de versiones | Se rechaza |
 | IMM-004 | Crear versión masiva en estado publicado | Se rechaza |
-| IMM-005 | Eliminar versión individual en revisión/publicada | Se rechaza |\n| IMM-006 | Saltar directamente de borrador a publicada | Se rechaza por transición inválida |\n| IMM-007 | Sobrescribir metadatos de auditoría | Se rechaza |
+| IMM-005 | Eliminar versión individual en revisión/publicada | Se rechaza |
+| IMM-006 | Saltar directamente de borrador a publicada | Se rechaza por transición inválida |
+| IMM-007 | Sobrescribir metadatos de auditoría | Se rechaza |
 
 ## 6.6 Pruebas de comandos editoriales
 
@@ -281,6 +284,18 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | SYNC-024 | ZIP malicioso | Entradas con traversal, symlink, duplicados o ratio/tamaño excesivo | Rechazo antes de escribir fuera del staging |
 | SYNC-025 | Reanudación segura | Descarga incompleta o archivo temporal previo alterado | Se descarta o valida de nuevo; nunca se activa parcialmente |
 | SYNC-026 | Sincronización concurrente | Se inician dos comprobaciones simultáneas | Solo una puede instalar; la otra espera o termina sin alterar el contenido activo |
+| SYNC-027 | JSON de manifiesto estricto | Claves duplicadas, constantes no estándar o propiedades adicionales | Rechazo antes de confiar en el contenido |
+| SYNC-028 | Firma Ed25519 | Firma alterada, clave desconocida o firma con longitud inválida | Rechazo criptográfico |
+| SYNC-029 | Anti-replay por canal | Secuencia inferior o igual con hash distinto | Rechazo; misma secuencia y mismo manifiesto se considera no-op |
+| SYNC-030 | Compatibilidad de aplicación | Manifiesto exige versión superior a la instalada | No se descarga ni instala |
+| SYNC-031 | Allowlist de distribución | URL HTTP, credenciales, puerto no estándar o host no permitido | Rechazo |
+| SYNC-032 | Índice de paquete | Índice ausente, esquema incorrecto, entrada duplicada o archivo no declarado | Rechazo |
+| SYNC-033 | Integridad de recurso | Tamaño o SHA-256 de una lección no coincide | Rechazo del paquete completo |
+| SYNC-034 | Esquema académico | Documento no cumple JSON v1 o su UUID no coincide con la ruta | Rechazo del paquete completo |
+| SYNC-035 | Colisión de identidad | UUID de lección, ejemplo o ejercicio repetido/reasignado en el paquete | Rechazo |
+| SYNC-036 | Archivo ZIP especial | Symlink, ruta absoluta, traversal, directorio o tipo especial | Rechazo sin extracción |
+| SYNC-037 | ZIP bomb | Tamaño descomprimido o ratio supera límites | Rechazo antes de activar |
+| SYNC-038 | Registro local | Secuencia duplicada o dos paquetes activos en el mismo canal | Restricción de base de datos |
 
 La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
 
@@ -319,4 +334,6 @@ La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que 
 | LIC-004 | Fuente solo referencia con adaptación/reproducción | Bloquea revisión editorial |
 | LIC-005 | Evidencia HTTP o URL inválida | Rechaza decisión de licencia |
 | LIC-006 | Decisión de licencia por editor activo | Conserva estado, evidencia, alcance, actor y fecha |
-| LIC-007 | Fuente requiere permiso/no reutilizable | Bloquea envío a revisión |\n| LIC-008 | Decisión de licencia cambia después de enviar a revisión | Bloquea aprobación/publicación y conserva snapshot histórico |\n| LIC-009 | Modificar/eliminar referencias de versión en revisión | Operación rechazada por protección ORM |
+| LIC-007 | Fuente requiere permiso/no reutilizable | Bloquea envío a revisión |
+| LIC-008 | Decisión de licencia cambia después de enviar a revisión | Bloquea aprobación/publicación y conserva snapshot histórico |
+| LIC-009 | Modificar/eliminar referencias de versión en revisión | Operación rechazada por protección ORM |
