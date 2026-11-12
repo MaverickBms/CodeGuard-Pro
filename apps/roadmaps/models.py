@@ -982,8 +982,10 @@ class PaqueteConocimientoInstalado(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            if self.estado != "descargado":
-                raise ValidationError("Un paquete debe registrarse inicialmente como descargado.")
+            if self.estado != "descargado" or self.installed_at is not None or self.error_code:
+                raise ValidationError(
+                    "Un paquete debe registrarse como descargado, sin fecha de instalación ni error."
+                )
         else:
             anterior = type(self).objects.get(pk=self.pk)
             identidad = (
@@ -1047,8 +1049,11 @@ class EstadoSincronizacion(models.Model):
 
     def clean(self):
         super().clean()
-        if self.active_package_id and self.active_package.channel != self.channel:
-            raise ValidationError({"active_package": "El paquete activo debe pertenecer al mismo canal."})
+        if self.active_package_id:
+            if self.active_package.channel != self.channel:
+                raise ValidationError({"active_package": "El paquete activo debe pertenecer al mismo canal."})
+            if self.active_package.estado != "activo":
+                raise ValidationError({"active_package": "El paquete referenciado debe estar activo."})
 
     class Meta:
         verbose_name = "estado de sincronización"
