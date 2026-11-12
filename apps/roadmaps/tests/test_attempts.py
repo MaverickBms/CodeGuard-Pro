@@ -264,6 +264,21 @@ class IntentosEjercicioTests(TestCase):
             self.leccion.versiones_contenido.filter(estado="publicada").count(), 1
         )
 
+
+    def test_modelo_impide_saltar_transiciones_editoriales(self):
+        from django.core.exceptions import ValidationError
+        from apps.roadmaps.models import VersionContenidoLeccion
+
+        version = VersionContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            numero_version=1,
+            snapshot={"contenido": "borrador"},
+            sha256="d" * 64,
+        )
+        version.estado = "publicada"
+        with self.assertRaises(ValidationError):
+            version.save()
+
     def test_transicion_editorial_exige_usuario_staff_activo(self):
         from django.core.exceptions import ValidationError
         from apps.roadmaps.knowledge import enviar_version_a_revision
