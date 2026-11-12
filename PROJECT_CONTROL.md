@@ -1,7 +1,7 @@
 # CodeGuard Pro — Control oficial del proyecto
 
 **Documento:** `PROJECT_CONTROL.md`  
-**Versión:** 2.6 — integración Electron y scheduler de sincronización  
+**Versión:** 2.7 — validación local del scheduler y backoff  
 **Fecha de actualización:** 2026-11-12  
 **Propietario:** propietario de CodeGuard Pro  
 **Mantenedor:** orquestador  
@@ -15,7 +15,7 @@
 ## 0. Resumen ejecutivo
 
 - **Fase 1 (núcleo funcional):** completada, verificada y aprobada documentalmente. Autenticación local, panel, roadmap, auditoría y seguridad operativos.
-- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso; `main` contiene el verificador, publicador, catálogo firmado v2 e instalador transaccional con rollback, validados por el propietario (119 pruebas OK). El cliente HTTP fue validado en `feat/phase-2-http-sync-client` (132 pruebas OK); el scheduler Electron y el modo PyInstaller se implementaron después y requieren nueva validación.
+- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso; `main` contiene el verificador, publicador, catálogo firmado v2 e instalador transaccional con rollback, validados por el propietario (119 pruebas OK). El cliente HTTP y las pruebas unitarias de backoff/bloqueo del scheduler fueron validados localmente por el propietario en `feat/phase-2-http-sync-client`. La compilación real de PyInstaller y la prueba de ejecución integrada con Electron siguen pendientes.
   - Roadmap ASCENSO 3.1 (33 etapas, módulos, lecciones, prerrequisitos) implementado y cargable con `cargar_ascenso`.
   - Contenido académico editable (`ContenidoLeccion`, `EjemploLeccion`, `EjercicioLeccion`) implementado.
   - Flujo editorial de versiones (`VersionContenidoLeccion`, `ReferenciaFuenteContenido`, `FuenteConocimiento`) implementado con comandos de gestión.
@@ -25,8 +25,8 @@
   - Intentos nuevos vinculados a la versión activa y con snapshot del ejercicio presentado.
   - Interfaz de entrega POST con CSRF, límite de 20.000 caracteres e historial de intentos.
   - Protecciones adicionales para escrituras masivas del registro local de paquetes y sincronización.
-  - El propietario confirmó **119 pruebas OK** en `main` `2c5d441` y posteriormente **132 pruebas OK** en `feat/phase-2-http-sync-client`, además de `manage.py check` sin problemas y `makemigrations --check --dry-run` sin cambios pendientes. Las modificaciones de scheduler Electron posteriores a esas 132 pruebas aún requieren validación local.
-- **Sincronización de red:** publicador e instalador validados en `main`; cliente HTTP validado localmente en rama aislada; scheduler Electron, backoff y modo PyInstaller implementados después de la validación de 132 pruebas y pendientes de pruebas locales. Hosting, endpoint y claves de producción pendientes.
+  - El propietario confirmó **119 pruebas OK** en `main` `2c5d441` y posteriormente **132 pruebas OK** en `feat/phase-2-http-sync-client`, además de `manage.py check` sin problemas y `makemigrations --check --dry-run` sin cambios pendientes. Las pruebas locales posteriores del scheduler/backoff y los chequeos de sintaxis fueron confirmados como satisfactorios por el propietario; el empaquetado real y la ejecución integrada siguen pendientes.
+- **Sincronización de red:** publicador e instalador validados en `main`; cliente HTTP validado localmente en rama aislada; scheduler Electron, backoff y bloqueo entre procesos con pruebas locales satisfactorias; compilación PyInstaller y ejecución integrada pendientes. Hosting, endpoint y claves de producción pendientes.
 - **Validación del cliente HTTP:** pendiente de ejecución local de sus pruebas de transporte e integración; la validación del instalador en `main` ya está confirmada.
 - **Autenticación:** temporalmente desactivada (`AUTH_DISABLED = True`); el sistema original se conserva íntegro y puede reactivarse con autorización expresa.
 
@@ -86,7 +86,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
 | Migraciones roadmaps | 0014, 0015 y 0016 validadas localmente por el propietario en `main` `2c5d441` |
 | Comandos de gestión | 9; incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (este último en rama de trabajo) |
-| Pruebas automatizadas | 119 OK en `main`; 132 OK confirmadas localmente para el cliente HTTP en rama; pruebas nuevas de scheduler/backoff/PyInstaller pendientes |
+| Pruebas automatizadas | 119 OK en `main`; 132 OK confirmadas para el cliente HTTP; pruebas locales de backoff/bloqueo y chequeos sintácticos del scheduler confirmados; build PyInstaller e integración Electron pendientes |
 | Autenticación | `AUTH_DISABLED = True` (temporal, conservada íntegra) |
 | Base de datos | SQLite, `data/db.sqlite3` |
 | Servidor local | Waitress + WhiteNoise en `127.0.0.1` |
@@ -109,8 +109,8 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Fase | Estado | Observación |
 |---|---|---|
 | **Fase 1 — Núcleo funcional** | ✅ Completada y verificada | Autenticación, panel, auditoría, seguridad, 12 temas, servidor local |
-| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Roadmap, flujo editorial, verificador, publicador e instalador en `main`; cliente HTTP validado localmente (132 pruebas); scheduler Electron/backoff/PyInstaller en rama aislada, pendiente de validación; hosting pendiente |
-| **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Cliente HTTP validado localmente; scheduler Electron y ejecución empaquetada implementados pero pendientes de validación; endpoint, hosting y claves de producción pendientes |
+| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Roadmap, flujo editorial, verificador, publicador e instalador en `main`; cliente HTTP validado localmente (132 pruebas); scheduler Electron y backoff con pruebas locales satisfactorias; build PyInstaller e integración Electron pendientes; hosting pendiente |
+| **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Cliente HTTP validado localmente; scheduler Electron y backoff con pruebas unitarias locales satisfactorias; ejecución empaquetada, endpoint, hosting y claves de producción pendientes |
 | **Competencias y evaluaciones** | ⏳ Pendiente | Incremento 3 |
 | **Biblioteca documental y base de conocimiento** | ⏳ Pendiente | Incremento 4 |
 | **Evidencias y laboratorios** | ⏳ Pendiente | Incremento 5 |
@@ -160,7 +160,7 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | **Hosting/endpoint público de distribución** | Pendiente de seleccionar proveedor y autorizar publicación; no se configura en esta rama |
 | **Generador central y catálogo firmado v2** | Generador, migración 0015 y catálogo v2 validados localmente por el propietario (119 pruebas OK) |
 | **Instalador transaccional (migración 0016)** | Validado en `main` `2c5d441` (119 pruebas OK) |
-| **Cliente de sincronización HTTP** | Validado localmente por el propietario dentro de 132 pruebas en `feat/phase-2-http-sync-client`; scheduler y modo PyInstaller posteriores pendientes de validación |
+| **Cliente de sincronización HTTP** | Validado localmente por el propietario dentro de 132 pruebas en `feat/phase-2-http-sync-client`; pruebas unitarias de backoff/bloqueo validadas; build PyInstaller e integración Electron pendientes |
 | **Competencias y evaluaciones (Incremento 3)** | Pendiente de decisión |
 | **Biblioteca documental (Incremento 4)** | Pendiente de decisión |
 | **Evidencias y laboratorios (Incremento 5)** | Pendiente de decisión |
@@ -182,7 +182,8 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | 2.3 | 2026-11-12 | Catálogo normalizado de fuentes y metadatos de licencia en índice de paquete v2; verificación estricta y compatibilidad de lectura v1 | Continuación autorizada en rama aislada; validación local confirmada por el propietario (108 pruebas OK) |
 | 2.4 | 2026-11-12 | Instalador transaccional, snapshots por paquete, catálogo aislado, activación, rollback, integración de lecciones e intentos, migración 0016 y pruebas | Validación local confirmada por el propietario: 119 pruebas OK en `main` `2c5d441` |
 | 2.5 | 2026-11-12 | Cliente HTTP pull-only inicial, comando manual, allowlist HTTPS, TLS, ETag, límites de descarga, rechazo de redirecciones, pruebas y documentación | Continuación autorizada en rama aislada; posteriormente validado localmente (132 pruebas OK) |
-| 2.6 | 2026-11-12 | Scheduler Electron, backoff exponencial, bloqueo entre procesos, proceso PyInstaller de una sola tarea, IPC limitado, pruebas y documentación | Autorización expresa del propietario; validación local pendiente |
+| 2.6 | 2026-11-12 | Scheduler Electron, backoff exponencial, bloqueo entre procesos, proceso PyInstaller de una sola tarea, IPC limitado, pruebas y documentación | Autorización expresa del propietario |
+| 2.7 | 2026-11-12 | Validación local satisfactoria de las pruebas de backoff/bloqueo y chequeos sintácticos; se mantiene pendiente el build real PyInstaller y la integración ejecutada con Electron | Confirmación del propietario; `main` sin cambios |
 
 ### Reglas de actualización
 
@@ -205,5 +206,5 @@ El propietario autorizó expresamente la implementación completa de la integrac
 - Se permiten commits exclusivamente en la rama autorizada como mecanismo de escritura.
 - No se autoriza merge, PR de integración, despliegue, publicación remota, selección de hosting ni incorporación de URLs/claves públicas de producción.
 - La sincronización debe permanecer inactiva si no hay configuración de distribución completa y confiable.
-- Las 132 pruebas fueron confirmadas por el propietario antes de este incremento; las pruebas nuevas y el empaquetado real requieren una nueva validación local.
+- El propietario confirmó que las pruebas locales del incremento de scheduler/backoff y los chequeos sintácticos finalizaron correctamente. El build real de PyInstaller y la ejecución integrada con Electron siguen pendientes.
 - `main` permanece intacta.
