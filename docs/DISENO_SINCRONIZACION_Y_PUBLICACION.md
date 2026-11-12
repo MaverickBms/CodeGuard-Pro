@@ -2,7 +2,7 @@
 
 **Producto:** CodeGuard Pro  
 **Fase:** 2 — Motor de aprendizaje y contenido interactivo  
-**Estado:** Diseño aprobado (ADR-004); verificador criptográfico y registro local implementados en `main`. La rama correctiva añade snapshots activos y evidencia de intentos. Cliente HTTP, publicación central e instalación atómica de paquetes siguen pendientes.  
+**Estado:** Diseño aprobado (ADR-004). Verificador, publicador local, snapshots por paquete e instalador transaccional validados en `main` `2c5d441` (119 pruebas confirmadas por el propietario). El cliente HTTP pull-only tiene una implementación inicial en `feat/phase-2-http-sync-client`; transporte y pruebas nuevas pendientes de validación local. Hosting, endpoint público y publicación remota siguen pendientes.  
 **Fecha:** 12 de noviembre de 2026  
 **ADR relacionada:** `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`  
 **Unifica:** `docs/DISENO_DATOS_SINCRONIZACION.md` + `docs/DISENO_PUBLICADOR_CENTRAL.md`
@@ -13,7 +13,7 @@
 
 Definir cómo CodeGuard Pro podrá distribuir contenido académico revisado, mantenerlo versionado y actualizarlo de forma opcional cuando exista conexión, sin depender de Internet para estudiar.
 
-Este documento no afirma que el sincronizador exista. Describe el diseño y los contratos de la sincronización; algunos componentes locales (versionado editorial, puntero de contenido activo y evidencia de intentos) ya están implementados, mientras que el cliente remoto y el instalador siguen pendientes.
+El sincronizador está dividido en componentes. El cliente HTTP inicial (`apps/roadmaps/sync_client.py`) y el comando manual `sincronizar_conocimiento` ya están implementados en la rama indicada; todavía no existe ejecución automática en segundo plano ni integración Electron. El endpoint real, las claves públicas de producción y el hosting aún no están configurados.
 
 Incluye:
 - Auditoría del modelo actual de contenido y evidencias.
@@ -461,14 +461,18 @@ El cliente local seguirá siendo pull-only. La implementación del publicador no
 10. Registra el paquete y conserva la versión anterior para rollback.
 11. Si cualquier paso falla, conserva el contenido previo y muestra un estado recuperable.
 
+**Implementación inicial en rama `feat/phase-2-http-sync-client`:** el comando `python manage.py sincronizar_conocimiento --channel stable` obtiene manifiesto y firma mediante GET HTTPS, valida el manifiesto Ed25519 antes de solicitar el ZIP y entrega los bytes al instalador transaccional. El cliente aplica allowlist exacta de hosts, TLS con validación de certificados, timeout máximo de 60 s, límites de tamaño, rechazo de redirecciones, comprobación de URL final, ETag condicional y verificación del tamaño/hash del paquete. Un HTTP 304 evita descargar firma y ZIP. La descarga no envía cookies, credenciales, progreso, intentos ni respuestas.
+
+La configuración se inyecta mediante variables de entorno: `CODEGUARD_SYNC_MANIFEST_URL`, `CODEGUARD_SYNC_SIGNATURE_URL`, `CODEGUARD_SYNC_ALLOWED_HOSTS` (lista separada por comas), `CODEGUARD_SYNC_TRUSTED_PUBLIC_KEYS` (objeto JSON de `key_id` a clave Ed25519 pública Base64), `CODEGUARD_APP_VERSION` y `CODEGUARD_SYNC_TIMEOUT` (opcional; 12 s por defecto). No se incorpora ninguna clave privada ni una clave pública de producción al repositorio.
+
 ### 9.3 Política de ejecución
 
-Recomendación para la primera implementación:
-- Comprobar al iniciar, pero después de que la ventana principal esté disponible.
+Estado actual y siguiente paso:
+- La primera ejecución disponible es manual mediante comando de gestión; no se llama desde `AppConfig.ready()` ni durante el arranque crítico.
 - No hacer llamadas de red desde `AppConfig.ready()`, migraciones ni durante el arranque crítico de Django.
-- Ejecutar la comprobación como tarea independiente/no bloqueante.
+- La invocación automática deberá ejecutarse como tarea independiente/no bloqueante desde Electron, después de mostrar la ventana principal; esa integración aún no está implementada.
 - Permitir comprobación manual y opción para desactivar/posponer la automática.
-- Usar intervalo configurable y backoff; no crear un temporizador agresivo.
+- La programación periódica, intervalo configurable y backoff progresivo quedan para el incremento de integración Electron; el comando admite `--force` y respeta `EstadoSincronizacion.next_check_after` si otro componente lo establece.
 - No mantener WebSocket ni conexión permanente.
 - La ausencia del servicio, timeout o falta de red nunca debe impedir estudiar.
 
