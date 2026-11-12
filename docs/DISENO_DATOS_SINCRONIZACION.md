@@ -620,13 +620,34 @@ Como Django Admin no está habilitado, se incorporan comandos internos para oper
 
 ```bash
 python manage.py crear_version_leccion --leccion 123 --fuente-id 4 --resumen "Primera revisión"
-python manage.py gestionar_version_leccion enviar-revision --version 17 --usuario editor
-python manage.py gestionar_version_leccion aprobar --version 17 --usuario revisor
-python manage.py gestionar_version_leccion publicar --version 17 --usuario publicador
-python manage.py gestionar_version_leccion retirar --version 17 --usuario revisor --motivo "La referencia quedó obsoleta"
+python manage.py gestionar_version_leccion enviar-revision --version-id 17 --usuario editor
+python manage.py gestionar_version_leccion aprobar --version-id 17 --usuario revisor
+python manage.py gestionar_version_leccion publicar --version-id 17 --usuario publicador
+python manage.py gestionar_version_leccion retirar --version-id 17 --usuario revisor --motivo "La referencia quedó obsoleta"
 ```
 
 Los IDs numéricos son locales y solo se usan para operación; los UUID son las identidades estables para distribución. Los comandos no crean usuarios ni conceden privilegios: el usuario debe existir, estar activo y tener `is_staff=True`.
 
 
 El propio modelo también valida la secuencia de estados y exige los metadatos correspondientes para cada transición. No permite saltar de borrador directamente a publicación ni sobrescribir una vez asignados los responsables/fechas de envío, revisión, publicación o retirada.
+
+
+## 21. Registro controlado del catálogo de fuentes
+
+El comando `registrar_fuente_conocimiento` permite crear registros desde una operación explícita del equipo editorial. Acepta publicador, título, URL canónica HTTPS, edición, identificador y URL de licencia y notas. La fecha de consulta se registra al crear el registro; la combinación URL + edición debe ser única.
+
+El comando rechaza URLs que no sean HTTPS absolutas o que incluyan credenciales, valida el modelo y no sobrescribe registros existentes. Su resultado es un registro **pendiente de verificación editorial**: no comprueba automáticamente la autoridad del dominio, la vigencia de la documentación ni los derechos de reutilización. La revisión humana debe comprobar esos aspectos antes de asociar la fuente a un snapshot que avance al estado de revisión.
+
+Ejemplo:
+
+```bash
+python manage.py registrar_fuente_conocimiento \
+  --publicador "Python Software Foundation" \
+  --titulo "Python Language Reference" \
+  --url "https://docs.python.org/3/reference/" \
+  --edicion "Python 3" \
+  --licencia-id "PSF-2.0" \
+  --licencia-url "https://docs.python.org/3/license.html"
+```
+
+El registro no realiza solicitudes HTTP, no importa páginas, no ejecuta recursos remotos y no cambia el estado editorial de ninguna lección. La administración del contenido y su publicación continúan separadas.
