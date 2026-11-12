@@ -218,7 +218,7 @@ def _build_deterministic_zip(package_id, package_version, documents, sources=())
             "sha256": hashlib.sha256(payload).hexdigest(),
         })
     index = {
-        "schema_version": 1,
+        "schema_version": 2,
         "package_id": str(package_id),
         "package_version": package_version,
         "content_schema_version": 1,
