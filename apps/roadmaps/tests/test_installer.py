@@ -205,10 +205,10 @@ class InstaladorPaquetesTests(TestCase):
             first = self.instalar(self.publicar())["package"]
             second_artifacts = self.publicar()
             with patch(
-                "apps.roadmaps.installer.FuentePaqueteConocimiento.objects.create",
-                side_effect=RuntimeError("fallo simulado de persistencia"),
+                "apps.roadmaps.models.EstadoSincronizacion.save",
+                side_effect=RuntimeError("fallo simulado al confirmar el puntero activo"),
             ):
-                with self.assertRaisesRegex(RuntimeError, "fallo simulado"):
+                with self.assertRaisesRegex(RuntimeError, "confirmar el puntero"):
                     self.instalar(second_artifacts)
 
         first.refresh_from_db()
