@@ -260,7 +260,6 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
             file_type = stat.S_IFMT(mode)
             if stat.S_ISLNK(mode) or file_type not in {0, stat.S_IFREG}:
                 raise DistributionError("El ZIP contiene un tipo de archivo no permitido.")
-                raise DistributionError("El ZIP contiene un tipo de archivo no permitido.")
             if info.compress_type not in {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED}:
                 raise DistributionError("El ZIP utiliza un método de compresión no permitido.")
             if info.file_size <= 0 or info.file_size > MAX_CONTENT_FILE_BYTES and name != "package-index.json":
