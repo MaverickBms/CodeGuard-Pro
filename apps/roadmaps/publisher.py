@@ -333,7 +333,9 @@ def publicar_paquete_conocimiento(
         uuid.NAMESPACE_URL,
         f"codeguard:{channel}:{sequence}:{package_version}:{content_digest}",
     )
-    package_bytes = _build_deterministic_zip(\n        package_id, package_version, documents, source_catalog.values()\n    )
+    package_bytes = _build_deterministic_zip(
+        package_id, package_version, documents, source_catalog.values()
+    )
     package_hash = hashlib.sha256(package_bytes).hexdigest()
 
     published_at = timezone.now().astimezone(datetime_timezone.utc)
