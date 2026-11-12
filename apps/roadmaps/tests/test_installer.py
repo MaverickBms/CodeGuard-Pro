@@ -36,7 +36,8 @@ from apps.roadmaps.models import (
 from apps.roadmaps.publisher import publicar_paquete_conocimiento
 from apps.roadmaps.models_attempts import ConfiguracionEvaluacion, IntentoEjercicio
 from apps.roadmaps.attempts import registrar_intento_ejercicio
-from apps.roadmaps.sync_client import SyncClientError, sincronizar_conocimiento\nfrom apps.roadmaps.installer import (
+from apps.roadmaps.sync_client import SyncClientError, sincronizar_conocimiento
+from apps.roadmaps.installer import (
     InstallationError,
     instalar_paquete_firmado,
     restaurar_paquete_anterior,
