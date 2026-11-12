@@ -1,14 +1,11 @@
 """Punto de entrada del servidor Django empaquetado para CodeGuard Pro.
 
-Electron inicia este binario (generado con PyInstaller) y espera a que responda
-en ``http://127.0.0.1:<CODEGUARD_PORT>/``. El proceso:
-
-1. Aplica las migraciones pendientes en la base de datos del usuario.
-2. Carga el roadmap oficial ASCENSO 3.1 si todavía no existe.
-3. Sirve la aplicación y los estáticos locales con un servidor WSGI local
-   (Waitress + WhiteNoise).
-
-No abre puertos externos: escucha exclusivamente en 127.0.0.1.
+Electron inicia este binario (generado con PyInstaller) para servir Django localmente o, con
+``--sync-knowledge``, para ejecutar una única comprobación de conocimiento y terminar.
+El modo servidor aplica migraciones, carga ASCENSO si todavía no existe y sirve la
+aplicación mediante Waitress + WhiteNoise. El modo de sincronización no ejecuta
+migraciones, no inicia Waitress y no modifica el roadmap. El servidor escucha
+exclusivamente en 127.0.0.1.
 """
 
 from __future__ import annotations
