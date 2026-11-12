@@ -923,3 +923,42 @@ El verificador mantiene compatibilidad de lectura con índice v1 y valida v2 con
 Este catálogo permite que el futuro instalador registre las fuentes ausentes sin depender de una preinstalación manual. No autoriza a sobrescribir silenciosamente fuentes locales existentes: si un UUID ya existe con metadatos incompatibles, el instalador deberá abortar o aplicar una política explícita de conciliación. La importación del catálogo no debe disparar por sí sola un flujo editorial ni modificar una decisión de licencia local.
 
 **Estado:** generación y validación de catálogo v2 implementadas en la rama correctiva; pruebas nuevas pendientes de ejecución local. La instalación transaccional de fuentes, snapshots y punteros activos sigue pendiente.
+
+## 27. Instalador transaccional local (implementación inicial)
+
+### 27.1 Separación de dominios
+
+El instalador no reutiliza `ContenidoLeccionActivo`: ese puntero pertenece al flujo editorial local y solo puede señalar versiones publicadas por un editor. Los paquetes distribuidos se representan mediante:
+
+- `PaqueteConocimientoInstalado`: identidad firmada, secuencia, hashes, clave de firma y clave relativa del ZIP conservado.
+- `ContenidoLeccionPaquete`: documento académico exacto por paquete y lección, con hash del payload.
+- `FuentePaqueteConocimiento`: metadatos de catálogo firmados, aislados del registro editorial `FuenteConocimiento`.
+- `EstadoSincronizacion.active_package`: puntero al paquete activo del canal.
+
+Los modelos de snapshots y fuentes instalados bloquean actualización masiva, modificación y borrado. Las claves estables de lección, ejemplo y ejercicio se resuelven contra ASCENSO local; una identidad curricular divergente aborta la instalación.
+
+### 27.2 Orden de instalación
+
+1. Recibir bytes del manifiesto, firma Ed25519 y ZIP (la descarga HTTP no forma parte de este servicio).
+2. Bloquear el estado del canal y consultar la secuencia local más alta para aplicar anti-downgrade/replay.
+3. Verificar firma, canal, versión mínima, tamaño y hash del paquete.
+4. Validar ZIP, índice v1/v2, documentos académicos y catálogo de fuentes en memoria.
+5. Comprobar que las identidades curriculares y UUID de ejemplos/ejercicios existen y pertenecen a la lección local correspondiente.
+6. Persistir el ZIP en `CODEGUARD_DATA_DIR/knowledge-packages/<canal>/` con nombre derivado de UUID y SHA-256.
+7. Crear el registro del paquete en estado descargado y moverlo a verificado.
+8. Guardar snapshots y fuentes en tablas propias del paquete, sin importar ni sobrescribir `FuenteConocimiento`.
+9. Sustituir el paquete anterior, activar el nuevo y actualizar `EstadoSincronizacion.active_package` dentro de la misma transacción SQLite.
+
+El servicio se implementa en `apps/roadmaps/installer.py` mediante `instalar_paquete_firmado()`. El rollback explícito `restaurar_paquete_anterior()` comprueba el SHA-256 del artefacto conservado y reactiva un paquete sustituido sin borrar los snapshots ni las evidencias.
+
+### 27.3 Uso académico del paquete activo
+
+La vista de lección prioriza el paquete activo del canal configurado (por defecto `stable`). Si existe paquete activo pero este no contiene una lección, no se expone como sustituto un borrador ni una publicación editorial local fuera del paquete. Las entregas se vinculan al paquete y guardan el snapshot exacto del ejercicio; el FK al paquete usa `PROTECT`. La evaluación continúa usando configuraciones locales existentes y no ejecuta código arbitrario.
+
+### 27.4 Límites y riesgos pendientes
+
+- No se descarga nada por HTTP; el servicio recibe bytes desde una futura capa de transporte.
+- El almacén de claves públicas y la allowlist deben venir de configuración confiable de producción; no hay claves ficticias embebidas.
+- La escritura atómica del ZIP en filesystem y el commit de SQLite no forman una transacción distribuida. Una caída abrupta puede dejar archivos huérfanos, que no se activan sin registro. Se requiere reconciliación/limpieza controlada antes de automatizar sincronizaciones.
+- El rollback conserva la secuencia máxima conocida para impedir que el servidor vuelva a imponer automáticamente una publicación antigua o la misma publicación revertida.
+- La migración 0016 y las pruebas de `apps.roadmaps.tests.test_installer` están pendientes de validación local. No declarar este incremento listo hasta ejecutar migraciones, pruebas específicas y suite completa.
