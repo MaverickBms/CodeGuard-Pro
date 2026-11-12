@@ -1,7 +1,7 @@
 # Fase 2 — Sistema de aprendizaje interactivo
 
 **Producto:** CodeGuard Pro  
-**Estado:** Motor de aprendizaje y control editorial en desarrollo. El usuario confirmó la validación local satisfactoria del incremento de importación/licencias (migraciones 0009–0011). El verificador de distribución firmado y el registro local de paquetes se incorporaron después y están pendientes de validación local.  
+**Estado:** Motor de aprendizaje, control editorial y núcleo de distribución en desarrollo. El usuario confirmó que la suite local de 93 pruebas finaliza con `OK`, tras instalar `cryptography==46.0.3` y corregir un caso de prueba de transición inválida. La validación reportada cubre el estado actual de la rama, incluidas las migraciones 0012–0013 y el verificador/registro de paquetes.  
 **Línea base:** rama `main`.
 
 ## 1. Objetivo
@@ -418,3 +418,16 @@ Se implementó parcialmente el núcleo de confianza del protocolo híbrido:
 - Pruebas: `apps/roadmaps/tests/test_distribution.py` y `test_distribution_models.py`.
 
 **No implementado todavía:** publicador, gestión/rotación de claves públicas, allowlist de producción, cliente HTTP, ETag/backoff, comando de sincronización, instalación transaccional de snapshots publicados, punteros de contenido activo, rollback e integración Electron. Las pruebas de este incremento aún no han sido ejecutadas localmente.
+
+
+## 14. Publicador central de conocimiento — siguiente incremento
+
+**Diseño técnico:** `docs/DISENO_PUBLICADOR_CENTRAL.md`.
+
+La validación local de la rama fue confirmada por el usuario: **93 pruebas pasan (OK)**. Se corrigió la instalación de `cryptography==46.0.3` en el entorno virtual y el test de transición ahora intenta correctamente el salto inválido `descargado → activo`.
+
+El siguiente incremento implementará el publicador editorial. Este deberá seleccionar exclusivamente `VersionContenidoLeccion` en estado `publicada`, utilizar snapshots congelados (nunca borradores mutables), recalcular hashes y validar la evidencia de licencia congelada antes de generar artefactos.
+
+Antes de generar paquetes se añadirá un registro central de releases con secuencia única y monotónica por canal. No se permitirá que el número de secuencia dependa solo de un argumento de consola ni que una publicación existente pueda sobrescribirse. El publicador generará ZIP determinista, índice, manifiesto y firma Ed25519 detached. La clave privada se suministrará externamente y no se guardará en el repositorio ni en la base de datos.
+
+Este diseño no autoriza todavía despliegue, CDN, dominio ni publicación real. La generación inicial será local y explícita; la URL HTTPS del manifiesto deberá corresponder a un proveedor aprobado antes de distribuir el paquete a clientes.
