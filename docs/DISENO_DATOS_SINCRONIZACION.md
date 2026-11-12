@@ -510,3 +510,33 @@ La migración se ejecutará por pasos aditivos: asignar UUID; crear snapshots in
 
 Antes de extraer, validar número de entradas, tamaño comprimido y descomprimido total, tamaño individual, relación de compresión, rutas normalizadas, nombres duplicados y tipo de archivo. Rechazar rutas absolutas, `..`, enlaces simbólicos, archivos anidados no previstos y entradas que escapen del directorio temporal. La extracción ocurre en una carpeta temporal nueva y no confiable; nunca directamente sobre el contenido activo.
 
+
+
+## 15. Integración con el ciclo de vida Electron/Django
+
+La revisión del empaquetado confirma que Electron inicia un servidor Django local como proceso hijo. En desarrollo se ejecuta `manage.py`; en la aplicación empaquetada se inicia el binario PyInstaller `CodeGuardServer`, construido desde `server_entry.py`. Por tanto, el sincronizador debe integrarse en este ciclo y no asumir que existe un intérprete Python externo en los equipos instalados.
+
+Diseño recomendado para la implementación:
+1. Crear una app de dominio `apps.knowledge` e instalarla en `INSTALLED_APPS`.
+2. Implementar la lógica de sincronización como servicios Python y un comando Django de una sola ejecución (por ejemplo, `sync_knowledge`). El comando comparte `CODEGUARD_DATA_DIR` y la misma configuración de base de datos que el servidor local.
+3. Extender `server_entry.py` para reconocer un modo de comando de sincronización y salir al terminar, además del modo actual de servidor WSGI. En desarrollo, Electron puede invocar el comando mediante el Python del entorno virtual; en producción, invoca el mismo binario PyInstaller con el argumento correspondiente.
+4. Electron inicia la comprobación después de que la ventana principal esté disponible. El proceso de descarga no forma parte del camino crítico de arranque y no bloquea el uso local.
+5. La UI consulta el estado mediante IPC limitado y tipado: última comprobación, última sincronización exitosa, versión disponible, estado y error genérico. No se exponen rutas arbitrarias, comandos ni argumentos libres al renderer.
+6. Permitir comprobación manual, desactivar/posponer la comprobación automática y configurar una frecuencia inicial diaria. Si la aplicación está cerrada no se ejecuta una tarea residente ni se requiere servicio del sistema operativo.
+7. Usar un bloqueo local para impedir dos sincronizaciones simultáneas. Descargar y validar fuera de la transacción; mantener la transacción SQLite de importación/activación breve. Manejar `database is locked` con reintentos limitados y nunca borrar el contenido activo por un error de concurrencia.
+
+No se debe realizar tráfico de red desde `AppConfig.ready()`, durante migraciones, en el constructor de Django ni antes de que la ventana esté disponible. La sincronización no se debe iniciar desde el renderer mediante llamadas HTTP arbitrarias.
+
+### 15.1 Compatibilidad del empaquetado
+
+La implementación debe revisar y actualizar de forma coordinada `server_entry.py`, `CodeGuardServer.spec`, `electron/main.js`, `electron/preload.js`, `package.json` si se requiere una señal de estado y `requirements.txt` si se incorpora criptografía. La app nueva debe quedar incluida en el descubrimiento de PyInstaller y en `INSTALLED_APPS`. La clave privada de firma no se incluye en `CodeGuardServer`, en Electron ni en el repositorio de distribución.
+
+### 15.2 Riesgo del cargador curricular actual
+
+El comando `cargar_ascenso` no es un instalador de paquetes de conocimiento:
+- El JSON `apps/roadmaps/data/ascenso_3_1.json` identifica lecciones por títulos y no contiene las claves UUID estables propuestas.
+- El servicio `cargar_ascenso` usa `update_or_create` por título para módulos/lecciones; no implementa un protocolo de migración de identidad curricular.
+- La opción `--recrear` elimina el roadmap y, por cascada, puede eliminar progreso y contenido asociado.
+- La reconstrucción de prerrequisitos forma parte de la carga del roadmap, no de la actualización de contenido pedagógico.
+
+**Regla obligatoria:** el sincronizador nunca invoca `cargar_ascenso --recrear` ni modifica la estructura curricular al instalar contenido de lecciones. La incorporación de UUID al catálogo ASCENSO requiere una migración/exportación controlada, preservando PK y progreso. Las actualizaciones de contenido usan exclusivamente el importador versionado descrito en este documento.
