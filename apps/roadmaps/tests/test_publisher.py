@@ -132,6 +132,13 @@ class PublicadorConocimientoTests(TestCase):
         archive = validate_package_archive(package_bytes, manifest=verified["manifest"])
         self.assertEqual(result["lesson_count"], 1)
         self.assertEqual(len(archive["payloads"]), 1)
+        self.assertEqual(len(archive["sources"]), 1)
+        source = next(iter(archive["sources"].values()))
+        self.assertEqual(source["clave"], str(self.fuente.clave))
+        self.assertEqual(source["estado_revision_licencia"], "compatible")
+        self.assertEqual(source["url_canonica"], self.fuente.url_canonica)
+        self.assertNotIn("revisada_por", source)
+        self.assertEqual(archive["index"]["schema_version"], 2)
         self.assertEqual(result["release"].sequence, 1)
 
     def test_publicaciones_incrementan_secuencia_y_no_sobrescriben_artefactos(self):
