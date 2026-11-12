@@ -751,3 +751,21 @@ class IntentosEjercicioTests(TestCase):
             intento.snapshot_ejercicio["enunciado"],
             "Declara una variable llamada nombre.",
         )
+
+
+
+    def test_evidencia_original_del_intento_es_inmutable(self):
+        intento = registrar_intento_ejercicio(
+            self.usuario, self.ejercicio, "nombre = 'Ada'"
+        )
+        intento.snapshot_ejercicio["enunciado"] = "Texto manipulado."
+        with self.assertRaisesMessage(ValidationError, "evidencia original"):
+            intento.save()
+
+        with self.assertRaisesMessage(ValidationError, "update() masivo"):
+            IntentoEjercicio.objects.filter(pk=intento.pk).update(
+                respuesta="respuesta manipulada"
+            )
+
+        with self.assertRaisesMessage(ValidationError, "no se eliminan físicamente"):
+            intento.delete()
