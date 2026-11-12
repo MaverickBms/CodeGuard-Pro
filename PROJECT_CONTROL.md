@@ -80,9 +80,9 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Repositorio | `/home/mvxbms/Documentos/CodeGuard` |
 | Línea base | `main` en `2c5d441` (incluye catálogo v2 e instalador transaccional) |
 | Rama de correcciones | `feat/phase-2-http-sync-client` |
-| HEAD de correcciones | Último commit de `fix/phase-2-integrity-learning`; no fusionado |
+| HEAD de trabajo | Último commit de `feat/phase-2-http-sync-client`; no fusionado |
 | Diferencia respecto a `main` | Rama correctiva por delante de `main`, sin divergencia de base; `main` sin modificar |
-| Remoto | `origin/fix/phase-2-integrity-learning` |
+| Remoto | `origin/feat/phase-2-http-sync-client` |
 | Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
 | Migraciones roadmaps | 0014 y 0015 validadas localmente por el propietario; 0016 añadida en la rama correctiva y pendiente de ejecución local |
 | Comandos de gestión | 9 (`cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`) |
