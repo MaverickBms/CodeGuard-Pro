@@ -234,7 +234,7 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | IMM-002 | `QuerySet.bulk_update()` sobre versión | Se rechaza |
 | IMM-003 | Eliminación masiva de versiones | Se rechaza |
 | IMM-004 | Crear versión masiva en estado publicado | Se rechaza |
-| IMM-005 | Eliminar versión individual en revisión/publicada | Se rechaza |
+| IMM-005 | Eliminar versión individual en revisión/publicada | Se rechaza |\n| IMM-006 | Saltar directamente de borrador a publicada | Se rechaza por transición inválida |\n| IMM-007 | Sobrescribir metadatos de auditoría | Se rechaza |
 
 ## 6.6 Pruebas de comandos editoriales
 
