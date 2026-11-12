@@ -319,4 +319,4 @@ La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que 
 | LIC-004 | Fuente solo referencia con adaptación/reproducción | Bloquea revisión editorial |
 | LIC-005 | Evidencia HTTP o URL inválida | Rechaza decisión de licencia |
 | LIC-006 | Decisión de licencia por editor activo | Conserva estado, evidencia, alcance, actor y fecha |
-| LIC-007 | Fuente requiere permiso/no reutilizable | Bloquea envío a revisión |
+| LIC-007 | Fuente requiere permiso/no reutilizable | Bloquea envío a revisión |\n| LIC-008 | Decisión de licencia cambia después de enviar a revisión | Bloquea aprobación/publicación y conserva snapshot histórico |\n| LIC-009 | Modificar/eliminar referencias de versión en revisión | Operación rechazada por protección ORM |
