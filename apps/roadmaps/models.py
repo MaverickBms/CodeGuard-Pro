@@ -486,6 +486,30 @@ class FuenteConocimiento(models.Model):
         return f"{self.publicador}: {self.titulo}"
 
 
+class VersionContenidoLeccionQuerySet(models.QuerySet):
+    """Impide mutaciones masivas que omitan el flujo editorial."""
+
+    def update(self, **kwargs):
+        raise ValidationError(
+            "Las versiones de contenido solo pueden cambiar mediante servicios editoriales."
+        )
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError(
+            "Las versiones de contenido solo pueden cambiar mediante servicios editoriales."
+        )
+
+    def bulk_create(self, objs, **kwargs):
+        if any(obj.estado != "borrador" for obj in objs):
+            raise ValidationError("Las versiones deben crearse inicialmente como borrador.")
+        return super().bulk_create(objs, **kwargs)
+
+    def delete(self):
+        raise ValidationError(
+            "No se permite eliminar versiones mediante operaciones masivas."
+        )
+
+
 class VersionContenidoLeccion(models.Model):
     """Snapshot versionado del contenido de una lección; no reemplaza el borrador editable."""
 
@@ -497,6 +521,8 @@ class VersionContenidoLeccion(models.Model):
         ("sustituida", "Sustituida"),
         ("retirada", "Retirada"),
     ]
+
+    objects = VersionContenidoLeccionQuerySet.as_manager()
 
     clave = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     leccion = models.ForeignKey(
@@ -552,6 +578,8 @@ class VersionContenidoLeccion(models.Model):
     creada_en = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
+        if not self.pk and self.estado != "borrador":
+            raise ValidationError("Una versión debe crearse inicialmente como borrador.")
         if self.pk:
             anterior = type(self).objects.only(
                 "estado", "leccion_id", "numero_version", "esquema_version",
