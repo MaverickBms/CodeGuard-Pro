@@ -1,7 +1,7 @@
 # Fase 2 — Sistema de aprendizaje interactivo
 
 **Producto:** CodeGuard Pro  
-**Estado:** Primer incremento implementado; validación local pendiente.  
+**Estado:** Motor de aprendizaje y control editorial en desarrollo; importador académico y revisión auditable de licencias implementados en la rama de trabajo, pendientes de validación local.  
 **Línea base:** rama `main`.
 
 ## 1. Objetivo
@@ -379,3 +379,47 @@ Reglas obligatorias del incremento:
 - Incorporar una revisión de licencia auditable y obligatoria en los servicios de revisión/publicación. El registro actual de una fuente no certifica su licencia.
 
 **Estado:** diseño técnico documentado; validador, importador y control formal de licencias aún no implementados. La implementación debe comenzar después de que se ejecuten y revisen las tres pruebas nuevas del comando de registro de fuentes y la suite local completa.
+
+
+## 13. Importación académica y revisión de licencias
+
+**Contrato:** `docs/CONTRATO_IMPORTACION_CONTENIDO.md`.
+
+### Implementado en la rama de trabajo
+
+- Migración `0009_revision_licencias_fuentes`: añade estado de revisión de licencia, evidencia, alcance, decisión, responsable y fecha; cada referencia registra el uso declarado.
+- Servicio `revisar_licencia_fuente()` y comando `revisar_licencia_fuente`, restringidos a editores activos.
+- El flujo editorial bloquea fuentes pendientes, con permiso requerido o no reutilizables. Una licencia compatible exige evidencia HTTPS y alcance documentado. La opción solo referencia permite contenido original, no adaptación ni reproducción.
+- `apps/roadmaps/content_import.py`: validador de JSON v1 e importador transaccional.
+- Comandos `validar_paquete_contenido` e `importar_paquete_contenido`.
+- Pruebas nuevas en `apps/roadmaps/tests/test_content_import.py`; pruebas editoriales anteriores actualizadas para registrar explícitamente la revisión de licencia.
+
+### Uso operativo
+
+Validar sin escribir:
+
+```bash
+python manage.py validar_paquete_contenido --directorio ./contenido/
+```
+
+Prevalidar el lote y mostrar advertencias:
+
+```bash
+python manage.py importar_paquete_contenido --directorio ./contenido/
+```
+
+Importar como borradores, con un editor activo:
+
+```bash
+python manage.py importar_paquete_contenido --directorio ./contenido/ --confirmar --usuario EDITOR
+```
+
+Revisar la licencia de una fuente:
+
+```bash
+python manage.py revisar_licencia_fuente --fuente-id 1 --usuario EDITOR --estado compatible --evidencia https://example.org/license --alcance "Redistribución con atribución" --nota "Decisión editorial documentada"
+```
+
+El ejemplo de URL es ilustrativo: el editor debe proporcionar la evidencia real de la licencia y evaluar sus condiciones.
+
+**Pendiente:** ejecutar la migración 0009, revisar el estado de migraciones y ejecutar las pruebas nuevas y la suite completa en el entorno local. No se declara el incremento como validado hasta recibir ese resultado.
