@@ -35,7 +35,7 @@ La rama `docs/phase-2-hybrid-knowledge-sync` fue fusionada a `main`. Incluye:
 - **Evidencia histórica de ejercicios:** cada nuevo `IntentoEjercicio` conserva `snapshot_ejercicio` y referencia `version_contenido` cuando existe una versión activa. La migración 0014 conserva el enunciado visible de intentos anteriores. La evidencia original queda protegida frente a cambios y borrados ORM.
 - **Interfaz de entregas:** el estudiante ya puede enviar respuestas mediante POST con CSRF, límite de 20.000 caracteres e historial de los tres últimos intentos. No se ejecuta código arbitrario.
 - **Registro local endurecido:** escrituras masivas de paquetes y estado de sincronización validan invariantes o quedan bloqueadas para evitar saltarse el flujo controlado.
-- **Comandos de gestión:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`, `publicar_paquete_conocimiento` y el nuevo `sincronizar_conocimiento` (cliente HTTP manual, en rama aislada).
+- **Comandos de gestión:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`, `publicar_paquete_conocimiento` y el nuevo `sincronizar_conocimiento` (cliente HTTP, en rama aislada), con scheduler Electron y ejecución PyInstaller en implementación.
 - **Validación de la línea base:** el propietario confirmó 119 pruebas OK, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2c5d441`. La validación local cubre el instalador transaccional y rollback.
 
 ---
@@ -70,7 +70,7 @@ El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos 
 
 | Elemento | Estado | Documento |
 |---|---|---|
-| Cliente de sincronización de red | Implementación inicial en `feat/phase-2-http-sync-client`; pruebas nuevas pendientes de validación local. Sin scheduler Electron ni endpoint configurado | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Cliente de sincronización de red | Cliente HTTP validado localmente por el propietario dentro de 132 pruebas; scheduler Electron, backoff y modo PyInstaller en implementación, pendientes de validación local. Endpoint y claves de producción no configurados | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Generador local y catálogo firmado v2 | Implementado; migración 0015 y pruebas confirmadas por el propietario. Hosting y publicación remota pendientes | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Instalación transaccional local y rollback | Validada por el propietario en `main` `2c5d441` (119 pruebas OK; migración 0016 incluida) | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Competencias y evaluaciones | Pendiente (Incremento 3) | `docs/PLAN_DESARROLLO.md` |
@@ -85,7 +85,7 @@ El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos 
 
 El módulo `apps/roadmaps/sync_client.py` realiza GET HTTPS al manifiesto, firma y ZIP. Verifica el manifiesto Ed25519 y su compatibilidad antes de descargar el paquete; el ZIP se entrega al instalador ya validado en `main`. Se aplican allowlist de hosts, TLS validado, rechazo de redirecciones, timeout y límites de bytes, ETag y verificación del tamaño/hash. No se envían datos del estudiante.
 
-El comando manual es `python manage.py sincronizar_conocimiento --channel stable`. Requiere configurar URLs, allowlist, clave(s) pública(s) confiables y versión de aplicación mediante variables de entorno. No se ha elegido proveedor ni publicado un endpoint real. La ejecución automática en segundo plano y la integración Electron permanecen pendientes. Las pruebas `test_sync_client.py` y las nuevas pruebas de integración del cliente deben ejecutarse en el entorno local antes de considerar validado este incremento.
+El comando manual es `python manage.py sincronizar_conocimiento --channel stable`. Requiere URLs, allowlist y claves públicas confiables mediante variables de entorno. El scheduler Electron consulta localmente cada cinco minutos, pero el cliente solo realiza red cuando vence `next_check_after`; la primera comprobación se difiere 30 segundos y los fallos aplican backoff de 15 minutos hasta 24 horas. La ejecución empaquetada utiliza `CodeGuardServer --sync-knowledge`, sin iniciar Waitress ni migraciones. Esta integración posterior a las 132 pruebas confirmadas aún requiere validación local y compilación PyInstaller. No se ha elegido proveedor ni publicado un endpoint real.
 
 ## 8. Reglas de operación
 
@@ -116,7 +116,7 @@ Luego iniciar CodeGuard Pro con `./run.sh`, abrir una etapa y entrar en una lecc
 
 El índice del paquete firmado incorpora un catálogo normalizado de fuentes con UUID, datos bibliográficos, decisión/evidencia/alcance de licencia y fecha de revisión. Se excluye la identidad personal del revisor. El verificador admite índices v1 anteriores y valida estrictamente v2, incluida la correspondencia exacta entre fuentes declaradas y referencias de las lecciones. El instalador conserva el catálogo firmado en `FuentePaqueteConocimiento`, asociado al paquete. No modifica ni sobrescribe `FuenteConocimiento`, por lo que cada versión instalada mantiene su propio expediente de fuentes.
 
-Las pruebas SRC-001 a SRC-008, PUB-001 a PUB-012 y las pruebas del instalador quedaron incluidas en las 119 pruebas confirmadas por el propietario. Las pruebas nuevas del cliente HTTP requieren validación específica.
+Las pruebas SRC-001 a SRC-008, PUB-001 a PUB-012 y las pruebas del instalador quedaron incluidas en las 119 pruebas confirmadas en `main`. El propietario confirmó después 132 pruebas OK en la rama del cliente HTTP, que incluyen las pruebas de transporte e integración iniciales. Las pruebas nuevas del scheduler, backoff, bloqueo entre procesos y modo PyInstaller siguen pendientes.
 
 ## 10. Instalador transaccional de paquetes (validado en main)
 
@@ -126,4 +126,4 @@ La migración 0016 añade snapshots de lección y catálogo de fuentes asociados
 
 El artefacto ZIP se conserva bajo `CODEGUARD_DATA_DIR/knowledge-packages/`. La activación se realiza al final de la transacción: el paquete anterior pasa a sustituido, el nuevo queda activo y `EstadoSincronizacion.active_package` cambia en la misma transacción. El rollback reactiva un paquete sustituido conservando artefactos, snapshots, intentos y progreso. El servicio también resuelve la vista de lección y la entrega de ejercicios contra el snapshot del paquete activo.
 
-**Límites actuales:** el cliente HTTP inicial y su comando manual se añadieron en `feat/phase-2-http-sync-client`; sus pruebas nuevas aún no están validadas localmente. No hay endpoint, hosting, claves públicas de producción, scheduler automático ni integración Electron. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado.
+**Límites actuales:** el cliente HTTP inicial fue validado por el propietario dentro de 132 pruebas. El scheduler Electron, el backoff, el bloqueo de concurrencia y el modo PyInstaller se añadieron después y requieren validación local y empaquetado real. No hay endpoint, hosting ni claves públicas de producción; por ello la sincronización automática permanece inactiva hasta configurar una distribución confiable. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado.
