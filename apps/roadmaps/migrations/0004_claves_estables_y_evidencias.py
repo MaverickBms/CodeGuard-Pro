@@ -54,6 +54,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name="intentoejercicio", name="configuracion_evaluacion",
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name="intentos", to="roadmaps.configuracionevaluacion", verbose_name="configuración aplicada"),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name="intentos", to="roadmaps.configuracionevaluacion", verbose_name="configuración aplicada"),
         ),
     ]
