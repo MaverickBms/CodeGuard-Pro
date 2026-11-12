@@ -4,8 +4,8 @@
 **Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada)  
 **Estado:** Núcleo funcional verificado; motor de aprendizaje y conocimiento versionado en curso  
 **SRS de referencia:** `IEEE830(1).md` v2.0  
-**Rama de trabajo:** `docs/phase-2-hybrid-knowledge-sync`  
-**HEAD:** `6a16f93`
+**Línea base integrada:** `main` (`c2ec604`); correcciones en `fix/phase-2-integrity-learning`  
+**HEAD de referencia de main:** `c2ec604`
 
 ---
 
@@ -26,7 +26,7 @@ el cliente y de solo descarga.
 (motor de aprendizaje y conocimiento versionado) está implementada parcialmente en la rama
 `docs/phase-2-hybrid-knowledge-sync`: roadmap ASCENSO 3.1, flujo editorial de versiones,
 registro local de paquetes y verificador de distribución firmada (Ed25519). El cliente de
-sincronización de red y el servicio central siguen pendientes.
+sincronización de red y el servicio central siguen pendientes. La versión editorial publicada ya dispone de un puntero local de contenido activo y los intentos nuevos conservan el snapshot académico presentado (migración 0014, pendiente de validación local).
 
 ---
 
@@ -166,8 +166,8 @@ sus códigos HEX oficiales (P01–P12) y reglas de accesibilidad cromática (WCA
 
 ## 9. Arquitectura objetivo: distribución y sincronización de conocimiento
 
-El diseño detallado está en `docs/DISENO_DATOS_SINCRONIZACION.md` y
-`docs/DISENO_PUBLICADOR_CENTRAL.md`.
+El diseño detallado está en `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` y
+`docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md`.
 
 > **Estado: DISEÑO APROBADO (ADR-004); implementación parcial en la rama de trabajo.**
 > El registro local de paquetes (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`) y el
@@ -229,7 +229,7 @@ flowchart TD
 ## 10. Próximos incrementos
 
 La implementación de conocimiento versionado y sincronización híbrida pertenece a la Fase 2.
-El detalle de entidades y migraciones propuestas está en `docs/DISENO_DATOS_SINCRONIZACION.md`.
+El detalle de entidades y migraciones propuestas está en `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md`.
 
 El orden vigente de las fases, dependencias y criterios de cierre se mantiene en
 `docs/PLAN_MAESTRO_CODEGUARD.md` y `docs/PLAN_DESARROLLO.md`.
