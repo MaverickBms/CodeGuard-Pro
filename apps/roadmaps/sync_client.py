@@ -82,12 +82,11 @@ def _validate_endpoint(url, *, allowed_hosts, label):
 
 
 def _open_url(request, *, timeout):
-    opener = urllib.request.build_opener(_NoRedirectHandler())
-    return opener.open(
-        request,
-        timeout=timeout,
-        context=ssl.create_default_context(),
+    opener = urllib.request.build_opener(
+        _NoRedirectHandler(),
+        urllib.request.HTTPSHandler(context=ssl.create_default_context()),
     )
+    return opener.open(request, timeout=timeout)
 
 
 def _read_response(response, *, max_bytes, expected_size=None):
@@ -97,9 +96,6 @@ def _read_response(response, *, max_bytes, expected_size=None):
             f"El servidor respondió con HTTP {status}.",
             code="http_error",
         )
-    final_url = response.geturl()
-    if final_url != response.geturl():
-        raise SyncClientError("La URL final de descarga no coincide.", code="redirect_rejected")
 
     header_length = response.headers.get("Content-Length")
     if header_length is not None:
@@ -234,6 +230,8 @@ def sincronizar_conocimiento(
             headers=request_headers,
         )
         if manifest_bytes is None:
+            if response_etag and len(response_etag) <= 255:
+                state.manifest_etag = response_etag
             state.last_check_at = now
             state.last_error_code = ""
             state.next_check_after = None
