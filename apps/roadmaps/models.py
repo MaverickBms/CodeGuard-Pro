@@ -8,7 +8,7 @@ ASCENSO 3.1; este módulo no inventa etapas ni dependencias.
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from django.utils import timezone
 import uuid
@@ -509,7 +509,11 @@ class VersionContenidoLeccion(models.Model):
     esquema_version = models.PositiveSmallIntegerField(default=1, verbose_name="versión del esquema")
     estado = models.CharField(max_length=12, choices=ESTADOS, default="borrador")
     snapshot = models.JSONField(verbose_name="snapshot académico")
-    sha256 = models.CharField(max_length=64, verbose_name="SHA-256 del snapshot")
+    sha256 = models.CharField(
+        max_length=64,
+        validators=[RegexValidator(r"^[0-9a-f]{64}$", "Debe ser un SHA-256 hexadecimal en minúsculas.")],
+        verbose_name="SHA-256 del snapshot",
+    )
     resumen_cambios = models.TextField(blank=True, verbose_name="resumen de cambios")
     motivo_retiro = models.TextField(blank=True, verbose_name="motivo de retiro")
     revisada_en = models.DateTimeField(null=True, blank=True, verbose_name="revisada el")
