@@ -6,6 +6,8 @@ El contenido de las 33 etapas se carga desde el documento maestro oficial
 ASCENSO 3.1; este módulo no inventa etapas ni dependencias.
 """
 
+import hashlib
+import json
 import uuid
 
 from django.conf import settings
@@ -1219,6 +1221,11 @@ class ContenidoLeccionPaquete(models.Model):
             raise ValidationError({"documento": "El documento no corresponde a la identidad estable de la lección."})
         if len(self.sha256) != 64 or any(c not in "0123456789abcdef" for c in self.sha256):
             raise ValidationError({"sha256": "Debe ser un SHA-256 hexadecimal válido."})
+        canonical = json.dumps(
+            self.documento, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+        if hashlib.sha256(canonical).hexdigest() != self.sha256:
+            raise ValidationError({"sha256": "El hash no coincide con el documento académico instalado."})
 
     def save(self, *args, **kwargs):
         if self.pk:
