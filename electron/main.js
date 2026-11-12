@@ -193,13 +193,28 @@ function emitKnowledgeSyncStatus(state, message, checkedAt = syncStatus.checkedA
 
 function syncConfiguration() {
   const channel = (process.env.CODEGUARD_SYNC_CHANNEL || 'stable').trim();
-  const required = [
-    process.env.CODEGUARD_SYNC_MANIFEST_URL,
-    process.env.CODEGUARD_SYNC_SIGNATURE_URL,
-    process.env.CODEGUARD_SYNC_ALLOWED_HOSTS,
-    process.env.CODEGUARD_SYNC_TRUSTED_PUBLIC_KEYS
-  ];
-  if (!['stable', 'beta'].includes(channel) || required.some(value => !value || !value.trim())) {
+  const manifestUrl = (process.env.CODEGUARD_SYNC_MANIFEST_URL || '').trim();
+  const signatureUrl = (process.env.CODEGUARD_SYNC_SIGNATURE_URL || '').trim();
+  const hosts = (process.env.CODEGUARD_SYNC_ALLOWED_HOSTS || '')
+    .split(',')
+    .map(host => host.trim())
+    .filter(Boolean);
+  let trustedKeys;
+  try {
+    trustedKeys = JSON.parse(process.env.CODEGUARD_SYNC_TRUSTED_PUBLIC_KEYS || '');
+  } catch (_error) {
+    return null;
+  }
+  if (
+    !['stable', 'beta'].includes(channel) ||
+    !manifestUrl ||
+    !signatureUrl ||
+    hosts.length === 0 ||
+    !trustedKeys ||
+    Array.isArray(trustedKeys) ||
+    typeof trustedKeys !== 'object' ||
+    Object.keys(trustedKeys).length === 0
+  ) {
     return null;
   }
   return { channel };
