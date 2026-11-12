@@ -3,6 +3,7 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand, CommandError
+from django.db import IntegrityError
 
 from apps.roadmaps.content_import import (
     ImportContentError,
@@ -54,6 +55,11 @@ class Command(BaseCommand):
         except (ValidationError, ImportContentError) as exc:
             mensaje = "; ".join(exc.messages) if isinstance(exc, ValidationError) else str(exc)
             raise CommandError(mensaje) from exc
+        except IntegrityError as exc:
+            raise CommandError(
+                "Conflicto de integridad durante una importación concurrente; "
+                "la transacción fue revertida. Vuelve a validar e intenta de nuevo."
+            ) from exc
 
         self.stdout.write(self.style.SUCCESS(
             f"Importación completada: {len(result['created'])} borradores nuevos; "
