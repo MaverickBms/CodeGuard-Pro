@@ -294,6 +294,8 @@ El contenido para estudiantes debe ser una explicación pedagógica original y r
 
 ### 2.6 Sincronización híbrida de conocimiento (decisión aprobada)
 
+**Diseño de datos y contrato técnico:** `docs/DISENO_DATOS_SINCRONIZACION.md` define el estado actual, las entidades objetivo, las claves estables, el formato de payload/manifiesto, la firma, las migraciones y los criterios de validación.
+
 **Modelo elegido:** servidor central de distribución de contenido revisado + sincronización automática opcional + almacenamiento local persistente. Esta capacidad forma parte de la Fase 2 y no constituye una fase adicional.
 
 Arquitectura lógica:
