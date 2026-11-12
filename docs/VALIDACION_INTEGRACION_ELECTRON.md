@@ -1,135 +1,102 @@
 # Validación de integración — Electron, Django y PyInstaller
 
-**Rama:** `test/phase-2-electron-integration`  
-**Base:** `main` en `2906abc`  
-**Alcance:** validación local de la aplicación empaquetada; no configura distribución remota.
+**Rama:** `main`  
+**Línea base de código:** `b82a249b203548f54b92c9fc85bc609bd2c7a478`  
+**Fecha de actualización:** 2026-11-12  
+**Alcance:** registrar la evidencia local confirmada por el propietario y separar las pruebas completadas de los criterios aún abiertos. No configura distribución remota.
 
-## 1. Evidencia disponible
+## 1. Resultado confirmado
 
 El propietario confirmó:
 
-- 136 pruebas automatizadas OK después de corregir los imports ocultos de Django en PyInstaller y la configuración de electron-builder.
-- Generación correcta de `dist-server/CodeGuardServer/CodeGuardServer`.
-- Generación correcta de `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage` (Linux x86_64).
-- El binario PyInstaller carga Django y alcanza `sincronizar_conocimiento`. El error por variables de sincronización ausentes es el resultado esperado cuando no se han configurado URLs, allowlist y claves.
+- **138 pruebas automatizadas:** todas aprobadas (OK).
+- **PyInstaller:** compilación correcta de `dist-server/CodeGuardServer/CodeGuardServer`.
+- **Smoke test:** el binario carga Django y ejecuta el despacho `--sync-knowledge`; el comando falla de forma controlada cuando faltan endpoints, allowlist y claves de confianza.
+- **AppImage:** generación correcta de `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage` (Linux x86_64).
+- **Ejecución:** AppImage iniciado usando un directorio temporal para los datos. El proceso se terminó mediante SIGTERM y reportó código 143.
 
-Esta rama añade dos pruebas unitarias del modo `--sync-knowledge` y un smoke test repetible para el binario. Esas nuevas pruebas todavía deben ejecutarse localmente; por ello no se afirma que la suite tenga ya 138 pruebas aprobadas.
+## 2. Límites de lo que demuestra la evidencia
 
-## 2. Actualizar la rama
+Hay dos modos distintos de `CodeGuardServer`: el modo puntual `--sync-knowledge` y el modo servidor normal (migraciones, comprobación de ASCENSO, WSGI y Waitress en `127.0.0.1:<CODEGUARD_PORT>`).
+
+El smoke test de `--sync-knowledge` **no demuestra** que el modo servidor normal haya arrancado, que Waitress esté escuchando, que Electron haya recibido una respuesta HTTP ni que la interfaz se haya cargado correctamente.
+
+El código de salida 143 significa que el proceso terminó por SIGTERM. Por sí solo no demuestra que la aplicación haya ejecutado un cierre ordenado desde su menú ni que haya liberado todos los procesos hijos.
+
+El puerto 11434 no se toma como evidencia de Django: es habitual en instalaciones de Ollama y no identifica por sí mismo el proceso ni el puerto dinámico que Electron asigna a CodeGuard.
+
+## 3. Estado de aceptación
+
+| Criterio | Estado | Evidencia / observación |
+|---|---|---|
+| Suite automatizada | **Confirmado** | 138 pruebas OK, según el propietario |
+| Compilación PyInstaller | **Confirmado** | Binario generado |
+| Despacho `--sync-knowledge` | **Confirmado** | Smoke test y error controlado por configuración ausente |
+| Generación AppImage | **Confirmado** | AppImage Linux x86_64 generado |
+| Inicio del AppImage | **Parcial** | Iniciado con directorio temporal |
+| Modo servidor normal / Waitress | **Pendiente** | No hay evidencia aportada de listener HTTP asociado al proceso Django durante la ejecución |
+| Carga de panel Electron | **Pendiente** | No se ha confirmado visualmente la carga de la interfaz |
+| Navegación por ASCENSO y apertura de lección | **Pendiente** | No se ha realizado la comprobación gráfica |
+| Listener exclusivamente en loopback | **Pendiente** | Debe verificarse el puerto dinámico mientras la aplicación está activa |
+| Cierre desde el menú y procesos hijos | **Pendiente** | SIGTERM/código 143 no sustituye la prueba de cierre normal |
+| Persistencia de perfil y progreso | **Pendiente** | Debe comprobarse sin modificar ni borrar el perfil real |
+| Sincronización remota | **No configurada** | No hay endpoint, allowlist ni claves de producción |
+
+**Conclusión:** la integración está parcialmente validada. No debe declararse la aceptación completa de Electron + Django ni que el producto está listo para distribución.
+
+## 4. Consideración sobre ASCENSO en instalaciones nuevas
+
+La revisión de `server_entry.py` en `b82a249` confirma que el servidor empaquetado ya no carga automáticamente el roadmap ASCENSO. Comprueba si existe en la base de datos y, si no existe, informa que debe ejecutarse `manage.py cargar_ascenso`.
+
+Por tanto, un perfil nuevo puede iniciar el servidor sin contenido curricular cargado. La prueba de aceptación debe confirmar la carga explícita del roadmap en el directorio de datos de prueba y, posteriormente, navegar las etapas y lecciones desde la GUI. No ejecutar `cargar_ascenso --recrear` sobre datos reales: esa opción puede eliminar progreso.
+
+## 5. Procedimiento pendiente de aceptación GUI
+
+Realizar en una sesión gráfica Linux. Mantener aislados los datos de prueba:
 
 ```bash
 cd ~/Documentos/CodeGuard
 
-git fetch origin
-git switch test/phase-2-electron-integration
-git pull --ff-only origin test/phase-2-electron-integration
+TEST_DATA="$(mktemp -d)"
+CODEGUARD_DATA_DIR="$TEST_DATA" ./dist/CodeGuard-Pro-1.0.0-x86_64.AppImage
 ```
 
-## 3. Pruebas automatizadas
+Con la aplicación abierta:
 
-Pruebas nuevas del punto de entrada empaquetado:
-
-```bash
-./.venv/bin/python manage.py test \
-  apps.roadmaps.tests.test_server_entry \
-  --settings=config.settings.development
-```
-
-Pruebas del cliente, instalador y despacho empaquetado:
-
-```bash
-export CODEGUARD_DATA_DIR="$PWD/data"
-
-./.venv/bin/python manage.py test \
-  apps.roadmaps.tests.test_server_entry \
-  apps.roadmaps.tests.test_sync_client \
-  apps.roadmaps.tests.test_installer \
-  --settings=config.settings.development
-```
-
-Suite completa y controles:
-
-```bash
-./.venv/bin/python manage.py test \
-  --settings=config.settings.development
-
-./.venv/bin/python manage.py check \
-  --settings=config.settings.development
-
-./.venv/bin/python manage.py makemigrations --check --dry-run \
-  --settings=config.settings.development
-
-node --check electron/main.js
-node --check electron/preload.js
-bash -n scripts/smoke-test-packaged-server-linux.sh
-```
-
-La base previamente confirmada es de 136 pruebas. Las dos nuevas pruebas elevan el resultado esperado a 138 si no hay cambios adicionales en el descubrimiento de pruebas.
-
-## 4. Smoke test del binario PyInstaller en Linux
-
-Ejecutar desde la raíz del repositorio:
-
-```bash
-bash scripts/smoke-test-packaged-server-linux.sh \
-  dist-server/CodeGuardServer/CodeGuardServer
-```
-
-Resultado esperado:
-
-- Código de salida 0 del script.
-- Mensaje `[OK] PyInstaller carga Django y ejecuta sincronizar_conocimiento.`
-- Mensaje `[OK] El comando falla de forma controlada cuando faltan endpoints y claves.`
-- Ningún `ModuleNotFoundError`, `ImportError` o error de módulo ausente.
-
-El smoke test crea un directorio temporal para los datos y no usa claves reales ni realiza una descarga. La salida de configuración incompleta es deliberada.
-
-## 5. Prueba de aceptación de la GUI empaquetada
-
-Ejecutar en una sesión gráfica Linux. No se requiere configurar el servicio central.
-
-1. Confirmar que existe el artefacto `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage` y que tiene permiso de ejecución.
-2. Crear un directorio temporal para aislar los datos de esta prueba:
-   ```bash
-   TEST_DATA="$(mktemp -d)"
-   CODEGUARD_DATA_DIR="$TEST_DATA" ./dist/CodeGuard-Pro-1.0.0-x86_64.AppImage
-   ```
-3. Confirmar que la ventana abre y carga el panel, sin depender de Python instalado en el sistema.
-4. Confirmar que el servidor local escucha exclusivamente en `127.0.0.1`:
-   ```bash
-   ss -ltnp
-   ```
-   No debe existir un listener de CodeGuard en `0.0.0.0` ni en una interfaz de red externa.
-5. Abrir una etapa y una lección. Verificar que el contenido local sigue disponible.
-6. Cerrar la aplicación desde su menú. Esperar unos segundos y comprobar que no quedan procesos de CodeGuard huérfanos:
+1. Confirmar que la ventana Electron muestra el panel principal.
+2. Identificar el puerto dinámico asignado a CodeGuard y confirmar el listener con `ss -ltnp`; debe estar ligado únicamente a `127.0.0.1`.
+3. Confirmar qué proceso mantiene ese listener. No asumir que el puerto 11434 pertenece a Django.
+4. Si ASCENSO no está cargado en el perfil temporal, ejecutar el comando de carga curricular previsto para ese perfil; no usar `--recrear` sobre datos reales.
+5. Navegar al menos una etapa, abrir un módulo y una lección. Confirmar que el contenido se muestra sin conexión a un servicio central.
+6. Cerrar la aplicación desde su menú.
+7. Comprobar que ya no quedan procesos hijos ni listeners de CodeGuard:
    ```bash
    pgrep -af 'CodeGuardServer|CodeGuard-Pro'
+   ss -ltnp
    ```
-   La ausencia de coincidencias es el resultado esperado después del cierre.
-7. Repetir el inicio con el directorio de datos habitual (sin borrar ni reemplazar la base de datos existente) y confirmar que el perfil de usuario y el progreso se conservan.
-8. Mantener ausentes las variables `CODEGUARD_SYNC_MANIFEST_URL`, `CODEGUARD_SYNC_SIGNATURE_URL`, `CODEGUARD_SYNC_ALLOWED_HOSTS` y `CODEGUARD_SYNC_TRUSTED_PUBLIC_KEYS`. La aplicación debe iniciar normalmente y no intentar una conexión de actualización.
+8. Solo después de completar la prueba aislada, verificar la persistencia del perfil habitual sin borrar, reemplazar ni migrar destructivamente su base de datos.
 
-**No borrar el directorio de datos habitual.** La prueba aislada del primer arranque debe usar `TEST_DATA`; la comprobación de preservación se realiza después con el perfil real, sin operaciones destructivas.
+Mantener ausentes las variables de configuración remota mientras no se haya aprobado y configurado un distribuidor confiable. La aplicación debe conservar el funcionamiento local aunque la sincronización esté desactivada.
 
-## 6. Criterios para cerrar la integración
+## 6. Reglas de cierre
 
-| Criterio | Evidencia requerida |
-|---|---|
-| Despacho del modo sync | Dos pruebas de `test_server_entry.py` OK |
-| Suite | 138 pruebas OK o explicación documentada de cualquier variación |
-| PyInstaller | Smoke test Linux OK, sin errores de importación |
-| Electron empaquetado | AppImage abre la interfaz y Django local |
-| Seguridad de red local | Listener únicamente en `127.0.0.1` |
-| Cierre | No quedan procesos hijos huérfanos |
-| Offline-first | El contenido local abre sin configuración remota |
-| Datos | Perfil habitual y progreso permanecen intactos |
+La aceptación de integración solo podrá cerrarse cuando se disponga de evidencia de:
 
-## 7. Fuera del alcance de esta validación
+- arranque del modo servidor normal y respuesta HTTP de Django;
+- panel Electron cargado;
+- navegación por ASCENSO y apertura de una lección;
+- listener restringido a `127.0.0.1`;
+- cierre normal desde el menú y ausencia de procesos/listeners huérfanos;
+- preservación de los datos del perfil habitual;
+- funcionamiento offline con sincronización remota desactivada.
+
+## 7. Fuera del alcance
 
 - Selección de proveedor de hosting o CDN.
 - Publicación remota de manifiestos, firmas o ZIP.
-- Creación o instalación de claves privadas/public keys de producción.
+- Creación o instalación de claves de producción.
 - Prueba de descarga real desde un endpoint externo.
-- Merge a `main` o despliegue.
+- Cambios de código fuera de las correcciones ya integradas en `main`.
+- Despliegue o publicación de una versión de distribución.
 
-Esas acciones requieren decisiones y autorizaciones independientes.
+Estas acciones requieren decisiones y autorizaciones independientes.

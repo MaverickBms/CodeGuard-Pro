@@ -8,7 +8,7 @@
 
 ## Estado actual: Incremento 1 — Núcleo funcional ✅ y Incremento 2 — Roadmap académico y conocimiento versionado 🔄
 
-**Estado:** Incremento 1 implementado y verificado. Incremento 2 parcialmente implementado en `main`; correcciones de consistencia en curso en `fix/phase-2-integrity-learning`, derivada de `main` en `c2ec604`.
+**Estado:** Incremento 1 implementado y verificado. Incremento 2 en curso sobre `main` (`b82a249`); la aceptación integral de la aplicación de escritorio sigue pendiente.
 
 ---
 
@@ -61,9 +61,9 @@
 
 ## Incremento 2 — Roadmap académico y conocimiento versionado (Fase 2)
 
-**Estado:** 🔄 En curso (base integrada en `main`; correcciones en `fix/phase-2-integrity-learning`)
+**Estado:** 🔄 En curso en `main` (`b82a249`); integración de escritorio parcialmente validada.
 
-### Qué se implementó (incremento 2, en rama de trabajo)
+### Qué se implementó (incremento 2, integrado en `main`)
 
 1. **Roadmap ASCENSO 3.1:** las 33 etapas (0 a 32) con bloques, secciones, prioridades, objetivos, proyectos y prerrequisitos. Cargable con `python manage.py cargar_ascenso`.
 2. **Estructura curricular relacional:** `Roadmap`, `Etapa`, `Modulo`, `Leccion`, `Prerrequisito`.
@@ -80,19 +80,19 @@
 13. **Un solo paquete activo por canal:** restricción parcial por `estado=activo` y migración de datos para garantizar unicidad (migración 0013).
 14. **Estado de sincronización por canal:** `EstadoSincronizacion` para rastrear la última consulta, éxito, ETag, canal y error (migración 0012).
 15. **Verificador de distribución firmada:** validación de manifiesto, firma Ed25519, hash SHA-256, estructura de ZIP, rutas prohibidas y symlinks (`validate_package_archive`, `verify_signed_manifest`).
-16. **Pruebas:** 93 pruebas automatizadas confirmadas por el usuario en el estado previo a las correcciones actuales.
+16. **Pruebas:** 138 pruebas automatizadas aprobadas, según ejecución local confirmada por el propietario el 12-11-2026.
 17. **Contenido activo:** puntero `ContenidoLeccionActivo` para seleccionar snapshots editoriales publicados sin sobrescribir contenido histórico (migración 0014).
 18. **Evidencia de entrega:** cada intento conserva el snapshot del ejercicio presentado y referencia la versión editorial activa cuando corresponde.
 19. **Interfaz de ejercicios:** formulario CSRF de entrega, límite de 20.000 caracteres e historial de los últimos tres intentos.
 20. **Hardening del registro local:** validación de escrituras masivas y bloqueo de actualizaciones masivas del estado de sincronización.
-21. **Generador de paquetes:** ZIP reproducible, índice interno, manifiesto externo y firma Ed25519 desde snapshots activos; migración 0015 con secuencias por canal y registro inmutable. La migración y pruebas nuevas están pendientes de validación local.
+21. **Generador de paquetes:** ZIP reproducible, índice interno, manifiesto externo y firma Ed25519 desde snapshots activos; migración 0015 con secuencias por canal y registro inmutable. Validación local confirmada por el propietario.
 
 ### Qué sigue pendiente (incremento 2, Fase 2)
 
-- Cliente de sincronización de red (consulta de manifiesto, descarga, instalación atómica, rollback).
-- Hosting y endpoint HTTPS del distribuidor; el generador local ya produce ZIP, manifiesto y firma, pero no despliega.
+- Aceptación funcional completa de Electron + Django empaquetados: arranque normal de Waitress, acceso al panel, navegación por etapas/lecciones y cierre normal.
+- Hosting y endpoint HTTPS del distribuidor; el generador local ya produce ZIP, manifiesto y firma, pero no despliega. Requiere autorización específica.
 - Integración del almacén de claves públicas y allowlist de producción en el cliente.
-- Validación local de la migración 0015 y de las pruebas del publicador; las pruebas históricas no validan estos componentes.
+- Verificación de carga de ASCENSO en un perfil aislado. El servidor empaquetado ya no carga automáticamente miles de lecciones; la carga debe ejecutarse explícitamente con `cargar_ascenso`.
 
 ---
 
@@ -138,3 +138,13 @@
 9. Cambios registrados.
 
 No usar "terminado"/"100% funcional" sin evidencia.
+
+
+### Estado de aceptación del escritorio (12-11-2026)
+
+- Confirmado por el propietario: 138 pruebas OK; build PyInstaller; smoke test de `CodeGuardServer --sync-knowledge`; generación y lanzamiento del AppImage Linux.
+- El smoke test valida el modo de tarea única, no el arranque normal de Django + Waitress ni la disponibilidad HTTP de la interfaz.
+- El AppImage se inició con datos temporales y se terminó mediante SIGTERM (código 143). Esto no demuestra cierre limpio desde el menú ni ausencia de procesos huérfanos tras cierre normal.
+- La navegación gráfica por ASCENSO y la apertura de una lección no han sido verificadas.
+- `server_entry.py` no carga automáticamente ASCENSO. En una base nueva, debe ejecutarse explícitamente `manage.py cargar_ascenso`.
+- Hosting, endpoint, allowlist y claves de producción no están configurados; la sincronización remota permanece inactiva.

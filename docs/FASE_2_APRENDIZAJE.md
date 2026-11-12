@@ -1,7 +1,7 @@
 # Fase 2 — Sistema de aprendizaje interactivo
 
 **Producto:** CodeGuard Pro  
-**Estado:** Motor de aprendizaje y control editorial en desarrollo (rama `docs/phase-2-hybrid-knowledge-sync`, fusionada a `main`)  
+**Estado:** Motor de aprendizaje y control editorial en desarrollo; componentes integrados en `main` (`b82a249`)  
 **Línea base:** rama `main`  
 **Documentos de referencia:** `docs/PLAN_DESARROLLO.md`, `docs/ARQUITECTURA.md`, `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md`, `docs/MODELO_DATOS.md`
 
@@ -35,8 +35,8 @@ La rama `docs/phase-2-hybrid-knowledge-sync` fue fusionada a `main`. Incluye:
 - **Evidencia histórica de ejercicios:** cada nuevo `IntentoEjercicio` conserva `snapshot_ejercicio` y referencia `version_contenido` cuando existe una versión activa. La migración 0014 conserva el enunciado visible de intentos anteriores. La evidencia original queda protegida frente a cambios y borrados ORM.
 - **Interfaz de entregas:** el estudiante ya puede enviar respuestas mediante POST con CSRF, límite de 20.000 caracteres e historial de los tres últimos intentos. No se ejecuta código arbitrario.
 - **Registro local endurecido:** escrituras masivas de paquetes y estado de sincronización validan invariantes o quedan bloqueadas para evitar saltarse el flujo controlado.
-- **Comandos de gestión:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`, `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (cliente HTTP), scheduler Electron y backoff. El propietario confirmó 136 pruebas OK, build PyInstaller y AppImage Linux; el binario carga Django y alcanza el comando de sincronización con el error esperado por configuración ausente. Dos pruebas adicionales del despacho empaquetado y la prueba GUI de ciclo de vida Electron están pendientes.
-- **Validación de la línea base:** el propietario confirmó 119 pruebas OK para el instalador transaccional en `main` `2c5d441`; posteriormente, tras integrar HTTP/Electron y corregir el empaquetado, confirmó 136 pruebas OK en `main` `2906abc`, además de la generación de PyInstaller y AppImage.
+- **Comandos de gestión:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`, `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (cliente HTTP), scheduler Electron y backoff. El propietario confirmó 138 pruebas OK, build PyInstaller y AppImage Linux. El smoke test del binario valida el despacho del comando `--sync-knowledge` y el error controlado por configuración ausente; no demuestra por sí solo el arranque normal de Waitress. La aceptación GUI y navegación por el roadmap siguen pendientes.
+- **Validación de la línea base:** el propietario confirmó 119 pruebas OK para el instalador transaccional en `main` `2c5d441`; posteriormente confirmó 138 pruebas OK en la línea actual de `main` (`b82a249`), además de la generación de PyInstaller y AppImage.
 
 ---
 
@@ -70,7 +70,7 @@ El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos 
 
 | Elemento | Estado | Documento |
 |---|---|---|
-| Cliente de sincronización de red | Cliente HTTP, scheduler y backoff implementados; 136 pruebas OK confirmadas por el propietario; PyInstaller y AppImage Linux generados; el binario alcanza el comando sync. Dos pruebas adicionales de despacho y la aceptación GUI Electron están pendientes. Endpoint y claves de producción no configurados | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Cliente de sincronización de red | Cliente HTTP, scheduler y backoff implementados; 138 pruebas OK confirmadas; PyInstaller y AppImage Linux generados. El smoke test valida el comando `--sync-knowledge`, no el servidor Waitress normal. Aceptación GUI Electron y navegación del roadmap pendientes. Endpoint y claves de producción no configurados | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Generador local y catálogo firmado v2 | Implementado; migración 0015 y pruebas confirmadas por el propietario. Hosting y publicación remota pendientes | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Instalación transaccional local y rollback | Validada por el propietario en `main` `2c5d441` (119 pruebas OK; migración 0016 incluida) | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Competencias y evaluaciones | Pendiente (Incremento 3) | `docs/PLAN_DESARROLLO.md` |
@@ -99,7 +99,7 @@ El comando manual es `python manage.py sincronizar_conocimiento --channel stable
 
 ## 9. Validación
 
-El propietario confirmó 119 pruebas OK para la línea base del instalador y posteriormente 136 pruebas OK tras la integración HTTP/Electron y las correcciones de empaquetado en `main` `2906abc`. También confirmó build PyInstaller y AppImage Linux.
+El propietario confirmó 119 pruebas OK para la línea base del instalador y posteriormente 138 pruebas OK en `main` (`b82a249`) tras la integración HTTP/Electron y las correcciones de empaquetado. También confirmó build PyInstaller, smoke test del modo de sincronización y AppImage Linux. El arranque normal del servidor Waitress y la navegación GUI no quedan acreditados por ese smoke test.
 
 Desde la carpeta local del proyecto:
 
@@ -126,4 +126,14 @@ La migración 0016 añade snapshots de lección y catálogo de fuentes asociados
 
 El artefacto ZIP se conserva bajo `CODEGUARD_DATA_DIR/knowledge-packages/`. La activación se realiza al final de la transacción: el paquete anterior pasa a sustituido, el nuevo queda activo y `EstadoSincronizacion.active_package` cambia en la misma transacción. El rollback reactiva un paquete sustituido conservando artefactos, snapshots, intentos y progreso. El servicio también resuelve la vista de lección y la entrega de ejercicios contra el snapshot del paquete activo.
 
-**Límites actuales:** el cliente HTTP y el scheduler fueron validados por el propietario dentro de una suite de 136 pruebas. El scheduler Electron, el backoff y el bloqueo de concurrencia ya superaron las pruebas unitarias locales confirmadas por el propietario; PyInstaller y AppImage fueron generados; la prueba integrada GUI de Electron sigue pendiente. No hay endpoint, hosting ni claves públicas de producción; por ello la sincronización automática permanece inactiva hasta configurar una distribución confiable. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado.
+**Límites actuales:** el cliente HTTP y el scheduler fueron validados por el propietario dentro de una suite de 138 pruebas. El scheduler Electron, el backoff y el bloqueo de concurrencia ya superaron las pruebas unitarias locales confirmadas por el propietario; PyInstaller y AppImage fueron generados; el smoke test del modo sync pasó. La prueba integrada GUI de Electron y la navegación por ASCENSO siguen pendientes. No hay endpoint, hosting ni claves públicas de producción; por ello la sincronización automática permanece inactiva hasta configurar una distribución confiable. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado.
+
+
+### 10. Estado de aceptación del escritorio (12-11-2026)
+
+- Confirmado por el propietario: 138 pruebas automatizadas OK; build PyInstaller; smoke test de `CodeGuardServer --sync-knowledge`; generación y lanzamiento del AppImage Linux.
+- El smoke test de `--sync-knowledge` valida el modo de tarea única. No acredita el arranque normal de Django + Waitress ni la disponibilidad HTTP de la interfaz.
+- El AppImage se inició con un directorio temporal y se terminó mediante SIGTERM (código 143). Esto no equivale a demostrar un cierre ordenado desde el menú ni ausencia de procesos huérfanos después de un cierre normal.
+- La navegación gráfica a través de ASCENSO y la apertura de una lección no han sido verificadas.
+- `server_entry.py` no carga automáticamente ASCENSO. En una base nueva, el contenido curricular debe cargarse explícitamente con `manage.py cargar_ascenso`; verificar esta operación en el perfil aislado antes de aceptar la experiencia de usuario.
+- No se ha configurado hosting, endpoint, allowlist ni claves de producción. La sincronización remota debe permanecer inactiva sin configuración confiable.

@@ -4,8 +4,8 @@
 **Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada)  
 **Estado:** Núcleo funcional verificado; motor de aprendizaje y conocimiento versionado en curso  
 **SRS de referencia:** `IEEE830(1).md` v2.0  
-**Línea base integrada:** `main` (`2c5d441`); cliente HTTP inicial en `feat/phase-2-http-sync-client`  
-**HEAD de referencia de main:** `2c5d441`
+**Línea base integrada:** `main` (`b82a249`)  
+**HEAD de referencia de main:** `b82a249`
 
 ---
 
@@ -22,7 +22,7 @@ fácil mantenimiento y continuidad offline. El funcionamiento académico local n
 servicio central; la sincronización de contenido será una capacidad complementaria, iniciada por
 el cliente y de solo descarga.
 
-**Estado actual:** el núcleo local está implementado y verificado (incremento 1). La Fase 2 (motor de aprendizaje y conocimiento versionado) está implementada parcialmente en `main`: roadmap ASCENSO 3.1, flujo editorial, publicador, catálogo firmado v2 e instalador transaccional con rollback. El propietario confirmó 119 pruebas OK en `main` `2c5d441` y 132 pruebas OK en `feat/phase-2-http-sync-client`, junto con `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios. El cliente HTTP inicial está validado localmente. El scheduler Electron y el backoff superaron las pruebas unitarias locales confirmadas por el propietario; la compilación real de PyInstaller y la ejecución integrada con Electron siguen pendientes. Hosting, endpoint público y claves de producción siguen pendientes.
+**Estado actual:** el núcleo local está implementado y verificado. La Fase 2 está integrada parcialmente en `main` (`b82a249`): roadmap ASCENSO 3.1, flujo editorial, publicador, catálogo firmado v2, instalador transaccional, cliente HTTP, scheduler Electron y empaquetado. El propietario confirmó 138 pruebas OK, build PyInstaller, smoke test del modo `--sync-knowledge` y generación del AppImage Linux. El smoke test no demuestra el arranque normal de Waitress ni la navegación GUI. La aceptación visual y funcional de Electron (panel, etapas, lecciones, cierre normal y procesos/listeners) sigue pendiente. Hosting, endpoint público y claves de producción no están configurados.
 
 ---
 
@@ -165,10 +165,8 @@ sus códigos HEX oficiales (P01–P12) y reglas de accesibilidad cromática (WCA
 El diseño detallado está en `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` y
 `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md`.
 
-> **Estado: DISEÑO APROBADO (ADR-004); implementación parcial en la rama de trabajo.**
-> El registro local de paquetes (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`) y el
-> verificador de distribución firmada (Ed25519) están implementados. El cliente de sincronización
-> de red, el servicio central y el publicador siguen pendientes.
+> **Estado: diseño aprobado (ADR-004); cliente y publicador implementados parcialmente en `main` (`b82a249`).**
+> El registro local, verificador Ed25519, generador, instalador transaccional, cliente HTTP y scheduler están implementados. La distribución central pública y la aceptación completa de la aplicación empaquetada siguen pendientes.
 
 ### 9.1 Límites de confianza y responsabilidades
 
@@ -215,12 +213,12 @@ flowchart TD
 | Registro local de paquetes (`PaqueteConocimientoInstalado`) | Implementado (migración 0012) |
 | Un solo activo por canal + estado de sincronización | Implementado (migración 0013) |
 | Verificador de distribución firmada (Ed25519, manifiesto, ZIP) | Implementado |
-| Comandos de gestión editorial y distribución | Incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento`; el scheduler Electron inicia el cliente en proceso separado en la rama aislada |
+| Comandos de gestión editorial y distribución | Incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento`; scheduler Electron integrado en `main` |
 | Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado; migración 0015 y pruebas del generador validadas localmente por el propietario |
 | Catálogo firmado de fuentes (índice v2) | Implementado y validado localmente por el propietario (119 pruebas OK en `main`; 132 en rama cliente HTTP) |
 | Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementado y validado en `main` (119 pruebas OK; migración 0016); cliente HTTP validado en rama (132 pruebas) |
-| Cliente de sincronización HTTP pull-only | Implementación inicial en `feat/phase-2-http-sync-client`; pruebas pendientes de validación local |
-| Hosting, endpoint y publicación remota | Pendiente; no se ha seleccionado proveedor ni configurado URL/key de producción |
+| Cliente de sincronización HTTP pull-only | Integrado; 138 pruebas OK confirmadas por el propietario |
+| Hosting, endpoint y publicación remota | Pendiente; no se ha seleccionado proveedor ni configurado URL/clave de producción |
 
 ---
 
@@ -253,4 +251,8 @@ La sincronización se ejecuta en un proceso hijo independiente. En desarrollo ut
 
 La concurrencia se limita en Electron y mediante un bloqueo de archivo por canal bajo `DATA_DIR`. El renderer solo recibe estado descriptivo por IPC. La configuración incompleta (URLs, allowlist o claves de confianza) desactiva la sincronización sin impedir el funcionamiento offline.
 
-**Estado de validación:** el propietario confirmó la ejecución satisfactoria de las pruebas unitarias de backoff y lock entre procesos, además de los chequeos sintácticos. El build real PyInstaller y la prueba de arranque/sincronización desde Electron siguen pendientes. No hay endpoint público ni claves de producción.
+**Estado de validación (12-11-2026):** el propietario confirmó 138 pruebas OK, build PyInstaller, smoke test del modo `--sync-knowledge` y generación del AppImage. Este smoke test no acredita el modo servidor Waitress. El AppImage se lanzó con datos temporales y se finalizó mediante SIGTERM (código 143); el cierre desde el menú, la ausencia de procesos huérfanos tras cierre normal, el arranque HTTP normal y la navegación GUI siguen pendientes. No hay endpoint público ni claves de producción.
+
+### 12. Aclaración de aceptación del ejecutable empaquetado
+
+El binario tiene dos modos distintos: servidor normal (migraciones + Django WSGI + Waitress) y tarea puntual `--sync-knowledge`. La evidencia del smoke test corresponde al segundo modo; no debe presentarse como prueba del primero. En el servidor normal, ASCENSO no se carga automáticamente: se debe ejecutar el comando `cargar_ascenso` de forma explícita. Una instalación nueva sin esa carga puede abrir la aplicación, pero no tendrá contenido curricular para navegar.

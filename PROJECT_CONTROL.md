@@ -1,21 +1,21 @@
 # CodeGuard Pro — Control oficial del proyecto
 
 **Documento:** `PROJECT_CONTROL.md`  
-**Versión:** 2.8 — empaquetado PyInstaller/AppImage validado; integración de escritorio en verificación  
+**Versión:** 2.9 — 138 pruebas, PyInstaller y AppImage confirmados; aceptación GUI aún pendiente  
 **Fecha de actualización:** 2026-11-12  
 **Propietario:** propietario de CodeGuard Pro  
 **Mantenedor:** orquestador  
 **Estado:** vigente, sujeto a autorización expresa para cada acción  
 **Ubicación:** raíz del repositorio  
-**Rama de trabajo autorizada:** `test/phase-2-electron-integration` (derivada de `main` `2906abc`; pruebas de integración empaquetada y documentación)  
-**Línea base:** `main` en `2906abc`; incluye correcciones PyInstaller/Django y electron-builder/Linux
+**Rama de trabajo:** `main`  
+**Línea base:** `main` en `b82a249b203548f54b92c9fc85bc609bd2c7a478`
 
 ---
 
 ## 0. Resumen ejecutivo
 
 - **Fase 1 (núcleo funcional):** completada, verificada y aprobada documentalmente. Autenticación local, panel, roadmap, auditoría y seguridad operativos.
-- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso; `main` contiene el verificador, publicador, catálogo firmado v2, instalador transaccional, cliente HTTP y scheduler; el propietario confirmó 136 pruebas OK en la versión actualizada `2906abc` (la línea base previa del instalador fue de 119 pruebas en `2c5d441`). El cliente HTTP y las pruebas unitarias de backoff/bloqueo del scheduler fueron validados localmente por el propietario en `feat/phase-2-http-sync-client`. El propietario confirmó la generación del ejecutable PyInstaller y del AppImage Linux. El binario ya carga Django y alcanza `sincronizar_conocimiento`; la ejecución GUI completa con Electron y el ciclo de vida de procesos siguen pendientes de una prueba de aceptación.
+- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso; `main` contiene el verificador, publicador, catálogo firmado v2, instalador transaccional, cliente HTTP y scheduler; el propietario confirmó 138 pruebas OK en `main` `b82a249` (la línea base previa del instalador fue de 119 pruebas en `2c5d441`). El cliente HTTP y las pruebas unitarias de backoff/bloqueo del scheduler fueron validados localmente por el propietario en `feat/phase-2-http-sync-client`. El propietario confirmó la generación del ejecutable PyInstaller y del AppImage Linux. El smoke test del binario carga Django y alcanza `sincronizar_conocimiento`; esto no demuestra el modo servidor Waitress. La aceptación GUI, navegación curricular y cierre normal siguen pendientes.
   - Roadmap ASCENSO 3.1 (33 etapas, módulos, lecciones, prerrequisitos) implementado y cargable con `cargar_ascenso`.
   - Contenido académico editable (`ContenidoLeccion`, `EjemploLeccion`, `EjercicioLeccion`) implementado.
   - Flujo editorial de versiones (`VersionContenidoLeccion`, `ReferenciaFuenteContenido`, `FuenteConocimiento`) implementado con comandos de gestión.
@@ -25,9 +25,9 @@
   - Intentos nuevos vinculados a la versión activa y con snapshot del ejercicio presentado.
   - Interfaz de entrega POST con CSRF, límite de 20.000 caracteres e historial de intentos.
   - Protecciones adicionales para escrituras masivas del registro local de paquetes y sincronización.
-  - El propietario confirmó **136 pruebas OK** después de corregir PyInstaller y electron-builder. En esta rama se agregaron dos pruebas del despacho `--sync-knowledge` (la nueva suite debe confirmar 138 pruebas); también se añadió un smoke test reproducible del binario Linux. La generación de PyInstaller y AppImage fue confirmada por el propietario; falta ejecutar las nuevas pruebas y validar el ciclo de vida de la aplicación Electron empaquetada.
-- **Sincronización de red:** cliente HTTP, backoff y bloqueo entre procesos implementados; PyInstaller y AppImage Linux generados; el binario alcanza el comando de sincronización y devuelve el error de configuración esperado cuando faltan variables. La integración GUI completa y las pruebas añadidas están pendientes de ejecución local. Hosting, endpoint y claves de producción siguen pendientes.
-- **Validación de pruebas:** el propietario reportó 136 pruebas OK. Las dos pruebas nuevas de `server_entry` y el smoke test del binario deben ejecutarse en el entorno local para cerrar esta intervención.
+  - El propietario confirmó **138 pruebas OK**, build PyInstaller, smoke test del modo `--sync-knowledge` y generación del AppImage Linux. El smoke test no valida el arranque normal de Waitress ni la navegación gráfica de Electron.
+- **Sincronización de red:** cliente HTTP, backoff y bloqueo entre procesos implementados; PyInstaller y AppImage Linux generados; el binario alcanza el comando de sincronización y devuelve el error de configuración esperado cuando faltan variables. El modo `--sync-knowledge` pasó el smoke test. El arranque normal de Waitress, la navegación GUI y el cierre normal siguen pendientes. Hosting, endpoint y claves de producción siguen pendientes.
+- **Validación de pruebas:** el propietario confirmó 138 pruebas OK. El smoke test del modo `--sync-knowledge` pasó; la aceptación del servidor normal y de GUI sigue abierta.
 - **Autenticación:** temporalmente desactivada (`AUTH_DISABLED = True`); el sistema original se conserva íntegro y puede reactivarse con autorización expresa.
 
 ---
@@ -78,15 +78,15 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Elemento | Estado |
 |---|---|
 | Repositorio | `/home/mvxbms/Documentos/CodeGuard` |
-| Línea base | `main` en `2906abc` (incluye catálogo v2, instalador, correcciones PyInstaller y electron-builder) |
-| Rama de trabajo | `test/phase-2-electron-integration` |
-| HEAD de trabajo | Rama de pruebas derivada de `main`; no fusionada |
-| Diferencia respecto a `main` | Rama de trabajo con commits no fusionados; `main` sin modificar |
-| Remoto | `origin/test/phase-2-electron-integration` |
+| Línea base | `main` en `b82a249` (incluye catálogo v2, instalador, cliente HTTP, scheduler y corrección PyInstaller) |
+| Rama de trabajo | `main` |
+| HEAD de trabajo | `b82a249b203548f54b92c9fc85bc609bd2c7a478` |
+| Diferencia respecto a `main` | Ninguna: documentación sincronizada directamente sobre `main` con autorización expresa |
+| Remoto | `origin/main` |
 | Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
 | Migraciones roadmaps | 0014, 0015 y 0016 validadas por el propietario; esta intervención no añade migraciones |
 | Comandos de gestión | 9; incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (este último en rama de trabajo) |
-| Pruebas automatizadas | 136 OK confirmadas por el propietario; dos pruebas nuevas de `server_entry` añadidas en esta rama (objetivo: 138); ejecución local pendiente. Smoke test Linux añadido. Integración GUI Electron pendiente |
+| Pruebas automatizadas | 138 OK confirmadas por el propietario. Smoke test del modo `--sync-knowledge` OK; servidor Waitress normal y GUI Electron pendientes de aceptación |
 | Autenticación | `AUTH_DISABLED = True` (temporal, conservada íntegra) |
 | Base de datos | SQLite, `data/db.sqlite3` |
 | Servidor local | Waitress + WhiteNoise en `127.0.0.1` |
@@ -97,7 +97,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 |---|---|
 | `manage.py check` | Sin errores |
 | `makemigrations --check --dry-run` | Sin cambios pendientes |
-| Suite de pruebas | 119 OK confirmadas para `main`; 132 OK confirmadas localmente para cliente HTTP; pruebas nuevas de Electron y backoff pendientes |
+| Suite de pruebas | 138 OK confirmadas por el propietario el 12-11-2026 |
 | Migraciones desde base vacía | Verificado |
 | Bind exclusivo | `127.0.0.1` (no `0.0.0.0`) |
 | Dependencias fijadas | `requirements.txt` con versiones exactas |
@@ -109,8 +109,8 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Fase | Estado | Observación |
 |---|---|---|
 | **Fase 1 — Núcleo funcional** | ✅ Completada y verificada | Autenticación, panel, auditoría, seguridad, 12 temas, servidor local |
-| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Motor, cliente HTTP, scheduler y empaquetado implementados; PyInstaller y AppImage generados; prueba GUI integrada pendiente; hosting y claves de producción pendientes |
-| **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Cliente HTTP validado localmente; scheduler Electron y backoff con pruebas unitarias locales satisfactorias; ejecución empaquetada, endpoint, hosting y claves de producción pendientes |
+| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | 138 pruebas OK; PyInstaller, smoke test sync y AppImage confirmados. Aceptación GUI/Waitress y navegación curricular pendientes; hosting y claves de producción pendientes |
+| **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Cliente HTTP/scheduler integrados; modo sync empaquetado probado; endpoint, hosting y claves de producción pendientes |
 | **Competencias y evaluaciones** | ⏳ Pendiente | Incremento 3 |
 | **Biblioteca documental y base de conocimiento** | ⏳ Pendiente | Incremento 4 |
 | **Evidencias y laboratorios** | ⏳ Pendiente | Incremento 5 |
@@ -160,13 +160,13 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | **Hosting/endpoint público de distribución** | Pendiente de seleccionar proveedor y autorizar publicación; no se configura en esta rama |
 | **Generador central y catálogo firmado v2** | Generador, migración 0015 y catálogo v2 validados localmente por el propietario (119 pruebas OK) |
 | **Instalador transaccional (migración 0016)** | Validado en `main` `2c5d441` (119 pruebas OK) |
-| **Cliente de sincronización HTTP** | Validado por el propietario; 136 pruebas de la base confirmadas. PyInstaller/AppImage generados; el binario alcanza el comando de sync con error de configuración esperado. Nuevas pruebas `server_entry` pendientes de ejecutar |
+| **Cliente de sincronización HTTP** | Integrado; 138 pruebas OK y smoke test del modo sync confirmados. No confundir con aceptación del servidor Waitress normal |
 | **Competencias y evaluaciones (Incremento 3)** | Pendiente de decisión |
 | **Biblioteca documental (Incremento 4)** | Pendiente de decisión |
 | **Evidencias y laboratorios (Incremento 5)** | Pendiente de decisión |
 | **Backups y administración (Incremento 6)** | Pendiente de decisión |
 | **Reactivación de autenticación** | Pendiente de autorización expresa del propietario |
-| **Commit / tag / baseline** | Pendiente de autorización expresa |
+| **Commit / tag / baseline** | Actualización documental autorizada y registrada en el commit actual; tags y releases requieren autorización independiente |
 | **Worktrees** | Pendiente de autorización expresa |
 
 ---
@@ -184,7 +184,8 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | 2.5 | 2026-11-12 | Cliente HTTP pull-only inicial, comando manual, allowlist HTTPS, TLS, ETag, límites de descarga, rechazo de redirecciones, pruebas y documentación | Continuación autorizada en rama aislada; posteriormente validado localmente (132 pruebas OK) |
 | 2.6 | 2026-11-12 | Scheduler Electron, backoff exponencial, bloqueo entre procesos, proceso PyInstaller de una sola tarea, IPC limitado, pruebas y documentación | Autorización expresa del propietario |
 | 2.7 | 2026-11-12 | Validación local satisfactoria de las pruebas de backoff/bloqueo y chequeos sintácticos | Confirmación del propietario |
-| 2.8 | 2026-11-12 | Corrección PyInstaller (Django hidden imports) y electron-builder; propietario confirma 136 pruebas, build PyInstaller y AppImage; nueva rama con pruebas de despacho y smoke test Linux | Autorización expresa para validación de integración en rama aislada |
+| 2.8 | 2026-11-12 | Corrección PyInstaller (Django hidden imports) y electron-builder; propietario confirma 136 pruebas, build PyInstaller y AppImage | Autorización expresa para validación de integración |
+| 2.9 | 2026-11-12 | Actualización del estado real de `main` (`b82a249`): 138 pruebas OK, build PyInstaller, smoke test sync y AppImage confirmados; se documentan límites de evidencia y aceptación GUI/Waitress pendiente | Confirmación del propietario; autorización expresa para actualizar cinco documentos y crear commit en `main` |
 
 ### Reglas de actualización
 
@@ -197,7 +198,7 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 
 ---
 
-**El alcance autorizado de esta intervención se limita a `test/phase-2-electron-integration`, derivada de `main` `2906abc`. `main` no debe modificarse. Detenerse antes de merge, despliegue, publicación remota o configuración de claves/hosting.**
+**Nota de vigencia:** las autorizaciones históricas de ramas aisladas descritas en §5.3–§5.5 documentan intervenciones anteriores y no describen el estado actual de Git. Para esta actualización documental, el propietario autorizó expresamente modificar únicamente los cinco documentos enumerados y crear un commit en `main`. No se autoriza con ello modificar código, desplegar, publicar paquetes, elegir hosting ni configurar claves de producción.
 ### 5.4 Autorización específica vigente — scheduler Electron y sincronización automática
 
 El propietario autorizó expresamente la implementación completa de la integración Electron, scheduler, reintentos progresivos y compatibilidad con PyInstaller, manteniendo `main` intacta.
@@ -220,3 +221,12 @@ El propietario autorizó crear una rama desde el `main` actualizado y completar 
 - Se permiten commits en esta rama.
 - No se autoriza modificar `main`, fusionar, desplegar, publicar paquetes, elegir hosting ni configurar claves públicas/privadas de producción.
 - La sincronización remota permanece desactivada mientras no exista configuración confiable.
+
+
+### 5.6 Autorización específica vigente — actualización documental de integración
+
+El propietario autorizó actualizar en `main` los siguientes cinco documentos y crear un commit único: `docs/PLAN_DESARROLLO.md`, `docs/FASE_2_APRENDIZAJE.md`, `docs/ARQUITECTURA.md`, `PROJECT_CONTROL.md` y `docs/VALIDACION_INTEGRACION_ELECTRON.md`.
+
+El registro debe reflejar únicamente la evidencia confirmada: 138 pruebas OK; build PyInstaller; smoke test del modo `--sync-knowledge`; generación y lanzamiento del AppImage Linux. No debe declarar probados el arranque normal de Waitress, el acceso HTTP a la interfaz, la navegación por ASCENSO, el cierre normal desde el menú ni la ausencia de procesos huérfanos. El fin mediante SIGTERM con código 143 no se considera prueba de cierre limpio.
+
+Esta autorización no incluye cambios de código, configuración de producción, hosting, endpoints, claves, publicación remota, merge adicional ni despliegue.
