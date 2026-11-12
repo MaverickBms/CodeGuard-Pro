@@ -1,7 +1,7 @@
 # CodeGuard Pro — Control oficial del proyecto
 
 **Documento:** `PROJECT_CONTROL.md`  
-**Versión:** 2.8 — empaquetado PyInstaller/AppImage validado; integración de escritorio en verificación  
+**Versión:** 2.9 — 138 pruebas y smoke test PyInstaller confirmados; aceptación GUI pendiente  
 **Fecha de actualización:** 2026-11-12  
 **Propietario:** propietario de CodeGuard Pro  
 **Mantenedor:** orquestador  
@@ -86,7 +86,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
 | Migraciones roadmaps | 0014, 0015 y 0016 validadas por el propietario; esta intervención no añade migraciones |
 | Comandos de gestión | 9; incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (este último en rama de trabajo) |
-| Pruebas automatizadas | 136 OK confirmadas por el propietario; dos pruebas nuevas de `server_entry` añadidas en esta rama (objetivo: 138); ejecución local pendiente. Smoke test Linux añadido. Integración GUI Electron pendiente |
+| Pruebas automatizadas | 138 OK confirmadas por el propietario; `manage.py check`, `makemigrations --check --dry-run` y `node --check` correctos. Smoke test Linux y reconstrucción PyInstaller confirmados. Integración GUI Electron pendiente |
 | Autenticación | `AUTH_DISABLED = True` (temporal, conservada íntegra) |
 | Base de datos | SQLite, `data/db.sqlite3` |
 | Servidor local | Waitress + WhiteNoise en `127.0.0.1` |
@@ -97,7 +97,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 |---|---|
 | `manage.py check` | Sin errores |
 | `makemigrations --check --dry-run` | Sin cambios pendientes |
-| Suite de pruebas | 119 OK confirmadas para `main`; 132 OK confirmadas localmente para cliente HTTP; pruebas nuevas de Electron y backoff pendientes |
+| Suite de pruebas | 119 OK en baseline histórica; 132 OK en validación HTTP anterior; 138 OK confirmadas por el propietario en la rama de integración |
 | Migraciones desde base vacía | Verificado |
 | Bind exclusivo | `127.0.0.1` (no `0.0.0.0`) |
 | Dependencias fijadas | `requirements.txt` con versiones exactas |
@@ -109,8 +109,8 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Fase | Estado | Observación |
 |---|---|---|
 | **Fase 1 — Núcleo funcional** | ✅ Completada y verificada | Autenticación, panel, auditoría, seguridad, 12 temas, servidor local |
-| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Motor, cliente HTTP, scheduler y empaquetado implementados; PyInstaller y AppImage generados; prueba GUI integrada pendiente; hosting y claves de producción pendientes |
-| **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Cliente HTTP validado localmente; scheduler Electron y backoff con pruebas unitarias locales satisfactorias; ejecución empaquetada, endpoint, hosting y claves de producción pendientes |
+| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Motor, cliente HTTP, scheduler y empaquetado implementados; 138 pruebas y smoke test PyInstaller confirmados; aceptación GUI pendiente; hosting y claves de producción pendientes |
+| **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Cliente HTTP, scheduler y backoff implementados; ejecución PyInstaller y smoke test confirmados; aceptación GUI, endpoint, hosting y claves de producción pendientes |
 | **Competencias y evaluaciones** | ⏳ Pendiente | Incremento 3 |
 | **Biblioteca documental y base de conocimiento** | ⏳ Pendiente | Incremento 4 |
 | **Evidencias y laboratorios** | ⏳ Pendiente | Incremento 5 |
@@ -185,6 +185,7 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | 2.6 | 2026-11-12 | Scheduler Electron, backoff exponencial, bloqueo entre procesos, proceso PyInstaller de una sola tarea, IPC limitado, pruebas y documentación | Autorización expresa del propietario |
 | 2.7 | 2026-11-12 | Validación local satisfactoria de las pruebas de backoff/bloqueo y chequeos sintácticos | Confirmación del propietario |
 | 2.8 | 2026-11-12 | Corrección PyInstaller (Django hidden imports) y electron-builder; propietario confirma 136 pruebas, build PyInstaller y AppImage; nueva rama con pruebas de despacho y smoke test Linux | Autorización expresa para validación de integración en rama aislada |
+| 2.9 | 2026-11-12 | Propietario confirma 138 pruebas OK, checks Django/migraciones/Node correctos, reconstrucción PyInstaller y smoke test Linux satisfactorios; queda aceptación GUI del AppImage | Confirmación del propietario |
 
 ### Reglas de actualización
 
@@ -220,3 +221,16 @@ El propietario autorizó crear una rama desde el `main` actualizado y completar 
 - Se permiten commits en esta rama.
 - No se autoriza modificar `main`, fusionar, desplegar, publicar paquetes, elegir hosting ni configurar claves públicas/privadas de producción.
 - La sincronización remota permanece desactivada mientras no exista configuración confiable.
+
+
+### 5.6 Evidencia de validación — 138 pruebas y PyInstaller
+
+El 12 de noviembre de 2026, el propietario confirmó en `test/phase-2-electron-integration`:
+
+- 138 pruebas Django ejecutadas y aprobadas.
+- `manage.py check`: sin problemas.
+- `makemigrations --check --dry-run`: sin cambios.
+- `node --check electron/main.js` y `node --check electron/preload.js`: correctos.
+- Reconstrucción de PyInstaller y smoke test Linux: funcionamiento satisfactorio.
+
+**Pendiente:** reconstruir el AppImage para incorporar el ejecutable PyInstaller actualizado y completar la aceptación GUI descrita en `docs/VALIDACION_INTEGRACION_ELECTRON.md`. No se autoriza merge ni despliegue.
