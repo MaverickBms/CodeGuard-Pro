@@ -360,14 +360,14 @@ La confirmación corresponde al entorno local del propietario y no equivale a un
 
 | ID | Prueba | Caso | Resultado esperado | Estado |
 |---|---|---|---|---|
-| F2-ACT-001 | Snapshot de intento legado | Crear intento sin puntero activo y modificar después el ejercicio | El snapshot conserva el enunciado original | OK — suite 108 confirmada por el propietario |
-| F2-ACT-002 | Activación editorial | Publicar una versión aprobada | `ContenidoLeccionActivo` apunta a la versión publicada | OK — suite 108 confirmada por el propietario |
-| F2-ACT-003 | Vinculación de intento | Entregar ejercicio de versión activa | El intento conserva FK a la versión y snapshot del ejercicio | OK — suite 108 confirmada por el propietario |
-| F2-ACT-004 | Interfaz de entregas | Abrir lección y enviar respuesta | Formulario CSRF disponible e historial visible | OK — suite 108 confirmada por el propietario |
-| F2-SYNC-001 | Bulk create de paquetes | Intentar insertar paquete descargado con error/fecha de instalación | Operación rechazada por validación de modelo | OK — suite 108 confirmada por el propietario |
-| F2-SYNC-002 | Estado de sincronización | Ejecutar `QuerySet.update()` | Operación masiva rechazada; usar `save()` validado | OK — suite 108 confirmada por el propietario |
-| F2-ACT-005 | Snapshot activo tras editar borrador | Modificar ejercicio editable después de publicación | Vista e intento siguen usando el snapshot publicado | OK — suite 108 confirmada por el propietario |
-| F2-ACT-006 | Inmutabilidad de evidencia | Modificar snapshot/respuesta de un intento o borrarlo mediante ORM | Operación rechazada; la evidencia original se conserva | OK — suite 108 confirmada por el propietario |
+| F2-ACT-001 | Snapshot de intento legado | Crear intento sin puntero activo y modificar después el ejercicio | El snapshot conserva el enunciado original | OK — suite 119 confirmada por el propietario |
+| F2-ACT-002 | Activación editorial | Publicar una versión aprobada | `ContenidoLeccionActivo` apunta a la versión publicada | OK — suite 119 confirmada por el propietario |
+| F2-ACT-003 | Vinculación de intento | Entregar ejercicio de versión activa | El intento conserva FK a la versión y snapshot del ejercicio | OK — suite 119 confirmada por el propietario |
+| F2-ACT-004 | Interfaz de entregas | Abrir lección y enviar respuesta | Formulario CSRF disponible e historial visible | OK — suite 119 confirmada por el propietario |
+| F2-SYNC-001 | Bulk create de paquetes | Intentar insertar paquete descargado con error/fecha de instalación | Operación rechazada por validación de modelo | OK — suite 119 confirmada por el propietario |
+| F2-SYNC-002 | Estado de sincronización | Ejecutar `QuerySet.update()` | Operación masiva rechazada; usar `save()` validado | OK — suite 119 confirmada por el propietario |
+| F2-ACT-005 | Snapshot activo tras editar borrador | Modificar ejercicio editable después de publicación | Vista e intento siguen usando el snapshot publicado | OK — suite 119 confirmada por el propietario |
+| F2-ACT-006 | Inmutabilidad de evidencia | Modificar snapshot/respuesta de un intento o borrarlo mediante ORM | Operación rechazada; la evidencia original se conserva | OK — suite 119 confirmada por el propietario |
 
 **Validación:** el propietario confirmó la suite completa de 119 pruebas OK en `main` `2c5d441`, incluyendo las pruebas de este bloque.
 
@@ -376,18 +376,18 @@ La confirmación corresponde al entorno local del propietario y no equivale a un
 
 | ID | Prueba | Caso | Resultado esperado | Estado |
 |---|---|---|---|---|
-| PUB-001 | Selección editorial | Solo existen versiones publicadas con puntero activo | El paquete incluye únicamente snapshots activos | OK — suite 108 confirmada por el propietario |
-| PUB-002 | Hash de snapshot | Alterar snapshot o hash | Publicación rechazada | OK — suite 108 confirmada por el propietario |
-| PUB-003 | Procedencia | Versión sin fuentes o con fuente inactiva | Publicación rechazada | OK — suite 108 confirmada por el propietario |
-| PUB-004 | Licencia | Fuente pendiente, requiere permiso o no reutilizable | Publicación rechazada | OK — suite 108 confirmada por el propietario |
-| PUB-005 | Licencia congelada | Cambiar decisión después de revisión | Publicación rechazada | OK — suite 108 confirmada por el propietario |
-| PUB-006 | Clave privada | Archivo ausente, symlink, permisos abiertos, PEM inválido o tipo distinto de Ed25519 | Publicación rechazada sin exponer secretos | OK — suite 108 confirmada por el propietario |
-| PUB-007 | ZIP reproducible | Mismos UUID, package_id, versión y payloads | Bytes del ZIP idénticos | OK — suite 108 confirmada por el propietario |
-| PUB-008 | Firma | Verificar manifiesto con clave pública derivada | Firma Ed25519 válida y ZIP aceptado por el verificador | OK — suite 108 confirmada por el propietario |
-| PUB-009 | Secuencia | Dos publicaciones consecutivas en el mismo canal | Secuencias consecutivas, artefactos inmutables | OK — suite 108 confirmada por el propietario |
-| PUB-010 | Canales | Publicar stable y beta | Contadores independientes por canal | OK — suite 108 confirmada por el propietario |
-| PUB-011 | URL | Host no permitido o URL no HTTPS | Publicación rechazada | OK — suite 108 confirmada por el propietario |
-| PUB-012 | Historial | Intentar modificar o borrar un release | Operación rechazada | OK — suite 108 confirmada por el propietario |
+| PUB-001 | Selección editorial | Solo existen versiones publicadas con puntero activo | El paquete incluye únicamente snapshots activos | OK — suite 119 confirmada por el propietario |
+| PUB-002 | Hash de snapshot | Alterar snapshot o hash | Publicación rechazada | OK — suite 119 confirmada por el propietario |
+| PUB-003 | Procedencia | Versión sin fuentes o con fuente inactiva | Publicación rechazada | OK — suite 119 confirmada por el propietario |
+| PUB-004 | Licencia | Fuente pendiente, requiere permiso o no reutilizable | Publicación rechazada | OK — suite 119 confirmada por el propietario |
+| PUB-005 | Licencia congelada | Cambiar decisión después de revisión | Publicación rechazada | OK — suite 119 confirmada por el propietario |
+| PUB-006 | Clave privada | Archivo ausente, symlink, permisos abiertos, PEM inválido o tipo distinto de Ed25519 | Publicación rechazada sin exponer secretos | OK — suite 119 confirmada por el propietario |
+| PUB-007 | ZIP reproducible | Mismos UUID, package_id, versión y payloads | Bytes del ZIP idénticos | OK — suite 119 confirmada por el propietario |
+| PUB-008 | Firma | Verificar manifiesto con clave pública derivada | Firma Ed25519 válida y ZIP aceptado por el verificador | OK — suite 119 confirmada por el propietario |
+| PUB-009 | Secuencia | Dos publicaciones consecutivas en el mismo canal | Secuencias consecutivas, artefactos inmutables | OK — suite 119 confirmada por el propietario |
+| PUB-010 | Canales | Publicar stable y beta | Contadores independientes por canal | OK — suite 119 confirmada por el propietario |
+| PUB-011 | URL | Host no permitido o URL no HTTPS | Publicación rechazada | OK — suite 119 confirmada por el propietario |
+| PUB-012 | Historial | Intentar modificar o borrar un release | Operación rechazada | OK — suite 119 confirmada por el propietario |
 
 La suite `apps.roadmaps.tests.test_publisher` cubre los casos automatizados añadidos. El propietario confirmó su ejecución correcta dentro de las 119 pruebas en `main` `2c5d441`.
 
@@ -395,13 +395,13 @@ La suite `apps.roadmaps.tests.test_publisher` cubre los casos automatizados aña
 
 | ID | Prueba | Caso | Resultado esperado | Estado |
 |---|---|---|---|---|
-| SRC-001 | Exportación | Publicar lecciones con fuentes aprobadas | El índice v2 incluye metadatos de fuente y licencia | OK — suite 108 confirmada por el propietario |
-| SRC-002 | Integridad | Fuente omitida, sobrante o duplicada | El verificador rechaza el paquete | OK — suite 108 confirmada por el propietario |
-| SRC-003 | UUID | UUID no canónico o repetido | El verificador rechaza el paquete | OK — suite 108 confirmada por el propietario |
-| SRC-004 | Licencia | Decisión no publicable, falta de evidencia o alcance | El verificador rechaza el paquete | OK — suite 108 confirmada por el propietario |
-| SRC-005 | URL | HTTP, credenciales, puerto alterno o fragmento | El verificador rechaza el paquete | OK — suite 108 confirmada por el propietario |
-| SRC-006 | Privacidad | Catálogo firmado | No se exporta identidad del revisor | OK — suite 108 confirmada por el propietario |
-| SRC-007 | Compatibilidad | Índice v1 preexistente | El verificador conserva lectura de v1 | OK — suite 108 confirmada por el propietario |
+| SRC-001 | Exportación | Publicar lecciones con fuentes aprobadas | El índice v2 incluye metadatos de fuente y licencia | OK — suite 119 confirmada por el propietario |
+| SRC-002 | Integridad | Fuente omitida, sobrante o duplicada | El verificador rechaza el paquete | OK — suite 119 confirmada por el propietario |
+| SRC-003 | UUID | UUID no canónico o repetido | El verificador rechaza el paquete | OK — suite 119 confirmada por el propietario |
+| SRC-004 | Licencia | Decisión no publicable, falta de evidencia o alcance | El verificador rechaza el paquete | OK — suite 119 confirmada por el propietario |
+| SRC-005 | URL | HTTP, credenciales, puerto alterno o fragmento | El verificador rechaza el paquete | OK — suite 119 confirmada por el propietario |
+| SRC-006 | Privacidad | Catálogo firmado | No se exporta identidad del revisor | OK — suite 119 confirmada por el propietario |
+| SRC-007 | Compatibilidad | Índice v1 preexistente | El verificador conserva lectura de v1 | OK — suite 119 confirmada por el propietario |
 | SRC-008 | Licencia solo referencia | Fuente `solo_referencia` con uso declarado `adaptacion` | El verificador rechaza el documento; solo admite `original` | OK — suite 119 confirmada por el propietario |
 
 Las suites `apps.roadmaps.tests.test_publisher` y `apps.roadmaps.tests.test_distribution` contienen las pruebas automatizadas añadidas para este contrato; el propietario confirmó 119 pruebas OK en `main` `2c5d441`.
