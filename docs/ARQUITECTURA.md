@@ -215,7 +215,7 @@ flowchart TD
 | Registro local de paquetes (`PaqueteConocimientoInstalado`) | Implementado (migración 0012) |
 | Un solo activo por canal + estado de sincronización | Implementado (migración 0013) |
 | Verificador de distribución firmada (Ed25519, manifiesto, ZIP) | Implementado |
-| Comandos de gestión editorial y distribución | Implementados; incluye publicar_paquete_conocimiento |
+| Comandos de gestión editorial y distribución | Incluye `publicar_paquete_conocimiento`; `sincronizar_conocimiento` manual en rama aislada |
 | Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado; migración 0015 y pruebas del generador validadas localmente por el propietario |
 | Catálogo firmado de fuentes (índice v2) | Implementado y validado localmente por el propietario (119 pruebas OK) |
 | Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementado y validado en `main` (119 pruebas OK; migración 0016) |
