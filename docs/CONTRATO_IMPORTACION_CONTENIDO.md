@@ -2,7 +2,7 @@
 
 **Producto:** CodeGuard Pro  
 **Fase:** 2 — Motor de aprendizaje y contenido interactivo  
-**Estado:** Diseño técnico aprobado para el siguiente incremento; importador aún no implementado.  
+**Estado:** Contrato implementado en la rama de trabajo; pendiente de validación local completa.  
 **Fecha:** 11 de noviembre de 2026  
 **Relacionado:** `docs/PLAN_MAESTRO_CODEGUARD.md`, `docs/FASE_2_APRENDIZAJE.md`, `docs/DISENO_DATOS_SINCRONIZACION.md`, `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`.
 
@@ -91,7 +91,8 @@ Estructura de un documento:
       "clave": "UUID-DE-FUENTE-REGISTRADA",
       "rol": "principal",
       "localizador": "Sección 4.2",
-      "nota_atribucion": "Referencia conceptual; explicación redactada por CodeGuard."
+      "nota_atribucion": "Referencia conceptual; explicación redactada por CodeGuard.",
+      "uso_declarado": "original"
     }
   ]
 }
@@ -159,7 +160,7 @@ La validación se ejecutará en memoria antes de crear cualquier fila. Si un doc
 - Cada UUID de fuente debe corresponder a una fila `FuenteConocimiento` existente.
 - No aceptar fuentes inactivas.
 - No crear fuentes automáticamente durante la importación; primero deben registrarse y revisarse por separado.
-- La referencia debe incluir rol válido (`principal`, `complementaria` o `normativa`), localizador y nota de atribución cuando corresponda.
+- La referencia debe incluir rol válido (`principal`, `complementaria` o `normativa`), localizador, nota de atribución y `uso_declarado` (`original`, `cita_breve`, `adaptacion` o `reproduccion`).
 - No considerar que HTTPS, dominio oficial o acceso público equivalen a permiso de reutilización.
 - No permitir que el importador marque una fuente como verificada ni modifique su licencia.
 - La versión importada debe quedar en borrador si alguna fuente está pendiente de revisión de licencia.
@@ -351,3 +352,22 @@ El importador podrá considerarse implementado cuando:
 - Sincronizar datos personales, progreso o intentos.
 
 **Regla de cierre:** importar un documento válido significa crear una propuesta editorial trazable, no certificar que su contenido sea correcto ni hacerlo visible para estudiantes.
+
+
+## 13. Estado de implementación — 11 de noviembre de 2026
+
+Se incorporó en la rama de trabajo:
+
+- Modelo de revisión de licencia con estado, evidencia HTTPS, alcance, nota, editor responsable y fecha.
+- Uso declarado por referencia de fuente.
+- Servicio `revisar_licencia_fuente()` y comando `revisar_licencia_fuente`.
+- Bloqueo de envío a revisión y publicación para fuentes pendientes, que requieren permiso o no reutilizables.
+- Fuentes `compatible` exigen evidencia, auditoría y alcance documentado.
+- Fuentes `solo_referencia` solo permiten referencias de contenido original; se bloquean citas, adaptaciones y reproducciones en esta primera política conservadora.
+- Validador JSON v1 de solo lectura, con límites, claves estrictas, UUID canónicos, validación contra ASCENSO y detección de duplicados.
+- Importador atómico, autorizado solo a editores activos, con creación de borradores, referencias y detección idempotente por hash.
+- Comandos `validar_paquete_contenido` e `importar_paquete_contenido`; el segundo exige `--confirmar --usuario` y no ofrece publicación.
+
+**Límites explícitos:** el importador no descarga URLs, no extrae ZIP, no ejecuta código, no modifica los modelos curriculares, no reemplaza contenido editable y no modifica progreso ni intentos. La revisión de licencia es una decisión humana registrada; el sistema no determina automáticamente la legalidad de una licencia.
+
+**Pendiente antes de considerar cerrado el incremento:** ejecutar migraciones, `makemigrations --check --dry-run`, las pruebas de `apps.roadmaps` y la suite completa en el entorno local. Las pruebas nuevas están incorporadas al repositorio, pero no se declaran aprobadas hasta ejecutar esos comandos.
