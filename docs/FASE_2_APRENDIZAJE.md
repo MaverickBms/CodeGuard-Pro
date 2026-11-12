@@ -338,3 +338,25 @@ La retirada editorial dispone de metadatos propios (`retirada_por`, `retirada_en
 ### Operación editorial mediante comandos
 
 Se añaden los comandos internos `crear_version_leccion` y `gestionar_version_leccion` para crear snapshots y ejecutar transiciones editoriales desde terminal. No se activa Django Admin ni se exponen acciones de publicación en las vistas de estudiante. Los comandos requieren un usuario editorial existente y activo con `is_staff=True`.
+
+
+### Registro controlado de fuentes documentales
+
+Se incorpora el comando interno `registrar_fuente_conocimiento` para registrar publicador, título, URL canónica HTTPS, edición, datos de licencia y notas editoriales. El comando asigna UUID y fecha de consulta, valida los campos del modelo y evita duplicar la combinación URL canónica + edición.
+
+El registro **no certifica** que una fuente sea oficial, vigente ni reutilizable. La salida advierte que un editor debe verificar autoridad, edición, vigencia y licencia antes de asociarla a una versión que vaya a revisión. No se descarga ni ejecuta contenido remoto y no se publica ninguna lección.
+
+Ejemplo:
+
+```bash
+python manage.py registrar_fuente_conocimiento \
+  --publicador "Python Software Foundation" \
+  --titulo "Python Language Reference" \
+  --url "https://docs.python.org/3/reference/" \
+  --edicion "Python 3" \
+  --licencia-id "PSF-2.0" \
+  --licencia-url "https://docs.python.org/3/license.html" \
+  --notas "Comprobar versión aplicable y secciones citadas"
+```
+
+El flujo de transición editorial utiliza la opción `--version-id` para evitar colisiones con el argumento global `--version` de Django.
