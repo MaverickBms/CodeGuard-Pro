@@ -15,7 +15,7 @@
 ## 0. Resumen ejecutivo
 
 - **Fase 1 (núcleo funcional):** completada, verificada y aprobada documentalmente. Autenticación local, panel, roadmap, auditoría y seguridad operativos.
-- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso / parcialmente implementada en la rama `docs/phase-2-hybrid-knowledge-sync`.
+- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso; base integrada en `main` y correcciones autorizadas en `fix/phase-2-integrity-learning`.
   - Roadmap ASCENSO 3.1 (33 etapas, módulos, lecciones, prerrequisitos) implementado y cargable con `cargar_ascenso`.
   - Contenido académico editable (`ContenidoLeccion`, `EjemploLeccion`, `EjercicioLeccion`) implementado.
   - Flujo editorial de versiones (`VersionContenidoLeccion`, `ReferenciaFuenteContenido`, `FuenteConocimiento`) implementado con comandos de gestión.
@@ -25,7 +25,7 @@
   - Intentos nuevos vinculados a la versión activa y con snapshot del ejercicio presentado.
   - Interfaz de entrega POST con CSRF, límite de 20.000 caracteres e historial de intentos.
   - Protecciones adicionales para escrituras masivas del registro local de paquetes y sincronización.
-  - Suite de pruebas: **93 pruebas pasando** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`).
+  - Suite base: **93 pruebas OK** confirmadas por el usuario antes del incremento 0014; las pruebas nuevas están pendientes de ejecución.
 - **Sincronización de red, servicio central y cliente de sincronización:** pendientes (Fase 2).
 - **Validación del incremento 0014:** pendiente de ejecución local; las 93 pruebas anteriores no validan las nuevas migraciones ni pruebas añadidas.
 - **Autenticación:** temporalmente desactivada (`AUTH_DISABLED = True`); el sistema original se conserva íntegro y puede reactivarse con autorización expresa.
@@ -96,7 +96,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 |---|---|
 | `manage.py check` | Sin errores |
 | `makemigrations --check --dry-run` | Sin cambios pendientes |
-| Suite de pruebas | 93 pruebas OK |
+| Suite de pruebas | 93 OK en el estado anterior; pruebas de la rama correctiva pendientes |
 | Migraciones desde base vacía | Verificado |
 | Bind exclusivo | `127.0.0.1` (no `0.0.0.0`) |
 | Dependencias fijadas | `requirements.txt` con versiones exactas |
