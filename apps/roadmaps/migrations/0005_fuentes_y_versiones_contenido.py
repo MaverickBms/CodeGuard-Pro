@@ -44,7 +44,6 @@ class Migration(migrations.Migration):
                 ("publicada_en", models.DateTimeField(blank=True, null=True, verbose_name="publicada el")),
                 ("creada_en", models.DateTimeField(auto_now_add=True)),
                 ("leccion", models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name="versiones_contenido", to="roadmaps.leccion", verbose_name="lección")),
-                ("fuentes", models.ManyToManyField(blank=True, related_name="versiones", through="roadmaps.ReferenciaFuenteContenido", to="roadmaps.fuenteconocimiento")),
             ],
             options={"verbose_name": "versión de contenido de lección", "verbose_name_plural": "versiones de contenido de lección", "ordering": ["leccion_id", "-numero_version"]},
         ),
@@ -59,6 +58,11 @@ class Migration(migrations.Migration):
                 ("version", models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name="referencias", to="roadmaps.versioncontenidoleccion")),
             ],
             options={"verbose_name": "referencia de fuente de contenido", "verbose_name_plural": "referencias de fuentes de contenido"},
+        ),
+        migrations.AddField(
+            model_name="versioncontenidoleccion",
+            name="fuentes",
+            field=models.ManyToManyField(blank=True, related_name="versiones", through="roadmaps.ReferenciaFuenteContenido", to="roadmaps.fuenteconocimiento"),
         ),
         migrations.AddConstraint(
             model_name="fuenteconocimiento",

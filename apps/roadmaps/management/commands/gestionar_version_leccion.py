@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("accion", choices=("enviar-revision", "aprobar", "publicar", "retirar"))
-        parser.add_argument("--version", type=int, required=True, help="ID de la versión")
+        parser.add_argument("--version-id", type=int, required=True, help="ID de la versión")
         parser.add_argument("--usuario", required=True, help="Usuario editorial activo")
         parser.add_argument("--motivo", default="", help="Motivo obligatorio al retirar")
 
@@ -27,7 +27,7 @@ class Command(BaseCommand):
             raise CommandError("No existe el usuario editorial indicado.") from exc
 
         accion = options["accion"]
-        version_id = options["version"]
+        version_id = options["version_id"]
         try:
             if accion == "enviar-revision":
                 version = enviar_version_a_revision(version_id, actor=actor)

@@ -1,7 +1,8 @@
 """Pruebas del ciclo de entrega y evaluación segura de ejercicios."""
 
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ProtectedError, ValidationError
+from django.core.exceptions import ValidationError
+from django.db.models import ProtectedError
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -559,7 +560,7 @@ class IntentosEjercicioTests(TestCase):
         salida = StringIO()
         call_command(
             "gestionar_version_leccion", "enviar-revision",
-            version=version.pk, usuario=editor.username, stdout=salida,
+            version_id=version.pk, usuario=editor.username, stdout=salida,
         )
         version.refresh_from_db()
         self.assertEqual(version.estado, "revision")
