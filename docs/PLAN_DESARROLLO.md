@@ -89,10 +89,10 @@
 ### Qué sigue pendiente (incremento 2, Fase 2)
 
 - Cliente de sincronización de red (consulta de manifiesto, descarga, instalación atómica, rollback).
-- Servicio central de publicación de paquetes académicos.
-- Paquetes firmados Ed25519 y manifiestos v1.
-- Sincronización pull-only, sin envío de progreso ni datos personales.
-- Validación local de la migración 0014 y de las pruebas nuevas; las 93 pruebas anteriores no validan este incremento.
+- Hosting y endpoint HTTPS del distribuidor; el generador local ya produce ZIP, manifiesto y firma, pero no despliega.
+- Cliente de sincronización pull-only, descarga, instalación atómica y rollback.
+- Integración del almacén de claves públicas y allowlist de producción en el cliente.
+- Validación local de la migración 0015 y de las pruebas del publicador; las pruebas históricas no validan estos componentes.
 
 ---
 
