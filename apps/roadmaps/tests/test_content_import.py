@@ -136,6 +136,7 @@ class ImportacionContenidoTests(TestCase):
         result = importar_documentos_validados(report, actor=self.editor)
         version = result["created"][0]
         self.assertEqual(version.estado, "borrador")
+        self.assertEqual(version.creada_por, self.editor)
         self.assertEqual(version.snapshot["leccion"]["clave"], str(self.leccion.clave_contenido))
         self.assertEqual(version.referencias.count(), 1)
         self.assertEqual(version.referencias.get().uso_declarado, "original")
