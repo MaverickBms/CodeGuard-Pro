@@ -249,3 +249,57 @@ class DistribucionFirmadaTests(SimpleTestCase):
         manifest = self.manifest_for_zip(package_bytes)
         with self.assertRaisesMessage(DistributionError, "no declarados"):
             validate_package_archive(package_bytes, manifest=manifest)
+
+    def build_zip_with_source_catalog(self, *, include_source=True):
+        original = self.build_zip()
+        source_uuid = None
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(io.BytesIO(original), "r") as source_archive:
+            payload_info = next(
+                info for info in source_archive.infolist()
+                if info.filename.startswith("payload/lessons/")
+            )
+            document = json.loads(source_archive.read(payload_info.filename))
+            source_uuid = document["fuentes"][0]["clave"]
+            with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as target:
+                for info in source_archive.infolist():
+                    payload = source_archive.read(info.filename)
+                    if info.filename == "package-index.json":
+                        index = json.loads(payload)
+                        index["schema_version"] = 2
+                        if include_source:
+                            index["sources"] = [{
+                                "clave": source_uuid,
+                                "publicador": "Python Software Foundation",
+                                "titulo": "Python Language Reference",
+                                "url_canonica": "https://docs.python.org/3/reference/",
+                                "edicion": "3",
+                                "identificador_licencia": "PSF-2.0",
+                                "url_licencia": "https://docs.python.org/3/license.html",
+                                "estado_revision_licencia": "compatible",
+                                "evidencia_licencia": "https://docs.python.org/3/license.html",
+                                "alcance_licencia": "Redistribución con atribución.",
+                                "nota_revision_licencia": "Revisión editorial documentada.",
+                                "revisada_en": "2026-11-12T10:00:00+00:00",
+                            }]
+                        payload = json.dumps(index, separators=(",", ":")).encode("utf-8")
+                    target.writestr(info.filename, payload)
+        return buffer.getvalue()
+
+    def test_indice_v2_valida_catalogo_de_fuentes(self):
+        package_bytes = self.build_zip_with_source_catalog()
+        result = validate_package_archive(
+            package_bytes, manifest=self.manifest_for_zip(package_bytes)
+        )
+        self.assertEqual(len(result["sources"]), 1)
+        self.assertEqual(
+            result["sources"][next(iter(result["sources"]))]["estado_revision_licencia"],
+            "compatible",
+        )
+
+    def test_indice_v2_rechaza_catalogo_incompleto(self):
+        package_bytes = self.build_zip_with_source_catalog(include_source=False)
+        with self.assertRaisesMessage(DistributionError, "no coincide exactamente"):
+            validate_package_archive(
+                package_bytes, manifest=self.manifest_for_zip(package_bytes)
+            )
