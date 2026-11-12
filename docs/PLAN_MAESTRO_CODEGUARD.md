@@ -184,12 +184,12 @@ Implementado en la base de la Fase 2 y ampliado en ramas de trabajo:
 - Validador de documentos académicos JSON v1 con validación de esquema, UUID estables, correspondencia curricular, límites de recursos, detección de duplicados y validación sin escrituras.
 - Importador transaccional autorizado a editores activos; crea únicamente borradores inmutables con hash y procedencia, reconoce reimportaciones idempotentes y no modifica progreso ni intentos.
 - Comandos `crear_version_leccion`, `gestionar_version_leccion`, `revisar_licencia_fuente`, `validar_paquete_contenido` e `importar_paquete_contenido`; Django Admin permanece deshabilitado.
-- Migraciones 0004–0008 fueron aplicadas y verificadas localmente en la configuración de desarrollo. La migración 0009 añade revisión de licencias y uso declarado; está incorporada a la rama y pendiente de aplicación/verificación local.
+- Migraciones 0004–0008 fueron aplicadas y verificadas localmente en la configuración de desarrollo. Las migraciones 0009–0010 añaden revisión de licencias, uso declarado y snapshot histórico de evidencia por versión; están incorporadas a la rama y pendientes de aplicación/verificación local.
 
 Validación registrada:
 
 - El usuario confirmó que la ronda anterior de comprobaciones locales funcionó correctamente.
-- La nueva migración 0009, el importador, la revisión de licencias y sus pruebas automatizadas se incorporaron después de esa validación; deben ejecutarse localmente antes de dar por cerrado este incremento.
+- Las migraciones 0009–0010, el importador, la revisión de licencias y sus pruebas automatizadas se incorporaron después de esa validación; deben ejecutarse localmente antes de dar por cerrado este incremento.
 - Último commit de referencia conocido en `main`: `dee0da9b4444ecabc5fc4dd4263296eef8361a99`.
 
 Pendiente de la Fase 2:
