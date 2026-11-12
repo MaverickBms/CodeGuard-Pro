@@ -254,8 +254,18 @@ class InstaladorPaquetesTests(TestCase):
         self.assertFalse((self.data / "knowledge-packages").exists())
 
     def test_rollback_reactiva_paquete_anterior_sin_eliminar_evidencia(self):
+        ejercicio = self.leccion.ejercicios.get()
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=ejercicio,
+            tipo="respuesta_exacta",
+            configuracion={"respuesta_esperada": "total = 5"},
+            permite_completar_leccion=True,
+        )
         with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
             first = self.instalar(self.publicar())["package"]
+            intento = registrar_intento_ejercicio(
+                self.editor, ejercicio, "total = 5", actor_auditoria=self.editor
+            )
             second = self.instalar(self.publicar())["package"]
             restored = restaurar_paquete_anterior(
                 channel="stable", package_id=first.package_id
@@ -263,12 +273,15 @@ class InstaladorPaquetesTests(TestCase):
 
         first.refresh_from_db()
         second.refresh_from_db()
+        intento.refresh_from_db()
         state = EstadoSincronizacion.objects.get(channel="stable")
         self.assertEqual(restored.pk, first.pk)
         self.assertEqual(first.estado, "activo")
         self.assertEqual(second.estado, "sustituido")
         self.assertEqual(state.active_package_id, first.pk)
         self.assertEqual(first.contenidos_leccion.count(), 1)
+        self.assertEqual(intento.paquete_contenido_id, first.pk)
+        self.assertTrue(IntentoEjercicio.objects.filter(pk=intento.pk).exists())
 
     def test_intento_usa_snapshot_del_paquete_y_conserva_evidencia(self):
         ejercicio = self.leccion.ejercicios.get()
