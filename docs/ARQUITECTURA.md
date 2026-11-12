@@ -45,7 +45,7 @@ codeguard-pro/
 │   ├── core/                 # panel principal, navegación, configuración sistema
 │   ├── accounts/             # identidad y acceso (login, setup, frase rescate, contraseña)
 │   └── audit/                # registro de eventos de seguridad y acceso
-│   [apps académicos pendientes: roadmaps, competencies, library, ...]
+│   ├── roadmaps/             # ruta ASCENSO, lecciones, intentos y conocimiento versionado\n│   [otras apps académicas futuras: competencies, library, ...]
 │
 ├── templates/                # plantillas base y por app (Django MVT)
 ├── static/                   # recursos estáticos locales (sin CDN)
@@ -284,6 +284,21 @@ El catálogo editorial registrará publicador, título, URL canónica, edición/
 ---
 
 ## 10. Próximos incrementos
+
+### Estado de la implementación editorial en la rama de trabajo
+
+La rama `docs/phase-2-hybrid-knowledge-sync` añade a `apps.roadmaps`:
+
+- Identificadores UUID estables para recursos didácticos y protección de evidencias históricas.
+- Catálogo de fuentes, snapshots de lección y referencias de atribución.
+- Servicio determinista de generación de versiones.
+- Flujo editorial con envío a revisión, aprobación, publicación, sustitución y retirada.
+- Metadatos de auditoría de responsables y fechas.
+- Comandos de gestión para operar el flujo sin habilitar Django Admin.
+- Migraciones 0004–0008 y pruebas asociadas, pendientes de ejecución local.
+
+La sincronización de red, el paquete firmado, la publicación central y la instalación offline siguen pendientes.
+
 
 El orden vigente de las fases, dependencias y criterios de cierre se mantiene en `docs/PLAN_MAESTRO_CODEGUARD.md`. La implementación de conocimiento versionado y sincronización híbrida pertenece a la Fase 2. El detalle de entidades y migraciones propuestas está en `docs/DISENO_DATOS_SINCRONIZACION.md`.
 
