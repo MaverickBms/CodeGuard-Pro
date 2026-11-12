@@ -305,7 +305,7 @@ La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que 
 
 ## 6.7 Importación académica y revisión de licencias
 
-> **Estado:** el usuario confirmó que las pruebas de importación/licencias y la suite local ejecutada fueron satisfactorias. Las pruebas SYNC-027–SYNC-041 pertenecen al incremento posterior y aún requieren ejecución local.
+> **Estado:** el usuario confirmó que la suite local actual finaliza con **93 pruebas: OK**. Esto incluye SYNC-027–SYNC-041 (verificador de manifiestos, ZIP y registro local). La instalación de `cryptography==46.0.3` en `.venv` resolvió el fallo de importación; el test de transición se corrigió para intentar el salto inválido `descargado → activo`.
 
 | ID | Prueba | Resultado esperado |
 |---|---|---|
@@ -340,3 +340,12 @@ La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que 
 | LIC-007 | Fuente requiere permiso/no reutilizable | Bloquea envío a revisión |
 | LIC-008 | Decisión de licencia cambia después de enviar a revisión | Bloquea aprobación/publicación y conserva snapshot histórico |
 | LIC-009 | Modificar/eliminar referencias de versión en revisión | Operación rechazada por protección ORM |
+
+
+### 6.8 Validación confirmada — distribución firmada y registro local
+
+El usuario reportó la ejecución satisfactoria de **93 pruebas (OK)** en el entorno local después de:
+- Instalar `cryptography==46.0.3` en el entorno virtual del proyecto.
+- Corregir `test_no_se_puede_saltar_transicion_de_paquete`: el caso parte de `descargado` e intenta `activo`, transición no permitida por el ciclo de vida.
+
+Esta confirmación acredita la suite ejecutada en el entorno del usuario. No equivale a una ejecución independiente en CI ni valida componentes aún no implementados, como publicador central, cliente HTTP, instalador, activación y rollback.
