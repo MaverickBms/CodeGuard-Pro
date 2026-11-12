@@ -540,6 +540,15 @@ class VersionContenidoLeccion(models.Model):
         related_name="versiones_contenido_publicadas",
         verbose_name="publicada por",
     )
+    retirada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="versiones_contenido_retiradas",
+        verbose_name="retirada por",
+    )
+    retirada_en = models.DateTimeField(null=True, blank=True, verbose_name="retirada el")
     creada_en = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
