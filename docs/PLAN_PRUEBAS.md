@@ -191,6 +191,10 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | SYNC-017 | Retiro de contenido | Publicar aviso de retirada/sustitución | Se advierte al estudiante sin borrar evidencias históricas |
 | SYNC-018 | Detección editorial | Cambiar fuente externa sin aprobación editorial | Se genera propuesta/aviso; no se publica automáticamente |
 | SYNC-019 | Reintento/backoff | Servicio intermitente | Reintentos limitados sin bucle agresivo ni bloqueo del usuario |
-| SYNC-020 | Electron y desarrollo | Ejecutar en ambos modos | Mismo comportamiento de sincronización y almacenamiento local |
+| SYNC-020 | Electron y desarrollo | Ejecutar en ambos modos | Mismo comportamiento de sincronización y almacenamiento local |\n| SYNC-021 | Firma y hash sin circularidad | Manifiesto externo firmado declara hash del ZIP | Firma y hash se verifican sin que el manifiesto forme parte del ZIP hasheado |
+| SYNC-022 | Anti-replay/downgrade | Se presenta manifiesto válido con sequence inferior o repetida con contenido distinto | Cliente rechaza la publicación antigua o inconsistente |
+| SYNC-023 | Redirección de host | URL o redirección apunta a host no permitido | Descarga rechazada |
+| SYNC-024 | ZIP malicioso | Entradas con traversal, symlink, duplicados o ratio/tamaño excesivo | Rechazo antes de escribir fuera del staging |
+| SYNC-025 | Reanudación segura | Descarga incompleta o archivo temporal previo alterado | Se descarta o valida de nuevo; nunca se activa parcialmente |
 
 La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
