@@ -199,6 +199,11 @@ def _channel_sync_lock(channel):
     lock_path = settings.DATA_DIR / f".knowledge-sync-{channel}.lock"
     lock_path.parent.mkdir(parents=True, exist_ok=True)
     handle = open(lock_path, "a+b")
+    if os.name != "nt":
+        try:
+            os.chmod(lock_path, 0o600)
+        except OSError:
+            pass
     locked = False
     try:
         if os.name == "nt":
@@ -388,7 +393,6 @@ def _sincronizar_conocimiento_sin_bloqueo(
             "La sincronización terminó con un error interno; el contenido local se conserva.",
             code="sync_internal_error",
         )
-
 
 
 def sincronizar_conocimiento(**kwargs):
