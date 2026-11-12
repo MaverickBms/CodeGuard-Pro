@@ -40,16 +40,23 @@ hiddenimports = [
     "apps.roadmaps.distribution",
     "apps.roadmaps.installer",
     "argon2",
+    "cryptography",
+    "cryptography.hazmat.primitives.asymmetric.ed25519",
+    "django",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.core.management",
+    "django.db.backends",
+    "django.db.backends.sqlite3",
     "whitenoise",
     "waitress",
 ]
 hiddenimports += collect_submodules("apps")
+hiddenimports += collect_submodules("django")
 
 a = Analysis(
     ["server_entry.py"],
