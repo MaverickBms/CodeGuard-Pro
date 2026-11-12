@@ -218,13 +218,13 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | EDIT-001 | Publicar un borrador directamente | Se rechaza la transición |
 | EDIT-002 | Enviar versión sin fuente o con hash alterado | Se rechaza el envío a revisión |
 | EDIT-003 | Transición con usuario no editorial | Se rechaza la operación |
-| EDIT-004 | Aprobar una versión en revisión | Se registra revisor y fecha |
-| EDIT-005 | Modificar snapshot tras enviar a revisión | El modelo rechaza el cambio |
-| EDIT-006 | Publicar una versión aprobada | Se registra publicador y fecha |
-| EDIT-007 | Publicar una nueva versión | La anterior pasa a sustituida en la misma transacción |
-| EDIT-008 | Retirar publicación sin motivo | Se rechaza la operación |
-| EDIT-009 | Retirar publicación con motivo | Se conserva snapshot, motivo, responsable y fecha de retirada |
-| EDIT-010 | Publicar dos versiones simultáneas | Solo una versión queda publicada por lección |
+| EDIT-004 | Enviar a revisión | Se registra remitente y fecha |\n| EDIT-005 | Aprobar una versión en revisión | Se registra revisor y fecha |
+| EDIT-006 | Modificar snapshot tras enviar a revisión | El modelo rechaza el cambio |
+| EDIT-007 | Publicar una versión aprobada | Se registra publicador y fecha |
+| EDIT-008 | Publicar una nueva versión | La anterior pasa a sustituida en la misma transacción |
+| EDIT-009 | Retirar publicación sin motivo | Se rechaza la operación |
+| EDIT-010 | Retirar publicación con motivo | Se conserva snapshot, motivo, responsable y fecha de retirada |
+| EDIT-011 | Publicar dos versiones simultáneas | Solo una versión queda publicada por lección |
 
 ## 6.5 Pruebas de protección de versiones
 
