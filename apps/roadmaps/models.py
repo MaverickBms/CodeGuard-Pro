@@ -722,6 +722,12 @@ class ReferenciaFuenteContenidoQuerySet(models.QuerySet):
             raise ValidationError("No se pueden modificar referencias de versiones congeladas.")
         return super().bulk_update(objs, fields, batch_size=batch_size)
 
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        if any(obj.version.estado != "borrador" for obj in objs):
+            raise ValidationError("No se pueden crear referencias en versiones congeladas.")
+        return super().bulk_create(objs, **kwargs)
+
     def delete(self):
         if self.exclude(version__estado="borrador").exists():
             raise ValidationError("No se pueden eliminar referencias de versiones congeladas.")
