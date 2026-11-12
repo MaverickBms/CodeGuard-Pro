@@ -295,7 +295,9 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | SYNC-035 | Colisión de identidad | UUID de lección, ejemplo o ejercicio repetido/reasignado en el paquete | Rechazo |
 | SYNC-036 | Archivo ZIP especial | Symlink, ruta absoluta, traversal, directorio o tipo especial | Rechazo sin extracción |
 | SYNC-037 | ZIP bomb | Tamaño descomprimido o ratio supera límites | Rechazo antes de activar |
-| SYNC-038 | Registro local | Secuencia duplicada o dos paquetes activos en el mismo canal | Restricción de base de datos |\n| SYNC-039 | Ciclo de vida del paquete | Salto de estado, cambio de hash/identidad o borrado | Rechazo por modelo/ORM |\n| SYNC-040 | Estado por canal | Paquete activo de otro canal o no activo | Rechazo de validación |
+| SYNC-038 | Registro local | Secuencia duplicada o dos paquetes activos en el mismo canal | Restricción de base de datos |
+| SYNC-039 | Ciclo de vida del paquete | Salto de estado, cambio de hash/identidad o borrado | Rechazo por modelo/ORM |
+| SYNC-040 | Estado por canal | Paquete activo de otro canal o no activo | Rechazo de validación |
 
 La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
 
