@@ -46,7 +46,7 @@ class Command(BaseCommand):
                 output_directory=options["output_directory"],
                 key_password=password,
             )
-        except (PublicationError, OSError) as exc:
+        except (ValueError, OSError) as exc:
             raise CommandError(str(exc)) from exc
 
         release = result["release"]
