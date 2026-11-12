@@ -717,6 +717,7 @@ class ReferenciaFuenteContenidoQuerySet(models.QuerySet):
         return super().update(**kwargs)
 
     def bulk_update(self, objs, fields, batch_size=None):
+        objs = list(objs)
         if any(obj.version.estado != "borrador" for obj in objs):
             raise ValidationError("No se pueden modificar referencias de versiones congeladas.")
         return super().bulk_update(objs, fields, batch_size=batch_size)
