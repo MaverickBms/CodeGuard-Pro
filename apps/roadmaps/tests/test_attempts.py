@@ -743,6 +743,15 @@ class IntentosEjercicioTests(TestCase):
         puntero = ContenidoLeccionActivo.objects.get(leccion=self.leccion)
         self.assertEqual(puntero.version, version)
 
+        self.ejercicio.enunciado = "BORRADOR EDITADO: no debe mostrarse."
+        self.ejercicio.save(update_fields=["enunciado"])
+        response = self.client.get(
+            reverse("roadmaps:leccion_detalle", args=[self.leccion.id])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Declara una variable llamada nombre.")
+        self.assertNotContains(response, "BORRADOR EDITADO")
+
         intento = registrar_intento_ejercicio(
             self.usuario, self.ejercicio, "nombre = 'Ada'"
         )
