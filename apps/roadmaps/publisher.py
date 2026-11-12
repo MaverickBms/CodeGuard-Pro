@@ -19,6 +19,7 @@ from datetime import timezone as datetime_timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from cryptography.exceptions import UnsupportedAlgorithm
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from django.core.exceptions import ValidationError
@@ -74,6 +75,13 @@ def _load_signing_key(private_key_path, password=None):
     path = Path(private_key_path).expanduser()
     if path.is_symlink() or not path.is_file():
         raise PublicationError("La clave privada debe ser un archivo regular externo al repositorio.")
+    repository_root = Path(__file__).resolve().parents[2]
+    try:
+        path.resolve().relative_to(repository_root)
+    except ValueError:
+        pass
+    else:
+        raise PublicationError("La clave privada no puede ubicarse dentro del repositorio.")
     if os.name == "posix" and stat.S_IMODE(path.stat().st_mode) & 0o077:
         raise PublicationError("La clave privada debe tener permisos exclusivos para su propietario (por ejemplo, 0600).")
     try:
@@ -81,7 +89,7 @@ def _load_signing_key(private_key_path, password=None):
             path.read_bytes(),
             password=password.encode("utf-8") if isinstance(password, str) else password,
         )
-    except (OSError, ValueError, TypeError) as exc:
+    except (OSError, ValueError, TypeError, UnsupportedAlgorithm) as exc:
         raise PublicationError("No se pudo cargar la clave privada PEM.") from exc
     if not isinstance(key, Ed25519PrivateKey):
         raise PublicationError("La clave privada configurada no es Ed25519.")
