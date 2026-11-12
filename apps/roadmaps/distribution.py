@@ -338,6 +338,7 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
         seen_lessons = set()
         seen_resources = set()
         referenced_sources = set()
+        referenced_source_usages = {}
         for item in files:
             _exact_keys(item, {"path", "size_bytes", "sha256"}, "package-index.files[]")
             path = item["path"]
@@ -363,7 +364,12 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
                 lesson_uuid = _validate_document(document, path)
             except ImportContentError as exc:
                 raise DistributionError(f"{path}: documento académico incompatible: {exc}") from exc
-            referenced_sources.update(source["clave"] for source in document["fuentes"])
+            for source_reference in document["fuentes"]:
+                source_uuid = source_reference["clave"]
+                referenced_sources.add(source_uuid)
+                referenced_source_usages.setdefault(source_uuid, set()).add(
+                    source_reference["uso_declarado"]
+                )
             if str(lesson_uuid) != LESSON_PATH_RE.fullmatch(path).group(1):
                 raise DistributionError(f"{path}: el UUID del archivo no coincide con la identidad de la lección.")
             if lesson_uuid in seen_lessons or str(lesson_uuid) in seen_resources:
@@ -430,4 +436,12 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
                 source_catalog[raw_uuid] = source
             if set(source_catalog) != referenced_sources:
                 raise DistributionError("El catálogo de fuentes no coincide exactamente con las referencias de las lecciones.")
+            for source_uuid, metadata in source_catalog.items():
+                if (
+                    metadata["estado_revision_licencia"] == "solo_referencia"
+                    and referenced_source_usages.get(source_uuid) != {"original"}
+                ):
+                    raise DistributionError(
+                        f"Fuente {source_uuid}: la licencia solo permite contenido original."
+                    )
         return {"index": index, "payloads": payloads, "sources": source_catalog}
