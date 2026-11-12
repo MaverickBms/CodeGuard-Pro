@@ -465,6 +465,8 @@ El cliente local seguirá siendo pull-only. La implementación del publicador no
 
 La configuración se inyecta mediante variables de entorno: `CODEGUARD_SYNC_MANIFEST_URL`, `CODEGUARD_SYNC_SIGNATURE_URL`, `CODEGUARD_SYNC_ALLOWED_HOSTS` (lista separada por comas), `CODEGUARD_SYNC_TRUSTED_PUBLIC_KEYS` (objeto JSON de `key_id` a clave Ed25519 pública Base64), `CODEGUARD_APP_VERSION` y `CODEGUARD_SYNC_TIMEOUT` (opcional; 12 s por defecto). No se incorpora ninguna clave privada ni una clave pública de producción al repositorio.
 
+`CODEGUARD_SYNC_MANIFEST_URL` y `CODEGUARD_SYNC_SIGNATURE_URL` deben apuntar a los dos archivos actuales del mismo release/canal. El publicador local genera artefactos inmutables con nombres versionados (`manifest-<canal>-<secuencia>.json` y `.ed25519`); el futuro proceso de publicación remota deberá actualizar dos alias estables del canal de forma coordinada para que el cliente siempre lea una pareja coherente. El cliente no deduce ni construye la URL de la firma.
+
 ### 9.3 Política de ejecución
 
 Estado actual y siguiente paso:
