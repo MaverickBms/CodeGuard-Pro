@@ -67,7 +67,7 @@ class RegistroPaquetesTests(TestCase):
             package.save()
 
     def test_no_se_puede_saltar_transicion_de_paquete(self):
-        package = self.crear_paquete(sequence=1)
+        package = self.crear_paquete(sequence=1, estado="descargado")
         package.estado = "activo"
         package.installed_at = datetime(2026, 11, 11, 1, tzinfo=timezone.utc)
         with self.assertRaisesMessage(ValidationError, "Transición"):
