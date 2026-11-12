@@ -315,6 +315,10 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
         index_version = index.get("schema_version")
         if type(index_version) is not int or index_version not in {1, 2}:
             raise DistributionError("Versión de índice no compatible.")
+        if index_version == 2 and "sources" not in index:
+            raise DistributionError(
+                "package-index: el catálogo de fuentes no coincide exactamente con el esquema requerido para la versión 2."
+            )
         index_keys = {"schema_version", "package_id", "package_version", "content_schema_version", "files"}
         if index_version == 2:
             index_keys.add("sources")
