@@ -14,6 +14,7 @@ from apps.roadmaps.content_import import (
     validar_directorio_contenido,
 )
 from apps.roadmaps.knowledge import (
+    aprobar_version_contenido,
     enviar_version_a_revision,
     revisar_licencia_fuente,
 )
@@ -178,6 +179,10 @@ class ImportacionContenidoTests(TestCase):
         version = importar_documentos_validados(report, actor=self.editor)["created"][0]
         version = enviar_version_a_revision(version.pk, actor=self.editor)
         self.assertEqual(version.estado, "revision")
+        referencia = version.referencias.get()
+        self.assertEqual(referencia.estado_licencia_snapshot, "compatible")
+        self.assertEqual(referencia.evidencia_licencia_snapshot, "https://docs.python.org/3/license.html")
+        self.assertEqual(referencia.licencia_revisada_por_snapshot, self.editor)
         self.fuente.refresh_from_db()
         self.assertEqual(self.fuente.revisada_por, self.editor)
 
@@ -187,6 +192,27 @@ class ImportacionContenidoTests(TestCase):
         version = importar_documentos_validados(report, actor=self.editor)["created"][0]
         with self.assertRaisesMessage(ValidationError, "solo permite contenido original"):
             enviar_version_a_revision(version.pk, actor=self.editor)
+
+
+    def test_cambio_posterior_de_licencia_bloquea_aprobacion_y_snapshot_es_inmutable(self):
+        self.approve_license()
+        report = validar_directorio_contenido(self.directory)
+        version = importar_documentos_validados(report, actor=self.editor)["created"][0]
+        enviar_version_a_revision(version.pk, actor=self.editor)
+        referencia = version.referencias.get()
+        referencia.uso_declarado = "adaptacion"
+        with self.assertRaisesMessage(ValidationError, "procedencia de una versión en revisión es inmutable"):
+            referencia.save()
+
+        revisar_licencia_fuente(
+            self.fuente.pk,
+            actor=self.editor,
+            estado="solo_referencia",
+            evidencia="https://docs.python.org/3/license.html",
+            nota="Se actualizó la interpretación de los términos.",
+        )
+        with self.assertRaisesMessage(ValidationError, "cambió después del envío a revisión"):
+            aprobar_version_contenido(version.pk, actor=self.editor)
 
     def test_usuario_sin_privilegios_no_puede_importar(self):
         report = validar_directorio_contenido(self.directory)
