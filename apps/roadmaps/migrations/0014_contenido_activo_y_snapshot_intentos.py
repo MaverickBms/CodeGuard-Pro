@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AddField(
-            model_name="intento ejercicio".replace(" ", ""),
+            model_name="intentoejercicio",
             name="version_contenido",
             field=models.ForeignKey(
                 blank=True,
