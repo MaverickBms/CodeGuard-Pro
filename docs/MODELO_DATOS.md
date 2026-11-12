@@ -240,7 +240,9 @@ Ver `docs/MATRIZ_TRAZABILIDAD.md` para el mapeo requisito → entidad.
 | referencia_fuente_contenido | (version, fuente) | Referencia única versión-fuente |
 | paquete_conocimiento_instalado | (channel, sequence) | Secuencia única por canal |
 | paquete_conocimiento_instalado | (channel) WHERE estado='activo' | Un solo activo por canal |
-| paquete_conocimiento_instalado | (channel, -sequence) | Índice de consulta por canal |\n| contenido_leccion_paquete | (paquete, leccion) | Snapshot único por paquete/lección |\n| fuente_paquete_conocimiento | (paquete, source_uuid) | Fuente única por paquete |
+| paquete_conocimiento_instalado | (channel, -sequence) | Índice de consulta por canal |
+| contenido_leccion_paquete | (paquete, leccion) | Snapshot único por paquete/lección |
+| fuente_paquete_conocimiento | (paquete, source_uuid) | Fuente única por paquete |
 
 ---
 
