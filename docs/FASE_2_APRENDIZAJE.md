@@ -308,3 +308,8 @@ La sincronización debe ejecutarse como tarea no bloqueante después de que Elec
 El comando comparte la base de datos local y no debe modificar el roadmap curricular. El cargador actual `cargar_ascenso` no es un importador de contenido: trabaja con títulos, reconstruye prerrequisitos y su opción `--recrear` puede borrar progreso por cascada. El sincronizador no debe llamarlo ni recrear etapas, módulos o lecciones. La identidad UUID del catálogo debe incorporarse mediante una migración/exportación controlada.
 
 La descarga y verificación ocurren fuera de la transacción; la activación local se realiza en una transacción corta y protegida contra ejecuciones simultáneas. Si la conexión falla, el servicio no responde o SQLite está ocupado, la versión local activa permanece disponible.
+
+
+### Primer incremento técnico
+
+La base de conocimiento comienza con identificadores UUID permanentes para lecciones, ejemplos y ejercicios, además de protección de las relaciones históricas de intentos y evaluadores. La migración preserva registros existentes y prepara identidades portables. Todavía no implementa snapshots ni sincronización online.
