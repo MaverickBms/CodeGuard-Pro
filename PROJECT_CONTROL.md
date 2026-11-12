@@ -80,8 +80,8 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Repositorio | `/home/mvxbms/Documentos/CodeGuard` |
 | Línea base | `main` en `cd7e18e` (incluye la corrección del catálogo v2) |
 | Rama de correcciones | `fix/phase-2-integrity-learning` |
-| HEAD de correcciones | Consultar `fix/phase-2-integrity-learning`; contiene commits posteriores a `main`, no fusionados |
-| Remoto | `origin/fix/phase-2-integrity-learning` |
+| HEAD de correcciones | `e5cfcacb2404eddf7c23fa48fc679cb863071bee`; no fusionado |
+| Diferencia respecto a `main` | 32 commits por delante, 0 por detrás; `main` sin modificar |\n| Remoto | `origin/fix/phase-2-integrity-learning` |
 | Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
 | Migraciones roadmaps | 0014 y 0015 validadas localmente por el propietario; 0016 añadida en la rama correctiva y pendiente de ejecución local |
 | Comandos de gestión | 9 (`cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`) |
