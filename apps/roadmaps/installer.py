@@ -271,6 +271,19 @@ def instalar_paquete_firmado(
                 raise InstallationError(
                     f"La fuente local '{source.titulo}' no conserva una revisión de licencia válida para instalar un índice v1."
                 )
+        for payload in archive["payloads"].values():
+            legacy_document = load_strict_json(
+                payload, max_bytes=MAX_DOCUMENT_BYTES
+            )
+            for source_reference in legacy_document["fuentes"]:
+                source = legacy_sources[source_reference["clave"]]
+                if (
+                    source.estado_revision_licencia == "solo_referencia"
+                    and source_reference["uso_declarado"] != "original"
+                ):
+                    raise InstallationError(
+                        f"La fuente local '{source.titulo}' solo permite contenido original."
+                    )
     manifest_package = manifest["package"]
     package_id = UUID(manifest_package["package_id"])
     if PaqueteConocimientoInstalado.objects.filter(package_id=package_id).exists():
