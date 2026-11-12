@@ -318,3 +318,8 @@ La base de conocimiento comienza con identificadores UUID permanentes para lecci
 ### Catálogo de fuentes y snapshots (incremento en curso)
 
 Se incorporan modelos para registrar fuentes técnicas con licencia y edición, snapshots JSON versionados por lección y referencias de atribución. Se limita a una versión publicada por lección y se protegen las fuentes/versiones históricas contra borrado. Este incremento todavía no implementa el servicio que genera snapshots ni el proceso de publicación/sincronización.
+
+
+### Servicio inicial de snapshots
+
+Se añade `apps/roadmaps/knowledge.py` para generar snapshots deterministas a partir del contenido editorial, incluyendo ejemplos y ejercicios publicados, y asociar referencias de fuentes. Cada operación crea una versión en estado borrador con SHA-256 y número incremental. No publica automáticamente ni modifica el progreso del estudiante.
