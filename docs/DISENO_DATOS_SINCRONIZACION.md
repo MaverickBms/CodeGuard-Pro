@@ -549,3 +549,21 @@ Se incorpora una migración aditiva para asignar UUID permanentes a lecciones, e
 Las relaciones desde intentos hacia ejercicios, desde evaluadores hacia ejercicios y desde intentos hacia la configuración aplicada pasan a protección contra borrado (PROTECT). El historial se conserva; la retirada de contenido deberá realizarse mediante estados editoriales y no mediante eliminación física.
 
 Este incremento no crea todavía snapshots ni sincronización de red. Las claves UUID deberán exportarse posteriormente al catálogo curricular canónico y nunca regenerarse al cargar ASCENSO o instalar paquetes.
+
+
+## 17. Catálogo de fuentes y snapshots versionados
+
+Se añade la primera estructura persistente para registrar la procedencia y las versiones del conocimiento académico:
+
+- `FuenteConocimiento`: publicador, título, URL canónica, edición, licencia, fecha de consulta y notas editoriales.
+- `VersionContenidoLeccion`: snapshot JSON, UUID, número de versión, versión del esquema, SHA-256, estado editorial, resumen de cambios y fechas de revisión/publicación.
+- `ReferenciaFuenteContenido`: relación explícita entre una versión y sus fuentes, con rol, localizador y atribución.
+
+Restricciones:
+- Una sola versión publicada por lección.
+- Número de versión único por lección.
+- Una fuente no se duplica por URL canónica y edición.
+- La versión y la fuente referenciadas se protegen contra borrado.
+- El hash debe validarse como hexadecimal SHA-256 en la validación del modelo.
+
+**Límite de este incremento:** los snapshots se almacenan, pero aún no se generan automáticamente desde `ContenidoLeccion`, ejemplos y ejercicios; tampoco se ha implementado el flujo editorial, la firma de paquetes ni el cliente de sincronización. La inmutabilidad completa deberá centralizarse en servicios de publicación y reforzarse en el siguiente incremento; no se debe editar una versión publicada desde interfaces ordinarias.
