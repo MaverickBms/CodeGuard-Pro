@@ -178,6 +178,7 @@ Implementado en la base de la Fase 2 y ampliado en ramas de trabajo:
 - Snapshots JSON de lecciones versionados, con hash SHA-256, número incremental y referencias de atribución.
 - Servicio para generar snapshots deterministas que incluye teoría, objetivos, ejemplos y ejercicios publicados, sin alterar versiones anteriores.
 - Flujo editorial de dominio: borrador → revisión → aprobación → publicación; sustitución atómica de la versión anterior y retirada con motivo.
+- Registro interno de fuentes documentales mediante `registrar_fuente_conocimiento`: URL HTTPS, publicador, edición, licencia y notas; evita duplicados y deja explícita la verificación humana pendiente.
 - Auditoría de remitente, revisor, publicador y responsable/fecha de retirada.
 - Protección ORM contra cambios de snapshots en estados revisados, escrituras masivas y saltos de estados.
 - Comandos internos `crear_version_leccion` y `gestionar_version_leccion`; Django Admin permanece deshabilitado.
@@ -194,6 +195,7 @@ Pendiente de la Fase 2:
 - Cargar y revisar contenido académico real para las lecciones.
 - Completar los metadatos editoriales de revisión técnica, vigencia y compatibilidad por tecnología/versión, y poblar el catálogo con fuentes reales verificadas.
 - Completar el flujo editorial con permisos granulares, interfaz de autoría/revisión, validadores pedagógicos y carga masiva; el primer flujo por servicios y comandos ya existe en la rama de trabajo.
+- Verificar localmente las pruebas nuevas del registro de fuentes y ampliar la validación editorial para exigir evidencia de licencia/condiciones de reutilización antes de publicar.
 - Implementar el servicio central de distribución, manifiesto firmado y paquetes académicos inmutables.
 - Implementar el cliente de sincronización pull-only, verificación criptográfica, instalación atómica, historial y rollback. **Este sistema está documentado y aprobado, pero todavía no está implementado.**
 - Validar navegación y presentación de todos los tipos de lección.
