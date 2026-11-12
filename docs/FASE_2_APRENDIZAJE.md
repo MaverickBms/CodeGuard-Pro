@@ -116,7 +116,7 @@ Luego iniciar CodeGuard Pro con `./run.sh`, abrir una etapa y entrar en una lecc
 
 El índice del paquete firmado incorpora un catálogo normalizado de fuentes con UUID, datos bibliográficos, decisión/evidencia/alcance de licencia y fecha de revisión. Se excluye la identidad personal del revisor. El verificador admite índices v1 anteriores y valida estrictamente v2, incluida la correspondencia exacta entre fuentes declaradas y referencias de las lecciones. El instalador conserva el catálogo firmado en `FuentePaqueteConocimiento`, asociado al paquete. No modifica ni sobrescribe `FuenteConocimiento`, por lo que cada versión instalada mantiene su propio expediente de fuentes.
 
-Las pruebas SRC-001 a SRC-007, PUB-001 a PUB-012 y las pruebas del instalador quedaron incluidas en las 119 pruebas confirmadas por el propietario. SRC-008 y las pruebas del cliente HTTP se añadieron después y requieren validación específica.
+Las pruebas SRC-001 a SRC-008, PUB-001 a PUB-012 y las pruebas del instalador quedaron incluidas en las 119 pruebas confirmadas por el propietario. Las pruebas nuevas del cliente HTTP requieren validación específica.
 
 ## 10. Instalador transaccional de paquetes (validado en main)
 
