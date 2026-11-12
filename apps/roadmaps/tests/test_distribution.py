@@ -1,0 +1,194 @@
+"""Pruebas del contrato criptográfico y estructural de distribución."""
+import base64
+import hashlib
+import io
+import json
+import stat
+import uuid
+import zipfile
+from datetime import datetime, timezone
+
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from django.test import SimpleTestCase
+
+from apps.roadmaps.distribution import (
+    DistributionError,
+    validate_manifest_structure,
+    validate_package_archive,
+    verify_signed_manifest,
+)
+
+
+class DistribucionFirmadaTests(SimpleTestCase):
+    def setUp(self):
+        self.private_key = Ed25519PrivateKey.generate()
+        public_bytes = self.private_key.public_key().public_bytes(
+            encoding=serialization.Encoding.Raw,
+            format=serialization.PublicFormat.Raw,
+        )
+        self.trusted_keys = {"test-key-1": base64.b64encode(public_bytes).decode("ascii")}
+        self.package_id = str(uuid.uuid4())
+        self.lesson_id = str(uuid.uuid4())
+        self.allowed_hosts = {"cdn.codeguard.example"}
+
+    def manifest_dict(self, *, sequence=10, package=None):
+        package_bytes = b"placeholder"
+        return {
+            "manifest_version": 1,
+            "channel": "stable",
+            "sequence": sequence,
+            "published_at": "2026-11-11T18:00:00Z",
+            "minimum_app_version": "1.0.0",
+            "content_schema_version": 1,
+            "package": package or {
+                "package_id": self.package_id,
+                "package_version": "2026.11.1",
+                "url": "https://cdn.codeguard.example/stable/package.zip",
+                "size_bytes": len(package_bytes),
+                "sha256": hashlib.sha256(package_bytes).hexdigest(),
+            },
+            "key_id": "test-key-1",
+        }
+
+    def sign(self, manifest):
+        raw = json.dumps(manifest, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        signature = base64.b64encode(self.private_key.sign(raw))
+        return raw, signature
+
+    def verify(self, raw, signature, **kwargs):
+        return verify_signed_manifest(
+            raw,
+            signature,
+            trusted_public_keys=self.trusted_keys,
+            allowed_hosts=self.allowed_hosts,
+            expected_channel="stable",
+            app_version="1.0.0",
+            **kwargs,
+        )
+
+    def build_zip(self, *, extra=None, indexed_path=None, symlink=False):
+        payload_path = indexed_path or f"payload/lessons/{self.lesson_id}.json"
+        payload = b'{"schema_version":1,"snapshot":{}}'
+        index = {
+            "schema_version": 1,
+            "package_id": self.package_id,
+            "package_version": "2026.11.1",
+            "content_schema_version": 1,
+            "files": [{
+                "path": payload_path,
+                "size_bytes": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+            }],
+        }
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr("package-index.json", json.dumps(index, separators=(",", ":")))
+            if symlink:
+                info = zipfile.ZipInfo(payload_path)
+                info.create_system = 3
+                info.external_attr = (stat.S_IFLNK | 0o777) << 16
+                archive.writestr(info, "target")
+            else:
+                archive.writestr(payload_path, payload)
+            if extra:
+                archive.writestr(extra[0], extra[1])
+        return buffer.getvalue()
+
+    def manifest_for_zip(self, package_bytes):
+        manifest = self.manifest_dict(package={
+            "package_id": self.package_id,
+            "package_version": "2026.11.1",
+            "url": "https://cdn.codeguard.example/stable/package.zip",
+            "size_bytes": len(package_bytes),
+            "sha256": hashlib.sha256(package_bytes).hexdigest(),
+        })
+        return manifest
+
+    def test_manifest_firmado_se_verifica(self):
+        raw, signature = self.sign(self.manifest_dict())
+        result = self.verify(raw, signature)
+        self.assertFalse(result["unchanged"])
+        self.assertEqual(result["manifest"]["sequence"], 10)
+
+    def test_firma_alterada_se_rechaza(self):
+        raw, signature = self.sign(self.manifest_dict())
+        altered = signature[:-2] + (b"AA" if signature[-2:] != b"AA" else b"BB")
+        with self.assertRaisesMessage(DistributionError, "firma"):
+            self.verify(raw, altered)
+
+    def test_clave_no_confiable_se_rechaza(self):
+        raw, signature = self.sign(self.manifest_dict())
+        manifest = json.loads(raw)
+        manifest["key_id"] = "unknown"
+        raw_unknown, signature_unknown = self.sign(manifest)
+        with self.assertRaisesMessage(DistributionError, "almacén de confianza"):
+            self.verify(raw_unknown, signature_unknown)
+
+    def test_manifiesto_rechaza_host_no_autorizado(self):
+        manifest = self.manifest_dict()
+        manifest["package"]["url"] = "https://attacker.example/package.zip"
+        raw, signature = self.sign(manifest)
+        with self.assertRaisesMessage(DistributionError, "host autorizado"):
+            self.verify(raw, signature)
+
+    def test_manifiesto_rechaza_claves_json_duplicadas(self):
+        raw = b'{"manifest_version":1,"manifest_version":1}'
+        with self.assertRaisesMessage(DistributionError, "duplicada"):
+            validate_manifest_structure(raw, allowed_hosts=self.allowed_hosts)
+
+    def test_manifiesto_rechaza_downgrade_y_replay_modificado(self):
+        manifest = self.manifest_dict(sequence=9)
+        raw, signature = self.sign(manifest)
+        with self.assertRaisesMessage(DistributionError, "antiguo"):
+            self.verify(raw, signature, current_sequence=10, current_manifest_sha256="a" * 64)
+
+        manifest = self.manifest_dict(sequence=10)
+        raw, signature = self.sign(manifest)
+        with self.assertRaisesMessage(DistributionError, "secuencia"):
+            self.verify(raw, signature, current_sequence=10, current_manifest_sha256="b" * 64)
+
+    def test_mismo_manifiesto_instalado_es_no_op(self):
+        raw, signature = self.sign(self.manifest_dict(sequence=10))
+        digest = hashlib.sha256(raw).hexdigest()
+        result = self.verify(raw, signature, current_sequence=10, current_manifest_sha256=digest)
+        self.assertTrue(result["unchanged"])
+
+    def test_version_minima_de_aplicacion(self):
+        manifest = self.manifest_dict()
+        manifest["minimum_app_version"] = "2.0.0"
+        raw, signature = self.sign(manifest)
+        with self.assertRaisesMessage(DistributionError, "más reciente"):
+            self.verify(raw, signature)
+
+    def test_paquete_zip_valido(self):
+        package_bytes = self.build_zip()
+        manifest = self.manifest_for_zip(package_bytes)
+        result = validate_package_archive(package_bytes, manifest=manifest)
+        self.assertEqual(len(result["payloads"]), 1)
+        self.assertIn(f"payload/lessons/{self.lesson_id}.json", result["payloads"])
+
+    def test_paquete_rechaza_hash_incorrecto(self):
+        package_bytes = self.build_zip()
+        manifest = self.manifest_for_zip(package_bytes)
+        manifest["package"]["sha256"] = "0" * 64
+        with self.assertRaisesMessage(DistributionError, "SHA-256"):
+            validate_package_archive(package_bytes, manifest=manifest)
+
+    def test_paquete_rechaza_ruta_traversal(self):
+        package_bytes = self.build_zip(extra=("../outside.txt", b"x"))
+        manifest = self.manifest_for_zip(package_bytes)
+        with self.assertRaisesMessage(DistributionError, "ruta"):
+            validate_package_archive(package_bytes, manifest=manifest)
+
+    def test_paquete_rechaza_symlink(self):
+        package_bytes = self.build_zip(symlink=True)
+        manifest = self.manifest_for_zip(package_bytes)
+        with self.assertRaisesMessage(DistributionError, "tipo de archivo"):
+            validate_package_archive(package_bytes, manifest=manifest)
+
+    def test_paquete_rechaza_archivo_no_declarado(self):
+        package_bytes = self.build_zip(extra=("payload/extra.json", b"{}"))
+        manifest = self.manifest_for_zip(package_bytes)
+        with self.assertRaisesMessage(DistributionError, "no declarados"):
+            validate_package_archive(package_bytes, manifest=manifest)
