@@ -157,6 +157,7 @@ def validate_manifest_structure(raw: bytes, *, allowed_hosts):
         or parsed.username
         or parsed.password
         or parsed.fragment
+        or parsed.port not in {None, 443}
     ):
         raise DistributionError("La URL debe usar HTTPS y un host autorizado, sin credenciales ni fragmentos.")
     return manifest
@@ -284,11 +285,12 @@ def validate_package_archive(package_bytes: bytes, *, manifest: dict):
         except (RuntimeError, zipfile.BadZipFile, OSError) as exc:
             raise DistributionError("No se pudo leer el índice del paquete.") from exc
         _exact_keys(index, {"schema_version", "package_id", "package_version", "content_schema_version", "files"}, "package-index")
-        if index["schema_version"] != 1:
+        if type(index["schema_version"]) is not int or index["schema_version"] != 1:
             raise DistributionError("Versión de índice no compatible.")
         if (
             index["package_id"] != package_meta["package_id"]
             or index["package_version"] != package_meta["package_version"]
+            or type(index["content_schema_version"]) is not int
             or index["content_schema_version"] != manifest["content_schema_version"]
         ):
             raise DistributionError("La identidad del índice no coincide con el manifiesto.")
