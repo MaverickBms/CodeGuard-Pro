@@ -349,11 +349,9 @@ La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que 
 
 ### 6.8 Validación confirmada — distribución firmada y registro local
 
-El usuario reportó la ejecución satisfactoria de **93 pruebas (OK)** en el entorno local después de:
-- Instalar `cryptography==46.0.3` en el entorno virtual del proyecto.
-- Corregir `test_no_se_puede_saltar_transicion_de_paquete`: el caso parte de `descargado` e intenta `activo`, transición no permitida por el ciclo de vida.
+El propietario reportó inicialmente **93 pruebas OK** tras instalar `cryptography==46.0.3` y corregir `test_no_se_puede_saltar_transicion_de_paquete`. Esa cifra fue posteriormente superada por la confirmación de **108 pruebas OK** en `main` `cd7e18e`, junto con `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes. La suite de 108 incluye las correcciones de snapshots, publicador y catálogo firmado v2 descritas en las secciones siguientes.
 
-Esta confirmación acredita la suite ejecutada en el entorno del usuario. No equivale a una ejecución independiente en CI ni valida componentes aún no implementados, como publicador central, cliente HTTP, instalador, activación y rollback.
+La confirmación corresponde al entorno local del propietario y no equivale a una ejecución independiente en CI. No valida la migración 0016 ni el instalador/rollback incorporados después en la rama correctiva.
 
 
 ---
