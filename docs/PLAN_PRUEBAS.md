@@ -163,3 +163,34 @@ Total: **53 tests automatizados pasando** (`apps.accounts`, `apps.audit`, `apps.
 Las pruebas de seguridad restantes (CSRF, XSS, validación de archivos, acceso no autorizado, path traversal, archivos maliciosos, exposición de secretos) siguen pendientes en sus respectivos incrementos.
 
 La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida manualmente.
+
+---
+
+## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
+
+> **Estado: PENDIENTES.** El sincronizador, el servicio central y los paquetes firmados todavía no están implementados. Estas pruebas definen el contrato que deberá verificarse cuando se construyan.
+
+| ID | Prueba | Caso | Resultado esperado |
+|---|---|---|---|
+| SYNC-001 | Arranque offline | Iniciar la aplicación sin conexión | El núcleo local abre sin esperar al servicio central |
+| SYNC-002 | Consulta offline | Abrir una lección instalada sin red | Contenido y recursos disponibles desde almacenamiento local |
+| SYNC-003 | Manifiesto disponible | Conexión activa y nueva versión publicada | Se detecta una actualización compatible sin bloquear la interfaz |
+| SYNC-004 | Sin cambios | Manifiesto y versión local coinciden | No se descarga ni reinstala contenido innecesariamente |
+| SYNC-005 | Timeout | Servicio central no responde | Se conserva la versión local y el estudio continúa |
+| SYNC-006 | Descarga interrumpida | Cortar conexión durante descarga | Paquete temporal incompleto no se activa; se puede reintentar |
+| SYNC-007 | Hash inválido | Alterar un byte del paquete | Rechazo de instalación y registro del error |
+| SYNC-008 | Firma inválida | Firma no verificable o clave desconocida | Rechazo del paquete |
+| SYNC-009 | Esquema incompatible | Paquete con versión de esquema no soportada | Rechazo seguro sin reemplazar el contenido actual |
+| SYNC-010 | Aplicación incompatible | Paquete exige versión de app superior | No se instala; se informa la incompatibilidad |
+| SYNC-011 | Tamaño/rutas maliciosas | Paquete excede límites o contiene path traversal | Rechazo antes de escribir fuera del área temporal |
+| SYNC-012 | Instalación atómica | Fallo durante activación | La versión anterior permanece activa |
+| SYNC-013 | Rollback | Restaurar versión previa | Contenido anterior vuelve a estar disponible y se registra la operación |
+| SYNC-014 | Preservación de progreso | Actualizar una lección con intentos existentes | Progreso, intentos, preferencias y notas permanecen intactos |
+| SYNC-015 | Trazabilidad de intentos | Revisar intento creado antes de actualización | Se conserva versión de contenido y evaluador originales |
+| SYNC-016 | Privacidad | Inspeccionar tráfico de sincronización | No se transmiten respuestas, código, calificaciones ni datos personales |
+| SYNC-017 | Retiro de contenido | Publicar aviso de retirada/sustitución | Se advierte al estudiante sin borrar evidencias históricas |
+| SYNC-018 | Detección editorial | Cambiar fuente externa sin aprobación editorial | Se genera propuesta/aviso; no se publica automáticamente |
+| SYNC-019 | Reintento/backoff | Servicio intermitente | Reintentos limitados sin bucle agresivo ni bloqueo del usuario |
+| SYNC-020 | Electron y desarrollo | Ejecutar en ambos modos | Mismo comportamiento de sincronización y almacenamiento local |
+
+La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
