@@ -25,7 +25,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.utils import timezone
 
-from .distribution import validate_manifest_structure, verify_signed_manifest
+from .distribution import (\n    validate_manifest_structure, validate_package_archive, verify_signed_manifest,\n)
 from .models import (
     ContenidoLeccionActivo,
     PublicacionPaqueteConocimiento,
@@ -302,6 +302,7 @@ def publicar_paquete_conocimiento(
     }
     manifest_bytes = _json_bytes(manifest)
     validate_manifest_structure(manifest_bytes, allowed_hosts=allowed_hosts)
+    validate_package_archive(package_bytes, manifest=manifest)
     signature = base64.b64encode(signing_key.sign(manifest_bytes))
     public_bytes = signing_key.public_key().public_bytes(
         encoding=serialization.Encoding.Raw,
