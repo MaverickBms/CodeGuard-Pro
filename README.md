@@ -4,7 +4,11 @@
 
 **CodeGuard Pro** es una plataforma educativa personal, local y **offline-first** que organiza tu roadmap de aprendizaje, gestiona etapas y lecciones, registra tu progreso verificado y documenta tus evidencias.
 
-El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicación de escritorio **Electron**, con **SQLite**. CodeGuard es **offline-first**: no requiere Internet para abrir la aplicación, estudiar con el contenido disponible ni consultar el progreso local. La sincronización opcional con un servicio central de conocimiento revisado está aprobada como parte de la Fase 2, pero **todavía no está implementada**. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
+El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicación de escritorio **Electron**, con **SQLite**. CodeGuard es **offline-first**: no requiere Internet para abrir la aplicación, estudiar con el contenido disponible ni consultar el progreso local.
+
+El roadmap ASCENSO 3.1 (33 etapas) ya está implementado y cargable mediante `python manage.py cargar_ascenso`. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está operativo en la rama de trabajo mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
+
+La sincronización opcional con un servicio central de conocimiento revisado está aprobada como parte de la Fase 2, pero **todavía no está implementada** en la rama principal. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
 
 ---
 
@@ -100,6 +104,18 @@ npm install && npm start
 
 O vía script: `./run.sh`.
 
+Comandos de gestión disponibles:
+
+| Comando | Propósito |
+|---|---|
+| `cargar_ascenso` | Carga o actualiza las 33 etapas del roadmap ASCENSO 3.1 |
+| `crear_version_leccion` | Genera un snapshot versionado borrador de una lección |
+| `gestionar_version_leccion` | Envía, aprueba, publica o retira una versión de contenido |
+| `importar_paquete_contenido` | Importa un lote validado como borradores editoriales |
+| `registrar_fuente_conocimiento` | Registra una fuente documental para el flujo editorial |
+| `revisar_licencia_fuente` | Registra una decisión editorial auditada sobre la licencia de una fuente |
+| `validar_paquete_contenido` | Valida un lote JSON académico sin escribir en la base de datos |
+
 ---
 
 ## 🌐 Funcionamiento offline y actualizaciones de conocimiento
@@ -107,11 +123,12 @@ O vía script: `./run.sh`.
 - El servidor de la aplicación escucha únicamente en `127.0.0.1`.
 - El contenido instalado y los datos del estudiante se conservan localmente.
 - La conexión no es requisito para estudiar con los recursos descargados.
+- El registro local de paquetes (`PaqueteConocimientoInstalado`) y el estado de sincronización por canal (`EstadoSincronizacion`) ya están implementados y verificados: transiciones controladas (`descargado → verificado → activo → rechazado → sustituido`), identidad inmutable (package_id, hashes, versión), un solo paquete activo por canal y restricción de secuencia única por canal.
 - La Fase 2 contempla un servicio central que distribuirá paquetes académicos revisados y versionados mediante HTTPS.
 - La sincronización será iniciada por el cliente, de solo descarga y no bloqueará el uso offline.
 - Las actualizaciones deberán validar firma, integridad y compatibilidad antes de instalarse, con conservación de la versión anterior.
 - El diseño no contempla enviar intentos, código, calificaciones, progreso ni datos personales al servidor central.
-- **Estado actual:** la sincronización todavía no está implementada; estas reglas describen el alcance aprobado.
+- **Estado actual:** el registro local y el verificador de distribución firmada están implementados; el cliente de sincronización de red y el servicio central todavía no están implementados; estas reglas describen el alcance aprobado.
 
 ## 🔒 Privacidad
 
@@ -133,7 +150,7 @@ O vía script: `./run.sh`.
 
 ## 🧠 Stack técnico
 
-Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/HTMX/SweetAlert2/FontAwesome locales.
+Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/HTMX/SweetAlert2/FontAwesome locales. Dependencias adicionales: `cryptography` (verificación Ed25519 de manifiestos de conocimiento), `PyMuPDF` (procesamiento PDF, fase futura), `pyinstaller` + `pyinstaller-hooks-contrib` (empaquetado del servidor local).
 
 ## 🧪 Verificación
 
@@ -142,6 +159,8 @@ python manage.py check
 python manage.py makemigrations --check --dry-run
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps
 ```
+
+Suite actual: 93 pruebas pasando (incluyendo modo sin autenticación, flujo editorial, registro de paquetes y distribución firmada).
 
 ## ❓ Solución de problemas
 

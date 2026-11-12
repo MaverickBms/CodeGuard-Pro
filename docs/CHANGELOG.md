@@ -2,6 +2,29 @@
 
 Todos los cambios notables del proyecto se documentan aquí.
 
+## [1.0.3] — 2026-11-11 — Fase 2: roadmap ASCENSO, flujo editorial y registro de paquetes
+
+### Añadido
+- Roadmap ASCENSO 3.1 completo: `Roadmap`, `Etapa`, `Modulo`, `Leccion`, `Prerrequisito` (33 etapas, 0 a 32).
+- Contenido académico editable: `ContenidoLeccion`, `EjemploLeccion`, `EjercicioLeccion` con objetivos, teoría, ejemplos, ejercicios y evaluadores.
+- Claves UUID estables (`clave_contenido`) para `Leccion`, `EjemploLeccion`, `EjercicioLeccion` (migración 0004).
+- Catálogo de fuentes documentales: `FuenteConocimiento` con publicador, título, URL canónica, edición, licencia y fecha de consulta (migración 0005).
+- Snapshots inmutables de versión de lección: `VersionContenidoLeccion` con flujo editorial (`borrador → revisión → aprobada → publicada → sustituida → retirada`) y metadatos de auditoría (migración 0005).
+- Referencias de fuente por versión: `ReferenciaFuenteContenido` con rol, localizador y nota de atribución (migración 0005).
+- Autoría y metadatos de versión de contenido (migración 0011).
+- Auditoría editorial: envío a revisión, aprobación, publicación, sustitución y retirada (migraciones 0006–0008).
+- Revisión de licencias de fuentes y correspondencia UUID/paquete (migraciones 0009–0010).
+- Registro local de paquetes de conocimiento: `PaqueteConocimientoInstalado` con transiciones controladas (`descargado → verificado → activo → rechazado → sustituido`), identidad inmutable, un solo activo por canal y secuencia única por canal (migración 0012).
+- Un solo paquete activo por canal: restricción parcial y migración de datos (migración 0013).
+- Estado de sincronización por canal: `EstadoSincronizacion` (migración 0012).
+- Comandos de gestión: `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`.
+- Pruebas del flujo editorial, registro de paquetes, distribución firmada (Ed25519) y modo sin autenticación.
+
+### Verificado
+- `manage.py check`: sin errores.
+- `makemigrations --check --dry-run`: sin cambios pendientes.
+- Suite de pruebas: **93 pruebas OK** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`).
+
 ## [1.0.2] — 2026-11-07 — Desactivación temporal de autenticación
 
 ### Cambiado

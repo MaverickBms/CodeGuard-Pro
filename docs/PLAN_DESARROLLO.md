@@ -1,12 +1,18 @@
 # CodeGuard Pro — Plan de desarrollo
 
 **Producto:** CodeGuard Pro  
-**Versión:** 1.0  
+**Versión:** 2.0  
 **Estrategia:** Incrementos verificables (según `IEEE830(1).md`, Sección 14)
 
 ---
 
-## Estado actual: Incremento 1 — Núcleo funcional
+## Estado actual: Incremento 1 — Núcleo funcional ✅ y Incremento 2 — Roadmap académico y conocimiento versionado 🔄
+
+**Estado:** Incremento 1 implementado y verificado. Incremento 2 parcialmente implementado en la rama `docs/phase-2-hybrid-knowledge-sync`.
+
+---
+
+## Incremento 1 — Núcleo funcional
 
 **Estado:** ✅ Implementado y verificado
 
@@ -19,8 +25,7 @@
 5. Configuración inicial guiada (setup): usuario, contraseña, aceptación de términos.
 6. Frase de rescate de alta entropía (≥128 bits), mostrada una sola vez, hash Argon2, un uso.
 7. Sesiones server-side con timeout de inactividad (15 min defecto).
-8. Panel principal con navegación principal. Acceso directo sin credenciales mientras
-   `AUTH_DISABLED = True`; protegido con `@login_required` cuando `AUTH_DISABLED = False`.
+8. Panel principal con navegación principal. Acceso directo sin credenciales mientras `AUTH_DISABLED = True`; protegido con `@login_required` cuando `AUTH_DISABLED = False`.
 9. Middleware de seguridad: sesión por inactividad, cabeceras CSP/X-Frame/etc., redirección setup.
 10. Registro de auditoría de accesos (`AuditLog`).
 11. Logging a consola y archivo (`logs/codeguard.log`).
@@ -50,22 +55,39 @@
 - Autenticación local completa: setup, login, logout, rescate, cambio de contraseña.
 - Servidor local exclusivo en `127.0.0.1` con Waitress + WhiteNoise.
 - Suite de pruebas automatizadas: 31 tests OK (auth, panel, roadmaps, auditoría).
-- Modelo de usuario custom `accounts.Usuario` activo (`AUTH_USER_MODEL`) con migración de datos
-  que preservó al usuario existente.
+- Modelo de usuario custom `accounts.Usuario` activo (`AUTH_USER_MODEL`) con migración de datos que preservó al usuario existente.
 
 ---
 
-## Incremento 2 — Roadmap académico (pendiente)
+## Incremento 2 — Roadmap académico y conocimiento versionado (Fase 2)
 
-- Las 33 etapas ASCENSO (0 a 32) desde el roadmap 3.1.
-- Estados: desarrollada / no desarrollada (visibles).
-- Dependencias entre etapas.
-- Módulos, lecciones, actividades, prerrequisitos.
-- Progreso por elemento.
-- Verificación contra ASCENSO 3.1.
+**Estado:** 🔄 En curso (rama `docs/phase-2-hybrid-knowledge-sync`)
 
-### Bloqueo: RF-006 / RS-017 (N de intentos) — pendiente de propietario.
-Esto no bloquea el incremento 2 (afecta al módulo Identidad, no al Académico).
+### Qué se implementó (incremento 2, en rama de trabajo)
+
+1. **Roadmap ASCENSO 3.1:** las 33 etapas (0 a 32) con bloques, secciones, prioridades, objetivos, proyectos y prerrequisitos. Cargable con `python manage.py cargar_ascenso`.
+2. **Estructura curricular relacional:** `Roadmap`, `Etapa`, `Modulo`, `Leccion`, `Prerrequisito`.
+3. **Contenido académico editable:** `ContenidoLeccion`, `EjemploLeccion`, `EjercicioLeccion` con teoría, ejemplos, ejercicios, estado de publicación y evaluadores.
+4. **Claves UUID estables:** `clave_contenido` en `Leccion`, `EjemploLeccion`, `EjercicioLeccion` para identidad portable entre instalaciones (migración 0004).
+5. **Catálogo de fuentes documentales:** `FuenteConocimiento` con publicador, título, URL canónica, edición, identificador y URL de licencia, fecha de consulta, estado activo/notas (migración 0005).
+6. **Snapshots inmutables de versión de lección:** `VersionContenidoLeccion` con flujo editorial completo (`borrador → revisión → aprobada → publicada → sustituida → retirada`), snapshot JSON, SHA-256, resumen de cambios, metadatos de auditoría (remitente, revisor, publicador, fechas) y protección contra modificación de versiones publicadas (migración 0005).
+7. **Referencias de fuente por versión:** `ReferenciaFuenteContenido` con rol, localizador, nota de atribución, FK a fuente y FK a versión (migración 0005).
+8. **Auditoría editorial:** envío a revisión, aprobación, publicación, sustitución y retirada con restricciones de transición y metadatos requeridos por estado (migraciones 0006–0008).
+9. **Revisión de licencias de fuentes:** estados `compatible`, `solo_referencia`, `requiere_permiso`, `no_reutilizable` con evidencia HTTPS y alcance (migraciones 0009–0010).
+10. **Autoría de versiones:** `VersionContenidoLeccion.autoria` con responsable y fecha (migración 0011).
+11. **Comandos de gestión:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`.
+12. **Registro local de paquetes de conocimiento:** `PaqueteConocimientoInstalado` con transiciones controladas, identidad inmutable, un solo activo por canal, secuencia única por canal, protección contra eliminación física y actualización masiva (migración 0012).
+13. **Un solo paquete activo por canal:** restricción parcial por `estado=activo` y migración de datos para garantizar unicidad (migración 0013).
+14. **Estado de sincronización por canal:** `EstadoSincronizacion` para rastrear la última consulta, éxito, ETag, canal y error (migración 0012).
+15. **Verificador de distribución firmada:** validación de manifiesto, firma Ed25519, hash SHA-256, estructura de ZIP, rutas prohibidas y symlinks (`validate_package_archive`, `verify_signed_manifest`).
+16. **Pruebas:** 93 pruebas automatizadas pasando (modo sin autenticación, flujo editorial, registro de paquetes, distribución firmada).
+
+### Qué sigue pendiente (incremento 2, Fase 2)
+
+- Cliente de sincronización de red (consulta de manifiesto, descarga, instalación atómica, rollback).
+- Servicio central de publicación de paquetes académicos.
+- Paquetes firmados Ed25519 y manifiestos v1.
+- Sincronización pull-only, sin envío de progreso ni datos personales.
 
 ---
 
