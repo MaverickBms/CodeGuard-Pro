@@ -2,7 +2,7 @@
 
 **Producto:** CodeGuard Pro  
 **Fase:** 2 — Motor de aprendizaje y contenido interactivo  
-**Estado:** Propuesta técnica basada en auditoría de `main`; pendiente de implementación  
+**Estado:** Diseño aprobado; primer núcleo de verificación criptográfica y registro local implementado en rama de trabajo. Cliente HTTP, publicación central e instalación atómica siguen pendientes.  
 **Fecha:** 11 de noviembre de 2026  
 **ADR relacionada:** `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`
 
@@ -651,3 +651,70 @@ python manage.py registrar_fuente_conocimiento \
 ```
 
 El registro no realiza solicitudes HTTP, no importa páginas, no ejecuta recursos remotos y no cambia el estado editorial de ninguna lección. La administración del contenido y su publicación continúan separadas.
+
+
+## 15. Incremento implementado: verificación de manifiestos y paquetes
+
+**Estado:** implementado en la rama `docs/phase-2-hybrid-knowledge-sync`; pendiente de ejecución local de las nuevas pruebas.
+
+### 15.1 Verificación del manifiesto
+
+Módulo: `apps/roadmaps/distribution.py`.
+
+- Analiza JSON UTF-8 estricto y rechaza claves duplicadas, constantes no estándar, tipos incorrectos y propiedades no declaradas.
+- Acepta únicamente `manifest_version=1`, canales `stable`/`beta` y `content_schema_version=1`.
+- Comprueba UUID canónico, SemVer, fecha ISO-8601 con zona horaria, tamaño máximo y SHA-256.
+- Exige URL HTTPS absoluta, sin credenciales ni fragmento, puerto estándar y hostname incluido en la allowlist entregada por el llamador.
+- Verifica firma Ed25519 sobre los bytes exactos de `manifest.json`; el archivo de firma separado contiene Base64 de los 64 bytes de firma.
+- Resuelve `key_id` únicamente contra claves públicas de confianza entregadas por configuración; no incorpora claves privadas ni claves públicas ficticias al repositorio.
+- Rechaza secuencias inferiores y manifiestos distintos que reutilicen la secuencia ya instalada. La misma secuencia y el mismo hash se reconocen como no-op.
+- Comprueba la versión mínima de la aplicación mediante comparación SemVer.
+
+La allowlist y el almacén de claves públicas todavía deben integrarse con la configuración empaquetada. El verificador recibe ambos explícitamente; no se ha habilitado ningún host ni clave de producción.
+
+### 15.2 Verificación del ZIP
+
+`validate_package_archive()` verifica el paquete en memoria y no extrae rutas suministradas por terceros.
+
+Límites actuales:
+
+| Control | Límite |
+|---|---:|
+| Manifiesto JSON | 64 KiB |
+| Firma Base64 | 256 bytes |
+| Paquete ZIP | 100 MiB |
+| Entradas totales | 501 (índice + 500 lecciones) |
+| Índice JSON | 1 MiB |
+| Documento de lección | 2 MiB |
+| Contenido descomprimido total | 100 MiB |
+| Ratio de compresión por entrada | 100:1 |
+
+Solo se aceptan `package-index.json` y documentos `payload/lessons/<uuid>.json`. Se rechazan rutas absolutas, traversal, barras invertidas, directorios explícitos, enlaces simbólicos, tipos especiales, métodos de compresión no admitidos, nombres duplicados, archivos no declarados, hashes/tamaños incorrectos y UUID repetidos o reasignados entre lecciones, ejemplos y ejercicios. Cada documento se valida con el contrato académico JSON v1 existente; el UUID del nombre del archivo debe coincidir con el UUID curricular interno.
+
+El validador no ejecuta contenido, no escribe archivos y no modifica SQLite.
+
+### 15.3 Registro local
+
+Migraciones `0012_registro_paquetes_sincronizacion` y `0013_un_paquete_activo_por_canal` incorporan:
+
+- `PaqueteConocimientoInstalado`: identidad, versión, canal, secuencia, esquema, hashes, clave de firma, fecha de publicación, instalación, estado y código de error.
+- `EstadoSincronizacion`: última comprobación/actualización, ETag, paquete activo, siguiente comprobación y último error.
+
+Se exige una secuencia única por canal y como máximo un paquete con estado `activo` por canal. El FK al paquete activo usa `PROTECT`. No se almacenan datos de progreso, respuestas, código del estudiante, secretos ni credenciales.
+
+### 15.4 Dependencia criptográfica
+
+Se fija `cryptography==46.0.3` en `requirements.txt` para Ed25519. Debe instalarse en el entorno virtual y estar incluida en la construcción PyInstaller antes de distribuir el cliente.
+
+### 15.5 Límites explícitos del incremento
+
+Este avance **no** implementa todavía:
+- cliente HTTP, descarga, ETag, reintentos o backoff;
+- endpoint o proveedor de distribución central;
+- almacén definitivo de claves públicas y allowlist de producción;
+- comando de empaquetado/firma editorial;
+- instalación de snapshots publicados, punteros de contenido activo ni rollback transaccional;
+- cambio de las vistas para leer versiones activas;
+- programación automática desde Electron.
+
+No se debe interpretar la validación criptográfica de artefactos como una sincronización ya operativa. El siguiente incremento debe conectar el verificador con un flujo de publicación controlado y un instalador transaccional, sin tocar progreso ni intentos.
