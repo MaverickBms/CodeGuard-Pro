@@ -1156,3 +1156,94 @@ class EstadoSincronizacion(models.Model):
 
     def __str__(self):
         return f"Sincronización {self.channel}"
+
+
+
+class SecuenciaPublicacionConocimiento(models.Model):
+    """Contador monotónico por canal para publicaciones centrales."""
+
+    channel = models.CharField(
+        max_length=16, primary_key=True,
+        choices=PaqueteConocimientoInstalado.CANALES,
+    )
+    siguiente = models.PositiveBigIntegerField(default=1)
+
+    class Meta:
+        verbose_name = "secuencia de publicación de conocimiento"
+        verbose_name_plural = "secuencias de publicación de conocimiento"
+
+    def clean(self):
+        super().clean()
+        if self.siguiente < 1:
+            raise ValidationError({"siguiente": "La secuencia debe ser positiva."})
+
+
+class PublicacionPaqueteConocimientoQuerySet(models.QuerySet):
+    """El registro de publicaciones es un historial inmutable."""
+
+    def update(self, **kwargs):
+        raise ValidationError("Las publicaciones de conocimiento son inmutables.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("Las publicaciones de conocimiento son inmutables.")
+
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        for obj in objs:
+            obj.full_clean()
+        return super().bulk_create(objs, **kwargs)
+
+    def delete(self):
+        raise ValidationError("El historial de publicaciones no se elimina masivamente.")
+
+
+class PublicacionPaqueteConocimiento(models.Model):
+    """Registro central e inmutable de cada paquete firmado emitido."""
+
+    objects = PublicacionPaqueteConocimientoQuerySet.as_manager()
+
+    CANALES = PaqueteConocimientoInstalado.CANALES
+
+    package_id = models.UUIDField(unique=True)
+    package_version = models.CharField(max_length=40)
+    channel = models.CharField(max_length=16, choices=CANALES)
+    sequence = models.PositiveBigIntegerField()
+    content_schema_version = models.PositiveSmallIntegerField(default=1)
+    package_sha256 = models.CharField(max_length=64)
+    manifest_sha256 = models.CharField(max_length=64)
+    signature_key_id = models.CharField(max_length=80)
+    package_url = models.URLField(max_length=2048)
+    package_filename = models.CharField(max_length=180)
+    manifest_filename = models.CharField(max_length=180)
+    signature_filename = models.CharField(max_length=180)
+    published_at = models.DateTimeField()
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "publicación de paquete de conocimiento"
+        verbose_name_plural = "publicaciones de paquetes de conocimiento"
+        ordering = ["channel", "-sequence"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["channel", "sequence"],
+                name="publicacion_secuencia_canal_unica",
+            ),
+        ]
+
+    def clean(self):
+        super().clean()
+        if self.sequence < 1:
+            raise ValidationError({"sequence": "La secuencia debe ser positiva."})
+        for field in ("package_sha256", "manifest_sha256"):
+            value = getattr(self, field)
+            if len(value) != 64 or any(char not in "0123456789abcdef" for char in value):
+                raise ValidationError({field: "Debe ser un SHA-256 hexadecimal válido."})
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            raise ValidationError("Una publicación registrada no se puede modificar.")
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("El historial de publicaciones no se elimina físicamente.")
