@@ -567,6 +567,63 @@ class IntentosEjercicioTests(TestCase):
         self.assertEqual(version.enviada_por, editor)
         self.assertIn("estado=revision", salida.getvalue())
 
+    def test_comando_registrar_fuente_guarda_metadatos_y_fecha_consulta(self):
+        from io import StringIO
+        from django.core.management import call_command
+        from apps.roadmaps.models import FuenteConocimiento
+
+        salida = StringIO()
+        call_command(
+            "registrar_fuente_conocimiento",
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url="https://docs.python.org/3/reference/",
+            edicion="Python 3",
+            licencia_id="PSF-2.0",
+            licencia_url="https://docs.python.org/3/license.html",
+            notas="Revisar la sección aplicable a la lección.",
+            stdout=salida,
+        )
+        fuente = FuenteConocimiento.objects.get(
+            url_canonica="https://docs.python.org/3/reference/", edicion="Python 3"
+        )
+        self.assertEqual(fuente.publicador, "Python Software Foundation")
+        self.assertEqual(fuente.identificador_licencia, "PSF-2.0")
+        self.assertIsNotNone(fuente.consultada_en)
+        self.assertTrue(fuente.activa)
+        self.assertIn("Fuente registrada", salida.getvalue())
+        self.assertIn("no verificado", salida.getvalue())
+
+    def test_comando_registrar_fuente_rechaza_url_no_https(self):
+        from django.core.management import call_command, CommandError
+
+        with self.assertRaisesMessage(CommandError, "URL HTTPS"):
+            call_command(
+                "registrar_fuente_conocimiento",
+                publicador="Organización",
+                titulo="Documentación",
+                url="http://example.org/docs",
+            )
+
+    def test_comando_registrar_fuente_rechaza_duplicado(self):
+        from django.core.management import call_command, CommandError
+        from apps.roadmaps.models import FuenteConocimiento
+
+        FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation",
+            titulo="Python Language Reference",
+            url_canonica="https://docs.python.org/3/reference/",
+            edicion="Python 3",
+        )
+        with self.assertRaisesMessage(CommandError, "Ya existe una fuente"):
+            call_command(
+                "registrar_fuente_conocimiento",
+                publicador="Python Software Foundation",
+                titulo="Python Language Reference",
+                url="https://docs.python.org/3/reference/",
+                edicion="Python 3",
+            )
+
     def test_vista_guarda_intento_y_muestra_historial(self):
         ConfiguracionEvaluacion.objects.create(
             ejercicio=self.ejercicio,
