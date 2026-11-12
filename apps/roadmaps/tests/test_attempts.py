@@ -227,6 +227,13 @@ class IntentosEjercicioTests(TestCase):
             url_canonica="https://docs.python.org/3/reference/",
             edicion="3",
         )
+        from apps.roadmaps.knowledge import revisar_licencia_fuente
+        revisar_licencia_fuente(
+            fuente.pk, actor=editor, estado="compatible",
+            evidencia="https://docs.python.org/3/license.html",
+            alcance="Redistribución con atribución.",
+            nota="Revisión manual de licencia para la prueba.",
+        )
 
         primera = crear_version_contenido_leccion(
             self.leccion, fuentes=[(fuente, "principal", "Assignment statements", "Fuente oficial")]
@@ -310,6 +317,13 @@ class IntentosEjercicioTests(TestCase):
             publicador="Python Software Foundation",
             titulo="Python Docs",
             url_canonica="https://docs.python.org/3/",
+        )
+        from apps.roadmaps.knowledge import revisar_licencia_fuente
+        revisar_licencia_fuente(
+            fuente.pk, actor=editor, estado="compatible",
+            evidencia="https://docs.python.org/3/license.html",
+            alcance="Redistribución con atribución.",
+            nota="Revisión manual de licencia para la prueba.",
         )
         version = crear_version_contenido_leccion(
             self.leccion, fuentes=[(fuente, "principal", "", "")]
@@ -553,6 +567,13 @@ class IntentosEjercicioTests(TestCase):
         fuente = FuenteConocimiento.objects.create(
             publicador="Python Software Foundation", titulo="Python Docs",
             url_canonica="https://docs.python.org/3/",
+        )
+        from apps.roadmaps.knowledge import revisar_licencia_fuente
+        revisar_licencia_fuente(
+            fuente.pk, actor=editor, estado="compatible",
+            evidencia="https://docs.python.org/3/license.html",
+            alcance="Redistribución con atribución.",
+            nota="Revisión manual de licencia para la prueba.",
         )
         version = crear_version_contenido_leccion(
             self.leccion, fuentes=[(fuente, "principal", "", "")]
