@@ -497,6 +497,60 @@ class IntentosEjercicioTests(TestCase):
             evaluador.delete()
         self.assertTrue(ConfiguracionEvaluacion.objects.filter(pk=evaluador.pk).exists())
 
+
+    def test_comando_crear_version_genera_borrador_con_fuente(self):
+        from io import StringIO
+        from django.core.management import call_command
+        from apps.roadmaps.models import ContenidoLeccion, FuenteConocimiento, VersionContenidoLeccion
+
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion, teoria_tecnica="Teoría técnica.",
+            explicacion_sencilla="Explicación sencilla.",
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation", titulo="Python Docs",
+            url_canonica="https://docs.python.org/3/",
+        )
+        salida = StringIO()
+        call_command(
+            "crear_version_leccion", leccion=self.leccion.pk,
+            fuente_id=[fuente.pk], resumen="Primera versión", stdout=salida,
+        )
+        version = VersionContenidoLeccion.objects.get(leccion=self.leccion)
+        self.assertEqual(version.estado, "borrador")
+        self.assertEqual(version.fuentes.get(), fuente)
+        self.assertIn("Versión borrador creada", salida.getvalue())
+
+    def test_comando_gestionar_version_envia_a_revision(self):
+        from io import StringIO
+        from django.core.management import call_command
+        from apps.roadmaps.models import ContenidoLeccion, FuenteConocimiento
+        from apps.roadmaps.knowledge import crear_version_contenido_leccion
+
+        editor = get_user_model().objects.create_user(
+            username="editor_cli", password="ClaveSegura123!", is_staff=True
+        )
+        ContenidoLeccion.objects.create(
+            leccion=self.leccion, teoria_tecnica="Teoría técnica.",
+            explicacion_sencilla="Explicación sencilla.",
+        )
+        fuente = FuenteConocimiento.objects.create(
+            publicador="Python Software Foundation", titulo="Python Docs",
+            url_canonica="https://docs.python.org/3/",
+        )
+        version = crear_version_contenido_leccion(
+            self.leccion, fuentes=[(fuente, "principal", "", "")]
+        )
+        salida = StringIO()
+        call_command(
+            "gestionar_version_leccion", "enviar-revision",
+            version=version.pk, usuario=editor.username, stdout=salida,
+        )
+        version.refresh_from_db()
+        self.assertEqual(version.estado, "revision")
+        self.assertEqual(version.enviada_por, editor)
+        self.assertIn("estado=revision", salida.getvalue())
+
     def test_vista_guarda_intento_y_muestra_historial(self):
         ConfiguracionEvaluacion.objects.create(
             ejercicio=self.ejercicio,
