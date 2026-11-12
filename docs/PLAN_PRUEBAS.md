@@ -196,6 +196,6 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | SYNC-022 | Anti-replay/downgrade | Se presenta manifiesto válido con sequence inferior o repetida con contenido distinto | Cliente rechaza la publicación antigua o inconsistente |
 | SYNC-023 | Redirección de host | URL o redirección apunta a host no permitido | Descarga rechazada |
 | SYNC-024 | ZIP malicioso | Entradas con traversal, symlink, duplicados o ratio/tamaño excesivo | Rechazo antes de escribir fuera del staging |
-| SYNC-025 | Reanudación segura | Descarga incompleta o archivo temporal previo alterado | Se descarta o valida de nuevo; nunca se activa parcialmente |
+| SYNC-025 | Reanudación segura | Descarga incompleta o archivo temporal previo alterado | Se descarta o valida de nuevo; nunca se activa parcialmente |\n| SYNC-026 | Sincronización concurrente | Se inician dos comprobaciones simultáneas | Solo una puede instalar; la otra espera o termina sin alterar el contenido activo |
 
 La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
