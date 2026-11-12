@@ -266,61 +266,71 @@ Reglas del payload:
 
 ## 6. Contrato del paquete de distribución
 
-### 6.1 Formato recomendado
+### 6.1 Topología de distribución
 
-Paquete comprimido versionado, por ejemplo `codeguard-knowledge-<channel>-<version>.zip`, con estructura conceptual:
+El manifiesto firmado y el paquete son dos artefactos distintos. El manifiesto se publica fuera del ZIP para evitar una referencia circular: un manifiesto que contuviera el SHA-256 del ZIP no puede estar incluido dentro de ese mismo ZIP.
+
+Estructura remota recomendada:
+
+```text
+/stable/
+  manifest.json
+  manifest.ed25519
+  /packages/
+    codeguard-knowledge-stable-<sequence>-<version>.zip
+```
+
+El cliente descarga primero el manifiesto y su firma; solo si la firma es válida descarga el paquete indicado. El paquete es inmutable y su URL debe pertenecer a un host permitido por la aplicación.
+
+### 6.2 Contenido del paquete
+
+El ZIP contiene únicamente datos editoriales y un índice interno de archivos:
 
 ```text
 package/
-  manifest.json
-  manifest.ed25519
+  package-index.json
   payload/
     lessons/
       <lesson-uuid>.json
-  checksums.txt
 ```
 
-El paquete contiene solo recursos editoriales publicados. No incluye base de datos del estudiante, intentos, respuestas, progreso, preferencias, secretos ni ejecutables.
+`package-index.json` declara `package_id`, `package_version`, `content_schema_version` y el listado de archivos con ruta relativa, tamaño y SHA-256. No incluye la firma externa ni intenta contener el hash del ZIP completo. No se aceptan ejecutables, scripts, migraciones, enlaces simbólicos ni archivos fuera del esquema permitido.
 
-### 6.2 Manifiesto mínimo
+El paquete no incluye base de datos del estudiante, intentos, respuestas, progreso, preferencias, secretos ni ejecutables.
+
+### 6.3 Manifiesto externo firmado
+
+Ejemplo conceptual:
 
 ```json
 {
   "manifest_version": "1",
-  "package_id": "uuid-del-paquete",
-  "package_version": "2026.11.1",
   "channel": "stable",
+  "sequence": 104,
   "published_at": "2026-11-11T18:00:00Z",
-  "minimum_app_version": "0.1.0",
+  "minimum_app_version": "1.0.0",
   "content_schema_version": "1.0",
-  "package_file": "codeguard-knowledge-stable-2026.11.1.zip",
-  "size_bytes": 123456,
-  "sha256": "64-caracteres-hexadecimales",
-  "key_id": "codeguard-release-2026",
-  "resources": [
-    {
-      "key": "uuid-estable-de-leccion",
-      "version": 3,
-      "sha256": "64-caracteres-hexadecimales",
-      "status": "published"
-    }
-  ]
+  "package": {
+    "package_id": "uuid-del-paquete",
+    "package_version": "2026.11.1",
+    "url": "/stable/packages/codeguard-knowledge-stable-104-2026.11.1.zip",
+    "size_bytes": 123456,
+    "sha256": "64-caracteres-hexadecimales"
+  },
+  "key_id": "codeguard-release-2026"
 }
 ```
 
-Los valores son ilustrativos, no un paquete real.
+Los valores son ilustrativos. La firma Ed25519 se entrega como archivo separado (`manifest.ed25519`) y cubre exactamente los bytes de `manifest.json`. El manifiesto firmado contiene el hash y tamaño del ZIP, por lo que el cliente puede verificar el artefacto sin circularidad.
 
-### 6.3 Firma e integridad
-
-- Usar firma digital Ed25519 para autenticar el manifiesto.
-- Firmar los bytes exactos de `manifest.json` mediante archivo de firma separado, evitando ambigüedad de canonicalización.
-- El manifiesto contiene SHA-256 del archivo de paquete; tras verificar la firma del manifiesto, el cliente calcula y compara el hash del paquete.
-- El cliente integra una o varias claves públicas de confianza identificadas por `key_id`.
-- La clave privada solo existe en el entorno editorial de publicación.
+Reglas:
+- `sequence` es un contador monotónico por canal y evita aceptar downgrades o manifiestos antiguos reproducidos. SemVer por sí solo no basta para este control.
+- `published_at` sirve para trazabilidad; no sustituye `sequence`.
+- La URL final se resuelve contra un origen HTTPS permitido. Se rechazan esquemas distintos de HTTPS, redirecciones a hosts no permitidos y URLs con credenciales.
+- El cliente valida firma, canal, secuencia, versión mínima de aplicación, esquema, tamaño y hash antes de procesar el ZIP.
+- La clave privada solo existe en el entorno de publicación. El cliente incorpora únicamente claves públicas de confianza identificadas por `key_id`.
 - La rotación de claves requiere un procedimiento explícito y una versión de aplicación que reconozca la nueva clave.
-- Rechazar firmas desconocidas, hashes incorrectos, downgrade no autorizado, tamaños excesivos y esquemas no compatibles.
-
-TLS protege el transporte; la firma permite verificar el origen aunque el paquete se descargue desde una caché o espejo. El hash detecta corrupción, pero no sustituye la firma.
+- El hash detecta corrupción; la firma autentica el manifiesto. TLS protege el transporte, pero no sustituye la firma.
 
 ## 7. Flujo editorial y de sincronización
 
@@ -465,3 +475,38 @@ El diseño estará listo para implementación cuando:
 - La migración desde los registros actuales tenga pruebas de ida/compatibilidad y no sea destructiva.
 
 **Estado al 11-11-2026:** auditoría y propuesta documentadas; no se han modificado modelos, migraciones, vistas, Electron ni datos de estudiantes.
+
+
+## 14. Hallazgos de auditoría y precisiones obligatorias
+
+Esta sección concreta el diseño tras contrastarlo con los modelos y migraciones existentes. Prevalece sobre cualquier ejemplo anterior que resulte ambiguo.
+
+### 14.1 Preservación de evidencias
+
+- Los FK desde `IntentoEjercicio` hacia `EjercicioLeccion` y `ConfiguracionEvaluacion` no deben permitir borrado en cascada de evidencias. Para nuevos cambios se debe preferir `PROTECT` y retiro lógico/editorial, no eliminación física.
+- Los intentos nuevos deben conservar la clave estable del ejercicio, la versión de contenido presentada y un snapshot mínimo del enunciado/instrucciones. Los intentos anteriores se migran como históricos con versión de contenido desconocida explícitamente; no se inventa una versión retroactiva.
+- La configuración de evaluación aplicada debe permanecer consultable e inmutable una vez utilizada. El intento conserva su referencia y versión; la referencia histórica no se elimina.
+- La eliminación de una lección o ejercicio con evidencias no forma parte del flujo editorial normal. Se retira o sustituye.
+
+### 14.2 Identidad curricular
+
+Los UUID se asignan una sola vez mediante migración de datos y se exportan al catálogo curricular canónico. La importación de ASCENSO debe resolver por esa identidad estable, no por título, orden ni PK local. Cambiar título u orden no cambia identidad. Un cambio de objetivo curricular que represente otra lección requiere nueva identidad y una regla explícita de migración del progreso.
+
+### 14.3 Separación entre borrador, publicación y vigencia
+
+El contenido editorial mutable existente puede seguir siendo fuente de trabajo durante la transición. Al publicar se genera un snapshot inmutable. No se debe editar un snapshot publicado ni mezclar en un único estado el ciclo editorial (borrador/revisión/aprobado) con la vigencia (vigente/revisión pendiente/sustituido/retirado). La vigencia puede cambiar mediante eventos/metadata sin alterar el payload histórico.
+
+Cada contenido debe registrar al menos: `reviewed_at`, `review_due_at` cuando aplique, versión tecnológica objetivo, idioma, fuentes, licencia/atribución y estado de vigencia. Una revisión vencida genera advertencia editorial, no una afirmación automática de que el contenido es incorrecto.
+
+### 14.4 Evaluadores y límite de confianza local
+
+Las configuraciones de evaluación incluidas en un paquete son datos declarativos, nunca código ejecutable. Como CodeGuard funciona localmente, el propietario del equipo puede inspeccionar o modificar la base de datos y el contenido instalado; por tanto, una configuración "no expuesta en la plantilla" no es un secreto criptográfico ni hace inviolable la evaluación. No incluir credenciales, claves ni secretos en evaluadores. Las aprobaciones locales sirven para la experiencia académica del usuario, no como certificación remota resistente a manipulación.
+
+### 14.5 Transición sin ruptura
+
+La migración se ejecutará por pasos aditivos: asignar UUID; crear snapshots iniciales desde los modelos actuales; comparar salida de la vista anterior y nueva; enlazar intentos nuevos a snapshots; cambiar lectura a la versión activa; y solo después retirar gradualmente la lectura mutable. Se conservan PK, URLs y progreso existentes. No se modifica ni se borra contenido real durante la auditoría.
+
+### 14.6 Límites de archivos comprimidos
+
+Antes de extraer, validar número de entradas, tamaño comprimido y descomprimido total, tamaño individual, relación de compresión, rutas normalizadas, nombres duplicados y tipo de archivo. Rechazar rutas absolutas, `..`, enlaces simbólicos, archivos anidados no previstos y entradas que escapen del directorio temporal. La extracción ocurre en una carpeta temporal nueva y no confiable; nunca directamente sobre el contenido activo.
+
