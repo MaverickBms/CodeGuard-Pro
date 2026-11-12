@@ -401,7 +401,7 @@ class IntentosEjercicioTests(TestCase):
         version = VersionContenidoLeccion.objects.create(
             leccion=self.leccion,
             numero_version=1,
-            estado="revision",
+            estado="borrador",
             snapshot={
                 "objetivos": ["Comprender variables"],
                 "teoria_tecnica": "Una variable enlaza un nombre con un objeto.",
@@ -432,19 +432,22 @@ class IntentosEjercicioTests(TestCase):
         with self.assertRaises(ValidationError):
             version.full_clean()
 
-    def test_no_se_permiten_dos_versiones_publicadas_para_una_leccion(self):
-        from django.db import IntegrityError, transaction
+    def test_versiones_no_admiten_mutaciones_masivas(self):
+        from django.core.exceptions import ValidationError
         from apps.roadmaps.models import VersionContenidoLeccion
 
-        datos = {
-            "leccion": self.leccion,
-            "estado": "publicada",
-            "snapshot": {"teoria_tecnica": "Contenido aprobado"},
-            "sha256": "b" * 64,
-        }
-        VersionContenidoLeccion.objects.create(numero_version=1, **datos)
-        with self.assertRaises(IntegrityError), transaction.atomic():
-            VersionContenidoLeccion.objects.create(numero_version=2, **datos)
+        version = VersionContenidoLeccion.objects.create(
+            leccion=self.leccion,
+            numero_version=1,
+            snapshot={"contenido": "original"},
+            sha256="b" * 64,
+        )
+        with self.assertRaises(ValidationError):
+            VersionContenidoLeccion.objects.filter(pk=version.pk).update(
+                snapshot={"contenido": "alterado"}
+            )
+        with self.assertRaises(ValidationError):
+            VersionContenidoLeccion.objects.filter(pk=version.pk).delete()
 
     def test_recursos_didacticos_tienen_identificadores_uuid_estables(self):
         from apps.roadmaps.models import EjemploLeccion
