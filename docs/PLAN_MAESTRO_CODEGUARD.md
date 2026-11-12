@@ -182,12 +182,11 @@ Implementado en la base de la Fase 2 y ampliado en ramas de trabajo:
 - Auditoría de remitente, revisor, publicador y responsable/fecha de retirada.
 - Protección ORM contra cambios de snapshots en estados revisados, escrituras masivas y saltos de estados.
 - Comandos internos `crear_version_leccion` y `gestionar_version_leccion`; Django Admin permanece deshabilitado.
-- Migraciones incrementales 0004–0008 preparadas en la rama `docs/phase-2-hybrid-knowledge-sync`; no aplicadas ni validadas aún en la base local.
+- Migraciones incrementales 0004–0008 aplicadas y verificadas localmente por el usuario en la configuración de desarrollo; `makemigrations --check --dry-run` informó que no hay cambios pendientes.
 
 Validación registrada:
 
-- La suite `apps.roadmaps` pasó **29 pruebas** en la rama `phase-2/progress-domain-rules` antes de este incremento.
-- Las pruebas de intentos, evaluación, snapshots, flujo editorial, protección ORM y comandos están añadidas en `apps/roadmaps/tests/test_attempts.py`, pero todavía requieren ejecución local.
+- La suite completa reportó **54 pruebas OK** en la validación local del usuario después de corregir las migraciones y los comandos editoriales. Las tres pruebas nuevas del comando `registrar_fuente_conocimiento` se añadieron después de esa ejecución y aún requieren validación local.
 - Último commit de referencia conocido en `main`: `dee0da9b4444ecabc5fc4dd4263296eef8361a99`.
 
 Pendiente de la Fase 2:
