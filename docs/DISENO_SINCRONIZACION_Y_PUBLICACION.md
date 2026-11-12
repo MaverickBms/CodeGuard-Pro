@@ -1,10 +1,11 @@
-# Diseño técnico — Modelo de datos y contrato de sincronización de conocimiento
+# Diseño técnico — Sincronización híbrida y publicador central de conocimiento
 
 **Producto:** CodeGuard Pro  
 **Fase:** 2 — Motor de aprendizaje y contenido interactivo  
-**Estado:** Diseño aprobado; primer núcleo de verificación criptográfica y registro local implementado en rama de trabajo. Cliente HTTP, publicación central e instalación atómica siguen pendientes.  
-**Fecha:** 11 de noviembre de 2026  
-**ADR relacionada:** `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`
+**Estado:** Diseño aprobado (ADR-004); núcleo de verificación criptográfica y registro local implementado en rama de trabajo. Cliente HTTP, publicación central e instalación atómica siguen pendientes.  
+**Fecha:** 12 de noviembre de 2026  
+**ADR relacionada:** `docs/ADR/ADR-004-sincronizacion-hibrida-conocimiento.md`  
+**Unifica:** `docs/DISENO_DATOS_SINCRONIZACION.md` + `docs/DISENO_PUBLICADOR_CENTRAL.md`
 
 ---
 
@@ -22,12 +23,25 @@ Incluye:
 - Flujo de publicación, descarga, validación, activación y rollback.
 - Estrategia de migración compatible con los registros existentes.
 - Requisitos de seguridad, privacidad y pruebas.
+- Diseño del publicador central de conocimiento.
 
 No incluye sincronización de progreso entre dispositivos, cuentas en la nube, actualización del ejecutable ni ejecución remota/local de código descargado.
 
-## 2. Auditoría del estado actual
+---
 
-La revisión de la rama `docs/phase-2-hybrid-knowledge-sync` encontró:
+## 2. Decisión de producto aprobada
+
+**Resuelta por el propietario (11-11-2026): modelo híbrido.** Un servidor central distribuye contenido revisado y versionado; el cliente sincroniza automáticamente cuando hay conexión y conserva el contenido local. Forma parte de la Fase 2.
+
+- Sincronización pull-only por HTTPS; el cliente valida firma, hash, esquema y compatibilidad; instalación atómica y rollback.
+- No se suben progreso, intentos, código, calificaciones ni datos personales.
+- La detección de cambios en fuentes no publica contenido sin revisión editorial.
+
+---
+
+## 3. Auditoría del estado actual
+
+La revisión de la rama de trabajo encontró:
 
 | Archivo / componente | Estado comprobado | Limitación para versionado |
 |---|---|---|
@@ -38,7 +52,6 @@ La revisión de la rama `docs/phase-2-hybrid-knowledge-sync` encontró:
 | `ConfiguracionEvaluacion` | Versionado numérico por ejercicio y una sola configuración activa | La configuración histórica permanece como fila, pero no está vinculada a una versión del contenido. |
 | `IntentoEjercicio` | Guarda respuesta, resultado, puntuación, detalles y versión numérica del evaluador | No identifica la versión exacta del enunciado/teoría que vio el estudiante. |
 | `views.leccion_detalle` | Lee directamente los modelos editables publicados | No resuelve una versión inmutable activa. |
-| `attempts.py` | Evalúa con el evaluador activo al registrar el intento | El intento no guarda snapshot del contenido presentado. |
 | `electron/main.js` / `preload.js` | Arranque del servidor local y API IPC de temas/funciones de escritorio | No se encontró flujo de consulta/descarga de paquetes. |
 | `config/settings/base.py` | Aplicaciones instaladas: accounts, audit, core y roadmaps | No se encontró una app de conocimiento/sincronización instalada. |
 | `apps/roadmaps/migrations` | Migraciones `0001_initial`, `0002_contenido_leccion`, `0003_intentos_y_evaluacion` | No hay todavía tablas para fuentes, versiones de contenido o paquetes instalados. |
@@ -52,7 +65,9 @@ La revisión de la rama `docs/phase-2-hybrid-knowledge-sync` encontró:
 5. **Identidad de contenido:** los IDs numéricos de SQLite no deben ser identificadores del paquete, porque no son una identidad portátil garantizada entre instalaciones.
 6. **Configuración de evaluación en cliente:** los evaluadores necesarios para operar localmente no deben tratarse como secretos inviolables. Un propietario con acceso al equipo puede inspeccionar sus datos locales; no almacenar secretos ni credenciales dentro de esas configuraciones.
 
-## 3. Principio de diseño: tres dominios separados
+---
+
+## 4. Principio de diseño: tres dominios separados
 
 La arquitectura de datos debe separar:
 
@@ -87,11 +102,13 @@ Contiene progreso, intentos, respuestas, resultados, preferencias y configuraci�
 - Los intentos conservan la versión del contenido y del evaluador que los originó.
 - El historial académico se conserva aunque una lección sea sustituida o retirada.
 
-## 4. Modelo de datos local recomendado
+---
+
+## 5. Modelo de datos local recomendado
 
 Los siguientes modelos son una propuesta conceptual. Los nombres pueden ajustarse al estilo del código antes de crear migraciones.
 
-### 4.1 Identificadores estables
+### 5.1 Identificadores estables
 
 Agregar una clave estable UUID a los elementos que deben resolverse desde paquetes externos:
 
@@ -103,7 +120,7 @@ Los paquetes referencian estas claves, no los PK autoincrementales de SQLite. La
 
 La fuente maestra del roadmap debe incluir esas claves para que una instalación nueva pueda resolver los mismos recursos. Para registros existentes, una migración de datos asignará UUID una sola vez y un export controlado los incorporará al catálogo curricular canónico. No generar claves nuevas en cada arranque ni al importar un paquete.
 
-### 4.2 `FuenteConocimiento`
+### 5.2 `FuenteConocimiento`
 
 Representa una fuente técnica externa.
 
@@ -121,7 +138,7 @@ Representa una fuente técnica externa.
 
 Una fuente no se considera reutilizable solo por ser pública. La licencia y las condiciones deben revisarse.
 
-### 4.3 `VersionContenidoLeccion`
+### 5.3 `VersionContenidoLeccion`
 
 Snapshot inmutable de una lección publicada.
 
@@ -146,7 +163,7 @@ Restricciones:
 - El payload se valida contra un esquema conocido.
 - Las referencias a fuentes se registran mediante una relación explícita, no solo en texto libre.
 
-### 4.4 `ReferenciaFuenteContenido`
+### 5.4 `ReferenciaFuenteContenido`
 
 Relación entre una versión de lección y una fuente consultada.
 
@@ -161,7 +178,7 @@ Relación entre una versión de lección y una fuente consultada.
 
 La relación permite que una lección cite varias fuentes y que una fuente respalde varias lecciones.
 
-### 4.5 `ContenidoLeccionActivo`
+### 5.5 `ContenidoLeccionActivo`
 
 Puntero a la versión que debe presentar la aplicación.
 
@@ -173,7 +190,7 @@ Puntero a la versión que debe presentar la aplicación.
 
 Separar el puntero de activación del snapshot permite cambiar muchas lecciones dentro de una transacción al instalar un paquete. Si falla la activación, se revierte la transacción y permanece el conjunto anterior.
 
-### 4.6 `PaqueteConocimientoInstalado`
+### 5.6 `PaqueteConocimientoInstalado`
 
 Registro local de paquetes recibidos y validados.
 
@@ -192,7 +209,7 @@ Registro local de paquetes recibidos y validados.
 
 La tabla conserva historial de paquetes y permite diagnosticar instalaciones.
 
-### 4.7 `EstadoSincronizacion`
+### 5.7 `EstadoSincronizacion`
 
 Estado local de la comprobación, idealmente una fila por canal.
 
@@ -208,7 +225,9 @@ Estado local de la comprobación, idealmente una fila por canal.
 
 No almacenar tokens personales ni progreso del estudiante en este registro.
 
-## 5. Snapshot de contenido: forma del payload
+---
+
+## 6. Snapshot de contenido: forma del payload
 
 El payload de una versión de lección debe ser autocontenido y validable. Ejemplo ilustrativo (no es contenido académico real):
 
@@ -264,9 +283,11 @@ Reglas del payload:
 - Las configuraciones de evaluación deben ser declarativas y validadas por tipo. No se acepta código Python/JS arbitrario como evaluador.
 - Las configuraciones que el cliente necesita para evaluar localmente no son secretos frente al propietario del dispositivo. No colocar claves ni datos sensibles en ellas.
 
-## 6. Contrato del paquete de distribución
+---
 
-### 6.1 Topología de distribución
+## 7. Contrato del paquete de distribución
+
+### 7.1 Topología de distribución
 
 El manifiesto firmado y el paquete son dos artefactos distintos. El manifiesto se publica fuera del ZIP para evitar una referencia circular: un manifiesto que contuviera el SHA-256 del ZIP no puede estar incluido dentro de ese mismo ZIP.
 
@@ -282,7 +303,7 @@ Estructura remota recomendada:
 
 El cliente descarga primero el manifiesto y su firma; solo si la firma es válida descarga el paquete indicado. El paquete es inmutable y su URL debe pertenecer a un host permitido por la aplicación.
 
-### 6.2 Contenido del paquete
+### 7.2 Contenido del paquete
 
 El ZIP contiene únicamente datos editoriales y un índice interno de archivos:
 
@@ -298,7 +319,7 @@ package/
 
 El paquete no incluye base de datos del estudiante, intentos, respuestas, progreso, preferencias, secretos ni ejecutables.
 
-### 6.3 Manifiesto externo firmado
+### 7.3 Manifiesto externo firmado
 
 Ejemplo conceptual:
 
@@ -332,9 +353,88 @@ Reglas:
 - La rotación de claves requiere un procedimiento explícito y una versión de aplicación que reconozca la nueva clave.
 - El hash detecta corrupción; la firma autentica el manifiesto. TLS protege el transporte, pero no sustituye la firma.
 
-## 7. Flujo editorial y de sincronización
+---
 
-### 7.1 Publicación central
+## 8. Publicador central de conocimiento
+
+### 8.1 Objetivo
+
+Construir el componente editorial que convierte versiones de lecciones aprobadas y publicadas en paquetes académicos inmutables, compatibles con el verificador local de distribución. El publicador no modifica el roadmap, no toca progreso ni intentos y no se ejecuta en el cliente del estudiante.
+
+### 8.2 Entrada autorizada
+
+El publicador solo seleccionará registros `VersionContenidoLeccion` cuyo estado sea `publicada`. No leerá el contenido editable actual de `ContenidoLeccion`, ni ejemplos/ejercicios mutables: el origen será exclusivamente el snapshot congelado de cada versión.
+
+Antes de empaquetar cada lección debe comprobar:
+
+- Hash SHA-256 del snapshot recalculado con JSON canónico (UTF-8, claves ordenadas y separadores compactos).
+- Esquema académico soportado y UUID estable de lección, ejemplos y ejercicios.
+- Referencias de fuente completas y congeladas al entrar en revisión.
+- Evidencia de revisión de licencia y estado permitido: `compatible` o `solo_referencia`.
+- Si la fuente está en `solo_referencia`, el uso declarado debe ser exclusivamente `original`.
+- Para `compatible`, debe existir evidencia HTTPS, responsable/fecha de revisión y alcance de reutilización documentado.
+- Ninguna fuente puede estar inactiva o tener una decisión de licencia incompatible con la publicación.
+
+La salida por lección seguirá exactamente el contrato JSON v1 que consume `content_import._validate_document`: `schema_version`, `resumen_cambios`, `snapshot` y `fuentes`. Las referencias incluirán UUID de fuente, rol, localizador, nota de atribución y uso declarado.
+
+### 8.3 Artefactos de distribución
+
+Cada publicación producirá tres artefactos externos:
+
+- `package.zip`: ZIP determinista con `package-index.json` y un JSON por lección bajo `payload/lessons/<uuid>.json`.
+- `manifest.json`: manifiesto v1 con canal, secuencia, fecha UTC, versión mínima de aplicación, esquema, UUID/versión del paquete, URL HTTPS, tamaño, SHA-256 y `key_id`.
+- `manifest.ed25519`: firma Ed25519 detached en Base64 sobre los bytes exactos de `manifest.json`.
+
+El ZIP será reproducible para la misma entrada e identidad de paquete: orden estable de archivos, JSON canónico, timestamps ZIP fijos, permisos regulares normalizados y compresión definida. No se incluirán binarios, scripts, archivos ejecutables, datos de usuarios, progreso, intentos, credenciales ni configuraciones privadas.
+
+### 8.4 Secuencia e historial de publicaciones
+
+La secuencia es monotónica por canal y no puede depender únicamente de un argumento CLI ni de inspeccionar una carpeta arbitraria. Antes del publicador operativo se incorporará un registro central de releases con:
+
+- Canal y secuencia únicos.
+- UUID y SemVer del paquete.
+- Hash del ZIP y hash del manifiesto.
+- `key_id`, fecha de publicación y editor responsable.
+- Identificador/ruta inmutable de los artefactos.
+
+La reserva de secuencia se realizará bajo transacción y restricción única por canal. Un release ya registrado no se sobrescribe ni se vuelve a firmar con el mismo número. Los artefactos se prepararán en staging y se promoverán atómicamente; si falla la promoción, el release no se marcará como publicado. La política de recuperación de fallos entre almacenamiento y base de datos debe quedar explícita y probada.
+
+### 8.5 Custodia de claves
+
+- La clave privada Ed25519 se suministra fuera del repositorio mediante archivo PEM protegido o gestor de secretos.
+- El publicador comprobará tipo de clave, permisos restrictivos del archivo y correspondencia con el `key_id` configurado.
+- La clave privada nunca se registra, imprime, copia al ZIP ni almacena en SQLite.
+- No se generarán claves de producción automáticamente durante una ejecución.
+- La rotación de claves requerirá registrar previamente la clave pública correspondiente en los clientes y mantener un periodo de compatibilidad controlado.
+- Las claves de prueba serán efímeras y solo existirán en fixtures de tests.
+
+### 8.6 Separación de responsabilidades
+
+El primer incremento implementará generación/validación local de artefactos y un comando editorial explícito. No realizará upload, despliegue CDN, cambios DNS ni configuración de proveedor. La URL pública declarada en el manifiesto deberá corresponder a una ubicación HTTPS autorizada y aprobada antes de una publicación real.
+
+El cliente local seguirá siendo pull-only. La implementación del publicador no inicia conexiones desde el equipo del estudiante ni transmite información personal.
+
+### 8.7 Pruebas de aceptación
+
+- Solo versiones publicadas pueden empaquetarse.
+- Rechazo de snapshot/hash alterado o esquema incompatible.
+- Rechazo de fuente sin evidencia, licencia pendiente, permiso requerido, no reutilizable o inactiva.
+- Rechazo de uso no permitido bajo `solo_referencia`.
+- Validación de UUID y ausencia de colisiones entre recursos del paquete.
+- ZIP determinista para la misma entrada.
+- Round-trip: los artefactos generados pasan `verify_signed_manifest` y `validate_package_archive`.
+- Rechazo de clave privada ausente, PEM inválido, tipo de clave incorrecto o permisos inseguros.
+- Secuencia duplicada/descendente rechazada bajo concurrencia.
+- Release y artefactos existentes nunca se sobrescriben.
+- Fallo de escritura/promoción no deja un release marcado como publicado.
+- Los paquetes no contienen información del estudiante ni código ejecutable.
+- La generación no altera versiones editoriales, roadmap, progreso ni intentos.
+
+---
+
+## 9. Flujo editorial y de sincronización
+
+### 9.1 Publicación central
 
 1. Registrar la fuente, licencia, atribución y versión consultada.
 2. Detectar cambios en fuentes técnicas y crear una alerta/propuesta de revisión.
@@ -347,7 +447,7 @@ Reglas:
 9. Publicar archivos inmutables en el canal correspondiente.
 10. Registrar la versión publicada y su historial.
 
-### 7.2 Cliente local
+### 9.2 Cliente local
 
 1. La aplicación arranca normalmente desde el almacenamiento local.
 2. Un comprobador en segundo plano consulta el manifiesto si hay conexión y si la política local permite comprobar.
@@ -361,7 +461,7 @@ Reglas:
 10. Registra el paquete y conserva la versión anterior para rollback.
 11. Si cualquier paso falla, conserva el contenido previo y muestra un estado recuperable.
 
-### 7.3 Política de ejecución
+### 9.3 Política de ejecución
 
 Recomendación para la primera implementación:
 - Comprobar al iniciar, pero después de que la ventana principal esté disponible.
@@ -372,7 +472,9 @@ Recomendación para la primera implementación:
 - No mantener WebSocket ni conexión permanente.
 - La ausencia del servicio, timeout o falta de red nunca debe impedir estudiar.
 
-## 8. Distribución central: recomendación de infraestructura
+---
+
+## 10. Distribución central: recomendación de infraestructura
 
 Para el primer incremento se recomienda que el endpoint central sea de distribución estática por HTTPS (almacenamiento de objetos o publicación estática con control de versiones), en lugar de crear de inmediato una API dinámica y una base de datos central.
 
@@ -385,11 +487,14 @@ Motivos:
 
 El proceso editorial puede publicar artefactos mediante un flujo controlado. El endpoint estático sigue siendo el servicio central de distribución aprobado por la ADR-004. La selección del proveedor y dominio se hará antes de implementar la publicación, no se presupone un proveedor concreto.
 
-## 9. Estrategia de compatibilidad y migración
+---
+
+## 11. Estrategia de compatibilidad y migración
 
 No reemplazar las tablas existentes de forma abrupta.
 
 ### Incremento A — Identidad y protección de evidencia
+
 1. Añadir claves estables UUID a lecciones, ejemplos y ejercicios.
 2. Crear una migración de datos para asignar claves a filas existentes una sola vez.
 3. Exportar y versionar las claves en el catálogo curricular canónico.
@@ -398,6 +503,7 @@ No reemplazar las tablas existentes de forma abrupta.
 6. Revisar las reglas `on_delete` de ejercicio y configuración de evaluación para que no se destruyan evidencias; usar protección y/o snapshots según el caso.
 
 ### Incremento B — Fuentes y snapshots
+
 1. Crear `FuenteConocimiento` y relaciones de referencia.
 2. Crear `VersionContenidoLeccion` con payload validado e inmutable.
 3. Crear `ContenidoLeccionActivo` como puntero independiente.
@@ -405,6 +511,7 @@ No reemplazar las tablas existentes de forma abrupta.
 5. Añadir pruebas de equivalencia entre contenido anterior y snapshot importado.
 
 ### Incremento C — Registro de paquetes y sincronizador
+
 1. Crear `PaqueteConocimientoInstalado` y `EstadoSincronizacion`.
 2. Implementar cliente HTTP con allowlist de host, TLS validado, timeout, tamaño máximo y ETag.
 3. Implementar verificación Ed25519 y SHA-256.
@@ -412,6 +519,7 @@ No reemplazar las tablas existentes de forma abrupta.
 5. Implementar rollback y estados visibles.
 
 ### Incremento D — Cambio de lectura
+
 1. Adaptar `leccion_detalle` para leer la versión activa.
 2. Mantener compatibilidad de URLs y progreso por IDs curriculares.
 3. Adaptar envío de intentos para registrar la versión de contenido presentada.
@@ -420,7 +528,9 @@ No reemplazar las tablas existentes de forma abrupta.
 
 No borrar los modelos actuales ni ejecutar migraciones destructivas durante la primera integración.
 
-## 10. Invariantes obligatorias
+---
+
+## 12. Invariantes obligatorias
 
 1. La estructura curricular no cambia al instalar una actualización de contenido.
 2. Una versión publicada es inmutable.
@@ -435,7 +545,9 @@ No borrar los modelos actuales ni ejecutar migraciones destructivas durante la p
 11. La última versión válida permanece disponible offline.
 12. La sincronización de esta fase es pull-only: el cliente descarga conocimiento y no transmite datos académicos del estudiante.
 
-## 11. Pruebas técnicas derivadas
+---
+
+## 13. Pruebas técnicas derivadas
 
 Además de SYNC-001 a SYNC-020 en `docs/PLAN_PRUEBAS.md`, añadir:
 
@@ -452,7 +564,24 @@ Además de SYNC-001 a SYNC-020 en `docs/PLAN_PRUEBAS.md`, añadir:
 | DATA-009 | Retirada | Un recurso retirado se oculta de nuevas asignaciones sin borrar evidencias. |
 | DATA-010 | Instalación limpia | Una base nueva resuelve las claves estables incluidas en el catálogo curricular. |
 
-## 12. Decisiones pendientes antes de implementar
+Pruebas del publicador (del diseño original):
+- Solo versiones publicadas pueden empaquetarse.
+- Rechazo de snapshot/hash alterado o esquema incompatible.
+- Rechazo de fuente sin evidencia, licencia pendiente, permiso requerido, no reutilizable o inactiva.
+- Rechazo de uso no permitido bajo `solo_referencia`.
+- Validación de UUID y ausencia de colisiones entre recursos del paquete.
+- ZIP determinista para la misma entrada.
+- Round-trip: los artefactos generados pasan `verify_signed_manifest` y `validate_package_archive`.
+- Rechazo de clave privada ausente, PEM inválido, tipo de clave incorrecto o permisos inseguros.
+- Secuencia duplicada/descendente rechazada bajo concurrencia.
+- Release y artefactos existentes nunca se sobrescriben.
+- Fallo de escritura/promoción no deja un release marcado como publicado.
+- Los paquetes no contienen información del estudiante ni código ejecutable.
+- La generación no altera versiones editoriales, roadmap, progreso ni intentos.
+
+---
+
+## 14. Decisiones pendientes antes de implementar
 
 Estas decisiones no invalidan la arquitectura híbrida ya aprobada; concretan detalles operativos que deben cerrarse antes de escribir código:
 
@@ -464,9 +593,12 @@ Estas decisiones no invalidan la arquitectura híbrida ya aprobada; concretan de
 6. **Catálogo curricular canónico:** definir el archivo/flujo que transporta las claves UUID de las lecciones entre instalaciones.
 7. **Editorial:** determinar dónde se redacta y revisa el contenido (repositorio controlado, herramienta interna o flujo editorial propio). No habilitar Django Admin por defecto como sustituto de este diseño.
 
-## 13. Criterio de cierre del diseño
+---
+
+## 15. Criterio de cierre del diseño
 
 El diseño estará listo para implementación cuando:
+
 - Los nombres y relaciones de los modelos hayan sido aprobados.
 - El esquema del payload y manifiesto tenga validación automatizada.
 - La estrategia de claves estables esté definida.
@@ -474,66 +606,68 @@ El diseño estará listo para implementación cuando:
 - Se haya seleccionado el endpoint de distribución.
 - La migración desde los registros actuales tenga pruebas de ida/compatibilidad y no sea destructiva.
 
-**Estado al 11-11-2026:** auditoría y propuesta documentadas; no se han modificado modelos, migraciones, vistas, Electron ni datos de estudiantes.
+**Estado al 12-11-2026:** auditoría y propuesta documentadas; no se han modificado modelos, migraciones, vistas, Electron ni datos de estudiantes.
 
+---
 
-## 14. Hallazgos de auditoría y precisiones obligatorias
+## 16. Hallazgos de auditoría y precisiones obligatorias
 
 Esta sección concreta el diseño tras contrastarlo con los modelos y migraciones existentes. Prevalece sobre cualquier ejemplo anterior que resulte ambiguo.
 
-### 14.1 Preservación de evidencias
+### 16.1 Preservación de evidencias
 
 - Los FK desde `IntentoEjercicio` hacia `EjercicioLeccion` y `ConfiguracionEvaluacion` no deben permitir borrado en cascada de evidencias. Para nuevos cambios se debe preferir `PROTECT` y retiro lógico/editorial, no eliminación física.
 - Los intentos nuevos deben conservar la clave estable del ejercicio, la versión de contenido presentada y un snapshot mínimo del enunciado/instrucciones. Los intentos anteriores se migran como históricos con versión de contenido desconocida explícitamente; no se inventa una versión retroactiva.
 - La configuración de evaluación aplicada debe permanecer consultable e inmutable una vez utilizada. El intento conserva su referencia y versión; la referencia histórica no se elimina.
 - La eliminación de una lección o ejercicio con evidencias no forma parte del flujo editorial normal. Se retira o sustituye.
 
-### 14.2 Identidad curricular
+### 16.2 Identidad curricular
 
 Los UUID se asignan una sola vez mediante migración de datos y se exportan al catálogo curricular canónico. La importación de ASCENSO debe resolver por esa identidad estable, no por título, orden ni PK local. Cambiar título u orden no cambia identidad. Un cambio de objetivo curricular que represente otra lección requiere nueva identidad y una regla explícita de migración del progreso.
 
-### 14.3 Separación entre borrador, publicación y vigencia
+### 16.3 Separación entre borrador, publicación y vigencia
 
 El contenido editorial mutable existente puede seguir siendo fuente de trabajo durante la transición. Al publicar se genera un snapshot inmutable. No se debe editar un snapshot publicado ni mezclar en un único estado el ciclo editorial (borrador/revisión/aprobado) con la vigencia (vigente/revisión pendiente/sustituido/retirado). La vigencia puede cambiar mediante eventos/metadata sin alterar el payload histórico.
 
 Cada contenido debe registrar al menos: `reviewed_at`, `review_due_at` cuando aplique, versión tecnológica objetivo, idioma, fuentes, licencia/atribución y estado de vigencia. Una revisión vencida genera advertencia editorial, no una afirmación automática de que el contenido es incorrecto.
 
-### 14.4 Evaluadores y límite de confianza local
+### 16.4 Evaluadores y límite de confianza local
 
 Las configuraciones de evaluación incluidas en un paquete son datos declarativos, nunca código ejecutable. Como CodeGuard funciona localmente, el propietario del equipo puede inspeccionar o modificar la base de datos y el contenido instalado; por tanto, una configuración "no expuesta en la plantilla" no es un secreto criptográfico ni hace inviolable la evaluación. No incluir credenciales, claves ni secretos en evaluadores. Las aprobaciones locales sirven para la experiencia académica del usuario, no como certificación remota resistente a manipulación.
 
-### 14.5 Transición sin ruptura
+### 16.5 Transición sin ruptura
 
 La migración se ejecutará por pasos aditivos: asignar UUID; crear snapshots iniciales desde los modelos actuales; comparar salida de la vista anterior y nueva; enlazar intentos nuevos a snapshots; cambiar lectura a la versión activa; y solo después retirar gradualmente la lectura mutable. Se conservan PK, URLs y progreso existentes. No se modifica ni se borra contenido real durante la auditoría.
 
-### 14.6 Límites de archivos comprimidos
+### 16.6 Límites de archivos comprimidos
 
 Antes de extraer, validar número de entradas, tamaño comprimido y descomprimido total, tamaño individual, relación de compresión, rutas normalizadas, nombres duplicados y tipo de archivo. Rechazar rutas absolutas, `..`, enlaces simbólicos, archivos anidados no previstos y entradas que escapen del directorio temporal. La extracción ocurre en una carpeta temporal nueva y no confiable; nunca directamente sobre el contenido activo.
 
+---
 
-
-## 15. Integración con el ciclo de vida Electron/Django
+## 17. Integración con el ciclo de vida Electron/Django
 
 La revisión del empaquetado confirma que Electron inicia un servidor Django local como proceso hijo. En desarrollo se ejecuta `manage.py`; en la aplicación empaquetada se inicia el binario PyInstaller `CodeGuardServer`, construido desde `server_entry.py`. Por tanto, el sincronizador debe integrarse en este ciclo y no asumir que existe un intérprete Python externo en los equipos instalados.
 
 Diseño recomendado para la implementación:
+
 1. Crear una app de dominio `apps.knowledge` e instalarla en `INSTALLED_APPS`.
 2. Implementar la lógica de sincronización como servicios Python y un comando Django de una sola ejecución (por ejemplo, `sync_knowledge`). El comando comparte `CODEGUARD_DATA_DIR` y la misma configuración de base de datos que el servidor local.
 3. Extender `server_entry.py` para reconocer un modo de comando de sincronización y salir al terminar, además del modo actual de servidor WSGI. En desarrollo, Electron puede invocar el comando mediante el Python del entorno virtual; en producción, invoca el mismo binario PyInstaller con el argumento correspondiente.
-4. Electron inicia la comprobación después de que la ventana principal esté disponible. El proceso de descarga no forma parte del camino crítico de arranque y no bloquea el uso local.
-5. La UI consulta el estado mediante IPC limitado y tipado: última comprobación, última sincronización exitosa, versión disponible, estado y error genérico. No se exponen rutas arbitrarias, comandos ni argumentos libres al renderer.
-6. Permitir comprobación manual, desactivar/posponer la comprobación automática y configurar una frecuencia inicial diaria. Si la aplicación está cerrada no se ejecuta una tarea residente ni se requiere servicio del sistema operativo.
-7. Usar un bloqueo local para impedir dos sincronizaciones simultáneas. Descargar y validar fuera de la transacción; mantener la transacción SQLite de importación/activación breve. Manejar `database is locked` con reintentos limitados y nunca borrar el contenido activo por un error de concurrencia.
+4. Electron inicia la comprobación después de que la ventana principal esté disponible. El proceso de descarga no forma parte del camino crítico de arranque y no bloquea el uso local. El renderer solo recibirá estado mediante IPC limitado y tipado: última comprobación, última sincronización exitosa, versión disponible, estado y error genérico. No se exponen rutas arbitrarias, comandos ni argumentos libres al renderer.
+5. Permitir comprobación manual, desactivar/posponer la comprobación automática y configurar una frecuencia inicial diaria. Si la aplicación está cerrada no se ejecuta una tarea residente ni se requiere servicio del sistema operativo.
+6. Usar un bloqueo local para impedir dos sincronizaciones simultáneas. Descargar y validar fuera de la transacción; mantener la transacción SQLite de importación/activación breve. Manejar `database is locked` con reintentos limitados y nunca borrar el contenido activo por un error de concurrencia.
 
 No se debe realizar tráfico de red desde `AppConfig.ready()`, durante migraciones, en el constructor de Django ni antes de que la ventana esté disponible. La sincronización no se debe iniciar desde el renderer mediante llamadas HTTP arbitrarias.
 
-### 15.1 Compatibilidad del empaquetado
+### 17.1 Compatibilidad del empaquetado
 
 La implementación debe revisar y actualizar de forma coordinada `server_entry.py`, `CodeGuardServer.spec`, `electron/main.js`, `electron/preload.js`, `package.json` si se requiere una señal de estado y `requirements.txt` si se incorpora criptografía. La app nueva debe quedar incluida en el descubrimiento de PyInstaller y en `INSTALLED_APPS`. La clave privada de firma no se incluye en `CodeGuardServer`, en Electron ni en el repositorio de distribución.
 
-### 15.2 Riesgo del cargador curricular actual
+### 17.2 Riesgo del cargador curricular actual
 
 El comando `cargar_ascenso` no es un instalador de paquetes de conocimiento:
+
 - El JSON `apps/roadmaps/data/ascenso_3_1.json` identifica lecciones por títulos y no contiene las claves UUID estables propuestas.
 - El servicio `cargar_ascenso` usa `update_or_create` por título para módulos/lecciones; no implementa un protocolo de migración de identidad curricular.
 - La opción `--recrear` elimina el roadmap y, por cascada, puede eliminar progreso y contenido asociado.
@@ -541,8 +675,9 @@ El comando `cargar_ascenso` no es un instalador de paquetes de conocimiento:
 
 **Regla obligatoria:** el sincronizador nunca invoca `cargar_ascenso --recrear` ni modifica la estructura curricular al instalar contenido de lecciones. La incorporación de UUID al catálogo ASCENSO requiere una migración/exportación controlada, preservando PK y progreso. Las actualizaciones de contenido usan exclusivamente el importador versionado descrito en este documento.
 
+---
 
-## 16. Primer incremento implementado
+## 18. Primer incremento implementado
 
 Se incorpora una migración aditiva para asignar UUID permanentes a lecciones, ejemplos y ejercicios existentes. La migración primero agrega columnas anulables, asigna un UUID distinto por fila y después impone unicidad y obligatoriedad.
 
@@ -550,8 +685,9 @@ Las relaciones desde intentos hacia ejercicios, desde evaluadores hacia ejercici
 
 Este incremento no crea todavía snapshots ni sincronización de red. Las claves UUID deberán exportarse posteriormente al catálogo curricular canónico y nunca regenerarse al cargar ASCENSO o instalar paquetes.
 
+---
 
-## 17. Catálogo de fuentes y snapshots versionados
+## 19. Catálogo de fuentes y snapshots versionados
 
 Se añade la primera estructura persistente para registrar la procedencia y las versiones del conocimiento académico:
 
@@ -568,8 +704,9 @@ Restricciones:
 
 **Límite de este incremento:** los snapshots se almacenan, pero aún no se generan automáticamente desde `ContenidoLeccion`, ejemplos y ejercicios; tampoco se ha implementado el flujo editorial, la firma de paquetes ni el cliente de sincronización. La inmutabilidad completa deberá centralizarse en servicios de publicación y reforzarse en el siguiente incremento; no se debe editar una versión publicada desde interfaces ordinarias.
 
+---
 
-## 18. Servicio de generación de snapshots
+## 20. Servicio de generación de snapshots
 
 El servicio `apps/roadmaps/knowledge.py` genera snapshots deterministas desde el borrador editorial actual:
 
@@ -586,8 +723,9 @@ La prueba verifica que el snapshot no cambia cuando el borrador editorial se mod
 
 **Límite:** el servicio crea snapshots, pero todavía no aplica una política completa de aprobación/publicación, no congela por sí mismo las filas de versiones frente a escrituras directas y no produce paquetes firmados.
 
+---
 
-## 19. Flujo editorial controlado
+## 21. Flujo editorial controlado
 
 Se implementan servicios explícitos para las transiciones de estado:
 
@@ -600,21 +738,19 @@ Las operaciones exigen un usuario autenticado, activo y con `is_staff=True`. Las
 
 **Importante:** Django Admin continúa deshabilitado. Estos servicios son la capa de dominio para una futura interfaz editorial segura o un comando de gestión; no se habilita un panel administrativo ni se expone publicación desde vistas de estudiante.
 
-
-### Auditoría de retirada
+### 20.1 Auditoría de retirada
 
 La retirada registra campos independientes `retirada_por` y `retirada_en`. No reutiliza los metadatos de revisión/aprobación, para preservar quién aprobó originalmente el contenido y quién ordenó su retirada. La causa queda en `motivo_retiro`.
 
-
-### Protección frente a escrituras masivas
+### 20.2 Protección frente a escrituras masivas
 
 El modelo de versiones usa un QuerySet especializado que rechaza `update()`, `bulk_update()` y eliminaciones masivas, además de impedir la creación masiva en estados distintos de borrador. La modificación de estados debe pasar por los servicios editoriales; la eliminación individual se limita a borradores. Esto reduce las vías accidentales para saltarse las validaciones del ciclo de vida. Como toda protección a nivel ORM, no sustituye controles de acceso a la base de datos ni impide SQL directo ejecutado por código privilegiado.
 
-
 El envío a revisión también conserva `enviada_por` y `enviada_en`, separados de los datos de aprobación, publicación y retirada. Así queda identificada cada responsabilidad del ciclo editorial.
 
+---
 
-## 20. Operación editorial local mediante comandos de gestión
+## 22. Operación editorial local mediante comandos de gestión
 
 Como Django Admin no está habilitado, se incorporan comandos internos para operar el flujo sin exponerlo a estudiantes:
 
@@ -628,11 +764,11 @@ python manage.py gestionar_version_leccion retirar --version-id 17 --usuario rev
 
 Los IDs numéricos son locales y solo se usan para operación; los UUID son las identidades estables para distribución. Los comandos no crean usuarios ni conceden privilegios: el usuario debe existir, estar activo y tener `is_staff=True`.
 
-
 El propio modelo también valida la secuencia de estados y exige los metadatos correspondientes para cada transición. No permite saltar de borrador directamente a publicación ni sobrescribir una vez asignados los responsables/fechas de envío, revisión, publicación o retirada.
 
+---
 
-## 21. Registro controlado del catálogo de fuentes
+## 23. Registro controlado del catálogo de fuentes
 
 El comando `registrar_fuente_conocimiento` permite crear registros desde una operación explícita del equipo editorial. Acepta publicador, título, URL canónica HTTPS, edición, identificador y URL de licencia y notas. La fecha de consulta se registra al crear el registro; la combinación URL + edición debe ser única.
 
@@ -652,12 +788,13 @@ python manage.py registrar_fuente_conocimiento \
 
 El registro no realiza solicitudes HTTP, no importa páginas, no ejecuta recursos remotos y no cambia el estado editorial de ninguna lección. La administración del contenido y su publicación continúan separadas.
 
+---
 
-## 15. Incremento implementado: verificación de manifiestos y paquetes
+## 24. Verificación de manifiestos y paquetes
 
-**Estado:** implementado en la rama `docs/phase-2-hybrid-knowledge-sync`; el usuario confirmó la ejecución local satisfactoria de la suite actual: 93 pruebas (`OK`).
+**Estado:** implementado en la rama de trabajo; el usuario confirmó la ejecución local satisfactoria de la suite actual: 93 pruebas (`OK`).
 
-### 15.1 Verificación del manifiesto
+### 24.1 Verificación del manifiesto
 
 Módulo: `apps/roadmaps/distribution.py`.
 
@@ -672,14 +809,14 @@ Módulo: `apps/roadmaps/distribution.py`.
 
 La allowlist y el almacén de claves públicas todavía deben integrarse con la configuración empaquetada. El verificador recibe ambos explícitamente; no se ha habilitado ningún host ni clave de producción.
 
-### 15.2 Verificación del ZIP
+### 24.2 Verificación del ZIP
 
 `validate_package_archive()` verifica el paquete en memoria y no extrae rutas suministradas por terceros.
 
 Límites actuales:
 
 | Control | Límite |
-|---|---:|
+|---|---|
 | Manifiesto JSON | 64 KiB |
 | Firma Base64 | 256 bytes |
 | Paquete ZIP | 100 MiB |
@@ -693,7 +830,7 @@ Solo se aceptan `package-index.json` y documentos `payload/lessons/<uuid>.json`.
 
 El validador no ejecuta contenido, no escribe archivos y no modifica SQLite.
 
-### 15.3 Registro local
+### 24.3 Registro local
 
 Migraciones `0012_registro_paquetes_sincronizacion` y `0013_un_paquete_activo_por_canal` incorporan:
 
@@ -702,13 +839,14 @@ Migraciones `0012_registro_paquetes_sincronizacion` y `0013_un_paquete_activo_po
 
 Se exige una secuencia única por canal y como máximo un paquete con estado `activo` por canal. El modelo restringe transiciones (`descargado → verificado/rechazado → activo → sustituido`), bloquea cambios de identidad/hash y borrado físico; el FK al paquete activo usa `PROTECT` y valida que el canal coincida. No se almacenan datos de progreso, respuestas, código del estudiante, secretos ni credenciales.
 
-### 15.4 Dependencia criptográfica
+### 24.4 Dependencia criptográfica
 
 Se fija `cryptography==46.0.3` en `requirements.txt` para Ed25519. Debe instalarse en el entorno virtual y estar incluida en la construcción PyInstaller antes de distribuir el cliente.
 
-### 15.5 Límites explícitos del incremento
+### 24.5 Límites explícitos del incremento
 
 Este avance **no** implementa todavía:
+
 - cliente HTTP, descarga, ETag, reintentos o backoff;
 - endpoint o proveedor de distribución central;
 - almacén definitivo de claves públicas y allowlist de producción;
@@ -718,12 +856,3 @@ Este avance **no** implementa todavía:
 - programación automática desde Electron.
 
 No se debe interpretar la validación criptográfica de artefactos como una sincronización ya operativa. El siguiente incremento debe conectar el verificador con un flujo de publicación controlado y un instalador transaccional, sin tocar progreso ni intentos.
-
-
-## 22. Siguiente componente: publicador central
-
-El diseño detallado del publicador se documenta en `docs/DISENO_PUBLICADOR_CENTRAL.md`. El publicador tomará únicamente snapshots con estado editorial `publicada`, verificará hash y procedencia/licencia congelada, y generará ZIP determinista, índice, manifiesto v1 y firma Ed25519.
-
-Antes de habilitarlo se requiere un registro central de releases que garantice secuencia monotónica y única por canal, impida sobrescritura de artefactos y registre hashes, `key_id`, responsable editorial y fecha. La clave privada se suministrará fuera del repositorio y se validarán tipo y permisos. La primera entrega será una operación local explícita; no realizará upload ni despliegue.
-
-**Estado:** diseño documentado; implementación pendiente. La URL HTTPS, el proveedor/CDN, el dominio y el procedimiento de operación deberán aprobarse antes de publicar paquetes reales.
