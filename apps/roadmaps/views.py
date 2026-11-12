@@ -359,10 +359,13 @@ def leccion_detalle(request, leccion_id):
                 lista_intentos.append(intento)
 
     for ejercicio in ejercicios:
-        ejercicio.intentos_usuario = intentos_por_ejercicio.get(ejercicio.id, [])
-        ejercicio.evaluacion_disponible = ejercicio.configuraciones_evaluacion.filter(
-            activo=True
-        ).exists()
+        ejercicio.intentos_usuario = (
+            intentos_por_ejercicio.get(ejercicio.id, []) if ejercicio.id else []
+        )
+        ejercicio.evaluacion_disponible = bool(
+            ejercicio.id
+            and ejercicio.configuraciones_evaluacion.filter(activo=True).exists()
+        )
 
     return render(
         request,
