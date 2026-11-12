@@ -35,7 +35,7 @@ from apps.roadmaps.models import (
 from apps.roadmaps.publisher import publicar_paquete_conocimiento
 from apps.roadmaps.models_attempts import ConfiguracionEvaluacion, IntentoEjercicio
 from apps.roadmaps.attempts import registrar_intento_ejercicio
-from apps.roadmaps.installer import (
+from apps.roadmaps.sync_client import SyncClientError, sincronizar_conocimiento\nfrom apps.roadmaps.installer import (
     InstallationError,
     instalar_paquete_firmado,
     restaurar_paquete_anterior,
@@ -253,6 +253,105 @@ class InstaladorPaquetesTests(TestCase):
         self.assertEqual(PaqueteConocimientoInstalado.objects.count(), 0)
         self.assertEqual(ContenidoLeccionPaquete.objects.count(), 0)
         self.assertFalse((self.data / "knowledge-packages").exists())
+
+    def test_cliente_http_instala_solo_despues_de_verificar_manifiesto(self):
+        artifacts = self.publicar()
+        manifest, signature, package_bytes = artifacts
+        package_url = __import__("json").loads(manifest)["package"]["url"]
+        requested = []
+
+        def fake_fetch(url, **kwargs):
+            requested.append(url)
+            if url.endswith("/manifest.json"):
+                return manifest, '"release-1"'
+            if url.endswith("/manifest.ed25519"):
+                return signature, ""
+            if url == package_url:
+                return package_bytes, ""
+            raise AssertionError(f"URL inesperada: {url}")
+
+        with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
+            with patch("apps.roadmaps.sync_client._fetch_bytes", side_effect=fake_fetch):
+                result = sincronizar_conocimiento(
+                    channel="stable",
+                    manifest_url="https://cdn.codeguard.example/stable/manifest.json",
+                    signature_url="https://cdn.codeguard.example/stable/manifest.ed25519",
+                    trusted_public_keys=self.trusted_keys,
+                    allowed_hosts={"cdn.codeguard.example"},
+                    app_version="1.0.0",
+                )
+
+        self.assertEqual(result["status"], "installed")
+        self.assertEqual(requested, [
+            "https://cdn.codeguard.example/stable/manifest.json",
+            "https://cdn.codeguard.example/stable/manifest.ed25519",
+            package_url,
+        ])
+        state = EstadoSincronizacion.objects.get(channel="stable")
+        self.assertEqual(state.manifest_etag, '"release-1"')
+        self.assertEqual(state.active_package_id, result["package"].pk)
+
+    def test_cliente_http_no_descarga_zip_si_la_firma_es_invalida(self):
+        manifest, signature, _package = self.publicar()
+        requested = []
+
+        def fake_fetch(url, **kwargs):
+            requested.append(url)
+            if url.endswith("/manifest.json"):
+                return manifest, '"release-1"'
+            return b"firma-alterada", ""
+
+        with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
+            with patch("apps.roadmaps.sync_client._fetch_bytes", side_effect=fake_fetch):
+                with self.assertRaisesRegex(SyncClientError, "firma"):
+                    sincronizar_conocimiento(
+                        channel="stable",
+                        manifest_url="https://cdn.codeguard.example/stable/manifest.json",
+                        signature_url="https://cdn.codeguard.example/stable/manifest.ed25519",
+                        trusted_public_keys=self.trusted_keys,
+                        allowed_hosts={"cdn.codeguard.example"},
+                        app_version="1.0.0",
+                    )
+
+        self.assertEqual(len(requested), 2)
+        self.assertFalse(PaqueteConocimientoInstalado.objects.exists())
+        state = EstadoSincronizacion.objects.get(channel="stable")
+        self.assertEqual(state.last_error_code, "manifest_rejected")
+
+    def test_cliente_http_usa_etag_y_acepta_304_sin_descargar(self):
+        state = EstadoSincronizacion.objects.create(
+            channel="stable", manifest_etag='"cached-release"'
+        )
+        with patch("apps.roadmaps.sync_client._fetch_bytes", return_value=(None, '"cached-release"')) as fetch:
+            result = sincronizar_conocimiento(
+                channel="stable",
+                manifest_url="https://cdn.codeguard.example/stable/manifest.json",
+                signature_url="https://cdn.codeguard.example/stable/manifest.ed25519",
+                trusted_public_keys=self.trusted_keys,
+                allowed_hosts={"cdn.codeguard.example"},
+                app_version="1.0.0",
+            )
+
+        self.assertEqual(result["status"], "not_modified")
+        fetch.assert_called_once()
+        self.assertIn("If-None-Match", fetch.call_args.kwargs["headers"])
+        state.refresh_from_db()
+        self.assertIsNotNone(state.last_check_at)
+        self.assertEqual(state.last_error_code, "")
+
+    def test_cliente_http_rechaza_endpoint_fuera_de_allowlist_sin_conectar(self):
+        with patch("apps.roadmaps.sync_client._fetch_bytes") as fetch:
+            with self.assertRaisesRegex(SyncClientError, "host autorizado"):
+                sincronizar_conocimiento(
+                    channel="stable",
+                    manifest_url="https://evil.example/manifest.json",
+                    signature_url="https://cdn.codeguard.example/stable/manifest.ed25519",
+                    trusted_public_keys=self.trusted_keys,
+                    allowed_hosts={"cdn.codeguard.example"},
+                    app_version="1.0.0",
+                )
+        fetch.assert_not_called()
+        self.assertFalse(EstadoSincronizacion.objects.exists())
 
     def test_rollback_reactiva_paquete_anterior_sin_eliminar_evidencia(self):
         ejercicio = self.leccion.ejercicios.get()
