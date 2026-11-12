@@ -6,6 +6,7 @@ código: los evaluadores disponibles son deterministas y estáticos.
 """
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -61,8 +62,23 @@ class ConfiguracionEvaluacion(models.Model):
         return f"Evaluador v{self.version}: {self.ejercicio}"
 
 
+class IntentoEjercicioQuerySet(models.QuerySet):
+    """Conserva la evidencia académica y bloquea mutaciones masivas."""
+
+    def update(self, **kwargs):
+        raise ValidationError("Los intentos son evidencia histórica y no admiten update() masivo.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("Los intentos son evidencia histórica y no admiten bulk_update().")
+
+    def delete(self):
+        raise ValidationError("Los intentos académicos no se eliminan mediante operaciones masivas.")
+
+
 class IntentoEjercicio(models.Model):
     """Entrega persistida del estudiante y resultado reproducible."""
+
+    objects = IntentoEjercicioQuerySet.as_manager()
 
     RESULTADOS = [
         ("pendiente_revision", "Pendiente de revisión"),
@@ -145,6 +161,40 @@ class IntentoEjercicio(models.Model):
                 name="intento_puntuacion_0_100",
             )
         ]
+
+    def clean(self):
+        super().clean()
+        if self.version_contenido_id:
+            if self.version_contenido.leccion_id != self.ejercicio.leccion_id:
+                raise ValidationError({
+                    "version_contenido": "La versión académica debe pertenecer a la lección del ejercicio."
+                })
+            if (
+                not isinstance(self.snapshot_ejercicio, dict)
+                or self.snapshot_ejercicio.get("clave") != str(self.ejercicio.clave_contenido)
+            ):
+                raise ValidationError({
+                    "snapshot_ejercicio": "El snapshot debe identificar el ejercicio presentado."
+                })
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            anterior = type(self).objects.get(pk=self.pk)
+            campos_inmutables = (
+                "ejercicio_id", "usuario_id", "version_contenido_id",
+                "snapshot_ejercicio", "respuesta", "configuracion_evaluacion_id",
+                "version_evaluacion", "creado_en",
+            )
+            if any(
+                getattr(anterior, campo) != getattr(self, campo)
+                for campo in campos_inmutables
+            ):
+                raise ValidationError("La evidencia original de un intento es inmutable.")
+        self.full_clean(validate_unique=False, validate_constraints=False)
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("Los intentos académicos no se eliminan físicamente.")
 
     def __str__(self):
         return f"Intento {self.pk} — {self.ejercicio} ({self.resultado})"
