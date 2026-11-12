@@ -100,10 +100,28 @@ def _evaluar_configuracion(configuracion: ConfiguracionEvaluacion, respuesta: st
 
 
 def _completar_leccion_si_corresponde(usuario, leccion, actor_auditoria=None) -> bool:
-    """Completa la lección solo si todos sus ejercicios obligatorios tienen evidencia aprobada."""
-    requeridos = list(leccion.ejercicios.filter(obligatorio=True))
-    if not requeridos or any(not ejercicio.publicado for ejercicio in requeridos):
-        return False
+    """Completa la lección solo si todos los ejercicios obligatorios de la versión activa tienen evidencia aprobada."""
+    puntero_activo = (
+        ContenidoLeccionActivo.objects.select_related("version")
+        .filter(leccion=leccion)
+        .first()
+    )
+    if puntero_activo:
+        claves_requeridas = [
+            item.get("clave")
+            for item in puntero_activo.version.snapshot.get("ejercicios", [])
+            if item.get("obligatorio")
+        ]
+        ejercicios_por_clave = {
+            str(item.clave_contenido): item for item in leccion.ejercicios.all()
+        }
+        if not claves_requeridas or any(clave not in ejercicios_por_clave for clave in claves_requeridas):
+            return False
+        requeridos = [ejercicios_por_clave[clave] for clave in claves_requeridas]
+    else:
+        requeridos = list(leccion.ejercicios.filter(obligatorio=True))
+        if not requeridos or any(not ejercicio.publicado for ejercicio in requeridos):
+            return False
 
     for ejercicio in requeridos:
         configuracion = ejercicio.configuraciones_evaluacion.filter(
