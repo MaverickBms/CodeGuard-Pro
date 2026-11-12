@@ -176,6 +176,30 @@ class InstaladorPaquetesTests(TestCase):
         self.assertEqual(package.contenidos_leccion.get().leccion_id, self.leccion.pk)
         self.assertEqual(package.fuentes_catalogo.get().source_uuid, self.fuente.clave)
 
+    def test_repetir_el_mismo_manifiesto_es_idempotente(self):
+        artifacts = self.publicar()
+        with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
+            first = self.instalar(artifacts)
+            second = self.instalar(artifacts)
+
+        self.assertTrue(first["installed"])
+        self.assertTrue(second["unchanged"])
+        self.assertEqual(first["package"].pk, second["package"].pk)
+        self.assertEqual(PaqueteConocimientoInstalado.objects.count(), 1)
+        self.assertEqual(ContenidoLeccionPaquete.objects.count(), 1)
+
+    def test_catalogo_instalado_no_sobrescribe_fuente_editorial_local(self):
+        artifacts = self.publicar()
+        self.fuente.titulo = "Título local actualizado"
+        self.fuente.save(update_fields=["titulo"])
+        with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
+            package = self.instalar(artifacts)["package"]
+
+        self.fuente.refresh_from_db()
+        catalog_entry = package.fuentes_catalogo.get(source_uuid=self.fuente.clave)
+        self.assertEqual(self.fuente.titulo, "Título local actualizado")
+        self.assertEqual(catalog_entry.metadatos["titulo"], "Python Language Reference")
+
     def test_rollback_reactiva_paquete_anterior_sin_eliminar_evidencia(self):
         with patch.dict(os.environ, {"CODEGUARD_DATA_DIR": str(self.data)}):
             first = self.instalar(self.publicar())["package"]
