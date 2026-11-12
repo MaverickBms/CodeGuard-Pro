@@ -207,7 +207,8 @@ Las pruebas de esta rama cubren evaluación exacta, comprobación estática, con
 | Validador editorial | Comprobar estructura, enlaces, referencias, ejemplos y compatibilidad | Pendiente |
 | Publicador central | Publicar paquetes inmutables y manifiesto firmado | Pendiente |
 | Cliente de sincronización | Consultar versiones y descargar paquetes cuando hay conexión | Pendiente |
-| Verificador local | Validar firma, hash, tamaño, esquema y compatibilidad | Parcial: núcleo Ed25519/ZIP implementado en rama; falta configuración de confianza y conexión al cliente |\n| Registro local de paquetes | Conservar historial, secuencia y estado por canal | Implementado en rama (migraciones 0012–0013); pendiente de validación local |
+| Verificador local | Validar firma, hash, tamaño, esquema y compatibilidad | Parcial: núcleo Ed25519/ZIP implementado en rama; falta configuración de confianza y conexión al cliente |
+| Registro local de paquetes | Conservar historial, secuencia y estado por canal | Implementado en rama (migraciones 0012–0013); pendiente de validación local |
 | Instalador local | Activar paquetes de forma atómica y permitir rollback | Pendiente |
 | Estado de vigencia | Mostrar actualización, última revisión, obsolescencia y retiro | Pendiente |
 
