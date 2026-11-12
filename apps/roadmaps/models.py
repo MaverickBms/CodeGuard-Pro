@@ -608,6 +608,10 @@ class VersionContenidoLeccion(models.Model):
         verbose_name="retirada por",
     )
     retirada_en = models.DateTimeField(null=True, blank=True, verbose_name="retirada el")
+    creada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, blank=True,
+        related_name="versiones_contenido_creadas", verbose_name="creada por",
+    )
     creada_en = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
@@ -619,7 +623,8 @@ class VersionContenidoLeccion(models.Model):
                 "snapshot", "sha256", "resumen_cambios",
                 "enviada_por_id", "enviada_en", "revisada_por_id", "revisada_en",
                 "publicada_por_id", "publicada_en", "retirada_por_id", "retirada_en",
-                "motivo_retiro",
+                "creada_por_id",
+                "motivo_retiro", "creada_por_id",
             ).get(pk=self.pk)
             estados_bloqueados = {"revision", "aprobada", "publicada", "sustituida", "retirada"}
             campos_inmutables = (
