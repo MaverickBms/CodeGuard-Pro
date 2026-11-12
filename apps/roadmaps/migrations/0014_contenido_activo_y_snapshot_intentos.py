@@ -8,21 +8,31 @@ def conservar_evidencia_historica(apps, schema_editor):
     Version = apps.get_model("roadmaps", "VersionContenidoLeccion")
     Puntero = apps.get_model("roadmaps", "ContenidoLeccionActivo")
 
-    for intento in Intento.objects.select_related("ejercicio").iterator():
-        ejercicio = intento.ejercicio
-        intento.snapshot_ejercicio = {
-            "clave": str(ejercicio.clave_contenido),
-            "titulo": ejercicio.titulo,
-            "enunciado": ejercicio.enunciado,
-            "instrucciones": ejercicio.instrucciones,
-            "lenguaje": ejercicio.lenguaje,
-            "nivel": ejercicio.nivel,
-            "codigo_inicial": ejercicio.codigo_inicial,
-            "obligatorio": ejercicio.obligatorio,
-            "orden": ejercicio.orden,
-            "origen": "migracion_historica",
-        }
-        intento.save(update_fields=["snapshot_ejercicio"])
+    ultimo_id = 0
+    while True:
+        lote = list(
+            Intento.objects.filter(pk__gt=ultimo_id)
+            .select_related("ejercicio")
+            .order_by("pk")[:200]
+        )
+        if not lote:
+            break
+        for intento in lote:
+            ejercicio = intento.ejercicio
+            intento.snapshot_ejercicio = {
+                "clave": str(ejercicio.clave_contenido),
+                "titulo": ejercicio.titulo,
+                "enunciado": ejercicio.enunciado,
+                "instrucciones": ejercicio.instrucciones,
+                "lenguaje": ejercicio.lenguaje,
+                "nivel": ejercicio.nivel,
+                "codigo_inicial": ejercicio.codigo_inicial,
+                "obligatorio": ejercicio.obligatorio,
+                "orden": ejercicio.orden,
+                "origen": "migracion_historica",
+            }
+        Intento.objects.bulk_update(lote, ["snapshot_ejercicio"], batch_size=200)
+        ultimo_id = lote[-1].pk
 
     for version in Version.objects.filter(estado="publicada").iterator():
         Puntero.objects.get_or_create(
