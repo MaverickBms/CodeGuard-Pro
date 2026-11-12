@@ -101,6 +101,8 @@ class IntentoEjercicio(models.Model):
     configuracion_evaluacion = models.ForeignKey(
         ConfiguracionEvaluacion,
         on_delete=models.PROTECT,
+        null=True,
+        blank=True,
         related_name="intentos",
         verbose_name="configuración aplicada",
     )
