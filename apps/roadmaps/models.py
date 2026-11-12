@@ -1059,6 +1059,12 @@ class PaqueteConocimientoInstalado(models.Model):
             value = getattr(self, field)
             if len(value) != 64 or any(char not in "0123456789abcdef" for char in value):
                 raise ValidationError({field: "Debe ser un SHA-256 hexadecimal de 64 caracteres."})
+        if not self.pk and (
+            self.estado != "descargado" or self.installed_at is not None or self.error_code
+        ):
+            raise ValidationError(
+                "Un paquete nuevo debe estar descargado, sin fecha de instalación ni error."
+            )
 
     def __str__(self):
         return f"{self.channel} #{self.sequence} — {self.package_version} ({self.estado})"
