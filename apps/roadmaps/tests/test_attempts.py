@@ -1,7 +1,7 @@
 """Pruebas del ciclo de entrega y evaluación segura de ejercicios."""
 
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ProtectedError, ValidationError
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -194,6 +194,43 @@ class IntentosEjercicioTests(TestCase):
             registrar_intento_ejercicio(self.usuario, self.ejercicio, "respuesta")
 
         self.assertFalse(IntentoEjercicio.objects.filter(ejercicio=self.ejercicio).exists())
+
+
+    def test_recursos_didacticos_tienen_identificadores_uuid_estables(self):
+        from apps.roadmaps.models import EjemploLeccion
+
+        ejemplo = EjemploLeccion.objects.create(
+            leccion=self.leccion, titulo="Ejemplo de variable", codigo="nombre = 'Ada'"
+        )
+        segundo = EjercicioLeccion.objects.create(
+            leccion=self.leccion, titulo="Segundo ejercicio", enunciado="Declara otra variable."
+        )
+        for recurso in (self.leccion, ejemplo, self.ejercicio, segundo):
+            with self.subTest(recurso=recurso):
+                self.assertIsNotNone(recurso.clave_contenido)
+                self.assertEqual(recurso.clave_contenido.version, 4)
+        self.assertNotEqual(self.ejercicio.clave_contenido, segundo.clave_contenido)
+
+    def test_no_se_puede_eliminar_ejercicio_con_intentos_historicos(self):
+        IntentoEjercicio.objects.create(
+            ejercicio=self.ejercicio, usuario=self.usuario, respuesta="nombre = 'Ada'"
+        )
+        with self.assertRaises(ProtectedError):
+            self.ejercicio.delete()
+        self.assertTrue(IntentoEjercicio.objects.filter(ejercicio=self.ejercicio).exists())
+
+    def test_no_se_puede_eliminar_evaluador_referenciado_por_intento(self):
+        evaluador = ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio, tipo="respuesta_exacta",
+            configuracion={"respuesta_esperada": "nombre = 'Ada'"},
+        )
+        IntentoEjercicio.objects.create(
+            ejercicio=self.ejercicio, usuario=self.usuario, respuesta="nombre = 'Ada'",
+            configuracion_evaluacion=evaluador, version_evaluacion=evaluador.version,
+        )
+        with self.assertRaises(ProtectedError):
+            evaluador.delete()
+        self.assertTrue(ConfiguracionEvaluacion.objects.filter(pk=evaluador.pk).exists())
 
     def test_vista_guarda_intento_y_muestra_historial(self):
         ConfiguracionEvaluacion.objects.create(
