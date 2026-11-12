@@ -159,6 +159,14 @@ class DistribucionFirmadaTests(SimpleTestCase):
         with self.assertRaisesMessage(DistributionError, "host autorizado"):
             self.verify(raw, signature)
 
+
+    def test_manifiesto_rechaza_semver_invalido(self):
+        manifest = self.manifest_dict()
+        manifest["minimum_app_version"] = "01.0.0"
+        raw, signature = self.sign(manifest)
+        with self.assertRaisesMessage(DistributionError, "SemVer"):
+            self.verify(raw, signature)
+
     def test_manifiesto_rechaza_claves_json_duplicadas(self):
         raw = b'{"manifest_version":1,"manifest_version":1}'
         with self.assertRaisesMessage(DistributionError, "duplicada"):
