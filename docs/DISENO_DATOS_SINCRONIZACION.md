@@ -540,3 +540,12 @@ El comando `cargar_ascenso` no es un instalador de paquetes de conocimiento:
 - La reconstrucción de prerrequisitos forma parte de la carga del roadmap, no de la actualización de contenido pedagógico.
 
 **Regla obligatoria:** el sincronizador nunca invoca `cargar_ascenso --recrear` ni modifica la estructura curricular al instalar contenido de lecciones. La incorporación de UUID al catálogo ASCENSO requiere una migración/exportación controlada, preservando PK y progreso. Las actualizaciones de contenido usan exclusivamente el importador versionado descrito en este documento.
+
+
+## 16. Primer incremento implementado
+
+Se incorpora una migración aditiva para asignar UUID permanentes a lecciones, ejemplos y ejercicios existentes. La migración primero agrega columnas anulables, asigna un UUID distinto por fila y después impone unicidad y obligatoriedad.
+
+Las relaciones desde intentos hacia ejercicios, desde evaluadores hacia ejercicios y desde intentos hacia la configuración aplicada pasan a protección contra borrado (PROTECT). El historial se conserva; la retirada de contenido deberá realizarse mediante estados editoriales y no mediante eliminación física.
+
+Este incremento no crea todavía snapshots ni sincronización de red. Las claves UUID deberán exportarse posteriormente al catálogo curricular canónico y nunca regenerarse al cargar ASCENSO o instalar paquetes.
