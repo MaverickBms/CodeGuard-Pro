@@ -2,7 +2,6 @@
 
 import json
 import tempfile
-import uuid
 from pathlib import Path
 
 from django.contrib.auth import get_user_model
@@ -141,6 +140,12 @@ class ImportacionContenidoTests(TestCase):
         self.assertEqual(version.referencias.count(), 1)
         self.assertEqual(version.referencias.get().uso_declarado, "original")
         self.assertFalse(result["duplicates"])
+        otro_editor = get_user_model().objects.create_user(
+            username="editor_otro", password="ClaveSegura123!", is_staff=True
+        )
+        version.creada_por = otro_editor
+        with self.assertRaisesMessage(ValidationError, "no puede modificarse"):
+            version.save()
 
     def test_reimportacion_del_mismo_hash_es_idempotente(self):
         report = validar_directorio_contenido(self.directory)
@@ -214,6 +219,17 @@ class ImportacionContenidoTests(TestCase):
         )
         with self.assertRaisesMessage(ValidationError, "cambió después del envío a revisión"):
             aprobar_version_contenido(version.pk, actor=self.editor)
+
+    def test_evidencia_http_no_puede_aprobar_licencia(self):
+        with self.assertRaisesMessage(ValidationError, "URL HTTPS absoluta"):
+            revisar_licencia_fuente(
+                self.fuente.pk,
+                actor=self.editor,
+                estado="compatible",
+                evidencia="http://example.org/license",
+                alcance="Redistribución.",
+                nota="Prueba de rechazo de HTTP.",
+            )
 
     def test_usuario_sin_privilegios_no_puede_importar(self):
         report = validar_directorio_contenido(self.directory)
