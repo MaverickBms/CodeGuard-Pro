@@ -257,7 +257,7 @@ Reglas de publicación:
 
 La validación de licencia debe residir en el servicio de dominio que envía una versión a revisión y que la publica, no solo en el comando de importación. Así se evita eludir el control mediante otra interfaz o llamada interna.
 
-Este control se implementó inicialmente en las migraciones 0009 y 0010 y requiere validación local de migraciones y pruebas antes de considerarse cerrado.
+Este control se implementó inicialmente en las migraciones 0009 y 0010; la migración 0011 registra la autoría de creación de las versiones importadas y requiere validación local de migraciones y pruebas antes de considerarse cerrado.
 
 ## 8. Seguridad y privacidad
 
