@@ -716,8 +716,29 @@ class VersionContenidoLeccion(models.Model):
         return f"{self.leccion} — v{self.numero_version} ({self.estado})"
 
 
+class ContenidoLeccionActivoQuerySet(models.QuerySet):
+    """Evita alterar el puntero publicado mediante operaciones masivas."""
+
+    def update(self, **kwargs):
+        raise ValidationError("El contenido activo solo cambia mediante publicación editorial.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("No se permiten actualizaciones masivas del contenido activo.")
+
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        for obj in objs:
+            obj.full_clean()
+        return super().bulk_create(objs, **kwargs)
+
+    def delete(self):
+        raise ValidationError("El contenido activo solo se retira mediante el flujo editorial.")
+
+
 class ContenidoLeccionActivo(models.Model):
     """Puntero transaccional a la versión editorial que se muestra al estudiante."""
+
+    objects = ContenidoLeccionActivoQuerySet.as_manager()
 
     leccion = models.OneToOneField(
         Leccion, on_delete=models.PROTECT, related_name="contenido_activo",
@@ -744,6 +765,11 @@ class ContenidoLeccionActivo(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.version.estado == "publicada":
+            raise ValidationError("El contenido activo solo se retira mediante el flujo editorial.")
+        return super().delete(*args, **kwargs)
 
     def __str__(self):
         return f"{self.leccion} → v{self.version.numero_version}"
@@ -954,8 +980,10 @@ class PaqueteConocimientoInstaladoQuerySet(models.QuerySet):
     def bulk_create(self, objs, **kwargs):
         objs = list(objs)
         for obj in objs:
-            if obj.estado != "descargado":
-                raise ValidationError("Los paquetes deben registrarse inicialmente como descargados.")
+            if obj.estado != "descargado" or obj.installed_at is not None or obj.error_code:
+                raise ValidationError(
+                    "Los paquetes deben registrarse inicialmente como descargados, sin fecha de instalación ni error."
+                )
             obj.full_clean()
         return super().bulk_create(objs, **kwargs)
 
