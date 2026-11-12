@@ -171,7 +171,7 @@ Los límites concretos se centralizarán en constantes de configuración y se pr
 
 | Recurso | Límite propuesto |
 |---|---:|
-| Tamaño máximo de un documento JSON | 2 MiB |
+| Tamaño máximo de un documento JSON | 2 MiB |\n| Tamaño máximo del lote completo | 100 MiB |
 | Documentos por lote de importación inicial | 500 |
 | Ejemplos por lección | 50 |
 | Ejercicios por lección | 50 |
