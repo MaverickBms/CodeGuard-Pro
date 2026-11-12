@@ -35,8 +35,8 @@ La rama `docs/phase-2-hybrid-knowledge-sync` fue fusionada a `main`. Incluye:
 - **Evidencia histórica de ejercicios:** cada nuevo `IntentoEjercicio` conserva `snapshot_ejercicio` y referencia `version_contenido` cuando existe una versión activa. La migración 0014 conserva el enunciado visible de intentos anteriores. La evidencia original queda protegida frente a cambios y borrados ORM.
 - **Interfaz de entregas:** el estudiante ya puede enviar respuestas mediante POST con CSRF, límite de 20.000 caracteres e historial de los tres últimos intentos. No se ejecuta código arbitrario.
 - **Registro local endurecido:** escrituras masivas de paquetes y estado de sincronización validan invariantes o quedan bloqueadas para evitar saltarse el flujo controlado.
-- **Comandos de gestión:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`, `publicar_paquete_conocimiento` y el nuevo `sincronizar_conocimiento` (cliente HTTP, en rama aislada), con scheduler Electron y backoff implementados y pruebas unitarias locales satisfactorias; build PyInstaller e integración Electron pendientes.
-- **Validación de la línea base:** el propietario confirmó 119 pruebas OK, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2c5d441`. La validación local cubre el instalador transaccional y rollback.
+- **Comandos de gestión:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`, `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (cliente HTTP), scheduler Electron y backoff. El propietario confirmó 136 pruebas OK, build PyInstaller y AppImage Linux; el binario carga Django y alcanza el comando de sincronización con el error esperado por configuración ausente. Dos pruebas adicionales del despacho empaquetado y la prueba GUI de ciclo de vida Electron están pendientes.
+- **Validación de la línea base:** el propietario confirmó 119 pruebas OK, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2906abc`. El propietario confirmó después 136 pruebas OK y la generación de PyInstaller/AppImage.
 
 ---
 
@@ -70,7 +70,7 @@ El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos 
 
 | Elemento | Estado | Documento |
 |---|---|---|
-| Cliente de sincronización de red | Cliente HTTP validado localmente por el propietario dentro de 132 pruebas; scheduler Electron y backoff implementados; pruebas unitarias locales satisfactorias. Build PyInstaller e integración Electron pendientes. Endpoint y claves de producción no configurados | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Cliente de sincronización de red | Cliente HTTP, scheduler y backoff implementados; 136 pruebas OK confirmadas por el propietario; PyInstaller y AppImage Linux generados; el binario alcanza el comando sync. Dos pruebas adicionales de despacho y la aceptación GUI Electron están pendientes. Endpoint y claves de producción no configurados | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Generador local y catálogo firmado v2 | Implementado; migración 0015 y pruebas confirmadas por el propietario. Hosting y publicación remota pendientes | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Instalación transaccional local y rollback | Validada por el propietario en `main` `2c5d441` (119 pruebas OK; migración 0016 incluida) | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Competencias y evaluaciones | Pendiente (Incremento 3) | `docs/PLAN_DESARROLLO.md` |
@@ -85,7 +85,7 @@ El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos 
 
 El módulo `apps/roadmaps/sync_client.py` realiza GET HTTPS al manifiesto, firma y ZIP. Verifica el manifiesto Ed25519 y su compatibilidad antes de descargar el paquete; el ZIP se entrega al instalador ya validado en `main`. Se aplican allowlist de hosts, TLS validado, rechazo de redirecciones, timeout y límites de bytes, ETag y verificación del tamaño/hash. No se envían datos del estudiante.
 
-El comando manual es `python manage.py sincronizar_conocimiento --channel stable`. Requiere URLs, allowlist y claves públicas confiables mediante variables de entorno. El scheduler Electron consulta localmente cada cinco minutos, pero el cliente solo realiza red cuando vence `next_check_after`; la primera comprobación se difiere 30 segundos y los fallos aplican backoff de 15 minutos hasta 24 horas. La ejecución empaquetada utiliza `CodeGuardServer --sync-knowledge`, sin iniciar Waitress ni migraciones. Las pruebas unitarias posteriores de backoff y bloqueo fueron confirmadas como satisfactorias por el propietario; todavía falta compilar PyInstaller y ejecutar la integración empaquetada con Electron. No se ha elegido proveedor ni publicado un endpoint real.
+El comando manual es `python manage.py sincronizar_conocimiento --channel stable`. Requiere URLs, allowlist y claves públicas confiables mediante variables de entorno. El scheduler Electron consulta localmente cada cinco minutos, pero el cliente solo realiza red cuando vence `next_check_after`; la primera comprobación se difiere 30 segundos y los fallos aplican backoff de 15 minutos hasta 24 horas. La ejecución empaquetada utiliza `CodeGuardServer --sync-knowledge`, sin iniciar Waitress ni migraciones. Las pruebas unitarias de backoff y bloqueo fueron confirmadas como satisfactorias. El propietario confirmó compilación PyInstaller y AppImage; el binario alcanza el comando sync con error controlado por variables ausentes. La prueba GUI completa de Electron sigue pendiente. No se ha elegido proveedor ni publicado un endpoint real.
 
 ## 8. Reglas de operación
 
@@ -99,7 +99,7 @@ El comando manual es `python manage.py sincronizar_conocimiento --channel stable
 
 ## 9. Validación
 
-El propietario confirmó 119 pruebas OK, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2c5d441`; esa validación incluye el catálogo v2 y el instalador transaccional.
+El propietario confirmó 119 pruebas OK para la línea base del instalador y posteriormente 136 pruebas OK tras la integración HTTP/Electron y las correcciones de empaquetado en `main` `2906abc`. También confirmó build PyInstaller y AppImage Linux.
 
 Desde la carpeta local del proyecto:
 
@@ -116,7 +116,7 @@ Luego iniciar CodeGuard Pro con `./run.sh`, abrir una etapa y entrar en una lecc
 
 El índice del paquete firmado incorpora un catálogo normalizado de fuentes con UUID, datos bibliográficos, decisión/evidencia/alcance de licencia y fecha de revisión. Se excluye la identidad personal del revisor. El verificador admite índices v1 anteriores y valida estrictamente v2, incluida la correspondencia exacta entre fuentes declaradas y referencias de las lecciones. El instalador conserva el catálogo firmado en `FuentePaqueteConocimiento`, asociado al paquete. No modifica ni sobrescribe `FuenteConocimiento`, por lo que cada versión instalada mantiene su propio expediente de fuentes.
 
-Las pruebas SRC-001 a SRC-008, PUB-001 a PUB-012 y las pruebas del instalador quedaron incluidas en las 119 pruebas confirmadas en `main`. El propietario confirmó después 132 pruebas OK en la rama del cliente HTTP, que incluyen las pruebas de transporte e integración iniciales. Las pruebas unitarias de backoff y bloqueo entre procesos fueron confirmadas como satisfactorias por el propietario. La ejecución real del binario PyInstaller y la integración con Electron siguen pendientes.
+Las pruebas SRC-001 a SRC-008, PUB-001 a PUB-012 y las pruebas del instalador quedaron incluidas en las 119 pruebas confirmadas en `main`. El propietario confirmó después 132 pruebas OK en la rama del cliente HTTP, que incluyen las pruebas de transporte e integración iniciales. Las pruebas unitarias de backoff y bloqueo entre procesos fueron confirmadas como satisfactorias por el propietario. El propietario confirmó la ejecución del binario PyInstaller hasta el comando sync y la generación del AppImage; la integración GUI completa con Electron sigue pendiente.
 
 ## 10. Instalador transaccional de paquetes (validado en main)
 
@@ -126,4 +126,4 @@ La migración 0016 añade snapshots de lección y catálogo de fuentes asociados
 
 El artefacto ZIP se conserva bajo `CODEGUARD_DATA_DIR/knowledge-packages/`. La activación se realiza al final de la transacción: el paquete anterior pasa a sustituido, el nuevo queda activo y `EstadoSincronizacion.active_package` cambia en la misma transacción. El rollback reactiva un paquete sustituido conservando artefactos, snapshots, intentos y progreso. El servicio también resuelve la vista de lección y la entrega de ejercicios contra el snapshot del paquete activo.
 
-**Límites actuales:** el cliente HTTP inicial fue validado por el propietario dentro de 132 pruebas. El scheduler Electron, el backoff y el bloqueo de concurrencia ya superaron las pruebas unitarias locales confirmadas por el propietario; el modo PyInstaller requiere compilación real y prueba integrada. No hay endpoint, hosting ni claves públicas de producción; por ello la sincronización automática permanece inactiva hasta configurar una distribución confiable. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado.
+**Límites actuales:** el cliente HTTP inicial fue validado por el propietario dentro de 132 pruebas. El scheduler Electron, el backoff y el bloqueo de concurrencia ya superaron las pruebas unitarias locales confirmadas por el propietario; PyInstaller y AppImage fueron generados; la prueba integrada GUI de Electron sigue pendiente. No hay endpoint, hosting ni claves públicas de producción; por ello la sincronización automática permanece inactiva hasta configurar una distribución confiable. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado.
