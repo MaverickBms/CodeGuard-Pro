@@ -94,8 +94,11 @@ def _curriculum_map(payloads):
 
 
 def _artifact_root():
+    configured_value = os.environ.get("CODEGUARD_DATA_DIR")
+    if configured_value is not None and not configured_value.strip():
+        raise InstallationError("CODEGUARD_DATA_DIR no puede estar vacío.")
     configured = Path(
-        os.environ.get("CODEGUARD_DATA_DIR", Path(settings.BASE_DIR) / "data")
+        configured_value if configured_value is not None else Path(settings.BASE_DIR) / "data"
     ).expanduser()
     if configured.is_symlink():
         raise InstallationError("CODEGUARD_DATA_DIR no puede ser un symlink.")
@@ -137,6 +140,12 @@ def _persist_artifact(package_bytes, *, channel, package_id, digest):
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(temporary_name, destination)
+        if os.name == "posix":
+            directory_fd = os.open(channel_dir, os.O_RDONLY)
+            try:
+                os.fsync(directory_fd)
+            finally:
+                os.close(directory_fd)
     except Exception:
         try:
             os.unlink(temporary_name)
