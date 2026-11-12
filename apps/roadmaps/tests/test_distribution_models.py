@@ -89,3 +89,27 @@ class RegistroPaquetesTests(TestCase):
         EstadoSincronizacion.objects.create(channel="stable", active_package=package)
         with self.assertRaisesMessage(ValidationError, "no se elimina físicamente"):
             package.delete()
+
+
+
+    def test_bulk_create_valida_invariantes_del_paquete(self):
+        paquete = PaqueteConocimientoInstalado(
+            package_id=uuid.uuid4(),
+            package_version="2026.11.99",
+            channel="stable",
+            sequence=99,
+            content_schema_version=1,
+            sha256="a" * 64,
+            manifest_sha256="b" * 64,
+            signature_key_id="release-key-2026",
+            published_at=datetime(2026, 11, 11, tzinfo=timezone.utc),
+            estado="descargado",
+            error_code="NO_DEBE_EXISTIR",
+        )
+        with self.assertRaisesMessage(ValidationError, "paquete nuevo"):
+            PaqueteConocimientoInstalado.objects.bulk_create([paquete])
+
+    def test_queryset_estado_sincronizacion_no_permite_update_masivo(self):
+        state = EstadoSincronizacion.objects.create(channel="stable")
+        with self.assertRaisesMessage(ValidationError, "mediante save"):
+            EstadoSincronizacion.objects.filter(pk=state.pk).update(manifest_etag='"forzado"')
