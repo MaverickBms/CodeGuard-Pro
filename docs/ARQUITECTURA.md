@@ -22,7 +22,7 @@ fácil mantenimiento y continuidad offline. El funcionamiento académico local n
 servicio central; la sincronización de contenido será una capacidad complementaria, iniciada por
 el cliente y de solo descarga.
 
-**Estado actual:** el núcleo local está implementado y verificado (incremento 1). La Fase 2 (motor de aprendizaje y conocimiento versionado) está implementada parcialmente en `main`: roadmap ASCENSO 3.1, flujo editorial, publicador, catálogo firmado v2 e instalador transaccional con rollback. El propietario confirmó 119 pruebas OK en `main` `2c5d441` y 132 pruebas OK en `feat/phase-2-http-sync-client`, junto con `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios. El cliente HTTP inicial está validado localmente. El scheduler Electron, el backoff y el modo de ejecución PyInstaller están implementados en desarrollo y requieren una nueva validación local y compilación real. Hosting, endpoint público y claves de producción siguen pendientes.
+**Estado actual:** el núcleo local está implementado y verificado (incremento 1). La Fase 2 (motor de aprendizaje y conocimiento versionado) está implementada parcialmente en `main`: roadmap ASCENSO 3.1, flujo editorial, publicador, catálogo firmado v2 e instalador transaccional con rollback. El propietario confirmó 119 pruebas OK en `main` `2c5d441` y 132 pruebas OK en `feat/phase-2-http-sync-client`, junto con `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios. El cliente HTTP inicial está validado localmente. El scheduler Electron y el backoff superaron las pruebas unitarias locales confirmadas por el propietario; la compilación real de PyInstaller y la ejecución integrada con Electron siguen pendientes. Hosting, endpoint público y claves de producción siguen pendientes.
 
 ---
 
@@ -253,4 +253,4 @@ La sincronización se ejecuta en un proceso hijo independiente. En desarrollo ut
 
 La concurrencia se limita en Electron y mediante un bloqueo de archivo por canal bajo `DATA_DIR`. El renderer solo recibe estado descriptivo por IPC. La configuración incompleta (URLs, allowlist o claves de confianza) desactiva la sincronización sin impedir el funcionamiento offline.
 
-**Estado de validación:** el propietario confirmó 132 pruebas antes de este incremento. El nuevo scheduler, backoff, lock entre procesos y modo empaquetado requieren validación local y prueba de compilación PyInstaller. No hay endpoint público ni claves de producción.
+**Estado de validación:** el propietario confirmó la ejecución satisfactoria de las pruebas unitarias de backoff y lock entre procesos, además de los chequeos sintácticos. El build real PyInstaller y la prueba de arranque/sincronización desde Electron siguen pendientes. No hay endpoint público ni claves de producción.
