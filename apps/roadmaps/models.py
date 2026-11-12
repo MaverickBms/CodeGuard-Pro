@@ -996,7 +996,7 @@ class PaqueteConocimientoInstalado(models.Model):
             transiciones = {
                 "descargado": {"verificado", "rechazado"},
                 "verificado": {"activo", "rechazado"},
-                "activo": {"sustituido", "rechazado"},
+                "activo": {"sustituido"},
             }
             if anterior.estado != self.estado and self.estado not in transiciones.get(anterior.estado, set()):
                 raise ValidationError(f"Transición de paquete no permitida: {anterior.estado} → {self.estado}.")
@@ -1006,6 +1006,10 @@ class PaqueteConocimientoInstalado(models.Model):
                 raise ValidationError("El código de error registrado no puede sobrescribirse.")
             if self.estado == "activo" and self.installed_at is None:
                 raise ValidationError("Un paquete activo debe registrar su fecha de instalación.")
+            if self.installed_at and self.estado not in {"activo", "sustituido"}:
+                raise ValidationError("Solo paquetes activos o sustituidos pueden tener fecha de instalación.")
+            if self.error_code and self.estado != "rechazado":
+                raise ValidationError("El código de error solo se conserva en paquetes rechazados.")
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
