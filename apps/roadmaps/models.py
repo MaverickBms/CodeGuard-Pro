@@ -623,7 +623,6 @@ class VersionContenidoLeccion(models.Model):
                 "snapshot", "sha256", "resumen_cambios",
                 "enviada_por_id", "enviada_en", "revisada_por_id", "revisada_en",
                 "publicada_por_id", "publicada_en", "retirada_por_id", "retirada_en",
-                "creada_por_id",
                 "motivo_retiro", "creada_por_id",
             ).get(pk=self.pk)
             estados_bloqueados = {"revision", "aprobada", "publicada", "sustituida", "retirada"}
@@ -671,6 +670,7 @@ class VersionContenidoLeccion(models.Model):
             auditoria = (
                 "enviada_por_id", "enviada_en", "revisada_por_id", "revisada_en",
                 "publicada_por_id", "publicada_en", "retirada_por_id", "retirada_en",
+                "creada_por_id",
             )
             for campo in auditoria:
                 valor_anterior = getattr(anterior, campo)
