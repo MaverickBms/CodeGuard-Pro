@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
+import uuid
 
 
 class Roadmap(models.Model):
@@ -167,6 +168,8 @@ class Modulo(models.Model):
 
 class Leccion(models.Model):
     """Unidad de aprendizaje extraída del documento maestro."""
+
+    clave_contenido = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, verbose_name="clave estable de contenido")
 
     TIPOS = [
         ("concepto", "Concepto"),
@@ -453,6 +456,8 @@ class ContenidoLeccion(models.Model):
 class EjemploLeccion(models.Model):
     """Ejemplo explicado que acompaña la teoría de una lección."""
 
+    clave_contenido = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, verbose_name="clave estable de contenido")
+
     leccion = models.ForeignKey(
         Leccion,
         on_delete=models.CASCADE,
@@ -481,6 +486,8 @@ class EjemploLeccion(models.Model):
 
 class EjercicioLeccion(models.Model):
     """Enunciado de práctica; evaluación en fase 2 y tutoría en fase 3."""
+
+    clave_contenido = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, verbose_name="clave estable de contenido")
 
     NIVELES = [
         ("basico", "Básico"),
