@@ -35,7 +35,7 @@ MAX_COMPRESSION_RATIO = 100
 SUPPORTED_MANIFEST_VERSION = 1
 SUPPORTED_CONTENT_SCHEMA_VERSION = 1
 ALLOWED_CHANNELS = {"stable", "beta"}
-SEMVER_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?$")
+SEMVER_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*))?$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 LESSON_PATH_RE = re.compile(r"^payload/lessons/([0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})\.json$")
 
@@ -141,7 +141,11 @@ def validate_manifest_structure(raw: bytes, *, allowed_hosts):
     _semver(package["package_version"], "package_version")
     _positive_int(package["size_bytes"], "package.size_bytes", MAX_PACKAGE_BYTES)
     _sha256(package["sha256"], "package.sha256")
-    if not isinstance(package["url"], str) or len(package["url"]) > 2048:
+    if (
+        not isinstance(package["url"], str)
+        or len(package["url"]) > 2048
+        or any(character.isspace() for character in package["url"])
+    ):
         raise DistributionError("URL de paquete inválida.")
     try:
         parsed = urlsplit(package["url"])
