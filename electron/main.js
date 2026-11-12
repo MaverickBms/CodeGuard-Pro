@@ -205,10 +205,24 @@ function syncConfiguration() {
   } catch (_error) {
     return null;
   }
+  const allowedHosts = new Set(hosts.map(host => host.toLowerCase().replace(/\\.$/, '')));
+  const validEndpoint = value => {
+    try {
+      const parsed = new URL(value);
+      return parsed.protocol === 'https:' &&
+        allowedHosts.has(parsed.hostname.toLowerCase().replace(/\\.$/, '')) &&
+        !parsed.username &&
+        !parsed.password &&
+        (!parsed.port || parsed.port === '443') &&
+        !parsed.hash;
+    } catch (_error) {
+      return false;
+    }
+  };
   if (
     !['stable', 'beta'].includes(channel) ||
-    !manifestUrl ||
-    !signatureUrl ||
+    !validEndpoint(manifestUrl) ||
+    !validEndpoint(signatureUrl) ||
     hosts.length === 0 ||
     !trustedKeys ||
     Array.isArray(trustedKeys) ||
