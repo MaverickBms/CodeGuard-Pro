@@ -181,11 +181,20 @@ class IntentoEjercicio(models.Model):
         if self.version_contenido_id and self.paquete_contenido_id:
             raise ValidationError("Un intento no puede vincularse simultáneamente a una versión editorial y a un paquete.")
         if self.paquete_contenido_id:
-            if not self.paquete_contenido.contenidos_leccion.filter(
+            contenido = self.paquete_contenido.contenidos_leccion.filter(
                 leccion_id=self.ejercicio.leccion_id
-            ).exists():
+            ).first()
+            if contenido is None:
                 raise ValidationError({
                     "paquete_contenido": "El paquete no contiene un snapshot para la lección del ejercicio."
+                })
+            ejercicios_paquete = contenido.documento.get("snapshot", {}).get("ejercicios", [])
+            claves_paquete = {
+                item.get("clave") for item in ejercicios_paquete if isinstance(item, dict)
+            }
+            if str(self.ejercicio.clave_contenido) not in claves_paquete:
+                raise ValidationError({
+                    "paquete_contenido": "El ejercicio no pertenece al snapshot instalado."
                 })
             if (
                 not isinstance(self.snapshot_ejercicio, dict)
