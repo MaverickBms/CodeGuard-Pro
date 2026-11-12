@@ -271,11 +271,13 @@ def validar_directorio_contenido(directory):
             lesson_uuid = _validate_document(document, path.name)
             if lesson_uuid in seen_lessons:
                 raise ImportContentError("La misma lección aparece más de una vez en el lote.")
+            if str(lesson_uuid) in seen_resources:
+                raise ImportContentError("El UUID de la lección ya fue asignado a otro recurso del lote.")
             seen_lessons.add(lesson_uuid)
             for item in document["snapshot"]["ejemplos"] + document["snapshot"]["ejercicios"]:
                 resource_uuid = item["clave"]
-                if resource_uuid in seen_resources:
-                    raise ImportContentError(f"UUID de recurso repetido en el lote: {resource_uuid}.")
+                if resource_uuid in seen_resources or uuid.UUID(resource_uuid) in seen_lessons:
+                    raise ImportContentError(f"UUID de recurso repetido o reasignado en el lote: {resource_uuid}.")
                 seen_resources.add(resource_uuid)
             lesson, sources, doc_warnings = _validate_against_database(document, path.name)
             canonical = json.dumps(document["snapshot"], ensure_ascii=False, sort_keys=True, separators=(",", ":"))
