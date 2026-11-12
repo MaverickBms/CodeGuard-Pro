@@ -229,6 +229,7 @@ class InstaladorPaquetesTests(TestCase):
                 self.instalar(first_artifacts)
 
         state = EstadoSincronizacion.objects.get(channel="stable")
+        first.refresh_from_db()
         self.assertEqual(state.active_package_id, second.pk)
         self.assertEqual(first.estado, "sustituido")
         self.assertEqual(second.estado, "activo")
