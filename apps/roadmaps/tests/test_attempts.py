@@ -233,7 +233,9 @@ class IntentosEjercicioTests(TestCase):
         with self.assertRaises(ValidationError):
             publicar_version_contenido(primera.pk, actor=editor)
 
-        enviar_version_a_revision(primera.pk, actor=editor)
+        primera = enviar_version_a_revision(primera.pk, actor=editor)
+        self.assertEqual(primera.enviada_por, editor)
+        self.assertIsNotNone(primera.enviada_en)
         with self.assertRaises(ValidationError):
             primera.snapshot["contenido"]["teoria_tecnica"] = "Alterado"
             primera.save()
@@ -448,6 +450,16 @@ class IntentosEjercicioTests(TestCase):
             )
         with self.assertRaises(ValidationError):
             VersionContenidoLeccion.objects.filter(pk=version.pk).delete()
+        with self.assertRaises(ValidationError):
+            VersionContenidoLeccion.objects.bulk_create([
+                VersionContenidoLeccion(
+                    leccion=self.leccion,
+                    numero_version=2,
+                    estado="publicada",
+                    snapshot={"contenido": "no permitido"},
+                    sha256="c" * 64,
+                )
+            ])
 
     def test_recursos_didacticos_tienen_identificadores_uuid_estables(self):
         from apps.roadmaps.models import EjemploLeccion
