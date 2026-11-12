@@ -313,3 +313,8 @@ La descarga y verificación ocurren fuera de la transacción; la activación loc
 ### Primer incremento técnico
 
 La base de conocimiento comienza con identificadores UUID permanentes para lecciones, ejemplos y ejercicios, además de protección de las relaciones históricas de intentos y evaluadores. La migración preserva registros existentes y prepara identidades portables. Todavía no implementa snapshots ni sincronización online.
+
+
+### Catálogo de fuentes y snapshots (incremento en curso)
+
+Se incorporan modelos para registrar fuentes técnicas con licencia y edición, snapshots JSON versionados por lección y referencias de atribución. Se limita a una versión publicada por lección y se protegen las fuentes/versiones históricas contra borrado. Este incremento todavía no implementa el servicio que genera snapshots ni el proceso de publicación/sincronización.
