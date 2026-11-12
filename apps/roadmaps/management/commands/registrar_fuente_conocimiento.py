@@ -28,8 +28,12 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         url = options["url"].strip()
-        parsed = urlsplit(url)
-        if parsed.scheme.lower() != "https" or not parsed.hostname:
+        try:
+            parsed = urlsplit(url)
+            hostname = parsed.hostname
+        except ValueError as exc:
+            raise CommandError("--url no es una URL válida.") from exc
+        if parsed.scheme.lower() != "https" or not hostname:
             raise CommandError("--url debe ser una URL HTTPS absoluta con un dominio válido.")
         if parsed.username or parsed.password:
             raise CommandError("--url no puede contener credenciales.")
