@@ -109,7 +109,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 |---|---|---|
 | **Fase 1 — Núcleo funcional** | ✅ Completada y verificada | Autenticación, panel, auditoría, seguridad, 12 temas, servidor local |
 | **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Roadmap, flujo editorial, verificador, publicador y catálogo v2 en `main`; instalador transaccional en rama correctiva; cliente HTTP y hosting pendientes |
-| **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Publicador local implementado y validadado en `main`; instalador offline inicial en rama correctiva, pendiente de validación local; transporte HTTP, endpoint, hosting y Electron pendientes |
+| **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Publicador local implementado y validado en `main`; instalador offline inicial en rama correctiva, pendiente de validación local; transporte HTTP, endpoint, hosting y Electron pendientes |
 | **Competencias y evaluaciones** | ⏳ Pendiente | Incremento 3 |
 | **Biblioteca documental y base de conocimiento** | ⏳ Pendiente | Incremento 4 |
 | **Evidencias y laboratorios** | ⏳ Pendiente | Incremento 5 |
