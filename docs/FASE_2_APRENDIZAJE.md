@@ -35,7 +35,7 @@ La rama `docs/phase-2-hybrid-knowledge-sync` fue fusionada a `main`. Incluye:
 - **Evidencia histórica de ejercicios:** cada nuevo `IntentoEjercicio` conserva `snapshot_ejercicio` y referencia `version_contenido` cuando existe una versión activa. La migración 0014 conserva el enunciado visible de intentos anteriores. La evidencia original queda protegida frente a cambios y borrados ORM.
 - **Interfaz de entregas:** el estudiante ya puede enviar respuestas mediante POST con CSRF, límite de 20.000 caracteres e historial de los tres últimos intentos. No se ejecuta código arbitrario.
 - **Registro local endurecido:** escrituras masivas de paquetes y estado de sincronización validan invariantes o quedan bloqueadas para evitar saltarse el flujo controlado.
-- **Comandos de gestión editoriales:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`.
+- **Comandos de gestión:** `cargar_ascenso`, `crear_version_leccion`, `gestionar_version_leccion`, `importar_paquete_contenido`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`, `validar_paquete_contenido`, `publicar_paquete_conocimiento` y el nuevo `sincronizar_conocimiento` (cliente HTTP manual, en rama aislada).
 - **Validación de la línea base:** el propietario confirmó 119 pruebas OK, `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes en `main` `2c5d441`. La validación local cubre el instalador transaccional y rollback.
 
 ---
