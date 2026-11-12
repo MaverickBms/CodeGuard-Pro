@@ -595,7 +595,8 @@ class IntentosEjercicioTests(TestCase):
         self.assertIn("no verificado", salida.getvalue())
 
     def test_comando_registrar_fuente_rechaza_url_no_https(self):
-        from django.core.management import call_command, CommandError
+        from django.core.management import call_command
+        from django.core.management.base import CommandError
 
         with self.assertRaisesMessage(CommandError, "URL HTTPS"):
             call_command(
