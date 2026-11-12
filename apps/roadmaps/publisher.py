@@ -133,6 +133,7 @@ def _validate_published_version(version):
         raise PublicationError(f"La versión {version.pk} no tiene procedencia documental.")
 
     sources = []
+    catalog = []
     for reference in references:
         source = reference.fuente
         state = reference.estado_licencia_snapshot
@@ -183,6 +184,20 @@ def _validate_published_version(version):
             "nota_atribucion": reference.nota_atribucion,
             "uso_declarado": reference.uso_declarado,
         })
+        catalog.append({
+            "clave": str(source.clave),
+            "publicador": source.publicador,
+            "titulo": source.titulo,
+            "url_canonica": source.url_canonica,
+            "edicion": source.edicion,
+            "identificador_licencia": source.identificador_licencia,
+            "url_licencia": source.url_licencia,
+            "estado_revision_licencia": state,
+            "evidencia_licencia": reference.evidencia_licencia_snapshot,
+            "alcance_licencia": reference.alcance_licencia_snapshot,
+            "nota_revision_licencia": reference.nota_licencia_snapshot,
+            "revisada_en": reference.licencia_revisada_en_snapshot.isoformat(),
+        })
 
     document = {
         "schema_version": 1,
@@ -190,10 +205,10 @@ def _validate_published_version(version):
         "snapshot": snapshot,
         "fuentes": sources,
     }
-    return _json_bytes(document)
+    return _json_bytes(document), catalog
 
 
-def _build_deterministic_zip(package_id, package_version, documents):
+def _build_deterministic_zip(package_id, package_version, documents, sources=()):
     entries = []
     for lesson_uuid, payload in sorted(documents, key=lambda item: item[0]):
         path = f"payload/lessons/{lesson_uuid}.json"
@@ -208,6 +223,7 @@ def _build_deterministic_zip(package_id, package_version, documents):
         "package_version": package_version,
         "content_schema_version": 1,
         "files": entries,
+        "sources": sorted(sources, key=lambda item: item["clave"]),
     }
     buffer = io.BytesIO()
     with zipfile.ZipFile(
@@ -288,12 +304,18 @@ def publicar_paquete_conocimiento(
         raise PublicationError("No hay lecciones con una versión editorial activa para publicar.")
 
     documents = []
+    source_catalog = {}
     for pointer in active_versions:
         version = pointer.version
         if version.leccion_id != pointer.leccion_id:
             raise PublicationError("Un puntero activo no coincide con su lección.")
-        payload = _validate_published_version(version)
+        payload, sources = _validate_published_version(version)
         documents.append((str(pointer.leccion.clave_contenido), payload))
+        for source in sources:
+            previous = source_catalog.get(source["clave"])
+            if previous is not None and previous != source:
+                raise PublicationError("Una fuente tiene metadatos de licencia inconsistentes entre lecciones.")
+            source_catalog[source["clave"]] = source
 
     counter, _ = SecuenciaPublicacionConocimiento.objects.get_or_create(
         channel=channel, defaults={"siguiente": 1}
@@ -311,7 +333,7 @@ def publicar_paquete_conocimiento(
         uuid.NAMESPACE_URL,
         f"codeguard:{channel}:{sequence}:{package_version}:{content_digest}",
     )
-    package_bytes = _build_deterministic_zip(package_id, package_version, documents)
+    package_bytes = _build_deterministic_zip(\n        package_id, package_version, documents, source_catalog.values()\n    )
     package_hash = hashlib.sha256(package_bytes).hexdigest()
 
     published_at = timezone.now().astimezone(datetime_timezone.utc)
