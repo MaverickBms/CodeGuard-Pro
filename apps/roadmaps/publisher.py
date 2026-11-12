@@ -226,7 +226,7 @@ def publicar_paquete_conocimiento(
     if channel not in {"stable", "beta"}:
         raise PublicationError("El canal debe ser stable o beta.")
     if not re.fullmatch(
-        r"(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?",
+        r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?",
         package_version or "",
     ):
         raise PublicationError("package_version debe usar SemVer MAJOR.MINOR.PATCH.")
@@ -260,10 +260,6 @@ def publicar_paquete_conocimiento(
         payload = _validate_published_version(version)
         documents.append((str(pointer.leccion.clave_contenido), payload))
 
-    package_id = uuid.uuid4()
-    package_bytes = _build_deterministic_zip(package_id, package_version, documents)
-    package_hash = hashlib.sha256(package_bytes).hexdigest()
-
     counter, _ = SecuenciaPublicacionConocimiento.objects.get_or_create(
         channel=channel, defaults={"siguiente": 1}
     )
@@ -272,10 +268,21 @@ def publicar_paquete_conocimiento(
     counter.siguiente = sequence + 1
     counter.save(update_fields=["siguiente"])
 
+    content_digest = hashlib.sha256(b"".join(
+        lesson_uuid.encode("ascii") + b"\\0" + payload
+        for lesson_uuid, payload in sorted(documents, key=lambda item: item[0])
+    )).hexdigest()
+    package_id = uuid.uuid5(
+        uuid.NAMESPACE_URL,
+        f"codeguard:{channel}:{sequence}:{package_version}:{content_digest}",
+    )
+    package_bytes = _build_deterministic_zip(package_id, package_version, documents)
+    package_hash = hashlib.sha256(package_bytes).hexdigest()
+
     published_at = timezone.now().astimezone(datetime_timezone.utc)
     package_filename = f"codeguard-{channel}-{sequence}-{package_id}.zip"
-    manifest_filename = f"manifest-{channel}.json"
-    signature_filename = f"manifest-{channel}.ed25519"
+    manifest_filename = f"manifest-{channel}-{sequence}.json"
+    signature_filename = f"manifest-{channel}-{sequence}.ed25519"
     package_url = f"{safe_base_url}/{package_filename}"
     manifest = {
         "manifest_version": 1,
