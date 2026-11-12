@@ -3,7 +3,7 @@
 **Producto:** CodeGuard Pro  
 **Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada)  
 **SRS de referencia:** `IEEE830(1).md` v2.2 — Sección 3.4 (RD-001 a RD-022)  
-**Rama de trabajo:** `docs/phase-2-hybrid-knowledge-sync`
+**Línea base:** `main`; correcciones aisladas en `fix/phase-2-integrity-learning`
 
 ---
 
@@ -102,7 +102,7 @@ Estas entidades representan la estructura y el primer flujo de contenido/evaluac
 
 ## 4. Entidades de conocimiento versionado y sincronización (Fase 2, implementadas en rama)
 
-Las siguientes entidades ya están implementadas en la rama `docs/phase-2-hybrid-knowledge-sync` (migraciones 0004 a 0013):
+Las siguientes entidades ya están implementadas en `main` (migraciones 0004 a 0013), con extensión en la rama `fix/phase-2-integrity-learning` (migración 0014):
 
 ### FuenteConocimiento
 Identificar publicador, URL canónica, licencia y atribución.
@@ -243,7 +243,7 @@ El modelo está diseñado para agregar nuevas aplicaciones sin modificar las exi
 
 ## 9. Contrato y documentación técnica
 
-El payload, manifiesto, firma Ed25519, hash SHA-256, validación, instalación atómica, rollback y estrategia de migración se especifican en `docs/DISENO_DATOS_SINCRONIZACION.md`.
+El payload, manifiesto, firma Ed25519, hash SHA-256, validación, instalación atómica, rollback y estrategia de migración se especifican en `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md`.
 
 ---
 
@@ -252,6 +252,7 @@ El payload, manifiesto, firma Ed25519, hash SHA-256, validación, instalación a
 - `ContenidoLeccionActivo`: relación 1:1 entre una lección y su `VersionContenidoLeccion` actualmente publicada. No copia ni modifica el snapshot; únicamente selecciona cuál debe leer la vista de estudio.
 - La publicación editorial actualiza el puntero dentro de la misma transacción que publica la versión. La retirada elimina el puntero después de retirar la versión, sin borrar snapshots ni intentos.
 - `IntentoEjercicio.version_contenido`: FK protegida y nullable para conservar compatibilidad con intentos históricos que no pueden asociarse retroactivamente a una versión exacta.
-- `IntentoEjercicio.snapshot_ejercicio`: JSON inmutable por convención de servicio que conserva el enunciado, instrucciones, lenguaje, nivel, código inicial, obligatoriedad y clave estable del ejercicio presentado.
+- `IntentoEjercicio.snapshot_ejercicio`: JSON protegido por el modelo que conserva el enunciado, instrucciones, lenguaje, nivel, código inicial, obligatoriedad y clave estable del ejercicio presentado.
+- La evidencia original del intento (`ejercicio`, `usuario`, `version_contenido`, `snapshot_ejercicio`, `respuesta`, configuración y versión del evaluador, fecha de creación) no se puede sobrescribir mediante el modelo ni operaciones masivas ORM.
 - La migración 0014 rellena snapshots para intentos anteriores con el contenido disponible durante la migración y crea punteros para versiones que ya estaban publicadas. No inventa una FK histórica cuando no hay evidencia suficiente para determinar qué versión vio el estudiante.
 - Los modelos validan el puntero y los servicios editoriales controlan su ciclo de vida. Estas protecciones ORM no equivalen a restricciones completas frente a SQL directo.
