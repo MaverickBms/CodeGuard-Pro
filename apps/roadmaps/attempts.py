@@ -155,8 +155,6 @@ def registrar_intento_ejercicio(
     """Guarda una entrega y aplica el evaluador estático configurado, si existe."""
     if usuario is None or not getattr(usuario, "is_authenticated", False):
         raise ValidationError("No existe un usuario propietario para guardar el intento.")
-    if not ejercicio.publicado:
-        raise ValidationError("Este ejercicio no está publicado.")
     if not isinstance(respuesta, str) or not respuesta.strip():
         raise ValidationError("Escribe una respuesta antes de enviar el intento.")
     if len(respuesta) > MAX_RESPUESTA_CARACTERES:
@@ -170,6 +168,8 @@ def registrar_intento_ejercicio(
         .first()
     )
     version_contenido = puntero_activo.version if puntero_activo else None
+    if version_contenido is None and not ejercicio.publicado:
+        raise ValidationError("Este ejercicio no está publicado.")
     if version_contenido is not None:
         snapshot_ejercicio = next(
             (
