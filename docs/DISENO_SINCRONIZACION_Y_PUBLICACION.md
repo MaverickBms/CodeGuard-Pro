@@ -909,5 +909,6 @@ python manage.py publicar_paquete_conocimiento \
 - No se crea endpoint HTTP ni URL estable de manifiesto.
 - No se suben artefactos ni se configura CDN.
 - El JSON académico v1 conserva UUID y atribución de fuentes, pero no incluye el expediente detallado de licencia; esa evidencia permanece en el repositorio editorial. Su exportación requiere una evolución versionada del contrato.
+- El paquete v1 tampoco transporta todavía un catálogo autónomo de fuentes: conserva sus UUID y atribuciones, pero el importador académico puede requerir que esos registros ya existan en la base local. Por tanto, el paquete generado se valida con el verificador de distribución, pero no debe considerarse directamente instalable hasta diseñar y probar la distribución/resolución del catálogo de fuentes.
 - La escritura de artefactos y el commit de SQLite no forman una transacción distribuida; un cierre abrupto puede dejar archivos huérfanos, que son inocuos y no se anuncian sin registro. Debe existir un proceso de reconciliación antes de automatizar publicaciones.
 - Las pruebas del publicador y la migración 0015 deben ejecutarse en el entorno local antes de considerar validado este incremento.
