@@ -741,6 +741,22 @@ class ReferenciaFuenteContenido(models.Model):
     )
     localizador = models.CharField(max_length=500, blank=True, verbose_name="sección o localizador")
     nota_atribucion = models.TextField(blank=True, verbose_name="nota de atribución")
+    estado_licencia_snapshot = models.CharField(
+        max_length=20, choices=FuenteConocimiento.ESTADOS_LICENCIA,
+        default="pendiente", verbose_name="estado de licencia al enviar a revisión",
+    )
+    evidencia_licencia_snapshot = models.URLField(
+        max_length=1000, blank=True, verbose_name="evidencia de licencia al enviar a revisión",
+    )
+    alcance_licencia_snapshot = models.TextField(blank=True, verbose_name="alcance de licencia al enviar a revisión")
+    nota_licencia_snapshot = models.TextField(blank=True, verbose_name="decisión de licencia al enviar a revisión")
+    licencia_revisada_por_snapshot = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, blank=True,
+        related_name="referencias_licencia_congeladas", verbose_name="editor de licencia al enviar a revisión",
+    )
+    licencia_revisada_en_snapshot = models.DateTimeField(
+        null=True, blank=True, verbose_name="fecha de revisión de licencia al enviar a revisión",
+    )
 
     class Meta:
         verbose_name = "referencia de fuente de contenido"
