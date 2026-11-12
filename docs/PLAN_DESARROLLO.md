@@ -84,7 +84,8 @@
 17. **Contenido activo:** puntero `ContenidoLeccionActivo` para seleccionar snapshots editoriales publicados sin sobrescribir contenido histórico (migración 0014).
 18. **Evidencia de entrega:** cada intento conserva el snapshot del ejercicio presentado y referencia la versión editorial activa cuando corresponde.
 19. **Interfaz de ejercicios:** formulario CSRF de entrega, límite de 20.000 caracteres e historial de los últimos tres intentos.
-20. **Hardening del registro local:** validación de escrituras masivas y bloqueo de actualizaciones masivas del estado de sincronización.\n21. **Generador de paquetes:** ZIP reproducible, índice interno, manifiesto externo y firma Ed25519 desde snapshots activos; migración 0015 con secuencias por canal y registro inmutable. La migración y pruebas nuevas están pendientes de validación local.
+20. **Hardening del registro local:** validación de escrituras masivas y bloqueo de actualizaciones masivas del estado de sincronización.
+21. **Generador de paquetes:** ZIP reproducible, índice interno, manifiesto externo y firma Ed25519 desde snapshots activos; migración 0015 con secuencias por canal y registro inmutable. La migración y pruebas nuevas están pendientes de validación local.
 
 ### Qué sigue pendiente (incremento 2, Fase 2)
 
