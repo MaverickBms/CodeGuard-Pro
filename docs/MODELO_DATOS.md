@@ -202,7 +202,7 @@ El contenido distribuido se conserva separado del flujo editorial local.
 | `PaqueteConocimientoInstalado.artifact_storage_key` | clave relativa del ZIP en almacén local | Inmutable; no guarda rutas suministradas por el paquete |
 | `IntentoEjercicio.paquete_contenido` | FK protegida al paquete presentado | Mutuamente excluyente con `version_contenido`; snapshot de ejercicio exacto |
 
-El instalador resuelve UUID de lección, ejemplo y ejercicio contra el roadmap ASCENSO ya instalado. Los paquetes v2 conservan su catálogo de fuentes dentro de `FuentePaqueteConocimiento`; los paquetes v1 requieren que las fuentes ya estén registradas localmente. Ninguna variante sobrescribe el registro editorial de fuentes.
+El instalador resuelve UUID de lección, ejemplo y ejercicio contra el roadmap ASCENSO ya instalado. Los paquetes v2 conservan su catálogo de fuentes dentro de `FuentePaqueteConocimiento`; los paquetes v1 requieren que las fuentes estén registradas, activas y con revisión de licencia/evidencia válida; las fuentes `solo_referencia` solo admiten uso `original`. Ninguna variante sobrescribe el registro editorial de fuentes.
 
 `EstadoSincronizacion.active_package` es el único selector del paquete distribuido activo por canal. No debe confundirse con `ContenidoLeccionActivo`, que sigue siendo el selector de publicación editorial local. La activación y el rollback cambian el estado de los paquetes y el puntero de sincronización dentro de una transacción SQLite; no eliminan intentos, progreso ni snapshots anteriores.
 
