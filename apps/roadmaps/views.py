@@ -9,6 +9,8 @@ implícita.
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
+from types import SimpleNamespace
+
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -19,6 +21,7 @@ from apps.accounts.identity import (
     requiere_acceso,
 )
 from .models import (
+    ContenidoLeccionActivo,
     EjercicioLeccion,
     Etapa,
     IntentoEjercicio,
@@ -307,9 +310,42 @@ def leccion_detalle(request, leccion_id):
             actor_auditoria=obtener_actor_auditoria(request),
         )
 
+    puntero_activo = (
+        ContenidoLeccionActivo.objects.select_related("version")
+        .filter(leccion=leccion, version__estado="publicada")
+        .first()
+    )
     contenido = getattr(leccion, "contenido", None)
-    ejemplos = leccion.ejemplos.filter(publicado=True)
+    ejemplos = list(leccion.ejemplos.filter(publicado=True))
     ejercicios = list(leccion.ejercicios.filter(publicado=True))
+
+    if puntero_activo:
+        snapshot = puntero_activo.version.snapshot
+        datos_contenido = snapshot.get("contenido", {})
+        contenido = SimpleNamespace(
+            objetivos_aprendizaje=datos_contenido.get("objetivos_aprendizaje", ""),
+            teoria_tecnica=datos_contenido.get("teoria_tecnica", ""),
+            explicacion_sencilla=datos_contenido.get("explicacion_sencilla", ""),
+            notas=datos_contenido.get("notas", ""),
+            publicado=True,
+        )
+        ejemplos = [
+            SimpleNamespace(**item)
+            for item in snapshot.get("ejemplos", [])
+        ]
+        ejercicios_actuales = {
+            str(item.clave_contenido): item for item in ejercicios
+        }
+        ejercicios = []
+        for item in snapshot.get("ejercicios", []):
+            actual = ejercicios_actuales.get(item.get("clave"))
+            nivel = item.get("nivel", "basico")
+            ejercicios.append(SimpleNamespace(
+                **item,
+                id=actual.id if actual else None,
+                get_nivel_display=lambda nivel=nivel: dict(EjercicioLeccion.NIVELES).get(nivel, nivel),
+            ))
+
     intentos_por_ejercicio = {}
     if usuario is not None and ejercicios:
         filas = IntentoEjercicio.objects.filter(
@@ -340,5 +376,6 @@ def leccion_detalle(request, leccion_id):
             "ejemplos": ejemplos,
             "ejercicios": ejercicios,
             "progreso": progreso,
+            "version_contenido_activa": puntero_activo.version if puntero_activo else None,
         },
     )
