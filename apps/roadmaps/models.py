@@ -716,6 +716,39 @@ class VersionContenidoLeccion(models.Model):
         return f"{self.leccion} — v{self.numero_version} ({self.estado})"
 
 
+class ContenidoLeccionActivo(models.Model):
+    """Puntero transaccional a la versión editorial que se muestra al estudiante."""
+
+    leccion = models.OneToOneField(
+        Leccion, on_delete=models.PROTECT, related_name="contenido_activo",
+        verbose_name="lección",
+    )
+    version = models.OneToOneField(
+        VersionContenidoLeccion, on_delete=models.PROTECT, related_name="puntero_activo",
+        verbose_name="versión publicada activa",
+    )
+    activado_en = models.DateTimeField(auto_now=True, verbose_name="activado el")
+
+    class Meta:
+        verbose_name = "contenido activo de lección"
+        verbose_name_plural = "contenidos activos de lección"
+
+    def clean(self):
+        super().clean()
+        if self.version_id and self.leccion_id:
+            if self.version.leccion_id != self.leccion_id:
+                raise ValidationError({"version": "La versión debe pertenecer a la misma lección."})
+            if self.version.estado != "publicada":
+                raise ValidationError({"version": "Solo una versión publicada puede estar activa."})
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.leccion} → v{self.version.numero_version}"
+
+
 class ReferenciaFuenteContenidoQuerySet(models.QuerySet):
     """Evita alterar referencias asociadas a versiones que ya entraron en revisión."""
 
@@ -920,8 +953,10 @@ class PaqueteConocimientoInstaladoQuerySet(models.QuerySet):
 
     def bulk_create(self, objs, **kwargs):
         objs = list(objs)
-        if any(obj.estado != "descargado" for obj in objs):
-            raise ValidationError("Los paquetes deben registrarse inicialmente como descargados.")
+        for obj in objs:
+            if obj.estado != "descargado":
+                raise ValidationError("Los paquetes deben registrarse inicialmente como descargados.")
+            obj.full_clean()
         return super().bulk_create(objs, **kwargs)
 
     def delete(self):
@@ -1012,6 +1047,7 @@ class PaqueteConocimientoInstalado(models.Model):
                 raise ValidationError("Solo paquetes activos o sustituidos pueden tener fecha de instalación.")
             if self.error_code and self.estado != "rechazado":
                 raise ValidationError("El código de error solo se conserva en paquetes rechazados.")
+        self.full_clean()
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
@@ -1028,8 +1064,29 @@ class PaqueteConocimientoInstalado(models.Model):
         return f"{self.channel} #{self.sequence} — {self.package_version} ({self.estado})"
 
 
+class EstadoSincronizacionQuerySet(models.QuerySet):
+    """Obliga a validar el estado de sincronización mediante save()."""
+
+    def update(self, **kwargs):
+        raise ValidationError("El estado de sincronización debe modificarse mediante save().")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("No se permiten actualizaciones masivas del estado de sincronización.")
+
+    def bulk_create(self, objs, **kwargs):
+        objs = list(objs)
+        for obj in objs:
+            obj.full_clean()
+        return super().bulk_create(objs, **kwargs)
+
+    def delete(self):
+        raise ValidationError("El estado de sincronización no se elimina mediante operaciones masivas.")
+
+
 class EstadoSincronizacion(models.Model):
     """Estado operativo local por canal; nunca contiene progreso ni datos personales."""
+
+    objects = EstadoSincronizacionQuerySet.as_manager()
 
     channel = models.CharField(max_length=16, choices=PaqueteConocimientoInstalado.CANALES, unique=True)
     last_check_at = models.DateTimeField(null=True, blank=True, verbose_name="última comprobación")
