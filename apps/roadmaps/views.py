@@ -318,9 +318,21 @@ def leccion_detalle(request, leccion_id):
     ejemplos = list(leccion.ejemplos.filter(publicado=True))
     ejercicios_modelo = list(leccion.ejercicios.all())
     ejercicios = [item for item in ejercicios_modelo if item.publicado]
+    versiones_historicas = leccion.versiones_contenido.filter(
+        estado__in=["publicada", "sustituida", "retirada"]
+    ).exists()
+    if not puntero_activo and versiones_historicas:
+        # Una retirada no debe hacer reaparecer el borrador editable como si estuviera publicado.
+        contenido = None
+        ejemplos = []
+        ejercicios = []
 
     if puntero_activo:
         snapshot = puntero_activo.version.snapshot
+        datos_leccion = snapshot.get("leccion", {})
+        leccion.titulo = datos_leccion.get("titulo", leccion.titulo)
+        leccion.descripcion = datos_leccion.get("descripcion", leccion.descripcion)
+        leccion.tipo = datos_leccion.get("tipo", leccion.tipo)
         datos_contenido = snapshot.get("contenido", {})
         contenido = SimpleNamespace(
             objetivos_aprendizaje=datos_contenido.get("objetivos_aprendizaje", ""),
@@ -334,7 +346,7 @@ def leccion_detalle(request, leccion_id):
             for item in snapshot.get("ejemplos", [])
         ]
         ejercicios_actuales = {
-            str(item.clave_contenido): item for item in ejercicios
+            str(item.clave_contenido): item for item in ejercicios_modelo
         }
         ejercicios = []
         for item in snapshot.get("ejercicios", []):
