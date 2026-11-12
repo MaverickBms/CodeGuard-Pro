@@ -101,7 +101,7 @@ Ver `docs/MATRIZ_TRAZABILIDAD.md` para el mapeo requisito → entidad.
 
 ---
 
-## 4. Índices y claves únicas (incremento 1)
+## 5. Índices y claves únicas (incremento 1)
 
 | Tabla | Índice / Único | Propósito |
 |---|---|---|
@@ -112,7 +112,7 @@ Ver `docs/MATRIZ_TRAZABILIDAD.md` para el mapeo requisito → entidad.
 
 ---
 
-## 5. Integridad referencial
+## 6. Integridad referencial
 
 Todas las claves foráneas usan `on_delete` apropiado (`CASCADE` o `SET_NULL`) para evitar
 huérfanos. Se utilizan migraciones de Django y se verifica que aplican desde una base de datos
@@ -120,7 +120,7 @@ vacía (RNF-008: integridad transaccional en SQLite).
 
 ---
 
-## 6. Crecimiento futuro
+## 7. Crecimiento futuro
 
 El modelo está diseñado para agregar nuevas aplicaciones sin modificar las existentes.
 Cada nueva entidad vivirá en su propia app Django con su propia migración, evitando modelos
@@ -129,13 +129,13 @@ monolíticos y dependencias circulares.
 
 ---
 
-## 7. Modelo objetivo de conocimiento versionado y sincronización
+## 8. Modelo objetivo de conocimiento versionado y sincronización
 
 > **Estado: diseño documentado; no implementado.** No se deben interpretar estas entidades como tablas que ya existan en las migraciones actuales.
 
 La propuesta separa estructura curricular, snapshots de conocimiento y datos privados del estudiante.
 
-### 7.1 Entidades objetivo
+### 8.1 Entidades objetivo
 
 | Entidad propuesta | Responsabilidad | Relación principal |
 |---|---|---|
@@ -146,11 +146,11 @@ La propuesta separa estructura curricular, snapshots de conocimiento y datos pri
 | `PaqueteConocimientoInstalado` | Historial local de paquetes verificados/instalados | N paquetes por instalación |
 | `EstadoSincronizacion` | Última consulta, éxito, ETag, canal y error | Estado local por canal |
 
-### 7.2 Identidad estable
+### 8.2 Identidad estable
 
 Los paquetes no deben depender de PK autoincrementales de SQLite. Se propone añadir claves UUID estables a `Leccion`, `EjemploLeccion` y `EjercicioLeccion`, mantenidas en el catálogo curricular canónico y preservadas entre instalaciones. Una migración de datos asignará claves a los registros existentes una sola vez.
 
-### 7.3 Evidencia académica
+### 8.3 Evidencia académica
 
 Antes de actualizar contenido:
 - Los intentos deben conservar la clave estable del ejercicio, snapshot del enunciado y referencia a la versión de contenido presentada.
@@ -158,7 +158,7 @@ Antes de actualizar contenido:
 - Debe revisarse `IntentoEjercicio.configuracion_evaluacion` (`SET_NULL`) porque borrar un evaluador elimina su referencia histórica.
 - Una versión publicada y usada por intentos debe quedar protegida frente a modificación o eliminación.
 
-### 7.4 Contrato y documentación técnica
+### 8.4 Contrato y documentación técnica
 
 El payload, manifiesto, firma Ed25519, hash SHA-256, validación, instalación atómica, rollback y estrategia de migración se especifican en `docs/DISENO_DATOS_SINCRONIZACION.md`.
 
