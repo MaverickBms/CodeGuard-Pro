@@ -963,11 +963,11 @@ La vista de lección prioriza el paquete activo del canal configurado (por defec
 
 ### 27.4 Límites y riesgos pendientes
 
-- No se descarga nada por HTTP; el servicio recibe bytes desde una futura capa de transporte.
+- El cliente HTTP pull-only descarga manifiesto, firma y ZIP mediante HTTPS; verifica la firma y los hashes antes de invocar el instalador transaccional.
 - El almacén de claves públicas y la allowlist deben venir de configuración confiable de producción; no hay claves ficticias embebidas.
 - La escritura atómica del ZIP en filesystem y el commit de SQLite no forman una transacción distribuida. Una caída abrupta puede dejar archivos huérfanos, que no se activan sin registro. Se requiere reconciliación/limpieza controlada antes de automatizar sincronizaciones.
 - El rollback conserva la secuencia máxima conocida para impedir que el servidor vuelva a imponer automáticamente una publicación antigua o la misma publicación revertida.
-- La migración 0016 y las pruebas de `apps.roadmaps.tests.test_installer` están pendientes de validación local. No declarar este incremento listo hasta ejecutar migraciones, pruebas específicas y suite completa.
+- La migración 0016 y las pruebas de `apps.roadmaps.tests.test_installer` fueron validadas por el propietario en la línea base `2c5d441` (119 pruebas OK); la suite posterior llegó a 136 pruebas OK.
 
 ---
 
