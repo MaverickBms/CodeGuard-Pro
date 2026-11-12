@@ -610,6 +610,43 @@ class VersionContenidoLeccion(models.Model):
                         "Una versión enviada a revisión no puede modificar su snapshot, "
                         "hash, identidad ni resumen de cambios."
                     )
+
+            transiciones = {
+                "borrador": {"revision"},
+                "revision": {"aprobada"},
+                "aprobada": {"publicada"},
+                "publicada": {"sustituida", "retirada"},
+            }
+            if anterior.estado != self.estado:
+                if self.estado not in transiciones.get(anterior.estado, set()):
+                    raise ValidationError(
+                        f"Transición editorial no permitida: {anterior.estado} → {self.estado}."
+                    )
+                requisitos = {
+                    "revision": (self.enviada_por_id, self.enviada_en),
+                    "aprobada": (self.revisada_por_id, self.revisada_en),
+                    "publicada": (self.publicada_por_id, self.publicada_en),
+                    "retirada": (
+                        self.retirada_por_id,
+                        self.retirada_en,
+                        self.motivo_retiro.strip(),
+                    ),
+                }
+                if self.estado in requisitos and not all(requisitos[self.estado]):
+                    raise ValidationError(
+                        "La transición editorial requiere sus metadatos de auditoría."
+                    )
+
+            auditoria = (
+                "enviada_por_id", "enviada_en", "revisada_por_id", "revisada_en",
+                "publicada_por_id", "publicada_en", "retirada_por_id", "retirada_en",
+            )
+            for campo in auditoria:
+                valor_anterior = getattr(anterior, campo)
+                if valor_anterior is not None and getattr(self, campo) != valor_anterior:
+                    raise ValidationError(
+                        "Los metadatos de auditoría editorial no se pueden sobrescribir."
+                    )
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
