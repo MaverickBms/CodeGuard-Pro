@@ -83,6 +83,20 @@ class IntentoEjercicio(models.Model):
         related_name="intentos_ejercicios",
         verbose_name="usuario",
     )
+    version_contenido = models.ForeignKey(
+        "roadmaps.VersionContenidoLeccion",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="intentos",
+        verbose_name="versión académica presentada",
+    )
+    snapshot_ejercicio = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name="snapshot del ejercicio presentado",
+        help_text="Conserva el enunciado exacto aunque el contenido editable cambie.",
+    )
     respuesta = models.TextField(verbose_name="respuesta enviada")
     resultado = models.CharField(
         max_length=24,
