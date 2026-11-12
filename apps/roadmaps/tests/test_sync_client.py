@@ -106,6 +106,46 @@ class TransporteSyncTests(SimpleTestCase):
                     max_bytes=1024,
                 )
 
+    def test_peticion_saliente_es_get_sin_cookies_ni_cuerpo(self):
+        response = FakeResponse(
+            b"ok",
+            headers={"Content-Length": "2"},
+            url="https://cdn.codeguard.example/manifest.json",
+        )
+        captured = {}
+
+        def fake_open(request, *, timeout):
+            captured["request"] = request
+            captured["timeout"] = timeout
+            return response
+
+        with patch("apps.roadmaps.sync_client._open_url", side_effect=fake_open):
+            payload, _etag = _fetch_bytes(
+                "https://cdn.codeguard.example/manifest.json",
+                allowed_hosts=self.allowed_hosts,
+                timeout=7,
+                max_bytes=20,
+            )
+
+        request = captured["request"]
+        self.assertEqual(payload, b"ok")
+        self.assertEqual(request.get_method(), "GET")
+        self.assertIsNone(request.data)
+        self.assertNotIn("Cookie", request.headers)
+        self.assertNotIn("Authorization", request.headers)
+        self.assertEqual(captured["timeout"], 7)
+
+    def test_timeout_se_convierte_en_error_de_red_controlado(self):
+        with patch("apps.roadmaps.sync_client._open_url", side_effect=TimeoutError()):
+            with self.assertRaises(SyncClientError) as context:
+                _fetch_bytes(
+                    "https://cdn.codeguard.example/manifest.json",
+                    allowed_hosts=self.allowed_hosts,
+                    timeout=1,
+                    max_bytes=1024,
+                )
+        self.assertEqual(context.exception.code, "network_error")
+
     def test_http_304_solo_se_acepta_si_se_solicito_condicionalmente(self):
         error = urllib.error.HTTPError(
             "https://cdn.codeguard.example/manifest.json",
