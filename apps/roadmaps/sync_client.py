@@ -123,7 +123,7 @@ def _read_response(response, *, max_bytes, expected_size=None):
     return b"".join(chunks)
 
 
-def _fetch_bytes(url, *, allowed_hosts, timeout, max_bytes, headers=None, expected_size=None):
+def _fetch_bytes(url, *, allowed_hosts, timeout, max_bytes, headers=None, expected_size=None, allow_not_modified=False):
     _validate_endpoint(url, allowed_hosts=allowed_hosts, label="Endpoint")
     request_headers = {
         "Accept": "application/octet-stream",
@@ -144,7 +144,9 @@ def _fetch_bytes(url, *, allowed_hosts, timeout, max_bytes, headers=None, expect
             return payload, response.headers.get("ETag", "")
     except urllib.error.HTTPError as exc:
         if exc.code == 304:
-            return None, exc.headers.get("ETag", "")
+            if allow_not_modified:
+                return None, exc.headers.get("ETag", "")
+            raise SyncClientError("El servidor devolvió HTTP 304 sin una descarga condicional.", code="invalid_response") from exc
         if 300 <= exc.code < 400:
             raise SyncClientError("El servidor intentó redirigir una descarga.", code="redirect_rejected") from exc
         raise SyncClientError(
@@ -228,6 +230,7 @@ def sincronizar_conocimiento(
             timeout=timeout,
             max_bytes=MAX_MANIFEST_BYTES,
             headers=request_headers,
+            allow_not_modified=True,
         )
         if manifest_bytes is None:
             if not request_headers:
