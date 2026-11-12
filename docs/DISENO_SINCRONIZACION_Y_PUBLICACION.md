@@ -792,7 +792,7 @@ El registro no realiza solicitudes HTTP, no importa páginas, no ejecuta recurso
 
 ## 24. Verificación de manifiestos y paquetes
 
-**Estado:** implementado en la rama de trabajo; el usuario confirmó la ejecución local satisfactoria de la suite actual: 93 pruebas (`OK`).
+**Estado:** núcleo de verificación y registro local implementado en `main`. El usuario confirmó 93 pruebas (`OK`) antes del incremento de correcciones 0014; la migración y pruebas nuevas de la rama correctiva están pendientes de validación local.
 
 ### 24.1 Verificación del manifiesto
 
