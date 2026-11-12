@@ -6,14 +6,12 @@ antes de solicitar el ZIP y delega la instalación al servicio transaccional.
 from __future__ import annotations
 
 import hashlib
-import json
 import logging
 import ssl
 import urllib.error
 import urllib.request
 from urllib.parse import urlsplit
 
-from django.conf import settings
 from django.utils import timezone
 
 from .distribution import (
@@ -282,6 +280,8 @@ def sincronizar_conocimiento(
             }
 
         manifest = verified["manifest"]
+        if response_etag and len(response_etag) > 255:
+            raise SyncClientError("ETag demasiado largo.", code="invalid_response")
         package_meta = manifest["package"]
         package_bytes, _ = _fetch_bytes(
             package_meta["url"],
