@@ -14,7 +14,6 @@ from pathlib import Path
 from uuid import UUID
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.utils import timezone
 
@@ -30,6 +29,7 @@ from .models import (
     EstadoSincronizacion,
     EjemploLeccion,
     EjercicioLeccion,
+    FuenteConocimiento,
     FuentePaqueteConocimiento,
     Leccion,
     PaqueteConocimientoInstalado,
@@ -231,6 +231,24 @@ def instalar_paquete_firmado(
         }
 
     curriculum = _curriculum_map(archive["payloads"])
+    if archive["index"]["schema_version"] == 1:
+        legacy_source_ids = {
+            source["clave"]
+            for payload in archive["payloads"].values()
+            for source in load_strict_json(
+                payload, max_bytes=MAX_DOCUMENT_BYTES
+            )["fuentes"]
+        }
+        registered_source_ids = {
+            str(value)
+            for value in FuenteConocimiento.objects.filter(
+                clave__in=legacy_source_ids
+            ).values_list("clave", flat=True)
+        }
+        if registered_source_ids != legacy_source_ids:
+            raise InstallationError(
+                "Los paquetes con índice v1 requieren que todas sus fuentes ya estén registradas localmente."
+            )
     manifest_package = manifest["package"]
     package_id = UUID(manifest_package["package_id"])
     if PaqueteConocimientoInstalado.objects.filter(package_id=package_id).exists():
