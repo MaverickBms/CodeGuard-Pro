@@ -257,57 +257,6 @@ Las pruebas cubren:
 | CLI-007 | Registrar URL HTTP o inválida | Rechaza el registro sin crear filas |
 | CLI-008 | Registrar URL + edición duplicada | Rechaza el duplicado sin modificar la fuente existente |
 
-## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
-
-> **Estado:** verificador, publicador e instalador están validados en `main`; el cliente HTTP inicial está en rama aislada y sus pruebas HTTP-001 a HTTP-010 requieren validación local. Hosting, endpoint público y ejecución automática aún no están implementados.
-
-| ID | Prueba | Caso | Resultado esperado |
-|---|---|---|---|
-| SYNC-001 | Arranque offline | Iniciar la aplicación sin conexión | El núcleo local abre sin esperar al servicio central |
-| SYNC-002 | Consulta offline | Abrir una lección instalada sin red | Contenido y recursos disponibles desde almacenamiento local |
-| SYNC-003 | Manifiesto disponible | Conexión activa y nueva versión publicada | Se detecta una actualización compatible sin bloquear la interfaz |
-| SYNC-004 | Sin cambios | Manifiesto y versión local coinciden | No se descarga ni reinstala contenido innecesariamente |
-| SYNC-005 | Timeout | Servicio central no responde | Se conserva la versión local y el estudio continúa |
-| SYNC-006 | Descarga interrumpida | Cortar conexión durante descarga | Paquete temporal incompleto no se activa; se puede reintentar |
-| SYNC-007 | Hash inválido | Alterar un byte del paquete | Rechazo de instalación y registro del error |
-| SYNC-008 | Firma inválida | Firma no verificable o clave desconocida | Rechazo del paquete |
-| SYNC-009 | Esquema incompatible | Paquete con versión de esquema no soportada | Rechazo seguro sin reemplazar el contenido actual |
-| SYNC-010 | Aplicación incompatible | Paquete exige versión de app superior | No se instala; se informa la incompatibilidad |
-| SYNC-011 | Tamaño/rutas maliciosas | Paquete excede límites o contiene path traversal | Rechazo antes de escribir fuera del área temporal |
-| SYNC-012 | Instalación atómica | Fallo durante activación | La versión anterior permanece activa |
-| SYNC-013 | Rollback | Restaurar versión previa | Contenido anterior vuelve a estar disponible y se registra la operación |
-| SYNC-014 | Preservación de progreso | Actualizar una lección con intentos existentes | Progreso, intentos, preferencias y notas permanecen intactos |
-| SYNC-015 | Trazabilidad de intentos | Revisar intento creado antes de actualización | Se conserva versión de contenido y evaluador originales |
-| SYNC-016 | Privacidad | Inspeccionar tráfico de sincronización | No se transmiten respuestas, código, calificaciones ni datos personales |
-| SYNC-017 | Retiro de contenido | Publicar aviso de retirada/sustitución | Se advierte al estudiante sin borrar evidencias históricas |
-| SYNC-018 | Detección editorial | Cambiar fuente externa sin aprobación editorial | Se genera propuesta/aviso; no se publica automáticamente |
-| SYNC-019 | Reintento/backoff | Servicio intermitente | Reintentos limitados sin bucle agresivo ni bloqueo del usuario |
-| SYNC-020 | Electron y desarrollo | Ejecutar en ambos modos | Mismo comportamiento de sincronización y almacenamiento local |
-| SYNC-021 | Firma y hash sin circularidad | Manifiesto externo firmado declara hash del ZIP | Firma y hash se verifican sin que el manifiesto forme parte del ZIP hasheado |
-| SYNC-022 | Anti-replay/downgrade | Se presenta manifiesto válido con sequence inferior o repetida con contenido distinto | Cliente rechaza la publicación antigua o inconsistente |
-| SYNC-023 | Redirección de host | URL o redirección apunta a host no permitido | Descarga rechazada |
-| SYNC-024 | ZIP malicioso | Entradas con traversal, symlink, duplicados o ratio/tamaño excesivo | Rechazo antes de escribir fuera del staging |
-| SYNC-025 | Reanudación segura | Descarga incompleta o archivo temporal previo alterado | Se descarta o valida de nuevo; nunca se activa parcialmente |
-| SYNC-026 | Sincronización concurrente | Se inician dos comprobaciones simultáneas | Solo una puede instalar; la otra espera o termina sin alterar el contenido activo |
-| SYNC-027 | JSON de manifiesto estricto | Claves duplicadas, constantes no estándar o propiedades adicionales | Rechazo antes de confiar en el contenido |
-| SYNC-028 | Firma Ed25519 | Firma alterada, clave desconocida o firma con longitud inválida | Rechazo criptográfico |
-| SYNC-029 | Anti-replay por canal | Secuencia inferior o igual con hash distinto | Rechazo; misma secuencia y mismo manifiesto se considera no-op |
-| SYNC-030 | Compatibilidad de aplicación | Manifiesto exige versión superior a la instalada | No se descarga ni instala |
-| SYNC-031 | Allowlist de distribución | URL HTTP, credenciales, puerto no estándar o host no permitido | Rechazo |
-| SYNC-032 | Índice de paquete | Índice ausente, esquema incorrecto, entrada duplicada o archivo no declarado | Rechazo |
-| SYNC-033 | Integridad de recurso | Tamaño o SHA-256 de una lección no coincide | Rechazo del paquete completo |
-| SYNC-034 | Esquema académico | Documento no cumple JSON v1 o su UUID no coincide con la ruta | Rechazo del paquete completo |
-| SYNC-035 | Colisión de identidad | UUID de lección, ejemplo o ejercicio repetido/reasignado en el paquete | Rechazo |
-| SYNC-036 | Archivo ZIP especial | Symlink, ruta absoluta, traversal, directorio o tipo especial | Rechazo sin extracción |
-| SYNC-037 | ZIP bomb | Tamaño descomprimido o ratio supera límites | Rechazo antes de activar |
-| SYNC-038 | Registro local | Secuencia duplicada o dos paquetes activos en el mismo canal | Restricción de base de datos |
-| SYNC-039 | Ciclo de vida del paquete | Salto de estado, cambio de hash/identidad o borrado | Rechazo por modelo/ORM |
-| SYNC-040 | Estado por canal | Paquete activo de otro canal o no activo | Rechazo de validación |
-| SYNC-041 | Mutación ORM de historial | `QuerySet.update()` o borrado de paquete | Operación rechazada |
-
-La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
-
-
 ## 6.7 Importación académica y revisión de licencias
 
 > **Estado:** el usuario confirmó que la suite local actual finaliza con **93 pruebas: OK**. Esto incluye SYNC-027–SYNC-041 (verificador de manifiestos, ZIP y registro local). La instalación de `cryptography==46.0.3` en `.venv` resolvió el fallo de importación; el test de transición se corrigió para intentar el salto inválido `descargado → activo`.
@@ -441,3 +390,54 @@ La suite `apps.roadmaps.tests.test_installer` cubre instalación y activación, 
 | HTTP-010 | Configuración | Falta clave de confianza o allowlist | Falla cerrada; no realiza petición | ⏳ Pendiente de validación local |
 
 Cobertura automatizada inicial: `apps.roadmaps.tests.test_sync_client` y pruebas de integración del cliente en `apps.roadmaps.tests.test_installer`. La suite debe ejecutarse localmente antes de marcar HTTP-001 a HTTP-010 como aprobadas.
+
+
+## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
+
+> **Estado:** verificador, publicador e instalador están validados en `main`; el cliente HTTP inicial está en rama aislada y sus pruebas HTTP-001 a HTTP-010 requieren validación local. Hosting, endpoint público y ejecución automática aún no están implementados.
+
+| ID | Prueba | Caso | Resultado esperado |
+|---|---|---|---|
+| SYNC-001 | Arranque offline | Iniciar la aplicación sin conexión | El núcleo local abre sin esperar al servicio central |
+| SYNC-002 | Consulta offline | Abrir una lección instalada sin red | Contenido y recursos disponibles desde almacenamiento local |
+| SYNC-003 | Manifiesto disponible | Conexión activa y nueva versión publicada | Se detecta una actualización compatible sin bloquear la interfaz |
+| SYNC-004 | Sin cambios | Manifiesto y versión local coinciden | No se descarga ni reinstala contenido innecesariamente |
+| SYNC-005 | Timeout | Servicio central no responde | Se conserva la versión local y el estudio continúa |
+| SYNC-006 | Descarga interrumpida | Cortar conexión durante descarga | Paquete temporal incompleto no se activa; se puede reintentar |
+| SYNC-007 | Hash inválido | Alterar un byte del paquete | Rechazo de instalación y registro del error |
+| SYNC-008 | Firma inválida | Firma no verificable o clave desconocida | Rechazo del paquete |
+| SYNC-009 | Esquema incompatible | Paquete con versión de esquema no soportada | Rechazo seguro sin reemplazar el contenido actual |
+| SYNC-010 | Aplicación incompatible | Paquete exige versión de app superior | No se instala; se informa la incompatibilidad |
+| SYNC-011 | Tamaño/rutas maliciosas | Paquete excede límites o contiene path traversal | Rechazo antes de escribir fuera del área temporal |
+| SYNC-012 | Instalación atómica | Fallo durante activación | La versión anterior permanece activa |
+| SYNC-013 | Rollback | Restaurar versión previa | Contenido anterior vuelve a estar disponible y se registra la operación |
+| SYNC-014 | Preservación de progreso | Actualizar una lección con intentos existentes | Progreso, intentos, preferencias y notas permanecen intactos |
+| SYNC-015 | Trazabilidad de intentos | Revisar intento creado antes de actualización | Se conserva versión de contenido y evaluador originales |
+| SYNC-016 | Privacidad | Inspeccionar tráfico de sincronización | No se transmiten respuestas, código, calificaciones ni datos personales |
+| SYNC-017 | Retiro de contenido | Publicar aviso de retirada/sustitución | Se advierte al estudiante sin borrar evidencias históricas |
+| SYNC-018 | Detección editorial | Cambiar fuente externa sin aprobación editorial | Se genera propuesta/aviso; no se publica automáticamente |
+| SYNC-019 | Reintento/backoff | Servicio intermitente | Reintentos limitados sin bucle agresivo ni bloqueo del usuario |
+| SYNC-020 | Electron y desarrollo | Ejecutar en ambos modos | Mismo comportamiento de sincronización y almacenamiento local |
+| SYNC-021 | Firma y hash sin circularidad | Manifiesto externo firmado declara hash del ZIP | Firma y hash se verifican sin que el manifiesto forme parte del ZIP hasheado |
+| SYNC-022 | Anti-replay/downgrade | Se presenta manifiesto válido con sequence inferior o repetida con contenido distinto | Cliente rechaza la publicación antigua o inconsistente |
+| SYNC-023 | Redirección de host | URL o redirección apunta a host no permitido | Descarga rechazada |
+| SYNC-024 | ZIP malicioso | Entradas con traversal, symlink, duplicados o ratio/tamaño excesivo | Rechazo antes de escribir fuera del staging |
+| SYNC-025 | Reanudación segura | Descarga incompleta o archivo temporal previo alterado | Se descarta o valida de nuevo; nunca se activa parcialmente |
+| SYNC-026 | Sincronización concurrente | Se inician dos comprobaciones simultáneas | Solo una puede instalar; la otra espera o termina sin alterar el contenido activo |
+| SYNC-027 | JSON de manifiesto estricto | Claves duplicadas, constantes no estándar o propiedades adicionales | Rechazo antes de confiar en el contenido |
+| SYNC-028 | Firma Ed25519 | Firma alterada, clave desconocida o firma con longitud inválida | Rechazo criptográfico |
+| SYNC-029 | Anti-replay por canal | Secuencia inferior o igual con hash distinto | Rechazo; misma secuencia y mismo manifiesto se considera no-op |
+| SYNC-030 | Compatibilidad de aplicación | Manifiesto exige versión superior a la instalada | No se descarga ni instala |
+| SYNC-031 | Allowlist de distribución | URL HTTP, credenciales, puerto no estándar o host no permitido | Rechazo |
+| SYNC-032 | Índice de paquete | Índice ausente, esquema incorrecto, entrada duplicada o archivo no declarado | Rechazo |
+| SYNC-033 | Integridad de recurso | Tamaño o SHA-256 de una lección no coincide | Rechazo del paquete completo |
+| SYNC-034 | Esquema académico | Documento no cumple JSON v1 o su UUID no coincide con la ruta | Rechazo del paquete completo |
+| SYNC-035 | Colisión de identidad | UUID de lección, ejemplo o ejercicio repetido/reasignado en el paquete | Rechazo |
+| SYNC-036 | Archivo ZIP especial | Symlink, ruta absoluta, traversal, directorio o tipo especial | Rechazo sin extracción |
+| SYNC-037 | ZIP bomb | Tamaño descomprimido o ratio supera límites | Rechazo antes de activar |
+| SYNC-038 | Registro local | Secuencia duplicada o dos paquetes activos en el mismo canal | Restricción de base de datos |
+| SYNC-039 | Ciclo de vida del paquete | Salto de estado, cambio de hash/identidad o borrado | Rechazo por modelo/ORM |
+| SYNC-040 | Estado por canal | Paquete activo de otro canal o no activo | Rechazo de validación |
+| SYNC-041 | Mutación ORM de historial | `QuerySet.update()` o borrado de paquete | Operación rechazada |
+
+La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que no depende de Internet) de la consulta de actualizaciones (que sí requiere conectividad). La sincronización debe probarse como función opcional, no como requisito de arranque.
