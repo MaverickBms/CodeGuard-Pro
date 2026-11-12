@@ -5,11 +5,12 @@ import sys
 from unittest.mock import patch
 
 import django
+from django.test import SimpleTestCase
 
 import server_entry
 
 
-class ServerEntrySyncModeTests:
+class ServerEntrySyncModeTests(SimpleTestCase):
     """Comprueba que --sync-knowledge no arranque ni migre el servidor web."""
 
     def test_sync_mode_dispatches_command_without_starting_server(self):
@@ -28,7 +29,7 @@ class ServerEntrySyncModeTests:
         ):
             result = server_entry.main()
 
-        assert result == 0
+        self.assertEqual(result, 0)
         django_setup.assert_called_once_with()
         call_command.assert_called_once_with(
             "sincronizar_conocimiento",
