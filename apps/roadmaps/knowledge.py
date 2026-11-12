@@ -242,7 +242,7 @@ def retirar_version_publicada(
         raise ValidationError("Solo se puede retirar una versión actualmente publicada.")
     version.estado = "retirada"
     version.motivo_retiro = motivo
-    version.revisada_en = timezone.now()
-    version.revisada_por = actor
-    version.save(update_fields=["estado", "motivo_retiro", "revisada_en", "revisada_por"])
+    version.retirada_en = timezone.now()
+    version.retirada_por = actor
+    version.save(update_fields=["estado", "motivo_retiro", "retirada_en", "retirada_por"])
     return version
