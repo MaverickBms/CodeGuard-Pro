@@ -15,7 +15,7 @@
 ## 0. Resumen ejecutivo
 
 - **Fase 1 (núcleo funcional):** completada, verificada y aprobada documentalmente. Autenticación local, panel, roadmap, auditoría y seguridad operativos.
-- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso; `main` contiene el verificador, publicador, catálogo firmado v2 e instalador transaccional con rollback, validados por el propietario (119 pruebas OK). El cliente HTTP pull-only inicial está en desarrollo en `feat/phase-2-http-sync-client`.
+- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso; `main` contiene el verificador, publicador, catálogo firmado v2 e instalador transaccional con rollback, validados por el propietario (119 pruebas OK). El cliente HTTP fue validado en `feat/phase-2-http-sync-client` (132 pruebas OK); el scheduler Electron y el modo PyInstaller se implementaron después y requieren nueva validación.
   - Roadmap ASCENSO 3.1 (33 etapas, módulos, lecciones, prerrequisitos) implementado y cargable con `cargar_ascenso`.
   - Contenido académico editable (`ContenidoLeccion`, `EjemploLeccion`, `EjercicioLeccion`) implementado.
   - Flujo editorial de versiones (`VersionContenidoLeccion`, `ReferenciaFuenteContenido`, `FuenteConocimiento`) implementado con comandos de gestión.
@@ -86,7 +86,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
 | Migraciones roadmaps | 0014, 0015 y 0016 validadas localmente por el propietario en `main` `2c5d441` |
 | Comandos de gestión | 9; incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (este último en rama de trabajo) |
-| Pruebas automatizadas | 119 OK confirmadas en `main`; pruebas HTTP nuevas pendientes de ejecución local |
+| Pruebas automatizadas | 119 OK en `main`; 132 OK confirmadas localmente para el cliente HTTP en rama; pruebas nuevas de scheduler/backoff/PyInstaller pendientes |
 | Autenticación | `AUTH_DISABLED = True` (temporal, conservada íntegra) |
 | Base de datos | SQLite, `data/db.sqlite3` |
 | Servidor local | Waitress + WhiteNoise en `127.0.0.1` |
@@ -97,7 +97,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 |---|---|
 | `manage.py check` | Sin errores |
 | `makemigrations --check --dry-run` | Sin cambios pendientes |
-| Suite de pruebas | 119 OK confirmadas para `main` en `2c5d441`; pruebas HTTP nuevas pendientes |
+| Suite de pruebas | 119 OK confirmadas para `main`; 132 OK confirmadas localmente para cliente HTTP; pruebas nuevas de Electron y backoff pendientes |
 | Migraciones desde base vacía | Verificado |
 | Bind exclusivo | `127.0.0.1` (no `0.0.0.0`) |
 | Dependencias fijadas | `requirements.txt` con versiones exactas |
@@ -160,7 +160,7 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | **Hosting/endpoint público de distribución** | Pendiente de seleccionar proveedor y autorizar publicación; no se configura en esta rama |
 | **Generador central y catálogo firmado v2** | Generador, migración 0015 y catálogo v2 validados localmente por el propietario (119 pruebas OK) |
 | **Instalador transaccional (migración 0016)** | Validado en `main` `2c5d441` (119 pruebas OK) |
-| **Cliente de sincronización HTTP** | Implementación inicial en `feat/phase-2-http-sync-client`; pruebas nuevas pendientes de validación local |
+| **Cliente de sincronización HTTP** | Validado localmente por el propietario dentro de 132 pruebas en `feat/phase-2-http-sync-client`; scheduler y modo PyInstaller posteriores pendientes de validación |
 | **Competencias y evaluaciones (Incremento 3)** | Pendiente de decisión |
 | **Biblioteca documental (Incremento 4)** | Pendiente de decisión |
 | **Evidencias y laboratorios (Incremento 5)** | Pendiente de decisión |
