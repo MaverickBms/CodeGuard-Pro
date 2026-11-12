@@ -180,6 +180,21 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | DATA-006 | Protección de evaluador | Eliminar configuración referenciada por intento | La operación se rechaza y la configuración histórica permanece |
 | DATA-007 | Intento sin evaluador | Guardar entrega pendiente | La referencia a configuración puede permanecer nula |
 
+## 6.2 Pruebas del catálogo de fuentes y snapshots
+
+> **Estado: incorporadas al código; pendientes de ejecución local.**
+
+| ID | Prueba | Resultado esperado |
+|---|---|---|
+| KNOW-001 | Registrar fuente con URL canónica y licencia | Se conserva publicador, edición, licencia y fecha de consulta |
+| KNOW-002 | Crear snapshot versionado | Se conserva JSON, UUID, versión y hash |
+| KNOW-003 | Asociar fuentes a un snapshot | La atribución identifica fuente, rol y localizador |
+| KNOW-004 | Repetir número de versión de una lección | La restricción única rechaza el duplicado |
+| KNOW-005 | Publicar dos versiones de una lección | La restricción parcial permite solo una publicada |
+| KNOW-006 | Hash con formato inválido | La validación rechaza valores que no sean SHA-256 hexadecimal |
+| KNOW-007 | Eliminar una fuente referenciada | La operación se bloquea por PROTECT |
+| KNOW-008 | Eliminar una versión referenciada | La operación se bloquea por PROTECT |
+
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
 
 > **Estado: PENDIENTES.** El sincronizador, el servicio central y los paquetes firmados todavía no están implementados. Estas pruebas definen el contrato que deberá verificarse cuando se construyan.
