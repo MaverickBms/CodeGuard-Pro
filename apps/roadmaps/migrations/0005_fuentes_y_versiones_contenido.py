@@ -1,6 +1,7 @@
 # Catálogo de fuentes y snapshots versionados de contenido académico.
 import uuid
 
+import django.core.validators
 import django.db.models.deletion
 from django.db import migrations, models
 
@@ -36,7 +37,7 @@ class Migration(migrations.Migration):
                 ("esquema_version", models.PositiveSmallIntegerField(default=1, verbose_name="versión del esquema")),
                 ("estado", models.CharField(choices=[("borrador", "Borrador"), ("revision", "En revisión"), ("aprobada", "Aprobada"), ("publicada", "Publicada"), ("sustituida", "Sustituida"), ("retirada", "Retirada")], default="borrador", max_length=12)),
                 ("snapshot", models.JSONField(verbose_name="snapshot académico")),
-                ("sha256", models.CharField(max_length=64, verbose_name="SHA-256 del snapshot")),
+                ("sha256", models.CharField(max_length=64, validators=[django.core.validators.RegexValidator(r"^[0-9a-f]{64}$", "Debe ser un SHA-256 hexadecimal en minúsculas.")], verbose_name="SHA-256 del snapshot")),
                 ("resumen_cambios", models.TextField(blank=True, verbose_name="resumen de cambios")),
                 ("motivo_retiro", models.TextField(blank=True, verbose_name="motivo de retiro")),
                 ("revisada_en", models.DateTimeField(blank=True, null=True, verbose_name="revisada el")),
