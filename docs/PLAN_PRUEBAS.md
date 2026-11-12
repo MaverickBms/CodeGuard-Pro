@@ -223,7 +223,7 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 | EDIT-006 | Publicar una versión aprobada | Se registra publicador y fecha |
 | EDIT-007 | Publicar una nueva versión | La anterior pasa a sustituida en la misma transacción |
 | EDIT-008 | Retirar publicación sin motivo | Se rechaza la operación |
-| EDIT-009 | Retirar publicación con motivo | Se conserva snapshot y motivo |
+| EDIT-009 | Retirar publicación con motivo | Se conserva snapshot, motivo, responsable y fecha de retirada |
 | EDIT-010 | Publicar dos versiones simultáneas | Solo una versión queda publicada por lección |
 
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
