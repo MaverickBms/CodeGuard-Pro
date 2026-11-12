@@ -911,7 +911,7 @@ python manage.py publicar_paquete_conocimiento \
 - El JSON académico v1 conserva UUID y atribución de fuentes. El índice de paquete v2 añade un catálogo normalizado con metadatos y evidencia de licencia, sin exportar identidades personales de revisores.
 - El catálogo ya se valida criptográficamente como parte del ZIP, pero todavía no se importa en la base local: la conciliación segura de fuentes existentes y nuevas forma parte del instalador transaccional pendiente.
 - La escritura de artefactos y el commit de SQLite no forman una transacción distribuida; un cierre abrupto puede dejar archivos huérfanos, que son inocuos y no se anuncian sin registro. Debe existir un proceso de reconciliación antes de automatizar publicaciones.
-- Las pruebas del publicador y la migración 0015 deben ejecutarse en el entorno local antes de considerar validado este incremento.
+- La migración 0015 y las pruebas del publicador/catálogo v2 fueron confirmadas localmente por el propietario dentro de la suite de 108 pruebas.
 ## 26. Catálogo de fuentes firmado (índice de paquete v2)
 
 El generador produce ahora `package-index.json` con `schema_version: 2` e incluye un catálogo normalizado de fuentes. El manifiesto Ed25519 firma indirectamente ese catálogo porque el SHA-256 del ZIP forma parte del manifiesto firmado.
@@ -922,7 +922,7 @@ El verificador mantiene compatibilidad de lectura con índice v1 y valida v2 con
 
 Este catálogo permite que el futuro instalador registre las fuentes ausentes sin depender de una preinstalación manual. No autoriza a sobrescribir silenciosamente fuentes locales existentes: si un UUID ya existe con metadatos incompatibles, el instalador deberá abortar o aplicar una política explícita de conciliación. La importación del catálogo no debe disparar por sí sola un flujo editorial ni modificar una decisión de licencia local.
 
-**Estado:** generación y validación de catálogo v2 implementadas en la rama correctiva; pruebas nuevas pendientes de ejecución local. La instalación transaccional de fuentes, snapshots y punteros activos sigue pendiente.
+**Estado:** generación y validación de catálogo v2 implementadas y validadas localmente por el propietario (108 pruebas OK). La persistencia del catálogo por paquete se implementa en la sección 27; su nueva migración 0016 y pruebas siguen pendientes de validación local.
 
 ## 27. Instalador transaccional local (implementación inicial)
 
