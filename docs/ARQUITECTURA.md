@@ -22,7 +22,7 @@ fácil mantenimiento y continuidad offline. El funcionamiento académico local n
 servicio central; la sincronización de contenido será una capacidad complementaria, iniciada por
 el cliente y de solo descarga.
 
-**Estado actual:** el núcleo local está implementado y verificado (incremento 1). La Fase 2 (motor de aprendizaje y conocimiento versionado) está implementada parcialmente en `main`: roadmap ASCENSO 3.1, flujo editorial, publicador, catálogo firmado v2 e instalador transaccional con rollback. El propietario confirmó 119 pruebas OK, `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios en `main` `2c5d441`. El cliente HTTP pull-only inicial está en `feat/phase-2-http-sync-client`; sus pruebas nuevas aún requieren validación local. Hosting, endpoint público y scheduler Electron siguen pendientes.
+**Estado actual:** el núcleo local está implementado y verificado (incremento 1). La Fase 2 (motor de aprendizaje y conocimiento versionado) está implementada parcialmente en `main`: roadmap ASCENSO 3.1, flujo editorial, publicador, catálogo firmado v2 e instalador transaccional con rollback. El propietario confirmó 119 pruebas OK en `main` `2c5d441` y 132 pruebas OK en `feat/phase-2-http-sync-client`, junto con `manage.py check` limpio y `makemigrations --check --dry-run` sin cambios. El cliente HTTP inicial está validado localmente. El scheduler Electron, el backoff y el modo de ejecución PyInstaller están implementados en desarrollo y requieren una nueva validación local y compilación real. Hosting, endpoint público y claves de producción siguen pendientes.
 
 ---
 
@@ -215,10 +215,10 @@ flowchart TD
 | Registro local de paquetes (`PaqueteConocimientoInstalado`) | Implementado (migración 0012) |
 | Un solo activo por canal + estado de sincronización | Implementado (migración 0013) |
 | Verificador de distribución firmada (Ed25519, manifiesto, ZIP) | Implementado |
-| Comandos de gestión editorial y distribución | Incluye `publicar_paquete_conocimiento`; `sincronizar_conocimiento` manual en rama aislada |
+| Comandos de gestión editorial y distribución | Incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento`; el scheduler Electron inicia el cliente en proceso separado en la rama aislada |
 | Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado; migración 0015 y pruebas del generador validadas localmente por el propietario |
-| Catálogo firmado de fuentes (índice v2) | Implementado y validado localmente por el propietario (119 pruebas OK) |
-| Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementado y validado en `main` (119 pruebas OK; migración 0016) |
+| Catálogo firmado de fuentes (índice v2) | Implementado y validado localmente por el propietario (119 pruebas OK en `main`; 132 en rama cliente HTTP) |
+| Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementado y validado en `main` (119 pruebas OK; migración 0016); cliente HTTP validado en rama (132 pruebas) |
 | Cliente de sincronización HTTP pull-only | Implementación inicial en `feat/phase-2-http-sync-client`; pruebas pendientes de validación local |
 | Hosting, endpoint y publicación remota | Pendiente; no se ha seleccionado proveedor ni configurado URL/key de producción |
 
@@ -245,3 +245,12 @@ bloqueará el arranque local. El renderer solo recibirá estado mediante IPC lim
 El cargador `cargar_ascenso` queda fuera del flujo de sincronización. En particular,
 `--recrear` puede eliminar progreso por las relaciones en cascada y nunca debe utilizarse
 para actualizar contenido pedagógico.
+### 9.1 Scheduler de sincronización de conocimiento (rama aislada)
+
+Electron programa una primera comprobación 30 segundos después de que Django y la ventana estén disponibles, y realiza sondeos locales cada cinco minutos. El cliente Python respeta `EstadoSincronizacion.next_check_after`, por lo que no realiza una petición de red en cada sondeo. Las respuestas válidas programan 24 horas; los fallos aplican backoff exponencial desde 15 minutos hasta 24 horas.
+
+La sincronización se ejecuta en un proceso hijo independiente. En desarrollo utiliza el entorno virtual; en producción reutiliza el ejecutable PyInstaller mediante `CodeGuardServer --sync-knowledge`. Este modo no inicia Waitress, no ejecuta migraciones y no carga/recrea el roadmap.
+
+La concurrencia se limita en Electron y mediante un bloqueo de archivo por canal bajo `DATA_DIR`. El renderer solo recibe estado descriptivo por IPC. La configuración incompleta (URLs, allowlist o claves de confianza) desactiva la sincronización sin impedir el funcionamiento offline.
+
+**Estado de validación:** el propietario confirmó 132 pruebas antes de este incremento. El nuevo scheduler, backoff, lock entre procesos y modo empaquetado requieren validación local y prueba de compilación PyInstaller. No hay endpoint público ni claves de producción.
