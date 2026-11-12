@@ -851,8 +851,9 @@ Este avance **no** implementa todavía:
 - endpoint o proveedor de distribución central;
 - almacén definitivo de claves públicas y allowlist de producción;
 - comando de empaquetado/firma editorial;
-- instalación de snapshots publicados, punteros de contenido activo ni rollback transaccional;
-- cambio de las vistas para leer versiones activas;
+- instalación de paquetes descargados, punteros de paquete activo y rollback transaccional;
 - programación automática desde Electron.
+
+El puntero editorial local `ContenidoLeccionActivo` ya existe para publicaciones gestionadas dentro de la aplicación; todavía no es un instalador de paquetes remotos ni debe confundirse con la activación transaccional de un paquete de distribución.
 
 No se debe interpretar la validación criptográfica de artefactos como una sincronización ya operativa. El siguiente incremento debe conectar el verificador con un flujo de publicación controlado y un instalador transaccional, sin tocar progreso ni intentos.
