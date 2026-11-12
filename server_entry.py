@@ -2,33 +2,51 @@
 
 Electron inicia este binario (generado con PyInstaller) para servir Django localmente o, con
 ``--sync-knowledge``, para ejecutar una única comprobación de conocimiento y terminar.
-El modo servidor aplica migraciones y sirve la aplicación mediante Waitress + WhiteNoise.
+El modo servidor sirve la aplicación mediante Waitress + WhiteNoise.
 El modo de sincronización no ejecuta migraciones, no inicia Waitress y no modifica el roadmap.
 El servidor escucha exclusivamente en 127.0.0.1.
 
-Nota: el roadmap ASCENSO se carga por separado con ``manage.py cargar_ascenso``, ya que dentro
-del binario PyInstaller empaquetado la carga automática puede bloquearse al procesar miles de
-lecciones. El servidor funciona correctamente sin el roadmap cargado.
+Nota: las migraciones y la carga del roadmap ASCENSO se ejecutan por separado desde
+``manage.py`` antes de iniciar Electron (ver ``run.sh``). El servidor empaquetado asume
+que la base de datos ya está inicializada.
 """
 
 from __future__ import annotations
 
 import os
 import sys
+import traceback
+
+
+def _die(message: str, code: int = 1) -> int:
+    """Imprime un error y sale con el código dado."""
+    print(f"[CodeGuard ERROR] {message}", file=sys.stderr, flush=True)
+    traceback.print_exc(file=sys.stderr)
+    return code
 
 
 def main() -> int:
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.desktop")
 
-    import django
+    print("[CodeGuard] Iniciando servidor Django empaquetado...", flush=True)
 
-    django.setup()
+    try:
+        import django
+        print("[CodeGuard] Django importado correctamente.", flush=True)
+    except Exception as exc:
+        return _die(f"No se pudo importar Django: {exc}", 2)
 
-    from django.core.management import call_command
+    try:
+        django.setup()
+        print("[CodeGuard] Django configurado correctamente.", flush=True)
+    except Exception as exc:
+        return _die(f"No se pudo configurar Django: {exc}", 3)
 
     # El sincronizador se ejecuta en un proceso separado y no toca el servidor,
     # las migraciones ni el roadmap. El servidor principal ya administra esos pasos.
     if sys.argv[1:] == ["--sync-knowledge"]:
+        from django.core.management import call_command
+
         try:
             channel_raw = os.environ.get("CODEGUARD_SYNC_CHANNEL", "").strip()
             channel = channel_raw if channel_raw else "stable"
@@ -42,38 +60,26 @@ def main() -> int:
             return 0
         except Exception as exc:
             print(f"[CodeGuard Sync] {exc}", file=sys.stderr, flush=True)
+            traceback.print_exc(file=sys.stderr)
             return 1
 
-    # Migraciones idempotentes: no destruyen datos del usuario.
-    try:
-        call_command("migrate", interactive=False, verbosity=0)
-        print("[CodeGuard] Migraciones aplicadas.", flush=True)
-    except Exception as exc:
-        print(f"[CodeGuard] Error aplicando migraciones: {exc}", file=sys.stderr, flush=True)
-        return 3
-
-    # Verificar si el roadmap ya está cargado (sin bloquear si no lo está).
-    try:
-        from apps.roadmaps.models import Roadmap
-
-        if Roadmap.objects.exists():
-            print("[CodeGuard] Roadmap ya existe en la base de datos.", flush=True)
-        else:
-            print("[CodeGuard] Roadmap no cargado. Ejecute: manage.py cargar_ascenso", flush=True)
-    except Exception as exc:  # pragma: no cover - defensivo en el binario
-        print(f"[CodeGuard] No se pudo verificar el roadmap: {exc}", file=sys.stderr)
-
-    if sys.argv[1:]:
-        print("[CodeGuard] Argumentos de ejecución no reconocidos.", file=sys.stderr)
-        return 2
-
     port = os.environ.get("CODEGUARD_PORT", "8000").strip() or "8000"
-    print(f"[CodeGuard] Servidor local en http://127.0.0.1:{port}/", flush=True)
-
-    from config.wsgi import application
-    from waitress import serve
+    print(f"[CodeGuard] Puerto: {port}", flush=True)
 
     try:
+        from config.wsgi import application
+        print("[CodeGuard] Aplicación WSGI cargada correctamente.", flush=True)
+    except Exception as exc:
+        return _die(f"No se pudo importar config.wsgi: {exc}", 5)
+
+    try:
+        from waitress import serve
+        print("[CodeGuard] Waitress importado correctamente.", flush=True)
+    except Exception as exc:
+        return _die(f"No se pudo importar waitress: {exc}", 6)
+
+    try:
+        print(f"[CodeGuard] Sirviendo en http://127.0.0.1:{port}/ ...", flush=True)
         serve(
             application,
             host="127.0.0.1",
@@ -81,6 +87,7 @@ def main() -> int:
         )
     except Exception as exc:
         print(f"[CodeGuard] Error iniciando el servidor Waitress: {exc}", file=sys.stderr, flush=True)
+        traceback.print_exc(file=sys.stderr)
         return 4
     return 0
 
