@@ -220,8 +220,8 @@ flowchart TD
 | Verificador de distribución firmada (Ed25519, manifiesto, ZIP) | Implementado |
 | Comandos de gestión editorial y distribución | Implementados; incluye publicar_paquete_conocimiento |
 | Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado; migración 0015 y pruebas del generador validadas localmente por el propietario |
-| Catálogo firmado de fuentes (índice v2) | Implementado en rama correctiva; pruebas pendientes de validación local |
-| Cliente de sincronización de red | Pendiente |
+| Catálogo firmado de fuentes (índice v2) | Implementado y validado localmente por el propietario (108 pruebas OK) |
+| Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementación inicial en rama correctiva; migración 0016 y pruebas pendientes de validación local |\n| Cliente de sincronización de red | Pendiente |
 | Hosting, endpoint y publicación remota | Pendiente |
 
 ---
