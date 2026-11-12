@@ -223,10 +223,6 @@ class BloqueoSincronizacionTests(TestCase):
 
 class PersistenciaBackoffTests(TestCase):
     def test_persistencia_duplica_intervalo_tras_fallos_consecutivos(self):
-        from unittest.mock import patch
-
-        from django.utils import timezone
-
         now = timezone.now()
         EstadoSincronizacion.objects.create(channel="stable")
         with patch("apps.roadmaps.sync_client.timezone.now", return_value=now):
