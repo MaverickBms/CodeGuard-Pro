@@ -178,6 +178,7 @@ class ImportacionContenidoTests(TestCase):
         version = importar_documentos_validados(report, actor=self.editor)["created"][0]
         version = enviar_version_a_revision(version.pk, actor=self.editor)
         self.assertEqual(version.estado, "revision")
+        self.fuente.refresh_from_db()
         self.assertEqual(self.fuente.revisada_por, self.editor)
 
     def test_solo_referencia_no_permite_adaptacion(self):
