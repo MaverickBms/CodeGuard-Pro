@@ -166,6 +166,20 @@ La prueba T-027 (bloqueo expira tras 15 min) requiere espera real y se valida ma
 
 ---
 
+## 6.1 Pruebas del incremento de identidad y evidencias
+
+> **Estado: implementadas en código; pendientes de ejecución en el entorno local.**
+
+| ID | Prueba | Caso | Resultado esperado |
+|---|---|---|---|
+| DATA-001 | UUID de lección | Crear una lección | Se asigna una clave UUID no nula, única e inmutable |
+| DATA-002 | UUID de ejemplo | Crear un ejemplo | Se asigna una clave UUID propia |
+| DATA-003 | UUID de ejercicio | Crear ejercicios distintos | Cada ejercicio recibe una clave UUID distinta |
+| DATA-004 | Migración de claves | Actualizar una BD con registros existentes | Cada registro obtiene un UUID antes de imponer unicidad y NOT NULL |
+| DATA-005 | Protección de ejercicio | Eliminar ejercicio con intentos | La operación se rechaza y los intentos permanecen |
+| DATA-006 | Protección de evaluador | Eliminar configuración referenciada por intento | La operación se rechaza y la configuración histórica permanece |
+| DATA-007 | Intento sin evaluador | Guardar entrega pendiente | La referencia a configuración puede permanecer nula |
+
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
 
 > **Estado: PENDIENTES.** El sincronizador, el servicio central y los paquetes firmados todavía no están implementados. Estas pruebas definen el contrato que deberá verificarse cuando se construyan.
