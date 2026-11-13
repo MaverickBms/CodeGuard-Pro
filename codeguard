@@ -41,14 +41,9 @@ echo "   (Usa --ozone-platform=x11 para compatibilidad con Wayland)"
 echo ""
 
 # Lanzar AppImage con X11 para evitar problemas de Wayland/Vulkan
-CODEGUARD_DATA_DIR="$DATA_DIR" \
-./dist/CodeGuard-Pro-1.0.0-x86_64.AppImage --ozone-platform=x11
+CODEGUARD_DATA_DIR="$DATA_DIR" ./dist/CodeGuard-Pro-1.0.0-x86_64.AppImage --ozone-platform=x11
 
 echo ""
 echo "=============================================="
 echo "   CodeGuard Pro - Cerrado"
 echo "=============================================="
-EOF
-
-chmod +x codeguard
-echo "✅ Script codeguard creado como archivo físico"

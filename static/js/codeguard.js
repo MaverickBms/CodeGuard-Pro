@@ -84,9 +84,7 @@ function cycleTheme() {
 applyTheme(getCurrentTheme());
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Aplicar tema guardado antes del primer paint (ya se ejecutó arriba con defer).
-  applyTheme(getCurrentTheme());
-
+  // El tema ya se aplicó arriba con defer; solo sincronizamos listeners.
   if (window.codeguardAPI && typeof window.codeguardAPI.onThemeChange === 'function') {
     window.codeguardAPI.onThemeChange(applyTheme);
   }
