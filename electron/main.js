@@ -71,7 +71,7 @@ function getFreePort() {
   });
 }
 
-function waitForServer(url, timeoutMs = 45000) {
+function waitForServer(url, timeoutMs = 120000) {
   const started = Date.now();
   return new Promise((resolve, reject) => {
     const retry = () => {
@@ -79,11 +79,11 @@ function waitForServer(url, timeoutMs = 45000) {
         reject(new Error(`El servidor local no respondió en ${Math.round(timeoutMs / 1000)} s.`));
         return;
       }
-      setTimeout(attempt, 400);
+      setTimeout(attempt, 200);
     };
 
     const attempt = () => {
-      const request = http.get(url, { timeout: 2500 }, (response) => {
+      const request = http.get(url, { timeout: 3000 }, (response) => {
         response.resume();
         if (response.statusCode && response.statusCode < 500) {
           resolve();
