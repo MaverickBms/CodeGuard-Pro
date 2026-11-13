@@ -1,0 +1,54 @@
+#!/bin/bash
+# =============================================================================
+# CodeGuard Pro - Script de acceso rápido
+# Ejecuta: codeguard  (desde cualquier terminal)
+# =============================================================================
+set -euo pipefail
+
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$PROJECT_DIR"
+
+# Verificar que el AppImage existe
+if [ ! -f "dist/CodeGuard-Pro-1.0.0-x86_64.AppImage" ]; then
+    echo "❌ Error: No se encuentra el AppImage en dist/"
+    echo "   Ejecuta primero: npm run build:linux"
+    exit 1
+fi
+
+# Directorio de datos del AppImage (empaquetado)
+DATA_DIR="$HOME/.config/Code Guard Pro/data"
+mkdir -p "$DATA_DIR"
+
+echo "=============================================="
+echo "   CodeGuard Pro - Inicio rápido"
+echo "=============================================="
+echo ""
+echo "📁 Directorio de datos: $DATA_DIR"
+echo ""
+
+# Aplicar migraciones de Django
+echo "🔄 Aplicando migraciones de Django..."
+./.venv/bin/python manage.py migrate --settings=config.settings.development 2>&1 | tail -3
+
+# Cargar roadmap ASCENSO
+echo ""
+echo "🗺️  Cargando roadmap ASCENSO..."
+./.venv/bin/python manage.py cargar_ascenso --settings=config.settings.development 2>&1 | tail -3
+
+echo ""
+echo "🚀 Lanzando CodeGuard Pro..."
+echo "   (Usa --ozone-platform=x11 para compatibilidad con Wayland)"
+echo ""
+
+# Lanzar AppImage con X11 para evitar problemas de Wayland/Vulkan
+CODEGUARD_DATA_DIR="$DATA_DIR" \
+./dist/CodeGuard-Pro-1.0.0-x86_64.AppImage --ozone-platform=x11
+
+echo ""
+echo "=============================================="
+echo "   CodeGuard Pro - Cerrado"
+echo "=============================================="
+EOF
+
+chmod +x codeguard
+echo "✅ Script codeguard creado como archivo físico"

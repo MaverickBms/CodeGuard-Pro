@@ -1,11 +1,11 @@
 #!/bin/bash
 # =============================================================================
 # CodeGuard Pro — Script de ejecución para Linux
-# Arquitectura: Electron + Django API local
+# Arquitectura: Electron + Django API local (empaquetado con PyInstaller)
 #
-# Electron es el único responsable de iniciar y detener el servidor Django
-# (ver electron/main.js). Este script solo prepara el entorno y lanza Electron,
-# evitando así dos procesos Django compitiendo por el mismo puerto.
+# Electron inicia el servidor Django empaquetado (CodeGuardServer) dentro
+# del AppImage. Este script prepara el entorno (migraciones + roadmap) y
+# lanza el AppImage con --ozone-platform=x11 para evitar problemas de Wayland.
 # =============================================================================
 
 set -euo pipefail
@@ -45,16 +45,21 @@ if ! "$PYTHON" -c "import django" 2>/dev/null; then
     "$PYTHON" -m pip install -r requirements.txt
 fi
 
-# --- Directorio de datos (misma base de datos que usará Electron) ---
-export CODEGUARD_DATA_DIR="$PWD/data"
+# --- Directorio de datos del AppImage (empaquetado) ---
+# El AppImage empaquetado usa ~/.config/Code Guard Pro/data
+DATA_DIR="$HOME/.config/Code Guard Pro/data"
+mkdir -p "$DATA_DIR"
+export CODEGUARD_DATA_DIR="$DATA_DIR"
+
+echo "[INFO] Directorio de datos: $DATA_DIR"
 
 # --- Aplicar migraciones de Django ---
-echo "[INFO] Aplicando migraciones de Django en $CODEGUARD_DATA_DIR..."
-"$PYTHON" manage.py migrate --settings=config.settings.development
+echo "[INFO] Aplicando migraciones de Django en $DATA_DIR..."
+"$PYTHON" manage.py migrate --settings=config.settings.development 2>&1 | tail -5
 
 # --- Cargar el roadmap oficial si aún no existe ---
-echo "[INFO] Verificando roadmap ASCENSO..."
-"$PYTHON" manage.py cargar_ascenso --settings=config.settings.development
+echo "[INFO] Cargando roadmap ASCENSO..."
+"$PYTHON" manage.py cargar_ascenso --settings=config.settings.development 2>&1 | tail -3
 
 # --- Instalar dependencias Node.js si es necesario ---
 echo "[INFO] Verificando dependencias Node.js..."
@@ -71,10 +76,23 @@ if [ ! -f ".env" ]; then
     fi
 fi
 
-# --- Iniciar Electron (él inicia y detiene Django) ---
-echo "[INFO] Iniciando aplicación Electron..."
-npm start
+# --- Verificar que el AppImage existe ---
+if [ ! -f "dist/CodeGuard-Pro-1.0.0-x86_64.AppImage" ]; then
+    echo "[ERROR] No se encuentra el AppImage en dist/"
+    echo "   Ejecuta primero: npm run build:linux"
+    exit 1
+fi
 
+# --- Lanzar Electron (AppImage con --ozone-platform=x11 para Wayland) ---
+echo ""
+echo "[INFO] Iniciando aplicación Electron (AppImage)..."
+echo "   Usando --ozone-platform=x11 para evitar problemas de Wayland/Vulkan"
+echo ""
+
+CODEGUARD_DATA_DIR="$DATA_DIR" \
+./dist/CodeGuard-Pro-1.0.0-x86_64.AppImage --ozone-platform=x11
+
+echo ""
 echo "============================================="
 echo "   CodeGuard Pro — Cerrado correctamente"
 echo "============================================="
