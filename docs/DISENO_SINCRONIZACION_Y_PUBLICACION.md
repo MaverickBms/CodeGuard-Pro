@@ -39,9 +39,11 @@ No incluye sincronización de progreso entre dispositivos, cuentas en la nube, a
 
 ---
 
-## 3. Auditoría del estado actual
+## 3. Auditoría histórica del estado inicial (no representa el estado actual)
 
-La revisión de la rama de trabajo encontró:
+> **Nota de mantenimiento (15-11-2026):** la tabla y los riesgos de esta sección documentan el diagnóstico previo a la implementación del flujo de conocimiento. No deben utilizarse como descripción del código actual. Los modelos, migraciones, publicador, instalador, cliente HTTP y scheduler Electron evolucionaron posteriormente; para el estado vigente consulte las secciones 24–28 y `docs/FASE_2_APRENDIZAJE.md`.
+
+La revisión inicial de la rama de trabajo encontró:
 
 | Archivo / componente | Estado comprobado | Limitación para versionado |
 |---|---|---|
@@ -798,7 +800,7 @@ El registro no realiza solicitudes HTTP, no importa páginas, no ejecuta recurso
 
 ## 24. Verificación de manifiestos y paquetes
 
-**Estado:** núcleo de verificación y registro local implementado en `main`. El usuario confirmó 93 pruebas (`OK`) antes del incremento de correcciones 0014; la migración y pruebas nuevas de la rama correctiva están pendientes de validación local.
+**Estado histórico:** esta sección se redactó antes de integrar las migraciones posteriores. El estado actual incluye publicador, catálogo firmado v2, instalador transaccional, rollback, cliente HTTP y scheduler Electron. Las validaciones posteriores reportadas por el propietario constan en `docs/PLAN_DESARROLLO.md`; la aceptación GUI y la distribución remota siguen pendientes.
 
 ### 24.1 Verificación del manifiesto
 
@@ -862,12 +864,12 @@ Este avance **no** implementa todavía:
 
 El puntero editorial local `ContenidoLeccionActivo` ya existe para publicaciones gestionadas dentro de la aplicación; todavía no es un instalador de paquetes remotos ni debe confundirse con la activación transaccional de un paquete de distribución.
 
-No se debe interpretar la validación criptográfica de artefactos como una sincronización ya operativa. El siguiente incremento debe conectar el verificador con un flujo de publicación controlado y un instalador transaccional, sin tocar progreso ni intentos.
+No se debe interpretar la validación criptográfica de artefactos como una sincronización ya operativa. Este párrafo describe el estado anterior al publicador/instalador. El flujo local de publicación e instalación transaccional está implementado en `publisher.py` e `installer.py`; la distribución remota sigue pendiente.
 ---
 
-## 25. Generador central de paquetes (rama correctiva)
+## 25. Generador local de paquetes firmados
 
-**Estado:** implementación añadida en `fix/phase-2-integrity-learning`; migración `0015_publicador_central_conocimiento` y pruebas nuevas pendientes de validación local.
+**Estado actual:** publicador local implementado en `apps/roadmaps/publisher.py`, comando `publicar_paquete_conocimiento` y migración 0015 integrados en `main`. Genera ZIP reproducible, manifiesto y firma; no despliega ni publica artefactos en un servicio remoto.
 
 ### 25.1 Selección y controles editoriales
 
@@ -928,9 +930,9 @@ El verificador mantiene compatibilidad de lectura con índice v1 y valida v2 con
 
 Este catálogo permite que el futuro instalador registre las fuentes ausentes sin depender de una preinstalación manual. No autoriza a sobrescribir silenciosamente fuentes locales existentes: si un UUID ya existe con metadatos incompatibles, el instalador deberá abortar o aplicar una política explícita de conciliación. La importación del catálogo no debe disparar por sí sola un flujo editorial ni modificar una decisión de licencia local.
 
-**Estado:** generación y validación de catálogo v2 implementadas y validadas localmente por el propietario (108 pruebas OK). La persistencia del catálogo por paquete se implementa en la sección 27; su nueva migración 0016 y pruebas siguen pendientes de validación local.
+**Estado actual:** catálogo v2 generado y validado por el verificador; su persistencia por paquete forma parte del instalador transaccional descrito en la sección 27. La migración 0016 y su validación posterior están registradas en `docs/PLAN_DESARROLLO.md`.
 
-## 27. Instalador transaccional local (implementación inicial)
+## 27. Instalador transaccional local
 
 ### 27.1 Separación de dominios
 
