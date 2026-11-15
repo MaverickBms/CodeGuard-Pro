@@ -27,9 +27,9 @@ El sistema de autenticación de CodeGuard Pro está **temporalmente desactivado*
 
 - Modelo `Usuario` (con `intentos_fallidos`, `bloqueado_hasta`, etc.).
 - Modelo `FraseRescate`.
-- Servicios de autenticación (`apps/account/services.py`).
-- Formularios de autenticación (`apps/account/forms.py`).
-- Vistas de autenticación (`apps/account/views.py`).
+- Servicios de autenticación (`apps/accounts/services.py`).
+- Formularios de autenticación (`apps/accounts/forms.py`).
+- Vistas de autenticación (`apps/accounts/views.py`).
 - Plantillas de autenticación (`templates/accounts/*.html`).
 - Archivo de migración `0002_usuario_bloqueado_hasta_usuario_intentos_fallidos.py`.
 - Campos `intentos_fallidos` y `bloqueado_hasta`.
@@ -63,7 +63,7 @@ No se debe reactivar sin autorización expresa.
 ## Archivos implicados
 
 - `config/settings/base.py` — constante `AUTH_DISABLED`.
-- `config/middleware.py` — `AccesoLocalMiddleware` y `SesionInactividadMiddleware` no-op.
+- `config/middleware.py` — `AccesoLocalMiddleware` y `SesionInactividadMiddleware`; este último conserva su lógica y omite el control de inactividad cuando `AUTH_DISABLED=True`.
 - `config/settings/desktop.py` — middleware añadido.
 - `apps/accounts/identity.py` — helpers y decoradores de acceso local (nuevo).
 - `apps/accounts/views.py` — guardas en rutas de autenticación.
