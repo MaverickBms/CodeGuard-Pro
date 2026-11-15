@@ -6,9 +6,9 @@
 
 El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicación de escritorio **Electron**, con **SQLite**. CodeGuard es **offline-first**: no requiere Internet para abrir la aplicación, estudiar con el contenido disponible ni consultar el progreso local.
 
-El roadmap ASCENSO 3.1 (33 etapas) ya está implementado y cargable mediante `python manage.py cargar_ascenso`. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está operativo en la rama de trabajo mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
+El roadmap ASCENSO 3.1 (33 etapas) ya está implementado y cargable mediante `python manage.py cargar_ascenso`. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado en la rama principal mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
 
-La sincronización opcional con un servicio central de conocimiento revisado está aprobada como parte de la Fase 2, pero **todavía no está implementada** en la rama principal. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
+El cliente de sincronización pull-only por HTTPS, el comando `sincronizar_conocimiento`, el publicador local y la integración de comprobaciones periódicas con Electron están implementados. **La distribución remota de producción sigue pendiente**: no hay hosting/endpoint público, allowlist ni claves públicas de producción configuradas. Sin esa configuración, el cliente falla cerrado y no realiza conexiones. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
 
 ---
 
@@ -115,6 +115,8 @@ Comandos de gestión disponibles:
 | `registrar_fuente_conocimiento` | Registra una fuente documental para el flujo editorial |
 | `revisar_licencia_fuente` | Registra una decisión editorial auditada sobre la licencia de una fuente |
 | `validar_paquete_contenido` | Valida un lote JSON académico sin escribir en la base de datos |
+| `publicar_paquete_conocimiento` | Genera localmente un paquete reproducible, manifiesto y firma Ed25519 desde contenido editorial publicado |
+| `sincronizar_conocimiento` | Comprueba y descarga actualizaciones firmadas desde un endpoint HTTPS configurado |
 
 ---
 
@@ -128,7 +130,7 @@ Comandos de gestión disponibles:
 - La sincronización será iniciada por el cliente, de solo descarga y no bloqueará el uso offline.
 - Las actualizaciones deberán validar firma, integridad y compatibilidad antes de instalarse, con conservación de la versión anterior.
 - El diseño no contempla enviar intentos, código, calificaciones, progreso ni datos personales al servidor central.
-- **Estado actual:** el registro local y el verificador de distribución firmada están implementados; el cliente de sincronización de red y el servicio central todavía no están implementados; estas reglas describen el alcance aprobado.
+- **Estado actual:** registro local, verificador Ed25519, publicador local, instalador transaccional, rollback y cliente HTTP están implementados. Electron programa comprobaciones periódicas. La sincronización remota permanece inactiva hasta configurar endpoint, allowlist y claves públicas confiables; el hosting y la publicación remota de producción no están implementados.
 
 ## 🔒 Privacidad
 
@@ -160,7 +162,7 @@ python manage.py makemigrations --check --dry-run
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps
 ```
 
-Suite actual: 93 pruebas pasando (incluyendo modo sin autenticación, flujo editorial, registro de paquetes y distribución firmada).
+Último resultado documentado por el propietario (12-11-2026): **138 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit` y `apps.roadmaps`. Esta cifra es un resultado reportado, no una ejecución reproducida por esta actualización. Antes de continuar el desarrollo, ejecutar los comandos anteriores en el entorno local y registrar el resultado vigente.
 
 ## ❓ Solución de problemas
 
