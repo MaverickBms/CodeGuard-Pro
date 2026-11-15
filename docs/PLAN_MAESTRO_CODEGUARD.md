@@ -199,7 +199,7 @@ Pendiente de la Fase 2:
 - Construir una interfaz editorial y permisos granulares; los primeros servicios y comandos de revisión e importación ya existen en la rama.
 - El publicador local de paquetes inmutables y manifiestos firmados está implementado en `apps/roadmaps/publisher.py`. Sigue pendiente desplegar el servicio central y el registro remoto de releases con secuencia única y monotónica por canal.
 - Integrar almacén de claves públicas/rotación y allowlist de producción; aún no están configurados.
-- Implementar cliente HTTP pull-only, descarga, ETag/backoff, instalación transaccional de snapshots, punteros activos, historial y rollback.
+- Cliente HTTP pull-only, descarga, ETag/backoff, instalación transaccional de snapshots, punteros activos, historial y rollback local implementados. Falta configurar y validar la distribución remota de producción.
 - Configurar el almacén de claves públicas/rotación, allowlist, endpoint HTTPS y hosting de producción; mantener sincronización cerrada hasta que exista configuración confiable.
 - Validar navegación y presentación de todos los tipos de lección.
 - Incorporar resaltado de sintaxis y mejorar la experiencia del editor.
