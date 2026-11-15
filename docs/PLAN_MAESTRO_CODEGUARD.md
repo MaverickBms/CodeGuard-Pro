@@ -5,7 +5,7 @@
 > **Estado general:** Fase 1 completada. Fase 2 iniciada y parcialmente implementada.  
 > **Repositorio:** `MaverickBms/CodeGuard-Pro`  
 > **Directorio local habitual:** `~/Documentos/CodeGuard`  
-> **Última actualización:** 11 de noviembre de 2026.
+> **Última actualización:** 15 de noviembre de 2026.
 
 ---
 
@@ -158,7 +158,7 @@ La finalización funcional no significa que todas las combinaciones de dispositi
 
 La Fase 2 comenzó con el primer incremento del flujo de aprendizaje.
 
-Implementado en la base de la Fase 2 y ampliado en ramas de trabajo:
+Implementado en `main` y ampliado mediante incrementos integrados:
 
 - Modelo `ContenidoLeccion` con campos para objetivos, teoría técnica, explicación sencilla, notas y publicación.
 - Modelos `EjemploLeccion` y `EjercicioLeccion`.
@@ -197,10 +197,10 @@ Pendiente de la Fase 2:
 - Cargar y revisar contenido académico real para las lecciones y poblar el catálogo con fuentes oficiales verificadas.
 - Completar metadatos de revisión técnica, vigencia y compatibilidad por tecnología/versión.
 - Construir una interfaz editorial y permisos granulares; los primeros servicios y comandos de revisión e importación ya existen en la rama.
-- Completar el publicador central de paquetes inmutables y manifiestos firmados. Diseño técnico: `docs/DISENO_PUBLICADOR_CENTRAL.md`; primero requiere registro central de releases con secuencia única y monotónica por canal.
+- El publicador local de paquetes inmutables y manifiestos firmados está implementado en `apps/roadmaps/publisher.py`. Sigue pendiente desplegar el servicio central y el registro remoto de releases con secuencia única y monotónica por canal.
 - Integrar almacén de claves públicas/rotación y allowlist de producción; aún no están configurados.
 - Implementar cliente HTTP pull-only, descarga, ETag/backoff, instalación transaccional de snapshots, punteros activos, historial y rollback.
-- Configurar posteriormente el almacén de claves públicas/rotación y la allowlist de producción, una vez aprobada la infraestructura de distribución.
+- Configurar el almacén de claves públicas/rotación, allowlist, endpoint HTTPS y hosting de producción; mantener sincronización cerrada hasta que exista configuración confiable.
 - Validar navegación y presentación de todos los tipos de lección.
 - Incorporar resaltado de sintaxis y mejorar la experiencia del editor.
 - Crear un flujo editorial versionado para configurar y publicar ejercicios/evaluadores.
