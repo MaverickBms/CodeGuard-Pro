@@ -23,7 +23,7 @@ El objetivo de "menos de 300 MB de RAM en reposo" es un **objetivo a validar**, 
 | RAM libre observada | ~1.3 GB |
 | Almacenamiento | SSD NVMe 238.5 GB (108 GB libres) |
 | SO | Fedora Linux 44 Workstation |
-| Python | 3.14.8 |
+| Python | 3.14.10 (entorno virtual `.venv`, validación local 15-11-2026) |
 | Django | 5.2.19 |
 
 Procedimiento de medición de RAM en reposo:
@@ -298,7 +298,7 @@ Las pruebas cubren:
 
 ### 6.8 Validación confirmada — distribución firmada y registro local
 
-Historial de validación: 93 pruebas en el incremento inicial; 119 pruebas en `main` `2c5d441`; 136 pruebas tras integrar cliente HTTP y empaquetado; y 138 pruebas reportadas por el propietario el 12-11-2026 tras incorporar las pruebas de despacho. Estos resultados pertenecen a distintas líneas base y no deben interpretarse como una única ejecución acumulativa reproducible desde este documento. La cifra vigente debe confirmarse ejecutando la suite completa en el commit que se vaya a integrar. Las confirmaciones del propietario no equivalen a una ejecución independiente de CI.
+Historial de validación: 93 pruebas en el incremento inicial; 119 pruebas en `main` `2c5d441`; 136 pruebas tras integrar cliente HTTP y empaquetado; 138 pruebas reportadas el 12-11-2026; y **197 pruebas OK** reportadas el 15-11-2026 en `chore/estabilizacion-pre-fase-2`. En esta última ejecución, el propietario informó también `pip check` sin dependencias rotas, `manage.py check` sin incidencias y `makemigrations --check --dry-run` sin cambios pendientes, usando Python 3.14.10 desde `.venv`. Esta es la línea base local más reciente de la rama; no equivale a una ejecución independiente de CI y debe repetirse después de modificaciones funcionales.
 
 
 ---
@@ -456,3 +456,19 @@ La prueba T-200 de funcionamiento offline debe distinguir el núcleo local (que 
 | AUTO-010 | IPC restringido | Invocar handlers desde un frame que no sea la URL local de CodeGuard | La solicitud se rechaza; no se exponen comandos ni argumentos arbitrarios | ⏳ Pendiente |
 | AUTO-011 | Despacho de sincronización aislada | Ejecutar las pruebas de `test_server_entry.py` con canal `beta` y modo forzado, y con valores predeterminados | Solo invoca `sincronizar_conocimiento`; no migra ni inicia Waitress | ⏳ Añadida en esta rama; ejecución local pendiente |
 | AUTO-012 | Smoke test del binario Linux | Ejecutar `bash scripts/smoke-test-packaged-server-linux.sh` contra el ejecutable PyInstaller | Django se importa y el comando llega al error controlado de configuración; sin errores de importación | ⏳ Añadida en esta rama; ejecución local pendiente |
+
+
+### 6.10 Validación local de estabilización — 15-11-2026
+
+**Resultado reportado por el propietario en `chore/estabilizacion-pre-fase-2`:**
+
+| Verificación | Resultado |
+|---|---|
+| Python del entorno virtual | 3.14.10 |
+| `git fetch origin` y checkout de la rama | Correctos |
+| `python -m pip check` | `No broken requirements found.` |
+| `python manage.py check` | `System check identified no issues (0 silenced).` |
+| `python manage.py makemigrations --check --dry-run` | `No changes detected` |
+| `python manage.py test apps.core apps.accounts apps.audit apps.roadmaps` | **197 tests — OK, sin fallos** |
+
+Esta ejecución confirma la suite automatizada y las comprobaciones Django en el entorno indicado. No sustituye la aceptación manual de Electron/Waitress, las pruebas GUI ni una prueba de extremo a extremo contra el futuro distribuidor remoto. El árbol local tenía además una modificación preexistente no confirmada en `electron/main.js`, fuera de los cambios de esta intervención; debe inspeccionarse por separado antes de limpiar o integrar el árbol de trabajo.
