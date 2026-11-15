@@ -20,7 +20,7 @@ El sistema de autenticación de CodeGuard Pro está **temporalmente desactivado*
 | Restablecimiento de contraseña | Redirige al panel (302) | Ruta conservada, no accesible |
 | Cambio de contraseña autenticado | Redirige al panel (302) | Ruta conservada, no accesible |
 | Bloqueo por 5 intentos fallidos | No aplica | Sin sesiones, sin intentos |
-| Restricción por inactividad | No aplica | Middleware no-op |
+| Restricción por inactividad | No aplica mientras `AUTH_DISABLED=True` | `SesionInactividadMiddleware` conserva su implementación y omite el control de inactividad en este modo |
 | Formularios y pantallas de auth | Eliminados de la navegación | Plantillas conservadas |
 
 ## ¿Qué se conservó (no se eliminó)?
