@@ -162,7 +162,7 @@ python manage.py makemigrations --check --dry-run
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps
 ```
 
-Último resultado documentado por el propietario (12-11-2026): **138 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit` y `apps.roadmaps`. Esta cifra es un resultado reportado, no una ejecución reproducida por esta actualización. Antes de continuar el desarrollo, ejecutar los comandos anteriores en el entorno local y registrar el resultado vigente.
+Última validación local reportada (15-11-2026), en la rama `chore/estabilizacion-pre-fase-2` y con Python 3.14.10 del entorno `.venv`: `pip check` sin dependencias rotas; `manage.py check` sin incidencias; `makemigrations --check --dry-run` sin cambios; y **197 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit` y `apps.roadmaps`. Resultado informado por el propietario; conservarlo como línea base de esta rama y repetirlo después de cambios funcionales.
 
 ## ❓ Solución de problemas
 
