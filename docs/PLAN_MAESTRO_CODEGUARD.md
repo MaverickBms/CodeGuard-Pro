@@ -188,9 +188,9 @@ Implementado en `main` y ampliado mediante incrementos integrados:
 
 Validación registrada:
 
-- El usuario confirmó que la suite local actual de la rama de sincronización finaliza con **93 pruebas: OK**. Para resolver dos fallos iniciales, instaló `cryptography==46.0.3` en `.venv` y corrigió `test_no_se_puede_saltar_transicion_de_paquete` para intentar el salto inválido `descargado → activo`.
-- Esta confirmación cubre el incremento de distribución (migraciones 0012–0013, verificador Ed25519/ZIP y registro local de paquetes), además de los incrementos anteriores.
-- Último commit de referencia conocido en `main`: `dee0da9b4444ecabc5fc4dd4263296eef8361a99`.
+- Historial de resultados reportados por el propietario: 93, 119, 136 y finalmente **138 pruebas OK** el 12-11-2026, en distintas líneas base. La cifra de 138 debe reproducirse en el commit actual antes de volver a declararla validada.
+- El alcance posterior incluye migraciones 0012–0016, verificador Ed25519/ZIP, publicador local, catálogo firmado v2, instalador transaccional, rollback, cliente HTTP pull-only y scheduler Electron.
+- Las confirmaciones de pruebas y empaquetado proceden del entorno local del propietario; no equivalen a una ejecución independiente en CI.
 
 Pendiente de la Fase 2:
 
@@ -746,7 +746,7 @@ La prioridad actual es completar la **Fase 2** con contenido de calidad, prácti
 Ante cualquier duda o conflicto entre una mejora llamativa y la integridad del aprendizaje, debe prevalecer la integridad del aprendizaje.
 
 
-### Estado de implementación del protocolo firmado (11-11-2026)
+### Estado de implementación del protocolo firmado (actualización 15-11-2026)
 
 En la rama `docs/phase-2-hybrid-knowledge-sync` se incorporaron:
 
@@ -755,4 +755,4 @@ En la rama `docs/phase-2-hybrid-knowledge-sync` se incorporaron:
 - Modelos `PaqueteConocimientoInstalado` y `EstadoSincronizacion`, con unicidad de secuencia y un solo paquete activo por canal.
 - Migraciones 0012–0013, dependencia criptográfica fijada y pruebas unitarias de verificación y persistencia.
 
-Este es un núcleo de verificación, no una sincronización funcional. No se ha configurado todavía una clave pública real, allowlist de producción, proveedor de distribución ni cliente HTTP; tampoco se instala o activa contenido publicado. Las pruebas nuevas y migraciones 0012–0013 requieren validación local.
+El estado evolucionó desde este núcleo inicial: ahora existen el publicador local, el instalador transaccional con rollback, el cliente HTTP pull-only, el comando `sincronizar_conocimiento` y el scheduler Electron. No hay todavía proveedor/hosting, endpoint, allowlist ni claves públicas de producción configurados; la sincronización remota debe permanecer inactiva hasta completar esa infraestructura. La aceptación GUI y la reproducción de las pruebas en el commit candidato siguen pendientes.
