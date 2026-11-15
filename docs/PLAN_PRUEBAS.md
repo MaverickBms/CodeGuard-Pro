@@ -259,7 +259,7 @@ Las pruebas cubren:
 
 ## 6.7 Importación académica y revisión de licencias
 
-> **Estado:** el usuario confirmó que la suite local actual finaliza con **93 pruebas: OK**. Esto incluye SYNC-027–SYNC-041 (verificador de manifiestos, ZIP y registro local). La instalación de `cryptography==46.0.3` en `.venv` resolvió el fallo de importación; el test de transición se corrigió para intentar el salto inválido `descargado → activo`.
+> **Registro histórico:** en el incremento inicial de distribución se confirmaron 93 pruebas OK. Esta cifra fue superada por validaciones posteriores; no representa el tamaño actual de la suite.
 
 | ID | Prueba | Resultado esperado |
 |---|---|---|
@@ -298,9 +298,7 @@ Las pruebas cubren:
 
 ### 6.8 Validación confirmada — distribución firmada y registro local
 
-El propietario reportó inicialmente **93 pruebas OK** tras instalar `cryptography==46.0.3` y corregir `test_no_se_puede_saltar_transicion_de_paquete`. Esa cifra fue posteriormente superada por la confirmación de **119 pruebas OK** en `main` `2c5d441`, junto con `manage.py check` sin errores y `makemigrations --check --dry-run` sin cambios pendientes. La suite de 108 incluye las correcciones de snapshots, publicador y catálogo firmado v2 descritas en las secciones siguientes.
-
-La confirmación corresponde al entorno local del propietario y no equivale a una ejecución independiente en CI. No valida la migración 0016 ni el instalador/rollback incorporados después en la rama correctiva.
+Historial de validación: 93 pruebas en el incremento inicial; 119 pruebas en `main` `2c5d441`; 136 pruebas tras integrar cliente HTTP y empaquetado; y 138 pruebas reportadas por el propietario el 12-11-2026 tras incorporar las pruebas de despacho. Estos resultados pertenecen a distintas líneas base y no deben interpretarse como una única ejecución acumulativa reproducible desde este documento. La cifra vigente debe confirmarse ejecutando la suite completa en el commit que se vaya a integrar. Las confirmaciones del propietario no equivalen a una ejecución independiente de CI.
 
 
 ---
@@ -389,12 +387,12 @@ La suite `apps.roadmaps.tests.test_installer` cubre instalación y activación, 
 | HTTP-009 | Timeout y conectividad | Timeout, error DNS o HTTP 5xx | Error controlado; el contenido instalado permanece disponible | ✅ Validado localmente por el propietario dentro de 132 pruebas |
 | HTTP-010 | Configuración | Falta clave de confianza o allowlist | Falla cerrada; no realiza petición | ✅ Validado localmente por el propietario dentro de 132 pruebas |
 
-Cobertura automatizada: `apps.roadmaps.tests.test_sync_client` y pruebas de integración del cliente en `apps.roadmaps.tests.test_installer`. El propietario confirmó 136 pruebas OK después de corregir PyInstaller y electron-builder. Esta rama agrega dos pruebas del despacho empaquetado; objetivo de suite: 138 pruebas, pendiente de ejecución local. El build PyInstaller y el AppImage Linux fueron generados; la prueba GUI de Electron sigue pendiente.
+Cobertura automatizada: `apps.roadmaps.tests.test_sync_client` y pruebas de integración del cliente en `apps.roadmaps.tests.test_installer`. El propietario confirmó posteriormente 138 pruebas OK el 12-11-2026 tras integrar las pruebas de despacho empaquetado. La aceptación GUI de Electron y navegación del roadmap siguen pendientes. La cifra debe reproducirse en el commit actual antes de declarar la suite validada.
 
 
 ## 7. Pruebas previstas para el sistema híbrido de conocimiento (Fase 2)
 
-> **Estado:** verificador, publicador, instalador, cliente HTTP y backoff implementados. El propietario confirmó 136 pruebas OK, build PyInstaller y AppImage Linux. El binario carga Django y alcanza el comando de sincronización con error de configuración esperado. Las dos pruebas nuevas de despacho y la prueba GUI de ciclo de vida Electron aún deben ejecutarse. Hosting, endpoint público y claves de producción siguen pendientes.
+> **Estado:** verificador, publicador local, instalador transaccional, cliente HTTP y backoff implementados. El propietario confirmó 138 pruebas OK, build PyInstaller y AppImage Linux el 12-11-2026. El smoke test de sincronización no acredita el arranque normal de Waitress ni la aceptación GUI. Hosting, endpoint público, allowlist y claves de producción siguen pendientes.
 
 | ID | Prueba | Caso | Resultado esperado |
 |---|---|---|---|
