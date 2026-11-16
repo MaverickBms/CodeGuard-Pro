@@ -66,7 +66,9 @@ Genera ZIP reproducible por secuencia, índice interno, manifiesto externo y fir
 
 El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos bibliográficos, decisión y evidencia de licencia, alcance y fecha de revisión. El verificador conserva compatibilidad con índice v1. No se exporta la identidad personal del revisor.
 
-## 7. Pendientes de cierre y aceptación\n\nLas cifras de pruebas de esta sección son históricas cuando se refieren a 119/138; el estado más reciente reportado es 245 en siete apps, pendiente de reproducir en el HEAD actual. Los pendientes de integración se detallan en `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
+## 7. Pendientes de cierre y aceptación
+
+Las cifras de pruebas de esta sección son históricas cuando se refieren a 119/138; el estado más reciente reportado es 245 en siete apps, pendiente de reproducir en el HEAD actual. Los pendientes de integración se detallan en `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
 
 | Elemento | Estado | Documento |
 |---|---|---|
