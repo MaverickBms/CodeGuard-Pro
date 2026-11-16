@@ -88,3 +88,29 @@ class LogrosAcademicosTests(TestCase):
         )
         evaluar_logros_academicos(self.usuario)
         self.assertTrue(LogroObtenido.objects.filter(usuario=self.usuario, logro__clave="primera-etapa").exists())
+
+from apps.gamification.models import AvatarPerfil, PersonajeGuia, ZonaMundo
+from apps.gamification.services import obtener_avatar
+
+
+class Fase6BaseTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="avatar-user", password="ClaveSegura123!"
+        )
+        self.roadmap = Roadmap.objects.create(nombre="ASCENSO mundo", edicion="test")
+        self.etapa = Etapa.objects.create(roadmap=self.roadmap, numero=1, titulo="Etapa 1")
+
+    def test_obtener_avatar_crea_y_reutiliza(self):
+        avatar = obtener_avatar(self.usuario)
+        self.assertIsNotNone(avatar)
+        self.assertEqual(avatar.usuario, self.usuario)
+        avatar2 = obtener_avatar(self.usuario)
+        self.assertEqual(avatar.id, avatar2.id)
+        self.assertEqual(AvatarPerfil.objects.filter(usuario=self.usuario).count(), 1)
+
+    def test_zona_y_personaje_guia(self):
+        zona = ZonaMundo.objects.create(etapa=self.etapa, nombre="Zona 1", orden=1)
+        personaje = PersonajeGuia.objects.create(zona=zona, nombre="Guía", rol="Mentor")
+        self.assertEqual(str(zona), "Zona 1 (Etapa 1)")
+        self.assertIn("Guía", str(personaje))

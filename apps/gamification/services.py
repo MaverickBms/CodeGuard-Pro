@@ -9,7 +9,7 @@ from __future__ import annotations
 from django.db import transaction
 from django.db.models import F
 
-from .models import Logro, LogroObtenido, PerfilGamificacion, TransaccionMoneda
+from .models import AvatarPerfil, Logro, LogroObtenido, PerfilGamificacion, TransaccionMoneda
 
 
 def obtener_perfil(usuario) -> PerfilGamificacion:
@@ -133,3 +133,10 @@ def evaluar_logros_academicos(usuario, *, modulos_completados: int | None = None
         obtenido, _ = otorgar_logro(usuario, logro, origen="evento_academico")
         otorgados.append(obtenido)
     return otorgados
+
+def obtener_avatar(usuario) -> AvatarPerfil | None:
+    """Obtiene o crea el perfil de avatar del usuario (cosmético, sin ventajas)."""
+    if usuario is None or not getattr(usuario, "is_authenticated", False):
+        return None
+    avatar, _ = AvatarPerfil.objects.get_or_create(usuario=usuario)
+    return avatar

@@ -175,3 +175,96 @@ class ItemInventario(models.Model):
 
     def __str__(self) -> str:
         return f"{self.nombre} ({self.get_rareza_display()}) — {self.usuario}"
+# append to apps/gamification/models.py
+
+class ZonaMundo(models.Model):
+    """Zona/mundo narrativo asociado a una etapa académica (Fase 6)."""
+
+    etapa = models.OneToOneField(
+        "roadmaps.Etapa",
+        on_delete=models.CASCADE,
+        related_name="zona_mundo",
+        verbose_name="etapa",
+    )
+    nombre = models.CharField(max_length=120, verbose_name="nombre")
+    descripcion = models.TextField(blank=True, verbose_name="descripción")
+    orden = models.PositiveIntegerField(default=0, verbose_name="orden")
+    activo = models.BooleanField(default=True, verbose_name="activo")
+
+    class Meta:
+        verbose_name = "zona del mundo"
+        verbose_name_plural = "zonas del mundo"
+        ordering = ["orden", "etapa__numero"]
+
+    def __str__(self) -> str:
+        return f"{self.nombre} (Etapa {self.etapa.numero})"
+
+
+class PersonajeGuia(models.Model):
+    """Personaje guía asociado a una zona/etapa (Fase 6)."""
+
+    zona = models.ForeignKey(
+        ZonaMundo,
+        on_delete=models.CASCADE,
+        related_name="personajes_guia",
+        verbose_name="zona",
+    )
+    nombre = models.CharField(max_length=120, verbose_name="nombre")
+    rol = models.CharField(max_length=120, blank=True, verbose_name="rol")
+    descripcion = models.TextField(blank=True, verbose_name="descripción")
+    activo = models.BooleanField(default=True, verbose_name="activo")
+
+    class Meta:
+        verbose_name = "personaje guía"
+        verbose_name_plural = "personajes guía"
+        ordering = ["zona__orden", "nombre"]
+
+    def __str__(self) -> str:
+        return f"{self.nombre} — {self.zona}"
+
+
+class AvatarPerfil(models.Model):
+    """Avatar personalizable del usuario (cosmético/narrativo, Fase 6)."""
+
+    usuario = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="avatar_perfil",
+        verbose_name="usuario",
+    )
+    nombre_avatar = models.CharField(max_length=80, blank=True, verbose_name="nombre del avatar")
+    especie = models.CharField(max_length=60, blank=True, verbose_name="especie")
+    clase = models.CharField(max_length=60, blank=True, verbose_name="clase")
+    apariencia = models.JSONField(default=dict, blank=True, verbose_name="apariencia (cosmética)")
+    creado_en = models.DateTimeField(auto_now_add=True, verbose_name="creado en")
+    actualizado_en = models.DateTimeField(auto_now=True, verbose_name="actualizado en")
+
+    class Meta:
+        verbose_name = "avatar del usuario"
+        verbose_name_plural = "avatares de usuario"
+
+    def __str__(self) -> str:
+        return f"Avatar — {self.usuario}"
+
+
+class DecisionEvolutiva(models.Model):
+    """Registro de decisión evolutiva cosmética/narrativa (Fase 6)."""
+
+    avatar = models.ForeignKey(
+        AvatarPerfil,
+        on_delete=models.CASCADE,
+        related_name="decisiones_evolutivas",
+        verbose_name="avatar",
+    )
+    clave = models.CharField(max_length=80, verbose_name="clave de decisión")
+    valor = models.CharField(max_length=120, verbose_name="valor elegido")
+    descripcion = models.TextField(blank=True, verbose_name="descripción")
+    registrada_en = models.DateTimeField(auto_now_add=True, verbose_name="registrada en")
+
+    class Meta:
+        verbose_name = "decisión evolutiva"
+        verbose_name_plural = "decisiones evolutivas"
+        ordering = ["-registrada_en"]
+
+    def __str__(self) -> str:
+        return f"{self.avatar} — {self.clave}: {self.valor}"

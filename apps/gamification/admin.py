@@ -1,6 +1,16 @@
 from django.contrib import admin
 
-from .models import ItemInventario, Logro, LogroObtenido, PerfilGamificacion, TransaccionMoneda
+from .models import (
+    AvatarPerfil,
+    DecisionEvolutiva,
+    ItemInventario,
+    Logro,
+    LogroObtenido,
+    PerfilGamificacion,
+    PersonajeGuia,
+    TransaccionMoneda,
+    ZonaMundo,
+)
 
 
 @admin.register(PerfilGamificacion)
@@ -34,3 +44,29 @@ class ItemInventarioAdmin(admin.ModelAdmin):
     list_display = ("usuario", "nombre", "rareza", "cantidad", "obtenido_en")
     list_filter = ("rareza",)
     search_fields = ("usuario__username", "nombre", "origen")
+
+
+@admin.register(ZonaMundo)
+class ZonaMundoAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "etapa", "orden", "activo")
+    list_filter = ("activo",)
+    search_fields = ("nombre", "etapa__titulo")
+
+
+@admin.register(PersonajeGuia)
+class PersonajeGuiaAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "zona", "rol", "activo")
+    list_filter = ("activo",)
+    search_fields = ("nombre", "rol")
+
+
+@admin.register(AvatarPerfil)
+class AvatarPerfilAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "nombre_avatar", "especie", "clase", "actualizado_en")
+    search_fields = ("usuario__username", "nombre_avatar", "especie", "clase")
+
+
+@admin.register(DecisionEvolutiva)
+class DecisionEvolutivaAdmin(admin.ModelAdmin):
+    list_display = ("avatar", "clave", "valor", "registrada_en")
+    search_fields = ("clave", "valor", "avatar__usuario__username")
