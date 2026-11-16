@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "apps.audit",
     "apps.core",
     "apps.roadmaps",
+    "apps.tutoring",
 ]
 
 MIDDLEWARE = [

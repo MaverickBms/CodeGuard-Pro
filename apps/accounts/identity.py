@@ -34,6 +34,25 @@ def obtener_usuario_local(request):
     return Usuario.objects.filter(is_active=True).first()
 
 
+def get_usuario_actual(request):
+    """Devuelve el usuario activo para operaciones de progreso.
+
+    En modo sin autenticación devuelve el propietario local existente
+    (``request.usuario_local``). Cuando la autenticación está activa devuelve
+    el usuario autenticado de la petición.
+
+    Si no existe propietario local ni usuario autenticado, devuelve None.
+    Las vistas deben manejar este caso: lectura permitida, escritura bloqueada
+    con mensaje comprensible. No se crea ningún usuario implícito.
+    """
+    usuario_local = getattr(request, "usuario_local", None)
+    if usuario_local is not None:
+        return usuario_local
+    if request.user.is_authenticated:
+        return request.user
+    return None
+
+
 def obtener_actor_auditoria(request):
     """Devuelve el actor para los registros de auditoría.
 

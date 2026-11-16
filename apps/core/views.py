@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from apps.accounts.identity import obtener_actor_auditoria, obtener_usuario_local, requiere_acceso
+from apps.accounts.identity import obtener_actor_auditoria, obtener_usuario_local, requiere_acceso, get_usuario_actual
 from apps.audit.services import registrar_evento
 from apps.core.models import ConfiguracionSistema
 from apps.roadmaps.models import Etapa, Progreso, Roadmap
@@ -13,25 +13,6 @@ from apps.roadmaps.services import (
     progreso_general,
     roadmap_activo,
 )
-
-
-def get_usuario_actual(request):
-    """Devuelve el usuario activo para operaciones de progreso.
-
-    En modo sin autenticación devuelve el propietario local existente
-    (``request.usuario_local``). Cuando la autenticación está activa devuelve
-    el usuario autenticado de la petición.
-
-    Si no existe propietario local ni usuario autenticado, devuelve None.
-    Las vistas deben manejar este caso: lectura permitida, escritura bloqueada
-    con mensaje comprensible. No se crea ningún usuario implícitamente.
-    """
-    usuario_local = getattr(request, "usuario_local", None)
-    if usuario_local is not None:
-        return usuario_local
-    if request.user.is_authenticated:
-        return request.user
-    return None
 
 
 def _progreso_reciente(usuario, limite=5):
