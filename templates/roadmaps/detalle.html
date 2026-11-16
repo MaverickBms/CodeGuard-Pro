@@ -93,6 +93,9 @@
           <span class="modulo-numero">{{ modulo.numero }}</span>
           <h3>{{ modulo.titulo }}</h3>
           <span class="modulo-count">{{ modulo.lecciones_lista|length }} lecciones</span>
+          {% if modulo.progreso_modulo and modulo.progreso_modulo.estado == "completado" %}
+            <span class="cg-badge cg-badge-success" title="Módulo aprobado por evaluación"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Módulo aprobado</span>
+          {% endif %}
         </header>
         <ul class="lecciones-list">
           {% for leccion in modulo.lecciones_lista %}

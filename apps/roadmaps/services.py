@@ -218,6 +218,21 @@ def mapa_progreso_lecciones(usuario, etapa: Etapa) -> dict[int, Progreso]:
     }
 
 
+def mapa_progreso_modulos(usuario, etapa: Etapa) -> dict[int, Progreso]:
+    """Progreso a nivel de módulo indexado por ``modulo_id``."""
+    roadmap = etapa.roadmap
+    return {
+        fila.modulo_id: fila
+        for fila in _progresos_usuario_roadmap(usuario, roadmap)
+        if (
+            fila.etapa_id == etapa.id
+            and fila.modulo_id is not None
+            and fila.leccion_id is None
+            and fila.actividad_id is None
+        )
+    }
+
+
 def progreso_general(usuario, roadmap: Roadmap) -> dict:
     """Porcentaje y conteos de avance del usuario en el roadmap."""
     total = roadmap.etapas.count()

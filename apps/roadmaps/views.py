@@ -36,6 +36,7 @@ from .services import (
     iniciar_leccion,
     mapa_progreso_etapas,
     mapa_progreso_lecciones,
+    mapa_progreso_modulos,
     marcar_etapa,
     marcar_leccion,
     progreso_general,
@@ -138,12 +139,14 @@ def detalle(request, numero):
     completadas = etapas_completadas(usuario, roadmap)
     progreso = mapa_progreso_etapas(usuario, roadmap).get(etapa.id)
     progresos_lecciones = mapa_progreso_lecciones(usuario, etapa)
+    progresos_modulos = mapa_progreso_modulos(usuario, etapa)
 
     for modulo in modulos:
         modulo.lecciones_lista = list(modulo.lecciones.all())
         modulo.quizzes_publicados = list(
             modulo.quizzes.filter(estado=Quiz.ESTADO_PUBLICADO).order_by("id")
         )
+        modulo.progreso_modulo = progresos_modulos.get(modulo.id)
         for leccion in modulo.lecciones_lista:
             leccion.progreso_actual = progresos_lecciones.get(leccion.id)
             leccion.completada = bool(
