@@ -9,7 +9,7 @@
 
 El propietario confirmó:
 
-- **138 pruebas automatizadas:** todas aprobadas (OK).
+- **138 pruebas automatizadas:** resultado histórico confirmado el 12-11-2026; no representa el total actual de aplicaciones integradas.
 - **PyInstaller:** compilación correcta de `dist-server/CodeGuardServer/CodeGuardServer`.
 - **Smoke test:** el binario carga Django y ejecuta el despacho `--sync-knowledge`; el comando falla de forma controlada cuando faltan endpoints, allowlist y claves de confianza.
 - **AppImage:** generación correcta de `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage` (Linux x86_64).
@@ -29,7 +29,7 @@ El puerto 11434 no se toma como evidencia de Django: es habitual en instalacione
 
 | Criterio | Estado | Evidencia / observación |
 |---|---|---|
-| Suite automatizada | **Confirmado** | 138 pruebas OK, según el propietario |
+| Suite automatizada | **Histórico** | 138 pruebas OK el 12-11-2026; README registra 245 en siete apps el 16-11-2026, pendiente de reproducción en HEAD actual |
 | Compilación PyInstaller | **Confirmado** | Binario generado |
 | Despacho `--sync-knowledge` | **Confirmado** | Smoke test y error controlado por configuración ausente |
 | Generación AppImage | **Confirmado** | AppImage Linux x86_64 generado |
