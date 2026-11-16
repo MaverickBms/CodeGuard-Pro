@@ -52,13 +52,13 @@ Entregar CodeGuard Pro como aplicación de escritorio completamente funcional, e
 | Fase | Nombre | Estado | Trabajo realizado | Resultado pruebas |
 |---|---|---|---|---|
 | 1 | Fundamentos UX/UI y experiencia base | ✅ Completada | Dashboard, navegación, sidebar, 12 temas, responsive, ajustes de contraste. | Documentado como verificado por propietario. |
-| 2 | Motor de aprendizaje y contenido interactivo | 🔄 En progreso — parcial | Modelos curriculares, contenido, ejemplos, ejercicios, progreso, flujo editorial, paquetes firmados, sincronización cliente. Arquitectura refinada: ADR-005 (WAL mode), ADR-006 (unificar contadores), ADR-007 (servicio contenido activo), ADR-008 (combinar consultas progreso), ADR-009 (DEPENDENCIAS_EXPLICITAS a JSON). Eliminados ~170 líneas de código duplicado. | 197 pruebas OK (ejecutado 16 nov 2026, verificado tras cada cambio arquitectónico). |
+| 2 | Motor de aprendizaje y contenido interactivo | 🔄 Casi completo (cierre pendiente GUI) | Modelos curriculares, contenido, ejemplos, ejercicios, progreso, flujo editorial, paquetes firmados, sincronización cliente. Arquitectura refinada: ADR-005 a ADR-009 implementados. Eliminados ~170 líneas de código duplicado. Pendiente: verificación GUI Electron+Waitress, contenido académico real, demo offline/rollback. | 197 pruebas OK (verificado tras cada cambio). |
 | 3 | Tutor inteligente local | ⏳ Pendiente | — | — |
 | 4 | Evaluaciones y progresión académica | ⏳ Pendiente | — | — |
 | 5 | Gamificación y economía de recompensas | ⏳ Pendiente | — | — |
 | 6 | Mundo, avatar, personajes e inventario | ⏳ Pendiente | — | — |
 | 7 | Minijuegos, desafíos y jefes | ⏳ Pendiente | — | — |
-| 8 | Integración, calidad, seguridad y optimización | ⏳ Pendiente (transversal) | — | — |
+| 8 | Integración, calidad, seguridad y optimización | 🔄 En curso (transversal) | Seguridad: 0 vulnerabilidades encontradas, CSRF en vistas POST, sin ejecución de código, auditoría completa. WAL mode para concurrencia. Pendiente: accesibilidad WCAG, pruebas de carga, manejo de errores edge cases. | 197 pruebas OK, system check 0 issues. |
 
 **Prioridad inmediata:** Cerrar correctamente la Fase 2 antes de avanzar a la Fase 3 (tutor IA).
 
