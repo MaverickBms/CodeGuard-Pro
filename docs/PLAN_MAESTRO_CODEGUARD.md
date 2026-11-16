@@ -489,7 +489,7 @@ El examen de etapa también debe estar disponible desde Evaluaciones para que un
 
 ## Fase 5 — Gamificación y economía de recompensas
 
-**Estado: EN PROGRESO — base técnica e integración inicial (ADR-012). Integrado: recompensas idempotentes por eventos académicos (módulo/etapa completados) y UI mínima de perfil. Pendiente: logros configurables, misiones/rachas completas, tienda/inventario avanzado, UI ampliada.**
+**Estado: EN PROGRESO — base técnica e integración inicial (ADR-012). Integrado: recompensas y logros académicos base idempotentes por eventos (módulo/etapa completados) y UI mínima de perfil. Pendiente: misiones/rachas completas, tienda/inventario avanzado, UI ampliada, más logros.**
 
 ### Objetivo
 Aumentar la motivación, continuidad y reconocimiento del esfuerzo sin convertir las recompensas en sustituto del aprendizaje.
