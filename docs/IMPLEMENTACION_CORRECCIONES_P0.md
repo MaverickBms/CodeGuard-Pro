@@ -35,6 +35,20 @@ Para probar la inicialización empaquetada, generar el servidor y arrancar Elect
 
 En Windows, construir NSIS/portable y probar ambos con un perfil de usuario nuevo. El build ya no debe ejecutar migraciones ni sembrar datos en la máquina de construcción.
 
+## Flujo de empaquetado protegido
+
+Los comandos de distribución pasan obligatoriamente por el mismo flujo:
+
+```bash
+npm run build:server
+npm run verify:server
+npm run build:linux  # o build:win; ambos reconstruyen y verifican antes de empaquetar
+```
+
+`npm run build:server` elimina el ejecutable anterior y su manifiesto, ejecuta PyInstaller con `--distpath dist-server` y genera un manifiesto SHA-256 fuera de la carpeta que electron-builder copia a `resources/server`. Si PyInstaller falla, no se crea un manifiesto válido. `npm run verify:server` exige ejecutable, manifiesto, plataforma/nombre esperados y coincidencia SHA-256. Los scripts `build`, `build:linux` y `build:win` encadenan generación, verificación y electron-builder mediante `&&`; cualquier fallo detiene el empaquetado. `build_windows.bat` delega en `npm run build:win` y no mantiene una segunda invocación independiente de PyInstaller.
+
+No ejecutar `electron-builder` directamente para crear artefactos distribuibles, porque ese comando aislado no ejecuta la protección anterior.
+
 ## Límites
 
 - No se habilita ejecución arbitraria de código.
