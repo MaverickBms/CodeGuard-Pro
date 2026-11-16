@@ -764,7 +764,7 @@ Actualizar este plan cuando cambie el estado real de una fase. No marcar una fas
 
 **CodeGuard Pro debe convertirse en una plataforma seria para aprender programación, con una experiencia visual atractiva y elementos de juego bien integrados. La gamificación debe reforzar el aprendizaje, nunca reemplazarlo.**
 
-La prioridad actual es completar la **Fase 2** con contenido de calidad, práctica verificable y progreso automático. Las fases posteriores deben construirse sobre ese núcleo, sin perder seguridad, accesibilidad, funcionamiento local ni personalización visual.
+La prioridad actual es estabilizar la instalación limpia y cerrar la **Fase 2** con contenido de calidad, práctica verificable y progreso automático. En paralelo, validar las bases de Fases 3–7 sin declarar terminadas sus experiencias completas. La prioridad inmediata es corregir el directorio de datos/primer arranque, reproducir las 245 pruebas, aceptar la GUI empaquetada, demostrar el modo offline y completar backup/restore. Ver `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
 
 Ante cualquier duda o conflicto entre una mejora llamativa y la integridad del aprendizaje, debe prevalecer la integridad del aprendizaje.
 
