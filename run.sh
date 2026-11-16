@@ -53,14 +53,6 @@ export CODEGUARD_DATA_DIR="$DATA_DIR"
 
 echo "[INFO] Directorio de datos: $DATA_DIR"
 
-# --- Aplicar migraciones de Django ---
-echo "[INFO] Aplicando migraciones de Django en $DATA_DIR..."
-"$PYTHON" manage.py migrate --settings=config.settings.development 2>&1 | tail -5
-
-# --- Cargar el roadmap oficial si aún no existe ---
-echo "[INFO] Cargando roadmap ASCENSO..."
-"$PYTHON" manage.py cargar_ascenso --settings=config.settings.development 2>&1 | tail -3
-
 # --- Instalar dependencias Node.js si es necesario ---
 echo "[INFO] Verificando dependencias Node.js..."
 if [ ! -d "node_modules" ]; then

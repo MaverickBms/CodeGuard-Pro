@@ -10,9 +10,10 @@
 3. La carga del roadmap utiliza el modo idempotente predeterminado. No se invoca `--recrear`; el progreso del usuario no se elimina.
 4. El modo aislado `--sync-knowledge` conserva su comportamiento y no ejecuta migraciones ni carga el roadmap.
 5. El build de Windows deja de crear una base de datos de desarrollo. La base real se inicializa en el primer arranque de cada usuario.
-6. Electron espera `GET /healthz/` y solo considera listo el servidor cuando la base de datos responde, no hay migraciones pendientes y existe un roadmap activo.
-7. El tutor solo admite Ollama en loopback, ignora proxies del entorno y rechaza redirecciones para evitar que el código del estudiante se envíe a un host remoto.
-8. La reserva del número de pista usa una actualización condicional atómica dentro de una transacción; el límite de tres se vuelve a comprobar en la base de datos y se conserva la unicidad `(sesion, numero_pista)`.
+6. `run.sh` deja de ejecutar migraciones y sembrar ASCENSO por separado; el servidor empaquetado es el único responsable de inicializar el perfil.
+7. Electron espera `GET /healthz/` y solo considera listo el servidor cuando la base de datos responde, no hay migraciones pendientes y existe un roadmap activo.
+8. El tutor solo admite Ollama en loopback, ignora proxies del entorno y rechaza redirecciones para evitar que el código del estudiante se envíe a un host remoto.
+9. La reserva del número de pista usa una actualización condicional atómica dentro de una transacción; el límite de tres se vuelve a comprobar en la base de datos y se conserva la unicidad `(sesion, numero_pista)`.
 
 ## Verificación local pendiente
 
