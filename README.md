@@ -82,6 +82,10 @@ ni cambios de esquema.
 
 ---
 
+## Estado de distribución (QA 16-11-2026)
+
+La compilación Linux x64 y la configuración de build Windows existen, pero la instalación limpia y el primer arranque todavía requieren aceptación. No distribuir como versión estable hasta corregir la inicialización de datos y completar las pruebas de escritorio/offline. Consulta `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
+
 ## ⚡ Instalación rápida
 
 ### Windows
@@ -159,9 +163,9 @@ Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/
 ## 🧪 Verificación
 
 ```bash
-python manage.py check
-python manage.py makemigrations --check --dry-run
-python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges
+python manage.py check --settings=config.settings.development
+python manage.py makemigrations --check --dry-run --settings=config.settings.development
+python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges --settings=config.settings.development
 ```
 
 Resultado reportado en el repositorio (16-11-2026): **245 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification` y `apps.challenges`, con `--settings=config.settings.development` (system check 0 issues y migraciones al día). El subconjunto de cuatro apps principales figura con 197 pruebas en el historial; 138 corresponde a una línea base anterior. Reproducir el comando completo en el HEAD actual antes de una release. Ver `docs/SEGUIMIENTO_TEMPORAL_USUARIO.md` para el estado por fases y validaciones pendientes.
