@@ -1,35 +1,34 @@
 # CodeGuard Pro — Control oficial del proyecto
 
 **Documento:** `PROJECT_CONTROL.md`  
-**Versión:** 2.9 — 138 pruebas, PyInstaller y AppImage confirmados; aceptación GUI aún pendiente  
-**Fecha de actualización:** 2026-11-12  
+**Versión:** 3.0 — auditoría integral, fases 2–7 integradas y estabilización de portabilidad pendiente  
+**Fecha de actualización:** 2026-11-16  
 **Propietario:** propietario de CodeGuard Pro  
 **Mantenedor:** orquestador  
 **Estado:** vigente, sujeto a autorización expresa para cada acción  
 **Ubicación:** raíz del repositorio  
 **Rama de trabajo:** `main`  
-**Línea base:** `main` en `b82a249b203548f54b92c9fc85bc609bd2c7a478`
+**Línea base de código auditada:** `main` en `26085c66ae4afd01b174b461b76d3de19d211b50`
 
 ---
 
 ## 0. Resumen ejecutivo
 
-- **Fase 1 (núcleo funcional):** completada, verificada y aprobada documentalmente. Autenticación local, panel, roadmap, auditoría y seguridad operativos.
-- **Fase 2 (motor de aprendizaje y conocimiento versionado):** en curso; `main` contiene el verificador, publicador, catálogo firmado v2, instalador transaccional, cliente HTTP y scheduler; el propietario confirmó 138 pruebas OK en `main` `b82a249` (la línea base previa del instalador fue de 119 pruebas en `2c5d441`). El cliente HTTP y las pruebas unitarias de backoff/bloqueo del scheduler fueron validados localmente por el propietario en `feat/phase-2-http-sync-client`. El propietario confirmó la generación del ejecutable PyInstaller y del AppImage Linux. El smoke test del binario carga Django y alcanza `sincronizar_conocimiento`; esto no demuestra el modo servidor Waitress. La aceptación GUI, navegación curricular y cierre normal siguen pendientes.
-  - Roadmap ASCENSO 3.1 (33 etapas, módulos, lecciones, prerrequisitos) implementado y cargable con `cargar_ascenso`.
-  - Contenido académico editable (`ContenidoLeccion`, `EjemploLeccion`, `EjercicioLeccion`) implementado.
-  - Flujo editorial de versiones (`VersionContenidoLeccion`, `ReferenciaFuenteContenido`, `FuenteConocimiento`) implementado con comandos de gestión.
-  - Registro local de paquetes de conocimiento (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`) implementado con transiciones controladas e identidad inmutable.
-  - Verificador de distribución firmada (Ed25519, manifiesto, ZIP) implementado (`validate_package_archive`, `verify_signed_manifest`).
-  - Puntero editorial `ContenidoLeccionActivo` para seleccionar snapshots publicados y mantener el borrador editable separado.
-  - Intentos nuevos vinculados a la versión activa y con snapshot del ejercicio presentado.
-  - Interfaz de entrega POST con CSRF, límite de 20.000 caracteres e historial de intentos.
-  - Protecciones adicionales para escrituras masivas del registro local de paquetes y sincronización.
-  - El propietario confirmó **138 pruebas OK**, build PyInstaller, smoke test del modo `--sync-knowledge` y generación del AppImage Linux. El smoke test no valida el arranque normal de Waitress ni la navegación gráfica de Electron.
-- **Sincronización de red:** cliente HTTP, backoff y bloqueo entre procesos implementados; PyInstaller y AppImage Linux generados; el binario alcanza el comando de sincronización y devuelve el error de configuración esperado cuando faltan variables. El modo `--sync-knowledge` pasó el smoke test. El arranque normal de Waitress, la navegación GUI y el cierre normal siguen pendientes. Hosting, endpoint y claves de producción siguen pendientes.
-- **Validación de pruebas:** el propietario confirmó 138 pruebas OK. El smoke test del modo `--sync-knowledge` pasó; la aceptación del servidor normal y de GUI sigue abierta.
-- **Autenticación:** temporalmente desactivada (`AUTH_DISABLED = True`); el sistema original se conserva íntegro y puede reactivarse con autorización expresa.
+- **Fase 1 — UX/UI base:** completada según la línea base del proyecto; regresión visual completa de los últimos cambios sigue pendiente.
+- **Fase 2 — Motor de aprendizaje:** en progreso. ASCENSO, contenido versionado, flujo editorial, paquetes firmados, instalación transaccional, rollback y cliente de sincronización están implementados parcialmente. Faltan contenido editorial completo, experiencia de práctica segura y aceptación E2E.
+- **Fase 3 — Tutor IA local:** app `apps/tutoring` integrada; Ollama es opcional y existe fallback estático. Validación real de modelo, rendimiento y privacidad pendiente.
+- **Fase 4 — Evaluaciones:** modelos, preguntas, resultados y criterios incorporados; corrección/progresión y UI completa pendientes.
+- **Fase 5 — Gamificación:** base de perfiles, monedas, transacciones, logros, misiones y rachas integrada; balance y validación funcional pendientes.
+- **Fase 6 — Mundo/avatar:** modelos y UI inicial integrados; personalización y narrativa avanzadas pendientes.
+- **Fase 7 — Desafíos:** base técnica integrada; catálogo y experiencia interactiva pendientes.
+- **Fase 8 — Calidad e integración:** en progreso. La instalación limpia, GUI empaquetada, offline E2E, backup/restore, matriz multiplataforma y aceptación de cierre siguen abiertas.
+- **Pruebas:** README informa 245 pruebas en siete apps (16-11-2026); el subconjunto de cuatro apps aparece con 197. Reproducir el comando completo en el HEAD actual antes de release.
+- **Escritorio:** Electron + Django/Waitress + SQLite + PyInstaller. El modo servidor empaquetado presupone base inicializada; se ha identificado una discrepancia en el lanzador `codeguard` y en el proceso de primer arranque Windows.
+- **Distribución remota:** cliente pull-only implementado parcialmente, pero hosting, endpoint, allowlist y claves de producción no configurados. No es requisito para estudiar offline.
+- **Autenticación:** `AUTH_DISABLED = True` temporalmente; el sistema original se conserva. No reactivarlo sin autorización expresa.
+- **Dictamen QA:** no declarar el producto listo para distribución hasta cerrar instalación limpia, aceptación GUI, offline, persistencia, recuperación y plataformas soportadas.
 
+Informe detallado: `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
 ---
 
 ## 1. Propósito y autoridad
@@ -80,13 +79,13 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Repositorio | `/home/mvxbms/Documentos/CodeGuard` |
 | Línea base | `main` en `b82a249` (incluye catálogo v2, instalador, cliente HTTP, scheduler y corrección PyInstaller) |
 | Rama de trabajo | `main` |
-| HEAD de trabajo | `b82a249b203548f54b92c9fc85bc609bd2c7a478` |
+| HEAD de código auditado | `26085c66ae4afd01b174b461b76d3de19d211b50` |
 | Diferencia respecto a `main` | Ninguna: documentación sincronizada directamente sobre `main` con autorización expresa |
 | Remoto | `origin/main` |
-| Apps instaladas | `accounts`, `audit`, `core`, `roadmaps` |
-| Migraciones roadmaps | 0014, 0015 y 0016 validadas por el propietario; esta intervención no añade migraciones |
+| Apps instaladas | `accounts`, `audit`, `core`, `roadmaps`, `tutoring`, `gamification`, `challenges` |
+| Migraciones | Roadmaps hasta 0019; tutoring 0001; gamification 0003; challenges 0001 (revalidar desde base vacía) |
 | Comandos de gestión | 9; incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento` (este último en rama de trabajo) |
-| Pruebas automatizadas | 138 OK confirmadas por el propietario. Smoke test del modo `--sync-knowledge` OK; servidor Waitress normal y GUI Electron pendientes de aceptación |
+| Pruebas automatizadas | 245 reportadas en README para siete apps; 197 reportadas para el subconjunto de cuatro apps. Reproducibilidad en HEAD actual pendiente |
 | Autenticación | `AUTH_DISABLED = True` (temporal, conservada íntegra) |
 | Base de datos | SQLite, `data/db.sqlite3` |
 | Servidor local | Waitress + WhiteNoise en `127.0.0.1` |
@@ -97,7 +96,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 |---|---|
 | `manage.py check` | Sin errores |
 | `makemigrations --check --dry-run` | Sin cambios pendientes |
-| Suite de pruebas | 138 OK confirmadas por el propietario el 12-11-2026 |
+| Suite de pruebas | 245 reportadas en siete apps el 16-11-2026; ejecutar nuevamente y registrar salida íntegra |
 | Migraciones desde base vacía | Verificado |
 | Bind exclusivo | `127.0.0.1` (no `0.0.0.0`) |
 | Dependencias fijadas | `requirements.txt` con versiones exactas |
@@ -185,7 +184,7 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | 2.6 | 2026-11-12 | Scheduler Electron, backoff exponencial, bloqueo entre procesos, proceso PyInstaller de una sola tarea, IPC limitado, pruebas y documentación | Autorización expresa del propietario |
 | 2.7 | 2026-11-12 | Validación local satisfactoria de las pruebas de backoff/bloqueo y chequeos sintácticos | Confirmación del propietario |
 | 2.8 | 2026-11-12 | Corrección PyInstaller (Django hidden imports) y electron-builder; propietario confirma 136 pruebas, build PyInstaller y AppImage | Autorización expresa para validación de integración |
-| 2.9 | 2026-11-12 | Actualización del estado real de `main` (`b82a249`): 138 pruebas OK, build PyInstaller, smoke test sync y AppImage confirmados; se documentan límites de evidencia y aceptación GUI/Waitress pendiente | Confirmación del propietario; autorización expresa para actualizar cinco documentos y crear commit en `main` |
+| 2.9 | 2026-11-12 | Línea base histórica de 138 pruebas, build PyInstaller, smoke test sync y AppImage | Confirmación del propietario |\n| 3.0 | 2026-11-16 | Integración fast-forward de 75 commits a `main`; fases 3–7 incorporadas; auditoría QA integral, riesgos de primer arranque y portabilidad documentados | Solicitud del propietario de auditar, consolidar `main` y actualizar documentación |
 
 ### Reglas de actualización
 
