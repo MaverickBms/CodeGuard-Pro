@@ -17,7 +17,7 @@
   - `af56fbd docs: actualizar conteo de pruebas a 197 OK` (README.md, docs/PLAN_DESARROLLO.md)
 - **Entorno:** Python 3.14.10, Django 5.2.19, entorno virtual `.venv/`, Electron 45.2.3, Node.js instalados.
 - **Base de datos:** `data/db.sqlite3` existe, migraciones aplicadas, `.secret_key` presente.
-- **Pruebas automatizadas:** **225 pruebas OK** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`) ejecutadas con `--settings=config.settings.development`. Incluye tutoría (Fase 3) y evaluación (Fase 4).
+- **Pruebas automatizadas:** **228 pruebas OK** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification`) ejecutadas con `--settings=config.settings.development`. Incluye tutoría (Fase 3), evaluación (Fase 4) y base de gamificación (Fase 5).
 - **Django system check:** 0 issues.
 - **Migraciones pendientes:** Ninguna (`makemigrations --check --dry-run` limpio).
 - **Autenticación:** `AUTH_DISABLED = True` (temporal). La app abre directamente el panel. Sistema de auth completo conservado pero inactivo.
