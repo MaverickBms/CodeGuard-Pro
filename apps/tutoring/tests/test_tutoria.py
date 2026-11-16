@@ -91,6 +91,9 @@ class PistaTutoriaViewTests(TestCase):
         self.assertEqual(datos["numero"], 1)
         self.assertEqual(datos["restantes"], 2)
         self.assertEqual(PistaTutoria.objects.count(), 1)
+        sesion = SesionTutoria.objects.get(usuario=self.usuario, ejercicio=self.ejercicio)
+        self.assertEqual(sesion.pistas_utilizadas, 1)
+        self.assertEqual(PistaTutoria.objects.get().numero_pista, sesion.pistas_utilizadas)
 
     def test_entrega_pista_rechaza_tipo_invalido(self):
         respuesta = self.client.post(

@@ -19,6 +19,8 @@ from typing import Optional
 from urllib.parse import urlsplit
 
 from django.conf import settings
+from django.db import transaction
+from django.db.models import F
 from django.utils import timezone
 
 from apps.audit.services import registrar_evento
@@ -148,14 +150,12 @@ def _pista_estatica(ejercicio, numero_pista: int) -> str:
 
 
 def entregar_pista(usuario, ejercicio, tipo_pista: str = "orientacion") -> dict:
-    """Entrega una pista al estudiante para un ejercicio.
+    """Entrega una pista y reserva su número de forma atómica por sesión.
 
-    Respeta el límite de 3 pistas por ejercicio. Devuelve un diccionario con:
-    - exito: bool
-    - pista: str (contenido de la pista)
-    - numero: int (número de pista entregada)
-    - restantes: int (pistas que quedan)
-    - error: str (si no se pudo entregar)
+    La llamada al modelo ocurre fuera de la transacción. El contador se incrementa
+    mediante una actualización condicional dentro de una transacción de escritura;
+    así SQLite serializa las reservas y no permite superar el límite ni duplicar
+    el número de pista.
     """
     sesion = obtener_sesion(usuario, ejercicio)
 
@@ -166,15 +166,14 @@ def entregar_pista(usuario, ejercicio, tipo_pista: str = "orientacion") -> dict:
             "restantes": 0,
         }
 
-    numero_pista = sesion.pistas_utilizadas + 1
-
     contexto = (
-        f"Ejercicio: {ejercicio.titulo}\n"
-        f"Enunciado: {ejercicio.enunciado}\n"
-        f"Instrucciones: {ejercicio.instrucciones or 'Sin instrucciones adicionales.'}\n"
-        f"Lenguaje: {ejercicio.lenguaje or 'No especificado'}\n"
-        f"Nivel: {ejercicio.nivel}\n"
-        f"Pista #{numero_pista} de 3, tipo: {tipo_pista}\n"
+        f"Ejercicio: {ejercicio.titulo}\\n"
+        f"Enunciado: {ejercicio.enunciado}\\n"
+        f"Instrucciones: {ejercicio.instrucciones or 'Sin instrucciones adicionales.'}\\n"
+        f"Lenguaje: {ejercicio.lenguaje or 'No especificado'}\\n"
+        f"Nivel: {ejercicio.nivel}\\n"
+        "Entrega una pista gradual, sin revelar la solución completa. "
+        "Máximo tres pistas en total para este ejercicio.\\n"
     )
 
     if tipo_pista == "orientacion":
@@ -199,20 +198,35 @@ def entregar_pista(usuario, ejercicio, tipo_pista: str = "orientacion") -> dict:
             usuario=contexto,
         )
     except TutorNoDisponible:
-        contenido_pista = _pista_estatica(ejercicio, numero_pista)
+        contenido_pista = None
 
-    PistaTutoria.objects.create(
-        sesion=sesion,
-        tipo=tipo_pista,
-        contenido=contenido_pista,
-        numero_pista=numero_pista,
-    )
+    with transaction.atomic():
+        reservada = SesionTutoria.objects.filter(
+            pk=sesion.pk,
+            pistas_utilizadas__lt=LIMITE_PISTAS_TUTORIA,
+        ).update(
+            pistas_utilizadas=F("pistas_utilizadas") + 1,
+            ultima_pista_en=timezone.now(),
+        )
 
-    sesion.pistas_utilizadas = numero_pista
-    sesion.ultima_pista_en = timezone.now()
-    sesion.save(
-        update_fields=["pistas_utilizadas", "ultima_pista_en", "actualizada_en"]
-    )
+        if not reservada:
+            return {
+                "exito": False,
+                "error": "Límite de 3 pistas alcanzado para este ejercicio.",
+                "restantes": 0,
+            }
+
+        sesion.refresh_from_db(fields=["pistas_utilizadas"])
+        numero_pista = sesion.pistas_utilizadas
+        if contenido_pista is None:
+            contenido_pista = _pista_estatica(ejercicio, numero_pista)
+
+        PistaTutoria.objects.create(
+            sesion=sesion,
+            tipo=tipo_pista,
+            contenido=contenido_pista,
+            numero_pista=numero_pista,
+        )
 
     registrar_evento(
         "tutoria_pista_entregada",
