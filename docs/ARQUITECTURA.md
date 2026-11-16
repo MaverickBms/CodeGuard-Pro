@@ -4,8 +4,8 @@
 **Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada + Fase 3 en progreso)  
 **Estado:** Núcleo funcional verificado; motor de aprendizaje y conocimiento versionado en curso; tutor IA local en progreso (Fase 3, ADR-010)  
 **SRS de referencia:** `IEEE830(1).md` v2.0  
-**Línea base integrada:** `main` (`b82a249`)  
-**HEAD de referencia de main:** `b82a249`
+**Línea base integrada:** `main` (`26085c6`)  
+**HEAD de referencia de main (código auditado):** `26085c6`
 
 ---
 
@@ -22,7 +22,7 @@ fácil mantenimiento y continuidad offline. El funcionamiento académico local n
 servicio central; la sincronización de contenido será una capacidad complementaria, iniciada por
 el cliente y de solo descarga.
 
-**Estado actual:** el núcleo local está implementado y verificado. La Fase 2 está integrada parcialmente en `main` (`b82a249`): roadmap ASCENSO 3.1, flujo editorial, publicador, catálogo firmado v2, instalador transaccional, cliente HTTP, scheduler Electron y empaquetado. El propietario confirmó 138 pruebas OK, build PyInstaller, smoke test del modo `--sync-knowledge` y generación del AppImage Linux. El smoke test no demuestra el arranque normal de Waitress ni la navegación GUI. La aceptación visual y funcional de Electron (panel, etapas, lecciones, cierre normal y procesos/listeners) sigue pendiente. Hosting, endpoint público y claves de producción no están configurados.
+**Estado actual (auditoría 16-11-2026):** `main` integra el núcleo y bases de Fases 2–7: aprendizaje/conocimiento, tutoría Ollama, evaluaciones, gamificación, mundo/avatar y desafíos. La Fase 8 permanece en progreso. El README informa 245 pruebas en siete apps; debe reproducirse el comando completo en el HEAD actual. La aceptación de instalación limpia, GUI Electron/Waitress, funcionamiento offline E2E, backup/restore y matriz multiplataforma sigue pendiente. Hosting, endpoint público y claves de producción no están configurados. Ver `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
 
 ---
 
