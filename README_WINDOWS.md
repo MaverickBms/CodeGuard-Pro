@@ -1,74 +1,83 @@
-# CodeGuard Pro — Versión para Windows (.exe)
+# CodeGuard Pro — Windows
 
-Este paquete contiene todo lo necesario para construir y ejecutar CodeGuard Pro
-como una aplicación desktop independiente en Windows.
+**Estado de la guía:** actualizado el 16-11-2026. La compilación Windows está definida; la aceptación de instalación limpia y primer arranque continúa pendiente. No considerar el paquete listo para distribución hasta cerrar los criterios de QA.
 
-## Contenido
+## Arquitectura actual
 
-| Archivo | Descripción |
+CodeGuard Pro utiliza:
+
+- Electron como aplicación de escritorio.
+- Django 5.2 como aplicación local.
+- Waitress como servidor WSGI local.
+- SQLite en el directorio de datos del usuario.
+- PyInstaller para empaquetar el servidor Django como `CodeGuardServer.exe`.
+- electron-builder para generar instalador NSIS y paquete portable.
+
+La arquitectura anterior basada en PySide6/`desktop/main.py` ya no corresponde al producto activo.
+
+## Requisitos para construir en Windows
+
+- Windows 10/11 de 64 bits.
+- Python y pip.
+- Node.js 20+ y npm.
+- Herramientas de compilación compatibles con las dependencias instaladas.
+- Espacio libre suficiente para dependencias, archivos intermedios y artefactos.
+
+El equipo destino que instala un paquete final no debería necesitar Python, Node.js, Django ni el entorno virtual del desarrollador. Esta independencia debe confirmarse con la prueba D-1 del plan QA.
+
+## Archivos principales
+
+| Archivo | Función |
 |---|---|
-| `build_windows.bat` | Script de construcción automática para Windows |
-| `CodeGuard.spec` | Especificación de PyInstaller para empaquetado |
-| `requirements.txt` | Dependencias de Python (versiones exactas) |
-| `manage.py` | Punto de entrada de Django |
-| `config/` | Configuración de Django (settings, URLs, middleware) |
-| `apps/` | Aplicaciones Django (core, accounts, audit) |
-| `desktop/` | Lanzador de aplicación desktop (PySide6) |
-| `templates/` | Plantillas HTML de la interfaz |
-| `static/` | Recursos estáticos (CSS, JS, fuentes, Bootstrap, HTMX) |
-| `docs/` | Documentación del proyecto |
-| `IEEE830.md` | Especificación de requisitos (SRS v2.0) |
+| `build_windows.bat` | Orquesta la compilación Windows |
+| `CodeGuardServer.spec` | Configuración PyInstaller del servidor Django |
+| `package.json` | Configuración electron-builder y recursos empaquetados |
+| `electron/main.js` | Ciclo de vida Electron, servidor local, ventana y sincronización opcional |
+| `server_entry.py` | Entrada del servidor Django empaquetado |
+| `requirements.txt` | Dependencias Python fijadas |
+| `docs/INFORME_QA_INTEGRAL_2026-11-16.md` | Hallazgos, riesgos y criterios de liberación |
 
-## Requisitos del sistema (Windows)
+## Construcción
 
-- Windows 10 o Windows 11 (64 bits)
-- Python 3.12 o superior
-- Al menos 2 GB de RAM libre
-- Al menos 1 GB de espacio en disco
+Desde PowerShell o CMD, en la raíz del repositorio:
 
-## Instalación y ejecución
+```bat
+build_windows.bat
+```
 
-### Opción A: Construcción automática (recomendada)
+El script instala dependencias Python, aplica migraciones, carga ASCENSO, construye el servidor con PyInstaller y ejecuta electron-builder para generar los artefactos Windows en `dist/`.
 
-1. Descomprima este archivo en una carpeta de su elección.
-2. Haga doble clic en `build_windows.bat`.
-3. El script instalará Python, las dependencias, aplicará las migraciones y
-   generará el ejecutable `Code Guard Pro.exe` en la carpeta `dist/`.
-4. Ejecute `Code Guard Pro.exe` para iniciar la aplicación.
+**Advertencia QA:** el script actual prepara la base de datos durante el proceso de build con configuración de desarrollo, mientras la aplicación empaquetada utiliza el directorio `userData` del usuario final. Además, `server_entry.py` presupone que la base ya está inicializada. Por ello, una compilación exitosa no demuestra que una instalación limpia pueda arrancar correctamente. Este flujo debe corregirse y validarse antes de distribuir.
 
-### Opción B: Ejecución desde código fuente
+## Datos locales
 
-1. Instale Python 3.12+ desde https://www.python.org
-2. Abra una terminal en la carpeta del proyecto.
-3. Ejecute: `python -m pip install -r requirements.txt`
-4. Ejecute: `python manage.py migrate`
-5. Ejecute: `python desktop/main.py`
+La aplicación empaquetada utiliza el directorio de datos administrado por Electron (`app.getPath('userData')`) o el valor explícito de `CODEGUARD_DATA_DIR`. Allí deben permanecer la base SQLite, logs, media y clave secreta. No se deben incluir datos personales del desarrollador dentro del instalador.
 
-## Características
+## Autenticación y tutor IA
 
-- ✅ Aplicación desktop independiente (no requiere navegador web)
-- ✅ Servidor Django embebido en 127.0.0.1 (sin exposición a red)
-- ✅ Autenticación local con contraseña maestra (Argon2)
-- ✅ Frase de rescate de alta entropía (un solo uso)
-- ✅ Sesión con timeout por inactividad
-- ✅ Panel principal con navegación de módulos
-- ✅ Todos los recursos estáticos locales (sin CDN, offline-first)
-- ✅ Diseño profesional con tipografía elegante (Caladea + Liberation Sans)
-- ✅ Cabeceras de seguridad (CSP, X-Frame-Options, CSRF, etc.)
+- El modo sin autenticación está activo temporalmente (`AUTH_DISABLED = True`). No reactivar el flujo de autenticación sin la autorización del propietario.
+- El tutor IA usa Ollama local de forma opcional. El equipo debe tener Ollama y el modelo instalado para obtener respuestas generativas; el resto del producto debe seguir funcionando si no están disponibles.
+- No se debe enviar código ni datos académicos a servicios remotos en la configuración privada/offline.
+- La ejecución arbitraria de código permanece bloqueada hasta disponer de un sandbox independiente y auditado.
 
-## Seguridad
+## Estado de soporte
 
-- La aplicación escucha exclusivamente en 127.0.0.1 (localhost)
-- Nunca se expone a la red local ni a Internet
-- Las contraseñas y la frase de rescate se hashean con Argon2
-- No hay telemetría ni llamadas externas
-- CSP estricta para prevenir XSS
+| Plataforma | Artefacto configurado | Estado |
+|---|---|---|
+| Windows x64 | NSIS installer / portable | Build definido; instalación limpia y primer arranque pendientes |
+| Linux x64 | AppImage | Build definido; aceptación GUI y offline E2E pendientes |
+| macOS | No configurado | No soportado/validado todavía |
+| ARM64 | No configurado | No soportado/validado todavía |
 
-## Documentación
+## Pruebas antes de distribución
 
-Consulte la carpeta `docs/` para documentación completa:
-- `ARQUITECTURA.md` — Arquitectura del sistema
-- `SEGURIDAD.md` — Requisitos y medidas de seguridad
-- `INSTALACION.md` — Guía de instalación
-- `MANUAL_USUARIO.md` — Manual de usuario
-- `IEEE830.md` — Especificación de requisitos (SRS v2.0)
+1. Instalar en Windows limpio sin Python, Node.js ni Django.
+2. Primer arranque con directorio de datos vacío.
+3. Confirmar migraciones y carga de ASCENSO en el directorio correcto.
+4. Abrir panel, roadmap, lección, ejercicio y evaluación.
+5. Desconectar Internet y repetir los flujos esenciales.
+6. Cerrar desde el menú y comprobar que no queden procesos ni puertos.
+7. Reiniciar y verificar persistencia de progreso, preferencias e intentos.
+8. Probar backup y restauración en un perfil aislado.
+
+No declarar la distribución aceptada hasta completar estas pruebas.
