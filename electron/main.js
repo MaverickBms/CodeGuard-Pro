@@ -482,7 +482,12 @@ function createWindow() {
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
-    mainWindow.maximize(); // Iniciar en pantalla completa maximizada
+    // Forzar maximizado después de un breve delay para asegurar que se aplique
+    setTimeout(() => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.maximize();
+      }
+    }, 100);
   });
 
   mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
