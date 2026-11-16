@@ -1101,6 +1101,12 @@
       "proyecto_titulo": "Proyecto",
       "notas": [
         "Ampliación de profundidad: ruta de bases de datos"
+      ],
+      "prerrequisitos": [
+        {
+          "etapa_requerida": 9,
+          "justificacion": "El documento indica que la ampliación de bases de datos desarrolla las etapas 9 y 10 y que se debe dominar SQL antes de pasar a los modelos documentales y a la caché."
+        }
       ]
     },
     {
@@ -1694,7 +1700,13 @@
       ],
       "proyecto": "Construir una API completa con NestJS, autenticación, roles, bases de datos y documentación.",
       "proyecto_titulo": "Proyecto",
-      "notas": []
+      "notas": [],
+      "prerrequisitos": [
+        {
+          "etapa_requerida": 13,
+          "justificacion": "La secuencia oficial sitúa Internet, HTTP y APIs (etapa 13) antes de Backend II: Node.js y NestJS (etapa 15)."
+        }
+      ]
     },
     {
       "numero": 16,
@@ -3591,7 +3603,29 @@
       ],
       "proyecto": "Analizar una muestra de entrenamiento inofensiva o un binario preparado para laboratorio, estudiar su comportamiento y elaborar un informe técnico. Importante: las pruebas de explotación de memoria y el análisis de malware se realizarán en entornos aislados, sin ejecutar muestras peligrosas en tu sistema habitual.",
       "proyecto_titulo": "Proyecto",
-      "notas": []
+      "notas": [],
+      "prerrequisitos": [
+        {
+          "etapa_requerida": 3,
+          "justificacion": "La etapa 31 requiere conocimientos anteriores de programación y Java."
+        },
+        {
+          "etapa_requerida": 4,
+          "justificacion": "La etapa 31 requiere conocimientos anteriores de programación orientada a objetos."
+        },
+        {
+          "etapa_requerida": 7,
+          "justificacion": "La etapa 31 requiere conocimientos anteriores de sistemas operativos."
+        },
+        {
+          "etapa_requerida": 8,
+          "justificacion": "La etapa 31 requiere conocimientos anteriores de redes."
+        },
+        {
+          "etapa_requerida": 21,
+          "justificacion": "La etapa 31 requiere conocimientos anteriores de seguridad."
+        }
+      ]
     },
     {
       "numero": 32,

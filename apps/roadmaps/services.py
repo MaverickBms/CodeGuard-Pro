@@ -43,50 +43,6 @@ NOTA_MVP = (
     "8, 17 y 21, sin eliminar las restantes del roadmap."
 )
 
-# Dependencias explícitas documentadas en ASCENSO 3.1.
-# No se agregan dependencias inferidas para no inventar contenido.
-DEPENDENCIAS_EXPLICITAS: dict[int, list[tuple[int, str]]] = {
-    10: [
-        (
-            9,
-            "El documento indica que la ampliación de bases de datos desarrolla "
-            "las etapas 9 y 10 y que se debe dominar SQL antes de pasar a los "
-            "modelos documentales y a la caché.",
-        )
-    ],
-    15: [
-        (
-            13,
-            "La secuencia oficial sitúa Internet, HTTP y APIs (etapa 13) antes de "
-            "Backend II: Node.js y NestJS (etapa 15).",
-        )
-    ],
-    31: [
-        (
-            3,
-            "La etapa 31 requiere conocimientos anteriores de programación y Java.",
-        ),
-        (
-            4,
-            "La etapa 31 requiere conocimientos anteriores de programación orientada "
-            "a objetos.",
-        ),
-        (
-            7,
-            "La etapa 31 requiere conocimientos anteriores de sistemas operativos.",
-        ),
-        (
-            8,
-            "La etapa 31 requiere conocimientos anteriores de redes.",
-        ),
-        (
-            21,
-            "La etapa 31 requiere conocimientos anteriores de seguridad.",
-        ),
-    ],
-}
-
-
 def _fecha(valor: str | None) -> date | None:
     if not valor:
         return None
@@ -183,11 +139,16 @@ def cargar_ascenso(ruta: str | Path | None = None, *, recrear: bool = False) -> 
 
     # Las dependencias se reconstruyen para mantener exactitud con la fuente.
     Prerrequisito.objects.filter(etapa__roadmap=roadmap).delete()
-    for numero, dependencias in DEPENDENCIAS_EXPLICITAS.items():
+    for datos_etapa in datos.get("etapas", []):
+        numero = int(datos_etapa["numero"])
         etapa = etapas_por_numero.get(numero)
         if not etapa:
             continue
-        for numero_requerido, justificacion in dependencias:
+        for prereq in datos_etapa.get("prerrequisitos", []):
+            numero_requerido = prereq.get("etapa_requerida")
+            justificacion = prereq.get("justificacion", "")
+            if numero_requerido is None:
+                continue
             requerida = etapas_por_numero.get(numero_requerido)
             if not requerida:
                 continue
