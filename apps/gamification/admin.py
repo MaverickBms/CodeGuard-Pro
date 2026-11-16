@@ -6,6 +6,8 @@ from .models import (
     ItemInventario,
     Logro,
     LogroObtenido,
+    Mision,
+    MisionProgreso,
     PerfilGamificacion,
     PersonajeGuia,
     TransaccionMoneda,
@@ -70,3 +72,17 @@ class AvatarPerfilAdmin(admin.ModelAdmin):
 class DecisionEvolutivaAdmin(admin.ModelAdmin):
     list_display = ("avatar", "clave", "valor", "registrada_en")
     search_fields = ("clave", "valor", "avatar__usuario__username")
+
+
+@admin.register(Mision)
+class MisionAdmin(admin.ModelAdmin):
+    list_display = ("clave", "nombre", "tipo", "objetivo", "recompensa_monedas", "activo")
+    list_filter = ("tipo", "activo")
+    search_fields = ("clave", "nombre")
+
+
+@admin.register(MisionProgreso)
+class MisionProgresoAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "mision", "progreso", "completada", "completada_en")
+    list_filter = ("completada",)
+    search_fields = ("usuario__username", "mision__nombre")

@@ -141,6 +141,67 @@ class TransaccionMoneda(models.Model):
         return f"{self.get_tipo_display()} {self.monto} — {self.usuario}"
 
 
+class Mision(models.Model):
+    """Misión/motivación periódica (Fase 5)."""
+
+    TIPOS = [
+        ("diaria", "Diaria"),
+        ("semanal", "Semanal"),
+        ("hito", "Hito"),
+    ]
+
+    clave = models.SlugField(max_length=80, unique=True, verbose_name="clave")
+    nombre = models.CharField(max_length=120, verbose_name="nombre")
+    descripcion = models.TextField(blank=True, verbose_name="descripción")
+    tipo = models.CharField(max_length=20, choices=TIPOS, default="hito", verbose_name="tipo")
+    objetivo = models.PositiveIntegerField(default=1, verbose_name="objetivo (contador)")
+    condicion = models.CharField(max_length=120, blank=True, verbose_name="condición/evento")
+    recompensa_monedas = models.PositiveIntegerField(default=0, verbose_name="recompensa en monedas")
+    activo = models.BooleanField(default=True, verbose_name="activo")
+
+    class Meta:
+        verbose_name = "misión"
+        verbose_name_plural = "misiones"
+        ordering = ["tipo", "nombre"]
+
+    def __str__(self) -> str:
+        return self.nombre
+
+
+class MisionProgreso(models.Model):
+    """Progreso de una misión por usuario (idempotente al completar)."""
+
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="misiones_progreso",
+        verbose_name="usuario",
+    )
+    mision = models.ForeignKey(
+        Mision,
+        on_delete=models.CASCADE,
+        related_name="progresos",
+        verbose_name="misión",
+    )
+    progreso = models.PositiveIntegerField(default=0, verbose_name="progreso")
+    completada = models.BooleanField(default=False, verbose_name="completada")
+    completada_en = models.DateTimeField(null=True, blank=True, verbose_name="completada en")
+    actualizado_en = models.DateTimeField(auto_now=True, verbose_name="actualizado en")
+
+    class Meta:
+        verbose_name = "progreso de misión"
+        verbose_name_plural = "progresos de misión"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["usuario", "mision"],
+                name="mision_unica_por_usuario",
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.mision} — {self.usuario} ({self.progreso}/{self.mision.objetivo})"
+
+
 class ItemInventario(models.Model):
     """Objeto de inventario otorgado al usuario."""
 

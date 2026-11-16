@@ -125,6 +125,33 @@
   </section>
 
   <section class="glass-card cg-card">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Misiones y rachas</h3>
+    {% if misiones %}
+      <ul style="list-style:none; padding:0; margin:0;">
+        {% for m in misiones %}
+          <li style="padding:.5rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
+            <div style="display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;">
+              <strong>{{ m.nombre }}</strong>
+              {% if m.progreso_usuario and m.progreso_usuario.completada %}
+                <span class="cg-badge cg-badge-success">Completada</span>
+              {% else %}
+                <span class="cg-badge cg-badge-muted">En progreso</span>
+              {% endif %}
+            </div>
+            <div class="muted" style="font-size:.9rem;">{{ m.descripcion }}</div>
+            <div class="muted" style="font-size:.85rem;">
+              Progreso: {% if m.progreso_usuario %}{{ m.progreso_usuario.progreso }}{% else %}0{% endif %}/{{ m.objetivo }}
+              {% if m.recompensa_monedas %}· Recompensa: {{ m.recompensa_monedas }} monedas{% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">No hay misiones activas.</p>
+    {% endif %}
+  </section>
+
+  <section class="glass-card cg-card">
     <h3 style="margin-top:0;"><i class="fa-solid fa-receipt" aria-hidden="true"></i> Historial de monedas</h3>
     {% if transacciones %}
       <ul style="list-style:none; padding:0; margin:0;">

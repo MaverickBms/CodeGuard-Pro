@@ -114,3 +114,26 @@ class Fase6BaseTests(TestCase):
         personaje = PersonajeGuia.objects.create(zona=zona, nombre="Guía", rol="Mentor")
         self.assertEqual(str(zona), "Zona 1 (Etapa 1)")
         self.assertIn("Guía", str(personaje))
+
+
+from apps.gamification.models import Mision, MisionProgreso
+from apps.gamification.services import actualizar_racha, evaluar_misiones_academicas
+
+
+class MisionesRachaTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="racha-user", password="ClaveSegura123!"
+        )
+
+    def test_actualizar_racha_incrementa(self):
+        perfil = actualizar_racha(self.usuario)
+        self.assertEqual(perfil.racha_dias, 1)
+        self.assertEqual(perfil.mejor_racha_dias, 1)
+
+    def test_mision_modulo_completado(self):
+        evaluar_misiones_academicas(self.usuario, "modulo_completado")
+        mision = Mision.objects.get(clave="completar-modulo")
+        mp = MisionProgreso.objects.get(usuario=self.usuario, mision=mision)
+        self.assertTrue(mp.completada)
+        self.assertEqual(mp.progreso, 1)

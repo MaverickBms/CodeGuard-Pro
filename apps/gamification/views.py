@@ -10,8 +10,8 @@ from apps.accounts.identity import get_usuario_actual, requiere_acceso
 from apps.roadmaps.models import Etapa
 from apps.roadmaps.services import etapas_completadas, roadmap_activo
 
-from .models import ItemInventario, Logro, LogroObtenido, TransaccionMoneda, ZonaMundo
-from .services import obtener_avatar, obtener_perfil
+from .models import ItemInventario, Logro, LogroObtenido, Mision, MisionProgreso, TransaccionMoneda, ZonaMundo
+from .services import asegurar_misiones_defecto, obtener_avatar, obtener_perfil
 
 
 @requiere_acceso
@@ -28,8 +28,10 @@ def perfil(request):
     inventario = []
     zonas_mundo = []
     completadas_nums = set()
+    misiones = []
 
     if usuario is not None:
+        asegurar_misiones_defecto()
         logros_obtenidos = list(
             LogroObtenido.objects.filter(usuario=usuario)
             .select_related("logro")
@@ -43,6 +45,13 @@ def perfil(request):
         inventario = list(
             ItemInventario.objects.filter(usuario=usuario).order_by("-obtenido_en")[:20]
         )
+        misiones = list(Mision.objects.filter(activo=True).order_by("tipo", "nombre"))
+        progresos_m = {
+            mp.mision_id: mp
+            for mp in MisionProgreso.objects.filter(usuario=usuario, mision__in=misiones)
+        }
+        for m in misiones:
+            m.progreso_usuario = progresos_m.get(m.id)
 
         roadmap = roadmap_activo()
         if roadmap is not None:
@@ -91,6 +100,7 @@ def perfil(request):
             "transacciones": transacciones,
             "inventario": inventario,
             "zonas_mundo": zonas_mundo,
+            "misiones": misiones,
         },
     )
 
