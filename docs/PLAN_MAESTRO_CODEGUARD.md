@@ -22,6 +22,8 @@ Este archivo es la referencia central para continuar CodeGuard Pro de forma orde
 
 **Regla principal:** antes de implementar una tarea, la IA o desarrollador debe leer este documento, inspeccionar el estado real del repositorio y actualizar el estado de la fase correspondiente. Este plan orienta el trabajo, pero no sustituye la inspección del código.
 
+**Estrategia financiera vigente:** el desarrollo inicial se realizará sin inversión en infraestructura externa. La aplicación local debe completarse y validarse antes de evaluar hosting o servicios remotos. Consultar `docs/ESTRATEGIA_SIN_INVERSION_INICIAL.md` y ADR-005. Esta decisión difiere el despliegue remoto de ADR-004, pero no cancela su arquitectura futura.
+
 ## 2. Visión del producto
 
 CodeGuard Pro es una plataforma educativa de programación, gamificada y orientada al aprendizaje progresivo. Debe permitir que una persona aprenda fundamentos y tecnologías de programación mediante:
@@ -188,9 +190,9 @@ Implementado en `main` y ampliado mediante incrementos integrados:
 
 Validación registrada:
 
-- Historial de resultados reportados por el propietario: 93, 119, 136 y finalmente **138 pruebas OK** el 12-11-2026, en distintas líneas base. La cifra de 138 debe reproducirse en el commit actual antes de volver a declararla validada.
-- El alcance posterior incluye migraciones 0012–0016, verificador Ed25519/ZIP, publicador local, catálogo firmado v2, instalador transaccional, rollback, cliente HTTP pull-only y scheduler Electron.
-- Las confirmaciones de pruebas y empaquetado proceden del entorno local del propietario; no equivalen a una ejecución independiente en CI.
+- Historial de resultados reportados: 93, 119, 136, 138 y finalmente **197 pruebas OK** el 15-11-2026 en `chore/estabilizacion-pre-fase-2`.
+- En esa validación se informó Python 3.14.10 (`.venv`), `pip check` limpio, `manage.py check` sin incidencias y `makemigrations --check --dry-run` sin cambios.
+- El alcance probado en esa ejecución incluyó `apps.core`, `apps.accounts`, `apps.audit` y `apps.roadmaps`. Es una validación local reportada por el propietario, no una ejecución independiente de CI ni una aceptación GUI.
 
 Pendiente de la Fase 2:
 
