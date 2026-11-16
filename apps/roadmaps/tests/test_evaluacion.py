@@ -563,3 +563,31 @@ class ExamenEtapaHomologacionTests(TestCase):
                 usuario=self.usuario, etapa=etapa2, modulo__isnull=True, leccion__isnull=True, estado="completado"
             ).exists()
         )
+
+    def test_examen_aprobado_con_criterio_proyecto_obligatorio_no_completa_etapa(self):
+        from apps.roadmaps.models import CriterioFinalizacion, Progreso
+
+        CriterioFinalizacion.objects.create(
+            etapa=self.etapa,
+            titulo="Proyecto de la etapa",
+            tipo="proyecto",
+            obligatorio=True,
+            orden=1,
+        )
+        resultado = evaluar_quiz(self.usuario, self.examen, {str(self.p1.id): "ok"})
+        self.assertTrue(resultado.aprobado)
+
+        self.assertFalse(
+            Progreso.objects.filter(
+                usuario=self.usuario,
+                etapa=self.etapa,
+                modulo__isnull=True,
+                leccion__isnull=True,
+                estado="completado",
+            ).exists()
+        )
+        self.assertTrue(
+            AuditLog.objects.filter(
+                evento="etapa_homologacion_pendiente_criterios", usuario=self.usuario
+            ).exists()
+        )

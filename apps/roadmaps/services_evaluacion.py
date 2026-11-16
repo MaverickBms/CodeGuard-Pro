@@ -304,14 +304,58 @@ def actualizar_progreso_por_evaluacion(usuario, quiz: Quiz, resultado: Resultado
     return progreso_modulo
 
 
+def _estado_criterios_etapa_por_evaluacion(etapa, quiz: Quiz, resultado: ResultadoEvaluacion) -> dict:
+    """Evalúa criterios de finalización respecto a una evaluación aprobada.
+
+    Reglas explícitas:
+    - Criterios obligatorios de tipo 'evaluacion' se consideran satisfechos por
+      un examen/quiz de etapa aprobado y sin revisión pendiente.
+    - Criterios obligatorios de tipo proyecto/evidencia/manual requieren
+      verificación adicional no automatizada en esta fase y permanecen pendientes.
+    """
+    criterios = list(etapa.criterios.all())
+    evaluacion_aprobada = bool(
+        resultado.aprobado
+        and not resultado.requiere_revision
+        and resultado.puntuacion is not None
+        and resultado.puntuacion >= quiz.umbral_aprobacion
+    )
+
+    satisfechos = []
+    pendientes_obligatorios = []
+    for criterio in criterios:
+        if criterio.tipo == "evaluacion":
+            if evaluacion_aprobada and criterio.obligatorio:
+                satisfechos.append(criterio)
+            elif evaluacion_aprobada and not criterio.obligatorio:
+                satisfechos.append(criterio)
+            elif criterio.obligatorio:
+                pendientes_obligatorios.append(criterio)
+        else:
+            # proyecto, evidencia, manual: requieren evidencia/verificación distinta
+            if criterio.obligatorio:
+                pendientes_obligatorios.append(criterio)
+
+    return {
+        "evaluacion_aprobada": evaluacion_aprobada,
+        "criterios_totales": len(criterios),
+        "satisfechos": satisfechos,
+        "pendientes_obligatorios": pendientes_obligatorios,
+        "puede_aprobar_etapa": evaluacion_aprobada and len(pendientes_obligatorios) == 0,
+    }
+
+
 def aprobar_etapa_por_evaluacion(usuario, etapa, quiz: Quiz, resultado: ResultadoEvaluacion) -> Progreso | None:
     """Aprueba u homologa una etapa cuando se cumple una evaluación verificable.
 
-    Reglas aplicadas:
+    Reglas aplicadas (explícitas y auditables):
     - El resultado debe estar aprobado, sin revisión pendiente y alcanzar el
       umbral del quiz/examen.
     - Los prerrequisitos de la etapa deben estar completados.
-    - La aprobación se registra como transición académica auditada (no manual).
+    - Los criterios obligatorios de tipo 'evaluacion' pueden satisfacerse con
+      examen aprobado; criterios obligatorios de proyecto/evidencia/manual
+      permanecen pendientes y bloquean la aprobación automática de etapa.
+    - La transición de progreso de etapa se registra en auditoría.
     """
     from django.utils import timezone
 
@@ -330,8 +374,8 @@ def aprobar_etapa_por_evaluacion(usuario, etapa, quiz: Quiz, resultado: Resultad
     if etapa.esta_bloqueada_para(completadas):
         return None
 
-    # Criterios de evaluación obligatorios: si existen exámenes publicados de la
-    # etapa, se requiere al menos un resultado aprobado del examen presentado.
+    estado_criterios = _estado_criterios_etapa_por_evaluacion(etapa, quiz, resultado)
+
     progreso, _ = Progreso.objects.get_or_create(
         usuario=usuario,
         etapa=etapa,
@@ -340,6 +384,26 @@ def aprobar_etapa_por_evaluacion(usuario, etapa, quiz: Quiz, resultado: Resultad
         actividad=None,
         defaults={"estado": "no_iniciado", "porcentaje": 0},
     )
+
+    if not estado_criterios["puede_aprobar_etapa"]:
+        pendientes = [
+            f"{c.get_tipo_display()}: {c.titulo}"
+            for c in estado_criterios["pendientes_obligatorios"]
+        ]
+        if progreso.estado == "no_iniciado":
+            progreso.estado = "en_progreso"
+            progreso.save(update_fields=["estado", "fecha_actualizacion"])
+        registrar_evento(
+            "etapa_homologacion_pendiente_criterios",
+            usuario=usuario,
+            descripcion=(
+                f"Etapa {etapa.numero} ({etapa.titulo}) con evaluación aprobada "
+                f"(quiz/examen {quiz.id} v{quiz.version}, resultado {resultado.id}, "
+                f"{resultado.puntuacion}% >= {quiz.umbral_aprobacion}%), pero pendiente "
+                f"de criterios obligatorios: {', '.join(pendientes) if pendientes else 'sin detalle'}."
+            ),
+        )
+        return progreso
 
     if progreso.estado != "completado":
         progreso.estado = "completado"
@@ -354,7 +418,9 @@ def aprobar_etapa_por_evaluacion(usuario, etapa, quiz: Quiz, resultado: Resultad
             descripcion=(
                 f"Etapa {etapa.numero} ({etapa.titulo}) aprobada/homologada por evaluación; "
                 f"quiz/examen {quiz.id} (v{quiz.version}); resultado {resultado.id}; "
-                f"puntuación {resultado.puntuacion}% (umbral {quiz.umbral_aprobacion}%)."
+                f"puntuación {resultado.puntuacion}% (umbral {quiz.umbral_aprobacion}%). "
+                f"Criterios obligatorios satisfechos: {len(estado_criterios['satisfechos'])}; "
+                f"pendientes: 0."
             ),
         )
     return progreso
