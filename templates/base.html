@@ -60,6 +60,10 @@
           <span class="nav-icon"><i class="fa-solid fa-map"></i></span>
           <span class="nav-label">Roadmap ASCENSO</span>
         </button>
+        <button class="nav-item cg-nav-item{% if request.resolver_match.app_name == 'gamification' %} cg-nav-active{% endif %}" data-url="{% url 'gamification:perfil' %}">
+          <span class="nav-icon"><i class="fa-solid fa-trophy"></i></span>
+          <span class="nav-label">Gamificación</span>
+        </button>
         <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
           <span class="nav-icon"><i class="fa-solid fa-medal"></i></span>
           <span class="nav-label">Competencias</span>

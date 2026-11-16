@@ -297,6 +297,18 @@ def actualizar_progreso_por_evaluacion(usuario, quiz: Quiz, resultado: Resultado
                     f"quiz {quiz.id} (v{quiz.version}); resultado {resultado.id}."
                 ),
             )
+            try:
+                from apps.gamification.services import recompensar_evento_academico
+
+                recompensar_evento_academico(
+                    usuario,
+                    "modulo_completado",
+                    modulo.id,
+                    concepto=f"Módulo completado: {modulo.titulo}",
+                    monto=15,
+                )
+            except Exception:
+                pass
 
     if quiz.etapa_id is not None and quiz.tipo == Quiz.TIPO_EXAMEN:
         aprobar_etapa_por_evaluacion(usuario, quiz.etapa, quiz, resultado)
@@ -417,6 +429,18 @@ def _intentar_completar_etapa(usuario, etapa, *, evaluacion_aprobada: bool = Fal
                 f"({len(estado_criterios['satisfechos'])}) y prerrequisitos cumplidos. {contexto}".strip()
             ),
         )
+        try:
+            from apps.gamification.services import recompensar_evento_academico
+
+            recompensar_evento_academico(
+                usuario,
+                "etapa_completada",
+                etapa.id,
+                concepto=f"Etapa completada: {etapa.numero} — {etapa.titulo}",
+                monto=50,
+            )
+        except Exception:
+            pass
     return progreso
 
 

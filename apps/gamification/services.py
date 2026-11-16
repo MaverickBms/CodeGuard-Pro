@@ -65,3 +65,15 @@ def otorgar_logro(usuario, logro: Logro, origen: str = "") -> tuple[LogroObtenid
             referencia=f"logro:{logro.id}:usuario:{usuario.id}",
         )
     return obtenido, creado
+
+
+@transaction.atomic
+def recompensar_evento_academico(usuario, evento: str, objeto_id: int, concepto: str, monto: int = 10) -> TransaccionMoneda | None:
+    """Otorga monedas por un evento académico de forma idempotente.
+
+    No altera resultados académicos ni aprobaciones.
+    """
+    if usuario is None or not getattr(usuario, "is_authenticated", False):
+        return None
+    referencia = f"evento:{evento}:{objeto_id}:usuario:{usuario.id}"
+    return acreditar_monedas(usuario, int(monto), concepto, referencia=referencia)

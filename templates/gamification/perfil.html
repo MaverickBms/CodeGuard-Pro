@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Gamificación — Perfil{% endblock %}
+{% block page_title %}Gamificación{% endblock %}
+{% block page_subtitle %}Perfil, recompensas e historial{% endblock %}
+
+{% block content %}
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <h2 style="margin-top:0;"><i class="fa-solid fa-coins" aria-hidden="true"></i> Perfil de recompensas</h2>
+  {% if perfil_gamificacion %}
+    <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:.75rem;">
+      <div class="cg-card" style="padding:1rem; min-width:180px;">
+        <div class="muted">Saldo de monedas</div>
+        <div style="font-size:1.6rem; font-weight:700;">{{ perfil_gamificacion.saldo_monedas }}</div>
+      </div>
+      <div class="cg-card" style="padding:1rem; min-width:180px;">
+        <div class="muted">Racha actual</div>
+        <div style="font-size:1.6rem; font-weight:700;">{{ perfil_gamificacion.racha_dias }} días</div>
+      </div>
+      <div class="cg-card" style="padding:1rem; min-width:180px;">
+        <div class="muted">Mejor racha</div>
+        <div style="font-size:1.6rem; font-weight:700;">{{ perfil_gamificacion.mejor_racha_dias }} días</div>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:.75rem;">Las recompensas son motivacionales y no alteran resultados ni aprobaciones académicas.</p>
+  {% else %}
+    <p class="muted">No hay un perfil de gamificación disponible.</p>
+  {% endif %}
+</section>
+
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem;">
+  <section class="glass-card cg-card">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-trophy" aria-hidden="true"></i> Logros obtenidos</h3>
+    {% if logros_obtenidos %}
+      <ul style="list-style:none; padding:0; margin:0;">
+        {% for lo in logros_obtenidos %}
+          <li style="padding:.5rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
+            <strong>{{ lo.logro.nombre }}</strong>
+            <div class="muted" style="font-size:.9rem;">{{ lo.logro.descripcion|default:"Logro obtenido." }}</div>
+            <div class="muted" style="font-size:.85rem;">{{ lo.obtenido_en|date:"Y-m-d H:i" }} · {{ lo.origen|default:"evento" }}</div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">Aún no hay logros registrados. Completa módulos y etapas para obtener recompensas.</p>
+    {% endif %}
+  </section>
+
+  <section class="glass-card cg-card">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-receipt" aria-hidden="true"></i> Historial de monedas</h3>
+    {% if transacciones %}
+      <ul style="list-style:none; padding:0; margin:0;">
+        {% for tx in transacciones %}
+          <li style="padding:.5rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
+            <div><strong>{% if tx.tipo == "credito" %}+{% else %}-{% endif %}{{ tx.monto }}</strong> — {{ tx.concepto }}</div>
+            <div class="muted" style="font-size:.85rem;">Saldo: {{ tx.saldo_resultante }} · {{ tx.creada_en|date:"Y-m-d H:i" }}</div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">Sin transacciones registradas.</p>
+    {% endif %}
+  </section>
+
+  <section class="glass-card cg-card">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-box-open" aria-hidden="true"></i> Inventario</h3>
+    {% if inventario %}
+      <ul style="list-style:none; padding:0; margin:0;">
+        {% for item in inventario %}
+          <li style="padding:.5rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
+            <strong>{{ item.nombre }}</strong>
+            <span class="cg-badge">{{ item.get_rareza_display }}</span>
+            <div class="muted" style="font-size:.85rem;">x{{ item.cantidad }} · {{ item.origen|default:"recompensa" }}</div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">Inventario vacío. Los ítems se otorgarán en futuras progresiones y desafíos.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
