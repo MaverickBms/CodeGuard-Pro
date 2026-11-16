@@ -22,6 +22,8 @@ Este archivo es la referencia central para continuar CodeGuard Pro de forma orde
 
 **Regla principal:** antes de implementar una tarea, la IA o desarrollador debe leer este documento, inspeccionar el estado real del repositorio y actualizar el estado de la fase correspondiente. Este plan orienta el trabajo, pero no sustituye la inspección del código.
 
+**Estrategia financiera vigente:** el desarrollo inicial se realizará sin inversión en infraestructura externa. La aplicación local debe completarse y validarse antes de evaluar hosting o servicios remotos. Consultar `docs/ESTRATEGIA_SIN_INVERSION_INICIAL.md` y ADR-005. Esta decisión difiere el despliegue remoto de ADR-004, pero no cancela su arquitectura futura.
+
 ## 2. Visión del producto
 
 CodeGuard Pro es una plataforma educativa de programación, gamificada y orientada al aprendizaje progresivo. Debe permitir que una persona aprenda fundamentos y tecnologías de programación mediante:
