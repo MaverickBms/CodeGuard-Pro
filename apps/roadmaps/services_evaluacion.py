@@ -15,7 +15,7 @@ from django.db import transaction
 
 from apps.audit.services import registrar_evento
 
-from .models import Progreso
+from .models import CumplimientoCriterio, CriterioFinalizacion, Progreso
 from .models_evaluacion import Pregunta, Quiz, ResultadoEvaluacion, ResultadoPregunta
 
 
@@ -304,78 +304,74 @@ def actualizar_progreso_por_evaluacion(usuario, quiz: Quiz, resultado: Resultado
     return progreso_modulo
 
 
-def _estado_criterios_etapa_por_evaluacion(etapa, quiz: Quiz, resultado: ResultadoEvaluacion) -> dict:
-    """Evalúa criterios de finalización respecto a una evaluación aprobada.
+def _estado_criterios_etapa(usuario, etapa, *, evaluacion_aprobada: bool = False) -> dict:
+    """Evalúa criterios de finalización de una etapa para un usuario.
 
-    Reglas explícitas:
-    - Criterios obligatorios de tipo 'evaluacion' se consideran satisfechos por
-      un examen/quiz de etapa aprobado y sin revisión pendiente.
-    - Criterios obligatorios de tipo proyecto/evidencia/manual requieren
-      verificación adicional no automatizada en esta fase y permanecen pendientes.
+    Reglas explícitas y auditables:
+    - Un criterio se considera satisfecho si existe `CumplimientoCriterio`
+      satisfecho para (usuario, criterio).
+    - En contexto de evaluación aprobada, los criterios obligatorios/opcionales
+      de tipo 'evaluacion' pueden considerarse satisfechos si aún no tienen
+      registro explícito (y se registran por el flujo de evaluación).
+    - Criterios obligatorios no satisfechos bloquean la aprobación automática.
     """
     criterios = list(etapa.criterios.all())
-    evaluacion_aprobada = bool(
-        resultado.aprobado
-        and not resultado.requiere_revision
-        and resultado.puntuacion is not None
-        and resultado.puntuacion >= quiz.umbral_aprobacion
-    )
+    cumplimientos = {
+        c.criterio_id: c
+        for c in CumplimientoCriterio.objects.filter(usuario=usuario, criterio__etapa=etapa)
+    }
 
     satisfechos = []
     pendientes_obligatorios = []
     for criterio in criterios:
-        if criterio.tipo == "evaluacion":
-            if evaluacion_aprobada and criterio.obligatorio:
-                satisfechos.append(criterio)
-            elif evaluacion_aprobada and not criterio.obligatorio:
-                satisfechos.append(criterio)
-            elif criterio.obligatorio:
-                pendientes_obligatorios.append(criterio)
-        else:
-            # proyecto, evidencia, manual: requieren evidencia/verificación distinta
-            if criterio.obligatorio:
-                pendientes_obligatorios.append(criterio)
+        cumplimiento = cumplimientos.get(criterio.id)
+        esta_satisfecho = bool(cumplimiento and cumplimiento.satisfecho)
+        if not esta_satisfecho and evaluacion_aprobada and criterio.tipo == "evaluacion":
+            esta_satisfecho = True
+
+        if esta_satisfecho:
+            satisfechos.append(criterio)
+        elif criterio.obligatorio:
+            pendientes_obligatorios.append(criterio)
 
     return {
-        "evaluacion_aprobada": evaluacion_aprobada,
         "criterios_totales": len(criterios),
         "satisfechos": satisfechos,
         "pendientes_obligatorios": pendientes_obligatorios,
-        "puede_aprobar_etapa": evaluacion_aprobada and len(pendientes_obligatorios) == 0,
+        "puede_aprobar_etapa": len(pendientes_obligatorios) == 0,
     }
 
 
-def aprobar_etapa_por_evaluacion(usuario, etapa, quiz: Quiz, resultado: ResultadoEvaluacion) -> Progreso | None:
-    """Aprueba u homologa una etapa cuando se cumple una evaluación verificable.
+def registrar_cumplimientos_evaluacion(usuario, etapa, quiz: Quiz, resultado: ResultadoEvaluacion) -> None:
+    """Registra cumplimiento de criterios de tipo evaluación tras examen aprobado."""
+    if not (resultado.aprobado and not resultado.requiere_revision):
+        return
+    for criterio in etapa.criterios.filter(tipo="evaluacion"):
+        CumplimientoCriterio.objects.update_or_create(
+            usuario=usuario,
+            criterio=criterio,
+            defaults={
+                "satisfecho": True,
+                "origen": "evaluacion",
+                "evidencia": f"Examen/quiz aprobado: {quiz.nombre}",
+                "referencia": f"quiz:{quiz.id}:resultado:{resultado.id}",
+            },
+        )
 
-    Reglas aplicadas (explícitas y auditables):
-    - El resultado debe estar aprobado, sin revisión pendiente y alcanzar el
-      umbral del quiz/examen.
-    - Los prerrequisitos de la etapa deben estar completados.
-    - Los criterios obligatorios de tipo 'evaluacion' pueden satisfacerse con
-      examen aprobado; criterios obligatorios de proyecto/evidencia/manual
-      permanecen pendientes y bloquean la aprobación automática de etapa.
-    - La transición de progreso de etapa se registra en auditoría.
-    """
+
+def _intentar_completar_etapa(usuario, etapa, *, evaluacion_aprobada: bool = False, origen_evento: str = "", contexto: str = "") -> Progreso | None:
+    """Completa la etapa si prerequisitos y criterios obligatorios están satisfechos."""
     from django.utils import timezone
 
     from .models import Progreso
     from .services import etapas_completadas
-
-    if usuario is None or not getattr(usuario, "is_authenticated", False):
-        return None
-    if not resultado.aprobado or resultado.requiere_revision:
-        return None
-    if resultado.puntuacion is None or resultado.puntuacion < quiz.umbral_aprobacion:
-        return None
 
     roadmap = etapa.roadmap
     completadas = etapas_completadas(usuario, roadmap)
     if etapa.esta_bloqueada_para(completadas):
         return None
 
-    estado_criterios = _estado_criterios_etapa_por_evaluacion(etapa, quiz, resultado)
-
+    estado_criterios = _estado_criterios_etapa(usuario, etapa, evaluacion_aprobada=evaluacion_aprobada)
     progreso, _ = Progreso.objects.get_or_create(
         usuario=usuario,
         etapa=etapa,
@@ -392,17 +388,18 @@ def aprobar_etapa_por_evaluacion(usuario, etapa, quiz: Quiz, resultado: Resultad
         ]
         if progreso.estado == "no_iniciado":
             progreso.estado = "en_progreso"
-            progreso.save(update_fields=["estado", "fecha_actualizacion"])
-        registrar_evento(
-            "etapa_homologacion_pendiente_criterios",
-            usuario=usuario,
-            descripcion=(
-                f"Etapa {etapa.numero} ({etapa.titulo}) con evaluación aprobada "
-                f"(quiz/examen {quiz.id} v{quiz.version}, resultado {resultado.id}, "
-                f"{resultado.puntuacion}% >= {quiz.umbral_aprobacion}%), pero pendiente "
-                f"de criterios obligatorios: {', '.join(pendientes) if pendientes else 'sin detalle'}."
-            ),
-        )
+            progreso.porcentaje = max(progreso.porcentaje, 0)
+            progreso.save(update_fields=["estado", "porcentaje", "fecha_actualizacion"])
+        if origen_evento:
+            registrar_evento(
+                origen_evento,
+                usuario=usuario,
+                descripcion=(
+                    f"Etapa {etapa.numero} ({etapa.titulo}) con evidencia parcial; "
+                    f"pendiente de criterios obligatorios: {', '.join(pendientes) if pendientes else 'sin detalle'}. "
+                    f"{contexto}".strip()
+                ),
+            )
         return progreso
 
     if progreso.estado != "completado":
@@ -413,14 +410,81 @@ def aprobar_etapa_por_evaluacion(usuario, etapa, quiz: Quiz, resultado: Resultad
             update_fields=["estado", "porcentaje", "fecha_completado", "fecha_actualizacion"]
         )
         registrar_evento(
-            "etapa_aprobada_por_evaluacion",
+            "etapa_completada_por_criterios",
             usuario=usuario,
             descripcion=(
-                f"Etapa {etapa.numero} ({etapa.titulo}) aprobada/homologada por evaluación; "
-                f"quiz/examen {quiz.id} (v{quiz.version}); resultado {resultado.id}; "
-                f"puntuación {resultado.puntuacion}% (umbral {quiz.umbral_aprobacion}%). "
-                f"Criterios obligatorios satisfechos: {len(estado_criterios['satisfechos'])}; "
-                f"pendientes: 0."
+                f"Etapa {etapa.numero} ({etapa.titulo}) completada: criterios obligatorios satisfechos "
+                f"({len(estado_criterios['satisfechos'])}) y prerrequisitos cumplidos. {contexto}".strip()
             ),
         )
     return progreso
+
+
+def aprobar_etapa_por_evaluacion(usuario, etapa, quiz: Quiz, resultado: ResultadoEvaluacion) -> Progreso | None:
+    """Aprueba u homologa una etapa cuando se cumple una evaluación verificable.
+
+    Reglas explícitas y auditables:
+    - Requiere resultado aprobado, sin revisión pendiente y umbral cumplido.
+    - Requiere prerrequisitos completados.
+    - Registra cumplimientos de criterios tipo 'evaluacion'.
+    - Completa la etapa solo si no quedan criterios obligatorios pendientes.
+    """
+    if usuario is None or not getattr(usuario, "is_authenticated", False):
+        return None
+    if not resultado.aprobado or resultado.requiere_revision:
+        return None
+    if resultado.puntuacion is None or resultado.puntuacion < quiz.umbral_aprobacion:
+        return None
+
+    registrar_cumplimientos_evaluacion(usuario, etapa, quiz, resultado)
+    contexto = (
+        f"Evaluación aprobada: quiz/examen {quiz.id} (v{quiz.version}), "
+        f"resultado {resultado.id}, {resultado.puntuacion}% >= {quiz.umbral_aprobacion}%."
+    )
+    return _intentar_completar_etapa(
+        usuario,
+        etapa,
+        evaluacion_aprobada=True,
+        origen_evento="etapa_homologacion_pendiente_criterios",
+        contexto=contexto,
+    )
+
+
+@transaction.atomic
+def registrar_cumplimiento_criterio(
+    usuario,
+    criterio: CriterioFinalizacion,
+    *,
+    evidencia: str = "",
+    origen: str = "manual",
+    referencia: str = "",
+) -> CumplimientoCriterio:
+    """Registra evidencia de cumplimiento de un criterio y reevalúa la etapa."""
+    if usuario is None or not getattr(usuario, "is_authenticated", False):
+        raise ValidationError("Se requiere un usuario autenticado.")
+
+    cumplimiento, _ = CumplimientoCriterio.objects.update_or_create(
+        usuario=usuario,
+        criterio=criterio,
+        defaults={
+            "satisfecho": True,
+            "origen": origen,
+            "evidencia": evidencia or "",
+            "referencia": referencia or "",
+        },
+    )
+    registrar_evento(
+        "criterio_finalizacion_cumplido",
+        usuario=usuario,
+        descripcion=(
+            f"Criterio cumplido: etapa {criterio.etapa.numero}, "
+            f"'{criterio.titulo}' ({criterio.get_tipo_display()}); origen={origen}."
+        ),
+    )
+    _intentar_completar_etapa(
+        usuario,
+        criterio.etapa,
+        origen_evento="etapa_homologacion_pendiente_criterios",
+        contexto=f"Criterio registrado: {criterio.titulo}.",
+    )
+    return cumplimiento

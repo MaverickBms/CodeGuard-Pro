@@ -495,7 +495,7 @@ class ExamenEtapaHomologacionTests(TestCase):
         self.assertEqual(progreso.porcentaje, 100)
         self.assertTrue(
             AuditLog.objects.filter(
-                evento="etapa_aprobada_por_evaluacion", usuario=self.usuario
+                evento="etapa_completada_por_criterios", usuario=self.usuario
             ).exists()
         )
 
@@ -589,5 +589,41 @@ class ExamenEtapaHomologacionTests(TestCase):
         self.assertTrue(
             AuditLog.objects.filter(
                 evento="etapa_homologacion_pendiente_criterios", usuario=self.usuario
+            ).exists()
+        )
+
+    def test_cumplimiento_criterio_proyecto_permite_completar_etapa_tras_examen(self):
+        from apps.roadmaps.models import CriterioFinalizacion, Progreso
+        from apps.roadmaps.services_evaluacion import registrar_cumplimiento_criterio
+
+        criterio = CriterioFinalizacion.objects.create(
+            etapa=self.etapa,
+            titulo="Proyecto de la etapa",
+            tipo="proyecto",
+            obligatorio=True,
+            orden=1,
+        )
+        resultado = evaluar_quiz(self.usuario, self.examen, {str(self.p1.id): "ok"})
+        self.assertTrue(resultado.aprobado)
+        self.assertFalse(
+            Progreso.objects.filter(
+                usuario=self.usuario,
+                etapa=self.etapa,
+                modulo__isnull=True,
+                leccion__isnull=True,
+                estado="completado",
+            ).exists()
+        )
+
+        registrar_cumplimiento_criterio(
+            self.usuario, criterio, evidencia="Proyecto entregado y verificado", origen="proyecto"
+        )
+        progreso = Progreso.objects.get(
+            usuario=self.usuario, etapa=self.etapa, modulo__isnull=True, leccion__isnull=True
+        )
+        self.assertEqual(progreso.estado, "completado")
+        self.assertTrue(
+            AuditLog.objects.filter(
+                evento="criterio_finalizacion_cumplido", usuario=self.usuario
             ).exists()
         )

@@ -323,6 +323,56 @@ class CriterioFinalizacion(models.Model):
         return f"{self.etapa.numero}: {self.titulo}"
 
 
+class CumplimientoCriterio(models.Model):
+    """Registro auditable del cumplimiento de un criterio de finalización por usuario.
+
+    Permite evidenciar criterios no automatizados (proyecto, evidencia, manual)
+    y también registrar satisfacciones derivadas de evaluaciones verificables.
+    """
+
+    ORIGENES = [
+        ("evaluacion", "Evaluación aprobada"),
+        ("manual", "Verificación manual"),
+        ("evidencia", "Evidencia registrada"),
+        ("proyecto", "Proyecto verificado"),
+    ]
+
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="cumplimientos_criterio",
+        verbose_name="usuario",
+    )
+    criterio = models.ForeignKey(
+        CriterioFinalizacion,
+        on_delete=models.CASCADE,
+        related_name="cumplimientos",
+        verbose_name="criterio",
+    )
+    satisfecho = models.BooleanField(default=True, verbose_name="satisfecho")
+    origen = models.CharField(max_length=20, choices=ORIGENES, verbose_name="origen")
+    evidencia = models.TextField(blank=True, verbose_name="evidencia / nota")
+    referencia = models.CharField(
+        max_length=120, blank=True, verbose_name="referencia (quiz/resultado/etc.)"
+    )
+    registrado_en = models.DateTimeField(auto_now_add=True, verbose_name="registrado en")
+    actualizado_en = models.DateTimeField(auto_now=True, verbose_name="actualizado en")
+
+    class Meta:
+        verbose_name = "cumplimiento de criterio"
+        verbose_name_plural = "cumplimientos de criterio"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["usuario", "criterio"],
+                name="cumplimiento_unico_usuario_criterio",
+            )
+        ]
+
+    def __str__(self) -> str:
+        estado = "satisfecho" if self.satisfecho else "pendiente"
+        return f"{self.criterio} — {self.usuario} ({estado})"
+
+
 class Progreso(models.Model):
     """Registro de avance por etapa, módulo, lección o actividad (RF-016)."""
 
