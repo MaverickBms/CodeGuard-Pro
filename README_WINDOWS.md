@@ -45,9 +45,16 @@ Desde PowerShell o CMD, en la raíz del repositorio:
 build_windows.bat
 ```
 
-El script instala dependencias Python, aplica migraciones, carga ASCENSO, construye el servidor con PyInstaller y ejecuta electron-builder para generar los artefactos Windows en `dist/`.
+El script instala dependencias Python y ejecuta `npm run build:win`. Ese comando orquesta, en orden estricto:
 
-**Advertencia QA:** el script actual prepara la base de datos durante el proceso de build con configuración de desarrollo, mientras la aplicación empaquetada utiliza el directorio `userData` del usuario final. Además, `server_entry.py` presupone que la base ya está inicializada. Por ello, una compilación exitosa no demuestra que una instalación limpia pueda arrancar correctamente. Este flujo debe corregirse y validarse antes de distribuir.
+1. `npm run build:server`: selecciona Python del entorno `.venv` (o Python del sistema), elimina el ejecutable anterior y genera `dist-server\\CodeGuardServer\\CodeGuardServer.exe` mediante PyInstaller.
+2. Genera `dist-server\\.codeguard-server-build.json` con plataforma, arquitectura, nombre del ejecutable y SHA-256 del binario recién creado.
+3. `npm run verify:server`: comprueba que el ejecutable existe, es ejecutable y coincide con el manifiesto de compilación.
+4. Solo si las verificaciones anteriores terminan correctamente, ejecuta electron-builder.
+
+`build_windows.bat` delega la generación del servidor a este flujo para evitar dos rutas de build distintas. No ejecutar `electron-builder` directamente para generar un paquete de distribución: usar `npm run build:win`, `npm run build:linux` o `npm run build`.
+
+La compilación no crea ni migra una base de datos de desarrollo. Las migraciones y la carga de ASCENSO se ejecutan en el primer arranque del usuario, dentro de su directorio `userData`.
 
 ## Datos locales
 
