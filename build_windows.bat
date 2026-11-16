@@ -82,22 +82,8 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 REM La base de datos y ASCENSO se inicializan en el primer arranque del usuario.
-REM No crear ni empaquetar una base de datos de desarrollo durante el build.
-
-echo [INFO] Generando servidor Django con PyInstaller...
-pyinstaller --clean --noconfirm --distpath dist-server --workpath build\pyinstaller-server CodeGuardServer.spec
-if %ERRORLEVEL% NEQ 0 (
-    echo [ERROR] PyInstaller fallo al generar el servidor.
-    pause
-    exit /b 1
-)
-
-if not exist "dist-server\CodeGuardServer\CodeGuardServer.exe" (
-    echo [ERROR] No se genero dist-server\CodeGuardServer\CodeGuardServer.exe
-    pause
-    exit /b 1
-)
-echo [OK] Servidor generado: dist-server\CodeGuardServer\CodeGuardServer.exe
+REM build:win genera el servidor con PyInstaller, verifica su hash y solo entonces
+REM permite que electron-builder empaquete el ejecutable recien generado.
 
 echo [INFO] Instalando dependencias Node.js...
 if not exist "node_modules" (
@@ -109,10 +95,10 @@ if not exist "node_modules" (
     )
 )
 
-echo [INFO] Empaquetando Electron para Windows...
+echo [INFO] Generando servidor y empaquetando Electron para Windows...
 call npm run build:win
 if %ERRORLEVEL% NEQ 0 (
-    echo [ERROR] electron-builder fallo al generar el paquete Windows.
+    echo [ERROR] Fallo la generacion/verificacion del servidor o electron-builder.
     pause
     exit /b 1
 )
