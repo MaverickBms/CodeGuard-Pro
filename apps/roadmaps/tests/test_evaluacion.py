@@ -1,9 +1,10 @@
-"""Pruebas básicas de los modelos de evaluación académica (Fase 4, ADR-011)."""
+"""Pruebas básicas de los modelos y corrección de evaluación (Fase 4, ADR-011)."""
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
+from apps.audit.models import AuditLog
 from apps.roadmaps.models import (
     Etapa,
     Modulo,
@@ -13,6 +14,7 @@ from apps.roadmaps.models import (
     ResultadoPregunta,
     Roadmap,
 )
+from apps.roadmaps.services_evaluacion import evaluar_quiz
 
 
 class QuizPreguntaModelTests(TestCase):
@@ -209,3 +211,127 @@ class ResultadoEvaluacionModelTests(TestCase):
         )
         with self.assertRaises(ValidationError):
             duplicado.full_clean()
+
+
+class CorreccionAutomaticaQuizTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="estudiante-correccion", password="ClaveSegura123!"
+        )
+        roadmap = Roadmap.objects.create(nombre="ASCENSO correccion", edicion="test")
+        etapa = Etapa.objects.create(roadmap=roadmap, numero=1, titulo="Etapa 1")
+        self.modulo = Modulo.objects.create(etapa=etapa, numero="1.1", titulo="Módulo 1")
+        self.quiz = Quiz.objects.create(
+            nombre="Quiz corrección",
+            tipo=Quiz.TIPO_QUIZ,
+            modulo=self.modulo,
+            umbral_aprobacion=70,
+        )
+        self.p1 = Pregunta.objects.create(
+            quiz=self.quiz,
+            orden=1,
+            formato=Pregunta.FORMATO_SELECCION,
+            enunciado="Selecciona la correcta",
+            datos_respuesta={
+                "opciones": [
+                    {"texto": "A", "correcta": True},
+                    {"texto": "B", "correcta": False},
+                ]
+            },
+        )
+        self.p2 = Pregunta.objects.create(
+            quiz=self.quiz,
+            orden=2,
+            formato=Pregunta.FORMATO_RESPUESTA,
+            enunciado="Escribe la palabra",
+            datos_respuesta={"respuesta_esperada": "variable", "sensible_mayusculas": False},
+        )
+
+    def test_evaluar_quiz_aprobado_y_registra_evidencia(self):
+        resultado = evaluar_quiz(
+            self.usuario,
+            self.quiz,
+            {str(self.p1.id): 0, str(self.p2.id): "  Variable  "},
+        )
+
+        self.assertEqual(resultado.puntuacion, 100)
+        self.assertTrue(resultado.aprobado)
+        self.assertFalse(resultado.requiere_revision)
+        self.assertEqual(resultado.temas_repaso, [])
+        self.assertEqual(ResultadoPregunta.objects.filter(resultado=resultado).count(), 2)
+        self.assertTrue(
+            AuditLog.objects.filter(
+                evento="evaluacion_resultado_registrado", usuario=self.usuario
+            ).exists()
+        )
+
+    def test_evaluar_quiz_no_aprobado_bajo_umbral(self):
+        resultado = evaluar_quiz(
+            self.usuario,
+            self.quiz,
+            {str(self.p1.id): 1, str(self.p2.id): "otra"},
+        )
+
+        self.assertEqual(resultado.puntuacion, 0)
+        self.assertFalse(resultado.aprobado)
+        self.assertFalse(resultado.requiere_revision)
+        self.assertGreaterEqual(len(resultado.temas_repaso), 1)
+
+    def test_umbral_aprobacion_aplicado(self):
+        self.quiz.umbral_aprobacion = 80
+        self.quiz.save(update_fields=["umbral_aprobacion"])
+
+        resultado = evaluar_quiz(
+            self.usuario,
+            self.quiz,
+            {str(self.p1.id): 0, str(self.p2.id): "incorrecta"},
+        )
+
+        self.assertEqual(resultado.puntuacion, 50)
+        self.assertFalse(resultado.aprobado)
+        self.assertEqual(resultado.umbral_aprobacion, 80)
+
+    def test_preguntas_abiertas_requieren_revision_y_no_autoaprueban(self):
+        quiz_abierto = Quiz.objects.create(
+            nombre="Quiz abierto",
+            tipo=Quiz.TIPO_QUIZ,
+            modulo=self.modulo,
+            umbral_aprobacion=70,
+            version=2,
+        )
+        Pregunta.objects.create(
+            quiz=quiz_abierto,
+            orden=1,
+            formato=Pregunta.FORMATO_INTERPRETACION,
+            enunciado="Interpreta el código",
+            datos_respuesta={"criterios": ["Identifica el flujo"]},
+        )
+        Pregunta.objects.create(
+            quiz=quiz_abierto,
+            orden=2,
+            formato=Pregunta.FORMATO_RESOLUCION,
+            enunciado="Resuelve el problema",
+            datos_respuesta={"criterios": ["Propone solución"]},
+        )
+
+        resultado = evaluar_quiz(
+            self.usuario,
+            quiz_abierto,
+            {"1": "explicación", "2": "solución"},
+        )
+
+        self.assertTrue(resultado.requiere_revision)
+        self.assertFalse(resultado.aprobado)
+        self.assertEqual(resultado.puntuacion, 0)
+        preguntas = ResultadoPregunta.objects.filter(resultado=resultado)
+        self.assertEqual(preguntas.count(), 2)
+        self.assertTrue(all(p.requiere_revision for p in preguntas))
+
+    def test_reintento_crea_nueva_evidencia(self):
+        r1 = evaluar_quiz(self.usuario, self.quiz, {str(self.p1.id): 1, str(self.p2.id): "x"})
+        r2 = evaluar_quiz(self.usuario, self.quiz, {str(self.p1.id): 0, str(self.p2.id): "variable"})
+
+        self.assertNotEqual(r1.id, r2.id)
+        self.assertFalse(r1.aprobado)
+        self.assertTrue(r2.aprobado)
+        self.assertEqual(ResultadoEvaluacion.objects.filter(quiz=self.quiz, usuario=self.usuario).count(), 2)
