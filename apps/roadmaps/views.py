@@ -141,6 +141,9 @@ def detalle(request, numero):
 
     for modulo in modulos:
         modulo.lecciones_lista = list(modulo.lecciones.all())
+        modulo.quizzes_publicados = list(
+            modulo.quizzes.filter(estado=Quiz.ESTADO_PUBLICADO).order_by("id")
+        )
         for leccion in modulo.lecciones_lista:
             leccion.progreso_actual = progresos_lecciones.get(leccion.id)
             leccion.completada = bool(

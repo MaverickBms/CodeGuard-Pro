@@ -118,6 +118,27 @@
             </li>
           {% endfor %}
         </ul>
+        {% if modulo.quizzes_publicados %}
+          <div class="modulo-quizzes" style="margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--cg-border, #e5e7eb);">
+            <h4 style="margin: 0 0 .5rem; font-size: .95rem;"><i class="fa-solid fa-clipboard-question" aria-hidden="true"></i> Evaluaciones del módulo</h4>
+            <ul class="lecciones-list">
+              {% for quiz in modulo.quizzes_publicados %}
+                <li class="leccion-item">
+                  <a class="leccion-info leccion-open-link" href="{% url 'roadmaps:quiz_detalle' quiz.id %}" aria-label="Abrir evaluación: {{ quiz.nombre }}">
+                    <span class="leccion-marker" aria-hidden="true"><i class="fa-solid fa-clipboard-check"></i></span>
+                    <span class="leccion-copy">
+                      <span class="leccion-title">{{ quiz.nombre }}</span>
+                      <span class="leccion-status">{{ quiz.get_tipo_display }} · Umbral {{ quiz.umbral_aprobacion }}%</span>
+                    </span>
+                  </a>
+                  <a class="btn-icon leccion-toggle leccion-open-action" href="{% url 'roadmaps:quiz_detalle' quiz.id %}" title="Realizar evaluación" aria-label="Realizar evaluación {{ quiz.nombre }}">
+                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
       </section>
     {% empty %}
       <div class="glass-card empty-state cg-card">

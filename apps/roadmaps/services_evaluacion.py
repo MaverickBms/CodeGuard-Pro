@@ -15,6 +15,7 @@ from django.db import transaction
 
 from apps.audit.services import registrar_evento
 
+from .models import Progreso
 from .models_evaluacion import Pregunta, Quiz, ResultadoEvaluacion, ResultadoPregunta
 
 
@@ -248,4 +249,52 @@ def evaluar_quiz(usuario, quiz: Quiz, respuestas_usuario: dict) -> ResultadoEval
         ),
     )
 
+    actualizar_progreso_por_evaluacion(usuario, quiz, resultado)
     return resultado
+
+
+def actualizar_progreso_por_evaluacion(usuario, quiz: Quiz, resultado: ResultadoEvaluacion) -> Progreso | None:
+    """Actualiza el progreso académico cuando una evaluación se aprueba.
+
+    - Si el quiz está asociado a un módulo y el resultado está aprobado
+      (sin revisión pendiente), marca el progreso del módulo como completado.
+    - Registra un evento de auditoría de transición académica.
+    - No modifica el progreso de la etapa: la aprobación de etapa seguirá
+      dependiendo de sus criterios/evaluaciones verificables (pendiente).
+    """
+    if usuario is None or not getattr(usuario, "is_authenticated", False):
+        return None
+    if quiz.modulo_id is None:
+        return None
+    if not resultado.aprobado or resultado.requiere_revision:
+        return None
+
+    modulo = quiz.modulo
+    etapa = modulo.etapa
+    progreso, _ = Progreso.objects.get_or_create(
+        usuario=usuario,
+        etapa=etapa,
+        modulo=modulo,
+        leccion=None,
+        actividad=None,
+        defaults={"estado": "no_iniciado", "porcentaje": 0},
+    )
+
+    if progreso.estado != "completado":
+        progreso.estado = "completado"
+        progreso.porcentaje = 100
+        from django.utils import timezone
+
+        progreso.fecha_completado = timezone.now()
+        progreso.save(
+            update_fields=["estado", "porcentaje", "fecha_completado", "fecha_actualizacion"]
+        )
+        registrar_evento(
+            "progreso_modulo_completado_por_evaluacion",
+            usuario=usuario,
+            descripcion=(
+                f"Módulo {modulo.id} ({modulo.titulo}) completado por evaluación; "
+                f"quiz {quiz.id} (v{quiz.version}); resultado {resultado.id}."
+            ),
+        )
+    return progreso

@@ -418,3 +418,43 @@ class QuizViewsTests(TestCase):
         )
         resp = self.client.get(f"/roadmaps/quiz/{borrador.id}/")
         self.assertEqual(resp.status_code, 404)
+
+class ProgresionPorEvaluacionTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="estudiante-progreso-eval", password="ClaveSegura123!"
+        )
+        roadmap = Roadmap.objects.create(nombre="ASCENSO progreso eval", edicion="test")
+        etapa = Etapa.objects.create(roadmap=roadmap, numero=1, titulo="Etapa 1")
+        self.modulo = Modulo.objects.create(etapa=etapa, numero="1.1", titulo="Módulo 1")
+        self.quiz = Quiz.objects.create(
+            nombre="Quiz módulo",
+            tipo=Quiz.TIPO_QUIZ,
+            modulo=self.modulo,
+            umbral_aprobacion=70,
+            estado=Quiz.ESTADO_PUBLICADO,
+        )
+        self.p1 = Pregunta.objects.create(
+            quiz=self.quiz,
+            orden=1,
+            formato=Pregunta.FORMATO_RESPUESTA,
+            enunciado="Pregunta",
+            datos_respuesta={"respuesta_esperada": "ok"},
+        )
+
+    def test_quiz_aprobado_marca_progreso_modulo_completado(self):
+        from apps.roadmaps.models import Progreso
+
+        resultado = evaluar_quiz(self.usuario, self.quiz, {str(self.p1.id): "ok"})
+        self.assertTrue(resultado.aprobado)
+
+        progreso = Progreso.objects.get(
+            usuario=self.usuario, etapa=self.modulo.etapa, modulo=self.modulo, leccion__isnull=True
+        )
+        self.assertEqual(progreso.estado, "completado")
+        self.assertEqual(progreso.porcentaje, 100)
+        self.assertTrue(
+            AuditLog.objects.filter(
+                evento="progreso_modulo_completado_por_evaluacion", usuario=self.usuario
+            ).exists()
+        )
