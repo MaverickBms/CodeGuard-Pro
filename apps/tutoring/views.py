@@ -104,7 +104,7 @@ def tutoria_analizar(request, ejercicio_id):
         )
 
     intento = get_object_or_404(
-        IntentoEjercicio, pk=intento_id, ejercicio=ejercicio
+        IntentoEjercicio, pk=intento_id, ejercicio=ejercicio, usuario=usuario
     )
     analisis = services.analizar_intento(usuario, ejercicio, intento)
 

@@ -26,9 +26,9 @@ from .models import IntentoTutoria, PistaTutoria, SesionTutoria
 
 logger = logging.getLogger("codeguard")
 
-TUTOR_MODEL = getattr(settings, "CODEGUARD_TUTOR_MODEL", "qwen2.5-coder:1.5b")
-TUTOR_BASE_URL = getattr(settings, "CODEGUARD_TUTOR_BASE_URL", "http://localhost:11434")
-TUTOR_TIMEOUT_SECONDS = int(getattr(settings, "CODEGUARD_TUTOR_TIMEOUT", "30"))
+TUTOR_MODEL = settings.CODEGUARD_TUTOR_MODEL
+TUTOR_BASE_URL = settings.CODEGUARD_TUTOR_BASE_URL
+TUTOR_TIMEOUT_SECONDS = int(settings.CODEGUARD_TUTOR_TIMEOUT)
 LIMITE_PISTAS_TUTORIA = 3
 TIPOS_PISTA = ("orientacion", "estrategia", "concretizacion")
 
@@ -203,7 +203,6 @@ def analizar_intento(usuario, ejercicio, intento_ejercicio) -> IntentoTutoria:
         if intento_ejercicio.resultado == "no_aprobado"
         else "pendiente_revision"
     )
-
     contexto = (
         f"Ejercicio: {ejercicio.titulo}\n"
         f"Enunciado: {ejercicio.enunciado}\n"
@@ -231,7 +230,7 @@ def analizar_intento(usuario, ejercicio, intento_ejercicio) -> IntentoTutoria:
         usuario=usuario,
         ejercicio=ejercicio,
         intento_ejercicio=intento_ejercicio,
-        resultado_evaluacion=intento_ejercicio.resultado,
+        resultado_evaluacion=resultado_evaluacion,
         analisis_tutor=analisis,
     )
 
