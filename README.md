@@ -8,6 +8,8 @@ El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicac
 
 El roadmap ASCENSO 3.1 (33 etapas) ya está implementado y cargable mediante `python manage.py cargar_ascenso`. El proyecto también incorpora bases funcionales de tutoría IA local (Ollama), evaluaciones, gamificación, mundo/avatar y desafíos; consulta `docs/PLAN_MAESTRO_CODEGUARD.md` para distinguir lo implementado de lo que sigue en progreso. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado en la rama principal mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
 
+La auditoría QA integral del 16-11-2026 identifica los pendientes de instalación limpia, portabilidad, pruebas E2E y recuperación de datos: `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
+
 El cliente de sincronización pull-only por HTTPS, el comando `sincronizar_conocimiento`, el publicador local y la integración de comprobaciones periódicas con Electron están implementados. **La distribución remota de producción sigue pendiente**: no hay hosting/endpoint público, allowlist ni claves públicas de producción configuradas. Sin esa configuración, el cliente falla cerrado y no realiza conexiones. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
 
 ---
