@@ -131,7 +131,7 @@ No hacer commit, push, merge ni despliegue salvo autorización explícita del us
 | 1 | Fundamentos UX/UI y experiencia base | **Completada** |
 | 2 | Motor de aprendizaje y contenido interactivo | **En progreso — parcial** |
 | 3 | Tutor inteligente local | **En progreso — parcialmente implementada (ADR-010, app `apps/tutoring`)** |
-| 4 | Evaluaciones y progresión académica | Pendiente |
+| 4 | Evaluaciones y progresión académica | **En progreso — parcialmente implementada (ADR-011, modelos de evaluación)** |
 | 5 | Gamificación y economía de recompensas | Pendiente |
 | 6 | Mundo, avatar, personajes e inventario | Pendiente |
 | 7 | Minijuegos, desafíos y jefes | Pendiente |
@@ -436,7 +436,17 @@ Las pistas deben ser progresivas, estar vinculadas al ejercicio y no reiniciarse
 
 ## Fase 4 — Evaluaciones y progresión académica
 
-**Estado: PENDIENTE. Depende de los resultados fiables de las Fases 2 y 3.**
+**Estado: EN PROGRESO — parcialmente implementada (ADR-011, modelos de evaluación). Pendiente de cierre: corrección automática, reglas de progresión, UI y authoring. Depende de los resultados fiables de las Fases 2 y 3.**
+
+### Decisión técnica — ADR-011 (Evaluaciones y progresión académica)
+
+**Estado:** Aprobada e implementada parcialmente (16-11-2026, commit `1b4e50c`).
+
+- **Decisión adoptada:** introducir el núcleo de evaluación en `apps.roadmaps` mediante modelos dedicados para estructurar quizzes, preguntas y resultados, preservando la trazabilidad con el progreso del estudiante.
+- **Alcance implementado a la fecha:** modelos `Quiz`, `Pregunta`, `ResultadoEvaluacion` y `ResultadoPregunta` (definidos en `apps/roadmaps/models_evaluacion.py`), migración `0017`, y **9 pruebas nuevas** asociadas.
+- **Línea base de pruebas:** total **215 OK** (206 previas + 9 nuevas).
+- **Restricciones vigentes:** las aprobaciones deben basarse en evidencia verificable; las transiciones académicas no pueden falsearse manualmente; las recompensas no alteran resultados académicos.
+- **Pendiente:** corrección automática completa, lógica de progresión/homologación, interfaz de usuario para evaluaciones y flujo de authoring/editorial.
 
 ### Objetivo
 Medir el aprendizaje de manera consistente y controlar la progresión por dominio demostrado.

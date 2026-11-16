@@ -54,7 +54,8 @@ codeguard-pro/
 │   ├── accounts/             # identidad y acceso (login, setup, frase rescate, contraseña)
 │   ├── audit/                # registro de eventos de seguridad y acceso (auditoría)
 │   ├── roadmaps/             # roadmap ASCENSO, contenido académico, flujo editorial,
-│   │                         # registro de paquetes, distribución firmada, importación
+│   │                         # registro de paquetes, distribución firmada, importación,
+│   │                         # modelos de evaluación (ADR-011: Quiz, Pregunta, Resultados)
 │   └── tutoring/             # Tutor IA local (Fase 3, ADR-010): Ollama, sesiones de pistas, análisis
 │
 ├── templates/                # plantillas base y por app (Django MVT)
@@ -84,7 +85,7 @@ Cada aplicación Django tiene responsabilidades delimitadas y evita acoplamiento
 | `apps.core` | Panel principal, navegación, configuración global (singleton) | Implementado (inc. 1) |
 | `apps.accounts` | Identidad y acceso: login, logout, setup inicial, frase de rescate, cambio de contraseña | Implementado (inc. 1, auth temporalmente desactivada) |
 | `apps.audit` | Registro de eventos de seguridad y acceso (auditoría) | Implementado (inc. 1) |
-| `apps.roadmaps` | Roadmap ASCENSO, contenido académico, flujo editorial, paquetes, distribución | Implementado parcialmente (Fase 2) |
+| `apps.roadmaps` | Roadmap ASCENSO, contenido académico, flujo editorial, paquetes, distribución, modelos de evaluación (ADR-011, `models_evaluacion.py`) | Implementado parcialmente (Fase 2 / Fase 4 en progreso) |
 | `apps.tutoring` | Tutor IA local (Fase 3, ADR-010): estado, sesiones, pistas, análisis | Implementado (parcial) |
 | `config.middleware` | Sesión por inactividad, cabeceras de seguridad, acceso local | Implementado (inc. 1) |
 | `config.settings` | Configuración Django (base + desarrollo + desktop) | Implementado (inc. 1) |
