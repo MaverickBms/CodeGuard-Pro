@@ -10,17 +10,25 @@ from __future__ import annotations
 import json
 from datetime import date
 from pathlib import Path
+from types import SimpleNamespace
 
+from django.conf import settings
 from django.db import transaction
 from django.db.models import Count, Q
 
 from apps.audit.services import registrar_evento
 
 from .models import (
+    ContenidoLeccion,
+    ContenidoLeccionActivo,
+    ContenidoLeccionPaquete,
     CriterioFinalizacion,
     Etapa,
+    EjercicioLeccion,
+    EstadoSincronizacion,
     Leccion,
     Modulo,
+    PaqueteConocimientoInstalado,
     Prerrequisito,
     Progreso,
     Roadmap,
@@ -393,3 +401,194 @@ def iniciar_leccion(usuario, leccion: Leccion, *, actor_auditoria=None) -> Progr
             descripcion=f"Etapa {etapa.numero} · {leccion.titulo}",
         )
     return progreso
+
+
+def _simple_namespace_ejercicio(item: dict, ejercicio_modelo=None) -> SimpleNamespace:
+    """Construye un SimpleNamespace para un ejercicio de snapshot."""
+    nivel = item.get("nivel", "basico")
+    return SimpleNamespace(
+        **item,
+        id=ejercicio_modelo.id if ejercicio_modelo else None,
+        get_nivel_display=lambda nivel=nivel: dict(EjercicioLeccion.NIVELES).get(
+            nivel, nivel
+        ),
+    )
+
+
+def _contenido_simple_namespace(datos_contenido: dict) -> SimpleNamespace:
+    """Construye un SimpleNamespace para el contenido de una lección."""
+    return SimpleNamespace(
+        objetivos_aprendizaje=datos_contenido.get("objetivos_aprendizaje", ""),
+        teoria_tecnica=datos_contenido.get("teoria_tecnica", ""),
+        explicacion_sencilla=datos_contenido.get("explicacion_sencilla", ""),
+        notas=datos_contenido.get("notas", ""),
+        publicado=True,
+    )
+
+
+def obtener_contenido_activo(leccion: Leccion, canal: str | None = None) -> dict:
+    """Resuelve el contenido activo de una lección.
+
+    Determina si el contenido se sirve desde un paquete de conocimiento
+    instalado activo (``ContenidoLeccionPaquete``) o desde el puntero
+    editorial publicado (``ContenidoLeccionActivo``). Si no existe ninguno
+    de los dos, se conserva el contenido del modelo ``ContenidoLeccion``
+    relacionado con la lección (valor por defecto del código original).
+
+    Argumentos:
+        leccion: instancia de ``Leccion`` a consultar.
+        canal: canal de conocimiento (por defecto
+            ``settings.CODEGUARD_KNOWLEDGE_CHANNEL``).
+
+    Devuelve un diccionario con las claves:
+        - origen: "paquete" | "editorial" | "ninguno"
+        - titulo, descripcion, tipo: datos de la lección
+        - contenido: SimpleNamespace con objetivos_aprendizaje,
+          teoria_tecnica, explicacion_sencilla, notas, publicado
+        - ejemplos: lista de SimpleNamespace
+        - ejercicios: lista de SimpleNamespace (con id y get_nivel_display
+          cuando hay modelo en BD)
+        - ejercicios_raw: lista de dicts originales del snapshot (para
+          conservar como evidencia en IntentoEjercicio.snapshot_ejercicio)
+        - version: VersionContenidoLeccion o None
+        - paquete: PaqueteConocimientoInstalado o None
+    """
+    if canal is None:
+        canal = getattr(settings, "CODEGUARD_KNOWLEDGE_CHANNEL", "stable")
+
+    # Valor por defecto: contenido del modelo ContenidoLeccion (si existe)
+    # y ejemplos/ejercicios publicados del modelo.
+    contenido_modelo = getattr(leccion, "contenido", None)
+    ejemplos_modelo = list(leccion.ejemplos.filter(publicado=True))
+    ejercicios_modelo = list(leccion.ejercicios.filter(publicado=True))
+
+    resultado = {
+        "origen": "ninguno",
+        "titulo": leccion.titulo,
+        "descripcion": leccion.descripcion,
+        "tipo": leccion.tipo,
+        "contenido": contenido_modelo,
+        "ejemplos": ejemplos_modelo,
+        "ejercicios": ejercicios_modelo,
+        "ejercicios_raw": [
+            {
+                "clave": str(e.clave_contenido),
+                "titulo": e.titulo,
+                "enunciado": e.enunciado,
+                "instrucciones": e.instrucciones,
+                "lenguaje": e.lenguaje,
+                "nivel": e.nivel,
+                "codigo_inicial": e.codigo_inicial,
+                "obligatorio": e.obligatorio,
+                "orden": e.orden,
+            }
+            for e in ejercicios_modelo
+        ],
+        "version": None,
+        "paquete": None,
+    }
+
+    sync_state = (
+        EstadoSincronizacion.objects.select_related("active_package")
+        .filter(channel=canal, active_package__isnull=False)
+        .first()
+    )
+    paquete_activo = sync_state.active_package if sync_state else None
+
+    if paquete_activo is not None:
+        contenido_paquete = ContenidoLeccionPaquete.objects.filter(
+            paquete=paquete_activo, leccion=leccion
+        ).first()
+        if contenido_paquete is None:
+            # Un paquete estable activo es la fuente de verdad: si no hay
+            # snapshot instalado para esta lección, no se mezcla con el
+            # borrador editorial ni con el puntero publicado.
+            resultado.update(
+                {
+                    "contenido": None,
+                    "ejemplos": [],
+                    "ejercicios": [],
+                    "ejercicios_raw": [],
+                }
+            )
+            return resultado
+
+        snapshot = contenido_paquete.documento.get("snapshot", {})
+        datos_leccion = snapshot.get("leccion", {})
+        datos_contenido = snapshot.get("contenido", {})
+
+        ejercicio_por_clave = {
+            str(item.clave_contenido): item for item in leccion.ejercicios.all()
+        }
+        ejercicios = []
+        ejercicios_raw = []
+        for item in snapshot.get("ejercicios", []):
+            actual = ejercicio_por_clave.get(item.get("clave"))
+            nivel = item.get("nivel", "basico")
+            ejercicios.append(
+                _simple_namespace_ejercicio(item, actual)
+            )
+            ejercicios_raw.append(item)
+
+        resultado.update(
+            {
+                "origen": "paquete",
+                "titulo": datos_leccion.get("titulo", leccion.titulo),
+                "descripcion": datos_leccion.get("descripcion", leccion.descripcion),
+                "tipo": datos_leccion.get("tipo", leccion.tipo),
+                "contenido": _contenido_simple_namespace(datos_contenido),
+                "ejemplos": [
+                    SimpleNamespace(**item) for item in snapshot.get("ejemplos", [])
+                ],
+                "ejercicios": ejercicios,
+                "ejercicios_raw": ejercicios_raw,
+                "version": None,
+                "paquete": paquete_activo,
+            }
+        )
+        return resultado
+
+    # Sin paquete activo: usar puntero editorial publicado.
+    puntero_activo = (
+        ContenidoLeccionActivo.objects.select_related("version")
+        .filter(leccion=leccion, version__estado="publicada")
+        .first()
+    )
+
+    if puntero_activo is None:
+        return resultado
+
+    snapshot = puntero_activo.version.snapshot
+    datos_leccion = snapshot.get("leccion", {})
+    datos_contenido = snapshot.get("contenido", {})
+
+    ejercicio_por_clave = {
+        str(item.clave_contenido): item for item in leccion.ejercicios.all()
+    }
+    ejercicios = []
+    ejercicios_raw = []
+    for item in snapshot.get("ejercicios", []):
+        actual = ejercicio_por_clave.get(item.get("clave"))
+        nivel = item.get("nivel", "basico")
+        ejercicios.append(
+            _simple_namespace_ejercicio(item, actual)
+        )
+        ejercicios_raw.append(item)
+
+    resultado.update(
+        {
+            "origen": "editorial",
+            "titulo": datos_leccion.get("titulo", leccion.titulo),
+            "descripcion": datos_leccion.get("descripcion", leccion.descripcion),
+            "tipo": datos_leccion.get("tipo", leccion.tipo),
+            "contenido": _contenido_simple_namespace(datos_contenido),
+            "ejemplos": [
+                SimpleNamespace(**item) for item in snapshot.get("ejemplos", [])
+            ],
+            "ejercicios": ejercicios,
+            "ejercicios_raw": ejercicios_raw,
+            "version": puntero_activo.version,
+            "paquete": None,
+        }
+    )
+    return resultado

@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import re
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.utils import timezone
@@ -17,11 +16,10 @@ from django.utils import timezone
 from apps.audit.services import registrar_evento
 
 from .models import (
-    ContenidoLeccionActivo, ContenidoLeccionPaquete, EstadoSincronizacion,
     EjercicioLeccion, Progreso,
 )
 from .models_attempts import ConfiguracionEvaluacion, IntentoEjercicio
-from .services import recalcular_progreso_etapa
+from .services import obtener_contenido_activo, recalcular_progreso_etapa
 
 MAX_RESPUESTA_CARACTERES = 20000
 
@@ -105,38 +103,15 @@ def _evaluar_configuracion(configuracion: ConfiguracionEvaluacion, respuesta: st
 
 def _completar_leccion_si_corresponde(usuario, leccion, actor_auditoria=None) -> bool:
     """Completa la lección solo si todos los ejercicios obligatorios de la versión activa tienen evidencia aprobada."""
-    channel = getattr(settings, "CODEGUARD_KNOWLEDGE_CHANNEL", "stable")
-    sync_state = (
-        EstadoSincronizacion.objects.select_related("active_package")
-        .filter(channel=channel, active_package__isnull=False)
-        .first()
-    )
-    package = sync_state.active_package if sync_state else None
-    puntero_activo = None
-    if package:
-        installed = ContenidoLeccionPaquete.objects.filter(
-            paquete=package, leccion=leccion
-        ).first()
-        if installed is None:
-            return False
-        claves_requeridas = [
-            item.get("clave")
-            for item in installed.documento["snapshot"].get("ejercicios", [])
-            if item.get("obligatorio")
-        ]
-    else:
-        puntero_activo = (
-            ContenidoLeccionActivo.objects.select_related("version")
-            .filter(leccion=leccion)
-            .first()
-        )
-        claves_requeridas = [
-            item.get("clave")
-            for item in puntero_activo.version.snapshot.get("ejercicios", [])
-            if item.get("obligatorio")
-        ] if puntero_activo else []
+    contenido_activo = obtener_contenido_activo(leccion)
+    package = contenido_activo["paquete"]
+    claves_requeridas = [
+        getattr(item, "clave", None)
+        for item in contenido_activo["ejercicios"]
+        if getattr(item, "obligatorio", False)
+    ]
 
-    if package or puntero_activo:
+    if package or contenido_activo["version"] is not None:
         ejercicios_por_clave = {
             str(item.clave_contenido): item for item in leccion.ejercicios.all()
         }
@@ -208,49 +183,27 @@ def registrar_intento_ejercicio(
             f"La respuesta supera el límite de {MAX_RESPUESTA_CARACTERES} caracteres."
         )
 
-    channel = getattr(settings, "CODEGUARD_KNOWLEDGE_CHANNEL", "stable")
-    sync_state = (
-        EstadoSincronizacion.objects.select_related("active_package")
-        .filter(channel=channel, active_package__isnull=False)
-        .first()
-    )
-    paquete_contenido = sync_state.active_package if sync_state else None
-    contenido_instalado = None
-    puntero_activo = None
+    contenido_activo = obtener_contenido_activo(ejercicio.leccion)
+    paquete_contenido = contenido_activo["paquete"]
+    version_contenido = contenido_activo["version"]
+
+    ejercicios_raw = contenido_activo.get("ejercicios_raw", [])
     if paquete_contenido:
-        contenido_instalado = ContenidoLeccionPaquete.objects.filter(
-            paquete=paquete_contenido, leccion=ejercicio.leccion
-        ).first()
-        if contenido_instalado is None:
-            raise ValidationError("La lección no está incluida en el paquete académico activo.")
-        version_contenido = None
         snapshot_ejercicio = next(
             (
-                item for item in contenido_instalado.documento["snapshot"].get("ejercicios", [])
+                item
+                for item in ejercicios_raw
                 if item.get("clave") == str(ejercicio.clave_contenido)
             ),
             None,
         )
         if snapshot_ejercicio is None:
             raise ValidationError("El ejercicio no pertenece al paquete académico activo.")
-    else:
-        puntero_activo = (
-            ContenidoLeccionActivo.objects.select_related("version")
-            .filter(leccion=ejercicio.leccion)
-            .first()
-        )
-        version_contenido = puntero_activo.version if puntero_activo else None
-    if not paquete_contenido and version_contenido is None:
-        if ejercicio.leccion.versiones_contenido.filter(
-            estado__in=["publicada", "sustituida", "retirada"]
-        ).exists():
-            raise ValidationError("La lección no tiene una versión académica activa.")
-        if not ejercicio.publicado:
-            raise ValidationError("Este ejercicio no está publicado.")
-    if not paquete_contenido and version_contenido is not None:
+    elif version_contenido is not None:
         snapshot_ejercicio = next(
             (
-                item for item in version_contenido.snapshot.get("ejercicios", [])
+                item
+                for item in ejercicios_raw
                 if item.get("clave") == str(ejercicio.clave_contenido)
             ),
             None,
@@ -259,7 +212,13 @@ def registrar_intento_ejercicio(
             raise ValidationError(
                 "El ejercicio no pertenece a la versión académica activa de esta lección."
             )
-    elif not paquete_contenido:
+    else:
+        if ejercicio.leccion.versiones_contenido.filter(
+            estado__in=["publicada", "sustituida", "retirada"]
+        ).exists():
+            raise ValidationError("La lección no tiene una versión académica activa.")
+        if not ejercicio.publicado:
+            raise ValidationError("Este ejercicio no está publicado.")
         # Compatibilidad: conserva el enunciado exacto de ejercicios anteriores al versionado activo.
         snapshot_ejercicio = {
             "clave": str(ejercicio.clave_contenido),
