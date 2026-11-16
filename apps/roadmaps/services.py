@@ -206,46 +206,55 @@ def roadmap_activo() -> Roadmap | None:
     return Roadmap.objects.filter(activo=True).order_by("-actualizado_en").first()
 
 
-def etapas_completadas(usuario, roadmap: Roadmap) -> set[int]:
-    """Números de etapa con progreso de etapa marcado como completado."""
+def _progresos_usuario_roadmap(usuario, roadmap: Roadmap) -> list[Progreso]:
+    """Obtiene todo el progreso del usuario para un roadmap en una sola consulta.
+
+    Usa ``prefetch_related`` sobre etapa, leccion y modulo para evitar
+    consultas adicionales al acceder a las relaciones. El filtrado por
+    tipo de objetivo (etapa, leccion, actividad) se hace en memoria sobre
+    el resultado ya traído.
+    """
     if not usuario or not usuario.is_authenticated:
-        return set()
-    return set(
+        return []
+    return list(
         Progreso.objects.filter(
             usuario=usuario,
             etapa__roadmap=roadmap,
-            modulo__isnull=True,
-            leccion__isnull=True,
-            actividad__isnull=True,
-            estado="completado",
-        ).values_list("etapa__numero", flat=True)
+        ).prefetch_related("etapa", "leccion", "modulo")
     )
+
+
+def etapas_completadas(usuario, roadmap: Roadmap) -> set[int]:
+    """Números de etapa con progreso de etapa marcado como completado."""
+    return {
+        fila.etapa.numero
+        for fila in _progresos_usuario_roadmap(usuario, roadmap)
+        if (
+            fila.modulo_id is None
+            and fila.leccion_id is None
+            and fila.actividad_id is None
+            and fila.estado == "completado"
+        )
+    }
 
 
 def mapa_progreso_etapas(usuario, roadmap: Roadmap) -> dict[int, Progreso]:
     """Progreso a nivel de etapa indexado por ``etapa_id``."""
-    if not usuario or not usuario.is_authenticated:
-        return {}
-    filas = Progreso.objects.filter(
-        usuario=usuario,
-        etapa__roadmap=roadmap,
-        modulo__isnull=True,
-        leccion__isnull=True,
-        actividad__isnull=True,
-    )
-    return {fila.etapa_id: fila for fila in filas}
+    return {
+        fila.etapa_id: fila
+        for fila in _progresos_usuario_roadmap(usuario, roadmap)
+        if fila.modulo_id is None and fila.leccion_id is None and fila.actividad_id is None
+    }
 
 
 def mapa_progreso_lecciones(usuario, etapa: Etapa) -> dict[int, Progreso]:
     """Progreso de lecciones indexado por ``leccion_id``."""
-    if not usuario or not usuario.is_authenticated:
-        return {}
-    filas = Progreso.objects.filter(
-        usuario=usuario,
-        etapa=etapa,
-        leccion__isnull=False,
-    )
-    return {fila.leccion_id: fila for fila in filas if fila.leccion_id}
+    roadmap = etapa.roadmap
+    return {
+        fila.leccion_id: fila
+        for fila in _progresos_usuario_roadmap(usuario, roadmap)
+        if fila.etapa_id == etapa.id and fila.leccion_id is not None
+    }
 
 
 def progreso_general(usuario, roadmap: Roadmap) -> dict:
