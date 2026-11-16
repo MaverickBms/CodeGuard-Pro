@@ -1,48 +1,60 @@
-# CodeGuard Pro — .gitignore
-
-# Entornos virtuales
+# Python
 .venv/
 venv/
 env/
-*.pyc
 __pycache__/
-*.pyo
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+*.egg-info/
 
-# Base de datos SQLite y clave secreta local (solo la carpeta de datos de runtime en raíz;
-# apps/roadmaps/data/ contiene el JSON del roadmap y sí se versiona)
-db.sqlite3
-db.sqlite3-journal
-.secret_key
+# Django: datos locales, bases de datos y secretos
 /data/
-
-# Media y archivos de usuario
+/.local-data/
+/.codeguard-data/
+db.sqlite3*
+*.sqlite3-wal
+*.sqlite3-shm
+.secret_key
 media/
 staticfiles/
-
-# Logs
-logs/*.log
+logs/
 *.log
-
-# Entorno (secreto — no commitear)
 .env
+.env.*
+!.env.example
 
-# IDE / OS
+# Node.js / Electron
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+dist/
+dist-server/
+build/
+
+# IDE y sistema operativo
 .idea/
 .vscode/
 *.swp
 *.swo
 .DS_Store
 .directory
+Thumbs.db
+desktop.ini
 
-# Empaquetados / backups locales
+# Temporales y respaldos de trabajo
 *.tar.gz
 *.zip
+*.bak
+*.orig
+*.rej
 
-# Node.js / Electron
-node_modules/
-dist/
-dist-server/
-build/
-
-# Python virtual env
-.env
+# Pruebas E2E
+playwright-report/
+test-results/

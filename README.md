@@ -96,19 +96,21 @@ build_windows.bat
 
 Genera el servidor Django (PyInstaller) + instalador Electron (NSIS / portable).
 
-### Linux / macOS (desde código)
+### Linux x64 (entorno de desarrollo; no es instalador de usuario)
 
 ```bash
-git clone <repositorio>
+git clone https://github.com/MaverickBms/CodeGuard-Pro.git
 cd CodeGuard-Pro
 python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py cargar_ascenso
-npm install && npm start
+python -m pip install -r requirements.txt
+npm ci
+export CODEGUARD_DATA_DIR="$PWD/.local-data"
+python manage.py migrate --settings=config.settings.development
+python manage.py cargar_ascenso --settings=config.settings.development
+npm start
 ```
 
-O vía script: `./run.sh`.
+Usa un directorio de datos aislado. Consulta [docs/INSTALACION.md](docs/INSTALACION.md). macOS todavía no está configurado ni validado.
 
 Comandos de gestión disponibles:
 
@@ -178,7 +180,7 @@ Resultado reportado en el repositorio (16-11-2026): **245 pruebas OK** en `apps.
 
 ## 🤝 Contribuir · 🛡️ Seguridad · 📄 Licencia
 
-Consulte `docs/` para arquitectura, seguridad, modelo de datos, plan de pruebas y manual extendido.
+Consulte [el índice de documentación](docs/README.md), [la estructura del repositorio](docs/ESTRUCTURA_REPOSITORIO.md), [las reglas para contribuir](CONTRIBUTING.md), arquitectura, seguridad, modelo de datos, plan de pruebas y manual extendido.
 
 ---
 

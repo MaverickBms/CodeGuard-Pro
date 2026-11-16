@@ -1,103 +1,124 @@
-# CodeGuard Pro — Instalación
+# CodeGuard Pro — instalación y entorno de desarrollo
 
-**Producto:** CodeGuard Pro  
-**Versión:** 1.0 (MVP, primer incremento)  
-**Entorno validado:** Fedora Linux 44 Workstation, Python 3.14.8, SQLite 3.51.2 (con FTS5)
+**Estado:** guía de desarrollo. La instalación limpia de los paquetes de escritorio todavía no está aceptada; consulta el [informe QA](INFORME_QA_INTEGRAL_2026-11-16.md). No utilizar estas instrucciones como declaración de que existe una release estable.
 
----
+## 1. Plataformas
 
-## 1. Requisitos del sistema
+| Plataforma | Estado |
+|---|---|
+| Linux x64 | AppImage configurado; aceptación de primer arranque/GUI/offline pendiente |
+| Windows x64 | Script de build e instalador configurados; instalación limpia pendiente |
+| macOS | No configurado ni validado |
+| ARM64 | No configurado ni validado |
 
-| Componente | Requisito | Validado en |
-|---|---|---|
-| Python | 3.12+ | 3.14.8 |
-| SQLite | con FTS5 | 3.51.2 (FTS5 confirmado) |
-| Memoria | bajo consumo objetivo | ~1.3 GB libres observados |
-| Disco | ~2 GB libres para la app | 108 GB disponibles |
-| Red | no requerida (offline-first) | N/A |
+El artefacto de cada sistema debe construirse en un entorno compatible con su plataforma. No se debe asumir que un paquete x64 funciona en ARM64.
 
----
+## 2. Requisitos para desarrollar
 
-## 2. Pasos de instalación
+- Git.
+- Python compatible con las versiones fijadas en `requirements.txt`.
+- Node.js/npm compatibles con `package-lock.json`.
+- Herramientas nativas de construcción requeridas por Electron Builder/PyInstaller para el sistema destino.
+
+El usuario final de un instalador aceptado no debería necesitar Python, Node.js, Django ni el entorno virtual del desarrollador.
+
+## 3. Clonar y preparar dependencias
+
+Linux:
 
 ```bash
-# 1. Entrar al directorio del proyecto
-cd /home/mvxbms/Documentos/Estrada/CodeGuard
+git clone https://github.com/MaverickBms/CodeGuard-Pro.git
+cd CodeGuard-Pro
 
-# 2. Crear entorno virtual (no instalar globalmente)
 python3 -m venv .venv
 source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 
-# 3. Instalar dependencias (versiones fijadas)
-pip install --upgrade pip
-pip install -r requirements.txt
-
-# 4. Copiar variables de entorno y ajustar
-cp .env.example .env
-# Editar .env: definir DJANGO_SECRET_KEY (al menos 50 caracteres aleatorios)
-
-# 5. Aplicar migraciones (crea la base de datos SQLite desde cero)
-python manage.py migrate
-
-# 6. Crear el usuario inicial (primera vez)
-python manage.py shell
->>> from apps.accounts.services import crear_usuario_inicial
->>> u, frase = crear_usuario_inicial("admin", "TU_CONTRASEÑA_MAESTRA")
->>> print("FRASE DE RESCATE (guardarla, una sola vez):", frase)
-
-# 7. Arrancar el servidor WSGI local (Waitress + WhiteNoise; solo en localhost)
-python server_entry.py        # o: ./run.sh (prepara entorno e inicia Electron, el que arranca Django)
+npm ci
 ```
 
-El servidor escucha exclusivamente en `127.0.0.1` (nunca `0.0.0.0`) en el puerto definido
-por `CODEGUARD_PORT` (por defecto `8000`).
+Windows PowerShell:
 
-> **Nota (hardening):** el modelo de usuario activo es el custom `accounts.Usuario`
-> (`AUTH_USER_MODEL = "accounts.Usuario"`). El usuario único persiste en la tabla
-> `accounts_usuario` de la base de datos SQLite (`data/db.sqlite3`). La transición desde
-> el usuario por defecto fue migrada sin pérdida de datos (ver `docs/DECISIONES_PENDIENTES.md`).
+```powershell
+git clone https://github.com/MaverickBms/CodeGuard-Pro.git
+Set-Location CodeGuard-Pro
 
-Luego abrir en el navegador: `http://127.0.0.1:8000/`
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 
----
+npm ci
+```
 
-## 3. Configuración sensible (`.env`)
+## 4. Base de datos de desarrollo aislada
 
-| Variable | Valor por defecto | Nota |
-|---|---|---|
-| `DJANGO_SECRET_KEY` | (obligatorio cambiar) | Clave secreta de Django |
-| `DJANGO_DEBUG` | `False` | Nunca `True` en ejecución habitual |
-| `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1,[::1]` | Solo localhost |
-| `DJANGO_SESSION_TIMEOUT_MINUTES` | `15` | Inactividad antes de expirar |
-| `DJANGO_LOG_LEVEL` | `INFO` | Nivel de logging |
+No ejecutar migraciones ni cargas sobre la base personal del usuario durante pruebas. Mantener los datos locales fuera del repositorio.
 
----
+Linux:
 
-## 4. Verificación de la instalación
+```bash
+export CODEGUARD_DATA_DIR="$PWD/.local-data"
+mkdir -p "$CODEGUARD_DATA_DIR"
 
-Después de arrancar, comprobar:
+./.venv/bin/python manage.py migrate \
+  --settings=config.settings.development
 
-1. `http://127.0.0.1:8000/` redirige a `/accounts/login/` (302).
-2. El login con credenciales válidas accede al panel (200).
-3. El servidor escucha solo en `127.0.0.1` (`ss -ltnp | grep 8000`).
-4. No hay referencias a CDN en el código fuente de las páginas.
-5. Las migraciones aplican desde una base de datos vacía (`python manage.py migrate`).
+./.venv/bin/python manage.py cargar_ascenso \
+  --settings=config.settings.development
+```
 
----
+Windows PowerShell:
 
-## 5. Modo desarrollo vs ejecución habitual
+```powershell
+$env:CODEGUARD_DATA_DIR = Join-Path $PWD ".local-data"
+New-Item -ItemType Directory -Force $env:CODEGUARD_DATA_DIR | Out-Null
 
-- **Desarrollo:** `DJANGO_DEBUG=True` (solo para depurar).
-- **Ejecución habitual:** `DJANGO_DEBUG=False`, `DJANGO_SECRET_KEY` definida, servidor en `127.0.0.1`.
+.\.venv\Scripts\python.exe manage.py migrate --settings=config.settings.development
+.\.venv\Scripts\python.exe manage.py cargar_ascenso --settings=config.settings.development
+```
 
-No activar `DEBUG` en producción local.
+La carga de ASCENSO debe ser idempotente y reportar los conteos esperados (33 etapas, 212 módulos y 1.946 lecciones). No usar `--recrear` sobre datos existentes.
 
----
+## 5. Ejecutar en desarrollo
 
-## 6. Limitaciones del entorno
+Con dependencias instaladas, base aislada inicializada y `CODEGUARD_DATA_DIR` establecido en la misma terminal:
 
-- La partición principal está protegida con LUKS (cifrado en reposo con dispositivo apagado).
-  Los backups trasladados a otro dispositivo no quedan automáticamente protegidos (ver
-  `docs/SEGURIDAD.md`, RS-015).
-- La memoria libre observada es menor de lo indicado en el SRS (~1.3 GB vs ~2.9 GiB). Se
-  diseña para bajo consumo (1 worker, sin servicios innecesarios).
+```bash
+npm start
+```
+
+El modo de desarrollo de Electron y el servidor local deben utilizar el mismo directorio de datos. Si el servidor no inicia, conservar la salida completa y los logs antes de cambiar configuración.
+
+El lanzador `run.sh` existente es un flujo específico de AppImage y está sujeto a los hallazgos de inicialización descritos en el informe QA. No utilizarlo como prueba de instalación limpia hasta corregir y aceptar ese flujo.
+
+## 6. Comprobaciones
+
+```bash
+./.venv/bin/python manage.py check --settings=config.settings.development
+./.venv/bin/python manage.py makemigrations --check --dry-run --settings=config.settings.development
+./.venv/bin/python -m pip check
+./.venv/bin/python manage.py test \
+  apps.core apps.accounts apps.audit apps.roadmaps \
+  apps.tutoring apps.gamification apps.challenges \
+  --settings=config.settings.development
+```
+
+La cifra de 245 pruebas OK está reportada en el README al 16-11-2026, pero debe reproducirse en el HEAD actual antes de usarla como línea base de release. Estas pruebas no sustituyen la aceptación de Electron, GUI, cierre limpio, offline y persistencia.
+
+## 7. Construcción de paquetes
+
+- Windows x64: `build_windows.bat`.
+- Linux x64: `npm run build:linux` después de generar el servidor con PyInstaller según el flujo vigente.
+
+Los comandos anteriores generan artefactos; no demuestran que el instalador pueda inicializar una base vacía. No distribuir paquetes hasta completar los criterios de aceptación del informe QA.
+
+## 8. Datos y privacidad
+
+El directorio runtime contiene SQLite, claves locales, logs y archivos del estudiante. Debe estar fuera del repositorio y no sincronizarse con Git.
+
+- No compartir `.local-data/`, `.env`, bases SQLite ni logs.
+- No configurar servicios remotos como requisito del modo offline.
+- El tutor Ollama es opcional; la aplicación debe seguir operativa sin el modelo.
+- No habilitar ejecución arbitraria de código sin sandbox auditado.
