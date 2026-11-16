@@ -170,7 +170,7 @@ sus códigos HEX oficiales (P01–P12) y reglas de accesibilidad cromática (WCA
 El diseño detallado está en `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` y
 `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md`.
 
-> **Estado: diseño aprobado (ADR-004); cliente y publicador implementados parcialmente en `main` (`b82a249`).**
+> **Estado: diseño aprobado (ADR-004); cliente y publicador implementados parcialmente en `main` (código auditado `26085c6`).**
 > El registro local, verificador Ed25519, generador, instalador transaccional, cliente HTTP y scheduler están implementados. La distribución central pública y la aceptación completa de la aplicación empaquetada siguen pendientes.
 
 ### 9.1 Límites de confianza y responsabilidades
@@ -221,8 +221,8 @@ flowchart TD
 | Comandos de gestión editorial y distribución | Incluye `publicar_paquete_conocimiento` y `sincronizar_conocimiento`; scheduler Electron integrado en `main` |
 | Generador local de paquetes firmados (ZIP + manifiesto Ed25519) | Implementado; migración 0015 y pruebas del generador validadas localmente por el propietario |
 | Catálogo firmado de fuentes (índice v2) | Implementado y validado localmente por el propietario (119 pruebas OK en `main`; 132 en rama cliente HTTP) |
-| Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementado; migración 0016 incluida. La suite integrada posterior fue confirmada con 138 pruebas OK en `main` |
-| Cliente de sincronización HTTP pull-only | Integrado; 138 pruebas OK confirmadas por el propietario |
+| Instalador transaccional local (snapshots, catálogo, activación y rollback) | Implementado parcialmente; migración 0016 incluida. La línea base de 138 pruebas es histórica |
+| Cliente de sincronización HTTP pull-only | Integrado parcialmente; distribución remota de producción aún no configurada |
 | Hosting, endpoint y publicación remota | Pendiente; no se ha seleccionado proveedor ni configurado URL/clave de producción |
 
 ---
@@ -256,8 +256,13 @@ La sincronización se ejecuta en un proceso hijo independiente. En desarrollo ut
 
 La concurrencia se limita en Electron y mediante un bloqueo de archivo por canal bajo `DATA_DIR`. El renderer solo recibe estado descriptivo por IPC. La configuración incompleta (URLs, allowlist o claves de confianza) desactiva la sincronización sin impedir el funcionamiento offline.
 
-**Estado de validación (12-11-2026):** el propietario confirmó 138 pruebas OK, build PyInstaller, smoke test del modo `--sync-knowledge` y generación del AppImage. Este smoke test no acredita el modo servidor Waitress. El AppImage se lanzó con datos temporales y se finalizó mediante SIGTERM (código 143); el cierre desde el menú, la ausencia de procesos huérfanos tras cierre normal, el arranque HTTP normal y la navegación GUI siguen pendientes. No hay endpoint público ni claves de producción.
+**Estado de validación histórica (12-11-2026):** el propietario confirmó 138 pruebas OK, build PyInstaller, smoke test del modo `--sync-knowledge` y generación del AppImage. Este smoke test no acredita el modo servidor Waitress. El AppImage se lanzó con datos temporales y se finalizó mediante SIGTERM (código 143); el cierre desde el menú, la ausencia de procesos huérfanos tras cierre normal, el arranque HTTP normal y la navegación GUI siguen pendientes. No hay endpoint público ni claves de producción.
 
 ### 12. Aclaración de aceptación del ejecutable empaquetado
 
 El binario tiene dos modos distintos: servidor normal (migraciones + Django WSGI + Waitress) y tarea puntual `--sync-knowledge`. La evidencia del smoke test corresponde al segundo modo; no debe presentarse como prueba del primero. En el servidor normal, ASCENSO no se carga automáticamente: se debe ejecutar el comando `cargar_ascenso` de forma explícita. Una instalación nueva sin esa carga puede abrir la aplicación, pero no tendrá contenido curricular para navegar.
+
+
+## Actualización de auditoría — 16-11-2026
+
+La línea base de código revisada es `main` en `26085c66ae4afd01b174b461b76d3de19d211b50`. Las referencias a 138 pruebas y a `b82a249` en secciones históricas describen el estado del 12-11-2026. El estado actual de fases 2–8, la portabilidad y los bloqueos de primer arranque se registran en `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
