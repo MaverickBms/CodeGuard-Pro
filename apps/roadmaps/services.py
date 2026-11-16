@@ -198,21 +198,6 @@ def roadmap_activo() -> Roadmap | None:
     return Roadmap.objects.filter(activo=True).order_by("-actualizado_en").first()
 
 
-def resumen_roadmap(roadmap: Roadmap) -> dict:
-    """Estadísticas descriptivas del roadmap para el panel de listado."""
-    etapas = roadmap.etapas.all()
-    return {
-        "total_etapas": etapas.count(),
-        "total_modulos": Modulo.objects.filter(etapa__roadmap=roadmap).count(),
-        "total_lecciones": Leccion.objects.filter(modulo__etapa__roadmap=roadmap).count(),
-        "total_proyectos": etapas.exclude(proyecto="").count(),
-        "por_prioridad": {
-            fila["prioridad"]: fila["total"]
-            for fila in etapas.values("prioridad").annotate(total=Count("id"))
-        },
-    }
-
-
 def etapas_completadas(usuario, roadmap: Roadmap) -> set[int]:
     """Números de etapa con progreso de etapa marcado como completado."""
     if not usuario or not usuario.is_authenticated:

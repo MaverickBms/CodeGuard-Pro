@@ -12,6 +12,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -39,7 +40,6 @@ from .services import (
     marcar_etapa,
     marcar_leccion,
     progreso_general,
-    resumen_roadmap,
     roadmap_activo,
 )
 
@@ -111,7 +111,16 @@ def lista(request):
             len(modulo.lecciones.all()) for modulo in etapa.modulos.all()
         )
 
-    resumen = resumen_roadmap(roadmap)
+    resumen = {
+        "total_etapas": roadmap.total_etapas,
+        "total_modulos": roadmap.total_modulos,
+        "total_lecciones": roadmap.total_lecciones,
+        "total_proyectos": roadmap.total_proyectos,
+        "por_prioridad": {
+            fila["prioridad"]: fila["total"]
+            for fila in roadmap.etapas.values("prioridad").annotate(total=Count("id"))
+        },
+    }
     avance = progreso_general(usuario, roadmap)
     bloques = list(
         roadmap.etapas.values_list("bloque", flat=True).distinct().order_by("bloque")
