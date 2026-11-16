@@ -77,7 +77,7 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Elemento | Estado |
 |---|---|
 | Repositorio | `/home/mvxbms/Documentos/CodeGuard` |
-| Línea base | `main` en `b82a249` (incluye catálogo v2, instalador, cliente HTTP, scheduler y corrección PyInstaller) |
+| Línea base | `main` en `26085c66ae4afd01b174b461b76d3de19d211b50` (código auditado; commits posteriores son documentales) |
 | Rama de trabajo | `main` |
 | HEAD de código auditado | `26085c66ae4afd01b174b461b76d3de19d211b50` |
 | Diferencia respecto a `main` | Ninguna: documentación sincronizada directamente sobre `main` con autorización expresa |
@@ -108,12 +108,12 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | Fase | Estado | Observación |
 |---|---|---|
 | **Fase 1 — Núcleo funcional** | ✅ Completada y verificada | Autenticación, panel, auditoría, seguridad, 12 temas, servidor local |
-| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | 138 pruebas OK; PyInstaller, smoke test sync y AppImage confirmados. Aceptación GUI/Waitress y navegación curricular pendientes; hosting y claves de producción pendientes |
+| **Fase 2 — Motor de aprendizaje y conocimiento versionado** | 🔄 En curso | Contenido real, práctica segura y aceptación GUI/offline pendientes; cliente pull-only y rollback implementados parcialmente |
 | **Sincronización de red / servicio central / cliente de sync** | ⏳ Parcial | Cliente HTTP/scheduler integrados; modo sync empaquetado probado; endpoint, hosting y claves de producción pendientes |
-| **Competencias y evaluaciones** | ⏳ Pendiente | Incremento 3 |
-| **Biblioteca documental y base de conocimiento** | ⏳ Pendiente | Incremento 4 |
-| **Evidencias y laboratorios** | ⏳ Pendiente | Incremento 5 |
-| **Administración y vigencia (backups)** | ⏳ Pendiente | Incremento 6 |
+| **Fase 3 — Tutor IA local** | 🔄 Parcial | Ollama y fallback estático; validación runtime pendiente |
+| **Fase 4 — Evaluaciones y progresión** | 🔄 Parcial | Modelos integrados; corrección, homologación y UI pendientes |
+| **Fase 5 — Gamificación** | 🔄 Base implementada | Balance y validación funcional pendientes |
+| **Fase 6 — Mundo/avatar** | 🔄 Base implementada | Personalización avanzada y narrativa pendientes |\n| **Fase 7 — Desafíos** | 🔄 Base técnica | Catálogo e interacción pendientes |\n| **Fase 8 — Calidad e integración** | 🔄 En progreso | Instalación limpia, offline E2E, backup/restore y matriz multiplataforma pendientes |
 
 ---
 
@@ -159,7 +159,7 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | **Hosting/endpoint público de distribución** | Pendiente de seleccionar proveedor y autorizar publicación; no se configura en esta rama |
 | **Generador central y catálogo firmado v2** | Generador, migración 0015 y catálogo v2 validados localmente por el propietario (119 pruebas OK) |
 | **Instalador transaccional (migración 0016)** | Validado en `main` `2c5d441` (119 pruebas OK) |
-| **Cliente de sincronización HTTP** | Integrado; 138 pruebas OK y smoke test del modo sync confirmados. No confundir con aceptación del servidor Waitress normal |
+| **Cliente de sincronización HTTP** | Implementado parcialmente; la distribución remota está desactivada hasta configurar endpoint, allowlist y claves. No es requisito para el uso offline |
 | **Competencias y evaluaciones (Incremento 3)** | Pendiente de decisión |
 | **Biblioteca documental (Incremento 4)** | Pendiente de decisión |
 | **Evidencias y laboratorios (Incremento 5)** | Pendiente de decisión |
