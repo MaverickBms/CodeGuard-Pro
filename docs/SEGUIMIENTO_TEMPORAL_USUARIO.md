@@ -52,7 +52,7 @@ Entregar CodeGuard Pro como aplicación de escritorio completamente funcional, e
 | Fase | Nombre | Estado | Trabajo realizado | Resultado pruebas |
 |---|---|---|---|---|
 | 1 | Fundamentos UX/UI y experiencia base | ✅ Completada | Dashboard, navegación, sidebar, 12 temas, responsive, ajustes de contraste. | Documentado como verificado por propietario. |
-| 2 | Motor de aprendizaje y contenido interactivo | 🔄 En progreso — parcial | Modelos curriculares, contenido, ejemplos, ejercicios, progreso, flujo editorial, paquetes firmados, sincronización cliente. | 197 pruebas OK (ejecutado 16 nov 2026). |
+| 2 | Motor de aprendizaje y contenido interactivo | 🔄 En progreso — parcial | Modelos curriculares, contenido, ejemplos, ejercicios, progreso, flujo editorial, paquetes firmados, sincronización cliente. Arquitectura refinada: ADR-005 (WAL mode), ADR-006 (unificar contadores), ADR-007 (servicio contenido activo), ADR-008 (combinar consultas progreso), ADR-009 (DEPENDENCIAS_EXPLICITAS a JSON). Eliminados ~170 líneas de código duplicado. | 197 pruebas OK (ejecutado 16 nov 2026, verificado tras cada cambio arquitectónico). |
 | 3 | Tutor inteligente local | ⏳ Pendiente | — | — |
 | 4 | Evaluaciones y progresión académica | ⏳ Pendiente | — | — |
 | 5 | Gamificación y economía de recompensas | ⏳ Pendiente | — | — |
@@ -116,7 +116,7 @@ Entregar CodeGuard Pro como aplicación de escritorio completamente funcional, e
 | DT-002 | Continuar en rama `chore/stabilizacion-pre-fase-2` | La rama contiene trabajo de estabilización previo a fase 2; no se asume que una rama experimental esté integrada. | Cambiar a `main` inmediatamente. | Riesgo de divergencia con main; debe evaluarse integración. |
 | DT-003 | Línea base de pruebas = 197 OK | Ejecución real en el commit actual supera las 138 reportadas por el propietario. | Mantener 138 como referencia. | Documentación debe actualizarse para reflejar 197. |
 | DT-004 | No introducir microservicios ni cloud en v1 | Principio de primera versión local y gratuita. | Arquitectura distribuida anticipada. | Simplicidad operativa; evolución futura documentada pero no implementada. |
-| DT-005 | No modificar código en esta fase de revisión | `arquitecto` (S1) realizó revisión de solo lectura sin modificar archivos. Todos los hallazgos documentados para futura autorización. | Modificar código inmediatamente para corregir duplicación/acoplamiento. | Evita cambios no coordinados; permite al orquestador priorizar correcciones. |
+| DT-005 | Implementar ADR-005 a ADR-009 (mejoras arquitectónicas cortas) | `arquitecto` (S1) implementó las 5 mejoras propuestas en la revisión de arquitectura: WAL mode, unificar contadores, servicio contenido activo, combinar consultas progreso, mover DEPENDENCIAS_EXPLICITAS a JSON. | No implementar mejoras y mantener deuda técnica. | Código más limpio, menor duplicado, mejor concurrencia SQLite. ~170 líneas eliminadas. |
 
 ---
 
@@ -124,7 +124,7 @@ Entregar CodeGuard Pro como aplicación de escritorio completamente funcional, e
 
 | Subagente | Especialización | Responsabilidades | Actividades | Entregables | Resultado supervisión |
 |---|---|---|---|---|---|
-| S1 | Arquitectura y Backend | Django, Python, modelos, servicios, vistas, APIs, integridad de datos, rendimiento. | Revisión completa de arquitectura; implementó ADR-005 (WAL mode) y ADR-006 (unificar contadores roadmap). Ejecutando ADR-007 (servicio resolucion contenido activo). | Informe detallado + 2 ADRs + 2 commits de código. 197 pruebas OK tras cada cambio. | 🔄 En curso (ADR-007) |
+| S1 | Arquitectura y Backend | Django, Python, modelos, servicios, vistas, APIs, integridad de datos, rendimiento. | Revisión completa de arquitectura; implementó ADR-005 (WAL mode), ADR-006 (unificar contadores), ADR-007 (servicio obtener_contenido_activo), ADR-008 (combinar consultas progreso), ADR-009 (DEPENDENCIAS_EXPLICITAS a JSON). | 5 ADRs + 4 commits de código. 197 pruebas OK tras cada cambio. Eliminó ~170 líneas de código duplicado. | ✅ Completado (16-nov-2026) |
 | S2 | Frontend y UX | HTML, CSS, JS, interfaz visual, accesibilidad, responsive, temas, animaciones. | Revisión de consistencia visual; actualizó README.md y docs/PLAN_DESARROLLO.md (138→197 pruebas). | Cambios commiteados en `af56fbd`. Salida por buffer no capturada, pero cambios revisados y aceptados. | ✅ Completado (16-nov-2026) |
 | S3 | Seguridad y Calidad | Vulnerabilidades, auth, sesiones, aislamiento Electron, pruebas unitarias/integración/regresión. | **No respondió a través de herdr** (estado idle persistente). Tarea asumida por el orquestador. | system check: 0 issues (development y desktop). makemigrations: sin cambios. 197 pruebas OK. Electron: sandbox, contextIsolation, nodeIntegration=false, IPC validado. | ⚠️ Asumido por orquestador (herdr no respondió) |
 | S4 | Documentación, Integración y QA | Documentación técnica, registros, integración, trazabilidad, instalación, distribución, informes de aceptación. | **No respondió a través de herdr** (estado idle persistente). Tarea asumida por el orquestador. | docs/SEGUIMIENTO_TEMPORAL_USUARIO.md creado y actualizado. Revisión de coherencia de docs/ completada por orquestador. | ⚠️ Asumido por orquestador (herdr no respondió) |
