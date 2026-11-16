@@ -113,7 +113,9 @@ Este documento **no es una autorización**. La autorización solo la concede el 
 | **Fase 3 — Tutor IA local** | 🔄 Parcial | Ollama y fallback estático; validación runtime pendiente |
 | **Fase 4 — Evaluaciones y progresión** | 🔄 Parcial | Modelos integrados; corrección, homologación y UI pendientes |
 | **Fase 5 — Gamificación** | 🔄 Base implementada | Balance y validación funcional pendientes |
-| **Fase 6 — Mundo/avatar** | 🔄 Base implementada | Personalización avanzada y narrativa pendientes |\n| **Fase 7 — Desafíos** | 🔄 Base técnica | Catálogo e interacción pendientes |\n| **Fase 8 — Calidad e integración** | 🔄 En progreso | Instalación limpia, offline E2E, backup/restore y matriz multiplataforma pendientes |
+| **Fase 6 — Mundo/avatar** | 🔄 Base implementada | Personalización avanzada y narrativa pendientes |
+| **Fase 7 — Desafíos** | 🔄 Base técnica | Catálogo e interacción pendientes |
+| **Fase 8 — Calidad e integración** | 🔄 En progreso | Instalación limpia, offline E2E, backup/restore y matriz multiplataforma pendientes |
 
 ---
 
@@ -184,7 +186,8 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | 2.6 | 2026-11-12 | Scheduler Electron, backoff exponencial, bloqueo entre procesos, proceso PyInstaller de una sola tarea, IPC limitado, pruebas y documentación | Autorización expresa del propietario |
 | 2.7 | 2026-11-12 | Validación local satisfactoria de las pruebas de backoff/bloqueo y chequeos sintácticos | Confirmación del propietario |
 | 2.8 | 2026-11-12 | Corrección PyInstaller (Django hidden imports) y electron-builder; propietario confirma 136 pruebas, build PyInstaller y AppImage | Autorización expresa para validación de integración |
-| 2.9 | 2026-11-12 | Línea base histórica de 138 pruebas, build PyInstaller, smoke test sync y AppImage | Confirmación del propietario |\n| 3.0 | 2026-11-16 | Integración fast-forward de 75 commits a `main`; fases 3–7 incorporadas; auditoría QA integral, riesgos de primer arranque y portabilidad documentados | Solicitud del propietario de auditar, consolidar `main` y actualizar documentación |
+| 2.9 | 2026-11-12 | Línea base histórica de 138 pruebas, build PyInstaller, smoke test sync y AppImage | Confirmación del propietario |
+| 3.0 | 2026-11-16 | Integración fast-forward de 75 commits a `main`; fases 3–7 incorporadas; auditoría QA integral, riesgos de primer arranque y portabilidad documentados | Solicitud del propietario de auditar, consolidar `main` y actualizar documentación |
 
 ### Reglas de actualización
 
