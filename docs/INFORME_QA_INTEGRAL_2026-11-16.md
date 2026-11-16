@@ -230,3 +230,24 @@ No declarar CodeGuard Pro listo para distribución hasta que:
 ---
 
 **Conclusión:** la base del proyecto es sustancial y la arquitectura elegida encaja con una aplicación educativa personal offline-first. La prioridad ya no debe ser añadir más módulos; debe ser cerrar la instalación limpia, la persistencia, la portabilidad, el contenido académico real y la aceptación funcional de extremo a extremo.
+
+### QA-12 — Límite de pistas no protegido frente a concurrencia
+**Prioridad: P2.**
+
+En `apps/tutoring/services.py`, `entregar_pista` lee `pistas_utilizadas`, genera la pista y después actualiza el contador. El flujo no está envuelto en una transacción ni bloquea la fila de sesión. Dos solicitudes simultáneas pueden leer el mismo contador y registrar pistas con el mismo número o superar el límite efectivo.
+
+**Mejora recomendada:** serializar la reserva del número de pista con transacción y estrategia compatible con SQLite (actualización condicional/contador atómico), imponer unicidad de `(sesion, numero_pista)` y añadir prueba concurrente.
+
+### QA-13 — URL del tutor configurable sin restricción de loopback
+**Prioridad: P1 de privacidad.**
+
+El tutor construye la URL de Ollama desde `CODEGUARD_TUTOR_BASE_URL`. El valor por defecto es localhost, pero la configuración acepta una URL alternativa sin validar que sea loopback. El análisis del intento incluye la respuesta/código del estudiante en el contexto enviado al modelo.
+
+**Mejora recomendada:** en el modo privado/offline, aceptar únicamente `localhost`, `127.0.0.1` o `::1`; rechazar hosts remotos y redirecciones. Si en el futuro se permite un proveedor remoto, debe ser una opción explícita, con consentimiento y aviso claro de qué datos salen del equipo.
+
+### QA-14 — Modo sin autenticación en equipo compartido
+**Prioridad: P1 condicionada al entorno de uso.**
+
+`AUTH_DISABLED = True` y las vistas con `requiere_acceso` permiten acceso sin credenciales. El servidor se limita a loopback, pero loopback no separa usuarios del sistema operativo: otros procesos o cuentas locales del mismo equipo pueden intentar acceder a la interfaz.
+
+**Recomendación:** para equipos personales de un solo usuario puede aceptarse como decisión temporal; para laboratorios, computadores compartidos o perfiles de Windows/Linux multiusuario, reactivar autenticación o añadir una barrera local ligada a la sesión del usuario antes de distribuir.
