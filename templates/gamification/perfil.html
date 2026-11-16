@@ -29,9 +29,86 @@
   {% endif %}
 </section>
 
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; margin-bottom:1rem;">
+  <section class="glass-card cg-card">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-user-astronaut" aria-hidden="true"></i> Avatar (cosmético)</h3>
+    {% if avatar %}
+      <form method="post" action="{% url 'gamification:guardar_avatar' %}">
+        {% csrf_token %}
+        <label for="nombre_avatar" class="muted" style="display:block;">Nombre del avatar</label>
+        <input id="nombre_avatar" name="nombre_avatar" type="text" class="form-control" value="{{ avatar.nombre_avatar }}" maxlength="80" style="width:100%; margin:.25rem 0 .5rem;">
+        <label for="especie" class="muted" style="display:block;">Especie</label>
+        <input id="especie" name="especie" type="text" class="form-control" value="{{ avatar.especie }}" maxlength="60" style="width:100%; margin:.25rem 0 .5rem;">
+        <label for="clase" class="muted" style="display:block;">Clase</label>
+        <input id="clase" name="clase" type="text" class="form-control" value="{{ avatar.clase }}" maxlength="60" style="width:100%; margin:.25rem 0 .75rem;">
+        <button type="submit" class="btn cg-btn cg-btn-secondary"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Guardar avatar</button>
+      </form>
+      <p class="muted" style="margin-top:.5rem; font-size:.9rem;">La personalización es cosmética/narrativa y no otorga ventajas en evaluaciones.</p>
+    {% else %}
+      <p class="muted">Avatar no disponible.</p>
+    {% endif %}
+  </section>
+
+  <section class="glass-card cg-card">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-medal" aria-hidden="true"></i> Logros (disponibles y obtenidos)</h3>
+    {% if logros_todos %}
+      <ul style="list-style:none; padding:0; margin:0;">
+        {% for logro in logros_todos %}
+          <li style="padding:.5rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
+            <div style="display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;">
+              <strong>{{ logro.nombre }}</strong>
+              {% if logro.obtenido %}
+                <span class="cg-badge cg-badge-success">Obtenido</span>
+              {% else %}
+                <span class="cg-badge cg-badge-muted">Disponible</span>
+              {% endif %}
+            </div>
+            <div class="muted" style="font-size:.9rem;">{{ logro.descripcion|default:"Logro verificable." }}</div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">Los logros se habilitarán al registrar actividad académica.</p>
+    {% endif %}
+  </section>
+</div>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i> Mundo y progreso (refleja avance real)</h3>
+  {% if zonas_mundo %}
+    <ul style="list-style:none; padding:0; margin:0; display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:.75rem;">
+      {% for zona in zonas_mundo %}
+        <li class="cg-card" style="padding:.75rem;">
+          <div style="display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;">
+            <strong>{{ zona.nombre }}</strong>
+            {% if zona.completada %}
+              <span class="cg-badge cg-badge-success">Completada</span>
+            {% elif zona.bloqueada %}
+              <span class="cg-badge cg-badge-danger">Bloqueada</span>
+            {% else %}
+              <span class="cg-badge cg-badge-primary">Disponible</span>
+            {% endif %}
+          </div>
+          <div class="muted" style="font-size:.9rem; margin-top:.25rem;">Etapa {{ zona.etapa.numero }} — {{ zona.etapa.titulo }}</div>
+          {% if zona.personajes_lista %}
+            <div style="margin-top:.35rem; font-size:.9rem;">
+              <span class="muted">Guías:</span>
+              {% for p in zona.personajes_lista %}
+                <span>{{ p.nombre }}{% if p.rol %} ({{ p.rol }}){% endif %}{% if not forloop.last %}, {% endif %}</span>
+              {% empty %}{% endfor %}
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">No hay zonas configuradas o roadmap activo. El mapa reflejará el progreso real cuando exista contenido académico.</p>
+  {% endif %}
+</section>
+
 <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem;">
   <section class="glass-card cg-card">
-    <h3 style="margin-top:0;"><i class="fa-solid fa-trophy" aria-hidden="true"></i> Logros obtenidos</h3>
+    <h3 style="margin-top:0;"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Logros obtenidos (recientes)</h3>
     {% if logros_obtenidos %}
       <ul style="list-style:none; padding:0; margin:0;">
         {% for lo in logros_obtenidos %}

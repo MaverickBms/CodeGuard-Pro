@@ -8,4 +8,5 @@ app_name = "gamification"
 
 urlpatterns = [
     path("perfil/", views.perfil, name="perfil"),
+    path("perfil/avatar/", views.guardar_avatar, name="guardar_avatar"),
 ]
