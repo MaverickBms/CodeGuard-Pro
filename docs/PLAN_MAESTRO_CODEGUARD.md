@@ -489,7 +489,7 @@ El examen de etapa también debe estar disponible desde Evaluaciones para que un
 
 ## Fase 5 — Gamificación y economía de recompensas
 
-**Estado: EN PROGRESO — base técnica e integración inicial (ADR-012). Integrado: recompensas y logros académicos base idempotentes por eventos (módulo/etapa completados) y UI mínima de perfil. Pendiente: misiones/rachas completas, tienda/inventario avanzado, UI ampliada, más logros.**
+**Estado: BASE IMPLEMENTADA E INTEGRADA (ADR-012). Incluye perfil, moneda, transacciones idempotentes, logros, misiones y rachas básicas, recompensas por eventos académicos y UI de perfil. Evolutivo pendiente: tienda/inventario avanzado, balance fino y ampliación de misiones/logros.**
 
 ### Objetivo
 Aumentar la motivación, continuidad y reconocimiento del esfuerzo sin convertir las recompensas en sustituto del aprendizaje.
@@ -521,7 +521,7 @@ Aumentar la motivación, continuidad y reconocimiento del esfuerzo sin convertir
 
 ## Fase 6 — Mundo, avatar, personajes e inventario
 
-**Estado: EN PROGRESO — base técnica implementada (modelos/migración en `apps.gamification`). Pendiente: mapa/UI, personalización y desbloqueos visuales ligados al progreso real.**
+**Estado: BASE IMPLEMENTADA. Incluye modelos de zonas/personajes/avatar/decisiones evolutivas y UI mínima (avatar cosmético y mundo reflejando progreso real) en `apps.gamification`. Evolutivo pendiente: personalización visual avanzada, desbloqueos cosméticos y narrativa ampliada.**
 
 ### Objetivo
 Dar identidad y continuidad narrativa al recorrido de aprendizaje.
@@ -550,7 +550,7 @@ Dar identidad y continuidad narrativa al recorrido de aprendizaje.
 
 ## Fase 7 — Minijuegos, desafíos y jefes
 
-**Estado: PENDIENTE.**
+**Estado: BASE TÉCNICA IMPLEMENTADA (`apps.challenges`). Incluye modelos de desafíos (competencia declarada, tipo/dificultad/reglas) y resultados/evidencia inmutable, servicio y admin. Evolutivo pendiente: catálogo y UI interactiva, dificultad adaptativa y recompensas integradas.**
 
 ### Objetivo
 Reforzar conceptos mediante experiencias breves, interactivas y relacionadas directamente con competencias de programación.
@@ -578,7 +578,8 @@ Reforzar conceptos mediante experiencias breves, interactivas y relacionadas dir
 
 ## Fase 8 — Integración, calidad, seguridad y optimización
 
-**Estado: PENDIENTE. Es una fase transversal de estabilización; también debe acompañar las anteriores.**
+**Estado: CONSOLIDACIÓN TÉCNICA REALIZADA (transversal), con validaciones externas pendientes.**  
+Checks Django en 0, migraciones consistentes y **245 pruebas automatizadas OK** en el entorno de desarrollo. Seguridad y consistencia reforzadas (evaluación verificable, evidencia inmutable, transacciones idempotentes). Pendientes condicionados por entorno/autorización: verificación GUI Electron+Django empaquetado y demo offline/rollback, validación runtime de Ollama en host destino, contenido editorial real/trazable y activación de sync/auth remoto con autorización expresa.
 
 ### Objetivo
 Consolidar el producto completo para que sea estable, seguro, accesible, eficiente y confiable en modo local.

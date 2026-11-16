@@ -162,7 +162,7 @@ python manage.py makemigrations --check --dry-run
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps
 ```
 
-Resultado vigente verificado localmente (16-11-2026): **197 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit` y `apps.roadmaps`, ejecutadas con `--settings=config.settings.development`. La cifra de 138 reportada por el propietario el 12-11-2026 corresponde a una línea base anterior y ha quedado superada. Antes de continuar el desarrollo, ejecutar los comandos anteriores en el entorno local y registrar el resultado vigente.
+Resultado vigente verificado localmente (16-11-2026): **245 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification` y `apps.challenges`, ejecutadas con `--settings=config.settings.development` (system check 0 issues, migraciones al día). Las cifras anteriores (138/197/...) corresponden a líneas base previas superadas. Ver `docs/SEGUIMIENTO_TEMPORAL_USUARIO.md` para el estado por fases y validaciones pendientes.
 
 ## ❓ Solución de problemas
 
