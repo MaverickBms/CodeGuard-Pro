@@ -9,6 +9,20 @@
 > y se verifican con `override_settings(AUTH_DISABLED=False)`. Las nuevas pruebas
 > del modo sin autenticación usan `override_settings(AUTH_DISABLED=True)`.
 
+## Estado de pruebas vigente — 16-11-2026
+
+El README del repositorio registra **245 pruebas OK** en siete aplicaciones: `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification` y `apps.challenges`. El plan de desarrollo registra 197 pruebas para el subconjunto de cuatro apps principales. Estas cifras corresponden a alcances distintos; 138 es una línea base histórica anterior.
+
+Comando de reproducción del conjunto ampliado:
+
+```bash
+./.venv/bin/python manage.py check --settings=config.settings.development
+./.venv/bin/python manage.py makemigrations --check --dry-run --settings=config.settings.development
+./.venv/bin/python -m pip check
+./.venv/bin/python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges --settings=config.settings.development
+```
+
+**Estado QA:** el resultado de 245 debe repetirse y registrarse con salida íntegra en el HEAD actual antes de una release. Estas pruebas automatizadas no sustituyen la aceptación GUI, la prueba offline E2E, la instalación limpia ni el backup/restore.
 ---
 
 ## 1. Entorno de medición (RNF-003)
