@@ -66,17 +66,17 @@ Genera ZIP reproducible por secuencia, índice interno, manifiesto externo y fir
 
 El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos bibliográficos, decisión y evidencia de licencia, alcance y fecha de revisión. El verificador conserva compatibilidad con índice v1. No se exporta la identidad personal del revisor.
 
-## 7. Pendiente (no implementado)
+## 7. Pendientes de cierre y aceptación\n\nLas cifras de pruebas de esta sección son históricas cuando se refieren a 119/138; el estado más reciente reportado es 245 en siete apps, pendiente de reproducir en el HEAD actual. Los pendientes de integración se detallan en `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
 
 | Elemento | Estado | Documento |
 |---|---|---|
-| Cliente de sincronización de red | Cliente HTTP, scheduler y backoff implementados; 138 pruebas OK confirmadas; PyInstaller y AppImage Linux generados. El smoke test valida el comando `--sync-knowledge`, no el servidor Waitress normal. Aceptación GUI Electron y navegación del roadmap pendientes. Endpoint y claves de producción no configurados | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
+| Cliente de sincronización de red | Cliente HTTP, scheduler y backoff implementados parcialmente. La evidencia de 138 pruebas es histórica; README registra 245 pruebas en siete apps el 16-11-2026, pendiente de reproducción en HEAD actual. El smoke test `--sync-knowledge` no valida Waitress/GUI. Endpoint y claves de producción no configurados | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Generador local y catálogo firmado v2 | Implementado; migración 0015 y pruebas confirmadas por el propietario. Hosting y publicación remota pendientes | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Instalación transaccional local y rollback | Validada por el propietario en `main` `2c5d441` (119 pruebas OK; migración 0016 incluida) | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Evaluaciones y progresión | Base de modelos integrada en Fase 4; corrección, homologación y UI pendientes | `docs/PLAN_MAESTRO_CODEGUARD.md` |
 | Tutoría IA local | App `apps.tutoring` integrada en Fase 3; validación Ollama pendiente | `docs/PLAN_MAESTRO_CODEGUARD.md` |
 | Gamificación, mundo y desafíos | Bases integradas en Fases 5–7; experiencia completa pendiente | `docs/PLAN_MAESTRO_CODEGUARD.md` |
-| Backups y administración | Pendiente (Incremento 6) | `docs/PLAN_DESARROLLO.md` |
+| Backups y administración | Backup/restore y migración de datos entre equipos pendientes de implementar y aceptar | `docs/INFORME_QA_INTEGRAL_2026-11-16.md` |
 
 ---
 
