@@ -35,6 +35,7 @@ try {
 const actualHash = crypto.createHash('sha256').update(fs.readFileSync(executablePath)).digest('hex');
 if (
   manifest.platform !== process.platform ||
+  manifest.architecture !== process.arch ||
   manifest.executable !== executableName ||
   manifest.sha256 !== actualHash
 ) {
