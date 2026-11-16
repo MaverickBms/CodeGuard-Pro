@@ -627,3 +627,33 @@ class ExamenEtapaHomologacionTests(TestCase):
                 evento="criterio_finalizacion_cumplido", usuario=self.usuario
             ).exists()
         )
+
+from django.test import TestCase
+from django.core.management import call_command
+
+from apps.roadmaps.models import Etapa, Modulo, Roadmap
+from apps.roadmaps.models_evaluacion import Pregunta, Quiz
+from apps.roadmaps.services_carga_evaluaciones import cargar_quizzes
+
+
+class CargaQuizzesTests(TestCase):
+    def setUp(self):
+        self.roadmap = Roadmap.objects.create(nombre="ASCENSO", edicion="3.1", activo=True)
+        etapa = Etapa.objects.create(roadmap=self.roadmap, numero=0, titulo="Etapa 0")
+        Modulo.objects.create(etapa=etapa, numero="0.1", titulo="Aprender a aprender", orden=1)
+
+    def test_carga_quizzes_ejemplo(self):
+        resumen = cargar_quizzes("apps/roadmaps/data/quizzes_ejemplo.json", roadmap=self.roadmap)
+        self.assertEqual(resumen["quizzes"], 1)
+        self.assertEqual(resumen["preguntas"], 2)
+        quiz = Quiz.objects.get(nombre__startswith="Ejemplo")
+        self.assertEqual(quiz.estado, Quiz.ESTADO_BORRADOR)
+        self.assertEqual(quiz.modulo.numero, "0.1")
+        self.assertEqual(quiz.preguntas.count(), 2)
+        p1 = quiz.preguntas.get(orden=1)
+        self.assertIn("_meta_trazabilidad", p1.datos_respuesta)
+        self.assertIn("objetivo", p1.datos_respuesta["_meta_trazabilidad"])
+
+    def test_command_cargar_quizzes(self):
+        call_command("cargar_quizzes", ruta="apps/roadmaps/data/quizzes_ejemplo.json")
+        self.assertEqual(Quiz.objects.count(), 1)

@@ -1,0 +1,45 @@
+{
+  "metadata": {
+    "descripcion": "Ejemplo/piloto de authoring trazable de evaluaciones (Fase 4).",
+    "nota": "Los quizzes de módulo publicados deben tener >=15 preguntas con objetivos y contenido/fuente trazables. Este archivo es un borrador de ejemplo de estructura, no contenido académico definitivo.",
+    "fuente": "Definir documento/fuente oficial y objetivos de aprendizaje al crear contenido real."
+  },
+  "quizzes": [
+    {
+      "nombre": "Ejemplo — Quiz borrador de módulo (estructura)",
+      "tipo": "quiz",
+      "etapa_numero": 0,
+      "modulo_numero": "0.1",
+      "version": 1,
+      "estado": "borrador",
+      "umbral_aprobacion": 70,
+      "objetivo_general": "Ejemplo de estructura trazable; reemplazar por objetivos reales del módulo.",
+      "fuente": "Pendiente de fuente académica trazable",
+      "preguntas": [
+        {
+          "orden": 1,
+          "formato": "respuesta",
+          "enunciado": "Ejemplo: ¿Qué es el aprendizaje activo? (reemplazar por pregunta real)",
+          "objetivo": "Comprender conceptos base del módulo (ejemplo)",
+          "contenido": "Fuente/objetivo trazable pendiente",
+          "datos_respuesta": {"respuesta_esperada": "ejemplo"},
+          "retroalimentacion_base": "Retroalimentación de ejemplo."
+        },
+        {
+          "orden": 2,
+          "formato": "seleccion",
+          "enunciado": "Ejemplo de selección única (reemplazar por pregunta real)",
+          "objetivo": "Identificar conceptos (ejemplo)",
+          "contenido": "Fuente/objetivo trazable pendiente",
+          "datos_respuesta": {
+            "opciones": [
+              {"texto": "Opción A (ejemplo)", "correcta": true},
+              {"texto": "Opción B (ejemplo)", "correcta": false}
+            ]
+          },
+          "retroalimentacion_base": "Retroalimentación de ejemplo."
+        }
+      ]
+    }
+  ]
+}
