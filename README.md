@@ -6,7 +6,7 @@
 
 El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicación de escritorio **Electron**, con **SQLite**. CodeGuard es **offline-first**: no requiere Internet para abrir la aplicación, estudiar con el contenido disponible ni consultar el progreso local.
 
-El roadmap ASCENSO 3.1 (33 etapas) ya está implementado y cargable mediante `python manage.py cargar_ascenso`. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado en la rama principal mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
+El roadmap ASCENSO 3.1 (33 etapas) ya está implementado y cargable mediante `python manage.py cargar_ascenso`. El proyecto también incorpora bases funcionales de tutoría IA local (Ollama), evaluaciones, gamificación, mundo/avatar y desafíos; consulta `docs/PLAN_MAESTRO_CODEGUARD.md` para distinguir lo implementado de lo que sigue en progreso. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado en la rama principal mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
 
 El cliente de sincronización pull-only por HTTPS, el comando `sincronizar_conocimiento`, el publicador local y la integración de comprobaciones periódicas con Electron están implementados. **La distribución remota de producción sigue pendiente**: no hay hosting/endpoint público, allowlist ni claves públicas de producción configuradas. Sin esa configuración, el cliente falla cerrado y no realiza conexiones. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
 
@@ -159,10 +159,10 @@ Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/
 ```bash
 python manage.py check
 python manage.py makemigrations --check --dry-run
-python manage.py test apps.core apps.accounts apps.audit apps.roadmaps
+python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges
 ```
 
-Resultado vigente verificado localmente (16-11-2026): **245 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification` y `apps.challenges`, ejecutadas con `--settings=config.settings.development` (system check 0 issues, migraciones al día). Las cifras anteriores (138/197/...) corresponden a líneas base previas superadas. Ver `docs/SEGUIMIENTO_TEMPORAL_USUARIO.md` para el estado por fases y validaciones pendientes.
+Resultado reportado en el repositorio (16-11-2026): **245 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification` y `apps.challenges`, con `--settings=config.settings.development` (system check 0 issues y migraciones al día). El subconjunto de cuatro apps principales figura con 197 pruebas en el historial; 138 corresponde a una línea base anterior. Reproducir el comando completo en el HEAD actual antes de una release. Ver `docs/SEGUIMIENTO_TEMPORAL_USUARIO.md` para el estado por fases y validaciones pendientes.
 
 ## ❓ Solución de problemas
 
