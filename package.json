@@ -7,9 +7,11 @@
   "scripts": {
     "start": "electron .",
     "dev": "cross-env NODE_ENV=development electron .",
-    "build": "electron-builder",
-    "build:win": "electron-builder --win",
-    "build:linux": "electron-builder --linux",
+    "build:server": "node scripts/build-server.js",
+    "verify:server": "node scripts/verify-server-build.js",
+    "build": "npm run build:server && npm run verify:server && electron-builder",
+    "build:win": "npm run build:server && npm run verify:server && electron-builder --win",
+    "build:linux": "npm run build:server && npm run verify:server && electron-builder --linux",
     "postinstall": "electron-builder install-app-deps"
   },
   "author": "CodeGuard Pro Team",
