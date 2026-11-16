@@ -6,7 +6,7 @@
 **Elaborado por:** Subagente 4 (Documentación, Integración y QA)  
 **Fecha:** 16 de noviembre de 2026  
 **Rama de referencia:** `chore/stabilizacion-pre-fase-2`  
-**Commit de referencia:** `7bc938d` (homologación por examen de etapa)  
+**Commit de referencia:** `73608c2` (homologación condicionada a criterios)  
 
 ---
 
@@ -16,9 +16,9 @@ La Fase 4 (Evaluaciones y progresión académica) está **en progreso — parcia
 
 Incluye: modelos de evaluación (`Quiz`, `Pregunta`, `ResultadoEvaluacion`, `ResultadoPregunta`), migraciones `0017` y `0018`, corrección automática determinista y revisión controlada para formatos abiertos, flujo UI de quiz (detalle/envío/resultado/historial), acceso desde detalle de etapa, progreso de módulo al aprobar quiz sin revisión, y **homologación/progresión de etapa por examen verificable** (`Quiz.etapa`) con auditoría cuando se cumple umbral, sin revisión pendiente y con prerrequisitos satisfechos.
 
-Línea base actual: **232 pruebas OK** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification`).
+Línea base actual: **233 pruebas OK** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification`).
 
-Pendiente: integración más completa con criterios/proyecto de finalización, authoring editorial (≥15 preguntas por módulo/examen), UI avanzada y validaciones GUI específicas.
+Pendiente: verificación/evidencia de criterios proyecto/manual/evidencia no automatizados, authoring editorial (≥15 preguntas por módulo/examen), UI avanzada y validaciones GUI específicas.
 
 ---
 
@@ -31,7 +31,7 @@ Pendiente: integración más completa con criterios/proyecto de finalización, a
 | Corrección automática (determinista/revisión controlada) | ✅ Implementado | `services_evaluacion.py`, tests |
 | Flujo quiz UI + historial | ✅ Implementado | vistas/templates |
 | Progreso de módulo por quiz aprobado | ✅ Implementado | `services_evaluacion.py`, `views.py`, tests |
-| Examen de etapa + homologación de etapa | ✅ Implementado (básico) | `Quiz.etapa`, `aprobar_etapa_por_evaluacion`, tests |
+| Examen de etapa + homologación condicionada a criterios | ✅ Implementado (explícito/auditable) | `Quiz.etapa`, `aprobar_etapa_por_evaluacion`, criterios, tests |
 | Authoring editorial (≥15 preguntas, objetivos trazables) | ⏳ Pendiente | Trabajo editorial/código adicional |
 | UI avanzada / integración plena criterios etapa | ⏳ Pendiente | No verificado |
 
