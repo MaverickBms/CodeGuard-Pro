@@ -52,3 +52,39 @@ class GamificationServicesTests(TestCase):
             TransaccionMoneda.objects.filter(usuario=self.usuario, tipo="credito").count(),
             1,
         )
+
+
+from apps.gamification.services import evaluar_logros_academicos
+from apps.roadmaps.models import Etapa, Modulo, Progreso, Roadmap
+
+
+class LogrosAcademicosTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="jugador-logros", password="ClaveSegura123!"
+        )
+        self.roadmap = Roadmap.objects.create(nombre="ASCENSO logros", edicion="test")
+
+    def test_otorga_primer_modulo_y_no_duplica(self):
+        etapa = Etapa.objects.create(roadmap=self.roadmap, numero=1, titulo="Etapa 1")
+        modulo = Modulo.objects.create(etapa=etapa, numero="1.1", titulo="Módulo 1")
+        Progreso.objects.create(
+            usuario=self.usuario, etapa=etapa, modulo=modulo, leccion=None, actividad=None,
+            estado="completado", porcentaje=100,
+        )
+        evaluar_logros_academicos(self.usuario)
+        self.assertTrue(LogroObtenido.objects.filter(usuario=self.usuario, logro__clave="primer-modulo").exists())
+        saldo1 = PerfilGamificacion.objects.get(usuario=self.usuario).saldo_monedas
+        evaluar_logros_academicos(self.usuario)
+        self.assertEqual(LogroObtenido.objects.filter(usuario=self.usuario, logro__clave="primer-modulo").count(), 1)
+        saldo2 = PerfilGamificacion.objects.get(usuario=self.usuario).saldo_monedas
+        self.assertEqual(saldo1, saldo2)
+
+    def test_otorga_primera_etapa(self):
+        etapa = Etapa.objects.create(roadmap=self.roadmap, numero=1, titulo="Etapa 1")
+        Progreso.objects.create(
+            usuario=self.usuario, etapa=etapa, modulo=None, leccion=None, actividad=None,
+            estado="completado", porcentaje=100,
+        )
+        evaluar_logros_academicos(self.usuario)
+        self.assertTrue(LogroObtenido.objects.filter(usuario=self.usuario, logro__clave="primera-etapa").exists())

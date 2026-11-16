@@ -77,3 +77,59 @@ def recompensar_evento_academico(usuario, evento: str, objeto_id: int, concepto:
         return None
     referencia = f"evento:{evento}:{objeto_id}:usuario:{usuario.id}"
     return acreditar_monedas(usuario, int(monto), concepto, referencia=referencia)
+
+
+LOGROS_ACADEMICOS_DEFECTO = [
+    {"clave": "primer-modulo", "nombre": "Primer módulo completado", "descripcion": "Completaste tu primer módulo por evaluación.", "condicion": "modulos_completados>=1", "recompensa_monedas": 10},
+    {"clave": "cinco-modulos", "nombre": "Cinco módulos completados", "descripcion": "Alcanzaste 5 módulos completados.", "condicion": "modulos_completados>=5", "recompensa_monedas": 25},
+    {"clave": "primera-etapa", "nombre": "Primera etapa completada", "descripcion": "Completaste tu primera etapa por criterios verificables.", "condicion": "etapas_completadas>=1", "recompensa_monedas": 20},
+    {"clave": "tres-etapas", "nombre": "Tres etapas completadas", "descripcion": "Alcanzaste 3 etapas completadas.", "condicion": "etapas_completadas>=3", "recompensa_monedas": 40},
+]
+
+
+def asegurar_logros_academicos_defecto() -> None:
+    """Crea logros académicos base si no existen (configurables)."""
+    for datos in LOGROS_ACADEMICOS_DEFECTO:
+        Logro.objects.get_or_create(clave=datos["clave"], defaults=datos)
+
+
+def evaluar_logros_academicos(usuario, *, modulos_completados: int | None = None, etapas_completadas: int | None = None) -> list[LogroObtenido]:
+    """Evalúa y otorga logros académicos de forma idempotente."""
+    if usuario is None or not getattr(usuario, "is_authenticated", False):
+        return []
+
+    asegurar_logros_academicos_defecto()
+
+    if modulos_completados is None:
+        try:
+            from apps.roadmaps.models import Progreso
+            modulos_completados = Progreso.objects.filter(
+                usuario=usuario, modulo__isnull=False, leccion__isnull=True, actividad__isnull=True, estado="completado"
+            ).values("modulo_id").distinct().count()
+        except Exception:
+            modulos_completados = 0
+    if etapas_completadas is None:
+        try:
+            from apps.roadmaps.models import Progreso
+            etapas_completadas = Progreso.objects.filter(
+                usuario=usuario, modulo__isnull=True, leccion__isnull=True, actividad__isnull=True, estado="completado"
+            ).values("etapa_id").distinct().count()
+        except Exception:
+            etapas_completadas = 0
+
+    otorgados = []
+    reglas = [
+        ("primer-modulo", modulos_completados >= 1),
+        ("cinco-modulos", modulos_completados >= 5),
+        ("primera-etapa", etapas_completadas >= 1),
+        ("tres-etapas", etapas_completadas >= 3),
+    ]
+    for clave, cumple in reglas:
+        if not cumple:
+            continue
+        logro = Logro.objects.filter(clave=clave, activo=True).first()
+        if not logro:
+            continue
+        obtenido, _ = otorgar_logro(usuario, logro, origen="evento_academico")
+        otorgados.append(obtenido)
+    return otorgados
