@@ -21,6 +21,8 @@ from apps.accounts.identity import (
     requiere_acceso,
 )
 from .models import (
+    CriterioFinalizacion,
+    CumplimientoCriterio,
     EjercicioLeccion,
     Etapa,
     IntentoEjercicio,
@@ -42,7 +44,7 @@ from .services import (
     progreso_general,
     roadmap_activo,
 )
-from .services_evaluacion import evaluar_quiz
+from .services_evaluacion import evaluar_quiz, registrar_cumplimiento_criterio
 
 
 @requiere_acceso
@@ -160,6 +162,19 @@ def detalle(request, numero):
         ).order_by("id")
     )
 
+    criterios = list(etapa.criterios.all())
+    cumplimientos = {}
+    if usuario is not None:
+        cumplimientos = {
+            c.criterio_id: c
+            for c in CumplimientoCriterio.objects.filter(usuario=usuario, criterio__etapa=etapa)
+        }
+    for criterio in criterios:
+        criterio.cumplimiento_actual = cumplimientos.get(criterio.id)
+        criterio.satisfecho = bool(
+            criterio.cumplimiento_actual and criterio.cumplimiento_actual.satisfecho
+        )
+
     return render(
         request,
         "roadmaps/detalle.html",
@@ -173,7 +188,7 @@ def detalle(request, numero):
             "bloqueada": etapa.esta_bloqueada_para(completadas),
             "prerrequisitos": etapa.prerrequisitos.select_related("etapa_requerida"),
             "desbloquea": etapa.desbloquea.select_related("etapa"),
-            "criterios": etapa.criterios.all(),
+            "criterios": criterios,
             "examenes_etapa": examenes_etapa,
         },
     )
@@ -537,3 +552,41 @@ def quiz_historial(request, quiz_id):
             "es_historial": True,
         },
     )
+
+
+@requiere_acceso
+@require_POST
+def registrar_criterio_view(request, numero, criterio_id):
+    """Registra evidencia/cumplimiento de un criterio de finalización (local)."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return redirect("roadmaps:lista")
+
+    usuario = get_usuario_actual(request)
+    if usuario is None:
+        messages.error(request, "No hay un propietario local configurado.")
+        return redirect("roadmaps:detalle", numero=numero)
+
+    etapa = get_object_or_404(Etapa, roadmap=roadmap, numero=numero)
+    criterio = get_object_or_404(CriterioFinalizacion, pk=criterio_id, etapa=etapa)
+
+    evidencia = (request.POST.get("evidencia") or "").strip()
+    origen = (request.POST.get("origen") or "manual").strip() or "manual"
+    if origen not in {"manual", "evidencia", "proyecto"}:
+        origen = "manual"
+
+    try:
+        registrar_cumplimiento_criterio(
+            usuario,
+            criterio,
+            evidencia=evidencia,
+            origen=origen,
+            referencia="ui:detalle_etapa",
+        )
+    except ValidationError as exc:
+        mensaje = exc.messages[0] if getattr(exc, "messages", None) else str(exc)
+        messages.error(request, mensaje)
+    else:
+        messages.success(request, f"Criterio registrado: {criterio.titulo}.")
+
+    return redirect("roadmaps:detalle", numero=numero)

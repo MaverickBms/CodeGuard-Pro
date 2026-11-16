@@ -13,6 +13,11 @@ urlpatterns = [
     path("ejercicio/<int:ejercicio_id>/intento/", views.enviar_intento_view, name="enviar_intento"),
     path("etapa/<int:numero>/marcar/", views.marcar_etapa_view, name="marcar_etapa"),
     path(
+        "etapa/<int:numero>/criterio/<int:criterio_id>/registrar/",
+        views.registrar_criterio_view,
+        name="registrar_criterio",
+    ),
+    path(
         "leccion/<int:leccion_id>/marcar/",
         views.marcar_leccion_view,
         name="marcar_leccion",
