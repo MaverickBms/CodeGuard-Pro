@@ -48,6 +48,14 @@ class Quiz(models.Model):
         related_name="quizzes",
         verbose_name="módulo",
     )
+    etapa = models.ForeignKey(
+        "roadmaps.Etapa",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="quizzes",
+        verbose_name="etapa",
+    )
     umbral_aprobacion = models.PositiveSmallIntegerField(
         default=70,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
@@ -74,7 +82,13 @@ class Quiz(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["modulo", "version"],
+                condition=models.Q(modulo__isnull=False),
                 name="quiz_unico_modulo_version",
+            ),
+            models.UniqueConstraint(
+                fields=["etapa", "version"],
+                condition=models.Q(etapa__isnull=False),
+                name="quiz_unico_etapa_version",
             ),
         ]
 
@@ -82,6 +96,10 @@ class Quiz(models.Model):
         super().clean()
         if self.tipo == self.TIPO_QUIZ and not self.modulo_id:
             raise ValidationError({"modulo": "Un quiz debe estar asociado a un módulo."})
+        if self.tipo == self.TIPO_EXAMEN and not self.etapa_id and not self.modulo_id:
+            raise ValidationError({"etapa": "Un examen debe estar asociado a una etapa o a un módulo."})
+        if self.etapa_id and self.modulo_id and self.modulo.etapa_id != self.etapa_id:
+            raise ValidationError({"etapa": "La etapa del examen debe coincidir con la etapa del módulo."})
         if self.umbral_aprobacion is None or not 0 <= self.umbral_aprobacion <= 100:
             raise ValidationError({"umbral_aprobacion": "El umbral de aprobación debe estar entre 0 y 100."})
 

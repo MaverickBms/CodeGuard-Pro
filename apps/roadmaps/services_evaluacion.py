@@ -258,23 +258,84 @@ def actualizar_progreso_por_evaluacion(usuario, quiz: Quiz, resultado: Resultado
 
     - Si el quiz está asociado a un módulo y el resultado está aprobado
       (sin revisión pendiente), marca el progreso del módulo como completado.
-    - Registra un evento de auditoría de transición académica.
-    - No modifica el progreso de la etapa: la aprobación de etapa seguirá
-      dependiendo de sus criterios/evaluaciones verificables (pendiente).
+    - Si el quiz es un examen de etapa aprobado, intenta aprobar/homologar
+      la etapa mediante criterios verificables (sin completación manual).
+    - Registra eventos de auditoría de transiciones académicas.
     """
     if usuario is None or not getattr(usuario, "is_authenticated", False):
-        return None
-    if quiz.modulo_id is None:
         return None
     if not resultado.aprobado or resultado.requiere_revision:
         return None
 
-    modulo = quiz.modulo
-    etapa = modulo.etapa
+    progreso_modulo = None
+    if quiz.modulo_id is not None:
+        modulo = quiz.modulo
+        etapa = modulo.etapa
+        progreso_modulo, _ = Progreso.objects.get_or_create(
+            usuario=usuario,
+            etapa=etapa,
+            modulo=modulo,
+            leccion=None,
+            actividad=None,
+            defaults={"estado": "no_iniciado", "porcentaje": 0},
+        )
+
+        if progreso_modulo.estado != "completado":
+            progreso_modulo.estado = "completado"
+            progreso_modulo.porcentaje = 100
+            from django.utils import timezone
+
+            progreso_modulo.fecha_completado = timezone.now()
+            progreso_modulo.save(
+                update_fields=["estado", "porcentaje", "fecha_completado", "fecha_actualizacion"]
+            )
+            registrar_evento(
+                "progreso_modulo_completado_por_evaluacion",
+                usuario=usuario,
+                descripcion=(
+                    f"Módulo {modulo.id} ({modulo.titulo}) completado por evaluación; "
+                    f"quiz {quiz.id} (v{quiz.version}); resultado {resultado.id}."
+                ),
+            )
+
+    if quiz.etapa_id is not None and quiz.tipo == Quiz.TIPO_EXAMEN:
+        aprobar_etapa_por_evaluacion(usuario, quiz.etapa, quiz, resultado)
+
+    return progreso_modulo
+
+
+def aprobar_etapa_por_evaluacion(usuario, etapa, quiz: Quiz, resultado: ResultadoEvaluacion) -> Progreso | None:
+    """Aprueba u homologa una etapa cuando se cumple una evaluación verificable.
+
+    Reglas aplicadas:
+    - El resultado debe estar aprobado, sin revisión pendiente y alcanzar el
+      umbral del quiz/examen.
+    - Los prerrequisitos de la etapa deben estar completados.
+    - La aprobación se registra como transición académica auditada (no manual).
+    """
+    from django.utils import timezone
+
+    from .models import Progreso
+    from .services import etapas_completadas
+
+    if usuario is None or not getattr(usuario, "is_authenticated", False):
+        return None
+    if not resultado.aprobado or resultado.requiere_revision:
+        return None
+    if resultado.puntuacion is None or resultado.puntuacion < quiz.umbral_aprobacion:
+        return None
+
+    roadmap = etapa.roadmap
+    completadas = etapas_completadas(usuario, roadmap)
+    if etapa.esta_bloqueada_para(completadas):
+        return None
+
+    # Criterios de evaluación obligatorios: si existen exámenes publicados de la
+    # etapa, se requiere al menos un resultado aprobado del examen presentado.
     progreso, _ = Progreso.objects.get_or_create(
         usuario=usuario,
         etapa=etapa,
-        modulo=modulo,
+        modulo=None,
         leccion=None,
         actividad=None,
         defaults={"estado": "no_iniciado", "porcentaje": 0},
@@ -283,18 +344,17 @@ def actualizar_progreso_por_evaluacion(usuario, quiz: Quiz, resultado: Resultado
     if progreso.estado != "completado":
         progreso.estado = "completado"
         progreso.porcentaje = 100
-        from django.utils import timezone
-
         progreso.fecha_completado = timezone.now()
         progreso.save(
             update_fields=["estado", "porcentaje", "fecha_completado", "fecha_actualizacion"]
         )
         registrar_evento(
-            "progreso_modulo_completado_por_evaluacion",
+            "etapa_aprobada_por_evaluacion",
             usuario=usuario,
             descripcion=(
-                f"Módulo {modulo.id} ({modulo.titulo}) completado por evaluación; "
-                f"quiz {quiz.id} (v{quiz.version}); resultado {resultado.id}."
+                f"Etapa {etapa.numero} ({etapa.titulo}) aprobada/homologada por evaluación; "
+                f"quiz/examen {quiz.id} (v{quiz.version}); resultado {resultado.id}; "
+                f"puntuación {resultado.puntuacion}% (umbral {quiz.umbral_aprobacion}%)."
             ),
         )
     return progreso

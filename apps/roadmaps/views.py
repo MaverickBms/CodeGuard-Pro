@@ -154,6 +154,12 @@ def detalle(request, numero):
                 and leccion.progreso_actual.estado == "completado"
             )
 
+    examenes_etapa = list(
+        Quiz.objects.filter(
+            etapa=etapa, modulo__isnull=True, estado=Quiz.ESTADO_PUBLICADO
+        ).order_by("id")
+    )
+
     return render(
         request,
         "roadmaps/detalle.html",
@@ -168,6 +174,7 @@ def detalle(request, numero):
             "prerrequisitos": etapa.prerrequisitos.select_related("etapa_requerida"),
             "desbloquea": etapa.desbloquea.select_related("etapa"),
             "criterios": etapa.criterios.all(),
+            "examenes_etapa": examenes_etapa,
         },
     )
 
@@ -455,13 +462,14 @@ def quiz_detalle(request, quiz_id):
             ResultadoEvaluacion.objects.filter(quiz=quiz, usuario=usuario).order_by("-creado_en")[:10]
         )
 
+    etapa_quiz = quiz.modulo.etapa if quiz.modulo_id else quiz.etapa
     return render(
         request,
         "roadmaps/quiz_detalle.html",
         {
             "quiz": quiz,
             "modulo": quiz.modulo,
-            "etapa": quiz.modulo.etapa if quiz.modulo_id else None,
+            "etapa": etapa_quiz,
             "preguntas": _preguntas_seguras(quiz),
             "resultados_usuario": resultados_usuario,
         },
@@ -487,13 +495,14 @@ def quiz_resultado(request, quiz_id, resultado_id):
         quiz=quiz,
         usuario=usuario,
     )
+    etapa_quiz = quiz.modulo.etapa if quiz.modulo_id else quiz.etapa
     return render(
         request,
         "roadmaps/quiz_resultado.html",
         {
             "quiz": quiz,
             "modulo": quiz.modulo,
-            "etapa": quiz.modulo.etapa if quiz.modulo_id else None,
+            "etapa": etapa_quiz,
             "resultado": resultado,
             "preguntas_resultados": list(resultado.preguntas_resultados.all()),
         },
@@ -514,13 +523,14 @@ def quiz_historial(request, quiz_id):
         resultados = list(
             ResultadoEvaluacion.objects.filter(quiz=quiz, usuario=usuario).order_by("-creado_en")
         )
+    etapa_quiz = quiz.modulo.etapa if quiz.modulo_id else quiz.etapa
     return render(
         request,
         "roadmaps/quiz_resultado.html",
         {
             "quiz": quiz,
             "modulo": quiz.modulo,
-            "etapa": quiz.modulo.etapa if quiz.modulo_id else None,
+            "etapa": etapa_quiz,
             "resultado": None,
             "preguntas_resultados": [],
             "historial": resultados,

@@ -458,3 +458,108 @@ class ProgresionPorEvaluacionTests(TestCase):
                 evento="progreso_modulo_completado_por_evaluacion", usuario=self.usuario
             ).exists()
         )
+
+class ExamenEtapaHomologacionTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="estudiante-examen-etapa", password="ClaveSegura123!"
+        )
+        self.roadmap = Roadmap.objects.create(nombre="ASCENSO examen etapa", edicion="test")
+        self.etapa = Etapa.objects.create(roadmap=self.roadmap, numero=1, titulo="Etapa 1")
+        self.examen = Quiz.objects.create(
+            nombre="Examen etapa 1",
+            tipo=Quiz.TIPO_EXAMEN,
+            etapa=self.etapa,
+            umbral_aprobacion=70,
+            estado=Quiz.ESTADO_PUBLICADO,
+        )
+        self.p1 = Pregunta.objects.create(
+            quiz=self.examen,
+            orden=1,
+            formato=Pregunta.FORMATO_RESPUESTA,
+            enunciado="Pregunta",
+            datos_respuesta={"respuesta_esperada": "ok"},
+        )
+
+    def test_examen_aprobado_homologa_etapa_y_audita(self):
+        from apps.roadmaps.models import Progreso
+
+        resultado = evaluar_quiz(self.usuario, self.examen, {str(self.p1.id): "ok"})
+        self.assertTrue(resultado.aprobado)
+        self.assertFalse(resultado.requiere_revision)
+
+        progreso = Progreso.objects.get(
+            usuario=self.usuario, etapa=self.etapa, modulo__isnull=True, leccion__isnull=True
+        )
+        self.assertEqual(progreso.estado, "completado")
+        self.assertEqual(progreso.porcentaje, 100)
+        self.assertTrue(
+            AuditLog.objects.filter(
+                evento="etapa_aprobada_por_evaluacion", usuario=self.usuario
+            ).exists()
+        )
+
+    def test_examen_no_aprobado_no_homologa_etapa(self):
+        from apps.roadmaps.models import Progreso
+
+        resultado = evaluar_quiz(self.usuario, self.examen, {str(self.p1.id): "mal"})
+        self.assertFalse(resultado.aprobado)
+        self.assertFalse(
+            Progreso.objects.filter(
+                usuario=self.usuario, etapa=self.etapa, modulo__isnull=True, leccion__isnull=True, estado="completado"
+            ).exists()
+        )
+
+    def test_examen_con_revision_pendiente_no_homologa_etapa(self):
+        from apps.roadmaps.models import Progreso
+
+        examen = Quiz.objects.create(
+            nombre="Examen revisión",
+            tipo=Quiz.TIPO_EXAMEN,
+            etapa=self.etapa,
+            version=2,
+            umbral_aprobacion=70,
+            estado=Quiz.ESTADO_PUBLICADO,
+        )
+        p = Pregunta.objects.create(
+            quiz=examen,
+            orden=1,
+            formato=Pregunta.FORMATO_RESOLUCION,
+            enunciado="Explica",
+            datos_respuesta={"criterios": ["explicacion"]},
+        )
+        resultado = evaluar_quiz(self.usuario, examen, {str(p.id): "respuesta libre"})
+        self.assertTrue(resultado.requiere_revision)
+        self.assertFalse(
+            Progreso.objects.filter(
+                usuario=self.usuario, etapa=self.etapa, modulo__isnull=True, leccion__isnull=True, estado="completado"
+            ).exists()
+        )
+
+    def test_examen_bloqueado_por_prerrequisitos_no_homologa_etapa(self):
+        from apps.roadmaps.models import Progreso
+        from apps.roadmaps.models import Prerrequisito
+
+        etapa2 = Etapa.objects.create(roadmap=self.roadmap, numero=2, titulo="Etapa 2")
+        Prerrequisito.objects.create(etapa=etapa2, etapa_requerida=self.etapa)
+        examen2 = Quiz.objects.create(
+            nombre="Examen etapa 2",
+            tipo=Quiz.TIPO_EXAMEN,
+            etapa=etapa2,
+            umbral_aprobacion=70,
+            estado=Quiz.ESTADO_PUBLICADO,
+        )
+        p2 = Pregunta.objects.create(
+            quiz=examen2,
+            orden=1,
+            formato=Pregunta.FORMATO_RESPUESTA,
+            enunciado="Pregunta",
+            datos_respuesta={"respuesta_esperada": "ok"},
+        )
+        resultado = evaluar_quiz(self.usuario, examen2, {str(p2.id): "ok"})
+        self.assertTrue(resultado.aprobado)
+        self.assertFalse(
+            Progreso.objects.filter(
+                usuario=self.usuario, etapa=etapa2, modulo__isnull=True, leccion__isnull=True, estado="completado"
+            ).exists()
+        )

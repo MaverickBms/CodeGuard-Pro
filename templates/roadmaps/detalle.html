@@ -162,6 +162,26 @@
       {% endif %}
     </section>
 
+    {% if examenes_etapa %}
+    <section class="glass-card side-card cg-card">
+      <h3><i class="fa-solid fa-file-circle-check"></i> Exámenes de la etapa</h3>
+      <p class="muted">Demuestra conocimientos previos u homologación mediante una evaluación verificable.</p>
+      <ul class="lecciones-list" style="margin-top:.5rem;">
+        {% for examen in examenes_etapa %}
+          <li class="leccion-item">
+            <a class="leccion-info leccion-open-link" href="{% url 'roadmaps:quiz_detalle' examen.id %}" aria-label="Abrir examen: {{ examen.nombre }}">
+              <span class="leccion-marker" aria-hidden="true"><i class="fa-solid fa-award"></i></span>
+              <span class="leccion-copy">
+                <span class="leccion-title">{{ examen.nombre }}</span>
+                <span class="leccion-status">{{ examen.get_tipo_display }} · Umbral {{ examen.umbral_aprobacion }}%</span>
+              </span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
     <section class="glass-card side-card cg-card">
       <h3><i class="fa-solid fa-clipboard-check"></i> Criterios de finalización</h3>
       {% for criterio in criterios %}
