@@ -692,7 +692,7 @@ Orden inmediato recomendado:
 8. Implementar verificación criptográfica, instalación atómica, historial y rollback offline.
 9. Completar el editor, navegación y evaluación segura; no ejecutar código hasta disponer de sandbox independiente.
 10. Cerrar Fase 2 mediante criterios de aceptación y documentación.
-11. Comenzar Fase 3: tutor local.
+11. Validar instalación limpia, directorio de datos, GUI y modo offline.\n12. Reproducir la suite ampliada de 245 pruebas y registrar el resultado.\n13. Completar backup/restore, pruebas de portabilidad y criterios de aceptación de Fases 2–8.
 
 ### Nota sobre el rediseño visual de la página de lección
 
