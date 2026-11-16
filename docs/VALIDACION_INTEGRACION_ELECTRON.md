@@ -1,8 +1,8 @@
 # Validación de integración — Electron, Django y PyInstaller
 
 **Rama:** `main`  
-**Línea base de código:** `b82a249b203548f54b92c9fc85bc609bd2c7a478`  
-**Fecha de actualización:** 2026-11-12  
+**Línea base de código auditada:** `26085c66ae4afd01b174b461b76d3de19d211b50`  
+**Fecha de actualización:** 2026-11-16  
 **Alcance:** registrar la evidencia local confirmada por el propietario y separar las pruebas completadas de los criterios aún abiertos. No configura distribución remota.
 
 ## 1. Resultado confirmado
@@ -100,3 +100,15 @@ La aceptación de integración solo podrá cerrarse cuando se disponga de eviden
 - Despliegue o publicación de una versión de distribución.
 
 Estas acciones requieren decisiones y autorizaciones independientes.
+
+
+## 6. Hallazgos posteriores — auditoría 16-11-2026
+
+La rama `main` incorpora ahora 75 commits adicionales respecto a la línea base anterior, incluyendo las bases de Fases 3–7. La revisión estática detectó dos riesgos de primer arranque que requieren corrección antes de aceptar distribución:
+
+- El lanzador `codeguard` no exporta `CODEGUARD_DATA_DIR` antes de ejecutar migraciones y carga de ASCENSO, por lo que puede inicializar una base diferente de la que utilizará el AppImage.
+- El servidor empaquetado presupone una base inicializada; el build Windows ejecuta migraciones sobre el directorio de desarrollo, mientras el runtime Electron usa `userData`. Se requiere inicialización idempotente en el primer arranque del perfil del usuario.
+
+La prueba de `--sync-knowledge` sigue siendo distinta de la prueba del servidor Waitress normal. No se declara aceptada la GUI, el cierre desde menú, el uso offline E2E ni la ausencia de procesos huérfanos.
+
+Informe completo: `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
