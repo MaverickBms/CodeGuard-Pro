@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}{{ quiz.nombre }} — Quiz — CodeGuard Pro{% endblock %}
+{% block page_title %}Evaluación{% endblock %}
+{% block page_subtitle %}{{ quiz.nombre }}{% endblock %}
+
+{% block content %}
+<div class="lesson-page">
+  <nav class="roadmap-breadcrumb lesson-breadcrumb" aria-label="Migas de pan">
+    <a href="{% url 'roadmaps:lista' %}"><i class="fa-solid fa-arrow-left"></i><span>Volver al roadmap</span></a>
+    {% if etapa %}
+      <span class="breadcrumb-sep" aria-hidden="true">/</span>
+      <a href="{% url 'roadmaps:detalle' etapa.numero %}">Etapa {{ etapa.numero }}</a>
+    {% endif %}
+  </nav>
+
+  <header class="lesson-hero cg-card">
+    <div class="lesson-hero-copy">
+      <div class="lesson-hero-topline">
+        <span class="lesson-eyebrow"><i class="fa-solid fa-clipboard-question"></i> {{ quiz.get_tipo_display }} · v{{ quiz.version }}</span>
+      </div>
+      <h1>{{ quiz.nombre }}</h1>
+      {% if modulo %}<p class="lesson-description">Módulo {{ modulo.numero }} — {{ modulo.titulo }}</p>{% endif %}
+      <div class="lesson-meta">
+        <span><i class="fa-solid fa-bullseye"></i> Umbral de aprobación: {{ quiz.umbral_aprobacion }}%</span>
+        <span><i class="fa-solid fa-list-check"></i> {{ preguntas|length }} pregunta{{ preguntas|length|pluralize }}</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="cg-card" aria-label="Cuestionario">
+    <form method="post" class="quiz-form">
+      {% csrf_token %}
+      {% for pregunta in preguntas %}
+        <fieldset class="cg-card" style="margin-bottom:1rem;" id="pregunta-{{ pregunta.id }}">
+          <legend><strong>{{ pregunta.orden }}.</strong> {{ pregunta.enunciado }}</legend>
+          <p class="text-muted"><small>Formato: {{ pregunta.formato_display }}{% if pregunta.leccion %} · Contenido: {{ pregunta.leccion.titulo }}{% endif %}</small></p>
+
+          {% if pregunta.formato == "seleccion" %}
+            <div role="group" aria-label="Opciones de respuesta">
+              {% for opcion in pregunta.datos.opciones %}
+                <div class="form-check" style="margin:.35rem 0;">
+                  <input class="form-check-input" type="radio" name="respuesta_{{ pregunta.id }}" id="q{{ pregunta.id }}_opt{{ opcion.indice }}" value="{{ opcion.indice }}">
+                  <label class="form-check-label" for="q{{ pregunta.id }}_opt{{ opcion.indice }}">{{ opcion.texto }}</label>
+                </div>
+              {% empty %}
+                <p class="text-muted">No hay opciones disponibles.</p>
+              {% endfor %}
+            </div>
+          {% elif pregunta.formato == "respuesta" %}
+            <label for="respuesta_{{ pregunta.id }}" class="form-label">Tu respuesta</label>
+            <input type="text" class="form-control" id="respuesta_{{ pregunta.id }}" name="respuesta_{{ pregunta.id }}" autocomplete="off">
+          {% else %}
+            <label for="respuesta_{{ pregunta.id }}" class="form-label">Tu respuesta (revisión controlada, sin auto-aprobación)</label>
+            <textarea class="form-control" id="respuesta_{{ pregunta.id }}" name="respuesta_{{ pregunta.id }}" rows="5"></textarea>
+          {% endif %}
+        </fieldset>
+      {% empty %}
+        <p>Este quiz no tiene preguntas publicadas.</p>
+      {% endfor %}
+
+      {% if preguntas %}
+        <div style="margin-top:1rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+          <button type="submit" class="btn-theme btn-theme-primary"><i class="fa-solid fa-paper-plane"></i> Enviar respuestas</button>
+          <a href="{% url 'roadmaps:quiz_historial' quiz.id %}" class="btn-theme btn-theme-ghost">Ver historial</a>
+        </div>
+      {% endif %}
+    </form>
+  </section>
+
+  {% if resultados_usuario %}
+    <section class="cg-card" aria-label="Intentos recientes" style="margin-top:1rem;">
+      <h2>Intentos recientes</h2>
+      <ul>
+        {% for r in resultados_usuario %}
+          <li>
+            <a href="{% url 'roadmaps:quiz_resultado' quiz.id r.id %}">Intento {{ r.id }}</a>
+            — {{ r.puntuacion }}% — {% if r.requiere_revision %}Pendiente de revisión{% elif r.aprobado %}Aprobado{% else %}No aprobado{% endif %}
+            <small>({{ r.creado_en }})</small>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}

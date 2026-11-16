@@ -9,7 +9,6 @@ implícita.
 from types import SimpleNamespace
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
@@ -19,7 +18,6 @@ from django.views.decorators.http import require_POST
 from apps.accounts.identity import (
     get_usuario_actual,
     obtener_actor_auditoria,
-    obtener_usuario_local,
     requiere_acceso,
 )
 from .models import (
@@ -27,6 +25,9 @@ from .models import (
     Etapa,
     IntentoEjercicio,
     Leccion,
+    Pregunta,
+    Quiz,
+    ResultadoEvaluacion,
 )
 from .attempts import registrar_intento_ejercicio
 from .services import (
@@ -40,6 +41,7 @@ from .services import (
     progreso_general,
     roadmap_activo,
 )
+from .services_evaluacion import evaluar_quiz
 
 
 @requiere_acceso
@@ -351,5 +353,171 @@ def leccion_detalle(request, leccion_id):
             "version_contenido_activa": version_contenido_activa,
             "paquete_contenido_activo": paquete_contenido_activo,
             "fuentes_paquete": list(paquete_contenido_activo.fuentes_catalogo.all()) if paquete_contenido_activo else [],
+        },
+    )
+
+
+def _preguntas_seguras(quiz: Quiz):
+    """Devuelve preguntas sin exponer respuestas correctas al cliente."""
+    preguntas = []
+    for pregunta in quiz.preguntas.all():
+        datos = pregunta.datos_respuesta if isinstance(pregunta.datos_respuesta, dict) else {}
+        if pregunta.formato == Pregunta.FORMATO_SELECCION:
+            opciones = []
+            for idx, opcion in enumerate(datos.get("opciones", []) or []):
+                if isinstance(opcion, dict):
+                    opciones.append(
+                        {
+                            "indice": idx,
+                            "texto": opcion.get("texto", opcion.get("valor", str(idx))),
+                        }
+                    )
+            datos_publicos = {"opciones": opciones}
+        elif pregunta.formato == Pregunta.FORMATO_RESPUESTA:
+            datos_publicos = {}
+        else:
+            datos_publicos = {
+                "criterios_count": len(datos.get("criterios", []) or [])
+                if isinstance(datos.get("criterios"), list)
+                else 0
+            }
+        preguntas.append(
+            {
+                "id": pregunta.id,
+                "orden": pregunta.orden,
+                "formato": pregunta.formato,
+                "formato_display": pregunta.get_formato_display(),
+                "enunciado": pregunta.enunciado,
+                "leccion": pregunta.leccion,
+                "datos": datos_publicos,
+            }
+        )
+    return preguntas
+
+
+@requiere_acceso
+def quiz_detalle(request, quiz_id):
+    """Muestra un quiz publicado y procesa su envío."""
+    quiz = get_object_or_404(
+        Quiz.objects.select_related("modulo__etapa__roadmap").prefetch_related(
+            "preguntas__leccion"
+        ),
+        pk=quiz_id,
+        estado=Quiz.ESTADO_PUBLICADO,
+    )
+    usuario = get_usuario_actual(request)
+
+    if request.method == "POST":
+        if usuario is None:
+            messages.error(
+                request,
+                "No hay un propietario local configurado. No se puede guardar el resultado.",
+            )
+            return redirect("roadmaps:quiz_detalle", quiz_id=quiz.id)
+
+        respuestas = {}
+        for pregunta in quiz.preguntas.all():
+            clave = f"respuesta_{pregunta.id}"
+            if pregunta.formato == Pregunta.FORMATO_SELECCION:
+                valor = request.POST.get(clave)
+                if valor is not None and valor != "":
+                    respuestas[str(pregunta.id)] = (
+                        int(valor) if str(valor).isdigit() else valor
+                    )
+            else:
+                valor = request.POST.get(clave, "")
+                respuestas[str(pregunta.id)] = valor
+
+        try:
+            resultado = evaluar_quiz(usuario, quiz, respuestas)
+        except ValidationError as exc:
+            mensaje = exc.messages[0] if getattr(exc, "messages", None) else str(exc)
+            messages.error(request, mensaje)
+            return redirect("roadmaps:quiz_detalle", quiz_id=quiz.id)
+
+        if resultado.aprobado:
+            messages.success(request, "Evaluación aprobada.")
+        elif resultado.requiere_revision:
+            messages.info(request, "Evaluación enviada. Algunas respuestas requieren revisión controlada.")
+        else:
+            messages.warning(request, "Evaluación registrada. Revisa los temas sugeridos para repaso.")
+        return redirect("roadmaps:quiz_resultado", quiz_id=quiz.id, resultado_id=resultado.id)
+
+    resultados_usuario = []
+    if usuario is not None:
+        resultados_usuario = list(
+            ResultadoEvaluacion.objects.filter(quiz=quiz, usuario=usuario).order_by("-creado_en")[:10]
+        )
+
+    return render(
+        request,
+        "roadmaps/quiz_detalle.html",
+        {
+            "quiz": quiz,
+            "modulo": quiz.modulo,
+            "etapa": quiz.modulo.etapa if quiz.modulo_id else None,
+            "preguntas": _preguntas_seguras(quiz),
+            "resultados_usuario": resultados_usuario,
+        },
+    )
+
+
+@requiere_acceso
+def quiz_resultado(request, quiz_id, resultado_id):
+    """Muestra el resultado de un intento de quiz del usuario."""
+    quiz = get_object_or_404(
+        Quiz.objects.select_related("modulo__etapa"),
+        pk=quiz_id,
+        estado=Quiz.ESTADO_PUBLICADO,
+    )
+    usuario = get_usuario_actual(request)
+    if usuario is None:
+        messages.error(request, "No hay un propietario local configurado.")
+        return redirect("roadmaps:quiz_detalle", quiz_id=quiz.id)
+
+    resultado = get_object_or_404(
+        ResultadoEvaluacion.objects.prefetch_related("preguntas_resultados__pregunta"),
+        pk=resultado_id,
+        quiz=quiz,
+        usuario=usuario,
+    )
+    return render(
+        request,
+        "roadmaps/quiz_resultado.html",
+        {
+            "quiz": quiz,
+            "modulo": quiz.modulo,
+            "etapa": quiz.modulo.etapa if quiz.modulo_id else None,
+            "resultado": resultado,
+            "preguntas_resultados": list(resultado.preguntas_resultados.all()),
+        },
+    )
+
+
+@requiere_acceso
+def quiz_historial(request, quiz_id):
+    """Muestra el historial de resultados del usuario para un quiz."""
+    quiz = get_object_or_404(
+        Quiz.objects.select_related("modulo__etapa"),
+        pk=quiz_id,
+        estado=Quiz.ESTADO_PUBLICADO,
+    )
+    usuario = get_usuario_actual(request)
+    resultados = []
+    if usuario is not None:
+        resultados = list(
+            ResultadoEvaluacion.objects.filter(quiz=quiz, usuario=usuario).order_by("-creado_en")
+        )
+    return render(
+        request,
+        "roadmaps/quiz_resultado.html",
+        {
+            "quiz": quiz,
+            "modulo": quiz.modulo,
+            "etapa": quiz.modulo.etapa if quiz.modulo_id else None,
+            "resultado": None,
+            "preguntas_resultados": [],
+            "historial": resultados,
+            "es_historial": True,
         },
     )

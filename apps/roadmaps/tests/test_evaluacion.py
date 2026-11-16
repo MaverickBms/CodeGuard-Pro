@@ -335,3 +335,86 @@ class CorreccionAutomaticaQuizTests(TestCase):
         self.assertFalse(r1.aprobado)
         self.assertTrue(r2.aprobado)
         self.assertEqual(ResultadoEvaluacion.objects.filter(quiz=self.quiz, usuario=self.usuario).count(), 2)
+
+
+class QuizViewsTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="estudiante-quiz-view", password="ClaveSegura123!"
+        )
+        roadmap = Roadmap.objects.create(nombre="ASCENSO quiz views", edicion="test")
+        etapa = Etapa.objects.create(roadmap=roadmap, numero=1, titulo="Etapa 1")
+        modulo = Modulo.objects.create(etapa=etapa, numero="1.1", titulo="Módulo 1")
+        self.quiz = Quiz.objects.create(
+            nombre="Quiz publicado",
+            tipo=Quiz.TIPO_QUIZ,
+            modulo=modulo,
+            umbral_aprobacion=70,
+            estado=Quiz.ESTADO_PUBLICADO,
+        )
+        self.p1 = Pregunta.objects.create(
+            quiz=self.quiz,
+            orden=1,
+            formato=Pregunta.FORMATO_SELECCION,
+            enunciado="Selecciona",
+            datos_respuesta={
+                "opciones": [
+                    {"texto": "Correcta", "correcta": True},
+                    {"texto": "Incorrecta", "correcta": False},
+                ]
+            },
+        )
+        self.p2 = Pregunta.objects.create(
+            quiz=self.quiz,
+            orden=2,
+            formato=Pregunta.FORMATO_RESPUESTA,
+            enunciado="Responde",
+            datos_respuesta={"respuesta_esperada": "ok"},
+        )
+
+    def test_detalle_quiz_publicado_accesible_sin_exponer_respuestas(self):
+        url = f"/roadmaps/quiz/{self.quiz.id}/"
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Quiz publicado")
+        self.assertContains(resp, "Correcta")
+        self.assertNotContains(resp, '"correcta"')
+        self.assertNotContains(resp, "respuesta_esperada")
+
+    def test_envio_quiz_crea_resultado_y_redirige(self):
+        url = f"/roadmaps/quiz/{self.quiz.id}/"
+        resp = self.client.post(
+            url,
+            {
+                f"respuesta_{self.p1.id}": "0",
+                f"respuesta_{self.p2.id}": "ok",
+            },
+        )
+        self.assertEqual(resp.status_code, 302)
+        resultado = ResultadoEvaluacion.objects.get(quiz=self.quiz, usuario=self.usuario)
+        self.assertTrue(resultado.aprobado)
+        self.assertIn(f"/roadmaps/quiz/{self.quiz.id}/resultado/{resultado.id}/", resp["Location"])
+
+    def test_resultado_y_historial_del_usuario(self):
+        resultado = evaluar_quiz(
+            self.usuario, self.quiz, {str(self.p1.id): 0, str(self.p2.id): "ok"}
+        )
+        resp_res = self.client.get(f"/roadmaps/quiz/{self.quiz.id}/resultado/{resultado.id}/")
+        self.assertEqual(resp_res.status_code, 200)
+        self.assertContains(resp_res, "Aprobado")
+
+        resp_hist = self.client.get(f"/roadmaps/quiz/{self.quiz.id}/historial/")
+        self.assertEqual(resp_hist.status_code, 200)
+        self.assertContains(resp_hist, "Historial")
+        self.assertContains(resp_hist, str(resultado.id))
+
+    def test_quiz_borrador_no_accesible(self):
+        borrador = Quiz.objects.create(
+            nombre="Borrador",
+            tipo=Quiz.TIPO_QUIZ,
+            modulo=self.quiz.modulo,
+            estado=Quiz.ESTADO_BORRADOR,
+            version=2,
+        )
+        resp = self.client.get(f"/roadmaps/quiz/{borrador.id}/")
+        self.assertEqual(resp.status_code, 404)

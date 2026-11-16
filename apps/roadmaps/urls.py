@@ -17,4 +17,15 @@ urlpatterns = [
         views.marcar_leccion_view,
         name="marcar_leccion",
     ),
+    path("quiz/<int:quiz_id>/", views.quiz_detalle, name="quiz_detalle"),
+    path(
+        "quiz/<int:quiz_id>/resultado/<int:resultado_id>/",
+        views.quiz_resultado,
+        name="quiz_resultado",
+    ),
+    path(
+        "quiz/<int:quiz_id>/historial/",
+        views.quiz_historial,
+        name="quiz_historial",
+    ),
 ]
