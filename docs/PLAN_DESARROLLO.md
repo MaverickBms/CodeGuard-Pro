@@ -8,7 +8,7 @@
 
 ## Estado actual: Incremento 1 — Núcleo funcional ✅ y Incremento 2 — Roadmap académico y conocimiento versionado 🔄
 
-**Estado:** Incremento 1 implementado y verificado. Incremento 2 en curso sobre `main` (`b82a249`); la aceptación integral de la aplicación de escritorio sigue pendiente.
+**Estado:** Incremento 1 implementado y verificado. Incremento 2 en curso sobre `main` (`b82a249`); la aceptación integral de la aplicación de escritorio sigue pendiente. La auditoría del 16-11-2026 incorpora las bases de Fases 3–7; ver `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
 
 ---
 
@@ -61,7 +61,7 @@
 
 ## Incremento 2 — Roadmap académico y conocimiento versionado (Fase 2)
 
-**Estado:** 🔄 En curso en `main` (`b82a249`); integración de escritorio parcialmente validada.
+**Estado:** 🔄 En curso en `main` (código auditado `26085c6`); integración de escritorio parcialmente validada.
 
 ### Qué se implementó (incremento 2, integrado en `main`)
 
@@ -172,3 +172,16 @@ No usar "terminado"/"100% funcional" sin evidencia.
 - La navegación gráfica por ASCENSO y la apertura de una lección no han sido verificadas.
 - `server_entry.py` no carga automáticamente ASCENSO. En una base nueva, debe ejecutarse explícitamente `manage.py cargar_ascenso`.
 - Hosting, endpoint, allowlist y claves de producción no están configurados; la sincronización remota permanece inactiva.
+
+
+## Estado de fases tras integración del 16-11-2026
+
+- Fase 2: continúa en progreso; el contenido real, la experiencia de práctica segura y la aceptación offline siguen abiertos.
+- Fase 3: tutor local Ollama implementado parcialmente; validación de runtime y hardware pendiente.
+- Fase 4: modelos de evaluación integrados; corrección, homologación y UI pendientes.
+- Fase 5: base de gamificación integrada; balance y validación funcional pendientes.
+- Fase 6: base de mundo/avatar integrada; personalización avanzada pendiente.
+- Fase 7: base de desafíos integrada; catálogo e interacción pendientes.
+- Fase 8: integración, calidad, seguridad, instalación limpia, backup/restore y matriz de plataformas en progreso.
+
+La cifra de 245 pruebas en siete apps está reportada en README; reproducirla en el HEAD actual antes de liberar. La línea base de 197 pruebas corresponde al subconjunto de cuatro apps principales. Informe QA: `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
