@@ -4,7 +4,10 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
+from config.health import healthz
+
 urlpatterns = [
+    path("healthz/", healthz, name="healthz"),
     path("accounts/", include("apps.accounts.urls")),
     path("roadmaps/", include("apps.roadmaps.urls")),
     path("tutoria/", include("apps.tutoring.urls")),

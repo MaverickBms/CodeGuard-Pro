@@ -61,3 +61,23 @@ class ServerEntrySyncModeTests(SimpleTestCase):
             force=False,
             verbosity=1,
         )
+
+
+class ServerEntryInitializationTests(SimpleTestCase):
+    """La inicialización normal debe ser idempotente y preservar el progreso."""
+
+    def test_initialization_runs_migrations_then_loads_without_recreate(self):
+        with patch("django.core.management.call_command") as call_command:
+            server_entry._initialize_database()
+
+        self.assertEqual(
+            call_command.call_args_list,
+            [
+                (("migrate",), {"interactive": False, "verbosity": 1}),
+                (("cargar_ascenso",), {"verbosity": 1}),
+            ],
+        )
+        self.assertNotIn(
+            "--recrear",
+            str(call_command.call_args_list),
+        )

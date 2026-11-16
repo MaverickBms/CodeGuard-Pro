@@ -76,25 +76,51 @@ function waitForServer(url, timeoutMs = 120000) {
   return new Promise((resolve, reject) => {
     const retry = () => {
       if (Date.now() - started > timeoutMs) {
-        reject(new Error(`El servidor local no respondió en ${Math.round(timeoutMs / 1000)} s.`));
+        reject(new Error(
+          `El servidor local no superó la comprobación de salud en ${Math.round(timeoutMs / 1000)} s. ` +
+          'Revisa la inicialización de la base de datos y el roadmap.'
+        ));
         return;
       }
-      setTimeout(attempt, 200);
+      setTimeout(attempt, 250);
     };
 
     const attempt = () => {
+      let retryScheduled = false;
+      const scheduleRetry = () => {
+        if (retryScheduled) return;
+        retryScheduled = true;
+        retry();
+      };
+
       const request = http.get(url, { timeout: 3000 }, (response) => {
-        response.resume();
-        if (response.statusCode && response.statusCode < 500) {
-          resolve();
-        } else {
-          retry();
-        }
+        let body = '';
+        response.setEncoding('utf8');
+        response.on('data', chunk => {
+          if (body.length < 4096) body += chunk;
+        });
+        response.on('end', () => {
+          if (response.statusCode !== 200) {
+            scheduleRetry();
+            return;
+          }
+          try {
+            const health = JSON.parse(body);
+            const ready = health.status === 'ok' &&
+              health.database === 'ok' &&
+              health.migrations === 'ok' &&
+              health.roadmap === 'ok';
+            if (ready) resolve();
+            else scheduleRetry();
+          } catch (_error) {
+            scheduleRetry();
+          }
+        });
       });
-      request.on('error', retry);
+      request.on('error', scheduleRetry);
       request.on('timeout', () => {
         request.destroy();
-        retry();
+        scheduleRetry();
       });
     };
 
@@ -180,7 +206,7 @@ async function startDjango() {
 
   attachProcessLogs(djangoProcess);
 
-  await waitForServer(`http://${DJANGO_HOST}:${djangoPort}/`);
+  await waitForServer(`http://${DJANGO_HOST}:${djangoPort}/healthz/`);
   return `http://${DJANGO_HOST}:${djangoPort}`;
 }
 

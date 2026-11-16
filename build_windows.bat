@@ -81,21 +81,8 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
-echo [INFO] Aplicando migraciones...
-python manage.py migrate --settings=config.settings.development
-if %ERRORLEVEL% NEQ 0 (
-    echo [ERROR] Fallo la migracion de la base de datos.
-    pause
-    exit /b 1
-)
-
-echo [INFO] Cargando roadmap ASCENSO 3.1...
-python manage.py cargar_ascenso --settings=config.settings.development
-if %ERRORLEVEL% NEQ 0 (
-    echo [ERROR] Fallo la carga del roadmap.
-    pause
-    exit /b 1
-)
+REM La base de datos y ASCENSO se inicializan en el primer arranque del usuario.
+REM No crear ni empaquetar una base de datos de desarrollo durante el build.
 
 echo [INFO] Generando servidor Django con PyInstaller...
 pyinstaller --clean --noconfirm --distpath dist-server --workpath build\pyinstaller-server CodeGuardServer.spec

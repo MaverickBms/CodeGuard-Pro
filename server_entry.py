@@ -3,12 +3,10 @@
 Electron inicia este binario (generado con PyInstaller) para servir Django localmente o, con
 ``--sync-knowledge``, para ejecutar una única comprobación de conocimiento y terminar.
 El modo servidor sirve la aplicación mediante Waitress + WhiteNoise.
-El modo de sincronización no ejecuta migraciones, no inicia Waitress y no modifica el roadmap.
-El servidor escucha exclusivamente en 127.0.0.1.
-
-Nota: las migraciones y la carga del roadmap ASCENSO se ejecutan por separado desde
-``manage.py`` antes de iniciar Electron (ver ``run.sh``). El servidor empaquetado asume
-que la base de datos ya está inicializada.
+El modo de sincronización no ejecuta migraciones ni inicia Waitress.
+En el modo servidor, este proceso inicializa de forma idempotente la base de datos
+y el roadmap ASCENSO en el directorio de datos del usuario antes de escuchar
+exclusivamente en 127.0.0.1.
 """
 
 from __future__ import annotations
@@ -23,6 +21,18 @@ def _die(message: str, code: int = 1) -> int:
     print(f"[CodeGuard ERROR] {message}", file=sys.stderr, flush=True)
     traceback.print_exc(file=sys.stderr)
     return code
+
+
+def _initialize_database() -> None:
+    """Prepara el perfil local sin borrar ni reiniciar el progreso existente.
+
+    `cargar_ascenso` es idempotente por defecto. Nunca se utiliza --recrear,
+    que eliminaría el roadmap y los registros de progreso asociados.
+    """
+    from django.core.management import call_command
+
+    call_command("migrate", interactive=False, verbosity=1)
+    call_command("cargar_ascenso", verbosity=1)
 
 
 def main() -> int:
@@ -62,6 +72,13 @@ def main() -> int:
             print(f"[CodeGuard Sync] {exc}", file=sys.stderr, flush=True)
             traceback.print_exc(file=sys.stderr)
             return 1
+
+    try:
+        print("[CodeGuard] Inicializando base de datos y roadmap local...", flush=True)
+        _initialize_database()
+        print("[CodeGuard] Datos locales preparados correctamente.", flush=True)
+    except Exception as exc:
+        return _die(f"No se pudo inicializar el perfil local: {exc}", 7)
 
     port = os.environ.get("CODEGUARD_PORT", "8000").strip() or "8000"
     print(f"[CodeGuard] Puerto: {port}", flush=True)
