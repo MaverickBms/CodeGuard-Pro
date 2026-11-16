@@ -6,7 +6,7 @@
 **Elaborado por:** Subagente 4 (Documentación, Integración y QA)  
 **Fecha:** 16 de noviembre de 2026  
 **Rama de referencia:** `chore/stabilizacion-pre-fase-2`  
-**Commit de referencia:** `7d43db7` (cumplimiento auditable de criterios)  
+**Commit de referencia:** `d391934` (carga trazable de evaluaciones)  
 
 ---
 
@@ -14,11 +14,11 @@
 
 La Fase 4 (Evaluaciones y progresión académica) está **en progreso — parcialmente implementada** bajo **ADR-011**.
 
-Incluye: modelos/migraciones de evaluación (0017–0019), corrección determinista y revisión controlada, flujo UI de quiz, progreso de módulo por aprobación, homologación de etapa condicionada a prerrequisitos y criterios obligatorios, y **cumplimiento auditable de criterios** (`CumplimientoCriterio`, `registrar_cumplimiento_criterio`) para cerrar criterios no automatizados con evidencia y completar etapa cuando corresponda.
+Incluye: modelos/migraciones de evaluación (0017–0019), corrección determinista y revisión controlada, flujo UI de quiz, progreso de módulo por aprobación, homologación de etapa condicionada a prerrequisitos y criterios, cumplimiento auditable de criterios con UI de evidencias, y **carga/estructura trazable de authoring** (`cargar_quizzes`, `quizzes_ejemplo.json`).
 
-Línea base actual: **234 pruebas OK** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification`).
+Línea base actual: **238 pruebas OK** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification`).
 
-Pendiente: UI/flujo de usuario para registrar evidencias, authoring editorial (≥15 preguntas por módulo/examen), UI avanzada y validaciones GUI específicas.
+Pendiente: contenido editorial real (≥15 preguntas por módulo/examen, objetivos y fuentes trazables), UI/UX avanzada y validaciones GUI específicas.
 
 ---
 
@@ -32,7 +32,8 @@ Pendiente: UI/flujo de usuario para registrar evidencias, authoring editorial (�
 | Flujo quiz UI + historial | ✅ Implementado | vistas/templates |
 | Progreso de módulo por quiz aprobado | ✅ Implementado | `services_evaluacion.py`, `views.py`, tests |
 | Examen de etapa + homologación condicionada a criterios | ✅ Implementado (explícito/auditable) | `Quiz.etapa`, `aprobar_etapa_por_evaluacion`, criterios, tests |
-| Cumplimiento auditable de criterios / cierre de etapa por criterios | ✅ Implementado (backend) | `CumplimientoCriterio`, `registrar_cumplimiento_criterio`, migración 0019, tests |
+| Cumplimiento auditable de criterios / cierre de etapa por criterios | ✅ Implementado (backend + UI mínima) | `CumplimientoCriterio`, servicio, vistas/plantilla, migración 0019, tests |
+| Estructura/carga trazable de authoring de evaluaciones | ✅ Implementado (mínimo) | `services_carga_evaluaciones.py`, comando `cargar_quizzes`, `data/quizzes_ejemplo.json`, tests |
 | Authoring editorial (≥15 preguntas, objetivos trazables) | ⏳ Pendiente | Trabajo editorial/código adicional |
 | UI avanzada / integración plena criterios etapa | ⏳ Pendiente | No verificado |
 
