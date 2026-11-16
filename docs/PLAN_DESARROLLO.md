@@ -80,7 +80,7 @@
 13. **Un solo paquete activo por canal:** restricción parcial por `estado=activo` y migración de datos para garantizar unicidad (migración 0013).
 14. **Estado de sincronización por canal:** `EstadoSincronizacion` para rastrear la última consulta, éxito, ETag, canal y error (migración 0012).
 15. **Verificador de distribución firmada:** validación de manifiesto, firma Ed25519, hash SHA-256, estructura de ZIP, rutas prohibidas y symlinks (`validate_package_archive`, `verify_signed_manifest`).
-16. **Pruebas:** 138 pruebas automatizadas pasando, confirmada por el propietario el 12-11-2026 (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`).
+16. **Pruebas:** 197 pruebas automatizadas pasando, verificadas localmente el 16-11-2026 en la rama `chore/stabilizacion-pre-fase-2` (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`). La cifra anterior de 138 (reportada por el propietario el 12-11-2026) corresponde a una línea base anterior y ha quedado superada.
 17. **Contenido activo:** puntero `ContenidoLeccionActivo` para seleccionar snapshots editoriales publicados sin sobrescribir contenido histórico (migración 0014).
 18. **Evidencia de entrega:** cada intento conserva el snapshot del ejercicio presentado y referencia la versión editorial activa cuando corresponde.
 19. **Interfaz de ejercicios:** formulario CSRF de entrega, límite de 20.000 caracteres e historial de los últimos tres intentos.
