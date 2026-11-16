@@ -11,6 +11,8 @@
 4. El modo aislado `--sync-knowledge` conserva su comportamiento y no ejecuta migraciones ni carga el roadmap.
 5. El build de Windows deja de crear una base de datos de desarrollo. La base real se inicializa en el primer arranque de cada usuario.
 6. Electron espera `GET /healthz/` y solo considera listo el servidor cuando la base de datos responde, no hay migraciones pendientes y existe un roadmap activo.
+7. El tutor solo admite Ollama en loopback, ignora proxies del entorno y rechaza redirecciones para evitar que el código del estudiante se envíe a un host remoto.
+8. La reserva del número de pista usa una actualización condicional atómica dentro de una transacción; el límite de tres se vuelve a comprobar en la base de datos y se conserva la unicidad `(sesion, numero_pista)`.
 
 ## Verificación local pendiente
 
@@ -24,7 +26,7 @@ git pull --ff-only origin fix/p0-first-run-initialization
 
 ./.venv/bin/python manage.py check --settings=config.settings.development
 ./.venv/bin/python manage.py makemigrations --check --dry-run --settings=config.settings.development
-CODEGUARD_DATA_DIR="$(mktemp -d)" ./.venv/bin/python manage.py test apps.roadmaps.tests.test_server_entry apps.core.tests.test_health --settings=config.settings.development
+CODEGUARD_DATA_DIR="$(mktemp -d)" ./.venv/bin/python manage.py test apps.roadmaps.tests.test_server_entry apps.core.tests.test_health apps.tutoring.tests.test_tutoria --settings=config.settings.development
 node --check electron/main.js
 ```
 
@@ -37,3 +39,4 @@ En Windows, construir NSIS/portable y probar ambos con un perfil de usuario nuev
 - No se habilita ejecución arbitraria de código.
 - No se configura hosting, sincronización remota ni claves de distribución.
 - No se considera aceptada la distribución hasta completar pruebas reales en Linux y Windows.
+- Las pruebas de concurrencia con múltiples procesos SQLite y la comprobación de redirecciones HTTP deben ejecutarse también en el entorno objetivo.
