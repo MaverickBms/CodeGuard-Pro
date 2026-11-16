@@ -489,7 +489,7 @@ El examen de etapa también debe estar disponible desde Evaluaciones para que un
 
 ## Fase 5 — Gamificación y economía de recompensas
 
-**Estado: PENDIENTE. Implementar después de consolidar aprendizaje y evaluación.**
+**Estado: EN PROGRESO — base técnica implementada (ADR-012). Pendiente: integración con eventos académicos, misiones/rachas completas, UI e inventario avanzado.**
 
 ### Objetivo
 Aumentar la motivación, continuidad y reconocimiento del esfuerzo sin convertir las recompensas en sustituto del aprendizaje.
