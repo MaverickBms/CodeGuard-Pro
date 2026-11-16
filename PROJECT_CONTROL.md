@@ -160,9 +160,9 @@ El propietario confirmó la validación del instalador en `main` y autorizó con
 | **Generador central y catálogo firmado v2** | Generador, migración 0015 y catálogo v2 validados localmente por el propietario (119 pruebas OK) |
 | **Instalador transaccional (migración 0016)** | Validado en `main` `2c5d441` (119 pruebas OK) |
 | **Cliente de sincronización HTTP** | Implementado parcialmente; la distribución remota está desactivada hasta configurar endpoint, allowlist y claves. No es requisito para el uso offline |
-| **Competencias y evaluaciones (Incremento 3)** | Pendiente de decisión |
-| **Biblioteca documental (Incremento 4)** | Pendiente de decisión |
-| **Evidencias y laboratorios (Incremento 5)** | Pendiente de decisión |
+| **Tutor IA local (Fase 3)** | Implementación parcial; Ollama y rendimiento en host destino pendientes |
+| **Evaluaciones (Fase 4)** | Modelos integrados; UI, corrección y homologación pendientes |
+| **Gamificación/mundo/desafíos (Fases 5–7)** | Bases técnicas integradas; experiencia completa pendiente |
 | **Backups y administración (Incremento 6)** | Pendiente de decisión |
 | **Reactivación de autenticación** | Pendiente de autorización expresa del propietario |
 | **Commit / tag / baseline** | Actualización documental autorizada y registrada en el commit actual; tags y releases requieren autorización independiente |
