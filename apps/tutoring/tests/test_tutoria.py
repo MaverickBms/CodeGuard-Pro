@@ -160,3 +160,47 @@ class AnalisisIntentoTutoriaTests(TestCase):
         )
         self.assertEqual(respuesta.status_code, 400)
         self.assertFalse(respuesta.json()["exito"])
+
+
+class ConfiguracionOllamaSeguraTests(TestCase):
+    """El tutor no debe transmitir respuestas a hosts remotos ni seguir redirects."""
+
+    def test_acepta_solo_hosts_loopback(self):
+        for url in (
+            "http://localhost:11434",
+            "http://127.0.0.1:11434",
+            "http://[::1]:11434",
+        ):
+            with self.subTest(url=url), patch.object(services, "TUTOR_BASE_URL", url):
+                self.assertEqual(
+                    services._url_ollama_local(),
+                    f"{url}/api/chat",
+                )
+
+    def test_rechaza_host_remoto_antes_de_abrir_conexion(self):
+        with (
+            patch.object(services, "TUTOR_BASE_URL", "https://ollama.example"),
+            patch("urllib.request.build_opener") as build_opener,
+        ):
+            with self.assertRaises(TutorNoDisponible):
+                services._llamar_ollama("sistema", "respuesta del estudiante")
+
+        build_opener.assert_not_called()
+
+    def test_rechaza_credenciales_y_rutas_en_la_url_base(self):
+        for url in (
+            "http://usuario:clave@localhost:11434",
+            "http://localhost:11434/proxy",
+            "http://localhost:11434/?redirect=1",
+        ):
+            with self.subTest(url=url), patch.object(services, "TUTOR_BASE_URL", url):
+                with self.assertRaises(TutorNoDisponible):
+                    services._url_ollama_local()
+
+    def test_redirects_no_se_siguen(self):
+        handler = services._NoRedirectHandler()
+        self.assertIsNone(
+            handler.redirect_request(
+                None, None, 302, "Found", {}, "https://remote.example/collect"
+            )
+        )

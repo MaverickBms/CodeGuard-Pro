@@ -251,3 +251,17 @@ El tutor construye la URL de Ollama desde `CODEGUARD_TUTOR_BASE_URL`. El valor p
 `AUTH_DISABLED = True` y las vistas con `requiere_acceso` permiten acceso sin credenciales. El servidor se limita a loopback, pero loopback no separa usuarios del sistema operativo: otros procesos o cuentas locales del mismo equipo pueden intentar acceder a la interfaz.
 
 **Recomendación:** para equipos personales de un solo usuario puede aceptarse como decisión temporal; para laboratorios, computadores compartidos o perfiles de Windows/Linux multiusuario, reactivar autenticación o añadir una barrera local ligada a la sesión del usuario antes de distribuir.
+
+
+---
+
+## Anexo de correcciones posteriores a la auditoría
+
+**Rama de trabajo:** `fix/p0-first-run-initialization`
+
+- **QA-01 (directorio de datos Linux):** al volver a inspeccionar `run.sh` en el HEAD actual, se confirmó que exporta `CODEGUARD_DATA_DIR` antes de ejecutar `migrate` y `cargar_ascenso`, y transmite el mismo valor al AppImage. La afirmación original de que faltaba esa exportación no aplica al script versionado en el HEAD revisado. Se mantiene la inicialización dentro del propio servidor como salvaguarda para el arranque directo y para no depender del lanzador.
+- **QA-03 (primer arranque Windows):** corregido en la rama de trabajo. El build ya no inicializa una base de datos de desarrollo; el servidor empaquetado ejecuta migraciones y carga idempotente de ASCENSO en el directorio de datos del usuario antes de iniciar Waitress.
+- **QA-04 (disponibilidad HTTP):** corregido en la rama de trabajo. Electron consulta `/healthz/` y exige HTTP 200 más estado saludable de base de datos, migraciones y roadmap.
+- **QA-13 (privacidad del tutor):** corregido en la rama de trabajo. La URL de Ollama se valida como loopback, se desactivan proxies heredados del entorno y no se siguen redirecciones HTTP.
+
+**Estado de validación:** cambios preparados y pruebas automatizadas añadidas; ejecución local, build PyInstaller y aceptación GUI/Windows/Linux todavía pendientes. No interpretar el estado de esta rama como aprobación de distribución.

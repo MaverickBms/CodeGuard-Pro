@@ -16,6 +16,7 @@ import logging
 import urllib.error
 import urllib.request
 from typing import Optional
+from urllib.parse import urlsplit
 
 from django.conf import settings
 from django.utils import timezone
@@ -37,6 +38,39 @@ class TutorNoDisponible(Exception):
     """El tutor IA no está disponible (Ollama no responde)."""
 
 
+class _NoRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Impide que una petición con código del estudiante siga redirecciones."""
+
+    def redirect_request(self, request, response, code, message, headers, new_url):
+        return None
+
+
+def _url_ollama_local() -> str:
+    """Valida que el tutor solo pueda enviar datos a Ollama en loopback."""
+    try:
+        parsed = urlsplit(TUTOR_BASE_URL)
+        hostname = (parsed.hostname or "").lower()
+        port = parsed.port
+    except ValueError as exc:
+        raise TutorNoDisponible("La URL local del tutor no es válida.") from exc
+
+    if (
+        parsed.scheme != "http"
+        or hostname not in {"localhost", "127.0.0.1", "::1"}
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.path not in {"", "/"}
+        or parsed.query
+        or parsed.fragment
+        or port == 0
+    ):
+        raise TutorNoDisponible(
+            "El tutor solo admite una instancia Ollama local (localhost/loopback)."
+        )
+
+    return TUTOR_BASE_URL.rstrip("/") + "/api/chat"
+
+
 def _llamar_ollama(sistema: str, usuario: str, modelo: Optional[str] = None) -> str:
     """Envía una solicitud a Ollama y devuelve la respuesta de texto.
 
@@ -45,7 +79,7 @@ def _llamar_ollama(sistema: str, usuario: str, modelo: Optional[str] = None) -> 
 
     Lanza ``TutorNoDisponible`` si Ollama no responde o devuelve error.
     """
-    url = f"{TUTOR_BASE_URL}/api/chat"
+    url = _url_ollama_local()
     payload = json.dumps(
         {
             "model": modelo or TUTOR_MODEL,
@@ -65,7 +99,11 @@ def _llamar_ollama(sistema: str, usuario: str, modelo: Optional[str] = None) -> 
         method="POST",
     )
     try:
-        with urllib.request.urlopen(requisito, timeout=TUTOR_TIMEOUT_SECONDS) as respuesta:
+        opener = urllib.request.build_opener(
+            urllib.request.ProxyHandler({}),
+            _NoRedirectHandler(),
+        )
+        with opener.open(requisito, timeout=TUTOR_TIMEOUT_SECONDS) as respuesta:
             datos = json.loads(respuesta.read().decode("utf-8"))
         return str((datos.get("message") or {}).get("content") or "").strip()
     except Exception as exc:  # noqa: BLE001 — degradación controlada del tutor
