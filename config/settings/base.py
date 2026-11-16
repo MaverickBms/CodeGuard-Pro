@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     "apps.roadmaps",
     "apps.tutoring",
     "apps.gamification",
+    "apps.challenges",
 ]
 
 MIDDLEWARE = [
