@@ -2,10 +2,10 @@
 
 > **Documento rector del proyecto.** Define el objetivo del producto, las fases de implementación, sus entregables, criterios de aceptación y las reglas que cualquier persona o agente de IA debe respetar al continuar el desarrollo.
 >
-> **Estado general:** Fase 1 completada. Fase 2 iniciada y parcialmente implementada.  
+> **Estado general:** Fase 1 completada; Fase 2 en progreso; bases de Fases 3–7 integradas parcialmente; Fase 8 en consolidación QA.  
 > **Repositorio:** `MaverickBms/CodeGuard-Pro`  
 > **Directorio local habitual:** `~/Documentos/CodeGuard`  
-> **Última actualización:** 15 de noviembre de 2026.
+> **Última actualización:** 16 de noviembre de 2026.
 
 ---
 
@@ -190,7 +190,7 @@ Implementado en `main` y ampliado mediante incrementos integrados:
 
 Validación registrada:
 
-- Historial de resultados reportados: 93, 119, 136, 138 y finalmente **197 pruebas OK** el 15-11-2026 en `chore/estabilizacion-pre-fase-2`.
+- Historial de resultados reportados: 93, 119, 136, 138 y 197 en subconjuntos/líneas base previas. El README registra **245 pruebas OK** en siete apps el 16-11-2026; repetir el comando completo en el HEAD actual antes de una release.
 - En esa validación se informó Python 3.14.10 (`.venv`), `pip check` limpio, `manage.py check` sin incidencias y `makemigrations --check --dry-run` sin cambios.
 - El alcance probado en esa ejecución incluyó `apps.core`, `apps.accounts`, `apps.audit` y `apps.roadmaps`. Es una validación local reportada por el propietario, no una ejecución independiente de CI ni una aceptación GUI.
 
@@ -581,7 +581,7 @@ Reforzar conceptos mediante experiencias breves, interactivas y relacionadas dir
 ## Fase 8 — Integración, calidad, seguridad y optimización
 
 **Estado: CONSOLIDACIÓN TÉCNICA REALIZADA (transversal), con validaciones externas pendientes.**  
-Checks Django en 0, migraciones consistentes y **245 pruebas automatizadas OK** en el entorno de desarrollo. Seguridad y consistencia reforzadas (evaluación verificable, evidencia inmutable, transacciones idempotentes). Pendientes condicionados por entorno/autorización: verificación GUI Electron+Django empaquetado y demo offline/rollback, validación runtime de Ollama en host destino, contenido editorial real/trazable y activación de sync/auth remoto con autorización expresa.
+Checks Django en 0, migraciones consistentes y 245 pruebas reportadas en el entorno de desarrollo (reproducibilidad pendiente en el HEAD actual). Seguridad y consistencia reforzadas (evaluación verificable, evidencia inmutable, transacciones idempotentes). Pendientes: verificación GUI Electron+Django empaquetado, demo offline/rollback, validación runtime de Ollama en host destino, contenido editorial real/trazable, backup/restore y matriz multiplataforma. La sincronización remota y la reactivación de autenticación requieren configuración y autorización expresa.
 
 ### Objetivo
 Consolidar el producto completo para que sea estable, seguro, accesible, eficiente y confiable en modo local.
