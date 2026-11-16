@@ -73,9 +73,9 @@ El contrato de paquete v2 incluye un catálogo normalizado de fuentes con datos 
 | Cliente de sincronización de red | Cliente HTTP, scheduler y backoff implementados; 138 pruebas OK confirmadas; PyInstaller y AppImage Linux generados. El smoke test valida el comando `--sync-knowledge`, no el servidor Waitress normal. Aceptación GUI Electron y navegación del roadmap pendientes. Endpoint y claves de producción no configurados | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Generador local y catálogo firmado v2 | Implementado; migración 0015 y pruebas confirmadas por el propietario. Hosting y publicación remota pendientes | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
 | Instalación transaccional local y rollback | Validada por el propietario en `main` `2c5d441` (119 pruebas OK; migración 0016 incluida) | `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md` |
-| Competencias y evaluaciones | Pendiente (Incremento 3) | `docs/PLAN_DESARROLLO.md` |
-| Biblioteca documental | Pendiente (Incremento 4) | `docs/PLAN_DESARROLLO.md` |
-| Evidencias y laboratorios | Pendiente (Incremento 5) | `docs/PLAN_DESARROLLO.md` |
+| Evaluaciones y progresión | Base de modelos integrada en Fase 4; corrección, homologación y UI pendientes | `docs/PLAN_MAESTRO_CODEGUARD.md` |
+| Tutoría IA local | App `apps.tutoring` integrada en Fase 3; validación Ollama pendiente | `docs/PLAN_MAESTRO_CODEGUARD.md` |
+| Gamificación, mundo y desafíos | Bases integradas en Fases 5–7; experiencia completa pendiente | `docs/PLAN_MAESTRO_CODEGUARD.md` |
 | Backups y administración | Pendiente (Incremento 6) | `docs/PLAN_DESARROLLO.md` |
 
 ---
@@ -126,7 +126,7 @@ La migración 0016 añade snapshots de lección y catálogo de fuentes asociados
 
 El artefacto ZIP se conserva bajo `CODEGUARD_DATA_DIR/knowledge-packages/`. La activación se realiza al final de la transacción: el paquete anterior pasa a sustituido, el nuevo queda activo y `EstadoSincronizacion.active_package` cambia en la misma transacción. El rollback reactiva un paquete sustituido conservando artefactos, snapshots, intentos y progreso. El servicio también resuelve la vista de lección y la entrega de ejercicios contra el snapshot del paquete activo.
 
-**Límites actuales:** el cliente HTTP y el scheduler fueron validados por el propietario dentro de una suite de 138 pruebas. El scheduler Electron, el backoff y el bloqueo de concurrencia ya superaron las pruebas unitarias locales confirmadas por el propietario; PyInstaller y AppImage fueron generados; el smoke test del modo sync pasó. La prueba integrada GUI de Electron y la navegación por ASCENSO siguen pendientes. No hay endpoint, hosting ni claves públicas de producción; por ello la sincronización automática permanece inactiva hasta configurar una distribución confiable. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado.
+**Límites actuales (actualización 16-11-2026):** el cliente HTTP y el scheduler fueron validados en líneas base anteriores; el README registra 245 pruebas en siete apps, pendiente de reproducción en el HEAD actual. El scheduler Electron, el backoff y el bloqueo de concurrencia ya superaron las pruebas unitarias locales confirmadas por el propietario; PyInstaller y AppImage fueron generados; el smoke test del modo sync pasó. La prueba integrada GUI de Electron y la navegación por ASCENSO siguen pendientes. No hay endpoint, hosting ni claves públicas de producción; por ello la sincronización automática permanece inactiva hasta configurar una distribución confiable. El guardado del artefacto en disco y la transacción SQLite no son una transacción distribuida; un cierre abrupto puede dejar un archivo huérfano no anunciado.
 
 
 ### 10. Estado de aceptación del escritorio (12-11-2026)
