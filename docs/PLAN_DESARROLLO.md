@@ -121,6 +121,7 @@
 
 ## Incremento 3 — Competencias y evaluaciones (pendiente)
 
+- **Fase 3 — Tutor IA local (iniciada):** ADR-010 aprobado (16-11-2026); app `apps/tutoring` implementada con migración 0001, API `/tutoria/*` y suite de 9 pruebas (total **206 OK**). Estado: en progreso; pendiente validación con Ollama y cierre de criterios.
 - Competencias, niveles, criterios, reglas combinables.
 - Evaluaciones (MC, abiertas, ejercicios, proyectos), rúbricas, intentos, resultados.
 - Validación automática de criterios.

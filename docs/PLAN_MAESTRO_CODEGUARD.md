@@ -130,7 +130,7 @@ No hacer commit, push, merge ni despliegue salvo autorización explícita del us
 |---|---|---|
 | 1 | Fundamentos UX/UI y experiencia base | **Completada** |
 | 2 | Motor de aprendizaje y contenido interactivo | **En progreso — parcial** |
-| 3 | Tutor inteligente local | Pendiente |
+| 3 | Tutor inteligente local | **En progreso — parcialmente implementada (ADR-010, app `apps/tutoring`)** |
 | 4 | Evaluaciones y progresión académica | Pendiente |
 | 5 | Gamificación y economía de recompensas | Pendiente |
 | 6 | Mundo, avatar, personajes e inventario | Pendiente |
@@ -388,7 +388,17 @@ La fecha de revisión no debe confundirse con la fecha de publicación ni usarse
 
 ## Fase 3 — Tutor inteligente local
 
-**Estado: PENDIENTE. Depende de la estructura de ejercicios y resultados de la Fase 2.**
+**Estado: EN PROGRESO — parcialmente implementada (ADR-010, app `apps/tutoring`). Pendiente de cierre: validación local con Ollama y criterios de aceptación. Depende de la estructura de ejercicios y resultados de la Fase 2.**
+
+### Decisión técnica — ADR-010 (Tutor IA local)
+
+**Estado:** Aprobada (16-11-2026) mediante `docs/ADR/ADR-010-tutor-ia-local.md`.
+
+- **Decisión adoptada:** Tutor IA local mediante modelo **Ollama** (`qwen2.5-coder:1.5b`, fallback `llama3.2:1b`), expuesto por la app Django `apps/tutoring` con API `/tutoria/*`.
+- **Alcance implementado a la fecha:** creación de la app (migración 0001), servicios con llamada a Ollama (`_llamar_ollama`, degradación a reglas estáticas, límite de 3 pistas) y vistas de estado/iniciar/pista/analizar con suite de 9 pruebas (`apps/tutoring`).
+- **Línea base de pruebas:** total **206 OK** (197 del núcleo + 9 de `apps/tutoring`).
+- **Restricciones vigentes:** el tutor no ejecuta código del estudiante, no entrega la solución completa, respeta el límite de 3 pistas por ejercicio y la evaluación determinista sigue siendo la fuente de verdad de la aprobación académica.
+- **Pendiente:** validación con Ollama en ejecución real, verificación de criterios de aceptación de la Fase 3 y cierre formal.
 
 ### Objetivo
 Ofrecer acompañamiento pedagógico personalizado sin sustituir el razonamiento del estudiante.

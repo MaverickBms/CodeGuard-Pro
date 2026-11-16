@@ -95,6 +95,10 @@
 
   <section class="lesson-panel cg-card" id="ejercicios">
     <div class="lesson-section-heading"><span class="lesson-section-icon"><i class="fa-solid fa-laptop-code"></i></span><div><span class="lesson-overline">PON A PRUEBA LO APRENDIDO</span><h2>Ejercicios y talleres</h2><p>Problemas prácticos para aplicar los conceptos de esta lección.</p></div></div>
+    <div class="lesson-tutor-status" id="tutoriaStatus" role="status">
+      <span class="lesson-tutor-status-icon" aria-hidden="true"><i class="fa-solid fa-robot"></i></span>
+      <p class="lesson-tutor-status-text">Consultando disponibilidad del tutor IA…</p>
+    </div>
     <div class="lesson-exercise-list">
       {% for ejercicio in ejercicios %}
         <article class="lesson-exercise">
@@ -105,7 +109,7 @@
           {% if ejercicio.codigo_inicial %}<pre class="lesson-code"><code>{{ ejercicio.codigo_inicial }}</code></pre>{% endif %}
 
           {% if ejercicio.id %}
-            <form class="lesson-submission" method="post" action="{% url 'roadmaps:enviar_intento' ejercicio.id %}">
+            <form class="lesson-submission" method="post" action="{% url 'roadmaps:enviar_intento' ejercicio.id %}" data-ejercicio-id="{{ ejercicio.id }}">
               {% csrf_token %}
               <label for="respuesta-{{ ejercicio.id }}">Tu respuesta</label>
               <textarea id="respuesta-{{ ejercicio.id }}" name="respuesta" rows="7" maxlength="20000" required placeholder="Escribe aquí tu solución o respuesta..."></textarea>
@@ -118,11 +122,28 @@
             <div class="lesson-empty"><i class="fa-solid fa-lock"></i><span>Este ejercicio pertenece a una versión histórica y se conserva para consulta. No admite nuevas entregas.</span></div>
           {% endif %}
 
+          {% if ejercicio.id %}
+            <div class="lesson-tutor-actions">
+              <button class="btn-theme btn-theme-ghost lesson-tutor-pista-btn" type="button" data-ejercicio-id="{{ ejercicio.id }}" data-tipo="orientacion">
+                <i class="fa-solid fa-lightbulb"></i> Pedir pista
+              </button>
+            </div>
+            <div class="lesson-tutor-hint" id="tutoriaHint-{{ ejercicio.id }}" hidden>
+              <p class="lesson-tutor-hint-text"></p>
+              <p class="lesson-tutor-hint-meta"></p>
+            </div>
+            <div class="lesson-tutor-analysis" id="tutoriaAnalisis-{{ ejercicio.id }}" hidden>
+              <h4>Análisis del tutor</h4>
+              <p class="lesson-tutor-analysis-result"></p>
+              <p class="lesson-tutor-analysis-text"></p>
+            </div>
+          {% endif %}
+
           {% if ejercicio.intentos_usuario %}
             <div class="lesson-attempt-history">
               <h4>Últimos intentos</h4>
               {% for intento in ejercicio.intentos_usuario %}
-                <article class="lesson-attempt">
+                <article class="lesson-attempt" data-intento-id="{{ intento.id }}">
                   <div class="lesson-attempt-meta">
                     <strong>{{ intento.get_resultado_display }}</strong>
                     <time datetime="{{ intento.creado_en|date:'c' }}">{{ intento.creado_en|date:"d/m/Y H:i" }}</time>
@@ -146,4 +167,8 @@
     <a class="btn-theme btn-theme-ghost" href="{% url 'roadmaps:detalle' etapa.numero %}"><i class="fa-solid fa-arrow-left"></i> Volver a las lecciones</a>
   </footer>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/tutoria.js' %}"></script>
 {% endblock %}

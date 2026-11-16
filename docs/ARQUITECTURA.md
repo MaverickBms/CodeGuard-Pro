@@ -1,8 +1,8 @@
 # CodeGuard Pro — Documentación de arquitectura
 
 **Producto:** CodeGuard Pro  
-**Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada)  
-**Estado:** Núcleo funcional verificado; motor de aprendizaje y conocimiento versionado en curso  
+**Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada + Fase 3 en progreso)  
+**Estado:** Núcleo funcional verificado; motor de aprendizaje y conocimiento versionado en curso; tutor IA local en progreso (Fase 3, ADR-010)  
 **SRS de referencia:** `IEEE830(1).md` v2.0  
 **Línea base integrada:** `main` (`b82a249`)  
 **HEAD de referencia de main:** `b82a249`
@@ -53,8 +53,9 @@ codeguard-pro/
 │   ├── core/                 # panel principal, navegación, configuración sistema (singleton)
 │   ├── accounts/             # identidad y acceso (login, setup, frase rescate, contraseña)
 │   ├── audit/                # registro de eventos de seguridad y acceso (auditoría)
-│   └── roadmaps/             # roadmap ASCENSO, contenido académico, flujo editorial,
+│   ├── roadmaps/             # roadmap ASCENSO, contenido académico, flujo editorial,
 │   │                         # registro de paquetes, distribución firmada, importación
+│   └── tutoring/             # Tutor IA local (Fase 3, ADR-010): Ollama, sesiones de pistas, análisis
 │
 ├── templates/                # plantillas base y por app (Django MVT)
 ├── static/                   # recursos estáticos locales (sin CDN)
@@ -84,6 +85,7 @@ Cada aplicación Django tiene responsabilidades delimitadas y evita acoplamiento
 | `apps.accounts` | Identidad y acceso: login, logout, setup inicial, frase de rescate, cambio de contraseña | Implementado (inc. 1, auth temporalmente desactivada) |
 | `apps.audit` | Registro de eventos de seguridad y acceso (auditoría) | Implementado (inc. 1) |
 | `apps.roadmaps` | Roadmap ASCENSO, contenido académico, flujo editorial, paquetes, distribución | Implementado parcialmente (Fase 2) |
+| `apps.tutoring` | Tutor IA local (Fase 3, ADR-010): estado, sesiones, pistas, análisis | Implementado (parcial) |
 | `config.middleware` | Sesión por inactividad, cabeceras de seguridad, acceso local | Implementado (inc. 1) |
 | `config.settings` | Configuración Django (base + desarrollo + desktop) | Implementado (inc. 1) |
 | Electron | Contenedor de escritorio que inicia Django local (Waitress) | Implementado |

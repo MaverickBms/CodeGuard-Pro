@@ -377,6 +377,75 @@ body[data-theme="light"] .main-content:has(.lesson-page) {
   font-size: .8rem;
   line-height: 1.55;
 }
+/* Tutoría con IA local (Fase 3) — consume los tokens del tema activo. */
+.lesson-tutor-status {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--cg-info) 22%, var(--cg-border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--cg-info) 6%, var(--lesson-card));
+}
+.lesson-tutor-status-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 10px;
+  color: var(--cg-info);
+  background: color-mix(in srgb, var(--cg-info) 12%, var(--lesson-card));
+  font-size: .9rem;
+}
+.lesson-tutor-status-text {
+  margin: 0;
+  color: var(--cg-text-secondary);
+  font-size: .8rem;
+  line-height: 1.5;
+}
+.lesson-tutor-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.lesson-tutor-pista-btn { min-height: 38px; }
+.lesson-tutor-hint {
+  margin-top: 12px;
+  padding: 13px 14px;
+  border: 1px solid color-mix(in srgb, var(--cg-warning) 30%, var(--cg-border));
+  border-radius: 12px;
+  background: var(--lesson-card);
+}
+.lesson-tutor-hint[hidden] { display: none; }
+.lesson-tutor-hint-text {
+  margin: 0;
+  color: var(--cg-text);
+  font-size: .87rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.lesson-tutor-hint-meta { margin: 7px 0 0; color: var(--cg-text-muted); font-size: .72rem; }
+.lesson-tutor-analysis {
+  margin-top: 12px;
+  padding: 13px 14px;
+  border: 1px solid color-mix(in srgb, var(--cg-info) 24%, var(--cg-border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--cg-info) 5%, var(--lesson-card));
+}
+.lesson-tutor-analysis[hidden] { display: none; }
+.lesson-tutor-analysis h4 {
+  margin: 0 0 8px;
+  color: var(--cg-text);
+  font-size: .85rem;
+  font-weight: 750;
+  letter-spacing: -.02em;
+}
+.lesson-tutor-analysis-result { margin: 0 0 6px; color: var(--cg-text-secondary); font-size: .78rem; font-weight: 700; }
+.lesson-tutor-analysis-text { margin: 0; color: var(--cg-text); font-size: .85rem; line-height: 1.65; overflow-wrap: anywhere; }
 
 @media (prefers-reduced-motion: reduce) {
   .lesson-page * { scroll-behavior: auto !important; transition-duration: .01ms !important; }
