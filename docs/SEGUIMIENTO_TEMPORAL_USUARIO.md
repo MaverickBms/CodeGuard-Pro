@@ -17,7 +17,7 @@
   - `af56fbd docs: actualizar conteo de pruebas a 197 OK` (README.md, docs/PLAN_DESARROLLO.md)
 - **Entorno:** Python 3.14.10, Django 5.2.19, entorno virtual `.venv/`, Electron 45.2.3, Node.js instalados.
 - **Base de datos:** `data/db.sqlite3` existe, migraciones aplicadas, `.secret_key` presente.
-- **Pruebas automatizadas:** **197 pruebas OK** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`) ejecutadas con `--settings=config.settings.development`.
+- **Pruebas automatizadas:** **206 pruebas OK** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`) ejecutadas con `--settings=config.settings.development`. Incluye las 9 nuevas del tutor IA (Fase 3).
 - **Django system check:** 0 issues.
 - **Migraciones pendientes:** Ninguna (`makemigrations --check --dry-run` limpio).
 - **Autenticación:** `AUTH_DISABLED = True` (temporal). La app abre directamente el panel. Sistema de auth completo conservado pero inactivo.
@@ -53,7 +53,7 @@ Entregar CodeGuard Pro como aplicación de escritorio completamente funcional, e
 |---|---|---|---|---|
 | 1 | Fundamentos UX/UI y experiencia base | ✅ Completada | Dashboard, navegación, sidebar, 12 temas, responsive, ajustes de contraste. | Documentado como verificado por propietario. |
 | 2 | Motor de aprendizaje y contenido interactivo | 🔄 Casi completo (cierre pendiente GUI) | Modelos curriculares, contenido, ejemplos, ejercicios, progreso, flujo editorial, paquetes firmados, sincronización cliente. Arquitectura refinada: ADR-005 a ADR-009 implementados. Eliminados ~170 líneas de código duplicado. Pendiente: verificación GUI Electron+Waitress, contenido académico real, demo offline/rollback. | 197 pruebas OK (verificado tras cada cambio). |
-| 3 | Tutor inteligente local | 🔄 En progreso — implementado (ADR-010) | App `apps/tutoring` creada: modelos `SesionTutoria`/`PistaTutoria`/`IntentoTutoria`, servicio `_llamar_ollama` (urllib/stdlib) contra Ollama local, entrega de pistas con límite de 3, degradación a reglas estáticas, análisis de intento con fallback. API JSON `/tutoria/*` implementada. Pendiente: integración UI del tutor en plantillas/JS, pruebas unitarias de la app. | 197 pruebas OK, system check 0 issues, migración 0001 creada, `GET /tutoria/estado/` verificado 200 JSON (`disponible: true`). |
+| 3 | Tutor inteligente local | 🔄 En progreso — implementado (ADR-010) | App `apps/tutoring` creada: modelos `SesionTutoria`/`PistaTutoria`/`IntentoTutoria`, servicio `_llamar_ollama` (urllib/stdlib) contra Ollama local, entrega de pistas con límite de 3, degradación a reglas estáticas, análisis de intento con fallback. API JSON `/tutoria/*` implementada. Pruebas propias: 9 tests (apps.tutoring). Pendiente: integración UI del tutor en plantillas/JS. | Suite completa (incl. apps.tutoring): **206 pruebas OK** (197 + 9 nuevos), system check 0 issues, migración 0001 creada, `GET /tutoria/estado/` verificado 200 JSON (`disponible: true`). |
 | 4 | Evaluaciones y progresión académica | ⏳ Pendiente | — | — |
 | 5 | Gamificación y economía de recompensas | ⏳ Pendiente | — | — |
 | 6 | Mundo, avatar, personajes e inventario | ⏳ Pendiente | — | — |
