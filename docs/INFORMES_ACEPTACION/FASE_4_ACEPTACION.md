@@ -2,23 +2,23 @@
 
 **Producto:** CodeGuard Pro  
 **Fase:** 4 — Evaluaciones y progresión académica  
-**Estado del informe:** Borrador  
+**Estado del informe:** Borrador (actualizado)  
 **Elaborado por:** Subagente 4 (Documentación, Integración y QA)  
 **Fecha:** 16 de noviembre de 2026  
 **Rama de referencia:** `chore/stabilizacion-pre-fase-2`  
-**Commit de referencia:** `1b4e50c` (ADR-011 — modelos de evaluación)  
+**Commit de referencia:** `7bc938d` (homologación por examen de etapa)  
 
 ---
 
 ## 1. Resumen ejecutivo
 
-La Fase 4 (Evaluaciones y progresión académica) está **en progreso — parcialmente implementada**, según la decisión técnica **ADR-011** (aprobada e implementada parcialmente, commit `1b4e50c`).
+La Fase 4 (Evaluaciones y progresión académica) está **en progreso — parcialmente implementada** bajo **ADR-011**.
 
-En este incremento se incorporó el núcleo de datos para evaluaciones en `apps.roadmaps`: modelos `Quiz`, `Pregunta`, `ResultadoEvaluacion` y `ResultadoPregunta` (definidos en `apps/roadmaps/models_evaluacion.py`), junto con la migración `0017` y **9 pruebas nuevas**.
+Incluye: modelos de evaluación (`Quiz`, `Pregunta`, `ResultadoEvaluacion`, `ResultadoPregunta`), migraciones `0017` y `0018`, corrección automática determinista y revisión controlada para formatos abiertos, flujo UI de quiz (detalle/envío/resultado/historial), acceso desde detalle de etapa, progreso de módulo al aprobar quiz sin revisión, y **homologación/progresión de etapa por examen verificable** (`Quiz.etapa`) con auditoría cuando se cumple umbral, sin revisión pendiente y con prerrequisitos satisfechos.
 
-La línea base total del proyecto asciende a **215 pruebas OK** (206 previas + 9 nuevas de Fase 4).
+Línea base actual: **232 pruebas OK** (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification`).
 
-El presente informe se mantiene en **borrador**: la Fase 4 **no está aceptada formalmente**. Quedan pendientes componentes esenciales (corrección automática, reglas de progresión/homologación, interfaz de usuario y flujo de authoring/editorial).
+Pendiente: integración más completa con criterios/proyecto de finalización, authoring editorial (≥15 preguntas por módulo/examen), UI avanzada y validaciones GUI específicas.
 
 ---
 
@@ -26,14 +26,14 @@ El presente informe se mantiene en **borrador**: la Fase 4 **no está aceptada f
 
 | Funcionalidad | Estado | Evidencia |
 |---|---|---|
-| Decisión ADR-011 (evaluaciones y progresión académica) | ✅ Aprobada (parcialmente implementada) | Commit `1b4e50c`, `docs/PLAN_MAESTRO_CODEGUARD.md` |
-| Modelos de evaluación: `Quiz`, `Pregunta`, `ResultadoEvaluacion`, `ResultadoPregunta` | ✅ Implementados | `apps/roadmaps/models_evaluacion.py` |
-| Migración de esquema de evaluación | ✅ Implementada | `apps/roadmaps/migrations/0017_*` (migración 0017) |
-| Pruebas del núcleo de modelos/migración de evaluación | ✅ Ejecutadas (9 nuevas) | Suite reportada: **215 OK** total |
-| Corrección automática de evaluaciones | ⏳ Pendiente | No verificado en este incremento |
-| Reglas de progresión académica y homologación | ⏳ Pendiente | No verificado en este incremento |
-| Interfaz de usuario para evaluaciones | ⏳ Pendiente | No verificado en este incremento |
-| Flujo de authoring/editorial de evaluaciones | ⏳ Pendiente | No verificado en este incremento |
+| ADR-011 | ✅ Parcialmente implementada | Commits Fase 4 en rama |
+| Modelos/migraciones 0017–0018 | ✅ Implementados | `models_evaluacion.py`, migraciones |
+| Corrección automática (determinista/revisión controlada) | ✅ Implementado | `services_evaluacion.py`, tests |
+| Flujo quiz UI + historial | ✅ Implementado | vistas/templates |
+| Progreso de módulo por quiz aprobado | ✅ Implementado | `services_evaluacion.py`, `views.py`, tests |
+| Examen de etapa + homologación de etapa | ✅ Implementado (básico) | `Quiz.etapa`, `aprobar_etapa_por_evaluacion`, tests |
+| Authoring editorial (≥15 preguntas, objetivos trazables) | ⏳ Pendiente | Trabajo editorial/código adicional |
+| UI avanzada / integración plena criterios etapa | ⏳ Pendiente | No verificado |
 
 ---
 
