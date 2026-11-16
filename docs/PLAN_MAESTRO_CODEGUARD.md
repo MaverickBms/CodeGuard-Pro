@@ -521,7 +521,7 @@ Aumentar la motivación, continuidad y reconocimiento del esfuerzo sin convertir
 
 ## Fase 6 — Mundo, avatar, personajes e inventario
 
-**Estado: PENDIENTE. Depende de la Fase 5.**
+**Estado: EN PROGRESO — base técnica implementada (modelos/migración en `apps.gamification`). Pendiente: mapa/UI, personalización y desbloqueos visuales ligados al progreso real.**
 
 ### Objetivo
 Dar identidad y continuidad narrativa al recorrido de aprendizaje.

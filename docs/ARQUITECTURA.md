@@ -87,7 +87,7 @@ Cada aplicación Django tiene responsabilidades delimitadas y evita acoplamiento
 | `apps.audit` | Registro de eventos de seguridad y acceso (auditoría) | Implementado (inc. 1) |
 | `apps.roadmaps` | Roadmap ASCENSO, contenido académico, flujo editorial, paquetes, distribución, modelos de evaluación (ADR-011, `models_evaluacion.py`) | Implementado parcialmente (Fase 2 / Fase 4 en progreso) |
 | `apps.tutoring` | Tutor IA local (Fase 3, ADR-010): estado, sesiones, pistas, análisis | Implementado (parcial) |
-| `apps.gamification` | Gamificación y economía de recompensas (Fase 5, ADR-012): perfil, logros, moneda, inventario, recompensas por eventos | Base e integración inicial (parcial) |
+| `apps.gamification` | Gamificación y economía de recompensas (Fase 5, ADR-012): perfil, logros, moneda, inventario, recompensas por eventos; base Fase 6 (mundo/avatar/personajes) | Base e integración inicial (parcial) |
 | `config.middleware` | Sesión por inactividad, cabeceras de seguridad, acceso local | Implementado (inc. 1) |
 | `config.settings` | Configuración Django (base + desarrollo + desktop) | Implementado (inc. 1) |
 | Electron | Contenedor de escritorio que inicia Django local (Waitress) | Implementado |
