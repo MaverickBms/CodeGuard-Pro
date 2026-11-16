@@ -1,8 +1,8 @@
 # Fase 2 — Sistema de aprendizaje interactivo
 
 **Producto:** CodeGuard Pro  
-**Estado:** Motor de aprendizaje y control editorial en desarrollo; componentes integrados en `main` (`b82a249`)  
-**Línea base:** rama `main`  
+**Estado:** Motor de aprendizaje y control editorial en desarrollo; componentes integrados en `main` (`26085c6`)  
+**Línea base de código auditada:** rama `main` (`26085c6`)  
 **Documentos de referencia:** `docs/PLAN_DESARROLLO.md`, `docs/ARQUITECTURA.md`, `docs/DISENO_SINCRONIZACION_Y_PUBLICACION.md`, `docs/MODELO_DATOS.md`
 
 ---
@@ -168,3 +168,10 @@ El artefacto ZIP se conserva bajo `CODEGUARD_DATA_DIR/knowledge-packages/`. La a
 | `manage.py migrate` | ✅ Todas las migraciones 0001–0016 aplicadas |
 | `manage.py cargar_ascenso` | ✅ 33 etapas, 212 módulos, 1.946 lecciones, 7 prerrequisitos |
 | `manage.py test` | ✅ 138 pruebas pasando (`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`) |
+
+
+## Actualización de estado — 16-11-2026
+
+La Fase 2 permanece en progreso. Se integraron en `main` los avances posteriores de Fases 3–7, pero no se considera cerrada la base académica hasta validar contenido editorial real, navegación de todas las lecciones, práctica segura, progresión y continuidad offline. La distribución remota sigue diferida por la estrategia sin inversión inicial; el cliente de sincronización no debe ser requisito para el funcionamiento local.
+
+La aceptación de instalación limpia y GUI Electron/Waitress está abierta. Ver `docs/INFORME_QA_INTEGRAL_2026-11-16.md` para los hallazgos de primer arranque, datos y portabilidad.
