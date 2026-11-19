@@ -503,6 +503,12 @@ def registrar_cumplimiento_criterio(
     """Registra evidencia de cumplimiento de un criterio y reevalúa la etapa."""
     if usuario is None or not getattr(usuario, "is_authenticated", False):
         raise ValidationError("Se requiere un usuario autenticado.")
+    if criterio.etapa.esta_bloqueada_para(
+        etapas_completadas(usuario, criterio.etapa.roadmap)
+    ):
+        raise ValidationError(
+            "No puedes registrar criterios de esta etapa hasta completar sus prerrequisitos."
+        )
 
     cumplimiento, _ = CumplimientoCriterio.objects.update_or_create(
         usuario=usuario,
