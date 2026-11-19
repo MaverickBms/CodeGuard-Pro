@@ -58,6 +58,18 @@ La presencia de archivos y pruebas no acredita por sí sola la aceptación funci
 - El tutor Ollama es opcional: el núcleo debe funcionar sin Ollama ni conexión a Internet.
 - El README público menciona metadatos de PySide6 en la descripción del repositorio, pero el código/documentación de Windows identifican Electron + Django como arquitectura vigente. Corregir metadatos solo después de confirmar con el propietario y sin alterar el alcance.
 
+
+### 4.1 Revisión estática adicional de Electron (main)
+
+Se revisó también el bloque IPC de `electron/main.js` en el HEAD remoto de `main` (`59d08848726550fde442be1eb1e1be5522637f0b`). Hallazgo para endurecimiento, no confirmado como vulnerabilidad explotable:
+
+- Los handlers `get-knowledge-sync-status` y `check-knowledge-updates` validan el origen del frame emisor.
+- Los handlers `get-system-info` y `select-folder` no aplican esa misma validación de origen.
+- Los canales `set-theme` y `show-notification` tampoco validan el emisor; aceptan datos del renderer.
+- El renderer está configurado con `contextIsolation: true`, `nodeIntegration: false`, `sandbox: true` y navegación externa bloqueada, lo que reduce la superficie, pero no sustituye la validación de origen en IPC privilegiado.
+
+**Prioridad propuesta: P2 (defensa en profundidad).** Antes de modificarlo, centralizar una comprobación de origen basada en URL parseada y comparar protocolo, hostname y puerto exactos; aplicarla a todos los canales expuestos por preload; validar además tipos y longitudes de los argumentos de notificación. Añadir pruebas de emisor autorizado/no autorizado. No se modificó el código porque falta el checkout local y deben preservarse los cambios locales pendientes en este archivo.
+
 ## 5. Priorización para beta
 
 ### P0 — Bloqueante
