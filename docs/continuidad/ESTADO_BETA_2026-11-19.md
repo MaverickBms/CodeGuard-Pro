@@ -270,3 +270,17 @@ El commit que disparó el run modifica documentación únicamente, aunque el wor
 **Acción pendiente externa al código:** verificar en GitHub, en Settings → Actions → General, que Actions está habilitado para el repositorio y que las políticas permiten los workflows y acciones usados; después ejecutar manualmente `CodeGuard Pro CI` con `workflow_dispatch`. Si sigue fallando antes de crear jobs, obtener el detalle de diagnóstico desde la interfaz de Actions o soporte de GitHub.
 
 **Validación:** revisión estática únicamente. No se ejecutaron suites Django/Electron, compilación PyInstaller, electron-builder ni instaladores. No se declara CI aprobado ni beta aceptada.
+
+
+## 19. Servicio interno de backup inicial (19-11-2026)
+
+Se incorporó `apps/core/backup.py` con creación y verificación de archivos ZIP de backup:
+- Snapshot consistente de SQLite mediante `Connection.backup()`, con `PRAGMA integrity_check`.
+- Inclusión de `media/`, manifiesto versionado, tamaños y SHA-256; validación CRC y de hashes al reabrir el archivo.
+- Rechazo de destinos dentro del perfil, destinos ya existentes, rutas ZIP absolutas/traversal, entradas duplicadas, symlinks y límites de tamaño.
+- Exclusión deliberada de `.secret_key`, logs y archivos WAL/SHM independientes.
+- Pruebas añadidas para creación, exclusión de secretos/logs, destino dentro del perfil, no sobrescritura, traversal y ZIP truncado.
+
+**Límite importante:** esto solo implementa el servicio de creación/verificación. No hay restauración, interfaz, cifrado de secretos, ejecución de pruebas ni validación en Windows/Linux. No usarlo aún como una función de usuario final ni marcar backup/restore como terminado. La restauración debe ejecutarse con Django/Electron detenidos y con rollback probado.
+
+**Validación de este commit:** cambios publicados en la rama del PR; el entorno de trabajo no tiene checkout local funcional, así que no se ejecutaron las pruebas Django ni el análisis estático con intérprete. CI sigue pendiente de diagnóstico.
