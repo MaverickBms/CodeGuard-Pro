@@ -103,8 +103,7 @@
           ]
         }
       ],
-      "icon": "static/icons/icon.ico",
-      "artifactName": "CodeGuard-Pro-${version}-${arch}.${ext}"
+      "icon": "static/icons/icon.ico"
     }
   },
   "devDependencies": {
