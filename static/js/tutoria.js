@@ -202,7 +202,7 @@
       } catch (error) { /* almacenamiento opcional */ }
     });
 
-    document.addEventListener('DOMContentLoaded', procesarIntentosPendientes);
+    procesarIntentosPendientes();
   }
 
   if (document.readyState === 'loading') {
