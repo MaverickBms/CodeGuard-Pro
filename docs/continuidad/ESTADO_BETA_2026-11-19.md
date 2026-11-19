@@ -1,10 +1,10 @@
 # Estado de avance de beta — CodeGuard Pro
 
-**Fecha de revisión:** 2026-11-18  
+**Fecha de revisión:** 2026-11-19  
 **Rama de trabajo:** `fix/electron-ipc-origin-validation`  
 **Base:** `main` en `59d08848726550fde442be1eb1e1be5522637f0b`  
 **HEAD de código revisado antes de los commits de continuidad:** `5223e4373aee76837437ebf943f952aa691b2b0f`  
-**Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`  
+**Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`, `40cfdf2`, `6907ff6`, `1d025a9`  
 **Pull request:** https://github.com/MaverickBms/CodeGuard-Pro/pull/12 (abierto, borrador)  
 **Alcance:** inspección estática remota y corrección puntual de launcher; no equivale a ejecutar el proyecto.
 
@@ -15,7 +15,7 @@
 - Se aplicó la validación a todos los canales IPC expuestos por `electron/preload.js`: tema, notificaciones, estado/solicitud de sincronización, información del sistema y selector de carpetas.
 - Las notificaciones limitan título (120 caracteres) y cuerpo (1000 caracteres), y utilizan el icono local de la aplicación.
 - Se añadieron seis casos de regresión en `electron/ipc-security.test.js` y el comando `npm run test:electron`.
-- Se añadió `.github/workflows/ci.yml` para checks Django, migraciones, suite Django y pruebas IPC.
+- Se añadió `.github/workflows/ci.yml` para checks Django, migraciones, suite Django y pruebas IPC. En la revisión del 19-11 se amplió el trigger `push` a todas las ramas y se añadieron verificaciones de sintaxis Python y JavaScript antes de ejecutar las suites.
 - Se corrigió el script `codeguard`: ahora exporta `CODEGUARD_DATA_DIR` inmediatamente después de crear el directorio de datos y antes de ejecutar `migrate` y `cargar_ascenso`. Electron hereda la misma variable al iniciar el AppImage. No se usa `--recrear`.
 - Se actualizó este documento y la descripción del PR con los hallazgos y límites de verificación.
 
@@ -29,7 +29,7 @@ Las seis pruebas cubren origen exacto, puerto diferente, host que suplanta el pr
 
 ### GitHub Actions
 
-Se consultaron las ejecuciones del workflow. La consulta más reciente mostró seis ejecuciones terminadas en fallo:
+Se consultaron las ejecuciones del workflow. La consulta del 19-11 mostró siete ejecuciones terminadas en fallo:
 
 | Run | Commit | Estado |
 |---|---|---|
@@ -39,13 +39,14 @@ Se consultaron las ejecuciones del workflow. La consulta más reciente mostró s
 | 4 | `4c32fe83b29c67af2565efa3a64419add26a8051` | `completed / failure` |
 | 5 | `98d354e4bdb4ea77a363d4e8e301a8f77a5c29f6` | `completed / failure` |
 | 6 | `40cfdf23639cf8bb6384c7297e19219af87507af` | `completed / failure` (run `44444429601`) |
+| 7 | `1d025a90e47e32d4580eacf31136fece5cd50160` | `completed / failure` (run `44445369572`) |
 
-La inspección directa de Actions para el run más reciente (`44444429601`) confirmó `conclusion=failure`, pero `total_count=0` y `jobs=[]`, incluso al consultar el intento 1. El endpoint de check-runs del commit también devolvió `total_count=0`. No hay jobs, steps ni logs de job que permitan identificar un error de ejecución. Además, el run está marcado como evento `push` sobre la rama de trabajo, aunque el archivo de workflow actualmente consultado limita el trigger `push` a `main`; esta discrepancia debe aclararse antes de modificar la configuración. Por tanto:
+La inspección directa de Actions para el run `44444429601` y el más reciente (`44445369572`) confirmó `conclusion=failure`, pero `total_count=0` y `jobs=[]`, incluso al consultar los intentos disponibles. El endpoint de check-runs del commit también devolvió `total_count=0`. No hay jobs, steps ni logs de job que permitan identificar un error de ejecución. El run más reciente también está marcado como evento `push` sobre la rama de trabajo. Para que las futuras modificaciones de la rama queden cubiertas de forma explícita, el trigger `push` se amplió a todas las ramas. El nuevo run `44445369572` volvió a terminar en fallo sin exponer jobs; por tanto, ampliar el trigger no resolvió la anomalía. Por tanto:
 
 - **No se conoce la causa del fallo.**
 - No se puede afirmar que hayan fallado las pruebas Django, las pruebas IPC, la instalación de dependencias o la sintaxis del workflow.
 - Ninguna ejecución cuenta como validación aprobada.
-- Se debe inspeccionar la vista de Actions y la configuración de Actions del repositorio para determinar por qué se crean ejecuciones fallidas sin jobs. No hay base para modificar las pruebas o dependencias hasta resolver esta anomalía.
+- Se debe inspeccionar la vista de Actions y la configuración de Actions del repositorio para determinar por qué se crean ejecuciones fallidas sin jobs. La API disponible no expone logs de workflow/job para esos runs. No hay base para modificar las pruebas o dependencias hasta resolver esta anomalía.
 
 Enlace: https://github.com/MaverickBms/CodeGuard-Pro/actions
 
@@ -67,7 +68,7 @@ La versión anterior inicializaba Django sin exportar `CODEGUARD_DATA_DIR`, por 
 |---|---|---|
 | P0 | Aceptación de instalación limpia y flujo principal Electron/Django. | Pendiente de ejecución real con perfil temporal. |
 | P1 | Reproducibilidad de la suite Django completa (245 reportadas). | Pendiente de ejecutar sobre el HEAD exacto y registrar salida. |
-| P1 | CI sin resultado verificable. | Cinco ejecuciones reportadas como failure, sin jobs/logs accesibles en esta revisión. |
+| P1 | CI sin resultado verificable. | Siete ejecuciones reportadas como failure; los dos runs más recientes devuelven cero jobs. Trigger push ampliado, sin resolver la anomalía. |
 | P1 | Persistencia tras reinicio, modo offline E2E y cierre sin procesos huérfanos. | Pendiente. |
 | P1 | Backup/restauración. | Diseño documentado; implementación/aceptación pendiente. |
 | P1 | Tutor Ollama. | Opcional; validar detección, modelo instalado, timeout, fallback y privacidad. |
@@ -101,15 +102,23 @@ No confundir modelos, rutas o controles visibles con un flujo de usuario termina
 - No desactivar CSRF, CSP, validaciones ni pruebas para conseguir un CI verde.
 - No declarar pruebas exitosas si no se ejecutaron realmente.
 
-## 6. Limitación de esta sesión
+## 6. Última actualización de la rama
+
+- Workflow CI actualizado para ejecutarse en `push` de cualquier rama.
+- Se agregaron `python -m compileall -q config apps server_entry.py manage.py` y `node --check` para los archivos principales de Electron.
+- Commit publicado: `1d025a90e47e32d4580eacf31136fece5cd50160`.
+- El nuevo run `44445369572` también terminó en `failure` con `jobs=[]`; el estado de CI sigue sin ser interpretable y no se declara aprobado.
+- La rama está 15 commits por delante de `main`, sin commits por detrás al momento de la consulta. `main` continúa en `59d08848726550fde442be1eb1e1be5522637f0b`.
+
+## 7. Limitación de esta sesión
 
 Se intentó clonar la rama para ejecutar pruebas localmente, pero el entorno de esta sesión no pudo resolver `github.com` por DNS. La inspección se realizó mediante la API de GitHub y lectura de archivos remotos. No se ejecutaron Python, Django, Node, Electron, PyInstaller, instaladores ni pruebas GUI en esta sesión.
 
 Esto no significa que el proyecto no pueda ejecutarse en el equipo del propietario; significa que esta sesión no dispone de un checkout ejecutable ni de una ruta de red para obtenerlo.
 
-## 7. Próximo bloque recomendado
+## 8. Próximo bloque recomendado
 
-1. Diagnosticar en GitHub por qué las cinco ejecuciones de Actions terminaron en failure sin jobs visibles.
+1. Diagnosticar en GitHub por qué las siete ejecuciones de Actions terminaron en failure sin jobs visibles, incluso tras ampliar el trigger de push.
 2. Ejecutar el launcher `codeguard` con un directorio temporal y confirmar que migrate, carga ASCENSO y AppImage comparten `CODEGUARD_DATA_DIR`.
 3. Probar `server_entry.py` en un directorio vacío y otro con datos de prueba existentes, verificando idempotencia y preservación.
 4. Ejecutar en el entorno del proyecto: `pip check`, `manage.py check`, `makemigrations --check --dry-run`, las siete apps de pruebas Django, `node --check` y `npm run test:electron`.
