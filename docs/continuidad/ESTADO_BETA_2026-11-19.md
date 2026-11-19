@@ -219,3 +219,16 @@ Cambios incorporados en la rama:
 - Se intentó clonar el repositorio para reproducir tests, pero el entorno no pudo resolver `github.com` por DNS. Tampoco hay un proyecto Vercel asociado al repositorio en la cuenta consultada para provisionar un sandbox de ejecución sin crear recursos nuevos. Por tanto, no se ejecutaron suites ni builds.
 
 **Criterio pendiente:** reproducir en un checkout ejecutable los tests de auditoría, el conjunto Django, las pruebas IPC y las comprobaciones de migraciones; después realizar aceptación GUI, offline, persistencia, instalación limpia y cierre limpio. El diseño de backup/restauración continúa pendiente de implementación: no se ha añadido un módulo incompleto ni se presenta como funcional.
+
+## 15. Corte posterior: verificación del HEAD publicado y diagnóstico de Actions
+
+Consulta realizada después de incorporar la corrección de auditoría:
+
+- HEAD publicado: `b82c17ced02a1117e41af9384781ee50fbe45cb8`.
+- PR #12 continúa abierto, en borrador y sin fusionar.
+- Comparación remota: 44 commits por delante de `main`, 0 por detrás. La base de `main` permanece en `59d08848726550fde442be1eb1e1be5522637f0b`.
+- La rama contiene la migración `apps/audit/migrations/0003_add_acceso_panel_event.py`, el cambio de `AuditLog.EVENTO_CHOICES` y la aserción de presentación del evento.
+- La ejecución más reciente visible al momento de esta consulta es el run `44448214712`, asociado al HEAD anterior al nuevo corte documental/código. GitHub lo registra como `completed / failure`, pero su endpoint de jobs devuelve `total_count=0` y `jobs=[]`. No hay steps ni logs con los que atribuir la conclusión a un fallo de sintaxis, dependencias o pruebas.
+- La definición del workflow aparece registrada por GitHub como `.github/workflows/ci.yml` (workflow id `423323839`), por lo que el evento sí generó un registro de ejecución. Eso no explica por qué no se crearon jobs; la configuración de Actions del repositorio o la evaluación previa a los jobs sigue siendo una incógnita y no puede corregirse desde esta sesión con las herramientas disponibles.
+
+**Validación:** se verificó el contenido publicado y los metadatos remotos. No se ejecutaron pruebas Django/Electron ni builds en un runner. No declarar CI aprobado ni beta aceptada. El siguiente paso técnico sigue siendo obtener un entorno reproducible con Python/Node y acceso al checkout, o resolver desde la configuración de GitHub del propietario por qué Actions finaliza sin jobs.
