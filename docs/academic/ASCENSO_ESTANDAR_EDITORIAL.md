@@ -61,7 +61,7 @@ No se debe llamar «oficial» a un artículo académico independiente ni «está
 
 ## Estado de esta entrega
 
-Esta rama desarrolla únicamente el módulo 0.1 «Aprender a aprender» como piloto editorial. No modifica el JSON curricular, no crea lecciones publicadas en SQLite y no cambia el DOCX maestro. La siguiente integración requiere mapear cada lección a su UUID real de la base de datos y usar el flujo editorial de fuentes, snapshots, revisión y aprobación ya existente en CodeGuard Pro.
+Esta rama contiene borradores documentales para las etapas 0–32. No modifica el JSON curricular, no crea lecciones publicadas en SQLite y no cambia el documento maestro. Cada lección que se pretenda importar debe mapearse a su UUID real de la base de datos y pasar por el flujo editorial de fuentes, snapshots, revisión y aprobación existente en CodeGuard Pro.
 
 
 ## Extensión didáctica: aprendizaje multimodal y recursos audiovisuales
@@ -80,7 +80,7 @@ Cada módulo podrá combinar, cuando aporte valor:
 
 ### Ficha obligatoria de video
 
-Registrar título, creador/canal, URL canónica, idioma hablado, subtítulos (idioma y si son manuales, automáticos o no verificados), duración solo si se ha comprobado, nivel, conceptos cubiertos, objetivo curricular, actividad posterior, fecha de verificación y estado del enlace. El español es la primera opción. Un video en inglés solo será recomendado como principal si se ha verificado una opción de subtítulos en español o existe una alternativa equivalente en español claramente enlazada.
+Registrar título, creador/canal, URL canónica, idioma hablado, subtítulos (idioma y si son manuales, automáticos o no verificados), duración solo si se ha comprobado, nivel, conceptos cubiertos, objetivo curricular, actividad posterior, fecha de verificación y estado del enlace. El audio hablado del video recomendado debe estar en español. Un video hablado en inglés no es aceptable como recurso recomendado, aunque tenga subtítulos en español o traducción automática.
 
 No atribuir al creador afirmaciones que no realiza. No usar visualizaciones, suscriptores o popularidad como sustitutos de revisión pedagógica. El video es material complementario: nunca basta con verlo para completar una lección o etapa.
 
