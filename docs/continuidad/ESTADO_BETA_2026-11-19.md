@@ -3,7 +3,7 @@
 **Fecha de revisión:** 2026-11-19  
 **Rama de trabajo:** `fix/electron-ipc-origin-validation`  
 **Base:** `main` en `59d08848726550fde442be1eb1e1be5522637f0b`  
-**HEAD auditado antes de esta actualización:** `5aeb614016386eca64f2495d9c2c07d796002088`  
+**HEAD auditado antes de esta actualización:** `ef703b5abdfb3013676db57fcb774cce838821fa`  
 **Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`, `40cfdf2`, `6907ff6`, `1d025a9`, `a892b5e`, `6178df9`, `49f463c`, `2e64a0a`, `cf963b8`, `80f703a`, `7f3cedd`  
 **Pull request:** https://github.com/MaverickBms/CodeGuard-Pro/pull/12 (abierto, borrador)  
 **Alcance:** inspección estática remota y corrección puntual de launcher; no equivale a ejecutar el proyecto.
@@ -163,7 +163,7 @@ La revisión del empaquetado detectó que `README_WINDOWS.md` y `build_windows.b
 - `package.json` declara explícitamente los objetivos `nsis` y `portable`, ambos para arquitectura `x64`, y utiliza el icono Windows `static/icons/icon.ico`.
 - Se evita forzar un `artifactName` compartido que podría producir colisión entre dos ejecutables .exe; electron-builder conserva sus nombres por objetivo.
 - `build_windows.bat` usa `npm ci` para instalar exactamente lo fijado en `package-lock.json`, en lugar de saltarse la instalación cuando existe un `node_modules` potencialmente desactualizado.
-- El script comprueba que el Python seleccionado sea 3.12 o superior antes de crear el entorno virtual e instalar dependencias.
+- El script comprueba que el Python seleccionado sea 3.12 o superior y Node.js sea 20 o superior antes de continuar con la compilación.
 - `README_WINDOWS.md` distingue la configuración de objetivos de la aceptación real: el build, instalación limpia, primer arranque y persistencia siguen pendientes.
 
 **Evidencia:** inspección estática de `package.json`, `build_windows.bat`, `scripts/build-server.js`, `scripts/verify-server-build.js`, `CodeGuardServer.spec`, `server_entry.py` y `config/settings/desktop.py`. No se ejecutó Windows, PyInstaller ni electron-builder; no se generaron artefactos.
@@ -173,3 +173,6 @@ La revisión del empaquetado detectó que `README_WINDOWS.md` y `build_windows.b
 **CI:** para el HEAD `5aeb614016386eca64f2495d9c2c07d796002088`, las consultas de runs de PR y estados combinados no devolvieron ejecuciones ni checks. Esto no equivale a aprobación; el problema histórico de Actions sin jobs sigue sin diagnóstico.
 
 **Siguiente paso de empaquetado:** ejecutar `build_windows.bat` en Windows x64 limpio y verificar que aparezcan ambos artefactos; instalar el NSIS y ejecutar el portable, ambos sin Python/Node, con perfil de datos nuevo y con perfil ya existente. No distribuir hasta completar esa matriz.
+
+
+**Ajuste final de requisitos Windows:** `build_windows.bat` también comprueba Node.js 20+; `README_WINDOWS.md` actualiza la fecha de revisión al 19-11-2026. Estas validaciones siguen siendo estáticas hasta ejecutar el script en Windows.
