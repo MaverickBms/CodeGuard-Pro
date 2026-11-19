@@ -671,16 +671,14 @@ ipcMain.on('show-notification', (event, options = {}) => {
 
 // IPC: estado de sincronización; solo se acepta desde la ventana local de CodeGuard.
 ipcMain.handle('get-knowledge-sync-status', event => {
-  const trustedUrl = `http://${DJANGO_HOST}:${djangoPort}/`;
-  if (!djangoPort || !event.senderFrame?.url?.startsWith(trustedUrl)) {
+  if (!isTrustedIpcEvent(event)) {
     throw new Error('Origen IPC no autorizado.');
   }
   return syncStatus;
 });
 
 ipcMain.handle('check-knowledge-updates', event => {
-  const trustedUrl = `http://${DJANGO_HOST}:${djangoPort}/`;
-  if (!djangoPort || !event.senderFrame?.url?.startsWith(trustedUrl)) {
+  if (!isTrustedIpcEvent(event)) {
     throw new Error('Origen IPC no autorizado.');
   }
   startKnowledgeSync(true);
