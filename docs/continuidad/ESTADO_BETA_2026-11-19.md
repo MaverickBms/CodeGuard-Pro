@@ -332,3 +332,51 @@ Rama de trabajo: fix/electron-ipc-origin-validation. HEAD verificado en este cor
 Se aisló `getChildStartupFailure` en `electron/process-health.js` y se añadieron pruebas Node para proceso activo, error de spawn, salida con código, salida por señal y proceso ausente. `electron/main.js` utiliza ahora este helper durante la espera de `/healthz/`.
 
 Las pruebas están añadidas a `npm run test:electron` por el patrón `electron/*.test.js`. No se afirma que estén aprobadas: falta ejecutar Node y obtener un resultado CI válido.
+
+
+## 24. Auditoría ampliada de frontend y roadmap (18-11-2026)
+
+### Hallazgos estructurales del contenido
+
+Se inspeccionó apps/roadmaps/data/ascenso_3_1.json mediante parseo y validaciones estructurales:
+- 33 etapas consecutivas (0–32), 212 módulos y 1.946 títulos de lección.
+- Distribución de prioridades: 24 P1, 6 P2 y 3 P3.
+- Siete relaciones de prerrequisito; todas apuntan a etapas existentes.
+- No se detectaron números de módulo duplicados dentro de una misma etapa, títulos de lección vacíos ni espacios periféricos en los títulos.
+- **Defecto editorial confirmado:** la etapa 25 (Seguridad de aplicaciones web y APIs) no tiene objetivo.
+- **Defecto de estructura/contenido confirmado:** el campo proyecto de la etapa 10 contiene aproximadamente 4.739 caracteres de material curricular y secuencias de tecnologías, no una descripción breve de proyecto. No se reescribe ni recorta sin cotejar la fuente oficial.
+- La metadata declara como fuente PROYECTO_ASCENSO_Roadmap_Maestro_Consolidado_3_1_2026.docx y guarda un SHA-256, pero ese DOCX no está versionado en el repositorio ni apareció en la búsqueda de archivos disponibles. Por tanto, esta auditoría comprueba estructura y consistencia interna, no fidelidad semántica contra el documento maestro.
+
+### Cobertura académica real en la beta
+
+- El JSON contiene la estructura curricular (etapas, módulos, títulos de lección, objetivos/proyectos por etapa y algunas dependencias), pero no incorpora teoría, explicación sencilla, ejemplos, ejercicios ni rúbricas por lección.
+- cargar_ascenso crea los registros estructurales; no genera material didáctico completo ni publica evaluaciones.
+- quizzes_ejemplo.json se identifica explícitamente como borrador de estructura, con dos preguntas de ejemplo que deben reemplazarse y fuente académica pendiente. No representa una evaluación lista para estudiantes.
+- La plantilla de lección contempla estados vacíos de forma explícita (Contenido en preparación, ejemplos/ejercicios pendientes). En consecuencia, la navegación por las 1.946 lecciones no significa que existan 1.946 lecciones desarrolladas.
+- La finalización académica depende de ejercicios/evaluaciones y criterios verificables. Sin contenido y evaluadores publicados para cada unidad, no debe prometerse que el recorrido completo pueda cursarse de principio a fin.
+
+### Navegación y opciones del frontend
+
+- Los filtros de bloque, prioridad y búsqueda de etapa/módulo/lección están conectados a la vista del roadmap.
+- Los módulos Competencias, Biblioteca, Base de conocimiento, Evaluaciones, Evidencias, Laboratorios, Backups, Vigencia y Ética aparecen deshabilitados en la navegación porque sus vistas integradas no están implementadas. Se mantienen así deliberadamente: habilitarlos ahora llevaría a destinos inexistentes o a controles sin acción.
+- Las herramientas de backup actuales son comandos de gestión; todavía no existe una pantalla integrada de backup/restauración.
+- Los temas y ajustes visuales tienen controladores frontend; su funcionamiento visual final requiere prueba manual en la aplicación empaquetada y distintos tamaños de ventana.
+
+### Corrección de progresión aplicada
+
+La inspección encontró que el estado Bloqueada se calculaba y mostraba, pero los servicios de envío de ejercicios y evaluaciones no comprobaban los prerrequisitos antes de aceptar una entrega. Se corrigió en esta rama:
+- registrar_intento_ejercicio rechaza entregas de etapas con prerrequisitos pendientes.
+- evaluar_quiz rechaza envíos de quizzes de etapas bloqueadas antes de crear resultados.
+- La pantalla de detalle aclara que se puede consultar el contenido bloqueado, pero no enviar entregas/evaluaciones hasta cumplir los prerrequisitos.
+- Se añadieron pruebas de regresión para ejercicios y quizzes bloqueados.
+
+**Validación pendiente:** las pruebas nuevas y las suites Django/Electron no se han ejecutado en un checkout de esta sesión; CI sigue sin ofrecer jobs/logs verificables. No se declara aprobada esta corrección hasta ejecutar las pruebas.
+
+### Dictamen provisional de frontend/roadmap
+
+La estructura de navegación y consulta del roadmap está implementada, pero el contenido académico no está completo para una beta educativa integral. Antes de aceptar el roadmap como correcto:
+1. Recuperar y cotejar el DOCX maestro exacto para corregir la etapa 25 y normalizar el campo proyecto de la etapa 10 sin inventar contenido.
+2. Definir explícitamente qué etapas y lecciones forman el alcance cursable de la beta.
+3. Publicar material revisado, ejemplos, ejercicios, evaluadores y evaluaciones reales para ese alcance.
+4. Ejecutar pruebas de navegación, filtros, entregas, evaluaciones, progresión, persistencia y presentación en Windows/Linux.
+5. Mantener deshabilitados los módulos que todavía no tienen una implementación real.
