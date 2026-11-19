@@ -295,3 +295,26 @@ Se añadieron dos comandos Django:
 Se añadieron pruebas de integración de los comandos en `apps/core/tests/test_backup_commands.py` y se documentó su uso. Son herramientas internas de mantenimiento; todavía no están conectadas a una pantalla de la aplicación.
 
 **Pendiente:** restauración offline con rollback, interfaz, ejecución real de pruebas, CI con jobs/logs, builds Windows/Linux y validación de instalación limpia. No se debe anunciar backup/restore como función completa.
+
+
+## 21. Endurecimiento del formato de backup y corte de beta (19-11-2026)
+
+Se endureció el validador de apps/core/backup.py:
+- El ZIP solo admite database.sqlite3 y archivos dentro de media/; rechaza payloads adicionales (por ejemplo, logs o rutas arbitrarias), incluso si están declarados en el manifiesto.
+- La detección de symlink en media/ ocurre antes de comprobar su existencia, por lo que también rechaza enlaces simbólicos rotos.
+- La carpeta raíz del perfil se comprueba antes de resolver la ruta para no aceptar una raíz configurada como symlink.
+- Se añadieron pruebas para payload inesperado y directorio media simbólico.
+
+**Estado de ejecución:** cambios publicados en esta rama, pero no ejecutados en un intérprete Python ni en CI. Las pruebas nuevas son cobertura añadida, no evidencia de que pasen.
+
+### Alcance beta y elementos que se omiten temporalmente
+
+Para evitar bloquear el cierre por trabajo no esencial:
+- **Omitido de la beta inicial:** sincronización remota de producción (no hay endpoint, allowlist ni claves públicas productivas); macOS y ARM64; tutor IA local como dependencia del flujo principal; restauración automática/UI de backups. Se mantienen documentados y no se anuncian como disponibles.
+- **No omitible antes de distribución:** reproducir suite Django y pruebas Electron; compilar al menos un artefacto por plataforma objetivo; instalación limpia y primer arranque; flujo principal de panel/roadmap/lección/evaluación; funcionamiento offline; persistencia tras reinicio; cierre sin procesos/puertos huérfanos.
+- **Bloqueo externo:** GitHub Actions sigue generando runs failure sin jobs ni check-runs. No se atribuye a los tests o al código sin logs. La corrección de Settings → Actions y el workflow_dispatch requieren intervención en la interfaz del propietario del repositorio.
+- **Backup actual:** creación/verificación interna disponible mediante comandos Django, pero sin restauración y sin UI. No equivale a una solución completa de recuperación de datos.
+
+### Estado Git de este corte
+
+Rama de trabajo: fix/electron-ipc-origin-validation. PR #12 sigue abierto y en borrador; no se fusiona ni se modifica main. Este corte debe actualizarse con el SHA real tras el commit documental y la consulta final de GitHub.
