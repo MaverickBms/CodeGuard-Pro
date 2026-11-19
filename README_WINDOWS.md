@@ -1,6 +1,6 @@
 # CodeGuard Pro — Windows
 
-**Estado de la guía:** actualizado el 16-11-2026. La compilación Windows está definida; la aceptación de instalación limpia y primer arranque continúa pendiente. No considerar el paquete listo para distribución hasta cerrar los criterios de QA.
+**Estado de la guía:** actualizado el 19-11-2026. La compilación Windows está definida; la aceptación de instalación limpia y primer arranque continúa pendiente. No considerar el paquete listo para distribución hasta cerrar los criterios de QA.
 
 ## Arquitectura actual
 
