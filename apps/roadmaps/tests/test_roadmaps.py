@@ -60,6 +60,18 @@ class CargaAscensoTest(TestCase):
             {(10, 9), (15, 13), (31, 3), (31, 4), (31, 7), (31, 8), (31, 21)},
         )
 
+    def test_proyecto_no_absorbe_ampliaciones_de_profundidad(self):
+        """El proyecto de etapa 10 no debe incluir la sección de ampliación.
+
+        Regresión del extractor: al no cerrar el marcador de proyecto, el texto
+        de ``Ampliación de profundidad`` se concatenaba al proyecto (4.739
+        caracteres en lugar de la frase oficial de 136).
+        """
+        etapa10 = Etapa.objects.get(roadmap=self.roadmap, numero=10)
+        self.assertLessEqual(len(etapa10.proyecto), 500)
+        self.assertNotIn("Ampliación de profundidad", etapa10.proyecto)
+        self.assertIn("MySQL para datos transaccionales", etapa10.proyecto)
+
     def test_carga_idempotente_no_duplica_contenido(self):
         cargar_ascenso()
         self.assertEqual(Etapa.objects.filter(roadmap=self.roadmap).count(), 33)

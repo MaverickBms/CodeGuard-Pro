@@ -89,9 +89,14 @@ for idx, (start, num, title) in enumerate(stages):
     for l in body:
         if l.startswith('Trayecto'):
             extras.append(l)
+            project_marker = None
             break
         if l.startswith('Ampliación'):
             extras.append(l)
+            # La ampliación es material curricular adicional, no parte del
+            # proyecto de la etapa. Sin este corte, el proyecto absorbía miles
+            # de caracteres de la sección de profundización.
+            project_marker = None
             current = None
             continue
         sm = section_re.match(l)
@@ -157,6 +162,23 @@ for idx, (start, num, title) in enumerate(stages):
         'proyecto_titulo': last_project_marker or ('Proyecto final' if num == 32 else ''),
         'notas': extras,
     })
+
+# Las dependencias entre etapas no aparecen como texto estructurado en el
+# DOCX; se conservan del JSON existente para no perderlas al regenerar el
+# contenido. Si no existe un JSON previo, el resultado no declara dependencias.
+previous_path = Path('ascenso_3_1.json')
+if previous_path.exists():
+    previous = json.loads(previous_path.read_text(encoding='utf-8'))
+    prerequisites = {
+        etapa['numero']: etapa.get('prerrequisitos', [])
+        for etapa in previous.get('etapas', [])
+        if etapa.get('prerrequisitos')
+    }
+    for etapa in result:
+        if etapa['numero'] in prerequisites:
+            etapa['prerrequisitos'] = prerequisites[etapa['numero']]
+else:
+    print('AVISO: no hay ascenso_3_1.json previo; no se conservan prerrequisitos.')
 
 meta = {
     'nombre': 'PROYECTO ASCENSO — Roadmap Maestro Consolidado',

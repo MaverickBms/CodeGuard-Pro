@@ -41,14 +41,16 @@ async function main() {
     ws.addEventListener('error', reject);
   });
 
-  const evaluate = (expression) => new Promise((resolve, reject) => {
+  const send = (method, params = {}) => new Promise((resolve, reject) => {
     const id = nextId++;
     pending.set(id, { resolve, reject });
-    ws.send(JSON.stringify({
-      id,
-      method: 'Runtime.evaluate',
-      params: { expression, awaitPromise: true, returnByValue: true }
-    }));
+    ws.send(JSON.stringify({ id, method, params }));
+  });
+
+  const evaluate = (expression) => send('Runtime.evaluate', {
+    expression,
+    awaitPromise: true,
+    returnByValue: true
   });
 
   const title = await evaluate('document.title');
@@ -69,6 +71,25 @@ async function main() {
   for (const [path, status] of Object.entries(parsed)) {
     if (status !== 200) throw new Error(`${path} devolvió HTTP ${status}`);
   }
+
+  // Verificación básica de responsive: la página no debe desbordar el ancho
+  // de un portátil (1024) ni una ventana estrecha (768).
+  for (const [width, height] of [[1024, 720], [768, 900]]) {
+    await send('Emulation.setDeviceMetricsOverride', {
+      width, height, deviceScaleFactor: 1, mobile: false
+    });
+    const overflow = await evaluate(`JSON.stringify({
+      scroll: document.documentElement.scrollWidth,
+      client: document.documentElement.clientWidth
+    })`);
+    const metrics = JSON.parse(overflow.result.value);
+    if (metrics.scroll > metrics.client + 2) {
+      throw new Error(
+        `Desbordamiento horizontal a ${width}px: ${metrics.scroll} > ${metrics.client}`
+      );
+    }
+  }
+  await send('Emulation.clearDeviceMetricsOverride');
 
   const themeCount = await evaluate(
     `document.querySelectorAll('.ajustes-tema-btn[data-theme]').length`
