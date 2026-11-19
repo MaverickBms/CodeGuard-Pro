@@ -47,12 +47,17 @@
       {
         "from": "dist-server/CodeGuardServer",
         "to": "server",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       },
       {
         "from": "static/icons",
         "to": "icons",
-        "filter": ["icon.png", "icon.ico"]
+        "filter": [
+          "icon.png",
+          "icon.ico"
+        ]
       },
       {
         "from": "README.md",
@@ -74,11 +79,31 @@
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "static/icons/icon.png",
       "category": "Education",
+      "artifactName": "CodeGuard-Pro-${version}-${arch}.${ext}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "static/icons/icon.ico",
       "artifactName": "CodeGuard-Pro-${version}-${arch}.${ext}"
     }
   },
