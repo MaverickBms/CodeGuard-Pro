@@ -11,8 +11,8 @@ whitenoise==6.9.0
 # Servidor local WSGI para la aplicación de escritorio (Electron + Django)
 waitress==3.0.0
 
-# Procesamiento PDF (biblioteca documental, fase futura)
-PyMuPDF==2.1
+# Procesamiento PDF: añadir una biblioteca cuando exista un módulo activo
+# y se haya aprobado su licencia y tamaño para la distribución de escritorio.
 
 # Empaquetado del servidor local para la aplicación Electron (Windows/Linux).
 # Se usa en build_windows.bat para generar dist-server/CodeGuardServer.
