@@ -72,10 +72,21 @@ function getFreePort() {
   });
 }
 
-function waitForServer(url, timeoutMs = 120000) {
+function waitForServer(url, child, timeoutMs = 120000) {
   const started = Date.now();
   return new Promise((resolve, reject) => {
     const retry = () => {
+      if (child.spawnError) {
+        reject(new Error(`No se pudo iniciar el servidor local: ${child.spawnError.message}`));
+        return;
+      }
+      if (child.exitCode !== null || child.signalCode !== null) {
+        const reason = child.signalCode
+          ? `señal ${child.signalCode}`
+          : `código ${child.exitCode}`;
+        reject(new Error(`El servidor local terminó antes de estar disponible (${reason}). Revisa los registros de CodeGuard Pro.`));
+        return;
+      }
       if (Date.now() - started > timeoutMs) {
         reject(new Error(
           `El servidor local no superó la comprobación de salud en ${Math.round(timeoutMs / 1000)} s. ` +
@@ -137,6 +148,7 @@ function attachProcessLogs(child) {
     console.error(`[Django ERR] ${data.toString().trim()}`);
   });
   child.on('error', (error) => {
+    child.spawnError = error;
     console.error('[Django] No se pudo iniciar el proceso:', error);
   });
   child.on('close', (code) => {
@@ -207,7 +219,7 @@ async function startDjango() {
 
   attachProcessLogs(djangoProcess);
 
-  await waitForServer(`http://${DJANGO_HOST}:${djangoPort}/healthz/`);
+  await waitForServer(`http://${DJANGO_HOST}:${djangoPort}/healthz/`, djangoProcess);
   return `http://${DJANGO_HOST}:${djangoPort}`;
 }
 
