@@ -196,3 +196,26 @@ Se contrastaron los hallazgos QA-04, QA-12 y QA-13 del informe histórico en la 
 Estos tres hallazgos no deben seguir describiéndose como defectos abiertos de código; su aceptación runtime/automatizada sigue condicionada a ejecutar las pruebas. El QA-14 (modo sin autenticación) continúa siendo una decisión consciente de producto para equipo personal monousuario y no se modifica sin autorización.
 
 **Pendientes de beta priorizados tras esta reconciliación:** reproducir la suite, instalar/probar AppImage y paquetes Windows en equipos limpios, validar GUI + offline + persistencia + cierre, e implementar/aceptar backup y restauración. El tutor IA local permanece opcional y no debe bloquear el núcleo educativo.
+
+
+
+## 13. Corrección de consistencia del registro de auditoría (19-11-2026)
+
+La vista del panel principal ya registraba el evento `acceso_panel`, pero el valor no figuraba en `AuditLog.EVENTO_CHOICES`. Esto podía hacer que el evento se guardara con una etiqueta de presentación vacía/no reconocida en la auditoría.
+
+Cambios incorporados en la rama:
+- Se añadió `acceso_panel` a las opciones del modelo `AuditLog`.
+- Se creó la migración `0003_add_acceso_panel_event.py` para mantener sincronizado el estado de migraciones y las opciones persistidas en el estado del proyecto.
+- Se reforzó `AuditoriaSinAutenticacionTests` para comprobar también la etiqueta de presentación del evento.
+
+**Estado de validación:** corrección de código y migración revisadas estáticamente. No se ejecutó `manage.py test`, `makemigrations --check` ni la migración sobre SQLite en esta sesión. No se afirma que el test esté pasando.
+
+## 14. Corte de Git y CI tras la corrección de auditoría
+
+- HEAD de la rama en este corte: `2043ef3a8b4f02832bab75f93d7e0edb9b2ac964`.
+- PR #12: abierto, borrador, sin fusionar.
+- Comparación contra `main`: 43 commits por delante, 0 por detrás; merge-base/base SHA `59d08848726550fde442be1eb1e1be5522637f0b`.
+- La consulta de workflow runs para el nuevo HEAD no devolvió ejecuciones asociadas y el estado combinado no contiene checks. El run previo `44447430636`, correspondiente al HEAD anterior `9290216`, acabó en `failure` con `jobs=[]` y timestamps de creación/inicio/actualización en el mismo segundo. Esto no permite determinar si Actions está deshabilitado, si el workflow fue rechazado antes de crear jobs o cuál es la causa concreta. No atribuirlo a las pruebas.
+- Se intentó clonar el repositorio para reproducir tests, pero el entorno no pudo resolver `github.com` por DNS. Tampoco hay un proyecto Vercel asociado al repositorio en la cuenta consultada para provisionar un sandbox de ejecución sin crear recursos nuevos. Por tanto, no se ejecutaron suites ni builds.
+
+**Criterio pendiente:** reproducir en un checkout ejecutable los tests de auditoría, el conjunto Django, las pruebas IPC y las comprobaciones de migraciones; después realizar aceptación GUI, offline, persistencia, instalación limpia y cierre limpio. El diseño de backup/restauración continúa pendiente de implementación: no se ha añadido un módulo incompleto ni se presenta como funcional.
