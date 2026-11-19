@@ -59,6 +59,12 @@ if %ERRORLEVEL% NEQ 0 (
     pause
     exit /b 1
 )
+node -e "const major = Number(process.versions.node.split('.')[0]); process.exit(major >= 20 ? 0 : 1)"
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Se requiere Node.js 20 o superior para compilar CodeGuard Pro.
+    pause
+    exit /b 1
+)
 
 REM --- Crear y activar entorno virtual ---
 if not exist ".venv\Scripts\python.exe" (
