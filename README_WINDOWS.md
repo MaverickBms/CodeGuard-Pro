@@ -35,7 +35,7 @@ El equipo destino que instala un paquete final no debería necesitar Python, Nod
 | `electron/main.js` | Ciclo de vida Electron, servidor local, ventana y sincronización opcional |
 | `server_entry.py` | Entrada del servidor Django empaquetado |
 | `requirements.txt` | Dependencias Python fijadas |
-| `docs/INFORME_QA_INTEGRAL_2026-11-16.md` | Hallazgos, riesgos y criterios de liberación |
+| [Informe QA integral](https://github.com/MaverickBms/CodeGuard-Pro/blob/documentation/docs/INFORME_QA_INTEGRAL_2026-11-16.md) | Hallazgos, riesgos y criterios de liberación |
 
 ## Construcción
 
@@ -60,6 +60,15 @@ La compilación no crea ni migra una base de datos de desarrollo. Las migracione
 
 La aplicación empaquetada utiliza el directorio de datos administrado por Electron (`app.getPath('userData')`) o el valor explícito de `CODEGUARD_DATA_DIR`. Allí deben permanecer la base SQLite, logs, media y clave secreta. No se deben incluir datos personales del desarrollador dentro del instalador.
 
+## Copias de seguridad
+
+La pantalla **Backups** crea copias verificadas en la carpeta
+`CodeGuard Backups/` situada junto al perfil de datos. Para restaurar, cierra la
+ventana y usa **CodeGuard Pro → Restaurar copia de seguridad…**; la aplicación
+detiene el servidor, restaura el ZIP con rollback y se reinicia. La aceptación
+completa de este flujo en Windows está pendiente y forma parte de la matriz de
+pruebas antes de distribuir.
+
 ## Autenticación y tutor IA
 
 - El modo sin autenticación está activo temporalmente (`AUTH_DISABLED = True`). No reactivar el flujo de autenticación sin la autorización del propietario.
@@ -71,8 +80,8 @@ La aplicación empaquetada utiliza el directorio de datos administrado por Elect
 
 | Plataforma | Artefacto configurado | Estado |
 |---|---|---|
-| Windows x64 | NSIS installer + portable | Objetivos configurados; build real, instalación limpia y primer arranque pendientes |
-| Linux x64 | AppImage | Build definido; aceptación GUI y offline E2E pendientes |
+| Windows x64 | NSIS installer + portable | **Compilación CI verificada** (job `windows-package`, artefacto `codeguard-windows-x64`); instalación limpia y primer arranque en host Windows pendientes |
+| Linux x64 | AppImage | **Build y E2E verificados** (health check, rutas principales, tema y cierre sin huérfanos); aceptación en equipo limpio pendiente |
 | macOS | No configurado | No soportado/validado todavía |
 | ARM64 | No configurado | No soportado/validado todavía |
 

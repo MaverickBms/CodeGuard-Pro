@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Copias de seguridad — CodeGuard Pro{% endblock %}
+{% block page_title %}Copias de seguridad{% endblock %}
+{% block page_subtitle %}Copias locales verificadas de tu perfil de aprendizaje{% endblock %}
+
+{% block content %}
+{% if error_entorno %}
+  <div class="alert alert-danger cg-alert" role="alert">{{ error_entorno }}</div>
+{% endif %}
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+    <div>
+      <h2 style="margin-top:0;"><i class="fa-solid fa-database" aria-hidden="true"></i> Copias de seguridad</h2>
+      <p class="muted" style="margin-bottom:0;">
+        La copia incluye una instantánea consistente de la base de datos y la
+        carpeta <code>media/</code>, con manifiesto y hashes SHA-256. No incluye
+        la clave local ni los registros.
+      </p>
+    </div>
+    <form method="post" action="{% url 'core:backups' %}">
+      {% csrf_token %}
+      <input type="hidden" name="accion" value="crear">
+      <button type="submit" class="btn btn-primary cg-btn cg-btn-primary" {% if error_entorno %}disabled{% endif %}>
+        <i class="fa-solid fa-plus me-2" aria-hidden="true"></i>Crear copia ahora
+      </button>
+    </form>
+  </div>
+  <div class="muted" style="margin-top:.75rem; font-size:.9rem;">
+    Carpeta de copias: <code>{{ backup_dir }}</code>
+  </div>
+</section>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Copias disponibles">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Copias disponibles</h3>
+  {% if archivos %}
+    <div style="overflow-x:auto;">
+      <table class="table" style="width:100%; margin:0;">
+        <thead>
+          <tr>
+            <th scope="col">Archivo</th>
+            <th scope="col">Tamaño</th>
+            <th scope="col">Fecha</th>
+            <th scope="col" style="text-align:right;">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for archivo in archivos %}
+            <tr>
+              <td>{{ archivo.nombre }}</td>
+              <td>{{ archivo.tamano_mb }} MB</td>
+              <td>{{ archivo.modificado|date:"Y-m-d H:i" }}</td>
+              <td style="text-align:right;">
+                <form method="post" action="{% url 'core:backups' %}" style="display:inline;">
+                  {% csrf_token %}
+                  <input type="hidden" name="accion" value="verificar">
+                  <input type="hidden" name="archivo" value="{{ archivo.nombre }}">
+                  <button type="submit" class="btn btn-secondary btn-sm cg-btn">
+                    <i class="fa-solid fa-shield-check me-1" aria-hidden="true"></i>Verificar
+                  </button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="v14-empty">
+      <i class="fa-solid fa-file-zipper" aria-hidden="true"></i>
+      <h3>Todavía no hay copias en esta carpeta</h3>
+      <p>Crea la primera copia con el botón superior. El archivo se verificará al crearse.</p>
+    </div>
+  {% endif %}
+</section>
+
+<section class="glass-card cg-card">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Restaurar una copia</h3>
+  <div class="alert alert-warning cg-alert" role="alert" style="margin-bottom:.75rem;">
+    La restauración reemplaza la base de datos y <code>media/</code> actuales.
+    Se conserva automáticamente una copia de reversión del perfil anterior.
+  </div>
+  <ol style="margin:0; padding-left:1.2rem;">
+    <li>Cierra CodeGuard Pro por completo.</li>
+    <li>Abre de nuevo la aplicación y usa <strong>CodeGuard Pro → Restaurar copia de seguridad…</strong> en el menú superior.</li>
+    <li>Selecciona el archivo ZIP y confirma. La aplicación se reiniciará con el perfil restaurado.</li>
+  </ol>
+  <p class="muted" style="margin-top:.75rem; margin-bottom:0; font-size:.9rem;">
+    También puedes restaurar desde el entorno de desarrollo con
+    <code>python manage.py restaurar_backup RUTA.zip --confirm</code> tras cerrar el servidor.
+    No muevas ni edites el ZIP original: se conserva como fuente de recuperación.
+  </p>
+</section>
+{% endblock %}

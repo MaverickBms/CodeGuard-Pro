@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Evidencias — CodeGuard Pro{% endblock %}
+{% block page_title %}Evidencias{% endblock %}
+{% block page_subtitle %}Registro local de criterios y proyectos de la ruta activa{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+    <div>
+      <h2 style="margin-top:0;"><i class="fa-solid fa-paperclip" aria-hidden="true"></i> Portafolio de evidencias</h2>
+      <p class="muted" style="margin-bottom:0;">
+        Las evidencias de proyectos y criterios manuales son declaraciones del
+        estudiante en esta instalación personal; no sustituyen una revisión
+        docente independiente. Las evaluaciones automáticas se registran aparte.
+      </p>
+    </div>
+    <span class="cg-badge cg-badge-primary">{{ total_evidencias }} registrada{{ total_evidencias|pluralize:"s" }}</span>
+  </div>
+</section>
+
+{% if not usuario_disponible %}
+<section class="glass-card empty-state cg-card">
+  <i class="fa-solid fa-user-slash fa-2x" aria-hidden="true"></i>
+  <h3>No hay propietario local configurado</h3>
+  <p>Configura el perfil local para registrar y consultar evidencias.</p>
+</section>
+{% else %}
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1rem;">
+  <section class="glass-card cg-card" aria-label="Evidencias registradas">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Evidencias registradas</h3>
+    {% if cumplimientos %}
+      <ul style="list-style:none; padding:0; margin:0;">
+        {% for cumplimiento in cumplimientos %}
+          <li style="padding:.75rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
+            <div style="display:flex; gap:.4rem; flex-wrap:wrap; align-items:center;">
+              <strong>{{ cumplimiento.criterio.titulo }}</strong>
+              <span class="cg-badge">{{ cumplimiento.get_origen_display }}</span>
+              <span class="cg-badge cg-badge-success">Evidencia registrada</span>
+            </div>
+            <div class="muted" style="font-size:.9rem; margin-top:.2rem;">
+              <a href="{% url 'roadmaps:detalle' cumplimiento.criterio.etapa.numero %}">
+                Etapa {{ cumplimiento.criterio.etapa.numero }} — {{ cumplimiento.criterio.etapa.titulo }}
+              </a>
+              · {{ cumplimiento.criterio.get_tipo_display }}
+              · {{ cumplimiento.actualizado_en|date:"Y-m-d H:i" }}
+            </div>
+            {% if cumplimiento.evidencia %}
+              <p style="margin:.4rem 0 0; white-space:pre-line;">{{ cumplimiento.evidencia|truncatechars:600 }}</p>
+            {% endif %}
+            {% if cumplimiento.referencia %}
+              <div class="muted" style="font-size:.85rem;">Referencia: {{ cumplimiento.referencia }}</div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="v14-empty">
+        <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+        <h3>Aún no hay evidencias registradas</h3>
+        <p>Abre una etapa y registra la evidencia de sus criterios de finalización.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="glass-card cg-card" aria-label="Criterios obligatorios pendientes">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> Criterios obligatorios pendientes</h3>
+    {% if pendientes %}
+      <ul style="list-style:none; padding:0; margin:0;">
+        {% for criterio in pendientes %}
+          <li style="padding:.6rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
+            <strong>{{ criterio.titulo }}</strong>
+            <div class="muted" style="font-size:.9rem;">
+              <a href="{% url 'roadmaps:detalle' criterio.etapa.numero %}">
+                Etapa {{ criterio.etapa.numero }} — {{ criterio.etapa.titulo }}
+              </a>
+              · {{ criterio.get_tipo_display }}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+      <p class="muted" style="font-size:.85rem; margin-bottom:0;">
+        Se muestran hasta 100 criterios. Abre la etapa para registrar la evidencia.
+      </p>
+    {% else %}
+      <p class="muted">No hay criterios obligatorios pendientes en la ruta activa.</p>
+    {% endif %}
+  </section>
+</div>
+{% endif %}
+{% endblock %}

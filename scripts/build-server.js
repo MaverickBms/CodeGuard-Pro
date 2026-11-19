@@ -17,11 +17,15 @@ function fail(message) {
   process.exit(1);
 }
 
+// En Windows se prefiere ``python`` del PATH (el que usa setup-python o el
+// entorno activado) antes que el lanzador ``py``, que puede resolver a otra
+// instalación sin las dependencias de requirements.txt. ``.venv`` conserva la
+// prioridad cuando existe.
 const candidates = process.platform === 'win32'
   ? [
       path.join(root, '.venv', 'Scripts', 'python.exe'),
-      'py',
-      'python'
+      'python',
+      'py'
     ]
   : [
       path.join(root, '.venv', 'bin', 'python'),

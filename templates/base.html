@@ -76,14 +76,14 @@
           <span class="nav-icon"><i class="fa-solid fa-brain"></i></span>
           <span class="nav-label">Base de conocimiento</span>
         </button>
-        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item{% if request.resolver_match.url_name == 'evaluaciones' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:evaluaciones' %}">
           <span class="nav-icon"><i class="fa-solid fa-pen-nib"></i></span>
           <span class="nav-label">Evaluaciones</span>
         </button>
       </div>
       <div class="nav-section">
         <div class="nav-section-title">Práctica</div>
-        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item{% if request.resolver_match.url_name == 'evidencias' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:evidencias' %}">
           <span class="nav-icon"><i class="fa-solid fa-paperclip"></i></span>
           <span class="nav-label">Evidencias</span>
         </button>
@@ -94,7 +94,7 @@
       </div>
       <div class="nav-section">
         <div class="nav-section-title">Administración</div>
-        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item{% if request.resolver_match.url_name == 'backups' %} cg-nav-active{% endif %}" data-url="{% url 'core:backups' %}">
           <span class="nav-icon"><i class="fa-solid fa-database"></i></span>
           <span class="nav-label">Backups</span>
         </button>
