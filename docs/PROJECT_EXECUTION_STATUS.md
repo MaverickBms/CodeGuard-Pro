@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-19  
 **Fase:** release candidate 1.0.0 — validación final y cierre de Windows  
-**Rama:** `release/1.0.0`  
+**Rama:** `release/1.0.0` (`e4599aa`)  
 **PR:** https://github.com/MaverickBms/CodeGuard-Pro/pull/13 (abierto, borrador, sin fusionar)  
 **Base:** `main` intacta; no se ha fusionado ni creado tag/release.
 
@@ -40,9 +40,9 @@
 | `npm audit --omit=dev` | 0 vulnerabilidades de producción |
 | `npm audit` completo | 6 moderadas, solo cadena de build de electron-builder |
 | Smoke PyInstaller Linux | Primer arranque, ASCENSO, health, cierre de puerto y sync OK |
-| Persistencia de tema (dev, dos arranques) | `cyberpunk` persiste tras reiniciar |
+| Persistencia de tema (AppImage, dos arranques) | `fantasy` persiste tras reiniciar el paquete |
 | E2E AppImage Linux | 5 rutas HTTP 200, 12 temas, responsive, cierre sin huérfanos |
-| Windows CI run `44574923603` | **7/7 fases OK**: instalación, primer arranque, health, 5 rutas, tema, progreso, desinstalación, portable y ausencia de huérfanos |
+| Windows CI run `44574923603` y `44576601446` | **7/7 fases OK**: instalación, primer arranque, health, 5 rutas, tema, progreso, desinstalación, portable y ausencia de huérfanos |
 
 ### Evidencia Windows (CI, no hardware físico)
 
@@ -93,18 +93,18 @@ la aceptación manual en un equipo limpio.
 
 ## 6. Pendientes
 
-1. Repetir CI final sobre el HEAD que incluya el JSON corregido y el CDP responsive.
-2. Reconstruir AppImage/Server Linux con la persistencia de tema y verificar
-   reinicio real del paquete.
-3. Revisar y aprobar el inventario académico; decidir etapa 25 y alcance cursable.
-4. Aceptación manual en un equipo Windows limpio (hardware real).
-5. Sincronización remota de producción, macOS/ARM64 y contenido académico completo:
+1. Revisar y aprobar el inventario académico; decidir etapa 25 y alcance cursable.
+2. Aceptación manual en un equipo Windows limpio (hardware real).
+3. Sincronización remota de producción, macOS/ARM64 y contenido académico completo:
    fuera del alcance de este RC.
 
-## 7. Próximos pasos
+## 7. Artefactos finales
 
-- Commit final de JSON/test/CDP/documentación.
-- CI completo en push y PR.
-- Rebuild Linux + E2E con reinicio de tema.
-- Actualizar PR #13 y `documentation` con evidencia final.
-- No fusionar ni crear release sin autorización.
+- Servidor PyInstaller: `c21ff228b40fab302a8081532e227feb3efe54a16194d19b7bbf667f7e84ea53`.
+- AppImage: `f016dca4055c94f240237ec8c83618b0f79c3155a344d4a5f63d70b6639b229b`.
+- CI push `e4599aa`: run `44576601446`, **4/4 jobs verdes**.
+
+## 8. Próximos pasos
+
+- Actualizar PR #13 y `documentation` con esta evidencia.
+- No fusionar ni crear release/tag sin autorización.
