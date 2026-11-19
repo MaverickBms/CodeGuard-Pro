@@ -509,6 +509,10 @@ def registrar_cumplimiento_criterio(
         raise ValidationError(
             "No puedes registrar criterios de esta etapa hasta completar sus prerrequisitos."
         )
+    if not isinstance(evidencia, str) or not evidencia.strip():
+        raise ValidationError(
+            "Describe la evidencia realizada antes de marcar el criterio como cumplido."
+        )
 
     cumplimiento, _ = CumplimientoCriterio.objects.update_or_create(
         usuario=usuario,
