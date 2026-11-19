@@ -202,7 +202,7 @@
           {% if criterio.cumplimiento_actual and criterio.cumplimiento_actual.evidencia %}
             <p class="muted" style="margin:.25rem 0 0;"><strong>Evidencia:</strong> {{ criterio.cumplimiento_actual.evidencia }}</p>
           {% endif %}
-          {% if not criterio.satisfecho and criterio.tipo != "evaluacion" %}
+          {% if not criterio.satisfecho and criterio.tipo != "evaluacion" and not bloqueada %}
             <form method="post" action="{% url 'roadmaps:registrar_criterio' etapa.numero criterio.id %}" style="margin-top:.5rem;">
               {% csrf_token %}
               <input type="hidden" name="origen" value="{{ criterio.tipo }}">
@@ -212,6 +212,8 @@
                 <i class="fa-solid fa-check-double" aria-hidden="true"></i> Marcar criterio cumplido
               </button>
             </form>
+          {% elif not criterio.satisfecho and bloqueada %}
+            <p class="muted" style="margin:.35rem 0 0;"><i class="fa-solid fa-lock" aria-hidden="true"></i> Disponible cuando completes los prerrequisitos de esta etapa.</p>
           {% elif not criterio.satisfecho and criterio.tipo == "evaluacion" %}
             <p class="muted" style="margin:.35rem 0 0;"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Este criterio se satisface aprobando el examen/evaluación de la etapa.</p>
           {% endif %}
