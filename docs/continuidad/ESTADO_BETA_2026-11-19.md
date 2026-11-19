@@ -138,3 +138,19 @@ Esto no significa que el proyecto no pueda ejecutarse en el equipo del propietar
 6. Actualizar los documentos históricos para que reflejen el código actual y distingan evidencia reportada, ejecutada y aceptada.
 
 **Nota de corte:** este informe registra los runs visibles hasta el commit `7f3cedd`; el propio commit de esta actualización documental puede generar otra ejecución push.\n\n**Criterio de salida:** CodeGuard Pro no debe declararse beta aceptada hasta que el primer arranque, el flujo académico esencial, la persistencia, el funcionamiento offline, la integración Electron y el cierre limpio tengan evidencia reproducible. La presentación puede describirse como beta de evaluación con limitaciones explícitas si todavía quedan criterios de distribución sin aceptar.
+
+## 9. Corrección posterior al corte: lanzadores Linux
+
+La revisión posterior detectó una discrepancia entre el artefacto configurado y los nombres que buscaban los lanzadores:
+
+- `package.json` configura electron-builder con arquitectura Linux `x64` y patrón `CodeGuard-Pro-${version}-${arch}.AppImage`.
+- Los scripts anteriores `run.sh` y `codeguard` buscaban el sufijo `x86_64.AppImage`, por lo que podían rechazar el AppImage generado por el build configurado.
+- `run.sh` también exigía Python y Node.js e intentaba instalar dependencias Python/Node aunque el servidor Django está empaquetado dentro del AppImage. El servidor empaquetado ya ejecuta migraciones y carga idempotente de ASCENSO en el perfil local.
+
+**Corrección publicada en la rama del PR #12:**
+
+- `run.sh` ahora localiza exactamente un artefacto `dist/CodeGuard-Pro-*-x64.AppImage`, configura `CODEGUARD_DATA_DIR` respetando `XDG_CONFIG_HOME` y ejecuta el AppImage sin instalar ni requerir Python/Node en el equipo usuario.
+- `codeguard` delega en `run.sh` para evitar mantener dos implementaciones distintas del arranque.
+- Ambos lanzadores pasan argumentos adicionales al AppImage y usan `exec` para conservar correctamente el proceso y sus señales.
+
+**Límite de validación:** comprobación estática contra `package.json` y `server_entry.py`; no se generó ni ejecutó un AppImage en esta sesión. La aceptación del nombre final del artefacto y del arranque real sigue pendiente de build Linux y prueba en equipo limpio.
