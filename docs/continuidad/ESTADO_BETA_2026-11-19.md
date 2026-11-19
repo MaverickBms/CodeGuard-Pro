@@ -3,7 +3,7 @@
 **Fecha de revisión:** 2026-11-19  
 **Rama de trabajo:** `fix/electron-ipc-origin-validation`  
 **Base:** `main` en `59d08848726550fde442be1eb1e1be5522637f0b`  
-**HEAD auditado antes de esta actualización:** `7f3ceddd3835b92d622a84859518b89b2537ba41`  
+**HEAD auditado antes de esta actualización:** `5aeb614016386eca64f2495d9c2c07d796002088`  
 **Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`, `40cfdf2`, `6907ff6`, `1d025a9`, `a892b5e`, `6178df9`, `49f463c`, `2e64a0a`, `cf963b8`, `80f703a`, `7f3cedd`  
 **Pull request:** https://github.com/MaverickBms/CodeGuard-Pro/pull/12 (abierto, borrador)  
 **Alcance:** inspección estática remota y corrección puntual de launcher; no equivale a ejecutar el proyecto.
@@ -80,7 +80,7 @@ El launcher ya no inicializa Django por separado con el entorno de desarrollo. `
 | P1 | Persistencia tras reinicio, modo offline E2E y cierre sin procesos huérfanos. | Pendiente. |
 | P1 | Backup/restauración. | Diseño documentado; implementación/aceptación pendiente. |
 | P1 | Tutor Ollama. | Opcional; validar detección, modelo instalado, timeout, fallback y privacidad. |
-| P2 | `run.sh` exige Python y Node aunque inicia un AppImage empaquetado. | Revisar si es un lanzador de desarrollo; no confundirlo con instalador autónomo. |
+| P2 | Build Windows x64 y artefactos de distribución. | Objetivos NSIS y portable declarados; build/instalación reales aún pendientes. |
 | P2 | Ciclo de vida en macOS. | `window-all-closed` detiene Django pero no cierra la app en macOS; `activate` crea una ventana sin reiniciar ni recargar el servidor. macOS no está configurado/validado y queda fuera de la beta actual. |
 | P2 | Documentos históricos no totalmente sincronizados. | Revisar especialmente `docs/VALIDACION_INTEGRACION_ELECTRON.md`, estados de fases y cifras históricas. |
 
@@ -154,3 +154,22 @@ La revisión posterior detectó una discrepancia entre el artefacto configurado 
 - Ambos lanzadores pasan argumentos adicionales al AppImage y usan `exec` para conservar correctamente el proceso y sus señales.
 
 **Límite de validación:** comprobación estática contra `package.json` y `server_entry.py`; no se generó ni ejecutó un AppImage en esta sesión. La aceptación del nombre final del artefacto y del arranque real sigue pendiente de build Linux y prueba en equipo limpio.
+
+
+## 10. Actualización posterior: empaquetado Windows x64 (19-11-2026)
+
+La revisión del empaquetado detectó que `README_WINDOWS.md` y `build_windows.bat` anunciaban instalador NSIS y ejecutable portable, pero `package.json` no declaraba objetivos Windows. Se corrigió en la rama del PR #12:
+
+- `package.json` declara explícitamente los objetivos `nsis` y `portable`, ambos para arquitectura `x64`, y utiliza el icono Windows `static/icons/icon.ico`.
+- Se evita forzar un `artifactName` compartido que podría producir colisión entre dos ejecutables .exe; electron-builder conserva sus nombres por objetivo.
+- `build_windows.bat` usa `npm ci` para instalar exactamente lo fijado en `package-lock.json`, en lugar de saltarse la instalación cuando existe un `node_modules` potencialmente desactualizado.
+- El script comprueba que el Python seleccionado sea 3.12 o superior antes de crear el entorno virtual e instalar dependencias.
+- `README_WINDOWS.md` distingue la configuración de objetivos de la aceptación real: el build, instalación limpia, primer arranque y persistencia siguen pendientes.
+
+**Evidencia:** inspección estática de `package.json`, `build_windows.bat`, `scripts/build-server.js`, `scripts/verify-server-build.js`, `CodeGuardServer.spec`, `server_entry.py` y `config/settings/desktop.py`. No se ejecutó Windows, PyInstaller ni electron-builder; no se generaron artefactos.
+
+**Estado Git verificado tras estos cambios:** PR #12 sigue abierto y en borrador, sin fusionar. La rama está 33 commits por delante y 0 por detrás de `main`; la base de `main` sigue en `59d08848726550fde442be1eb1e1be5522637f0b`. El árbol Git confirma que `run.sh` conserva modo ejecutable `100755` y `codeguard` también `100755`.
+
+**CI:** para el HEAD `5aeb614016386eca64f2495d9c2c07d796002088`, las consultas de runs de PR y estados combinados no devolvieron ejecuciones ni checks. Esto no equivale a aprobación; el problema histórico de Actions sin jobs sigue sin diagnóstico.
+
+**Siguiente paso de empaquetado:** ejecutar `build_windows.bat` en Windows x64 limpio y verificar que aparezcan ambos artefactos; instalar el NSIS y ejecutar el portable, ambos sin Python/Node, con perfil de datos nuevo y con perfil ya existente. No distribuir hasta completar esa matriz.
