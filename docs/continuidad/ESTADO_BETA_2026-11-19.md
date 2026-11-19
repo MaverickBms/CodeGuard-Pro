@@ -317,7 +317,7 @@ Para evitar bloquear el cierre por trabajo no esencial:
 
 ### Estado Git de este corte
 
-Rama de trabajo: fix/electron-ipc-origin-validation. HEAD verificado: 9df010784630742d96b9fd33ad829173e68f7b8c. PR #12 sigue abierto y en borrador; comparación con main: 70 commits por delante y 0 por detrás. No se fusiona ni se modifica main.
+Rama de trabajo: fix/electron-ipc-origin-validation. HEAD verificado en este corte: 607c27af1dce48829ea43b7b16f6939a57db2ca8. PR #12 sigue abierto y en borrador; comparación con main: 78 commits por delante y 0 por detrás. No se fusiona ni se modifica main.
 
 
 ## 22. Diagnóstico temprano del servidor Electron (19-11-2026)
