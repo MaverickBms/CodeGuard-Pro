@@ -19,7 +19,11 @@ from .models import (
     EjercicioLeccion, Progreso,
 )
 from .models_attempts import ConfiguracionEvaluacion, IntentoEjercicio
-from .services import obtener_contenido_activo, recalcular_progreso_etapa
+from .services import (
+    etapas_completadas,
+    obtener_contenido_activo,
+    recalcular_progreso_etapa,
+)
 
 MAX_RESPUESTA_CARACTERES = 20000
 
@@ -176,6 +180,11 @@ def registrar_intento_ejercicio(
     """Guarda una entrega y aplica el evaluador estático configurado, si existe."""
     if usuario is None or not getattr(usuario, "is_authenticated", False):
         raise ValidationError("No existe un usuario propietario para guardar el intento.")
+    etapa = ejercicio.leccion.modulo.etapa
+    if etapa.esta_bloqueada_para(etapas_completadas(usuario, etapa.roadmap)):
+        raise ValidationError(
+            "No puedes enviar ejercicios de esta etapa hasta completar sus prerrequisitos."
+        )
     if not isinstance(respuesta, str) or not respuesta.strip():
         raise ValidationError("Escribe una respuesta antes de enviar el intento.")
     if len(respuesta) > MAX_RESPUESTA_CARACTERES:
