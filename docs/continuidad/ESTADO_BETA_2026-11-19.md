@@ -382,3 +382,24 @@ La estructura de navegación y consulta del roadmap está implementada, pero el 
 3. Publicar material revisado, ejemplos, ejercicios, evaluadores y evaluaciones reales para ese alcance.
 4. Ejecutar pruebas de navegación, filtros, entregas, evaluaciones, progresión, persistencia y presentación en Windows/Linux.
 5. Mantener deshabilitados los módulos que todavía no tienen una implementación real.
+
+
+## 25. Revisión adicional de dashboard y evidencias (18-11-2026)
+
+### Dashboard: actividad reciente aislada por roadmap
+Se detectó que el panel consultaba los cinco registros más recientes del usuario sin filtrar por roadmap. Al cambiar de ruta, podía mezclar actividad de una ruta anterior con las métricas del roadmap activo. Ahora la consulta se limita al roadmap activo y devuelve una lista vacía si no existe uno. Se añadieron dos pruebas para ambos escenarios.
+
+### Criterios de finalización: transparencia y validación de entradas
+La revisión confirmó que los criterios de proyecto/manual son autodeclaraciones locales, no una revisión docente independiente. Se aclaró esto en la interfaz y se cambió el estado visual a «Evidencia registrada» para no presentar la declaración como verificación externa. El formulario ahora habla de registrar evidencia y no de conceder aprobación por sí solo.
+- El backend exige evidencia no vacía y limita su longitud a 5.000 caracteres.
+- El origen debe pertenecer a los valores permitidos por el modelo.
+- La referencia se limita a 120 caracteres.
+- Se añadieron pruebas para evidencia demasiado larga y origen inválido.
+
+**Validación pendiente:** los tests del dashboard y de criterios están versionados, pero no se han ejecutado. No se declara correcto el comportamiento runtime hasta tener salida reproducible de la suite.
+
+### Estado del frontend
+El panel, roadmap, gamificación y ajustes visuales tienen rutas y acciones identificables. Las secciones que aún no tienen vistas reales continúan deshabilitadas intencionalmente. Las doce opciones de tema están presentes en el diálogo de ajustes; las pruebas de plantilla comprueban su presencia, pero falta validación visual en ejecución para cada tema, contraste, responsive y persistencia real entre reinicios.
+
+### Bloqueos de contenido y alcance
+Sigue sin existir cotejo semántico con el DOCX maestro ASCENSO 3.1. Se mantienen los defectos editoriales detectados en la etapa 25 (objetivo vacío) y etapa 10 (campo proyecto con contenido anormalmente extenso). La plataforma sigue mostrando la estructura curricular completa, no 1.946 lecciones desarrolladas. Los contenidos, ejercicios y quizzes deben completarse para el conjunto de etapas que se defina como alcance cursable de la beta.
