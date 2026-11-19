@@ -1,6 +1,7 @@
 """Pruebas del formato de copias de seguridad de CodeGuard Pro."""
 import json
 import sqlite3
+import shutil
 import tempfile
 import unittest
 import zipfile
@@ -83,7 +84,7 @@ class BackupTests(unittest.TestCase):
         outside = Path(self.temporary.name) / "outside"
         outside.mkdir()
         (outside / "secret.txt").write_text("secret", encoding="utf-8")
-        (self.root / "media").rmdir()
+        shutil.rmtree(self.root / "media")
         try:
             (self.root / "media").symlink_to(outside, target_is_directory=True)
         except (OSError, NotImplementedError):
