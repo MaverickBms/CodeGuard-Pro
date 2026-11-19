@@ -60,6 +60,15 @@ La compilación no crea ni migra una base de datos de desarrollo. Las migracione
 
 La aplicación empaquetada utiliza el directorio de datos administrado por Electron (`app.getPath('userData')`) o el valor explícito de `CODEGUARD_DATA_DIR`. Allí deben permanecer la base SQLite, logs, media y clave secreta. No se deben incluir datos personales del desarrollador dentro del instalador.
 
+## Copias de seguridad
+
+La pantalla **Backups** crea copias verificadas en la carpeta
+`CodeGuard Backups/` situada junto al perfil de datos. Para restaurar, cierra la
+ventana y usa **CodeGuard Pro → Restaurar copia de seguridad…**; la aplicación
+detiene el servidor, restaura el ZIP con rollback y se reinicia. La aceptación
+completa de este flujo en Windows está pendiente y forma parte de la matriz de
+pruebas antes de distribuir.
+
 ## Autenticación y tutor IA
 
 - El modo sin autenticación está activo temporalmente (`AUTH_DISABLED = True`). No reactivar el flujo de autenticación sin la autorización del propietario.
