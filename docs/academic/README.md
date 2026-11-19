@@ -25,7 +25,11 @@ Material didáctico original en desarrollo. Este directorio no reemplaza el PDF 
 | 16 | Backend III: PHP, Laravel y .NET | Borrador |
 | 17 | Testing, aseguramiento y calidad del software | Borrador |
 | 18 | Arquitectura, diseño y planeación de software | Borrador |
-| 19–32 | Infraestructura, AppSec y especialización en ciberseguridad | Pendiente de desarrollo |
+| 19 | DevOps, Docker, CI/CD y servidores | Borrador |
+| 20 | Desarrollo seguro de software (AppSec) | Borrador |
+| 21 | Fundamentos de ciberseguridad, riesgos y ética | Borrador |
+| 22 | Laboratorio de ciberseguridad, hardening y administración segura | Borrador |
+| 23–32 | OSINT, pentesting, seguridad web, AD, Blue Team, DFIR, Cloud Security, IA, bajo nivel y proyecto profesional | Pendiente de desarrollo |
 
 ## Estándares transversales
 
@@ -51,28 +55,35 @@ Material didáctico original en desarrollo. Este directorio no reemplaza el PDF 
 
 ## Etapas 7–12 · Sistemas y frontend
 
-- [Etapa 7 — Sistemas operativos: Linux, Windows y administración](ascenso-3.1/etapa-07/sistemas-operativos-linux-windows-administracion.md)
+- [Etapa 7 — Sistemas operativos](ascenso-3.1/etapa-07/sistemas-operativos-linux-windows-administracion.md)
 - [Etapa 8 — Redes informáticas y protocolos](ascenso-3.1/etapa-08/redes-informaticas-y-protocolos.md)
 - [Etapa 9 — Bases de datos relacionales y SQL](ascenso-3.1/etapa-09/bases-de-datos-relacionales-y-sql.md)
 - [Etapa 10 — Bases de datos NoSQL y almacenamiento moderno](ascenso-3.1/etapa-10/nosql-y-almacenamiento-moderno.md)
-- [Etapa 11 — HTML y CSS: fundamentos profesionales del frontend](ascenso-3.1/etapa-11/html-css-fundamentos-frontend.md)
+- [Etapa 11 — HTML y CSS](ascenso-3.1/etapa-11/html-css-fundamentos-frontend.md)
 - [Etapa 12 — JavaScript, TypeScript y frameworks frontend](ascenso-3.1/etapa-12/javascript-typescript-react-nextjs.md)
 
 ## Etapas 13–18 · APIs, backend e ingeniería
 
-- [Etapa 13 — Internet, HTTP, APIs y comunicación entre sistemas](ascenso-3.1/etapa-13-http-apis-comunicacion.md)
-- [Etapa 14 — Backend I: Java y Spring Boot](ascenso-3.1/etapa-14-java-spring-boot.md)
-- [Etapa 15 — Backend II: Node.js y NestJS](ascenso-3.1/etapa-15-nodejs-nestjs.md)
-- [Etapa 16 — Backend III: PHP, Laravel y .NET](ascenso-3.1/etapa-16-php-laravel-dotnet.md)
-- [Etapa 17 — Testing, aseguramiento y calidad del software](ascenso-3.1/etapa-17-testing-calidad-software.md)
-- [Etapa 18 — Arquitectura, diseño y planeación de software](ascenso-3.1/etapa-18-arquitectura-diseno-planeacion.md)
+- [Etapa 13 — Internet, HTTP y APIs](ascenso-3.1/etapa-13-http-apis-comunicacion.md)
+- [Etapa 14 — Java y Spring Boot](ascenso-3.1/etapa-14-java-spring-boot.md)
+- [Etapa 15 — Node.js y NestJS](ascenso-3.1/etapa-15-nodejs-nestjs.md)
+- [Etapa 16 — PHP, Laravel y .NET](ascenso-3.1/etapa-16-php-laravel-dotnet.md)
+- [Etapa 17 — Testing y calidad del software](ascenso-3.1/etapa-17-testing-calidad-software.md)
+- [Etapa 18 — Arquitectura, diseño y planeación](ascenso-3.1/etapa-18-arquitectura-diseno-planeacion.md)
+
+## Etapas 19–22 · Infraestructura y fundamentos de seguridad
+
+- [Etapa 19 — DevOps, Docker, CI/CD y servidores](ascenso-3.1/etapa-19-devops-docker-cloud.md)
+- [Etapa 20 — Desarrollo seguro de software (AppSec)](ascenso-3.1/etapa-20-desarrollo-seguro-appsec.md)
+- [Etapa 21 — Fundamentos de ciberseguridad, riesgos y ética](ascenso-3.1/etapa-21-fundamentos-ciberseguridad-riesgos-etica.md)
+- [Etapa 22 — Laboratorio, hardening y administración segura](ascenso-3.1/etapa-22-laboratorio-hardening.md)
 
 ## Política de publicación
 
-Todo el contenido de esta carpeta es **borrador** hasta completar revisión técnica, pedagógica, de referencias y de licencias. La integración en CodeGuard Pro debe utilizar el flujo editorial existente: registrar fuentes, validar su licencia y alcance, crear snapshots, enviar a revisión, aprobar y publicar. No insertar borradores directamente como contenido activo.
+Todo el contenido es **borrador** hasta completar revisión técnica, pedagógica, de referencias y licencias. La integración en CodeGuard Pro debe utilizar el flujo editorial existente: registrar fuentes, validar licencia y alcance, crear snapshots, enviar a revisión, aprobar y publicar. No insertar borradores directamente como contenido activo.
 
-Los UUID curriculares deben resolverse contra la base de datos del roadmap; no se inventan identificadores. El material aquí redactado se conserva como fuente de autoría y revisión hasta completar ese mapeo.
+Los UUID curriculares deben resolverse contra la base de datos del roadmap; no se inventan identificadores. El material se conserva como fuente de autoría y revisión hasta completar ese mapeo.
 
 ## Revisión y verificación
 
-Las referencias y fechas de consulta se consignan dentro de cada etapa. Deben revisarse antes de publicación, especialmente cuando describen versiones, APIs, estándares o requisitos que cambian. Los ejemplos y proyectos no se etiquetarán como ejecutados o verificados hasta que se prueben realmente. Los videos solo se aprobarán tras comprobar audio hablado en español y relación directa con el objetivo concreto.
+Las referencias y fechas de consulta se consignan dentro de cada etapa. Deben revisarse antes de publicación, especialmente si describen versiones, APIs, estándares o requisitos cambiantes. Los ejemplos y proyectos no se etiquetarán como ejecutados o verificados hasta probarlos realmente. Los videos solo se aprobarán tras comprobar audio hablado en español y relación directa con el objetivo concreto.
