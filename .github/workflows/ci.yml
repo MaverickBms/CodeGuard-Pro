@@ -1,8 +1,8 @@
 name: CodeGuard Pro CI
 
 on:
+  # Ejecutar CI en cada rama para que los cambios de trabajo también se validen.
   push:
-    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -42,6 +42,9 @@ jobs:
       - name: Check dependency consistency
         run: python -m pip check
 
+      - name: Validate Python syntax
+        run: python -m compileall -q config apps server_entry.py manage.py
+
       - name: Django system check
         run: python manage.py check --settings=config.settings.development
 
@@ -67,6 +70,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+
+      - name: Validate Electron JavaScript syntax
+        run: |
+          node --check electron/main.js
+          node --check electron/preload.js
+          node --check electron/ipc-security.js
 
       - name: Run Electron unit tests
         run: npm run test:electron
