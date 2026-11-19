@@ -42,6 +42,13 @@ class BackupTests(unittest.TestCase):
         with self.assertRaises(BackupError):
             create_backup(self.root / "backup.zip", data_dir=self.root)
 
+    def test_does_not_overwrite_existing_backup(self):
+        destination = Path(self.temporary.name) / "respaldo.zip"
+        destination.write_bytes(b"backup anterior")
+        with self.assertRaises(BackupError):
+            create_backup(destination, data_dir=self.root)
+        self.assertEqual(destination.read_bytes(), b"backup anterior")
+
     def test_rejects_path_traversal(self):
         malicious = Path(self.temporary.name) / "malicious.zip"
         manifest = {
