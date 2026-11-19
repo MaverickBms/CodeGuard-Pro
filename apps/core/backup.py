@@ -40,8 +40,9 @@ def _sha256_file(path: Path) -> str:
 def _safe_archive_path(name: str) -> str:
     if not isinstance(name, str) or not name or "\\" in name:
         raise BackupError("La copia contiene una ruta inválida.")
+    raw_parts = name.split("/")
     path = PurePosixPath(name)
-    if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
+    if name.startswith("/") or any(part in {"", ".", ".."} for part in raw_parts):
         raise BackupError("La copia contiene una ruta fuera de su raíz.")
     if path.parts and ":" in path.parts[0]:
         raise BackupError("La copia contiene una ruta absoluta no permitida.")
