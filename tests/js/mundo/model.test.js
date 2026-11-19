@@ -3,8 +3,8 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const Model = require('./model');
-require('./world');
+const Model = require('../../../static/js/mundo/model');
+require('../../../static/js/mundo/world');
 
 const world = globalThis.CodeGuardMundoWorld.world;
 

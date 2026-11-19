@@ -14,7 +14,7 @@
     "build:linux": "npm run build:server && npm run verify:server && electron-builder --linux --publish never",
     "postinstall": "electron-builder install-app-deps",
     "test:electron": "node --test electron/*.test.js",
-    "test:mundo": "node --test static/js/mundo/*.test.js"
+    "test:mundo": "node --test tests/js/mundo/*.test.js"
   },
   "author": "CodeGuard Pro Team",
   "license": "MIT",
