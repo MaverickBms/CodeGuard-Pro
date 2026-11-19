@@ -284,3 +284,14 @@ Se incorporó `apps/core/backup.py` con creación y verificación de archivos ZI
 **Límite importante:** esto solo implementa el servicio de creación/verificación. No hay restauración, interfaz, cifrado de secretos, ejecución de pruebas ni validación en Windows/Linux. No usarlo aún como una función de usuario final ni marcar backup/restore como terminado. La restauración debe ejecutarse con Django/Electron detenidos y con rollback probado.
 
 **Validación de este commit:** cambios publicados en la rama del PR; el entorno de trabajo no tiene checkout local funcional, así que no se ejecutaron las pruebas Django ni el análisis estático con intérprete. CI sigue pendiente de diagnóstico.
+
+
+## 20. Comandos de backup internos (19-11-2026)
+
+Se añadieron dos comandos Django:
+- `python manage.py crear_backup --output RUTA.zip`: crea un ZIP verificado desde `settings.DATA_DIR`.
+- `python manage.py verificar_backup RUTA.zip`: comprueba formato, CRC, manifiesto, hashes SHA-256 e integridad SQLite sin extraer al perfil.
+
+Se añadieron pruebas de integración de los comandos en `apps/core/tests/test_backup_commands.py` y se documentó su uso. Son herramientas internas de mantenimiento; todavía no están conectadas a una pantalla de la aplicación.
+
+**Pendiente:** restauración offline con rollback, interfaz, ejecución real de pruebas, CI con jobs/logs, builds Windows/Linux y validación de instalación limpia. No se debe anunciar backup/restore como función completa.
