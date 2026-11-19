@@ -513,6 +513,12 @@ def registrar_cumplimiento_criterio(
         raise ValidationError(
             "Describe la evidencia realizada antes de marcar el criterio como cumplido."
         )
+    if len(evidencia) > 5000:
+        raise ValidationError("La evidencia no puede superar los 5.000 caracteres.")
+    if origen not in dict(CumplimientoCriterio.ORIGENES):
+        raise ValidationError("El origen de la evidencia no es válido.")
+    if not isinstance(referencia, str) or len(referencia) > 120:
+        raise ValidationError("La referencia no puede superar los 120 caracteres.")
 
     cumplimiento, _ = CumplimientoCriterio.objects.update_or_create(
         usuario=usuario,
