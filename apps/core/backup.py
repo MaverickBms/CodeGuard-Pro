@@ -49,6 +49,16 @@ def _safe_archive_path(name: str) -> str:
     return path.as_posix()
 
 
+def _validate_payload_path(name: str) -> str:
+    """Solo admite la base y archivos bajo media/; evita rutas arbitrarias."""
+    name = _safe_archive_path(name)
+    if name != "database.sqlite3" and not name.startswith("media/"):
+        raise BackupError("La copia contiene un archivo fuera del conjunto permitido.")
+    if name == "media/":
+        raise BackupError("La copia contiene una ruta multimedia vacía.")
+    return name
+
+
 def _check_sqlite(path: Path) -> None:
     try:
         with sqlite3.connect(str(path)) as connection:
@@ -60,10 +70,13 @@ def _check_sqlite(path: Path) -> None:
 
 
 def _iter_media_files(media_root: Path):
+    if media_root.is_symlink():
+        raise BackupError("La carpeta media no puede ser un enlace simbólico.")
     if not media_root.exists():
         return
-    if media_root.is_symlink() or not media_root.is_dir():
+    if not media_root.is_dir():
         raise BackupError("La carpeta media no es un directorio seguro.")
+
     def raise_walk_error(error):
         raise BackupError("No se pudo leer completamente la carpeta media.") from error
 
@@ -80,7 +93,7 @@ def _iter_media_files(media_root: Path):
             if candidate.is_symlink() or not candidate.is_file():
                 raise BackupError("Media contiene un archivo no regular o un enlace simbólico.")
             relative = candidate.relative_to(media_root).as_posix()
-            yield candidate, _safe_archive_path(f"media/{relative}")
+            yield candidate, _validate_payload_path(f"media/{relative}")
 
 
 def create_backup(
@@ -97,9 +110,12 @@ def create_backup(
     Se incluyen db.sqlite3 y media/. Nunca se incluye .secret_key, logs ni archivos
     WAL/SHM. El destino debe estar fuera del perfil de datos.
     """
-    root = Path(data_dir or os.environ.get("CODEGUARD_DATA_DIR", "data")).expanduser().resolve()
+    root_input = Path(data_dir or os.environ.get("CODEGUARD_DATA_DIR", "data")).expanduser()
+    if root_input.is_symlink():
+        raise BackupError("La carpeta de datos no puede ser un enlace simbólico.")
+    root = root_input.resolve()
     destination_path = Path(destination).expanduser()
-    if destination_path.exists() and destination_path.is_symlink():
+    if destination_path.is_symlink():
         raise BackupError("El destino no puede ser un enlace simbólico.")
     destination_path = destination_path.resolve()
     if not destination_path.parent.is_dir():
@@ -174,8 +190,6 @@ def create_backup(
             max_file_size=max_file_size,
             max_total_size=max_total_size,
         )
-        # link() publica sin sobrescribir un backup previo, incluso si otro
-        # proceso creó el mismo destino durante la operación.
         try:
             os.link(temporary_path, destination_path)
         except FileExistsError as exc:
@@ -211,6 +225,8 @@ def inspect_backup(
             total_size = 0
             for info in infos:
                 name = _safe_archive_path(info.filename)
+                if name != "manifest.json":
+                    _validate_payload_path(name)
                 if info.is_dir():
                     raise BackupError("No se permiten entradas de directorio explícitas.")
                 if info.flag_bits & 0x1:
@@ -242,9 +258,9 @@ def inspect_backup(
             for item in declared:
                 if not isinstance(item, dict):
                     raise BackupError("El manifiesto contiene una entrada inválida.")
-                name = _safe_archive_path(item.get("path"))
-                if name == "manifest.json" or name in expected_names:
-                    raise BackupError("El manifiesto contiene rutas duplicadas o reservadas.")
+                name = _validate_payload_path(item.get("path"))
+                if name in expected_names:
+                    raise BackupError("El manifiesto contiene rutas duplicadas.")
                 expected_names.add(name)
                 if name not in names:
                     raise BackupError("Falta un archivo declarado en el manifiesto.")
