@@ -14,6 +14,7 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 ## Archivos
 
 - [Estándar editorial académico](ASCENSO_ESTANDAR_EDITORIAL.md)
+- [Experiencia de aprendizaje multim formato y curación audiovisual](EXPERIENCIA_APRENDIZAJE_MULTIFORMATO.md)
 - [Etapa 0 · Módulo 0.1 — Aprender a aprender](ascenso-3.1/etapa-00/modulo-0.1-aprender-a-aprender.md)
 
 ## Política de publicación
