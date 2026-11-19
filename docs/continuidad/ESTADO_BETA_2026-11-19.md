@@ -368,9 +368,9 @@ Se inspeccionó apps/roadmaps/data/ascenso_3_1.json mediante parseo y validacion
 La inspección encontró que el estado Bloqueada se calculaba y mostraba, pero los servicios de envío de ejercicios y evaluaciones no comprobaban los prerrequisitos antes de aceptar una entrega. Se corrigió en esta rama:
 - registrar_intento_ejercicio rechaza entregas de etapas con prerrequisitos pendientes.
 - evaluar_quiz rechaza envíos de quizzes de etapas bloqueadas antes de crear resultados.
-- registrar_cumplimiento_criterio rechaza evidencia anticipada en etapas bloqueadas; la plantilla oculta ese formulario y explica cuándo se habilita.
+- registrar_cumplimiento_criterio rechaza evidencia anticipada en etapas bloqueadas y no acepta evidencia vacía; la plantilla oculta ese formulario antes de cumplir prerrequisitos y exige texto de evidencia.
 - La pantalla de detalle aclara que se puede consultar el contenido bloqueado, pero no enviar entregas/evaluaciones ni registrar criterios hasta cumplir los prerrequisitos.
-- Se añadieron pruebas de regresión para ejercicios, quizzes y criterios bloqueados.
+- Se añadieron pruebas de regresión para ejercicios, quizzes, criterios bloqueados y rechazo de criterios sin evidencia.
 
 **Validación pendiente:** las pruebas nuevas y las suites Django/Electron no se han ejecutado en un checkout de esta sesión; CI sigue sin ofrecer jobs/logs verificables. No se declara aprobada esta corrección hasta ejecutar las pruebas.
 
