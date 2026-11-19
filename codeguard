@@ -15,22 +15,25 @@ if [ ! -f "dist/CodeGuard-Pro-1.0.0-x86_64.AppImage" ]; then
     exit 1
 fi
 
-# Directorio de datos del AppImage (empaquetado)
+# Directorio de datos compartido por los comandos de preparación y Electron.
+# Debe exportarse ANTES de migrar o cargar ASCENSO para evitar crear una base
+# en BASE_DIR/data distinta de la que utilizará el AppImage.
 DATA_DIR="$HOME/.config/Code Guard Pro/data"
 mkdir -p "$DATA_DIR"
+export CODEGUARD_DATA_DIR="$DATA_DIR"
 
 echo "=============================================="
 echo "   CodeGuard Pro - Inicio rápido"
 echo "=============================================="
 echo ""
-echo "📁 Directorio de datos: $DATA_DIR"
+echo "📁 Directorio de datos: $CODEGUARD_DATA_DIR"
 echo ""
 
-# Aplicar migraciones de Django
+# Aplicar migraciones en el mismo perfil que utilizará la aplicación.
 echo "🔄 Aplicando migraciones de Django..."
 ./.venv/bin/python manage.py migrate --settings=config.settings.development 2>&1 | tail -3
 
-# Cargar roadmap ASCENSO
+# Cargar ASCENSO de forma idempotente; nunca usar --recrear en datos del usuario.
 echo ""
 echo "🗺️  Cargando roadmap ASCENSO..."
 ./.venv/bin/python manage.py cargar_ascenso --settings=config.settings.development 2>&1 | tail -3
@@ -40,8 +43,8 @@ echo "🚀 Lanzando CodeGuard Pro..."
 echo "   (Usa --ozone-platform=x11 para compatibilidad con Wayland)"
 echo ""
 
-# Lanzar AppImage con X11 para evitar problemas de Wayland/Vulkan
-CODEGUARD_DATA_DIR="$DATA_DIR" ./dist/CodeGuard-Pro-1.0.0-x86_64.AppImage --ozone-platform=x11
+# Electron hereda CODEGUARD_DATA_DIR y comparte exactamente el perfil inicializado.
+./dist/CodeGuard-Pro-1.0.0-x86_64.AppImage --ozone-platform=x11
 
 echo ""
 echo "=============================================="
