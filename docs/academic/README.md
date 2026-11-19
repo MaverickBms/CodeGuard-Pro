@@ -17,7 +17,8 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 | Etapa 4 · POO y paradigmas | Borrador didáctico v0.1.0 |
 | Etapa 5 · Git, GitHub, terminal y modularidad | Borrador didáctico v0.1.0 |
 | Etapa 6 · Estructuras de datos y algoritmos | Borrador didáctico v0.1.0 |
-| Etapas 7–32 | Pendiente |
+| Etapa 7 · Sistemas operativos: Linux, Windows y administración | Borrador didáctico v0.1.0 |
+| Etapas 8–32 | Pendiente |
 
 ## Archivos
 
@@ -47,3 +48,4 @@ Los UUID curriculares deben resolverse contra la base de datos del roadmap; no s
 ## Revisión
 
 Las referencias y fechas de consulta se consignan dentro de cada módulo. Deben revisarse de nuevo antes de una publicación, especialmente si describen herramientas, versiones, APIs o requisitos que puedan cambiar.
+- [Etapa 7 — Sistemas operativos: Linux, Windows y administración](ascenso-3.1/etapa-07/sistemas-operativos-linux-windows-administracion.md)\n
