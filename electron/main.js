@@ -15,6 +15,7 @@ const http = require('http');
 const net = require('net');
 const { isTrustedIpcSender } = require('./ipc-security');
 const { getChildStartupFailure } = require('./process-health');
+const { resolveBackupPath } = require('./restore-backup');
 
 let mainWindow = null;
 let djangoProcess = null;
@@ -24,6 +25,7 @@ let syncTimer = null;
 let syncInitialTimer = null;
 let syncStatus = { state: 'idle', message: 'Sin comprobaciones recientes.', checkedAt: null };
 let quitting = false;
+let restoring = false;
 
 const DJANGO_HOST = '127.0.0.1';
 const SYNC_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -444,6 +446,156 @@ function stopDjango() {
   }
 }
 
+function restoreCommand(backupPath) {
+  if (app.isPackaged) {
+    const serverDir = path.join(process.resourcesPath, 'server');
+    const executable = path.join(
+      serverDir,
+      process.platform === 'win32' ? 'CodeGuardServer.exe' : 'CodeGuardServer'
+    );
+    if (!fs.existsSync(executable)) return null;
+    return {
+      executable,
+      args: ['--restore-backup', backupPath],
+      cwd: serverDir
+    };
+  }
+
+  let pythonPath = process.env.CODEGUARD_PYTHON;
+  if (!pythonPath) {
+    pythonPath = process.platform === 'win32'
+      ? path.join(projectRoot(), '.venv', 'Scripts', 'python.exe')
+      : path.join(projectRoot(), '.venv', 'bin', 'python');
+  }
+  if (!fs.existsSync(pythonPath)) {
+    pythonPath = process.platform === 'win32' ? 'python' : 'python3';
+  }
+  return {
+    executable: pythonPath,
+    args: [
+      path.join(projectRoot(), 'manage.py'),
+      'restaurar_backup',
+      backupPath,
+      '--confirm'
+    ],
+    cwd: projectRoot()
+  };
+}
+
+function runRestoreProcess(backupPath) {
+  return new Promise((resolve) => {
+    const command = restoreCommand(backupPath);
+    if (!command) {
+      resolve({ ok: false, detail: 'No se encontró la herramienta de restauración del paquete.' });
+      return;
+    }
+
+    let child;
+    try {
+      child = spawn(command.executable, command.args, {
+        cwd: command.cwd,
+        env: {
+          ...process.env,
+          DJANGO_SETTINGS_MODULE: app.isPackaged
+            ? 'config.settings.desktop'
+            : 'config.settings.development',
+          CODEGUARD_DATA_DIR: dataDir(),
+          PYTHONUNBUFFERED: '1'
+        },
+        stdio: ['ignore', 'pipe', 'pipe'],
+        windowsHide: true
+      });
+    } catch (error) {
+      resolve({ ok: false, detail: error.message });
+      return;
+    }
+
+    let stderr = '';
+    child.stdout.on('data', data => {
+      const line = data.toString().trim();
+      if (line) console.log('[Restore]', line.slice(0, 1000));
+    });
+    child.stderr.on('data', data => {
+      stderr = (stderr + data.toString()).slice(-3000);
+      console.error('[Restore ERR]', data.toString().trim().slice(0, 1000));
+    });
+    child.on('error', error => resolve({ ok: false, detail: error.message }));
+    child.on('close', code => {
+      if (code === 0) {
+        resolve({ ok: true, detail: '' });
+      } else {
+        const detail = stderr
+          .split('\n')
+          .filter(Boolean)
+          .slice(-4)
+          .join('\n') || `La restauración terminó con código ${code}.`;
+        resolve({ ok: false, detail });
+      }
+    });
+  });
+}
+
+async function promptRestoreBackup() {
+  if (restoring) return;
+
+  const selection = await dialog.showOpenDialog(mainWindow, {
+    title: 'Restaurar copia de seguridad',
+    buttonLabel: 'Seleccionar copia',
+    properties: ['openFile'],
+    filters: [{ name: 'Copias de CodeGuard Pro', extensions: ['zip'] }]
+  });
+  if (selection.canceled || selection.filePaths.length === 0) return;
+
+  const backupPath = resolveBackupPath(selection.filePaths[0]);
+  if (!backupPath) {
+    dialog.showErrorBox(
+      'Copia no válida',
+      'Selecciona un archivo .zip regular generado por CodeGuard Pro.'
+    );
+    return;
+  }
+
+  const confirmation = await dialog.showMessageBox(mainWindow, {
+    type: 'warning',
+    title: 'Restaurar copia de seguridad',
+    message: 'Se reemplazarán la base de datos y los archivos multimedia actuales.',
+    detail:
+      'La aplicación se cerrará, restaurará la copia y volverá a iniciarse. ' +
+      'Se conservará una copia de reversión del perfil anterior.',
+    buttons: ['Cancelar', 'Restaurar y reiniciar'],
+    defaultId: 0,
+    cancelId: 0,
+    noLink: true
+  });
+  if (confirmation.response !== 1) return;
+
+  restoring = true;
+  quitting = true;
+  stopKnowledgeSync();
+  stopDjango();
+  // Dar tiempo a que Waitress libere la base antes de sustituirla.
+  await new Promise(resolve => setTimeout(resolve, 800));
+
+  const result = await runRestoreProcess(backupPath);
+  if (result.ok) {
+    await dialog.showMessageBox(mainWindow, {
+      type: 'info',
+      title: 'Restauración completada',
+      message: 'La copia se restauró y verificó correctamente.',
+      detail: 'CodeGuard Pro se reiniciará con el perfil restaurado.'
+    });
+  } else {
+    dialog.showErrorBox(
+      'No se pudo restaurar la copia',
+      `${result.detail}\n\nEl perfil anterior se conserva o se revierte automáticamente. ` +
+      'CodeGuard Pro se reiniciará para comprobarlo.'
+    );
+  }
+
+  app.relaunch();
+  app.exit(0);
+}
+
 function splashHtml() {
   return `data:text/html;charset=utf-8,${encodeURIComponent(`
     <!doctype html>
@@ -556,6 +708,8 @@ function buildMenu() {
         { type: 'separator' },
         { label: 'Abrir carpeta de datos', click: () => shell.openPath(dataDir()) },
         { label: 'Comprobar actualizaciones de conocimiento', click: () => startKnowledgeSync(true) },
+        { type: 'separator' },
+        { label: 'Restaurar copia de seguridad…', click: () => promptRestoreBackup() },
         { type: 'separator' },
         { label: 'Salir', accelerator: 'CmdOrCtrl+Q', click: () => app.quit() }
       ]

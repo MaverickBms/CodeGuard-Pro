@@ -63,6 +63,53 @@ class ServerEntrySyncModeTests(SimpleTestCase):
         )
 
 
+class ServerEntryRestoreModeTests(SimpleTestCase):
+    """El modo --restore-backup restaura sin arrancar Waitress ni migrar."""
+
+    def test_restore_mode_invokes_restore_and_exits(self):
+        with (
+            patch.object(
+                sys,
+                "argv",
+                ["CodeGuardServer", "--restore-backup", "/tmp/copia.zip"],
+            ),
+            patch.object(django, "setup"),
+            patch(
+                "apps.core.restore.restore_backup",
+                return_value={
+                    "applied_migrations": 10,
+                    "pending_migrations": 2,
+                    "manifest": {},
+                    "rollback_path": None,
+                },
+            ) as restore_backup,
+        ):
+            result = server_entry.main()
+
+        self.assertEqual(result, 0)
+        restore_backup.assert_called_once()
+        args, kwargs = restore_backup.call_args
+        self.assertEqual(args[0], "/tmp/copia.zip")
+        self.assertTrue(kwargs["confirm"])
+
+    def test_restore_mode_reports_failure_without_starting_server(self):
+        with (
+            patch.object(
+                sys,
+                "argv",
+                ["CodeGuardServer", "--restore-backup", "/tmp/copia.zip"],
+            ),
+            patch.object(django, "setup"),
+            patch(
+                "apps.core.restore.restore_backup",
+                side_effect=ValueError("copia inválida"),
+            ),
+        ):
+            result = server_entry.main()
+
+        self.assertEqual(result, 8)
+
+
 class ServerEntryInitializationTests(SimpleTestCase):
     """La inicialización normal debe ser idempotente y preservar el progreso."""
 
