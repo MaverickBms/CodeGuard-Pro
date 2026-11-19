@@ -1,11 +1,12 @@
 # Estado de avance de beta — CodeGuard Pro
 
-**Fecha de revisión:** 2026-11-18 (hora local del propietario)  
+**Fecha de revisión:** 2026-11-18  
 **Rama de trabajo:** `fix/electron-ipc-origin-validation`  
 **Base:** `main` en `59d08848726550fde442be1eb1e1be5522637f0b`  
-**HEAD revisado:** `5223e4373aee76837437ebf943f952aa691b2b0f`  
+**HEAD de código revisado:** `5223e4373aee76837437ebf943f952aa691b2b0f`  
+**Commits documentales/correctivos posteriores:** `fcca40d`, `4c32fe8`  
 **Pull request:** https://github.com/MaverickBms/CodeGuard-Pro/pull/12 (abierto, borrador)  
-**Alcance de esta revisión:** inspección estática remota; no equivale a ejecutar el proyecto.
+**Alcance:** inspección estática remota y corrección puntual de launcher; no equivale a ejecutar el proyecto.
 
 ## 1. Trabajo incorporado en la rama
 
@@ -15,6 +16,8 @@
 - Las notificaciones limitan título (120 caracteres) y cuerpo (1000 caracteres), y utilizan el icono local de la aplicación.
 - Se añadieron seis casos de regresión en `electron/ipc-security.test.js` y el comando `npm run test:electron`.
 - Se añadió `.github/workflows/ci.yml` para checks Django, migraciones, suite Django y pruebas IPC.
+- Se actualizó este documento de continuidad con el estado observado de GitHub Actions, limitaciones de verificación y próximos pasos.
+- Se corrigió el script `codeguard`: ahora exporta `CODEGUARD_DATA_DIR` inmediatamente después de crear el directorio de datos y antes de ejecutar `migrate` y `cargar_ascenso`. Electron hereda la misma variable al iniciar el AppImage. No se usa `--recrear`.
 
 ## 2. Evidencia y límites de verificación
 
@@ -33,41 +36,39 @@ La consulta del repositorio encontró dos ejecuciones asociadas al workflow:
 | #1 | `670d675aaaa26dbcfe2c9b1744c0ea869cb30d40` | `completed / failure` |
 | #2 | `5223e4373aee76837437ebf943f952aa691b2b0f` | `completed / failure` |
 
-En esta consulta, el endpoint de jobs devolvió una lista vacía para ambas ejecuciones y no se obtuvieron check-runs ni logs de jobs. Por tanto:
+El endpoint de jobs devolvió una lista vacía para ambas ejecuciones y no se obtuvieron check-runs ni logs de jobs. Por tanto:
 
 - **No se conoce la causa del fallo.**
 - No se puede afirmar que hayan fallado las pruebas Django, las pruebas IPC, la instalación de dependencias o la sintaxis del workflow.
-- Tampoco se puede contar ninguna de esas ejecuciones como validación aprobada.
-- La siguiente acción es inspeccionar los detalles visibles de Actions en GitHub y determinar si se trata de un error de inicialización del workflow, permisos/configuración del repositorio o un job real.
+- Ninguna de esas ejecuciones cuenta como validación aprobada.
+- Se debe inspeccionar el detalle de Actions en GitHub y determinar si fue un fallo de inicialización, permisos/configuración o un job real.
 
 Enlace: https://github.com/MaverickBms/CodeGuard-Pro/actions
 
-### Inspección estática de primer arranque
+### Primer arranque empaquetado
 
-El código actual de `server_entry.py` contiene `_initialize_database()`, que llama a `migrate` y `cargar_ascenso` antes de iniciar Waitress en el modo servidor empaquetado. Esto **parece corregir** el hallazgo QA-03 del informe del 16-11-2026, que describía una inicialización externa.
-
-La corrección todavía requiere pruebas en un directorio de datos vacío y en uno preexistente. Debe comprobarse que:
-- la base, migraciones y roadmap quedan en el mismo `CODEGUARD_DATA_DIR` utilizado por Electron;
-- la carga es idempotente;
-- no se utiliza `--recrear`;
-- el progreso existente no se elimina ni se reinicia;
-- el endpoint `/healthz/` llega a estado `ok` solo cuando DB, migraciones y roadmap están disponibles.
+El código de `server_entry.py` contiene `_initialize_database()`, que llama a `migrate` y `cargar_ascenso` antes de iniciar Waitress en el modo servidor empaquetado. Esto parece resolver el problema descrito por QA-03 en el informe del 16-11-2026, pero necesita pruebas con directorio vacío y perfil preexistente.
 
 El endpoint `config/health.py` comprueba DB, migraciones pendientes y existencia de un roadmap activo. Electron espera HTTP 200 y los cuatro estados `ok` antes de cargar la ventana.
 
-## 3. Hallazgos documentales y operativos abiertos
+### Corrección del launcher `codeguard`
+
+La versión anterior inicializaba Django sin exportar `CODEGUARD_DATA_DIR`, por lo que podía crear/usar `BASE_DIR/data` mientras el AppImage recibía otro directorio. La corrección ya está publicada en esta rama y garantiza que las operaciones previas y Electron hereden el mismo path.
+
+**Estado de validación:** corrección inspeccionada estáticamente; aún no se ejecutó el script en Linux con un perfil temporal. Debe probarse que ambas fases usan el mismo directorio y que la carga idempotente conserva progreso existente.
+
+## 3. Hallazgos operativos abiertos
 
 | Prioridad | Hallazgo | Estado / acción |
 |---|---|---|
-| P0 | El script raíz `codeguard` define `DATA_DIR`, pero no exporta `CODEGUARD_DATA_DIR` antes de ejecutar migraciones y cargar ASCENSO. | Puede inicializar otra base distinta de la usada por AppImage. Corregir y probar con directorio temporal si se mantiene como lanzador soportado. |
 | P0 | Aceptación de instalación limpia y flujo principal Electron/Django. | Pendiente de ejecución real con perfil temporal. |
 | P1 | Reproducibilidad de la suite Django completa (245 reportadas). | Pendiente de ejecutar sobre el HEAD exacto y registrar salida. |
 | P1 | CI sin resultado verificable. | Dos ejecuciones reportadas como failure, sin jobs/logs accesibles en esta revisión. |
 | P1 | Persistencia tras reinicio, modo offline E2E y cierre sin procesos huérfanos. | Pendiente. |
 | P1 | Backup/restauración. | Diseño documentado; implementación/aceptación pendiente. |
 | P1 | Tutor Ollama. | Opcional; validar detección, modelo instalado, timeout, fallback y privacidad. |
-| P2 | `run.sh` exige Python y Node aunque inicia un AppImage que ya contiene Electron y el servidor empaquetado. | Revisar si es solo lanzador de desarrollo; no confundirlo con instalador autónomo. |
-| P2 | Documentos históricos no totalmente sincronizados. | Revisar especialmente `docs/VALIDACION_INTEGRACION_ELECTRON.md`, QA-03, estados de fases y cifras históricas de pruebas. |
+| P2 | `run.sh` exige Python y Node aunque inicia un AppImage empaquetado. | Revisar si es un lanzador de desarrollo; no confundirlo con instalador autónomo. |
+| P2 | Documentos históricos no totalmente sincronizados. | Revisar especialmente `docs/VALIDACION_INTEGRACION_ELECTRON.md`, estados de fases y cifras históricas. |
 
 ## 4. Estado funcional del producto
 
@@ -105,10 +106,10 @@ Esto no significa que el proyecto no pueda ejecutarse en el equipo del propietar
 ## 7. Próximo bloque recomendado
 
 1. Diagnosticar en GitHub por qué las dos ejecuciones de Actions terminaron en failure sin jobs visibles.
-2. Corregir el script `codeguard` para exportar `CODEGUARD_DATA_DIR` antes de cualquier comando Django, si se mantiene como punto de entrada soportado; añadir una prueba de regresión aislada.
+2. Ejecutar el launcher `codeguard` con un directorio temporal y confirmar que migrate, carga ASCENSO y AppImage comparten `CODEGUARD_DATA_DIR`.
 3. Probar `server_entry.py` en un directorio vacío y otro con datos de prueba existentes, verificando idempotencia y preservación.
 4. Ejecutar en el entorno del proyecto: `pip check`, `manage.py check`, `makemigrations --check --dry-run`, las siete apps de pruebas Django, `node --check` y `npm run test:electron`.
 5. Ejecutar la aceptación GUI/offline/persistencia/cierre en Linux y la instalación limpia Windows si esa es la plataforma de presentación.
-6. Actualizar los documentos históricos para que reflejen el código actual y distinguir claramente evidencia reportada, ejecutada y aceptada.
+6. Actualizar los documentos históricos para que reflejen el código actual y distingan evidencia reportada, ejecutada y aceptada.
 
 **Criterio de salida:** CodeGuard Pro no debe declararse beta aceptada hasta que el primer arranque, el flujo académico esencial, la persistencia, el funcionamiento offline, la integración Electron y el cierre limpio tengan evidencia reproducible. La presentación puede describirse como beta de evaluación con limitaciones explícitas si todavía quedan criterios de distribución sin aceptar.
