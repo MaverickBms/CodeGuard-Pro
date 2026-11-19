@@ -51,7 +51,7 @@ def _safe_archive_path(name: str) -> str:
 
 def _check_sqlite(path: Path) -> None:
     try:
-        with sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True) as connection:
+        with sqlite3.connect(str(path)) as connection:
             result = connection.execute("PRAGMA integrity_check").fetchone()
     except sqlite3.DatabaseError as exc:
         raise BackupError("La base de datos de la copia no es válida.") from exc
@@ -64,7 +64,12 @@ def _iter_media_files(media_root: Path):
         return
     if media_root.is_symlink() or not media_root.is_dir():
         raise BackupError("La carpeta media no es un directorio seguro.")
-    for current, directories, filenames in os.walk(media_root, followlinks=False):
+    def raise_walk_error(error):
+        raise BackupError("No se pudo leer completamente la carpeta media.") from error
+
+    for current, directories, filenames in os.walk(
+        media_root, followlinks=False, onerror=raise_walk_error
+    ):
         current_path = Path(current)
         for directory in list(directories):
             candidate = current_path / directory
@@ -155,6 +160,8 @@ def create_backup(
             }
             with zipfile.ZipFile(temporary_path, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
                 for source_path, archive_name in candidates:
+                    if source_path.is_symlink() or not source_path.is_file():
+                        raise BackupError("Un archivo cambió o dejó de ser seguro durante el backup.")
                     archive.write(source_path, archive_name)
                 archive.writestr(
                     "manifest.json",
@@ -206,6 +213,8 @@ def inspect_backup(
                 name = _safe_archive_path(info.filename)
                 if info.is_dir():
                     raise BackupError("No se permiten entradas de directorio explícitas.")
+                if info.flag_bits & 0x1:
+                    raise BackupError("No se admiten entradas ZIP cifradas.")
                 if name in names:
                     raise BackupError("La copia contiene rutas duplicadas.")
                 names.append(name)
@@ -222,6 +231,8 @@ def inspect_backup(
             if archive.testzip() is not None:
                 raise BackupError("La comprobación CRC de la copia falló.")
             manifest = json.loads(archive.read("manifest.json").decode("utf-8"))
+            if not isinstance(manifest, dict):
+                raise BackupError("El manifiesto debe ser un objeto JSON.")
             if manifest.get("format") != FORMAT_NAME or manifest.get("format_version") != FORMAT_VERSION:
                 raise BackupError("La versión del formato de backup no es compatible.")
             declared = manifest.get("files")
