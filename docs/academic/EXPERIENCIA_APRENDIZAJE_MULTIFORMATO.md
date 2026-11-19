@@ -11,8 +11,8 @@ Complementar el material escrito con recursos audiovisuales útiles, preferiblem
 ## Principios
 
 1. Primero se define el objetivo de aprendizaje; después se busca el video.
-2. Español como idioma preferente.
-3. En inglés: comprobar subtítulos en español dentro de YouTube o proporcionar alternativa equivalente en español.
+2. El audio hablado de todo video recomendado debe estar en español.
+3. El video debe enseñar directamente el tema de la lección; los subtítulos no convierten un video en otro idioma en un recurso aceptable.
 4. Enlazar siempre al video original y respetar derechos de autor.
 5. No asumir duración, subtítulos, idioma o vigencia sin verificarlos.
 6. La calidad didáctica y exactitud prevalecen sobre la fama del canal.
@@ -44,8 +44,8 @@ Se podrán incorporar otros canales, universidades, instituciones y mantenedores
 |---|---|
 | Título y creador | Exactos, contrastados con la página original. |
 | URL | Enlace canónico al recurso original. |
-| Idioma hablado | Español, inglés u otro. |
-| Subtítulos | Idioma, tipo y estado de verificación. |
+| Idioma hablado | Debe ser español. |
+| Subtítulos | Idioma, tipo y estado de verificación, como apoyo adicional. |
 | Duración | Solo si la página/reproductor la confirma. |
 | Nivel | Inicial, intermedio o avanzado, justificado por prerrequisitos. |
 | Temas | Conceptos que realmente aborda. |
@@ -67,7 +67,7 @@ Después: pedir explicación propia, contraste con documentación y ejercicio in
 
 ### 3. Subtítulos y accesibilidad
 
-Priorizar audio en español. Para material inglés, ofrecer subtítulos españoles verificados y una alternativa en español. Indicar que la disponibilidad puede variar por dispositivo/cuenta y no garantizar la precisión de subtítulos automáticos.
+Priorizar audio en español. El audio hablado de los videos debe estar en español. Indicar que la disponibilidad puede variar por dispositivo/cuenta y no garantizar la precisión de subtítulos automáticos.
 
 ### 4. Repaso y recuperación
 
@@ -94,7 +94,6 @@ Candidato → comprobación de enlace y metadatos → revisión de pertinencia y
 - [midudev — ¿Cómo me ORGANIZO? Mi SECRETO para ser más PRODUCTIVO y APRENDER más rápido programación](https://www.youtube.com/watch?v=UZarokfByTs) — español; organización, apuntes y tareas. Actividad: diseñar un sistema de notas propio y justificar qué se adapta y qué no.
 - [Academia de Hostinger — Cómo Aprender a Programar | Consejos y Recursos](https://www.youtube.com/watch?v=Zf48b175sKo) — español; objetivos, herramientas y proyectos. Actividad: comparar sus recomendaciones con la secuencia y el foco de ASCENSO.
 - [MoureDev Pro — Ruta de estudio](https://mouredev.pro/roadmap) — recurso web oficial complementario, no video individual de YouTube; el sitio presenta un curso para principiantes titulado «Cómo estudiar programación». Actividad: comparar estrategias de estudio, sin sustituir el roadmap ASCENSO.
-- [Fireship — How to Learn to Code - 8 Hard Truths](https://www.youtube.com/watch?v=NtfbWkxJTHw) — inglés; candidato para revisión. No se considera aprobado para el estudiante hasta comprobar subtítulos españoles en el reproductor y definir alternativa en español.
 
 ## Mantenimiento
 
