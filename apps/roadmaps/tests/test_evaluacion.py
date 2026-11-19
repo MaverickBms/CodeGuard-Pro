@@ -12,6 +12,7 @@ from apps.roadmaps.models import (
     Quiz,
     ResultadoEvaluacion,
     ResultadoPregunta,
+    Prerrequisito,
     Roadmap,
 )
 from apps.roadmaps.services_evaluacion import evaluar_quiz
@@ -657,3 +658,23 @@ class CargaQuizzesTests(TestCase):
     def test_command_cargar_quizzes(self):
         call_command("cargar_quizzes", ruta="apps/roadmaps/data/quizzes_ejemplo.json")
         self.assertEqual(Quiz.objects.count(), 1)
+
+    def test_quiz_de_etapa_bloqueada_no_acepta_respuestas(self):
+        requerida = Etapa.objects.create(
+            roadmap=self.modulo.etapa.roadmap, numero=0, titulo="Prerrequisito"
+        )
+        Prerrequisito.objects.create(
+            etapa=self.modulo.etapa, etapa_requerida=requerida,
+            justificacion="Debe completarse antes.",
+        )
+
+        with self.assertRaisesMessage(ValidationError, "prerrequisitos"):
+            evaluar_quiz(
+                self.usuario,
+                self.quiz,
+                {str(self.p1.id): 0, str(self.p2.id): "variable"},
+            )
+
+        self.assertFalse(
+            ResultadoEvaluacion.objects.filter(quiz=self.quiz, usuario=self.usuario).exists()
+        )
