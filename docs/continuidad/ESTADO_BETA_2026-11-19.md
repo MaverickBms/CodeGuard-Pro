@@ -252,3 +252,21 @@ Se añadió `docs/BACKUPS_Y_RESTAURACION.md` como contrato técnico para la futu
 La especificación exige snapshot SQLite mediante API de backup (no copiar la base activa), validación de integridad y hashes, rechazo de ZIP path traversal/symlinks/ZIP bombs, restauración desde staging, rollback ante fallo y tratamiento cifrado de la clave local si se decide incluirla. También define pruebas de concurrencia, corrupción, interrupción, compatibilidad y recuperación.
 
 **Importante:** se publicó únicamente la especificación; no existe todavía código ejecutable de backup/restauración ni UI para ello. No anunciar esta función como disponible. No se ejecutaron pruebas ni builds en este corte.
+
+## 18. Revisión de seguridad IPC y diagnóstico CI (19-11-2026)
+
+Se revisaron de nuevo `electron/ipc-security.js`, sus seis pruebas, los handlers IPC de `electron/main.js`, el preload y el endpoint `/healthz/`.
+
+- La validación IPC compara protocolo HTTP, hostname y puerto exactos, rechaza credenciales y falla de forma cerrada ante eventos/puertos inválidos. Los handlers privilegiados revisados aplican esa validación.
+- Electron mantiene `contextIsolation`, `nodeIntegration: false`, sandbox y bloqueo de ventanas nuevas. La revisión fue estática; no sustituye pruebas con Electron real.
+- El health check comprueba conexión SQLite, ausencia de migraciones pendientes y existencia de un roadmap activo antes de que Electron muestre la aplicación.
+
+### CI: evidencia más reciente
+
+El run `44448810877` corresponde al push del commit `1e556b1`, workflow `.github/workflows/ci.yml`, evento `push`. GitHub devuelve `completed/failure`, pero la consulta de jobs devuelve `total_count=0`, `jobs=[]`; la consulta de check-runs del commit también devuelve cero. No hay logs de job que permitan identificar una excepción o un paso fallido.
+
+El commit que disparó el run modifica documentación únicamente, aunque el workflow declara `paths-ignore` para `docs/**` y Markdown. Esto es una anomalía adicional que debe investigarse desde la configuración/ejecución de Actions; con la evidencia disponible no se puede atribuir a una prueba, a un error de YAML ni a permisos concretos. El conector disponible permite leer runs/jobs, pero no inspeccionar la configuración administrativa de Actions ni despachar un nuevo workflow manualmente.
+
+**Acción pendiente externa al código:** verificar en GitHub, en Settings → Actions → General, que Actions está habilitado para el repositorio y que las políticas permiten los workflows y acciones usados; después ejecutar manualmente `CodeGuard Pro CI` con `workflow_dispatch`. Si sigue fallando antes de crear jobs, obtener el detalle de diagnóstico desde la interfaz de Actions o soporte de GitHub.
+
+**Validación:** revisión estática únicamente. No se ejecutaron suites Django/Electron, compilación PyInstaller, electron-builder ni instaladores. No se declara CI aprobado ni beta aceptada.
