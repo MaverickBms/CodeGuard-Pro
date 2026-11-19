@@ -80,7 +80,7 @@ class ExportarManifiestoAcademicoTests(TestCase):
         with tempfile.TemporaryDirectory() as directory:
             destination = Path(directory) / "manifest.json"
             destination.write_text("preservar", encoding="utf-8")
-            with self.assertRaises(Exception):
+            from django.core.management.base import CommandError\n\n        with self.assertRaises(CommandError):
                 call_command(
                     "exportar_manifiesto_academico",
                     **self._arguments(salida=str(destination)),
