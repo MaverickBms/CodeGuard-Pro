@@ -137,7 +137,14 @@ jobs:
         shell: pwsh
         run: Get-ChildItem dist -Filter *.exe | Select-Object Name,Length
 
+      - name: Windows installation acceptance
+        shell: pwsh
+        run: ./scripts/windows-acceptance.ps1
+        env:
+          CODEGUARD_DATA_DIR: ${{ runner.temp }}/codeguard-win-seed
+
       - name: Upload Windows artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: codeguard-windows-x64
@@ -168,6 +175,8 @@ jobs:
           node --check electron/ipc-security.js
           node --check electron/process-health.js
           node --check electron/restore-backup.js
+          node --check electron/theme-preference.js
+          node --check scripts/cdp-smoke.js
 
       - name: Run Electron unit tests
         run: npm run test:electron
