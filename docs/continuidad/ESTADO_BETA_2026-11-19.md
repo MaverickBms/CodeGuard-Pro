@@ -29,7 +29,7 @@ Las seis pruebas cubren origen exacto, puerto diferente, host que suplanta el pr
 
 ### GitHub Actions
 
-Se consultaron las ejecuciones del workflow. La consulta más reciente mostró cinco ejecuciones terminadas en fallo:
+Se consultaron las ejecuciones del workflow. La consulta más reciente mostró seis ejecuciones terminadas en fallo:
 
 | Run | Commit | Estado |
 |---|---|---|
@@ -38,13 +38,14 @@ Se consultaron las ejecuciones del workflow. La consulta más reciente mostró c
 | 3 | `fcca40def7c5f7703406fb78a3274579613f13a2` | `completed / failure` |
 | 4 | `4c32fe83b29c67af2565efa3a64419add26a8051` | `completed / failure` |
 | 5 | `98d354e4bdb4ea77a363d4e8e301a8f77a5c29f6` | `completed / failure` |
+| 6 | `40cfdf23639cf8bb6384c7297e19219af87507af` | `completed / failure` (run `44444429601`) |
 
-Los endpoints consultados devolvieron listas de jobs vacías y no se obtuvieron check-runs ni logs de jobs. Por tanto:
+La inspección directa de Actions para el run más reciente (`44444429601`) confirmó `conclusion=failure`, pero `total_count=0` y `jobs=[]`, incluso al consultar el intento 1. El endpoint de check-runs del commit también devolvió `total_count=0`. No hay jobs, steps ni logs de job que permitan identificar un error de ejecución. Además, el run está marcado como evento `push` sobre la rama de trabajo, aunque el archivo de workflow actualmente consultado limita el trigger `push` a `main`; esta discrepancia debe aclararse antes de modificar la configuración. Por tanto:
 
 - **No se conoce la causa del fallo.**
 - No se puede afirmar que hayan fallado las pruebas Django, las pruebas IPC, la instalación de dependencias o la sintaxis del workflow.
 - Ninguna ejecución cuenta como validación aprobada.
-- Se debe inspeccionar el detalle de Actions en GitHub y determinar si fue un fallo de inicialización, permisos/configuración o un job real.
+- Se debe inspeccionar la vista de Actions y la configuración de Actions del repositorio para determinar por qué se crean ejecuciones fallidas sin jobs. No hay base para modificar las pruebas o dependencias hasta resolver esta anomalía.
 
 Enlace: https://github.com/MaverickBms/CodeGuard-Pro/actions
 
