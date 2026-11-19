@@ -463,7 +463,7 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
 
 ### Commits de la rama
 
-`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`, `880fbff`, `02f9583`, `fb32d3f`, `48afb1e`, `ad99b7e`, `70ae225`, `fc2fb97`, `ee04cb9`, `8663968`, `9e54207`.
+`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`, `880fbff`, `02f9583`, `fb32d3f`, `48afb1e`, `ad99b7e`, `70ae225`, `fc2fb97`, `ee04cb9`, `8663968`, `9e54207`, `fe0a621`.
 
 ### Pendientes y bloqueos
 
@@ -544,7 +544,7 @@ siguen pendientes de una máquina Windows real**.
 
 ### Verificación final de CI
 
-- `workflow_dispatch` sobre `release/1.0.0` (`9e54207`): run **44558560843**,
-  **4/4 jobs en verde**.
+- `release/1.0.0` (`fe0a621`): runs **44560176376** (push) y **44560197331**
+  (pull_request), ambos con **4/4 jobs en verde**, incluido Windows x64.
 - Artefacto Windows `codeguard-windows-x64`: 274.776.109 bytes
   (instalador NSIS + portable x64).
