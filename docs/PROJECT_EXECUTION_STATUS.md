@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-19  
 **Fase:** release candidate + prototipo vertical del Mundo CodeGuard  
-**Rama:** `feature/mundo-codeguard` (desde `release/1.0.0`)  
+**Rama:** `feature/mundo-codeguard` (desde `release/1.0.0`, HEAD de código `66fb962`)  
 **PR:** https://github.com/MaverickBms/CodeGuard-Pro/pull/13 (abierto, borrador, sin fusionar)  
 **Base:** `main` intacta; no se ha fusionado ni creado tag/release.
 
@@ -45,6 +45,7 @@
 | Persistencia de tema (AppImage, dos arranques) | `fantasy` persiste tras reiniciar el paquete |
 | E2E AppImage Linux | 5 rutas HTTP 200, 12 temas, responsive, cierre sin huérfanos |
 | E2E Mundo (Electron dev) | Canvas 480×320, 3 misiones, diálogo con Ada, misión principal y minijuego completados, sin errores JS |
+| E2E Mundo (AppImage) | Canvas, 3 misiones, diálogo, reclamar misión principal y minijuego completado; inventario con 2 objetos; sin errores JS |
 | Windows CI run `44574923603` y `44576601446` | **7/7 fases OK**: instalación, primer arranque, health, 5 rutas, tema, progreso, desinstalación, portable y ausencia de huérfanos |
 
 ### Evidencia Windows (CI, no hardware físico)
@@ -106,12 +107,18 @@ la aceptación manual en un equipo limpio.
 ## 6. Pendientes
 
 1. Revisar y aprobar el inventario académico; decidir etapa 25 y alcance cursable.
-2. Rebuild del AppImage/Server con el Mundo y verificación E2E en el paquete.
-3. Aceptación manual en un equipo Windows limpio (hardware real).
+2. Aceptación manual en un equipo Windows limpio (hardware real).
+3. Ampliar el Mundo: más regiones, misiones, minijuegos y contenido audiovisual.
 3. Sincronización remota de producción, macOS/ARM64 y contenido académico completo:
    fuera del alcance de este RC.
 
-## 7. Artefactos finales
+## 7. Artefactos del Mundo CodeGuard
+
+- Servidor PyInstaller: `5267179a1f7c9e16376fbb2dc5a8f427257b17589e2481fd0f74f2ebd1cf5c10`.
+- AppImage con Mundo: `33cb6a5063ba6a62d1a662fa2b9bfbac3c1bf06666a2a63e59a6863ad9ef5d6a`.
+- PR del Mundo: https://github.com/MaverickBms/CodeGuard-Pro/pull/15 (borrador, sin fusionar).
+
+## 8. Artefactos del release base
 
 - Servidor PyInstaller: `c21ff228b40fab302a8081532e227feb3efe54a16194d19b7bbf667f7e84ea53`.
 - AppImage: `3e14314636be75a44665846a0f1a25972352cb847dadbe407d84a9fd11a7f05d`.

@@ -116,3 +116,13 @@ npm start
 ```
 
 Abre **Mundo CodeGuard** en la barra lateral o entra desde Gamificación.
+
+## 9. Verificación en paquete
+
+- AppImage construido y ejecutado con perfil aislado.
+- Canvas 480×320, tres misiones y diálogo con Ada verificados por CDP.
+- Misión principal reclamada y minijuego completado con respuestas válidas.
+- Inventario final con `insignia-metodo` y `chip-depurador`.
+- Sin errores JavaScript en la consola del renderer.
+- Servidor PyInstaller: `5267179a1f7c9e16376fbb2dc5a8f427257b17589e2481fd0f74f2ebd1cf5c10`.
+- AppImage: `33cb6a5063ba6a62d1a662fa2b9bfbac3c1bf06666a2a63e59a6863ad9ef5d6a`.
