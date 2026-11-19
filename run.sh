@@ -10,20 +10,24 @@ set -euo pipefail
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$PROJECT_DIR"
 
-# electron-builder genera CodeGuard-Pro-<version>-x64.AppImage
-# (la arquitectura configurada en package.json es x64, no x86_64).
+# electron-builder puede generar nombres con arch x64 o x86_64 según configuración/versión.
 shopt -s nullglob
-APPIMAGES=(dist/CodeGuard-Pro-*-x64.AppImage)
+APPIMAGES=(dist/CodeGuard-Pro-*-x64.AppImage dist/CodeGuard-Pro-*-x86_64.AppImage)
 shopt -u nullglob
 
+# Deduplicar por si algún patrón coincidiera de forma redundante
+if [ "${#APPIMAGES[@]}" -gt 0 ]; then
+    mapfile -t APPIMAGES < <(printf '%s\n' "${APPIMAGES[@]}" | awk '!seen[$0]++')
+fi
+
 if [ "${#APPIMAGES[@]}" -eq 0 ]; then
-    echo "[ERROR] No se encuentra el AppImage x64 en dist/."
+    echo "[ERROR] No se encuentra el AppImage en dist/ (esperado: CodeGuard-Pro-*-x64.AppImage o CodeGuard-Pro-*-x86_64.AppImage)."
     echo "        Genera primero el paquete con: npm run build:linux"
     exit 1
 fi
 
 if [ "${#APPIMAGES[@]}" -ne 1 ]; then
-    echo "[ERROR] Se encontraron varios AppImage x64 en dist/."
+    echo "[ERROR] Se encontraron varios AppImage en dist/."
     echo "        Conserva un único artefacto o limpia dist/ antes de iniciar."
     printf '        - %s\n' "${APPIMAGES[@]}"
     exit 1
