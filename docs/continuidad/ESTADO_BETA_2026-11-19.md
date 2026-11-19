@@ -28,6 +28,10 @@ Los casos cubren origen exacto, puerto diferente, host que suplanta el prefijo l
 
 Esta ejecución valida la función pura y sus pruebas. No equivale a ejecutar Electron ni prueba la integración IPC real.
 
+## Automatización de CI añadida
+
+Se añadió `.github/workflows/ci.yml` con dos trabajos para futuras ejecuciones en `push`/`pull_request` hacia `main` y ejecución manual: (1) instalación de `requirements.txt`, `pip check`, `manage.py check`, comprobación de migraciones y suite Django; (2) `npm run test:electron` con Node 22. El workflow está versionado en esta rama, pero todavía no hay una ejecución observada. Al no existir aún en la rama base `main`, no se presenta como CI aprobado ni como evidencia de aceptación.
+
 ## Estado de validación de beta
 
 | Área | Estado |
@@ -44,7 +48,7 @@ Esta ejecución valida la función pura y sus pruebas. No equivale a ejecutar El
 | Backup y restauración aislados | Pendiente |
 | Cierre limpio y ausencia de procesos huérfanos | Pendiente |
 
-La consulta remota no encontró ejecuciones de GitHub Actions para la rama/repo en el endpoint consultado. No se debe interpretar como build aprobado.
+La consulta remota no encontró ejecuciones de GitHub Actions asociadas al commit de esta rama. El workflow recién añadido aún no ha producido una ejecución verificable. No se debe interpretar como build aprobado.
 
 ## Protección del trabajo local del propietario
 
