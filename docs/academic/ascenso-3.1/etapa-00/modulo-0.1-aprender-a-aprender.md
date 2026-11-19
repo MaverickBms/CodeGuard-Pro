@@ -483,3 +483,41 @@ Fecha de consulta de los recursos web: **2026-11-19**. Las referencias respaldan
 - «Práctica deliberada» no significa simplemente acumular horas; el módulo evita prometer experticia automática.
 - El calendario de repasos es un ejemplo adaptable, no una frecuencia universal.
 - El aprendizaje basado en proyectos se propone como formato de integración; este módulo no afirma que sea superior a toda enseñanza explícita o práctica guiada.
+
+
+---
+
+## Recursos audiovisuales curados
+
+Los videos complementan la explicación escrita; no sustituyen los ejercicios, las fuentes primarias ni la demostración de competencias. Se prioriza español y se enlaza al video original del creador.
+
+### Selección para el módulo 0.1
+
+| Recurso | Idioma | Enfoque | Cómo utilizarlo | Estado editorial |
+|---|---|---|---|---|
+| [¿Cómo me ORGANIZO? Mi SECRETO para ser más PRODUCTIVO y APRENDER más rápido programación — midudev](https://www.youtube.com/watch?v=UZarokfByTs) | Español | Organización, apuntes, tareas y seguimiento del aprendizaje. | Verlo después de 0.1.4; diseñar un sistema propio de notas y revisión. No es una receta universal ni se exige usar Notion. | Enlace y descripción contrastados; revisar disponibilidad antes de publicar. |
+| [Cómo Aprender a Programar | Consejos y Recursos — Academia de Hostinger](https://www.youtube.com/watch?v=Zf48b175sKo) | Español | Objetivos, herramientas, práctica y proyectos. | Verlo como orientación inicial y contrastar sus recomendaciones con el orden curricular de ASCENSO. | Enlace y descripción contrastados; material complementario, no fuente normativa. |
+| [Ruta de estudio: Cómo estudiar programación — MoureDev Pro](https://mouredev.pro/roadmap) | Español | Ruta estructurada de estudio; curso para principiantes de 44 lecciones y 2 horas de video indicado en el sitio. | Consultar como recurso opcional para comparar hábitos y planificación; ASCENSO conserva su propio roadmap. | Página oficial consultada; no es un video individual de YouTube. |
+
+### Recursos en inglés y subtítulos
+
+[How to Learn to Code - 8 Hard Truths — Fireship](https://www.youtube.com/watch?v=NtfbWkxJTHw) trata práctica, patrones, dejar de consumir tutoriales pasivamente y autoexplicación. Está en inglés. **No se incorpora como recurso obligatorio** hasta verificar en el propio reproductor que ofrece subtítulos en español (no basta con asumir que los subtítulos automáticos están disponibles o son correctos). Si se incorpora, se indicará cómo activar CC y seleccionar español, y se ofrecerá una alternativa en español.
+
+### Actividad obligatoria después de cualquier video
+
+1. Escribe tres ideas que puedas explicar sin volver a reproducirlo.
+2. Anota una afirmación que quieras contrastar con una fuente fiable.
+3. Aplica una idea a tu sistema ASCENSO-Knowledge-Base.
+4. Resuelve un ejercicio sin copiar los pasos del video.
+5. Registra qué cambió en tu comprensión y qué sigue sin estar claro.
+
+### Política de curación audiovisual
+
+- La selección se hace por correspondencia con objetivos y calidad didáctica, no por popularidad del canal.
+- Se favorecen videos en español, del canal original del autor y con contenido concreto.
+- Un canal sugerido por el estudiante (MoureDev, midudev, Fireship, Mosh Hamedani, HolaMundo, The Net Ninja, DotCSV, Héctor de León, Ania Kubów, The Cherno, Alex Profe, Daniel Carreon, Julio Profe u otros) pasa a ser candidato de búsqueda, no una recomendación automática.
+- Para cada video se registran: título exacto, creador/canal, URL, idioma hablado, subtítulos disponibles y su tipo (humanos/automáticos/no comprobados), duración cuando esté verificada, nivel, temas, objetivo curricular, fecha de comprobación y alternativa accesible.
+- Se evitan enlaces a recopilaciones no oficiales, reuploads, videos eliminados o piezas que solo repiten contenido sin aportar una explicación distinta.
+- Los videos pueden cambiar, quedar privados o perder subtítulos. Los enlaces se revisan antes de publicar y periódicamente; un recurso caído se retira o sustituye conservando historial.
+- No se descarga ni se vuelve a alojar material de terceros. Se enlaza al original y se respeta la plataforma y los derechos del creador.
+- La disponibilidad de subtítulos puede variar por país, cuenta y dispositivo. La ficha debe describir lo que se verificó, no prometer una pista que no se comprobó.
