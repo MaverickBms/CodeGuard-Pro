@@ -11,7 +11,7 @@ CodeGuard Pro utiliza:
 - Waitress como servidor WSGI local.
 - SQLite en el directorio de datos del usuario.
 - PyInstaller para empaquetar el servidor Django como `CodeGuardServer.exe`.
-- electron-builder para generar instalador NSIS y paquete portable.
+- electron-builder para generar dos artefactos Windows x64: instalador NSIS y ejecutable portable. Ambos objetivos están declarados explícitamente en `package.json`.
 
 La arquitectura anterior basada en PySide6/`desktop/main.py` ya no corresponde al producto activo.
 
@@ -50,9 +50,9 @@ El script instala dependencias Python y ejecuta `npm run build:win`. Ese comando
 1. `npm run build:server`: selecciona Python del entorno `.venv` (o Python del sistema), elimina el ejecutable anterior y genera `dist-server\\CodeGuardServer\\CodeGuardServer.exe` mediante PyInstaller.
 2. Genera `dist-server\\.codeguard-server-build.json` con plataforma, arquitectura, nombre del ejecutable y SHA-256 del binario recién creado.
 3. `npm run verify:server`: comprueba que el ejecutable existe, es ejecutable y coincide con el manifiesto de compilación.
-4. Solo si las verificaciones anteriores terminan correctamente, ejecuta electron-builder.
+4. Solo si las verificaciones anteriores terminan correctamente, ejecuta electron-builder para producir los objetivos NSIS y portable de Windows x64.
 
-`build_windows.bat` delega la generación del servidor a este flujo para evitar dos rutas de build distintas. No ejecutar `electron-builder` directamente para generar un paquete de distribución: usar `npm run build:win`, `npm run build:linux` o `npm run build`.
+`build_windows.bat` delega la generación del servidor a este flujo para evitar dos rutas de build distintas. Instala las dependencias Node de forma reproducible con `npm ci`, respetando `package-lock.json`. No ejecutar `electron-builder` directamente para generar un paquete de distribución: usar `npm run build:win`, `npm run build:linux` o `npm run build`. Los ejecutables Windows se guardan en `dist/`; sus nombres finales los determina electron-builder.
 
 La compilación no crea ni migra una base de datos de desarrollo. Las migraciones y la carga de ASCENSO se ejecutan en el primer arranque del usuario, dentro de su directorio `userData`.
 
@@ -71,7 +71,7 @@ La aplicación empaquetada utiliza el directorio de datos administrado por Elect
 
 | Plataforma | Artefacto configurado | Estado |
 |---|---|---|
-| Windows x64 | NSIS installer / portable | Build definido; instalación limpia y primer arranque pendientes |
+| Windows x64 | NSIS installer + portable | Objetivos configurados; build real, instalación limpia y primer arranque pendientes |
 | Linux x64 | AppImage | Build definido; aceptación GUI y offline E2E pendientes |
 | macOS | No configurado | No soportado/validado todavía |
 | ARM64 | No configurado | No soportado/validado todavía |
