@@ -21,7 +21,8 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 | Etapa 8 · Redes informáticas y protocolos | Borrador didáctico v0.1.0 |
 | Etapa 9 · Bases de datos relacionales y SQL | Borrador didáctico v0.1.0 |
 | Etapa 10 · Bases de datos NoSQL y almacenamiento moderno | Borrador didáctico v0.1.0 |
-| Etapas 11–32 | Pendiente |
+| Etapa 11 · HTML y CSS: fundamentos profesionales del frontend | Borrador didáctico v0.1.0 |
+| Etapas 12–32 | Pendiente |
 
 ## Archivos
 
@@ -51,4 +52,4 @@ Los UUID curriculares deben resolverse contra la base de datos del roadmap; no s
 ## Revisión
 
 Las referencias y fechas de consulta se consignan dentro de cada módulo. Deben revisarse de nuevo antes de una publicación, especialmente si describen herramientas, versiones, APIs o requisitos que puedan cambiar.
-- [Etapa 7 — Sistemas operativos: Linux, Windows y administración](ascenso-3.1/etapa-07/sistemas-operativos-linux-windows-administracion.md)\n- [Etapa 8 — Redes informáticas y protocolos](ascenso-3.1/etapa-08/redes-informaticas-y-protocolos.md)\n- [Etapa 9 — Bases de datos relacionales y SQL](ascenso-3.1/etapa-09/bases-de-datos-relacionales-y-sql.md)\n- [Etapa 10 — Bases de datos NoSQL y almacenamiento moderno](ascenso-3.1/etapa-10/nosql-y-almacenamiento-moderno.md)\n
+- [Etapa 7 — Sistemas operativos: Linux, Windows y administración](ascenso-3.1/etapa-07/sistemas-operativos-linux-windows-administracion.md)\n- [Etapa 8 — Redes informáticas y protocolos](ascenso-3.1/etapa-08/redes-informaticas-y-protocolos.md)\n- [Etapa 9 — Bases de datos relacionales y SQL](ascenso-3.1/etapa-09/bases-de-datos-relacionales-y-sql.md)\n- [Etapa 10 — Bases de datos NoSQL y almacenamiento moderno](ascenso-3.1/etapa-10/nosql-y-almacenamiento-moderno.md)\n- [Etapa 11 — HTML y CSS: fundamentos profesionales del frontend](ascenso-3.1/etapa-11/html-css-fundamentos-frontend.md)\n
