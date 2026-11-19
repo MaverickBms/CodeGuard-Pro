@@ -165,19 +165,19 @@ Cada caso incluirá pregunta, entorno, evidencias, fuentes, hipótesis, pruebas,
 
 Aprobación sugerida: 80/100 y ningún fallo crítico de seguridad. Esta rúbrica es propuesta pedagógica y no sustituye los criterios de aprobación de la aplicación.
 
-## Videos complementarios — coincidencia temática obligatoria
+## Videos candidatos — coincidencia temática y audio pendientes de verificación
 
-Solo se recomiendan videos en español cuyo contenido descrito coincide directamente con objetivos del módulo. No se añaden videos de productividad, Git o herramientas generales porque no enseñan específicamente investigación técnica.
+Los siguientes enlaces son candidatos editoriales por sus títulos y descripciones; no se consideran recomendados ni aprobados hasta escuchar el audio real, confirmar que está hablado en español y comprobar que cubre directamente los objetivos del módulo. No se infiere el idioma del audio a partir de metadatos. No se añaden videos de productividad, Git o herramientas generales porque no enseñan específicamente investigación técnica.
 
 1. **[Cómo usar la documentación para aprender lenguajes, librerías y frameworks — Programación en español](https://www.youtube.com/watch?v=y6f3susXT5g)**  
-   Idioma: español. Relación: navegación de documentación; aborda instalación, tutoriales, referencia API, migración y guías de estilo.  
+   Idioma hablado: pendiente de verificación. Pertinencia prevista: navegación de documentación; la descripción indica instalación, tutoriales, referencia API, migración y guías de estilo.  
    Actividad: usar documentación oficial y localizar esas secciones.
 
 2. **[Tips para enfrentar BUGS y BLOQUEOS como programador — Programación en español](https://www.youtube.com/watch?v=21_f6fglZ_A)**  
-   Idioma: español. Relación: investigar errores, buscar en Google/Stack Overflow, consultar GitHub Issues y comprender el contexto del problema.  
+   Idioma hablado: pendiente de verificación. Pertinencia prevista: investigar errores, buscar en Google/Stack Overflow, consultar GitHub Issues y comprender el contexto del problema.  
    Actividad: aplicar su enfoque a un error reproducible y entregar una bitácora.
 
-Los títulos, descripciones y capítulos publicados de ambos videos fueron contrastados el 19-11-2026. No se atribuye al video contenido que no esté descrito. La selección debe revisarse antes de aprobar o publicar.
+Los títulos, descripciones y capítulos publicados se contrastaron el 19-11-2026; eso no verifica el idioma del audio ni sustituye la visualización. Mantener ambos enlaces como candidatos hasta escuchar y revisar el contenido. No publicar como recursos recomendados antes de esa comprobación.
 
 ## Autoevaluación
 
