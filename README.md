@@ -161,7 +161,7 @@ Comandos de gestión disponibles:
 
 ## 🧠 Stack técnico
 
-Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/HTMX/SweetAlert2/FontAwesome locales. Dependencias adicionales: `cryptography` (verificación Ed25519 de manifiestos de conocimiento), `PyMuPDF` (procesamiento PDF, fase futura), `pyinstaller` + `pyinstaller-hooks-contrib` (empaquetado del servidor local).
+Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/HTMX/SweetAlert2/FontAwesome locales. Dependencias adicionales: `cryptography` (verificación Ed25519 de manifiestos de conocimiento), `pyinstaller` + `pyinstaller-hooks-contrib` (empaquetado del servidor local). El procesamiento de PDF todavía no tiene una biblioteca activa en `requirements.txt`; se incorporará cuando exista un módulo funcional y se aprueben la licencia y el impacto en el tamaño de distribución.
 
 ## 🧪 Verificación
 
