@@ -403,3 +403,7 @@ El panel, roadmap, gamificación y ajustes visuales tienen rutas y acciones iden
 
 ### Bloqueos de contenido y alcance
 Sigue sin existir cotejo semántico con el DOCX maestro ASCENSO 3.1. Se mantienen los defectos editoriales detectados en la etapa 25 (objetivo vacío) y etapa 10 (campo proyecto con contenido anormalmente extenso). La plataforma sigue mostrando la estructura curricular completa, no 1.946 lecciones desarrolladas. Los contenidos, ejercicios y quizzes deben completarse para el conjunto de etapas que se defina como alcance cursable de la beta.
+
+
+### CI: resultado observado tras la última publicación
+La consulta directa de GitHub Actions para el HEAD e13a3897fc8c0e1203e53819b686635c32e587f4 encontró el run 44452070470 (evento push), concluido como failure con total_count=0 y jobs=[]. No se ejecutó ningún job; por tanto no es un fallo demostrado de las pruebas ni una aprobación. La consulta resumida de runs por commit no incluye este evento push, por lo que para auditoría se debe consultar la lista de Actions runs directamente. La causa del run sin jobs sigue sin estar expuesta en la respuesta disponible.
