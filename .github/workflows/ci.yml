@@ -3,6 +3,9 @@ name: CodeGuard Pro CI
 on:
   # Ejecutar CI en cada rama para que los cambios de trabajo también se validen.
   push:
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
   pull_request:
     branches: [main]
   workflow_dispatch:
