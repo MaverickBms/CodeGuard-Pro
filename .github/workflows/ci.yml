@@ -25,7 +25,7 @@ jobs:
     env:
       DJANGO_SETTINGS_MODULE: config.settings.development
       DJANGO_SECRET_KEY: ci-only-not-a-production-secret
-      CODEGUARD_DATA_DIR: ${{ runner.temp }}/codeguard-data
+      CODEGUARD_DATA_DIR: /tmp/codeguard-data
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,7 +67,7 @@ jobs:
     timeout-minutes: 20
     env:
       DJANGO_SETTINGS_MODULE: config.settings.desktop
-      CODEGUARD_DATA_DIR: ${{ runner.temp }}/codeguard-packaging
+      CODEGUARD_DATA_DIR: /tmp/codeguard-packaging
     steps:
       - name: Checkout
         uses: actions/checkout@v4
