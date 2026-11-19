@@ -38,11 +38,7 @@
     "files": [
       "electron/**/*",
       "static/icons/icon.png",
-      "static/icons/icon.ico",
-      "README.md",
-      "README_WINDOWS.md",
-      "IEEE830.md",
-      "docs/**/*"
+      "static/icons/icon.ico"
     ],
     "extraResources": [
       {
@@ -54,23 +50,6 @@
         "from": "static/icons",
         "to": "icons",
         "filter": ["icon.png", "icon.ico"]
-      },
-      {
-        "from": "README.md",
-        "to": "README.md"
-      },
-      {
-        "from": "README_WINDOWS.md",
-        "to": "README_WINDOWS.md"
-      },
-      {
-        "from": "IEEE830.md",
-        "to": "IEEE830.md"
-      },
-      {
-        "from": "docs",
-        "to": "docs",
-        "filter": ["**/*"]
       }
     ],
     "extraMetadata": {
