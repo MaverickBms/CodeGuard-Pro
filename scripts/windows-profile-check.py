@@ -8,7 +8,11 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+from pathlib import Path
 
+# Al ejecutar el script desde scripts/, Python añade ese directorio a sys.path;
+# el proyecto y sus apps viven un nivel arriba.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.development")
 
 import django  # noqa: E402
