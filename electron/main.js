@@ -774,10 +774,12 @@ function showDocs() {
     title: 'Documentación local',
     message: 'Documentación de CodeGuard Pro',
     detail:
-      'La documentación se distribuye junto con la aplicación:\n\n' +
-      '• README.md — instalación, ejecución y empaquetado.\n' +
-      '• IEEE830.md — especificación de requisitos.\n' +
-      '• docs/ — modelo de datos, plan de desarrollo y decisiones.\n\n' +
+      'La documentación incluida con la aplicación es:\n\n' +
+      '• README.md — instalación, ejecución, backups y empaquetado.\n' +
+      '• README_WINDOWS.md — guía específica de Windows.\n\n' +
+      'La documentación técnica extendida (arquitectura, ADRs, seguridad, ' +
+      'modelo de datos e informes QA) se mantiene en la rama documentation ' +
+      'del repositorio oficial.\n\n' +
       `Carpeta de referencia: ${root}`
   });
 }

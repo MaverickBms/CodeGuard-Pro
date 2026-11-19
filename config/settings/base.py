@@ -165,8 +165,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Mensajes basados en cookies (sin requerir middleware de sesión).
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
-USE_TZ = True
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
