@@ -95,6 +95,13 @@
         if (hintTexto) hintTexto.textContent = (data && data.error) || 'No se pudo obtener la pista en este momento.';
         if (hintMeta) hintMeta.textContent = '';
       }
+    }).catch(function () {
+      boton.disabled = false;
+      if (hintElement) {
+        hintElement.hidden = false;
+        if (hintTexto) hintTexto.textContent = 'No fue posible conectar con el servicio de tutoría. Comprueba el servidor e inténtalo de nuevo.';
+        if (hintMeta) hintMeta.textContent = '';
+      }
     });
   }
 
