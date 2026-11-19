@@ -101,8 +101,8 @@ def create_backup(
         raise BackupError("La carpeta de destino no existe.")
     if destination_path == root or root in destination_path.parents:
         raise BackupError("El backup debe guardarse fuera de la carpeta de datos.")
-    if destination_path.exists() and not destination_path.is_file():
-        raise BackupError("El destino debe ser un archivo.")
+    if destination_path.exists():
+        raise BackupError("El destino ya existe; elige otro nombre para conservar el backup anterior.")
     if max_entries < 1 or max_file_size < 1 or max_total_size < 1:
         raise BackupError("Los límites de tamaño deben ser positivos.")
 
@@ -167,7 +167,13 @@ def create_backup(
             max_file_size=max_file_size,
             max_total_size=max_total_size,
         )
-        os.replace(temporary_path, destination_path)
+        # link() publica sin sobrescribir un backup previo, incluso si otro
+        # proceso creó el mismo destino durante la operación.
+        try:
+            os.link(temporary_path, destination_path)
+        except FileExistsError as exc:
+            raise BackupError("El destino ya existe; no se sobrescribió.") from exc
+        temporary_path.unlink()
         try:
             destination_path.chmod(stat.S_IRUSR | stat.S_IWUSR)
         except OSError:
