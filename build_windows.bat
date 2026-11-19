@@ -85,14 +85,12 @@ REM La base de datos y ASCENSO se inicializan en el primer arranque del usuario.
 REM build:win genera el servidor con PyInstaller, verifica su hash y solo entonces
 REM permite que electron-builder empaquete el ejecutable recien generado.
 
-echo [INFO] Instalando dependencias Node.js...
-if not exist "node_modules" (
-    call npm install
-    if !ERRORLEVEL! NEQ 0 (
-        echo [ERROR] Fallo npm install.
-        pause
-        exit /b 1
-    )
+echo [INFO] Instalando dependencias Node.js desde package-lock.json...
+call npm ci
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Fallo npm ci. Revisa package-lock.json y la conexion a npm.
+    pause
+    exit /b 1
 )
 
 echo [INFO] Generando servidor y empaquetando Electron para Windows...
