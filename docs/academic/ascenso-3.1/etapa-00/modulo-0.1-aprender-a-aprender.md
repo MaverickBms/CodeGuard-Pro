@@ -499,9 +499,9 @@ Los videos complementan la explicación escrita; no sustituyen los ejercicios, l
 | [Cómo Aprender a Programar | Consejos y Recursos — Academia de Hostinger](https://www.youtube.com/watch?v=Zf48b175sKo) | Español | Objetivos, herramientas, práctica y proyectos. | Verlo como orientación inicial y contrastar sus recomendaciones con el orden curricular de ASCENSO. | Enlace y descripción contrastados; material complementario, no fuente normativa. |
 | [Ruta de estudio: Cómo estudiar programación — MoureDev Pro](https://mouredev.pro/roadmap) | Español | Ruta estructurada de estudio; curso para principiantes de 44 lecciones y 2 horas de video indicado en el sitio. | Consultar como recurso opcional para comparar hábitos y planificación; ASCENSO conserva su propio roadmap. | Página oficial consultada; no es un video individual de YouTube. |
 
-### Recursos en inglés y subtítulos
+### Idioma de los recursos
 
-[How to Learn to Code - 8 Hard Truths — Fireship](https://www.youtube.com/watch?v=NtfbWkxJTHw) trata práctica, patrones, dejar de consumir tutoriales pasivamente y autoexplicación. Está en inglés. **No se incorpora como recurso obligatorio** hasta verificar en el propio reproductor que ofrece subtítulos en español (no basta con asumir que los subtítulos automáticos están disponibles o son correctos). Si se incorpora, se indicará cómo activar CC y seleccionar español, y se ofrecerá una alternativa en español.
+Todos los videos recomendados en ASCENSO deben estar hablados en español. No se incluirán videos en inglés como recursos de aprendizaje en los módulos; tampoco se considerará suficiente la posibilidad de traducción automática de subtítulos para cumplir este requisito.
 
 ### Actividad obligatoria después de cualquier video
 
@@ -514,7 +514,7 @@ Los videos complementan la explicación escrita; no sustituyen los ejercicios, l
 ### Política de curación audiovisual
 
 - La selección se hace por correspondencia con objetivos y calidad didáctica, no por popularidad del canal.
-- Se favorecen videos en español, del canal original del autor y con contenido concreto.
+- Todos los videos recomendados deben estar hablados en español, enlazar al canal original y cubrir directamente el objetivo de la lección.
 - Un canal sugerido por el estudiante (MoureDev, midudev, Fireship, Mosh Hamedani, HolaMundo, The Net Ninja, DotCSV, Héctor de León, Ania Kubów, The Cherno, Alex Profe, Daniel Carreon, Julio Profe u otros) pasa a ser candidato de búsqueda, no una recomendación automática.
 - Para cada video se registran: título exacto, creador/canal, URL, idioma hablado, subtítulos disponibles y su tipo (humanos/automáticos/no comprobados), duración cuando esté verificada, nivel, temas, objetivo curricular, fecha de comprobación y alternativa accesible.
 - Se evitan enlaces a recopilaciones no oficiales, reuploads, videos eliminados o piezas que solo repiten contenido sin aportar una explicación distinta.
