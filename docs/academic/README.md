@@ -16,6 +16,9 @@ Las etapas 0–32 cuentan con un documento de desarrollo en esta rama. Todos per
 | Ciberseguridad | 21–31 | Riesgos, laboratorio, OSINT, pentesting autorizado, AppSec, AD, SOC, DFIR, Cloud Security, IA, bajo nivel | Borrador |
 | Consolidación profesional | 32 | Proyecto integral, portafolio y preparación laboral | Borrador |
 
+## Auditoría y estado de integración
+- [Auditoría de continuidad ASCENSO 3.1](AUDITORIA_CONTINUIDAD_ASCENSO_3_1.md)
+
 ## Estándares transversales
 - [Estándar editorial académico](ASCENSO_ESTANDAR_EDITORIAL.md)
 - [Experiencia de aprendizaje multiformato y curación audiovisual](EXPERIENCIA_APRENDIZAJE_MULTIFORMATO.md)
