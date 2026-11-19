@@ -16,7 +16,8 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 | Etapa 3 · Programación desde cero con Java | Borrador didáctico v0.1.0 |
 | Etapa 4 · POO y paradigmas | Borrador didáctico v0.1.0 |
 | Etapa 5 · Git, GitHub, terminal y modularidad | Borrador didáctico v0.1.0 |
-| Etapas 6–32 | Pendiente |
+| Etapa 6 · Estructuras de datos y algoritmos | Borrador didáctico v0.1.0 |
+| Etapas 7–32 | Pendiente |
 
 ## Archivos
 
@@ -35,6 +36,7 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 - [Etapa 3 — Programación desde cero con Java](ascenso-3.1/etapa-03/programacion-desde-cero-java.md)
 - [Etapa 4 — POO y paradigmas](ascenso-3.1/etapa-04/poo-y-paradigmas.md)
 - [Etapa 5 — Git, GitHub, terminal y modularidad](ascenso-3.1/etapa-05/git-github-terminal-modularidad.md)
+- [Etapa 6 — Estructuras de datos y algoritmos](ascenso-3.1/etapa-06/estructuras-de-datos-y-algoritmos.md)
 
 ## Política de publicación
 
