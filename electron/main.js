@@ -14,6 +14,7 @@ const os = require('os');
 const http = require('http');
 const net = require('net');
 const { isTrustedIpcSender } = require('./ipc-security');
+const { getChildStartupFailure } = require('./process-health');
 
 let mainWindow = null;
 let djangoProcess = null;
@@ -76,15 +77,9 @@ function waitForServer(url, child, timeoutMs = 120000) {
   const started = Date.now();
   return new Promise((resolve, reject) => {
     const retry = () => {
-      if (child.spawnError) {
-        reject(new Error(`No se pudo iniciar el servidor local: ${child.spawnError.message}`));
-        return;
-      }
-      if (child.exitCode !== null || child.signalCode !== null) {
-        const reason = child.signalCode
-          ? `señal ${child.signalCode}`
-          : `código ${child.exitCode}`;
-        reject(new Error(`El servidor local terminó antes de estar disponible (${reason}). Revisa los registros de CodeGuard Pro.`));
+      const startupFailure = getChildStartupFailure(child);
+      if (startupFailure) {
+        reject(startupFailure);
         return;
       }
       if (Date.now() - started > timeoutMs) {
