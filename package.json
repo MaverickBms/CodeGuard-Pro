@@ -12,7 +12,8 @@
     "build": "npm run build:server && npm run verify:server && electron-builder",
     "build:win": "npm run build:server && npm run verify:server && electron-builder --win",
     "build:linux": "npm run build:server && npm run verify:server && electron-builder --linux",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "test:electron": "node --test electron/*.test.js"
   },
   "author": "CodeGuard Pro Team",
   "license": "MIT",
@@ -46,12 +47,17 @@
       {
         "from": "dist-server/CodeGuardServer",
         "to": "server",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       },
       {
         "from": "static/icons",
         "to": "icons",
-        "filter": ["icon.png", "icon.ico"]
+        "filter": [
+          "icon.png",
+          "icon.ico"
+        ]
       },
       {
         "from": "README.md",
@@ -73,7 +79,9 @@
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "static/icons/icon.png",
