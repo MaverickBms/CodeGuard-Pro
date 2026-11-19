@@ -659,22 +659,44 @@ class CargaQuizzesTests(TestCase):
         call_command("cargar_quizzes", ruta="apps/roadmaps/data/quizzes_ejemplo.json")
         self.assertEqual(Quiz.objects.count(), 1)
 
-    def test_quiz_de_etapa_bloqueada_no_acepta_respuestas(self):
-        requerida = Etapa.objects.create(
-            roadmap=self.modulo.etapa.roadmap, numero=0, titulo="Prerrequisito"
+
+
+class QuizBlockedSubmissionTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="estudiante-quiz-bloqueado", password="ClaveSegura123!"
+        )
+        self.roadmap = Roadmap.objects.create(nombre="ASCENSO quiz bloqueado", edicion="test")
+        self.prerrequisito = Etapa.objects.create(
+            roadmap=self.roadmap, numero=0, titulo="Prerrequisito"
+        )
+        self.etapa = Etapa.objects.create(
+            roadmap=self.roadmap, numero=1, titulo="Etapa bloqueada"
         )
         Prerrequisito.objects.create(
-            etapa=self.modulo.etapa, etapa_requerida=requerida,
+            etapa=self.etapa, etapa_requerida=self.prerrequisito,
             justificacion="Debe completarse antes.",
         )
+        self.modulo = Modulo.objects.create(
+            etapa=self.etapa, numero="1.1", titulo="Módulo bloqueado"
+        )
+        self.quiz = Quiz.objects.create(
+            nombre="Quiz bloqueado", tipo=Quiz.TIPO_QUIZ,
+            modulo=self.modulo, umbral_aprobacion=70,
+        )
+        self.pregunta = Pregunta.objects.create(
+            quiz=self.quiz, orden=1, formato=Pregunta.FORMATO_RESPUESTA,
+            enunciado="Escribe la respuesta",
+            datos_respuesta={"respuesta_esperada": "variable"},
+        )
 
+    def test_quiz_de_etapa_bloqueada_no_acepta_respuestas(self):
         with self.assertRaisesMessage(ValidationError, "prerrequisitos"):
             evaluar_quiz(
-                self.usuario,
-                self.quiz,
-                {str(self.p1.id): 0, str(self.p2.id): "variable"},
+                self.usuario, self.quiz, {str(self.pregunta.id): "variable"}
             )
-
         self.assertFalse(
-            ResultadoEvaluacion.objects.filter(quiz=self.quiz, usuario=self.usuario).exists()
+            ResultadoEvaluacion.objects.filter(
+                quiz=self.quiz, usuario=self.usuario
+            ).exists()
         )
