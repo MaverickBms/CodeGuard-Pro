@@ -143,6 +143,16 @@
         renderAnalisis(contenedorActual, data);
       }
       return response;
+    }).catch(function () {
+      var contenedorActual = document.getElementById('tutoriaAnalisis-' + ejercicioId);
+      if (contenedorActual) {
+        contenedorActual.hidden = false;
+        renderAnalisis(contenedorActual, {
+          resultado_evaluacion: 'pendiente_revision',
+          analisis_tutor: 'No fue posible conectar con el servicio de tutoría. Tu entrega permanece guardada; puedes volver a consultar el análisis más tarde.',
+        });
+      }
+      return null;
     });
   }
 
