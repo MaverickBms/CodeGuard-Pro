@@ -361,6 +361,7 @@ Se inspeccionó apps/roadmaps/data/ascenso_3_1.json mediante parseo y validacion
 - Los módulos Competencias, Biblioteca, Base de conocimiento, Evaluaciones, Evidencias, Laboratorios, Backups, Vigencia y Ética aparecen deshabilitados en la navegación porque sus vistas integradas no están implementadas. Se mantienen así deliberadamente: habilitarlos ahora llevaría a destinos inexistentes o a controles sin acción.
 - Las herramientas de backup actuales son comandos de gestión; todavía no existe una pantalla integrada de backup/restauración.
 - Los temas y ajustes visuales tienen controladores frontend; su funcionamiento visual final requiere prueba manual en la aplicación empaquetada y distintos tamaños de ventana.
+- En tutoría frontend se detectó que el análisis automático posterior al envío registraba un listener de DOMContentLoaded desde otro listener de ese mismo evento, por lo que podía no ejecutarse. Se cambió a invocación directa después de inicializar la vista. También se añadieron manejadores de fallo de red para que pedir una pista no deje el botón bloqueado y para informar cuando no se pueda recuperar el análisis.
 
 ### Corrección de progresión aplicada
 
