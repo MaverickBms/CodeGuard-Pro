@@ -232,3 +232,15 @@ Consulta realizada después de incorporar la corrección de auditoría:
 - La definición del workflow aparece registrada por GitHub como `.github/workflows/ci.yml` (workflow id `423323839`), por lo que el evento sí generó un registro de ejecución. Eso no explica por qué no se crearon jobs; la configuración de Actions del repositorio o la evaluación previa a los jobs sigue siendo una incógnita y no puede corregirse desde esta sesión con las herramientas disponibles.
 
 **Validación:** se verificó el contenido publicado y los metadatos remotos. No se ejecutaron pruebas Django/Electron ni builds en un runner. No declarar CI aprobado ni beta aceptada. El siguiente paso técnico sigue siendo obtener un entorno reproducible con Python/Node y acceso al checkout, o resolver desde la configuración de GitHub del propietario por qué Actions finaliza sin jobs.
+
+## 16. Verificación adicional de GitHub Actions (run 38)
+
+Se consultó el objeto completo del run `44448412917` y los endpoints de check-runs/status para el commit `f50663c09b800dc7c0f7292fcc3c182fd6f49ead`:
+
+- Evento: `push`; workflow registrado: `.github/workflows/ci.yml`; workflow id `423323839`.
+- Resultado: `completed / failure`, con hora de inicio y finalización idénticas (`2026-11-19T03:01:00Z`).
+- Endpoint de jobs: `total_count=0`, `jobs=[]`.
+- Endpoint de check-runs del commit: `total_count=0`, `check_runs=[]`.
+- Commit status: `pending`, `total_count=0`, sin estados individuales.
+
+Esto confirma que no existe evidencia de que los jobs Django o Electron hayan comenzado. No permite concluir si la causa es configuración/política de Actions, evaluación del workflow u otro fallo previo a la creación de jobs. No cambiar el workflow ni sus protecciones sin identificar primero la causa. Las pruebas y los builds siguen sin ejecutarse desde un entorno reproducible.
