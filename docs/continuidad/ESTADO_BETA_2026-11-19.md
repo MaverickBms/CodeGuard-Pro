@@ -541,3 +541,10 @@ siguen pendientes de una máquina Windows real**.
   recarga; cierre de ventana sin procesos huérfanos.
 - Windows x64: artefacto CI `codeguard-windows-x64` (instalador NSIS +
   portable). Instalación limpia en host Windows sigue pendiente.
+
+### Verificación final de CI
+
+- `workflow_dispatch` sobre `release/1.0.0` (`9e54207`): run **44558560843**,
+  **4/4 jobs en verde**.
+- Artefacto Windows `codeguard-windows-x64`: 274.776.109 bytes
+  (instalador NSIS + portable x64).
