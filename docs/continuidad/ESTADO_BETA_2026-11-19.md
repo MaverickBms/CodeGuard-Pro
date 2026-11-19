@@ -244,3 +244,11 @@ Se consultó el objeto completo del run `44448412917` y los endpoints de check-r
 - Commit status: `pending`, `total_count=0`, sin estados individuales.
 
 Esto confirma que no existe evidencia de que los jobs Django o Electron hayan comenzado. No permite concluir si la causa es configuración/política de Actions, evaluación del workflow u otro fallo previo a la creación de jobs. No cambiar el workflow ni sus protecciones sin identificar primero la causa. Las pruebas y los builds siguen sin ejecutarse desde un entorno reproducible.
+
+## 17. Especificación de backup/restauración publicada
+
+Se añadió `docs/BACKUPS_Y_RESTAURACION.md` como contrato técnico para la futura función. La revisión de `config/settings/base.py` confirma que el perfil incluye `db.sqlite3`, `media/`, `.secret_key` y `logs/`; SQLite usa WAL.
+
+La especificación exige snapshot SQLite mediante API de backup (no copiar la base activa), validación de integridad y hashes, rechazo de ZIP path traversal/symlinks/ZIP bombs, restauración desde staging, rollback ante fallo y tratamiento cifrado de la clave local si se decide incluirla. También define pruebas de concurrencia, corrupción, interrupción, compatibilidad y recuperación.
+
+**Importante:** se publicó únicamente la especificación; no existe todavía código ejecutable de backup/restauración ni UI para ello. No anunciar esta función como disponible. No se ejecutaron pruebas ni builds en este corte.
