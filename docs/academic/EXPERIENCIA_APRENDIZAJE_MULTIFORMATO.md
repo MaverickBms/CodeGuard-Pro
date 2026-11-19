@@ -1,6 +1,6 @@
 # Curación audiovisual y experiencia de aprendizaje ASCENSO 3.1
 
-**Estado:** propuesta editorial/funcional v0.1.0.  
+**Estado:** propuesta editorial/funcional v0.1.1. Los enlaces de la primera curación son candidatos; no están aprobados hasta verificar el audio real.  
 **Fecha:** 2026-11-19.  
 **Alcance inicial:** Etapa 0; ampliable a las etapas 1–32.
 
@@ -18,25 +18,9 @@ Complementar el material escrito con recursos audiovisuales útiles, preferiblem
 6. La calidad didáctica y exactitud prevalecen sobre la fama del canal.
 7. Ver un video no completa una lección ni una etapa.
 
-## Canales candidatos
+## Selección de creadores
 
-Los siguientes nombres proceden de la lista sugerida por el estudiante. Son candidatos para buscar piezas concretas; su inclusión aquí no implica que cada canal tenga un video aprobado para cada etapa.
-
-- MoureDev
-- midudev
-- Fireship
-- Mosh Hamedani
-- HolaMundo
-- The Net Ninja
-- DotCSV
-- Héctor de León
-- Ania Kubów
-- The Cherno
-- Alex Profe
-- Daniel Carreon
-- Julio Profe
-
-Se podrán incorporar otros canales, universidades, instituciones y mantenedores oficiales si la pieza concreta mejora el aprendizaje.
+No se aprueban canales completos ni se presupone que un creador publique siempre en español. Cada video se evalúa individualmente. El nombre del canal, el título, la descripción, las etiquetas y los subtítulos automáticos no demuestran el idioma del audio. Solo se incorpora como recomendado después de escuchar el recurso y comprobar que el audio hablado es español y que enseña directamente el objetivo curricular. Se podrán evaluar creadores, universidades, instituciones y mantenedores oficiales sin preferencia por popularidad.
 
 ## Metadatos mínimos de un recurso
 
@@ -91,9 +75,11 @@ Candidato → comprobación de enlace y metadatos → revisión de pertinencia y
 
 ## Primera curación: Etapa 0 / Módulo 0.1
 
-- [midudev — ¿Cómo me ORGANIZO? Mi SECRETO para ser más PRODUCTIVO y APRENDER más rápido programación](https://www.youtube.com/watch?v=UZarokfByTs) — español; organización, apuntes y tareas. Actividad: diseñar un sistema de notas propio y justificar qué se adapta y qué no.
-- [Academia de Hostinger — Cómo Aprender a Programar | Consejos y Recursos](https://www.youtube.com/watch?v=Zf48b175sKo) — español; objetivos, herramientas y proyectos. Actividad: comparar sus recomendaciones con la secuencia y el foco de ASCENSO.
-- [MoureDev Pro — Ruta de estudio](https://mouredev.pro/roadmap) — recurso web oficial complementario, no video individual de YouTube; el sitio presenta un curso para principiantes titulado «Cómo estudiar programación». Actividad: comparar estrategias de estudio, sin sustituir el roadmap ASCENSO.
+**Estado: candidatos pendientes de comprobación audiovisual. No mostrar como videos recomendados ni usarlos para aprobar la lección hasta escuchar el audio completo o una muestra suficiente y verificar idioma, pertinencia y vigencia.**
+
+- [midudev — ¿Cómo me ORGANIZO? Mi SECRETO para ser más PRODUCTIVO y APRENDER más rápido programación](https://www.youtube.com/watch?v=UZarokfByTs) — candidato por título y descripción; audio hablado pendiente de verificación. Pertinencia prevista: organización, apuntes y tareas. Actividad propuesta: diseñar un sistema de notas propio.
+- [Academia de Hostinger — Cómo Aprender a Programar | Consejos y Recursos](https://www.youtube.com/watch?v=Zf48b175sKo) — candidato por título y descripción; audio hablado pendiente de verificación. Pertinencia prevista: objetivos, herramientas, práctica y proyectos. Actividad propuesta: contrastar sus recomendaciones con ASCENSO.
+- [MoureDev Pro — Ruta de estudio](https://mouredev.pro/roadmap) — recurso web oficial complementario, no video individual de YouTube; verificar la vigencia de la página antes de publicarlo como recurso.
 
 ## Mantenimiento
 
@@ -133,8 +119,8 @@ La traducción automática puede cometer errores; para conceptos técnicos, nomb
 
 ## Regla reforzada de selección audiovisual (obligatoria)
 
-La condición es doble e indivisible:
-1. El audio del video debe estar en español.
+La condición es doble e indivisible y debe comprobarse antes de aprobar:
+1. El audio real del video debe estar hablado en español; no basta título, descripción, etiquetas, subtítulos ni traducción automática.
 2. El contenido debe corresponder directamente al objetivo o subtema de la lección.
 
 Un video en español sobre programación en general no es válido para una lección sobre Stack Overflow, breakpoints o bases de datos si no enseña ese contenido. La popularidad del canal tampoco demuestra pertinencia. Si no se encuentra un video que cumpla ambas condiciones, la lección se publica sin video hasta localizar uno adecuado. Los subtítulos no convierten un video en inglés en un recurso aceptable.
