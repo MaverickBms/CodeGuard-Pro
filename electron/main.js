@@ -16,6 +16,7 @@ const net = require('net');
 const { isTrustedIpcSender } = require('./ipc-security');
 const { getChildStartupFailure } = require('./process-health');
 const { resolveBackupPath } = require('./restore-backup');
+const { FILE_NAME: THEME_FILE, readTheme, writeTheme } = require('./theme-preference');
 
 let mainWindow = null;
 let djangoProcess = null;
@@ -30,6 +31,10 @@ let restoring = false;
 const DJANGO_HOST = '127.0.0.1';
 const SYNC_POLL_INTERVAL_MS = 5 * 60 * 1000;
 const SYNC_INITIAL_DELAY_MS = 30 * 1000;
+const THEME_IDS = [
+  'light', 'dark', 'high-contrast', 'retro-pixel', 'cyberpunk', 'fantasy',
+  'sci-fi', 'warrior', 'mage', 'rogue', 'paladin', 'dark-mage'
+];
 const THEMES = [
   ['light', 'Claro Diurno'],
   ['dark', 'Oscuro Nocturno'],
@@ -56,6 +61,25 @@ function dataDir() {
       : path.join(projectRoot(), 'data'));
   fs.mkdirSync(dir, { recursive: true });
   return dir;
+}
+
+function themePreferencePath() {
+  return path.join(dataDir(), THEME_FILE);
+}
+
+function storedTheme() {
+  return readTheme(themePreferencePath(), THEME_IDS);
+}
+
+function persistTheme(theme) {
+  if (!THEME_IDS.includes(theme)) return false;
+  try {
+    writeTheme(themePreferencePath(), theme, THEME_IDS);
+    return true;
+  } catch (error) {
+    console.error('[Theme] No se pudo guardar la preferencia:', error);
+    return false;
+  }
 }
 
 function iconPath() {
@@ -748,6 +772,8 @@ function buildMenu() {
 }
 
 function sendTheme(theme) {
+  if (!THEME_IDS.includes(theme)) return;
+  persistTheme(theme);
   if (mainWindow) {
     mainWindow.webContents.send('theme-changed', theme);
   }
@@ -803,12 +829,20 @@ function isTrustedIpcEvent(event) {
   return isTrustedIpcSender(event, DJANGO_HOST, djangoPort);
 }
 
-// IPC: el renderer solicita cambiar el tema; el proceso principal lo difunde.
+// IPC: el renderer solicita cambiar el tema; el proceso principal lo persiste
+// en el perfil (fuera del origen HTTP, cuyo puerto cambia en cada arranque) y
+// lo difunde a la ventana.
 ipcMain.on('set-theme', (event, theme) => {
   if (!isTrustedIpcEvent(event)) return;
-  if (THEMES.some(([id]) => id === theme)) {
+  if (THEME_IDS.includes(theme)) {
     sendTheme(theme);
   }
+});
+
+// IPC: recupera el tema persistido del perfil para aplicarlo antes de pintar.
+ipcMain.handle('get-theme', event => {
+  if (!isTrustedIpcEvent(event)) return 'light';
+  return storedTheme();
 });
 
 // IPC: notificaciones nativas del sistema. El icono siempre es local y

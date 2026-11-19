@@ -83,6 +83,26 @@ function cycleTheme() {
 // se ejecuta tras el parseo del HTML y antes del primer paint).
 applyTheme(getCurrentTheme());
 
+// En Electron, el tema de referencia vive en el perfil (ui-preferences.json)
+// porque localStorage está ligado al puerto aleatorio del servidor. La lectura
+// es asíncrona y corrige el tema inicial sin bloquear el render.
+function syncThemeFromDesktop() {
+  if (!window.codeguardAPI || typeof window.codeguardAPI.getTheme !== 'function') {
+    return;
+  }
+  Promise.resolve(window.codeguardAPI.getTheme())
+    .then((theme) => {
+      if (themes.includes(theme) && theme !== getCurrentTheme()) {
+        applyTheme(theme);
+      }
+    })
+    .catch((error) => {
+      console.warn('No se pudo recuperar el tema persistido:', error);
+    });
+}
+
+syncThemeFromDesktop();
+
 document.addEventListener('DOMContentLoaded', () => {
   // El tema ya se aplicó arriba con defer; solo sincronizamos listeners.
   if (window.codeguardAPI && typeof window.codeguardAPI.onThemeChange === 'function') {
