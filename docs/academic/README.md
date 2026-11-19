@@ -18,7 +18,8 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 | Etapa 5 · Git, GitHub, terminal y modularidad | Borrador didáctico v0.1.0 |
 | Etapa 6 · Estructuras de datos y algoritmos | Borrador didáctico v0.1.0 |
 | Etapa 7 · Sistemas operativos: Linux, Windows y administración | Borrador didáctico v0.1.0 |
-| Etapas 8–32 | Pendiente |
+| Etapa 8 · Redes informáticas y protocolos | Borrador didáctico v0.1.0 |
+| Etapas 9–32 | Pendiente |
 
 ## Archivos
 
@@ -48,4 +49,4 @@ Los UUID curriculares deben resolverse contra la base de datos del roadmap; no s
 ## Revisión
 
 Las referencias y fechas de consulta se consignan dentro de cada módulo. Deben revisarse de nuevo antes de una publicación, especialmente si describen herramientas, versiones, APIs o requisitos que puedan cambiar.
-- [Etapa 7 — Sistemas operativos: Linux, Windows y administración](ascenso-3.1/etapa-07/sistemas-operativos-linux-windows-administracion.md)\n
+- [Etapa 7 — Sistemas operativos: Linux, Windows y administración](ascenso-3.1/etapa-07/sistemas-operativos-linux-windows-administracion.md)\n- [Etapa 8 — Redes informáticas y protocolos](ascenso-3.1/etapa-08/redes-informaticas-y-protocolos.md)\n
