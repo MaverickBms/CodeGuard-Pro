@@ -62,3 +62,48 @@ No se debe llamar «oficial» a un artículo académico independiente ni «está
 ## Estado de esta entrega
 
 Esta rama desarrolla únicamente el módulo 0.1 «Aprender a aprender» como piloto editorial. No modifica el JSON curricular, no crea lecciones publicadas en SQLite y no cambia el DOCX maestro. La siguiente integración requiere mapear cada lección a su UUID real de la base de datos y usar el flujo editorial de fuentes, snapshots, revisión y aprobación ya existente en CodeGuard Pro.
+
+
+## Extensión didáctica: aprendizaje multimodal y recursos audiovisuales
+
+Cada módulo podrá combinar, cuando aporte valor:
+- explicación escrita original;
+- video externo curado y enlazado al canal original;
+- demostración o animación propia;
+- ejemplo resuelto;
+- práctica guiada y reto independiente;
+- laboratorio reproducible;
+- quiz de recuperación con retroalimentación razonada;
+- tarjetas de repaso y agenda de repetición espaciada;
+- proyecto integrador y rúbrica;
+- glosario, mapa conceptual y referencias.
+
+### Ficha obligatoria de video
+
+Registrar título, creador/canal, URL canónica, idioma hablado, subtítulos (idioma y si son manuales, automáticos o no verificados), duración solo si se ha comprobado, nivel, conceptos cubiertos, objetivo curricular, actividad posterior, fecha de verificación y estado del enlace. El español es la primera opción. Un video en inglés solo será recomendado como principal si se ha verificado una opción de subtítulos en español o existe una alternativa equivalente en español claramente enlazada.
+
+No atribuir al creador afirmaciones que no realiza. No usar visualizaciones, suscriptores o popularidad como sustitutos de revisión pedagógica. El video es material complementario: nunca basta con verlo para completar una lección o etapa.
+
+### Criterio de accesibilidad y mantenimiento
+
+- Proporcionar una alternativa textual o en español cuando el recurso principal esté en inglés.
+- Indicar cómo activar subtítulos cuando se haya comprobado su disponibilidad.
+- No asumir que los subtítulos automáticos son exactos.
+- Revisar enlaces, idioma y subtítulos antes de cada publicación y durante mantenimiento.
+- Enlazar al original; no descargar, republicar ni incrustar copias no autorizadas.
+
+### Funciones de aprendizaje recomendadas para la experiencia CodeGuard Pro
+
+Estas son especificaciones funcionales propuestas, no afirmaciones de que ya estén implementadas:
+1. **Ruta de la lección:** teoría, ejemplo, video, práctica, evaluación y evidencia en una secuencia visible.
+2. **Panel de video:** reproductor/enlace externo, idioma, subtítulos, duración verificada, objetivo y notas del estudiante.
+3. **Modo activo:** preguntas de predicción antes del video y preguntas de recuperación después; evitar reproducción pasiva como criterio de avance.
+4. **Notas vinculadas:** guardar apuntes y marcas de tiempo asociadas a la lección, sin copiar transcripciones protegidas.
+5. **Repaso espaciado:** programar revisiones configurables según desempeño; permitir ajustar y pausar la agenda.
+6. **Quizzes con explicación:** explicar por qué una respuesta es correcta o incorrecta, registrar intentos y permitir reintentos.
+7. **Laboratorios y entregables:** checklist, instrucciones, entorno, resultados esperados y evidencia entregada.
+8. **Progreso por competencias:** mostrar objetivos demostrados, pendientes y evidencias; no confundir porcentaje de videos vistos con dominio.
+9. **Biblioteca de recursos:** filtrar por etapa, módulo, idioma, nivel, tipo de recurso y estado de vigencia.
+10. **Calidad y caducidad:** registrar quién verificó el enlace y cuándo; detectar recursos rotos o desactualizados mediante revisión editorial.
+
+La implementación debe integrarse con los modelos y servicios existentes de CodeGuard Pro tras inspeccionar su arquitectura real. No crear tablas, APIs, estados ni migraciones por suposición.
