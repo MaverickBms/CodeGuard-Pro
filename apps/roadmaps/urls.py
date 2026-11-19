@@ -8,6 +8,8 @@ app_name = "roadmaps"
 
 urlpatterns = [
     path("", views.lista, name="lista"),
+    path("evaluaciones/", views.evaluaciones, name="evaluaciones"),
+    path("evidencias/", views.evidencias, name="evidencias"),
     path("etapa/<int:numero>/", views.detalle, name="detalle"),
     path("leccion/<int:leccion_id>/", views.leccion_detalle, name="leccion_detalle"),
     path("ejercicio/<int:ejercicio_id>/intento/", views.enviar_intento_view, name="enviar_intento"),
