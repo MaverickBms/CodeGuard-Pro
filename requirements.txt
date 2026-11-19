@@ -5,11 +5,11 @@
 # Backend Django (obligatorio)
 Django==5.2.19
 argon2-cffi==25.1.0
-cryptography==46.0.3  # Verificación Ed25519 de manifiestos de conocimiento
+cryptography==50.0.2  # Verificación Ed25519 de manifiestos de conocimiento
 whitenoise==6.9.0
 
 # Servidor local WSGI para la aplicación de escritorio (Electron + Django)
-waitress==3.0.0
+waitress==3.0.2
 
 # Procesamiento PDF: añadir una biblioteca cuando exista un módulo activo
 # y se haya aprobado su licencia y tamaño para la distribución de escritorio.

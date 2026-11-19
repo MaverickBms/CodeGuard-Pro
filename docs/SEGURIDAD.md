@@ -1,9 +1,9 @@
 # CodeGuard Pro — Seguridad
 
 **Producto:** CodeGuard Pro  
-**Versión:** 2.0 (Incremento 1 + Fase 2 parcialmente implementada)  
+**Versión:** 1.0.0 release candidate (19-11-2026)  
 **SRS de referencia:** `IEEE830(1).md` v2.0 — Sección 3.5 (RS-001 a RS-020)  
-**Rama de trabajo:** `docs/phase-2-hybrid-knowledge-sync`
+**Rama de trabajo:** `release/1.0.0`
 
 ---
 
@@ -29,8 +29,8 @@ validada criptográficamente.
 | RS-004 | Bind 127.0.0.1 | Servidor WSGI local (Waitress) en `127.0.0.1:<puerto>`; `ALLOWED_HOSTS` solo localhost | ✅ |
 | RS-005 | Validación de archivos | Pendiente (incremento de evidencias) | ⏳ |
 | RS-006 | Archivos fuera de web root | Pendiente (incremento de evidencias) | ⏳ |
-| RS-007 | Backup íntegro (hash + validación) | Pendiente (incremento de backups) | ⏳ |
-| RS-008 | Cifrado de backup | Propuesto, no aprobado | ⏳ |
+| RS-007 | Backup íntegro (hash + validación) | `apps/core/backup.py` crea snapshot SQLite verificado; `apps/core/restore.py` restaura con staging, validación de esquema, rollback y copia de reversión. Interfaz `/backups/` y menú Electron. | ✅ Linux; Windows pendiente de aceptación |
+| RS-008 | Cifrado de backup | Propuesto, no aprobado; el backup actual no incluye `.secret_key` ni logs. | ⏳ |
 | RS-009 | Timeout de sesión probado | Middleware `SesionInactividadMiddleware` (15 min defecto). La comprobación de expiración se realiza antes de ejecutar la vista. | ✅ |
 | RS-010 | CSRF | `CsrfViewMiddleware` + token en forms | ✅ |
 | RS-011 | XSS | Escape de salida en plantillas + CSP estricta | ✅ |
@@ -41,9 +41,9 @@ validada criptográficamente.
 | RS-016 | Política de contraseñas | Mínimo 8 caracteres en `SetupInicialForm` | ✅ |
 | RS-017 | Bloqueo N intentos | 5 intentos fallidos consecutivos bloquean la cuenta 15 min (`intentos_fallidos`, `bloqueado_hasta` en `Usuario`). Reinicio tras login exitoso. Registro en auditoría (`acceso_denegado`). Mensajes genéricos sin revelar existencia de usuario. | ✅ |
 | RS-018 | Minimización de datos | Solo campos necesarios; sin telemetría | ✅ |
-| RS-019 | Dependencias actualizadas | `requirements.txt` con versiones exactas (Django 5.2.19, cryptography 46.0.3, etc.) | ✅ |
+| RS-019 | Dependencias actualizadas | `requirements.txt` con versiones exactas (Django 5.2.19, cryptography 50.0.2, waitress 3.0.2). `pip-audit` sin avisos. `npm audit` conserva 6 avisos moderados de herramientas de build (electron-builder/minimatch), no incluidos en el runtime. | ✅ |
 | RS-020 | Errores no expuestos | `DEBUG=False` por defecto; mensajes genéricos | ✅ |
-| RS-021 | Firmas digitales Ed25519 | `cryptography==46.0.3` para verificación de manifiestos de conocimiento | ✅ (rama de trabajo) |
+| RS-021 | Firmas digitales Ed25519 | `cryptography==50.0.2` para verificación de manifiestos de conocimiento | ✅ |
 | RS-022 | Validación de paquetes ZIP | `validate_package_archive()`: límites de tamaño, traversal, symlinks, hashes | ✅ (rama de trabajo) |
 
 ---
@@ -51,7 +51,7 @@ validada criptográficamente.
 ## 3. Middlewares de seguridad
 
 - **`SesionInactividadMiddleware`**: expira la sesión tras `sesion_timeout_minutos` de inactividad (RF-002, RS-009). La comprobación se realiza antes de delegar en la vista (`get_response`) para garantizar que una sesión vencida nunca ejecute operaciones protegidas. Los recursos locales (estáticos y medios) no renuevan la sesión. Registra evento `logout_inactividad` en auditoría.
-- **`CabecerasSeguridadMiddleware`**: añade a cada respuesta `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy` restrictiva y una CSP estricta (solo recursos propios, sin CDN; scripts locales sin `unsafe-inline`, estilos con `unsafe-inline` por uso de estilos inline).
+- **`CabecerasSeguridadMiddleware`**: añade a cada respuesta `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy` restrictiva y una CSP estricta (solo recursos propios, sin CDN; scripts locales sin `unsafe-inline`, estilos con `unsafe-inline` por uso de estilos inline; `object-src`/`frame-src` cerrados y `form-action 'self'`).
 - **`AccesoLocalMiddleware`**: resuelve el propietario local en modo sin autenticación (`request.usuario_local`).
 - **Redirección de configuración inicial**: implementada en la vista `apps.accounts.setup_inicial`; si no existe usuario, redirige a `/accounts/setup/` (cuando auth está activada).
 

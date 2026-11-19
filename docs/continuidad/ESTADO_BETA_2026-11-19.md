@@ -450,9 +450,9 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
 ### Artefactos y E2E
 
 - Servidor PyInstaller reconstruido con SHA-256
-  `7320d684679aa9a1e3e613e8c7bc99759863a8329d356bc455e1f7277a8f78c4`.
+  `a2d0daf32ae0211db00fb02b7d8925e01d52b5ea9488d6e501b4572776f7568d`.
 - AppImage Linux reconstruido (`CodeGuard-Pro-1.0.0-x86_64.AppImage`,
-  SHA-256 `cbe10c8601eb69d8b245cc7c851b41eb941e78699b5f6099934c909d7c968786`).
+  SHA-256 `5af43286c2e5acab95c34d8f7ac6c176284c2392f57d74904ec744b31d424636`).
 - E2E ejecutado sobre el AppImage con perfil temporal:
   - `/healthz/` → `{"status":"ok","database":"ok","migrations":"ok","roadmap":"ok"}`.
   - `/`, `/roadmaps/`, `/roadmaps/evaluaciones/`, `/roadmaps/evidencias/` y
@@ -463,7 +463,7 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
 
 ### Commits de la rama
 
-`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`, `880fbff`.
+`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`, `880fbff`, `02f9583`, `fb32d3f`, `48afb1e`.
 
 ### Pendientes y bloqueos
 
@@ -479,3 +479,17 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
 - **Contenido académico:** el JSON conserva 33/212/1946 y los defectos
   editoriales conocidos (etapa 25 sin objetivo; etapa 10 con proyecto
   anormalmente extenso). No se modificó contenido sin la fuente maestra.
+
+
+### Dependencias y CI (actualización final)
+
+- `pip-audit -r requirements.txt`: **sin vulnerabilidades conocidas** tras subir
+  `cryptography` 46.0.3 → 50.0.2 y `waitress` 3.0.0 → 3.0.2.
+- `npm audit`: 6 avisos moderados en la cadena de build de `electron-builder`
+  (`minimatch`/`@electron/universal`), no incluidos en el runtime empaquetado.
+  No se fuerza una actualización rota; se documenta como riesgo de herramienta
+  de compilación.
+- CI incorpora un job `packaging` que compila el servidor PyInstaller y ejecuta
+  un smoke test de primer arranque, health check y modo de sincronización.
+- La suite Django (291) y las pruebas Electron (15) se repitieron tras la
+  actualización de dependencias y el rebuild de artefactos.

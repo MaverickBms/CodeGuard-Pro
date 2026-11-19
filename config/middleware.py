@@ -1,7 +1,8 @@
 """Middlewares de seguridad, sesión y acceso local para CodeGuard Pro.
 
 - Cabeceras de seguridad: CSP, X-Frame-Options, X-Content-Type-Options, etc. (RS-013).
-- Restricción de host: solo localhost/127.0.0.1 en ejecución normal.
+- Restricción de host: ALLOWED_HOSTS limita el encabezado Host y el servidor
+  empaquetado se enlaza exclusivamente a 127.0.0.1.
 - Cierre de sesión por inactividad (RF-002 / CG-005).
 - Identidad local (AccesoLocalMiddleware): resuelve el propietario local existente
   cuando la autenticación está desactivada (AUTH_DISABLED=True), sin crear sesiones
