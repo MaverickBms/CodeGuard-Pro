@@ -183,3 +183,16 @@ La revisión del empaquetado detectó que `README_WINDOWS.md` y `build_windows.b
 Se consultó directamente la colección de ejecuciones del repositorio, además del wrapper de runs de PR. Para el HEAD `252168148609e7ff8f041df41741e1a036abd9a4`, GitHub registra el run `44446813398` como `completed / failure`, evento `push`, pero la consulta directa de `/actions/runs/44446813398/jobs` devuelve `total_count=0` y `jobs=[]`. El run fue creado y actualizado en el mismo segundo, sin inicio visible de jobs. Se repitió la consulta para `44446640625` y `44445950472`, con el mismo resultado. No hay evidencia que permita atribuir el fallo a código, instalación de dependencias o tests; no cambiar tests ni desactivar protecciones para ocultar esta anomalía.
 
 La última actualización documental generó el run `44446871347` para el commit `4e784bbf59cc6a9c461470cf2ae2eafd40a87621`; volvió a terminar en `failure` con `jobs=[]` y `total_count=0`. La causa sigue sin estar expuesta por la API consultada.
+
+
+## 12. Reconciliación con hallazgos QA históricos (19-11-2026)
+
+Se contrastaron los hallazgos QA-04, QA-12 y QA-13 del informe histórico en la rama `documentation` contra el código actual de esta rama:
+
+- **QA-04 — health check:** el código actual incluye `/healthz/` en `config/health.py`, que devuelve 200 solo cuando la base responde, no hay migraciones pendientes y existe un roadmap activo. Electron exige HTTP 200 y los cuatro estados `ok` antes de cargar la interfaz. Hallazgo corregido en código; aceptación empaquetada sigue pendiente.
+- **QA-12 — concurrencia del límite de pistas:** `apps/tutoring/services.py` reserva el contador mediante `QuerySet.update(pistas_utilizadas=F(...)+1)` condicionado a `pistas_utilizadas__lt=3`, dentro de transacción; `PistaTutoria` tiene restricción única por sesión/número. El límite no depende de un contador leído previamente. La prueba de concurrencia real no se ha ejecutado en esta sesión.
+- **QA-13 — privacidad de Ollama:** `_url_ollama_local()` limita el destino a HTTP con hostname `localhost`, `127.0.0.1` o `::1`, sin credenciales, rutas adicionales, query ni fragmento. `_NoRedirectHandler` impide seguir redirecciones. `apps/tutoring/tests/test_tutoria.py` incluye pruebas para hosts remotos, rutas/credenciales y redirecciones. El código de protección y las pruebas están presentes; no se han ejecutado localmente en este entorno.
+
+Estos tres hallazgos no deben seguir describiéndose como defectos abiertos de código; su aceptación runtime/automatizada sigue condicionada a ejecutar las pruebas. El QA-14 (modo sin autenticación) continúa siendo una decisión consciente de producto para equipo personal monousuario y no se modifica sin autorización.
+
+**Pendientes de beta priorizados tras esta reconciliación:** reproducir la suite, instalar/probar AppImage y paquetes Windows en equipos limpios, validar GUI + offline + persistencia + cierre, e implementar/aceptar backup y restauración. El tutor IA local permanece opcional y no debe bloquear el núcleo educativo.
