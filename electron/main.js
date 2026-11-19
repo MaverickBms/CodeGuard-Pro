@@ -13,6 +13,7 @@ const fs = require('fs');
 const os = require('os');
 const http = require('http');
 const net = require('net');
+const { isTrustedIpcSender } = require('./ipc-security');
 
 let mainWindow = null;
 let djangoProcess = null;
@@ -634,20 +635,36 @@ function showVersion() {
   });
 }
 
+// Los canales IPC solo aceptan mensajes del documento local servido por Django.
+function isTrustedIpcEvent(event) {
+  return isTrustedIpcSender(event, DJANGO_HOST, djangoPort);
+}
+
 // IPC: el renderer solicita cambiar el tema; el proceso principal lo difunde.
-ipcMain.on('set-theme', (_event, theme) => {
+ipcMain.on('set-theme', (event, theme) => {
+  if (!isTrustedIpcEvent(event)) return;
   if (THEMES.some(([id]) => id === theme)) {
     sendTheme(theme);
   }
 });
 
-// IPC: notificaciones nativas del sistema.
-ipcMain.on('show-notification', (_event, options = {}) => {
-  if (!Notification.isSupported()) return;
+// IPC: notificaciones nativas del sistema. El icono siempre es local y
+// los textos tienen límites para evitar abuso del canal privilegiado.
+ipcMain.on('show-notification', (event, options = {}) => {
+  if (!isTrustedIpcEvent(event) || !Notification.isSupported()) return;
+  if (!options || typeof options !== 'object' || Array.isArray(options)) return;
+
+  const title = typeof options.title === 'string'
+    ? options.title.slice(0, 120)
+    : 'CodeGuard Pro';
+  const body = typeof options.body === 'string'
+    ? options.body.slice(0, 1000)
+    : '';
+
   const notification = new Notification({
-    title: options.title || 'CodeGuard Pro',
-    body: options.body || '',
-    icon: options.icon || iconPath()
+    title: title || 'CodeGuard Pro',
+    body,
+    icon: iconPath()
   });
   notification.show();
 });
@@ -671,16 +688,24 @@ ipcMain.handle('check-knowledge-updates', event => {
 });
 
 // IPC: información del sistema (sin datos sensibles).
-ipcMain.handle('get-system-info', async () => ({
-  platform: os.platform(),
-  arch: os.arch(),
-  totalmem: os.totalmem(),
-  freemem: os.freemem(),
-  hostname: os.hostname()
-}));
+ipcMain.handle('get-system-info', async event => {
+  if (!isTrustedIpcEvent(event)) {
+    throw new Error('Origen IPC no autorizado.');
+  }
+  return {
+    platform: os.platform(),
+    arch: os.arch(),
+    totalmem: os.totalmem(),
+    freemem: os.freemem(),
+    hostname: os.hostname()
+  };
+});
 
 // IPC: seleccionar carpeta para backup/restauración.
-ipcMain.handle('select-folder', async () => {
+ipcMain.handle('select-folder', async event => {
+  if (!isTrustedIpcEvent(event)) {
+    throw new Error('Origen IPC no autorizado.');
+  }
   return dialog.showOpenDialog(mainWindow, {
     properties: ['openDirectory', 'createDirectory']
   });
