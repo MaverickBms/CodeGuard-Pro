@@ -318,3 +318,10 @@ Para evitar bloquear el cierre por trabajo no esencial:
 ### Estado Git de este corte
 
 Rama de trabajo: fix/electron-ipc-origin-validation. HEAD verificado: 9df010784630742d96b9fd33ad829173e68f7b8c. PR #12 sigue abierto y en borrador; comparación con main: 70 commits por delante y 0 por detrás. No se fusiona ni se modifica main.
+
+
+## 22. Diagnóstico temprano del servidor Electron (19-11-2026)
+
+`electron/main.js` ahora entrega el proceso hijo a `waitForServer`. Durante el sondeo de `/healthz/`, el arranque se interrumpe inmediatamente si el proceso emite un error de spawn o termina antes de estar listo; ya no espera innecesariamente el timeout completo de 120 segundos en ese escenario. El error incluye código de salida o señal y orienta a revisar los logs.
+
+**Validación pendiente:** el cambio está publicado, pero no se ejecutaron `node --check`, pruebas Electron ni una aplicación empaquetada en este entorno. La consulta de ejecuciones para este commit no devolvió runs; no se interpreta como CI aprobado.
