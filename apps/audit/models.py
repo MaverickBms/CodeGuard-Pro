@@ -20,6 +20,7 @@ class AuditLog(models.Model):
         ("cambio_contraseña", "Cambio de contraseña"),
         ("uso_frase_rescate", "Uso de frase de rescate"),
         ("acceso_denegado", "Acceso denegado a vista protegida"),
+        ("acceso_panel", "Acceso al panel principal"),
         ("backup_creado", "Backup creado"),
         ("backup_restaurado", "Backup restaurado"),
         ("error_importacion", "Error de importación de documento"),
