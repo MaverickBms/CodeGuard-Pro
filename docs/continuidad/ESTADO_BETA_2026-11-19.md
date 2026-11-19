@@ -463,16 +463,17 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
 
 ### Commits de la rama
 
-`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`, `880fbff`, `02f9583`, `fb32d3f`, `48afb1e`.
+`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`, `880fbff`, `02f9583`, `fb32d3f`, `48afb1e`, `ad99b7e`, `70ae225`.
 
 ### Pendientes y bloqueos
 
 - **Windows:** build, instalación y aceptación E2E no ejecutados en este equipo
   Linux. No declarar aceptación Windows.
-- **GitHub Actions:** el entorno no resuelve `github.com` (fallo DNS) y `gh` no
-  tiene sesión. No se pueden publicar commits, abrir PR ni diagnosticar los
-  runs con `jobs=[]`. La configuración de Actions requiere intervención del
-  propietario.
+- **GitHub Actions:** resuelto. El fallo con `jobs=[]` se debía a que el
+  workflow usaba `${{ runner.temp }}` en `jobs.<id>.env`, un contexto inválido
+  que GitHub rechazaba antes de crear jobs. Se sustituyó por rutas `/tmp/...`
+  válidas. Los runs `44552242626` (push) y `44552252703` (PR) terminan con los
+  tres jobs en verde.
 - **macOS/ARM64:** fuera de alcance de 1.0.0.
 - **Sincronización remota de producción:** sin endpoint, allowlist ni claves;
   el cliente falla cerrado.
@@ -493,3 +494,21 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
   un smoke test de primer arranque, health check y modo de sincronización.
 - La suite Django (291) y las pruebas Electron (15) se repitieron tras la
   actualización de dependencias y el rebuild de artefactos.
+
+
+## 27. Publicación y CI verde (19-11-2026)
+
+- Rama `release/1.0.0` publicada en `origin`.
+- Pull request **#13** abierto en borrador contra `main`:
+  https://github.com/MaverickBms/CodeGuard-Pro/pull/13
+- Rama `documentation` publicada de nuevo, sincronizada con el código del RC.
+- Diagnóstico de Actions: el workflow era inválido por `runner.temp` en el
+  `env` del job. GitHub creaba un run `failure` sin jobs. Corregido en
+  `ad99b7e`; tras `70ae225` (paquetes regulares para Python 3.12), los tres
+  jobs pasan:
+  - Django checks and test suite.
+  - Electron IPC unit tests.
+  - PyInstaller server build and smoke test.
+- Evidencia: runs `44552242626` (push) y `44552252703` (pull_request), ambos
+  `completed / success`.
+- **No se fusiona el PR ni se crea release/tag** sin autorización expresa.
