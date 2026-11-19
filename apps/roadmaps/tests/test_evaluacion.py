@@ -741,3 +741,15 @@ class BlockedStageCriterionTests(TestCase):
                 usuario=self.usuario, criterio=self.criterio
             ).exists()
         )
+
+
+    def test_criterio_no_se_marca_sin_evidencia(self):
+        with self.assertRaisesMessage(ValidationError, "Describe la evidencia"):
+            registrar_cumplimiento_criterio(
+                self.usuario, self.criterio, evidencia="  ", origen="proyecto"
+            )
+        self.assertFalse(
+            CumplimientoCriterio.objects.filter(
+                usuario=self.usuario, criterio=self.criterio
+            ).exists()
+        )
