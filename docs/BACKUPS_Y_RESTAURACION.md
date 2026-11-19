@@ -8,7 +8,14 @@
 
 El módulo interno `apps/core/backup.py` proporciona `create_backup()` e `inspect_backup()`. Crea un snapshot SQLite mediante la API de backup, incluye `media/`, genera manifiesto SHA-256, verifica CRC e integridad SQLite y publica el ZIP sin sobrescribir un destino existente. Rechaza rutas inseguras, enlaces simbólicos, duplicados y tamaños fuera de los límites configurados. No incluye `.secret_key` ni logs.
 
-Hay pruebas automatizadas en `apps/core/tests/test_backups.py`, pero deben ejecutarse en CI antes de considerar validada esta implementación. Todavía no existe restauración, cifrado de secretos, interfaz de usuario, progreso/cancelación ni prueba empaquetada. Por tanto, el servicio no debe presentarse como una función disponible para usuarios finales.
+Los comandos de administración `crear_backup --output RUTA.zip` y `verificar_backup RUTA.zip` permiten crear y validar el archivo desde un entorno Django. La ruta de destino debe estar fuera del perfil de datos y no puede existir previamente. Ejemplo desde la raíz del proyecto:
+
+```bash
+python manage.py crear_backup --output "$HOME/CodeGuard-backup.zip"
+python manage.py verificar_backup "$HOME/CodeGuard-backup.zip"
+```
+
+Hay pruebas automatizadas en `apps/core/tests/test_backups.py` y `apps/core/tests/test_backup_commands.py`, pero deben ejecutarse en CI antes de considerar validada esta implementación. Todavía no existe restauración, cifrado de secretos, interfaz de usuario, progreso/cancelación ni prueba empaquetada. Por tanto, el servicio no debe presentarse como una función disponible para usuarios finales.
 
 ## 1. Alcance de los datos
 
