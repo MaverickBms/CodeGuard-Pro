@@ -124,10 +124,10 @@ No uses datos reales ni ejecutes código de terceros.
 | Hipótesis y pruebas | 20 |
 | Corrección y regresión | 20 |
 
-## Video complementario — investigar bugs
+## Video candidato — investigar bugs (audio pendiente de verificación)
 
 **[Tips para enfrentar BUGS y BLOQUEOS como programador — Programación en español](https://www.youtube.com/watch?v=21_f6fglZ_A)**  
-Idioma: español. Relación directa: trata contexto del problema, búsqueda de soluciones, Stack Overflow, GitHub Issues, trazabilidad y aproximaciones para resolver bloqueos.  
+Idioma hablado: pendiente de verificación mediante escucha. Pertinencia prevista: trata contexto del problema, búsqueda de soluciones, Stack Overflow, GitHub Issues, trazabilidad y aproximaciones para resolver bloqueos. No aprobar ni recomendar hasta confirmar audio real en español y correspondencia con el contenido.  
 Actividad: aplicar el enfoque de investigación a uno de los defectos del laboratorio. El video complementa la investigación, pero no sustituye la práctica específica con breakpoints, stack traces y logs.
 
 No se agregan videos genéricos de programación ni recursos en inglés. Si no se encuentra una pieza en español directamente alineada con un subtema, se mantiene la explicación y el laboratorio sin forzar un enlace.
