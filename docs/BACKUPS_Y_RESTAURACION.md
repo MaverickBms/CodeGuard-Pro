@@ -1,84 +1,112 @@
-# CodeGuard Pro — Backups y restauración
+# Copias de seguridad y restauración — CodeGuard Pro
 
-**Producto:** CodeGuard Pro  
-**Versión:** 1.0  
-**SRS de referencia:** `IEEE830(1).md` v2.0 — RF-100 a RF-109, RS-007, RS-008  
-**Estado:** Diseño documentado; implementación pendiente (incremento 6)
+> **Estado: creación y verificación del archivo implementadas como servicio interno; restauración e interfaz todavía no implementadas ni disponibles.**
+>
+> Este documento fija el contrato mínimo para implementar backup/restore sin poner en riesgo el perfil local. No debe interpretarse como una guía de comandos ejecutables.
 
----
+## Estado real de implementación
 
-## 1. Formato de backup
+El módulo interno `apps/core/backup.py` proporciona `create_backup()` e `inspect_backup()`. Crea un snapshot SQLite mediante la API de backup, incluye `media/`, genera manifiesto SHA-256, verifica CRC e integridad SQLite y publica el ZIP sin sobrescribir un destino existente. Rechaza rutas inseguras, enlaces simbólicos, duplicados y tamaños fuera de los límites configurados. No incluye `.secret_key` ni logs.
 
-El formato previsto es **tar.gz** que empaqueta:
-- Base de datos SQLite (`data/db.sqlite3`; la tabla del usuario único local es
-  `accounts_usuario` tras el modelo custom `AUTH_USER_MODEL = "accounts.Usuario"`).
-- Archivos de usuario (`media/`).
-- Archivo de metadatos del backup (fecha, versión, hash SHA-256).
+Los comandos de administración `crear_backup --output RUTA.zip` y `verificar_backup RUTA.zip` permiten crear y validar el archivo desde un entorno Django. La ruta de destino debe estar fuera del perfil de datos y no puede existir previamente. Ejemplo desde la raíz del proyecto:
 
----
+```bash
+python manage.py crear_backup --output "$HOME/CodeGuard-backup.zip"
+python manage.py verificar_backup "$HOME/CodeGuard-backup.zip"
+```
 
-## 2. Creación de backup (manual, RF-100)
+Hay pruebas automatizadas en `apps/core/tests/test_backups.py` y `apps/core/tests/test_backup_commands.py`, pero deben ejecutarse en CI antes de considerar validada esta implementación. Todavía no existe restauración, cifrado de secretos, interfaz de usuario, progreso/cancelación ni prueba empaquetada. Por tanto, el servicio no debe presentarse como una función disponible para usuarios finales.
 
-1. Usuario solicita "Crear backup" desde la administración.
-2. El sistema empaqueta SQLite + archivos en un `tar.gz`.
-3. Se calcula el hash SHA-256 del paquete.
-4. Se guarda en la ruta especificada por el usuario.
-5. Se registra la operación en auditoría (`backup_creado`).
+## 1. Alcance de los datos
 
----
+El perfil escribible se determina exclusivamente por `CODEGUARD_DATA_DIR` (en escritorio, Electron lo establece en su carpeta `userData`). La configuración actual define:
 
-## 3. Validación de integridad (RF-102)
+- Base de datos: `db.sqlite3`.
+- Archivos del usuario: `media/`.
+- Clave local Django: `.secret_key`.
+- Registros: `logs/`.
 
-- Hash SHA-256 pre y post creación.
-- Validación de contenido del archivo tar.gz antes de considerar el backup válido.
+Una copia de seguridad debe preservar como mínimo la base de datos y `media/`. La clave `.secret_key` no puede copiarse en claro: si se decide conservarla para mantener continuidad criptográfica, debe ir cifrada dentro del archivo con una clave derivada de una frase de paso que nunca se almacene junto al backup. Los logs no se incluyen por defecto porque pueden contener rutas y datos operativos. Los archivos temporales SQLite `-wal` y `-shm` no se copian directamente.
 
----
+## 2. Formato propuesto
 
-## 4. Restauración segura (RF-103, RF-104)
+Archivo ZIP versionado, con estructura lógica:
 
-La restauración **debe validar el contenido antes de extraerlo** y no sobrescribir los datos
-actuales hasta haber validado la copia y preparado una estrategia de recuperación.
+- `manifest.json`: formato, versión de CodeGuard, versión del esquema, fecha UTC, lista de archivos, tamaños y SHA-256.
+- `database.sqlite3`: snapshot consistente de la base.
+- `media/**`: árbol de archivos multimedia, conservando rutas relativas.
+- `secrets/secret-key.enc`: opcional y cifrado con AES-256-GCM; clave derivada mediante Scrypt. La frase de paso no se escribe en el archivo, base de datos ni logs.
 
-Protecciones implementadas/planificadas:
-- **Rutas de archivo maliciosas:** rechazar rutas absolutas o con `..` dentro del tar.
-- **Path traversal:** validar que todas las rutas del tar estén dentro del directorio destino.
-- **Archivos inesperados:** permitir solo tipos esperados (SQLite, archivos de media, metadatos).
-- **Archivos excesivamente grandes:** limitar tamaño del tar y de cada archivo interno.
-- **Archivos corruptos:** detectar tar.gz dañado y abortar.
-- **Restauraciones incompletas:** verificar checksum de todos los miembros del tar.
+El manifest no debe incluir credenciales, tokens, variables de entorno ni rutas absolutas del equipo. El ZIP debe ser determinista en sus rutas y rechazar nombres absolutos, segmentos `..`, enlaces simbólicos, entradas duplicadas y tamaños descomprimidos excesivos.
 
-Estrategia de recuperación:
-1. Antes de restaurar, hacer un backup de seguridad del estado actual.
-2. Validar el backup a restaurar (hash, contenido, tamaño).
-3. Extraer en ubicación temporal.
-4. Si todo es válido, reemplazar los datos actuales.
-5. Si falla en cualquier paso, restaurar desde el backup de seguridad y abortar.
+## 3. Creación segura
 
----
+1. Verificar que la aplicación se ejecuta sobre un perfil local escribible y que el destino de backup no está dentro del propio `CODEGUARD_DATA_DIR`.
+2. Obtener snapshot de SQLite mediante la API de backup de SQLite (conexión origen y destino independientes), no copiando `db.sqlite3` mientras está abierto en modo WAL.
+3. Comprobar `PRAGMA integrity_check` sobre el snapshot; exigir resultado `ok`.
+4. Copiar `media/` a un área temporal, sin seguir enlaces simbólicos ni salir de la raíz.
+5. Calcular SHA-256 y tamaño de cada archivo; escribir el manifest.
+6. Crear primero un archivo temporal en el directorio destino, cerrar el ZIP, reabrirlo y verificar CRC, manifest y hashes.
+7. Publicar el archivo final mediante rename atómico en el mismo volumen. Si algo falla, eliminar solo temporales creados por la operación y conservar backups anteriores.
+8. Registrar `backup_creado` sin incluir la frase de paso, claves ni contenido sensible.
 
-## 5. Cifrado de backup (RF-105 / RS-008 — PROPUESTO)
+La operación no debe bloquear indefinidamente la UI; el estado y los errores deben ser comunicados al usuario. No borrar backups antiguos automáticamente en la primera versión.
 
-El cifrado de backup está **propuesto, no aprobado** como requisito funcional.
+## 4. Restauración segura
 
-**Recomendación:** ofrecer cifrado para backups que se trasladen a otro dispositivo, ya que
-LUKS solo protege el disco en reposo (dispositivo apagado) y no protege backups copiados fuera
-del equipo.
+La restauración requiere confirmación explícita del usuario y la aplicación completamente cerrada (incluido el servidor Django). El proceso debe:
 
-**Riesgos:**
-- Pérdida de la contraseña de cifrado = pérdida irreversible del backup.
-- Complejidad adicional en el flujo de restauración.
-- No es requisito del MVP; se deja para una fase posterior si el propietario lo aprueba.
+1. Abrir el ZIP sin extraerlo directamente al perfil.
+2. Validar versión de formato, estructura, rutas, límites de tamaño, entradas duplicadas y hashes.
+3. Verificar la base restaurada con `PRAGMA integrity_check`.
+4. Comprobar compatibilidad del esquema. No ejecutar migraciones destructivas ni downgrade automático.
+5. Extraer base y multimedia a un directorio temporal nuevo, dentro del mismo volumen del perfil.
+6. Si existe clave cifrada, solicitar frase de paso y verificar AES-GCM antes de modificar el perfil. Una clave incorrecta debe abortar sin cambios.
+7. Crear una copia de reversión del perfil actual o renombrar el perfil actual a una ubicación de recuperación.
+8. Sustituir el conjunto de datos mediante renombres atómicos controlados. Si falla cualquier paso, restaurar el perfil previo.
+9. Arrancar Django y comprobar migraciones/health check antes de marcar la restauración como aceptada.
+10. Registrar `backup_restaurado` solo tras el éxito, sin registrar secretos ni rutas sensibles.
 
----
+No se permite mezclar la base restaurada con el directorio `media/` actual: ambos pertenecen al mismo snapshot lógico.
 
-## 6. Registro de operaciones (RF-108)
+## 5. Compatibilidad y protección
 
-Todas las operaciones de backup y restauración se registran en `AuditLog` con evento
-`backup_creado` / `backup_restaurado`, usuario, IP y fecha.
+- Rechazar versiones de formato futuras o no soportadas.
+- Para esquemas anteriores, permitir solo una ruta de migración explícita y probada; nunca migrar el único ejemplar del backup.
+- Mantener la copia original inmutable.
+- No seguir symlinks durante copia o extracción.
+- Limitar cantidad de entradas, tamaño individual y tamaño total descomprimido para evitar ZIP bombs.
+- No aceptar archivos ZIP cifrados con algoritmos heredados.
+- No mostrar ni registrar la frase de paso, clave derivada, contenido de `.secret_key` o hashes de contraseñas.
+- El backup contiene datos personales y debe guardarse en una ubicación elegida por el usuario; no subirlo a servicios remotos automáticamente.
 
----
+## 6. Pruebas de aceptación obligatorias
 
-## 7. Limpieza de temporales (RF-109)
+### Creación
+- Perfil vacío y perfil con progreso, documentos y multimedia.
+- Escrituras concurrentes durante backup; snapshot íntegro y restaurable.
+- SQLite WAL activo; integridad del snapshot y ausencia de dependencia en archivos WAL/SHM externos.
+- Destino sin permisos, disco lleno, interrupción y archivo temporal preexistente.
+- Destino dentro del perfil: rechazo.
+- Destino existente: rechazo sin sobrescribir el backup previo.
+- Verificación de SHA-256 y CRC tras crear el ZIP.
 
-Los archivos temporales generados durante backups y restauraciones se limpian tras la
-operación, incluso en caso de error (bloques `try/finally`).
+### Restauración
+- Backup válido en perfil vacío y perfil con datos previos.
+- Confirmación cancelada: perfil sin cambios.
+- ZIP truncado, manifest ausente, hash incorrecto, rutas `../`, rutas absolutas, symlinks, duplicados y ZIP bomb: rechazo sin tocar el perfil.
+- Base corrupta y versión de esquema no compatible: rechazo.
+- Frase de paso incorrecta: rechazo sin cambios.
+- Fallo simulado durante sustitución: rollback completo.
+- Comprobación posterior de documentos, progreso, intentos, evaluaciones, auditoría, roadmap y health check.
+- Reinicio posterior y comparación de conteos/checksums de archivos.
+
+### Interfaz
+- Mensajes comprensibles, progreso y cancelación segura.
+- Confirmación antes de reemplazar el perfil.
+- Indicación de fecha, tamaño y versión del backup.
+- No presentar la operación como exitosa antes de validar el perfil restaurado.
+
+## 7. Criterio de salida
+
+La función solo puede marcarse como disponible cuando existan implementación, pruebas automatizadas de los casos anteriores, prueba de restauración en instalación limpia Windows y Linux, y una prueba manual de recuperación con perfil de datos desechable. Hasta entonces, la beta debe informar claramente que la copia/restauración integrada no está disponible y recomendar que el usuario cierre la aplicación antes de realizar copias manuales del perfil completo.
