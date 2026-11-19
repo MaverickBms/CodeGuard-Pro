@@ -142,10 +142,10 @@ No incluyas secretos ni archivos innecesarios. Otra persona debe poder comprende
 
 Aprobación sugerida: 80/100 y sin secretos expuestos ni comandos destructivos ejecutados sin control.
 
-## Video complementario — Git y GitHub
+## Video candidato — Git y GitHub (audio pendiente de verificación)
 
 **[Curso COMPLETO de GIT y GITHUB desde CERO para PRINCIPIANTES — MoureDev by Brais Moure](https://www.youtube.com/watch?v=3GymExBkKjE)**  
-Idioma: español. Relación exacta: explica Git, comandos básicos de terminal, init, status, add, commit, ramas, merge, conflictos, remotos, GitHub, pull requests y Markdown.  
+Idioma hablado: pendiente de verificación mediante escucha. Pertinencia prevista: explica Git, comandos básicos de terminal, init, status, add, commit, ramas, merge, conflictos, remotos, GitHub, pull requests y Markdown. No aprobar ni recomendar hasta confirmar audio real en español y correspondencia con el contenido.  
 Actividad: estudiar las secciones necesarias y realizar el laboratorio en un repositorio separado. No necesitas memorizar todos los comandos en esta etapa; se profundizarán posteriormente.
 
 No se agregan videos genéricos de VS Code, terminal o diagramación en esta entrega: no se ha verificado una pieza concreta que cubra con precisión esos objetivos. Se añadirán solo cuando exista correspondencia temática comprobable.
