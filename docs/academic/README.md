@@ -11,7 +11,8 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 | Etapa 0 · Módulo 0.2 — Investigación técnica | Borrador v0.1.0 |
 | Etapa 0 · Módulo 0.3 — Herramientas | Borrador v0.1.0 |
 | Etapa 0 · Módulo 0.4 — Depuración | Borrador v0.1.0 |
-| Etapas 1–32 | Pendiente |
+| Etapa 1 · Módulos 1.1–1.5 — Hardware, representación, arquitectura, arranque y memoria | Borradores didácticos v0.1.0 |
+| Etapas 2–32 | Pendiente |
 
 ## Archivos
 
@@ -21,6 +22,11 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 - [Etapa 0 · Módulo 0.2 — Investigación técnica](ascenso-3.1/etapa-00/modulo-0.2-investigacion-tecnica.md)
 - [Etapa 0 · Módulo 0.3 — Herramientas](ascenso-3.1/etapa-00/modulo-0.3-herramientas.md)
 - [Etapa 0 · Módulo 0.4 — Depuración](ascenso-3.1/etapa-00/modulo-0.4-depuracion.md)
+- [Etapa 1 · Módulo 1.1 — Hardware](ascenso-3.1/etapa-01/modulo-1.1-hardware.md)
+- [Etapa 1 · Módulo 1.2 — Representación de información](ascenso-3.1/etapa-01/modulo-1.2-representacion-informacion.md)
+- [Etapa 1 · Módulo 1.3 — Arquitectura de computadores](ascenso-3.1/etapa-01/modulo-1.3-arquitectura-computadores.md)
+- [Etapa 1 · Módulo 1.4 — Arranque](ascenso-3.1/etapa-01/modulo-1.4-arranque.md)
+- [Etapa 1 · Módulo 1.5 — Memoria](ascenso-3.1/etapa-01/modulo-1.5-memoria.md)
 
 ## Política de publicación
 
