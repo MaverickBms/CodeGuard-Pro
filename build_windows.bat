@@ -38,6 +38,14 @@ if %ERRORLEVEL%==0 (
     set "PY_CMD=python"
 )
 
+REM --- Verificar version minima de Python ---
+%PY_CMD% -c "import sys; raise SystemExit(0 if sys.version_info >= (3,12) else 1)"
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Se requiere Python 3.12 o superior para compilar CodeGuard Pro.
+    pause
+    exit /b 1
+)
+
 REM --- Verificar Node.js ---
 where node >nul 2>nul
 if %ERRORLEVEL% NEQ 0 (
