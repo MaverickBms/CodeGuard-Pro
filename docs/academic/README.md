@@ -8,7 +8,9 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 |---|---|
 | Estándar editorial y control de calidad | Borrador v0.1.0 |
 | Etapa 0 · Módulo 0.1 — Aprender a aprender | Borrador piloto v0.1.0 |
-| Etapa 0 · Módulos 0.2–0.4 | Pendiente |
+| Etapa 0 · Módulo 0.2 — Investigación técnica | Borrador v0.1.0 |
+| Etapa 0 · Módulo 0.3 — Herramientas | Borrador v0.1.0 |
+| Etapa 0 · Módulo 0.4 — Depuración | Borrador v0.1.0 |
 | Etapas 1–32 | Pendiente |
 
 ## Archivos
@@ -16,6 +18,9 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 - [Estándar editorial académico](ASCENSO_ESTANDAR_EDITORIAL.md)
 - [Experiencia de aprendizaje multiformato y curación audiovisual](EXPERIENCIA_APRENDIZAJE_MULTIFORMATO.md)
 - [Etapa 0 · Módulo 0.1 — Aprender a aprender](ascenso-3.1/etapa-00/modulo-0.1-aprender-a-aprender.md)
+- [Etapa 0 · Módulo 0.2 — Investigación técnica](ascenso-3.1/etapa-00/modulo-0.2-investigacion-tecnica.md)
+- [Etapa 0 · Módulo 0.3 — Herramientas](ascenso-3.1/etapa-00/modulo-0.3-herramientas.md)
+- [Etapa 0 · Módulo 0.4 — Depuración](ascenso-3.1/etapa-00/modulo-0.4-depuracion.md)
 
 ## Política de publicación
 
