@@ -753,3 +753,28 @@ class BlockedStageCriterionTests(TestCase):
                 usuario=self.usuario, criterio=self.criterio
             ).exists()
         )
+
+
+    def test_criterio_rechaza_evidencia_mayor_a_5000_caracteres(self):
+        with self.assertRaisesMessage(ValidationError, "5.000 caracteres"):
+            registrar_cumplimiento_criterio(
+                self.usuario, self.criterio, evidencia="x" * 5001,
+                origen="proyecto",
+            )
+        self.assertFalse(
+            CumplimientoCriterio.objects.filter(
+                usuario=self.usuario, criterio=self.criterio
+            ).exists()
+        )
+
+    def test_criterio_rechaza_origen_no_permitido(self):
+        with self.assertRaisesMessage(ValidationError, "origen"):
+            registrar_cumplimiento_criterio(
+                self.usuario, self.criterio, evidencia="Evidencia válida.",
+                origen="admin_inventado",
+            )
+        self.assertFalse(
+            CumplimientoCriterio.objects.filter(
+                usuario=self.usuario, criterio=self.criterio
+            ).exists()
+        )
