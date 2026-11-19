@@ -130,3 +130,12 @@ La traducción automática puede cometer errores; para conceptos técnicos, nomb
 **Ayuda oficial de YouTube:**
 - [Administrar la configuración de subtítulos](https://support.google.com/youtube/answer/100078)
 - [Subtítulos automáticos y sus limitaciones](https://support.google.com/youtube/answer/6373554)
+
+
+## Regla reforzada de selección audiovisual (obligatoria)
+
+La condición es doble e indivisible:
+1. El audio del video debe estar en español.
+2. El contenido debe corresponder directamente al objetivo o subtema de la lección.
+
+Un video en español sobre programación en general no es válido para una lección sobre Stack Overflow, breakpoints o bases de datos si no enseña ese contenido. La popularidad del canal tampoco demuestra pertinencia. Si no se encuentra un video que cumpla ambas condiciones, la lección se publica sin video hasta localizar uno adecuado. Los subtítulos no convierten un video en inglés en un recurso aceptable.
