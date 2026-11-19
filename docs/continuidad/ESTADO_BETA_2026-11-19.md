@@ -598,9 +598,20 @@ aplicación durante la prueba.
 ### Artefactos y CI final
 
 - Servidor: `c21ff228b40fab302a8081532e227feb3efe54a16194d19b7bbf667f7e84ea53`.
-- AppImage: `f016dca4055c94f240237ec8c83618b0f79c3155a344d4a5f63d70b6639b229b`.
-- CI push `e4599aa`: run `44576601446`, **4/4 jobs verdes** (Django, Electron,
+- AppImage: `3e14314636be75a44665846a0f1a25972352cb847dadbe407d84a9fd11a7f05d`.
+- CI final `d2c7e70`: run `44580413810`, **4/4 jobs verdes** (Django, Electron,
   PyInstaller y Windows x64).
 - `npm audit --omit=dev`: 0 vulnerabilidades de producción. El audit completo
   mantiene 6 avisos moderados en la cadena de build de electron-builder; no se
   fuerza un override no verificado.
+
+
+### Verificación final del HEAD `d2c7e70`
+
+- Run `44580413810` (pull_request): Django, Electron, PyInstaller y Windows x64
+  en verde.
+- Windows x64 ejecutó las 7 fases de aceptación; artefacto
+  `codeguard-windows-x64` de 274.774.375 bytes.
+- AppImage final `3e14314636be75a44665846a0f1a25972352cb847dadbe407d84a9fd11a7f05d`
+  verificado con dos arranques y tema `dark` persistente.
+- Servidor PyInstaller: `c21ff228b40fab302a8081532e227feb3efe54a16194d19b7bbf667f7e84ea53`.

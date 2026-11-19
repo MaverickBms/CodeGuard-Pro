@@ -95,12 +95,15 @@ ni cambios de esquema.
 ## Estado de distribución (QA 16-11-2026)
 
 El AppImage Linux x64 se compiló y verificó con un E2E sobre perfil temporal:
-health check, rutas principales, persistencia de tema y cierre sin procesos
-huérfanos. El job `windows-package` de CI generó instalador NSIS y portable x64
-como artefacto `codeguard-windows-x64`. **La instalación limpia y el primer
-arranque en un host Windows real siguen pendientes de aceptación**, al igual
-que la matriz en equipos limpios. No distribuir como versión estable hasta
-completar esas pruebas. Consulta el informe QA en la rama `documentation`.
+health check, cinco rutas HTTP 200, 12 temas, responsive, persistencia de tema
+tras reiniciar y cierre sin procesos huérfanos. El job `windows-package` de CI
+ejecutó la aceptación automatizada completa (instalación NSIS, primer arranque,
+health, persistencia de tema y progreso, cierre, desinstalación y portable) y
+publicó el artefacto `codeguard-windows-x64`. **La aceptación manual en un
+equipo Windows físico sigue pendiente**; CI no sustituye hardware real. No
+distribuir como versión estable hasta completar esa matriz. Consulta
+[docs/PROJECT_EXECUTION_STATUS.md](docs/PROJECT_EXECUTION_STATUS.md) y el
+informe QA de la rama `documentation`.
 
 ## ⚡ Instalación rápida
 
@@ -216,15 +219,16 @@ python manage.py makemigrations --check --dry-run --settings=config.settings.dev
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges --settings=config.settings.development
 ```
 
-Resultado verificado en este repositorio (19-11-2026): **291 pruebas OK** en
+Resultado verificado en este repositorio (19-11-2026): **292 pruebas OK** en
 `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`,
 `apps.gamification` y `apps.challenges`, con
 `--settings=config.settings.development` (system check 0 incidencias y
 migraciones al día). Las pruebas incluyen restauración de backups, cabeceras
 CSP, contraste WCAG de los 12 temas e índices de evaluaciones/evidencias.
-`npm run test:electron` ejecuta las 15 pruebas de IPC y restauración de
-escritorio. Las cifras históricas de 245/197/138 quedan sustituidas por esta
-línea base reproducible.
+`npm run test:electron` ejecuta las 20 pruebas de IPC, restauración y
+persistencia de tema de escritorio. Las cifras históricas de 245/197/138 quedan sustituidas por esta
+línea base reproducible. El inventario académico y los hallazgos editoriales
+están en [docs/ROADMAP_ASCENSO_INVENTARIO.md](docs/ROADMAP_ASCENSO_INVENTARIO.md).
 
 ## ❓ Solución de problemas
 

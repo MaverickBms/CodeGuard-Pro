@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-19  
 **Fase:** release candidate 1.0.0 — validación final y cierre de Windows  
-**Rama:** `release/1.0.0` (`e4599aa`)  
+**Rama:** `release/1.0.0` (`ec278b8`)  
 **PR:** https://github.com/MaverickBms/CodeGuard-Pro/pull/13 (abierto, borrador, sin fusionar)  
 **Base:** `main` intacta; no se ha fusionado ni creado tag/release.
 
@@ -101,7 +101,7 @@ la aceptación manual en un equipo limpio.
 ## 7. Artefactos finales
 
 - Servidor PyInstaller: `c21ff228b40fab302a8081532e227feb3efe54a16194d19b7bbf667f7e84ea53`.
-- AppImage: `f016dca4055c94f240237ec8c83618b0f79c3155a344d4a5f63d70b6639b229b`.
+- AppImage: `3e14314636be75a44665846a0f1a25972352cb847dadbe407d84a9fd11a7f05d`.
 - CI push `e4599aa`: run `44576601446`, **4/4 jobs verdes**.
 
 ## 8. Próximos pasos
