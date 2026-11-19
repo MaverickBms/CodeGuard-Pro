@@ -3,8 +3,8 @@
 **Fecha de revisión:** 2026-11-19  
 **Rama de trabajo:** `fix/electron-ipc-origin-validation`  
 **Base:** `main` en `59d08848726550fde442be1eb1e1be5522637f0b`  
-**HEAD actual verificado:** `80f703a409897ef59eb2a2b72986a990c99e6e10`  
-**Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`, `40cfdf2`, `6907ff6`, `1d025a9`, `a892b5e`, `6178df9`, `49f463c`, `2e64a0a`, `cf963b8`, `80f703a`  
+**HEAD auditado antes de esta actualización:** `7f3ceddd3835b92d622a84859518b89b2537ba41`  
+**Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`, `40cfdf2`, `6907ff6`, `1d025a9`, `a892b5e`, `6178df9`, `49f463c`, `2e64a0a`, `cf963b8`, `80f703a`, `7f3cedd`  
 **Pull request:** https://github.com/MaverickBms/CodeGuard-Pro/pull/12 (abierto, borrador)  
 **Alcance:** inspección estática remota y corrección puntual de launcher; no equivale a ejecutar el proyecto.
 
@@ -29,7 +29,7 @@ Las seis pruebas cubren origen exacto, puerto diferente, host que suplanta el pr
 
 ### GitHub Actions
 
-Se consultaron las ejecuciones del workflow. La consulta actual mostró catorce ejecuciones terminadas en fallo:
+Se consultaron las ejecuciones del workflow. La consulta actual mostró quince ejecuciones terminadas en fallo:
 
 | Run | Commit | Estado |
 |---|---|---|
@@ -47,6 +47,7 @@ Se consultaron las ejecuciones del workflow. La consulta actual mostró catorce 
 | 12 | `2e64a0ae45aef90f16ecfb5373dc9db6120631ba` | `completed / failure` (run `44445764770`) |
 | 13 | `cf963b8ac72163003c750793b8c1811eb060f4e6` | `completed / failure` (run `44445807473`) |
 | 14 | `80f703a409897ef59eb2a2b72986a990c99e6e10` | `completed / failure` (run `44445836794`) |
+| 15 | `7f3ceddd3835b92d622a84859518b89b2537ba41` | `completed / failure` (run `44445883166`) |
 
 La inspección directa de Actions para los runs `44444429601`, `44445369572`, `44445451593`, `44445508444` y `44445540907` confirmó `conclusion=failure`, pero `total_count=0` y `jobs=[]`, incluso al consultar los intentos disponibles. Los check-runs/statuses consultados tampoco aportan validaciones. Los seis runs más recientes (`44445369572`, `44445451593`, `44445508444`, `44445540907`, `44445764770` y `44445807473`) devuelven `jobs=[]`; el run `44445836794` del último commit documental también devuelve `jobs=[]`. No hay jobs, steps ni logs de job que permitan identificar un error de ejecución. Los runs se marcan como eventos `push` sobre la rama de trabajo. El workflow en la rama actual incluye `push` sin filtro de ramas y `paths-ignore` para `docs/**` y `**.md`; sin embargo, tanto el cambio de dependencias (`2e64a0a`) como los cambios exclusivamente documentales (`cf963b8`) generaron ejecuciones. Por tanto, el filtro `paths-ignore` no parece estar evitando los runs como se esperaba. Esto deja dos problemas: ejecuciones fallidas sin jobs y comportamiento inconsistente de filtros/activación.
 
@@ -80,6 +81,7 @@ La versión anterior inicializaba Django sin exportar `CODEGUARD_DATA_DIR`, por 
 | P1 | Backup/restauración. | Diseño documentado; implementación/aceptación pendiente. |
 | P1 | Tutor Ollama. | Opcional; validar detección, modelo instalado, timeout, fallback y privacidad. |
 | P2 | `run.sh` exige Python y Node aunque inicia un AppImage empaquetado. | Revisar si es un lanzador de desarrollo; no confundirlo con instalador autónomo. |
+| P2 | Ciclo de vida en macOS. | `window-all-closed` detiene Django pero no cierra la app en macOS; `activate` crea una ventana sin reiniciar ni recargar el servidor. macOS no está configurado/validado y queda fuera de la beta actual. |
 | P2 | Documentos históricos no totalmente sincronizados. | Revisar especialmente `docs/VALIDACION_INTEGRACION_ELECTRON.md`, estados de fases y cifras históricas. |
 
 ## 4. Estado funcional del producto
@@ -118,7 +120,7 @@ No confundir modelos, rutas o controles visibles con un flujo de usuario termina
 - Commit del ajuste del workflow: `1d025a90e47e32d4580eacf31136fece5cd50160`.
 - Los runs `44445369572`, `44445451593`, `44445508444`, `44445540907`, `44445764770`, `44445807473` y `44445836794` terminaron en `failure` con `jobs=[]`. CI sigue sin ser interpretable y no se declara aprobado.
 - Se eliminó la dependencia PyMuPDF aún no utilizada de `requirements.txt`.
-- La rama está 21 commits por delante de `main`, sin commits por detrás al momento de la consulta. `main` continúa en `59d08848726550fde442be1eb1e1be5522637f0b`.
+- La rama está 22 commits por delante de `main`, sin commits por detrás al momento de la consulta. `main` continúa en `59d08848726550fde442be1eb1e1be5522637f0b`.
 
 ## 7. Limitación de esta sesión
 
@@ -128,11 +130,11 @@ Esto no significa que el proyecto no pueda ejecutarse en el equipo del propietar
 
 ## 8. Próximo bloque recomendado
 
-1. Diagnosticar en GitHub por qué las catorce ejecuciones de Actions terminaron en failure sin jobs visibles y por qué `paths-ignore` no evita las ejecuciones documentales.
+1. Diagnosticar en GitHub por qué las quince ejecuciones de Actions terminaron en failure sin jobs visibles y por qué `paths-ignore` no evita las ejecuciones documentales.
 2. Ejecutar el launcher `codeguard` con un directorio temporal y confirmar que migrate, carga ASCENSO y AppImage comparten `CODEGUARD_DATA_DIR`.
 3. Probar `server_entry.py` en un directorio vacío y otro con datos de prueba existentes, verificando idempotencia y preservación.
 4. Ejecutar en el entorno del proyecto: `pip check`, `manage.py check`, `makemigrations --check --dry-run`, las siete apps de pruebas Django, `node --check` y `npm run test:electron`.
 5. Ejecutar la aceptación GUI/offline/persistencia/cierre en Linux y la instalación limpia Windows si esa es la plataforma de presentación.
 6. Actualizar los documentos históricos para que reflejen el código actual y distingan evidencia reportada, ejecutada y aceptada.
 
-**Criterio de salida:** CodeGuard Pro no debe declararse beta aceptada hasta que el primer arranque, el flujo académico esencial, la persistencia, el funcionamiento offline, la integración Electron y el cierre limpio tengan evidencia reproducible. La presentación puede describirse como beta de evaluación con limitaciones explícitas si todavía quedan criterios de distribución sin aceptar.
+**Nota de corte:** este informe registra los runs visibles hasta el commit `7f3cedd`; el propio commit de esta actualización documental puede generar otra ejecución push.\n\n**Criterio de salida:** CodeGuard Pro no debe declararse beta aceptada hasta que el primer arranque, el flujo académico esencial, la persistencia, el funcionamiento offline, la integración Electron y el cierre limpio tengan evidencia reproducible. La presentación puede describirse como beta de evaluación con limitaciones explícitas si todavía quedan criterios de distribución sin aceptar.
