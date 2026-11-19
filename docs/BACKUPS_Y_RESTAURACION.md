@@ -1,8 +1,14 @@
 # Copias de seguridad y restauración — CodeGuard Pro
 
-> **Estado: especificación técnica; función todavía no implementada ni disponible en la interfaz.**
+> **Estado: creación y verificación del archivo implementadas como servicio interno; restauración e interfaz todavía no implementadas ni disponibles.**
 >
 > Este documento fija el contrato mínimo para implementar backup/restore sin poner en riesgo el perfil local. No debe interpretarse como una guía de comandos ejecutables.
+
+## Estado real de implementación
+
+El módulo interno `apps/core/backup.py` proporciona `create_backup()` e `inspect_backup()`. Crea un snapshot SQLite mediante la API de backup, incluye `media/`, genera manifiesto SHA-256, verifica CRC e integridad SQLite y publica el ZIP sin sobrescribir un destino existente. Rechaza rutas inseguras, enlaces simbólicos, duplicados y tamaños fuera de los límites configurados. No incluye `.secret_key` ni logs.
+
+Hay pruebas automatizadas en `apps/core/tests/test_backups.py`, pero deben ejecutarse en CI antes de considerar validada esta implementación. Todavía no existe restauración, cifrado de secretos, interfaz de usuario, progreso/cancelación ni prueba empaquetada. Por tanto, el servicio no debe presentarse como una función disponible para usuarios finales.
 
 ## 1. Alcance de los datos
 
@@ -75,6 +81,7 @@ No se permite mezclar la base restaurada con el directorio `media/` actual: ambo
 - SQLite WAL activo; integridad del snapshot y ausencia de dependencia en archivos WAL/SHM externos.
 - Destino sin permisos, disco lleno, interrupción y archivo temporal preexistente.
 - Destino dentro del perfil: rechazo.
+- Destino existente: rechazo sin sobrescribir el backup previo.
 - Verificación de SHA-256 y CRC tras crear el ZIP.
 
 ### Restauración
