@@ -3,8 +3,8 @@
 **Fecha de revisión:** 2026-11-18  
 **Rama de trabajo:** `fix/electron-ipc-origin-validation`  
 **Base:** `main` en `59d08848726550fde442be1eb1e1be5522637f0b`  
-**HEAD de código revisado:** `5223e4373aee76837437ebf943f952aa691b2b0f`  
-**Commits documentales/correctivos posteriores:** `fcca40d`, `4c32fe8`  
+**HEAD de código revisado antes de los commits de continuidad:** `5223e4373aee76837437ebf943f952aa691b2b0f`  
+**Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`  
 **Pull request:** https://github.com/MaverickBms/CodeGuard-Pro/pull/12 (abierto, borrador)  
 **Alcance:** inspección estática remota y corrección puntual de launcher; no equivale a ejecutar el proyecto.
 
@@ -16,31 +16,34 @@
 - Las notificaciones limitan título (120 caracteres) y cuerpo (1000 caracteres), y utilizan el icono local de la aplicación.
 - Se añadieron seis casos de regresión en `electron/ipc-security.test.js` y el comando `npm run test:electron`.
 - Se añadió `.github/workflows/ci.yml` para checks Django, migraciones, suite Django y pruebas IPC.
-- Se actualizó este documento de continuidad con el estado observado de GitHub Actions, limitaciones de verificación y próximos pasos.
 - Se corrigió el script `codeguard`: ahora exporta `CODEGUARD_DATA_DIR` inmediatamente después de crear el directorio de datos y antes de ejecutar `migrate` y `cargar_ascenso`. Electron hereda la misma variable al iniciar el AppImage. No se usa `--recrear`.
+- Se actualizó este documento y la descripción del PR con los hallazgos y límites de verificación.
 
 ## 2. Evidencia y límites de verificación
 
 ### Pruebas IPC
 
-El registro de trabajo anterior reporta una ejecución aislada de `npm run test:electron` con 6/6 pruebas correctas. Esta revisión no pudo repetirla en un checkout local, por lo que se conserva como **evidencia reportada, no reproducida independientemente en esta sesión**.
+El trabajo previo reporta una ejecución aislada de `npm run test:electron` con 6/6 pruebas correctas. Esta revisión no pudo repetirla en un checkout local, por lo que se conserva como **evidencia reportada, no reproducida independientemente en esta sesión**.
 
 Las seis pruebas cubren origen exacto, puerto diferente, host que suplanta el prefijo loopback, protocolo no permitido, credenciales en URL y eventos/argumentos inválidos. Validan la función pura; no demuestran integración real con Electron.
 
 ### GitHub Actions
 
-La consulta del repositorio encontró dos ejecuciones asociadas al workflow:
+Se consultaron las ejecuciones del workflow. La consulta más reciente mostró cinco ejecuciones terminadas en fallo:
 
-| Ejecución | Commit | Estado remoto |
+| Run | Commit | Estado |
 |---|---|---|
-| #1 | `670d675aaaa26dbcfe2c9b1744c0ea869cb30d40` | `completed / failure` |
-| #2 | `5223e4373aee76837437ebf943f952aa691b2b0f` | `completed / failure` |
+| 1 | `670d675aaaa26dbcfe2c9b1744c0ea869cb30d40` | `completed / failure` |
+| 2 | `5223e4373aee76837437ebf943f952aa691b2b0f` | `completed / failure` |
+| 3 | `fcca40def7c5f7703406fb78a3274579613f13a2` | `completed / failure` |
+| 4 | `4c32fe83b29c67af2565efa3a64419add26a8051` | `completed / failure` |
+| 5 | `98d354e4bdb4ea77a363d4e8e301a8f77a5c29f6` | `completed / failure` |
 
-El endpoint de jobs devolvió una lista vacía para ambas ejecuciones y no se obtuvieron check-runs ni logs de jobs. Por tanto:
+Los endpoints consultados devolvieron listas de jobs vacías y no se obtuvieron check-runs ni logs de jobs. Por tanto:
 
 - **No se conoce la causa del fallo.**
 - No se puede afirmar que hayan fallado las pruebas Django, las pruebas IPC, la instalación de dependencias o la sintaxis del workflow.
-- Ninguna de esas ejecuciones cuenta como validación aprobada.
+- Ninguna ejecución cuenta como validación aprobada.
 - Se debe inspeccionar el detalle de Actions en GitHub y determinar si fue un fallo de inicialización, permisos/configuración o un job real.
 
 Enlace: https://github.com/MaverickBms/CodeGuard-Pro/actions
@@ -63,7 +66,7 @@ La versión anterior inicializaba Django sin exportar `CODEGUARD_DATA_DIR`, por 
 |---|---|---|
 | P0 | Aceptación de instalación limpia y flujo principal Electron/Django. | Pendiente de ejecución real con perfil temporal. |
 | P1 | Reproducibilidad de la suite Django completa (245 reportadas). | Pendiente de ejecutar sobre el HEAD exacto y registrar salida. |
-| P1 | CI sin resultado verificable. | Dos ejecuciones reportadas como failure, sin jobs/logs accesibles en esta revisión. |
+| P1 | CI sin resultado verificable. | Cinco ejecuciones reportadas como failure, sin jobs/logs accesibles en esta revisión. |
 | P1 | Persistencia tras reinicio, modo offline E2E y cierre sin procesos huérfanos. | Pendiente. |
 | P1 | Backup/restauración. | Diseño documentado; implementación/aceptación pendiente. |
 | P1 | Tutor Ollama. | Opcional; validar detección, modelo instalado, timeout, fallback y privacidad. |
@@ -105,7 +108,7 @@ Esto no significa que el proyecto no pueda ejecutarse en el equipo del propietar
 
 ## 7. Próximo bloque recomendado
 
-1. Diagnosticar en GitHub por qué las dos ejecuciones de Actions terminaron en failure sin jobs visibles.
+1. Diagnosticar en GitHub por qué las cinco ejecuciones de Actions terminaron en failure sin jobs visibles.
 2. Ejecutar el launcher `codeguard` con un directorio temporal y confirmar que migrate, carga ASCENSO y AppImage comparten `CODEGUARD_DATA_DIR`.
 3. Probar `server_entry.py` en un directorio vacío y otro con datos de prueba existentes, verificando idempotencia y preservación.
 4. Ejecutar en el entorno del proyecto: `pip check`, `manage.py check`, `makemigrations --check --dry-run`, las siete apps de pruebas Django, `node --check` y `npm run test:electron`.
