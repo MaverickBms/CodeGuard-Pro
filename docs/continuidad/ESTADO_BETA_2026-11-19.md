@@ -317,4 +317,4 @@ Para evitar bloquear el cierre por trabajo no esencial:
 
 ### Estado Git de este corte
 
-Rama de trabajo: fix/electron-ipc-origin-validation. PR #12 sigue abierto y en borrador; no se fusiona ni se modifica main. Este corte debe actualizarse con el SHA real tras el commit documental y la consulta final de GitHub.
+Rama de trabajo: fix/electron-ipc-origin-validation. HEAD verificado: 9df010784630742d96b9fd33ad829173e68f7b8c. PR #12 sigue abierto y en borrador; comparación con main: 70 commits por delante y 0 por detrás. No se fusiona ni se modifica main.
