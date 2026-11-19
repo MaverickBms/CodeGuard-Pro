@@ -3,8 +3,8 @@
 **Fecha de revisión:** 2026-11-19  
 **Rama de trabajo:** `fix/electron-ipc-origin-validation`  
 **Base:** `main` en `59d08848726550fde442be1eb1e1be5522637f0b`  
-**HEAD actual verificado:** `cf963b8ac72163003c750793b8c1811eb060f4e6`  
-**Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`, `40cfdf2`, `6907ff6`, `1d025a9`, `a892b5e`, `6178df9`, `49f463c`, `2e64a0a`, `cf963b8`  
+**HEAD actual verificado:** `80f703a409897ef59eb2a2b72986a990c99e6e10`  
+**Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`, `40cfdf2`, `6907ff6`, `1d025a9`, `a892b5e`, `6178df9`, `49f463c`, `2e64a0a`, `cf963b8`, `80f703a`  
 **Pull request:** https://github.com/MaverickBms/CodeGuard-Pro/pull/12 (abierto, borrador)  
 **Alcance:** inspección estática remota y corrección puntual de launcher; no equivale a ejecutar el proyecto.
 
@@ -29,24 +29,26 @@ Las seis pruebas cubren origen exacto, puerto diferente, host que suplanta el pr
 
 ### GitHub Actions
 
-Se consultaron las ejecuciones del workflow. La consulta actual mostró trece ejecuciones terminadas en fallo:
+Se consultaron las ejecuciones del workflow. La consulta actual mostró catorce ejecuciones terminadas en fallo:
 
 | Run | Commit | Estado |
 |---|---|---|
-| 1 | `670d675aaaa26dbcfe2c9b1744c0ea869cb30d40` | `completed / failure` |
-| 2 | `5223e4373aee76837437ebf943f952aa691b2b0f` | `completed / failure` |
-| 3 | `fcca40def7c5f7703406fb78a3274579613f13a2` | `completed / failure` |
-| 4 | `4c32fe83b29c67af2565efa3a64419add26a8051` | `completed / failure` |
-| 5 | `98d354e4bdb4ea77a363d4e8e301a8f77a5c29f6` | `completed / failure` |
+| 1 | `670d675aaaa26dbcfe2c9b1744c0ea869cb30d40` | `completed / failure` (run `44443084187`) |
+| 2 | `5223e4373aee76837437ebf943f952aa691b2b0f` | `completed / failure` (run `44443103887`) |
+| 3 | `fcca40def7c5f7703406fb78a3274579613f13a2` | `completed / failure` (run `44444331213`) |
+| 4 | `4c32fe83b29c67af2565efa3a64419add26a8051` | `completed / failure` (run `44444347512`) |
+| 5 | `98d354e4bdb4ea77a363d4e8e301a8f77a5c29f6` | `completed / failure` (run `44444371255`) |
 | 6 | `40cfdf23639cf8bb6384c7297e19219af87507af` | `completed / failure` (run `44444429601`) |
-| 7 | `1d025a90e47e32d4580eacf31136fece5cd50160` | `completed / failure` (run `44445369572`) |
-| 8 | `a892b5e024f19a97cfbb2d25907fd427ab3796d1` | `completed / failure` (run `44445451593`) |
-| 9 | `6178df902159c73b4d19995e6ab245534c7ea9ef` | `completed / failure` (run `44445508444`) |
-| 10 | `49f463c6a98e8dc28e6b1314eafe675d25326b87` | `completed / failure` (run `44445540907`) |
-| 11 | `2e64a0ae45aef90f16ecfb5373dc9db6120631ba` | `completed / failure` (run `44445764770`) |
-| 12 | `cf963b8ac72163003c750793b8c1811eb060f4e6` | `completed / failure` (run `44445807473`) |
+| 7 | `6907ff66f0d7a03bf68bbd00ab6f7f039678dfe7` | `completed / failure` (run `44445039210`) |
+| 8 | `1d025a90e47e32d4580eacf31136fece5cd50160` | `completed / failure` (run `44445369572`) |
+| 9 | `a892b5e024f19a97cfbb2d25907fd427ab3796d1` | `completed / failure` (run `44445451593`) |
+| 10 | `6178df902159c73b4d19995e6ab245534c7ea9ef` | `completed / failure` (run `44445508444`) |
+| 11 | `49f463c6a98e8dc28e6b1314eafe675d25326b87` | `completed / failure` (run `44445540907`) |
+| 12 | `2e64a0ae45aef90f16ecfb5373dc9db6120631ba` | `completed / failure` (run `44445764770`) |
+| 13 | `cf963b8ac72163003c750793b8c1811eb060f4e6` | `completed / failure` (run `44445807473`) |
+| 14 | `80f703a409897ef59eb2a2b72986a990c99e6e10` | `completed / failure` (run `44445836794`) |
 
-La inspección directa de Actions para los runs `44444429601`, `44445369572`, `44445451593`, `44445508444` y `44445540907` confirmó `conclusion=failure`, pero `total_count=0` y `jobs=[]`, incluso al consultar los intentos disponibles. Los check-runs/statuses consultados tampoco aportan validaciones. Los runs `44445764770` y `44445807473` también devuelven `jobs=[]`. No hay jobs, steps ni logs de job que permitan identificar un error de ejecución. Los runs se marcan como eventos `push` sobre la rama de trabajo. El workflow en la rama actual incluye `push` sin filtro de ramas y `paths-ignore` para `docs/**` y `**.md`; sin embargo, tanto el cambio de dependencias (`2e64a0a`) como los cambios exclusivamente documentales (`cf963b8`) generaron ejecuciones. Por tanto, el filtro `paths-ignore` no parece estar evitando los runs como se esperaba. Esto deja dos problemas: ejecuciones fallidas sin jobs y comportamiento inconsistente de filtros/activación.
+La inspección directa de Actions para los runs `44444429601`, `44445369572`, `44445451593`, `44445508444` y `44445540907` confirmó `conclusion=failure`, pero `total_count=0` y `jobs=[]`, incluso al consultar los intentos disponibles. Los check-runs/statuses consultados tampoco aportan validaciones. Los seis runs más recientes (`44445369572`, `44445451593`, `44445508444`, `44445540907`, `44445764770` y `44445807473`) devuelven `jobs=[]`; el run `44445836794` del último commit documental también devuelve `jobs=[]`. No hay jobs, steps ni logs de job que permitan identificar un error de ejecución. Los runs se marcan como eventos `push` sobre la rama de trabajo. El workflow en la rama actual incluye `push` sin filtro de ramas y `paths-ignore` para `docs/**` y `**.md`; sin embargo, tanto el cambio de dependencias (`2e64a0a`) como los cambios exclusivamente documentales (`cf963b8`) generaron ejecuciones. Por tanto, el filtro `paths-ignore` no parece estar evitando los runs como se esperaba. Esto deja dos problemas: ejecuciones fallidas sin jobs y comportamiento inconsistente de filtros/activación.
 
 - **No se conoce la causa del fallo.**
 - No se puede afirmar que hayan fallado las pruebas Django, las pruebas IPC, la instalación de dependencias o la sintaxis del workflow.
@@ -73,7 +75,7 @@ La versión anterior inicializaba Django sin exportar `CODEGUARD_DATA_DIR`, por 
 |---|---|---|
 | P0 | Aceptación de instalación limpia y flujo principal Electron/Django. | Pendiente de ejecución real con perfil temporal. |
 | P1 | Reproducibilidad de la suite Django completa (245 reportadas). | Pendiente de ejecutar sobre el HEAD exacto y registrar salida. |
-| P1 | CI sin resultado verificable. | Trece runs fallidos; los siete más recientes consultados devuelven cero jobs. Los cambios de dependencias y documentación generan runs pese a `paths-ignore`. |
+| P1 | CI sin resultado verificable. | Catorce runs fallidos; los seis más recientes inspeccionados devuelven cero jobs. Los cambios de dependencias y documentación generan runs pese a `paths-ignore`. |
 | P1 | Persistencia tras reinicio, modo offline E2E y cierre sin procesos huérfanos. | Pendiente. |
 | P1 | Backup/restauración. | Diseño documentado; implementación/aceptación pendiente. |
 | P1 | Tutor Ollama. | Opcional; validar detección, modelo instalado, timeout, fallback y privacidad. |
@@ -114,9 +116,9 @@ No confundir modelos, rutas o controles visibles con un flujo de usuario termina
 - Se retiró `PyMuPDF==2.1` de `requirements.txt`: no se encontraron importaciones del paquete en el código revisado, está etiquetado como fase futura, añade un motor PDF nativo de gran tamaño y su licencia es AGPL-3.0 o comercial. Reincorporar una biblioteca PDF cuando haya módulo activo y decisión de licencia. Fuente oficial: https://pypi.org/project/pymupdf/2.1/.
 - El trigger `push` cubre todas las ramas y omite cambios exclusivamente documentales (`docs/**`, `**.md`) para evitar ejecuciones de CI innecesarias.
 - Commit del ajuste del workflow: `1d025a90e47e32d4580eacf31136fece5cd50160`.
-- Los runs `44445369572`, `44445451593`, `44445508444`, `44445540907`, `44445764770` y `44445807473` terminaron en `failure` con `jobs=[]`. CI sigue sin ser interpretable y no se declara aprobado.
+- Los runs `44445369572`, `44445451593`, `44445508444`, `44445540907`, `44445764770`, `44445807473` y `44445836794` terminaron en `failure` con `jobs=[]`. CI sigue sin ser interpretable y no se declara aprobado.
 - Se eliminó la dependencia PyMuPDF aún no utilizada de `requirements.txt`.
-- La rama está 20 commits por delante de `main`, sin commits por detrás al momento de la consulta. `main` continúa en `59d08848726550fde442be1eb1e1be5522637f0b`.
+- La rama está 21 commits por delante de `main`, sin commits por detrás al momento de la consulta. `main` continúa en `59d08848726550fde442be1eb1e1be5522637f0b`.
 
 ## 7. Limitación de esta sesión
 
@@ -126,7 +128,7 @@ Esto no significa que el proyecto no pueda ejecutarse en el equipo del propietar
 
 ## 8. Próximo bloque recomendado
 
-1. Diagnosticar en GitHub por qué las trece ejecuciones de Actions terminaron en failure sin jobs visibles y por qué `paths-ignore` no evita las ejecuciones documentales.
+1. Diagnosticar en GitHub por qué las catorce ejecuciones de Actions terminaron en failure sin jobs visibles y por qué `paths-ignore` no evita las ejecuciones documentales.
 2. Ejecutar el launcher `codeguard` con un directorio temporal y confirmar que migrate, carga ASCENSO y AppImage comparten `CODEGUARD_DATA_DIR`.
 3. Probar `server_entry.py` en un directorio vacío y otro con datos de prueba existentes, verificando idempotencia y preservación.
 4. Ejecutar en el entorno del proyecto: `pip check`, `manage.py check`, `makemigrations --check --dry-run`, las siete apps de pruebas Django, `node --check` y `npm run test:electron`.
