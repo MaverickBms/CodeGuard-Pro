@@ -15,10 +15,15 @@ from apps.roadmaps.services import (
 )
 
 
-def _progreso_reciente(usuario, limite=5):
-    """Devuelve los progresos más recientes del usuario (actividad reciente)."""
+def _progreso_reciente(usuario, roadmap, limite=5):
+    """Devuelve actividad reciente limitada al roadmap activo.
+
+    Si no hay roadmap activo, no muestra registros históricos de otras rutas.
+    """
+    if roadmap is None:
+        return Progreso.objects.none()
     return (
-        Progreso.objects.filter(usuario=usuario)
+        Progreso.objects.filter(usuario=usuario, etapa__roadmap=roadmap)
         .select_related("etapa", "leccion", "modulo")
         .order_by("-fecha_actualizacion")[:limite]
     )
@@ -93,7 +98,7 @@ def panel(request):
     else:
         proxima_actividad = None
 
-    actividad_reciente = _progreso_reciente(usuario)
+    actividad_reciente = _progreso_reciente(usuario, roadmap)
 
     registrar_evento(
         "acceso_panel",
