@@ -55,6 +55,7 @@
         {% for pre in prerrequisitos %}
           <a href="{% url 'roadmaps:detalle' pre.etapa_requerida.numero %}">etapa {{ pre.etapa_requerida.numero }}</a>{% if not forloop.last %}, {% endif %}
         {% endfor %}
+        <span class="d-block mt-2">Puedes consultar el contenido, pero las entregas y evaluaciones permanecerán bloqueadas hasta cumplir estos requisitos.</span>
       </div>
     {% endif %}
     <form method="post" action="{% url 'roadmaps:marcar_etapa' etapa.numero %}" class="etapa-complete-form">
