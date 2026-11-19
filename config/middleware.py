@@ -77,7 +77,10 @@ class CabecerasSeguridadMiddleware:
             "img-src 'self' data:; "
             "font-src 'self'; "
             "connect-src 'self'; "
+            "object-src 'none'; "
+            "frame-src 'none'; "
             "frame-ancestors 'none'; "
+            "form-action 'self'; "
             "base-uri 'self';"
         )
         response["Content-Security-Policy"] = csp

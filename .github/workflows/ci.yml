@@ -79,6 +79,8 @@ jobs:
           node --check electron/main.js
           node --check electron/preload.js
           node --check electron/ipc-security.js
+          node --check electron/process-health.js
+          node --check electron/restore-backup.js
 
       - name: Run Electron unit tests
         run: npm run test:electron

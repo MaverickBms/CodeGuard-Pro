@@ -2,6 +2,33 @@
 
 Todos los cambios notables del proyecto se documentan aquí.
 
+## [1.0.0] — 2026-11-19 — Release candidate
+
+### Añadido
+- Restauración de copias de seguridad con staging, validación de esquema,
+  copia de reversión y rollback (`apps/core/restore.py`).
+- Comando `restaurar_backup RUTA.zip --confirm`, pantalla `/backups/` y menú
+  **Restaurar copia de seguridad…** en Electron.
+- Índices `/roadmaps/evaluaciones/` y `/roadmaps/evidencias/`.
+- Pruebas de restauración, cabeceras CSP, contraste WCAG de 12 temas y vistas.
+
+### Corregido
+- Cinco pruebas defectuosas que mantenían la suite en rojo.
+- Bordes derivados de ocho temas que no alcanzaban 3:1.
+- Enlaces de README a documentación inexistente en `main`.
+- Cifra histórica de pruebas; línea base actual: 291 Django + 15 Electron.
+
+### Verificado
+- `manage.py check` sin incidencias y migraciones al día.
+- AppImage Linux reconstruido; E2E con health check, cinco rutas HTTP 200,
+  persistencia de tema y cierre sin procesos huérfanos.
+- Restauración real y arranque del servidor empaquetado sobre el perfil restaurado.
+
+### Pendiente
+- Aceptación de instalación/build en Windows.
+- Diagnóstico de GitHub Actions sin jobs; publicación bloqueada por DNS local.
+- Aceptación de contenido académico completo y sincronización remota de producción.
+
 ## [1.0.3] — 2026-11-11 — Fase 2: roadmap ASCENSO, flujo editorial y registro de paquetes
 
 ### Añadido

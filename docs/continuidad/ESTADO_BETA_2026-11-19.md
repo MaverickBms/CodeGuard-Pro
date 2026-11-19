@@ -463,7 +463,7 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
 
 ### Commits de la rama
 
-`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`.
+`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`, `880fbff`.
 
 ### Pendientes y bloqueos
 

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Evaluaciones — CodeGuard Pro{% endblock %}
+{% block page_title %}Evaluaciones{% endblock %}
+{% block page_subtitle %}Quizzes y exámenes publicados de ASCENSO 3.1{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+    <div>
+      <h2 style="margin-top:0;"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i> Evaluaciones disponibles</h2>
+      <p class="muted" style="margin-bottom:0;">
+        Solo se muestran evaluaciones publicadas. Las etapas bloqueadas pueden
+        consultarse, pero sus envíos se rechazan hasta completar los prerrequisitos.
+      </p>
+    </div>
+    <span class="cg-badge cg-badge-primary">{{ total_publicadas }} publicada{{ total_publicadas|pluralize:"s" }}</span>
+  </div>
+</section>
+
+{% if quizzes %}
+<section class="glass-card cg-card" aria-label="Listado de evaluaciones">
+  <ul style="list-style:none; padding:0; margin:0;">
+    {% for quiz in quizzes %}
+      <li style="padding:.9rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
+        <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+          <div style="min-width:240px; flex:1;">
+            <div style="display:flex; gap:.4rem; flex-wrap:wrap; align-items:center;">
+              <strong>{{ quiz.nombre }}</strong>
+              <span class="cg-badge">{{ quiz.get_tipo_display }}</span>
+              {% if quiz.bloqueada %}
+                <span class="cg-badge cg-badge-danger"><i class="fa-solid fa-lock" aria-hidden="true"></i> Bloqueada</span>
+              {% endif %}
+              {% if quiz.ultimo_resultado %}
+                {% if quiz.ultimo_resultado.aprobado %}
+                  <span class="cg-badge cg-badge-success"><i class="fa-solid fa-check" aria-hidden="true"></i> Aprobada</span>
+                {% elif quiz.ultimo_resultado.requiere_revision %}
+                  <span class="cg-badge cg-badge-warning">Revisión pendiente</span>
+                {% else %}
+                  <span class="cg-badge cg-badge-muted">Último intento: {{ quiz.ultimo_resultado.puntuacion|default:"—" }}%</span>
+                {% endif %}
+              {% else %}
+                <span class="cg-badge cg-badge-muted">Sin intentos</span>
+              {% endif %}
+            </div>
+            <div class="muted" style="font-size:.9rem; margin-top:.25rem;">
+              {% if quiz.etapa_real %}Etapa {{ quiz.etapa_real.numero }} — {{ quiz.etapa_real.titulo }}{% endif %}
+              {% if quiz.modulo %} · {{ quiz.modulo.numero }} {{ quiz.modulo.titulo }}{% endif %}
+              · {{ quiz.total_preguntas }} pregunta{{ quiz.total_preguntas|pluralize:"s" }}
+              · Umbral {{ quiz.umbral_aprobacion }}%
+            </div>
+          </div>
+          <a class="btn btn-primary btn-sm cg-btn cg-btn-primary"
+             href="{% url 'roadmaps:quiz_detalle' quiz.id %}">
+            {% if quiz.bloqueada %}Consultar{% else %}Abrir evaluación{% endif %}
+            <i class="fa-solid fa-arrow-right ms-2" aria-hidden="true"></i>
+          </a>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+{% else %}
+<section class="glass-card empty-state cg-card">
+  <i class="fa-solid fa-clipboard-question fa-2x" aria-hidden="true"></i>
+  <h3>Todavía no hay evaluaciones publicadas</h3>
+  <p>
+    Las evaluaciones se crean y publican desde el flujo editorial del roadmap.
+    Mientras tanto puedes estudiar las lecciones y registrar evidencias de etapa.
+  </p>
+  <a class="btn btn-primary cg-btn cg-btn-primary" href="{% url 'roadmaps:lista' %}">
+    <i class="fa-solid fa-map me-2" aria-hidden="true"></i>Volver al roadmap
+  </a>
+</section>
+{% endif %}
+{% endblock %}
