@@ -2,7 +2,8 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 // Exponer API segura al renderer
 contextBridge.exposeInMainWorld('codeguardAPI', {
-  // Temas
+  // Temas (persistidos en el perfil por el proceso principal)
+  getTheme: () => ipcRenderer.invoke('get-theme'),
   setTheme: (theme) => ipcRenderer.send('set-theme', theme),
   
   // Notificaciones

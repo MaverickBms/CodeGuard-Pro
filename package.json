@@ -104,6 +104,11 @@
         }
       ],
       "icon": "static/icons/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "runAfterFinish": false
     }
   },
   "devDependencies": {

@@ -18,11 +18,15 @@
   var themes = ['light', 'dark', 'high-contrast', 'retro-pixel', 'cyberpunk', 'fantasy', 'sci-fi', 'warrior', 'mage', 'rogue', 'paladin', 'dark-mage'];
 
   function currentTheme() {
+    // El documento refleja ya la preferencia efectiva (incluida la persistida
+    // por Electron); localStorage es solo la caché del mismo origen.
+    var applied = document.documentElement.getAttribute('data-theme');
+    if (themes.indexOf(applied) >= 0) return applied;
     try {
       var saved = localStorage.getItem('cg-theme');
       return themes.indexOf(saved) >= 0 ? saved : 'light';
     } catch (error) {
-      return document.documentElement.getAttribute('data-theme') || 'light';
+      return 'light';
     }
   }
 

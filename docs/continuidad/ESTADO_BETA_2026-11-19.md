@@ -548,3 +548,59 @@ siguen pendientes de una máquina Windows real**.
   (pull_request), ambos con **4/4 jobs en verde**, incluido Windows x64.
 - Artefacto Windows `codeguard-windows-x64`: 274.776.109 bytes
   (instalador NSIS + portable x64).
+
+## 29. Persistencia de tema, aceptación Windows y roadmap (19-11-2026)
+
+### Persistencia de tema
+
+Se detectó que `localStorage` está separado por el origen `http://127.0.0.1:<puerto>`
+y el puerto de Django cambia en cada arranque. El tema se perdía entre sesiones.
+Se añadió `electron/theme-preference.js`:
+
+- guarda `ui-preferences.json` dentro de `CODEGUARD_DATA_DIR`;
+- valida el tema contra los 12 identificadores oficiales;
+- escribe de forma atómica y lo expone por IPC (`get-theme`/`set-theme`);
+- el renderer lo aplica al cargar y mantiene `localStorage` como caché del origen.
+
+Verificado en AppImage con dos arranques consecutivos: `fantasy` persistió tras
+cerrar y volver a abrir el paquete.
+
+### Aceptación Windows en CI
+
+`scripts/windows-acceptance.ps1` ejecuta sobre `windows-latest`:
+
+1. instalación silenciosa del NSIS;
+2. primer arranque, health check y cinco rutas;
+3. tema persistido tras reiniciar;
+4. progreso local sembrado y verificado tras reiniciar;
+5. cierre sin procesos huérfanos;
+6. desinstalación silenciosa;
+7. arranque y cierre del portable.
+
+Run `44574923603`: **7/7 fases correctas**. No sustituye una instalación en
+hardware Windows real. `runAfterFinish=false` evita que el instalador abra la
+aplicación durante la prueba.
+
+### Roadmap ASCENSO 3.1
+
+- DOCX maestro localizado en
+  `/home/mvxbms/Descargas/PROYECTO_ASCENSO_Roadmap_Maestro_Consolidado_3_1_2026.docx`.
+- SHA-256 `15a9ef38c7284de79eedd1ba10ef33cc50b324c9706836740205778eea4704d3`;
+  coincide con `metadata.sha256_fuente`.
+- El proyecto de la etapa 10 se corrigió de 4.739 a 136 caracteres; el extractor
+  absorbía `Ampliación de profundidad`. Se conservaron los 7 prerrequisitos.
+- Inventario completo en `docs/ROADMAP_ASCENSO_INVENTARIO.md`.
+- Etapa 25 sin objetivo formal en el DOCX; propuesta documentada, no publicada.
+- Perfil limpio: 33 etapas, 212 módulos, 1.946 títulos, **0 contenidos de lección,
+  0 ejemplos, 0 ejercicios y 0 quizzes**. La estructura no equivale a contenido
+  cursable completo.
+
+### Artefactos y CI final
+
+- Servidor: `c21ff228b40fab302a8081532e227feb3efe54a16194d19b7bbf667f7e84ea53`.
+- AppImage: `f016dca4055c94f240237ec8c83618b0f79c3155a344d4a5f63d70b6639b229b`.
+- CI push `e4599aa`: run `44576601446`, **4/4 jobs verdes** (Django, Electron,
+  PyInstaller y Windows x64).
+- `npm audit --omit=dev`: 0 vulnerabilidades de producción. El audit completo
+  mantiene 6 avisos moderados en la cadena de build de electron-builder; no se
+  fuerza un override no verificado.

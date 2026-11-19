@@ -7,6 +7,8 @@ Esta carpeta contiene la documentación técnica, funcional, de operación y ace
 | Documento | Uso |
 |---|---|
 | [Estado de beta y continuidad](continuidad/ESTADO_BETA_2026-11-19.md) | Estado vigente, evidencia ejecutada, bloqueos y siguiente paso |
+| [Estado de ejecución](PROJECT_EXECUTION_STATUS.md) | Fase, cambios, pruebas y riesgos de la iteración actual |
+| [Inventario ASCENSO 3.1](ROADMAP_ASCENSO_INVENTARIO.md) | Fuente oficial, correspondencia y estado de las 33 etapas |
 | [Plan maestro](PLAN_MAESTRO_CODEGUARD.md) | Visión, fases, entregables y criterios de aceptación |
 | [Arquitectura](ARQUITECTURA.md) | Componentes, límites y decisiones técnicas |
 | [Estructura del repositorio](ESTRUCTURA_REPOSITORIO.md) | Ubicación y responsabilidad de carpetas |
