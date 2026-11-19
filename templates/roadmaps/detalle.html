@@ -185,13 +185,14 @@
 
     <section class="glass-card side-card cg-card">
       <h3><i class="fa-solid fa-clipboard-check"></i> Criterios de finalización</h3>
+      <p class="muted">En esta beta personal, la evidencia de proyectos y criterios manuales es una declaración del estudiante; no existe revisión independiente por un docente. Las evaluaciones automáticas se califican por separado.</p>
       {% for criterio in criterios %}
         <div class="criterio" style="padding:.6rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
           <div style="display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;">
             <strong>{{ criterio.titulo }}</strong>
             <span class="cg-badge">{{ criterio.get_tipo_display }}</span>
             {% if criterio.satisfecho %}
-              <span class="cg-badge cg-badge-success"><i class="fa-solid fa-check" aria-hidden="true"></i> Satisfecho</span>
+              <span class="cg-badge cg-badge-success"><i class="fa-solid fa-check" aria-hidden="true"></i> Evidencia registrada</span>
             {% elif criterio.obligatorio %}
               <span class="cg-badge cg-badge-warning"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> Pendiente</span>
             {% else %}
@@ -206,10 +207,10 @@
             <form method="post" action="{% url 'roadmaps:registrar_criterio' etapa.numero criterio.id %}" style="margin-top:.5rem;">
               {% csrf_token %}
               <input type="hidden" name="origen" value="{{ criterio.tipo }}">
-              <label for="evidencia-{{ criterio.id }}" class="muted" style="display:block; font-size:.9rem;">Registrar evidencia/cumplimiento</label>
-              <textarea id="evidencia-{{ criterio.id }}" name="evidencia" rows="2" class="form-control" maxlength="5000" required placeholder="Describe brevemente la evidencia o verificación realizada" style="width:100%; margin:.25rem 0;"></textarea>
+              <label for="evidencia-{{ criterio.id }}" class="muted" style="display:block; font-size:.9rem;">Registrar tu evidencia (autodeclaración)</label>
+              <textarea id="evidencia-{{ criterio.id }}" name="evidencia" rows="2" class="form-control" maxlength="5000" required placeholder="Describe qué realizaste y cómo puedes comprobarlo" style="width:100%; margin:.25rem 0;"></textarea>
               <button type="submit" class="btn btn-sm cg-btn cg-btn-secondary">
-                <i class="fa-solid fa-check-double" aria-hidden="true"></i> Marcar criterio cumplido
+                <i class="fa-solid fa-check-double" aria-hidden="true"></i> Registrar evidencia
               </button>
             </form>
           {% elif not criterio.satisfecho and bloqueada %}
