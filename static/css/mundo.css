@@ -1,0 +1,283 @@
+/* Mundo CodeGuard — capa visual sobre las variables de tema existentes. */
+
+.mundo-shell {
+  --mundo-borde: var(--cg-border, #cbd5e1);
+  --mundo-panel: var(--cg-surface, #ffffff);
+  --mundo-texto: var(--cg-text, #0f172a);
+  color: var(--mundo-texto);
+}
+
+.mundo-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.mundo-brand {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+}
+
+.mundo-brand-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 2px solid var(--cg-primary, #2563eb);
+  color: var(--cg-primary, #2563eb);
+  font-size: 1.1rem;
+  background: color-mix(in srgb, var(--cg-primary, #2563eb) 12%, transparent);
+}
+
+.mundo-brand strong { display: block; font-size: 1.05rem; }
+.mundo-brand small { color: var(--cg-text-muted, #64748b); }
+
+.mundo-hud {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mundo-chip {
+  border: 1px solid var(--mundo-borde);
+  padding: .35rem .6rem;
+  font-size: .82rem;
+  background: var(--mundo-panel);
+}
+
+.mundo-icon-btn {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--mundo-borde);
+  background: var(--mundo-panel);
+  color: var(--mundo-texto);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.mundo-icon-btn:hover,
+.mundo-icon-btn:focus-visible {
+  border-color: var(--cg-border-focus, #2563eb);
+  outline: 2px solid var(--cg-border-focus, #2563eb);
+  outline-offset: 1px;
+}
+
+.mundo-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.mundo-stage-wrap {
+  position: relative;
+  border: 3px solid var(--mundo-borde);
+  background: #0b1220;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+#mundoCanvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: #78a75a;
+  touch-action: none;
+}
+
+.mundo-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: .75rem;
+  text-align: center;
+  padding: 1rem;
+  background: color-mix(in srgb, #0b1220 82%, transparent);
+  color: #f8fafc;
+  z-index: 4;
+}
+
+.mundo-error { background: color-mix(in srgb, #7f1d1d 88%, transparent); }
+.mundo-error p { max-width: 36rem; }
+
+.mundo-spinner {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  border: 3px solid rgba(255, 255, 255, .2);
+  border-top-color: #93c5fd;
+  border-radius: 50%;
+  animation: mundo-spin .9s linear infinite;
+}
+
+@keyframes mundo-spin { to { transform: rotate(360deg); } }
+
+.mundo-dialogo,
+.mundo-panel {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  width: min(600px, calc(100% - 2rem));
+  max-height: 70%;
+  overflow: auto;
+  border: 3px solid var(--mundo-borde);
+  background: var(--mundo-panel);
+  color: var(--mundo-texto);
+  padding: 1rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .28);
+}
+
+.mundo-panel {
+  top: 1rem;
+  bottom: auto;
+  max-height: calc(100% - 2rem);
+}
+
+.mundo-dialogo-cabeza {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+  border-bottom: 1px solid var(--mundo-borde);
+  padding-bottom: .35rem;
+  margin-bottom: .5rem;
+}
+
+.mundo-dialogo p { margin: .5rem 0 1rem; line-height: 1.55; }
+
+.mundo-dialogo-acciones,
+.mundo-pausa-acciones {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.mundo-pausa-ayuda {
+  border-top: 1px solid var(--mundo-borde);
+  margin-top: 1rem;
+  padding-top: .75rem;
+  font-size: .9rem;
+}
+
+.mundo-minijuego form { display: grid; gap: 1rem; }
+.mundo-minijuego fieldset { border: 1px solid var(--mundo-borde); padding: .75rem; }
+.mundo-minijuego legend { font-weight: 700; padding: 0 .35rem; }
+.mundo-minijuego label { display: block; margin: .3rem 0; cursor: pointer; }
+.mundo-minijuego-error { color: #b91c1c; font-weight: 700; margin-top: .75rem; }
+
+.mundo-sidebar { display: grid; gap: 1rem; }
+.mundo-sidebar h2 { margin: 0 0 .6rem; font-size: 1rem; }
+
+.mundo-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: .55rem;
+}
+
+.mundo-lista li {
+  border: 1px solid var(--mundo-borde);
+  padding: .55rem;
+  background: color-mix(in srgb, var(--cg-surface, #fff) 88%, transparent);
+}
+
+.mundo-mision-cabeza {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem;
+  align-items: center;
+}
+
+.mundo-mision-estado {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border: 1px solid var(--mundo-borde);
+  padding: .15rem .3rem;
+  white-space: nowrap;
+}
+
+.mundo-mision-estado[data-estado="completada"] { border-color: #15803d; color: #15803d; }
+.mundo-mision-estado[data-estado="lista"] { border-color: #b45309; color: #b45309; }
+.mundo-mision-desc { margin: .35rem 0 0; font-size: .86rem; color: var(--cg-text-muted, #64748b); }
+.mundo-mision-recompensa { margin: .25rem 0 0; font-size: .78rem; color: var(--cg-text-muted, #64748b); }
+
+.mundo-vacio { color: var(--cg-text-muted, #64748b); font-size: .9rem; }
+
+.mundo-ayuda { font-size: .9rem; margin: 0 0 .6rem; }
+.mundo-ayuda kbd {
+  border: 1px solid var(--mundo-borde);
+  border-bottom-width: 2px;
+  padding: 0 .25rem;
+  background: color-mix(in srgb, var(--mundo-texto) 8%, transparent);
+  font-size: .82rem;
+}
+
+.mundo-estado {
+  min-height: 1.4rem;
+  margin: .6rem 0 0;
+  font-size: .85rem;
+  color: var(--cg-text-muted, #64748b);
+}
+
+.mundo-controles-tactiles {
+  display: none;
+  position: absolute;
+  inset: auto .5rem .5rem .5rem;
+  justify-content: space-between;
+  align-items: end;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.mundo-controles-tactiles button {
+  pointer-events: auto;
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(255, 255, 255, .65);
+  background: rgba(15, 23, 42, .72);
+  color: #fff;
+  font-weight: 700;
+}
+
+.mundo-controles-tactiles button[data-mundo-dir="up"] { grid-area: up; }
+.mundo-controles-tactiles button[data-mundo-dir="left"] { grid-area: left; }
+.mundo-controles-tactiles button[data-mundo-dir="down"] { grid-area: down; }
+.mundo-controles-tactiles button[data-mundo-dir="right"] { grid-area: right; }
+.mundo-controles-tactiles button[data-mundo-action] { align-self: end; }
+
+@media (max-width: 980px) {
+  .mundo-layout { grid-template-columns: 1fr; }
+  .mundo-sidebar { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .mundo-brand small { display: none; }
+  .mundo-hud .mundo-chip { font-size: .72rem; }
+  .mundo-controles-tactiles {
+    display: grid;
+    grid-template-areas: ". up ." "left down right";
+    grid-template-columns: repeat(3, 44px);
+    gap: .3rem;
+  }
+  .mundo-dialogo, .mundo-panel { bottom: .5rem; width: calc(100% - 1rem); }
+  .mundo-panel { top: .5rem; }
+  .mundo-dialogo p { font-size: .92rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mundo-spinner { animation: none; }
+  #mundoCanvas { scroll-behavior: auto; }
+}

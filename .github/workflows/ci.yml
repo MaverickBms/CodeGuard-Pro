@@ -177,6 +177,13 @@ jobs:
           node --check electron/restore-backup.js
           node --check electron/theme-preference.js
           node --check scripts/cdp-smoke.js
+          node --check static/js/mundo/model.js
+          node --check static/js/mundo/world.js
+          node --check static/js/mundo/sprites.js
+          node --check static/js/mundo/game.js
 
       - name: Run Electron unit tests
         run: npm run test:electron
+
+      - name: Run Mundo CodeGuard model tests
+        run: npm run test:mundo

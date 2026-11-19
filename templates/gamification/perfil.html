@@ -6,6 +6,14 @@
 {% block page_subtitle %}Perfil, recompensas e historial{% endblock %}
 
 {% block content %}
+<section class="glass-card cg-card" style="margin-bottom:1rem; display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:center;">
+  <div>
+    <h2 style="margin:0;"><i class="fa-solid fa-gamepad" aria-hidden="true"></i> Mundo CodeGuard</h2>
+    <p class="muted" style="margin:.35rem 0 0;">Explora la Aldea del Método y completa misiones narrativas.</p>
+  </div>
+  <a class="btn cg-btn cg-btn-primary" href="{% url 'gamification:mundo' %}">Entrar al mundo</a>
+</section>
+
 <section class="glass-card cg-card" style="margin-bottom:1rem;">
   <h2 style="margin-top:0;"><i class="fa-solid fa-coins" aria-hidden="true"></i> Perfil de recompensas</h2>
   {% if perfil_gamificacion %}

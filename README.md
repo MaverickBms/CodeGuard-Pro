@@ -65,7 +65,18 @@ El texto es blanco/negro según la luminancia para garantizar **WCAG AA
 botones, bordes, focus). Se respeta `prefers-reduced-motion` y no se usa
 `transition: all`.
 
-### 6. Autenticación (temporalmente desactivada)
+### 6. Mundo CodeGuard
+
+Acceso desde **Mundo CodeGuard** en la barra lateral o desde Gamificación.
+Incluye una región piloto pixel art (Aldea del Método), tres NPC, diálogos,
+dos misiones narrativas, un minijuego de depuración validado en servidor,
+inventario, XP, guardado local, pausa, audio y controles táctiles.
+
+El mundo es una capa motivacional: **no modifica el progreso académico ni
+concede aprobaciones**. La etapa 0 real del roadmap se muestra como vínculo.
+Consulta [la arquitectura y limitaciones](docs/MUNDO_CODEGUARD.md).
+
+### 7. Autenticación (temporalmente desactivada)
 
 El flujo de autenticación original queda preservado y no se ha eliminado:
 
@@ -219,16 +230,19 @@ python manage.py makemigrations --check --dry-run --settings=config.settings.dev
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges --settings=config.settings.development
 ```
 
-Resultado verificado en este repositorio (19-11-2026): **292 pruebas OK** en
+Resultado verificado en este repositorio (19-11-2026): **298 pruebas OK** en
 `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`,
 `apps.gamification` y `apps.challenges`, con
 `--settings=config.settings.development` (system check 0 incidencias y
 migraciones al día). Las pruebas incluyen restauración de backups, cabeceras
 CSP, contraste WCAG de los 12 temas e índices de evaluaciones/evidencias.
 `npm run test:electron` ejecuta las 20 pruebas de IPC, restauración y
-persistencia de tema de escritorio. Las cifras históricas de 245/197/138 quedan sustituidas por esta
-línea base reproducible. El inventario académico y los hallazgos editoriales
-están en [docs/ROADMAP_ASCENSO_INVENTARIO.md](docs/ROADMAP_ASCENSO_INVENTARIO.md).
+persistencia de tema; `npm run test:mundo` ejecuta las 7 pruebas del modelo
+del Mundo CodeGuard. Las cifras históricas de 245/197/138 quedan sustituidas por esta
+línea base reproducible (298 Django + 27 Node). El inventario académico y los
+hallazgos editoriales están en
+[docs/ROADMAP_ASCENSO_INVENTARIO.md](docs/ROADMAP_ASCENSO_INVENTARIO.md); el mundo
+jugable, en [docs/MUNDO_CODEGUARD.md](docs/MUNDO_CODEGUARD.md).
 
 ## ❓ Solución de problemas
 

@@ -161,6 +161,13 @@ def panel(request):
                     "implementado": True,
                 },
                 {
+                    "titulo": "Mundo CodeGuard",
+                    "descripcion": "Explora la Aldea del Método, conversa y completa misiones.",
+                    "url": "gamification:mundo",
+                    "icono": "🎮",
+                    "implementado": True,
+                },
+                {
                     "titulo": "Laboratorios",
                     "descripcion": "Guías, pasos y registro de resultados.",
                     "url": "labs:lista",
