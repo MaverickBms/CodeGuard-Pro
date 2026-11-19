@@ -207,7 +207,7 @@
               {% csrf_token %}
               <input type="hidden" name="origen" value="{{ criterio.tipo }}">
               <label for="evidencia-{{ criterio.id }}" class="muted" style="display:block; font-size:.9rem;">Registrar evidencia/cumplimiento</label>
-              <textarea id="evidencia-{{ criterio.id }}" name="evidencia" rows="2" class="form-control" placeholder="Describe brevemente la evidencia o verificación realizada" style="width:100%; margin:.25rem 0;"></textarea>
+              <textarea id="evidencia-{{ criterio.id }}" name="evidencia" rows="2" class="form-control" maxlength="5000" required placeholder="Describe brevemente la evidencia o verificación realizada" style="width:100%; margin:.25rem 0;"></textarea>
               <button type="submit" class="btn btn-sm cg-btn cg-btn-secondary">
                 <i class="fa-solid fa-check-double" aria-hidden="true"></i> Marcar criterio cumplido
               </button>
