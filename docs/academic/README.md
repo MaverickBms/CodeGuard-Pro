@@ -13,7 +13,8 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 | Etapa 0 · Módulo 0.4 — Depuración | Borrador v0.1.0 |
 | Etapa 1 · Módulos 1.1–1.5 — Hardware, representación, arquitectura, arranque y memoria | Borradores didácticos v0.1.0 |
 | Etapa 2 · Pensamiento computacional, lógica y matemáticas | Borrador didáctico v0.1.0 |
-| Etapas 3–32 | Pendiente |
+| Etapa 3 · Programación desde cero con Java | Borrador didáctico v0.1.0 |
+| Etapas 4–32 | Pendiente |
 
 ## Archivos
 
@@ -29,6 +30,7 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 - [Etapa 1 · Módulo 1.4 — Arranque](ascenso-3.1/etapa-01/modulo-1.4-arranque.md)
 - [Etapa 1 · Módulo 1.5 — Memoria](ascenso-3.1/etapa-01/modulo-1.5-memoria.md)
 - [Etapa 2 — Pensamiento computacional, lógica y matemáticas](ascenso-3.1/etapa-02/pensamiento-computacional-logica-matematicas.md)
+- [Etapa 3 — Programación desde cero con Java](ascenso-3.1/etapa-03/programacion-desde-cero-java.md)
 
 ## Política de publicación
 
