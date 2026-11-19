@@ -84,3 +84,30 @@ La política se corrigió en los documentos editoriales: el audio hablado debe s
 - Documento maestro y JSON curricular modificados por esta rama: no.
 
 La prioridad siguiente es obtener un manifiesto curricular real y desarrollar contenido a nivel de lección, no declarar completado el roadmap por la mera existencia de 33 archivos.
+
+## 6. Exportador de manifiesto de solo lectura añadido
+
+Se añadió `apps.roadmaps.management.commands.exportar_manifiesto_academico` junto con pruebas Django en `apps/roadmaps/tests/test_exportar_manifiesto_academico.py`.
+
+El comando:
+- Selecciona el roadmap por nombre y edición exactos.
+- Exporta jerarquía de etapas, módulos y lecciones.
+- Incluye los UUID estables existentes de lecciones, ejemplos y ejercicios.
+- Puede incluir el catálogo de fuentes registradas y su estado de licencia.
+- No exporta progreso, cuentas, contraseñas ni datos de usuarios.
+- No crea ni actualiza registros de la base de datos.
+- Por defecto imprime JSON en stdout; con `--salida` crea un archivo nuevo y se niega a sobrescribir uno existente.
+
+Ejemplo de ejecución en una instalación de desarrollo o una copia controlada de la base de datos:
+
+```bash
+python manage.py exportar_manifiesto_academico \
+  --nombre "NOMBRE EXACTO DEL ROADMAP EN LA INSTALACIÓN" \
+  --edicion "3.1" \
+  --salida ./var/ascenso-manifest.json \
+  --incluir-fuentes
+```
+
+El directorio `./var` debe existir y el archivo de salida no debe existir. Se recomienda ejecutar primero en una copia de la base de datos y almacenar el manifiesto en una ubicación privada, pues contiene identificadores internos de contenido. No subir ese manifiesto con UUID de una instalación real a un repositorio público.
+
+**Verificación:** el código y las pruebas fueron añadidos a la rama, pero no se ejecutó Django ni CI desde esta sesión. Por tanto, la funcionalidad permanece pendiente de ejecución automatizada y validación en la instalación de destino.
