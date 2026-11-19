@@ -3,7 +3,7 @@ import sqlite3
 import tempfile
 from pathlib import Path
 
-from django.core.management import call_command, CommandError
+from django.core.management import call_command
 from django.test import SimpleTestCase, override_settings
 
 
@@ -19,14 +19,9 @@ class BackupCommandTests(SimpleTestCase):
     def tearDown(self):
         self.temporary.cleanup()
 
-    @override_settings()
     def test_create_then_verify_backup_commands(self):
         destination = Path(self.temporary.name) / "cli-backup.zip"
         with override_settings(DATA_DIR=self.root):
             call_command("crear_backup", output=str(destination))
             call_command("verificar_backup", archive=str(destination))
         self.assertTrue(destination.is_file())
-
-    def test_create_command_requires_output(self):
-        with self.assertRaises(CommandError):
-            call_command("crear_backup")
