@@ -22,6 +22,8 @@ Todos los cambios notables del proyecto se documentan aquí.
 - `manage.py check` sin incidencias y migraciones al día.
 - AppImage Linux reconstruido; E2E con health check, cinco rutas HTTP 200,
   persistencia de tema y cierre sin procesos huérfanos.
+- CI compila y publica instalador NSIS y portable Windows x64 como artefacto
+  `codeguard-windows-x64`; instalación limpia pendiente en host Windows.
 - Restauración real y arranque del servidor empaquetado sobre el perfil restaurado.
 
 ### Pendiente

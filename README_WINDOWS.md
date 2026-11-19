@@ -80,8 +80,8 @@ pruebas antes de distribuir.
 
 | Plataforma | Artefacto configurado | Estado |
 |---|---|---|
-| Windows x64 | NSIS installer + portable | Objetivos configurados; build real, instalación limpia y primer arranque pendientes |
-| Linux x64 | AppImage | Build definido; aceptación GUI y offline E2E pendientes |
+| Windows x64 | NSIS installer + portable | **Compilación CI verificada** (job `windows-package`, artefacto `codeguard-windows-x64`); instalación limpia y primer arranque en host Windows pendientes |
+| Linux x64 | AppImage | **Build y E2E verificados** (health check, rutas principales, tema y cierre sin huérfanos); aceptación en equipo limpio pendiente |
 | macOS | No configurado | No soportado/validado todavía |
 | ARM64 | No configurado | No soportado/validado todavía |
 

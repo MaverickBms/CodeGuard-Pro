@@ -463,12 +463,14 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
 
 ### Commits de la rama
 
-`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`, `880fbff`, `02f9583`, `fb32d3f`, `48afb1e`, `ad99b7e`, `70ae225`.
+`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`, `880fbff`, `02f9583`, `fb32d3f`, `48afb1e`, `ad99b7e`, `70ae225`, `fc2fb97`, `ee04cb9`, `8663968`, `9e54207`.
 
 ### Pendientes y bloqueos
 
-- **Windows:** build, instalación y aceptación E2E no ejecutados en este equipo
-  Linux. No declarar aceptación Windows.
+- **Windows:** la compilación ya está verificada en CI (job `windows-package`,
+  artefacto `codeguard-windows-x64` con instalador NSIS y portable). La
+  instalación limpia y el primer arranque en un host Windows real siguen
+  pendientes; no declarar aceptación Windows.
 - **GitHub Actions:** resuelto. El fallo con `jobs=[]` se debía a que el
   workflow usaba `${{ runner.temp }}` en `jobs.<id>.env`, un contexto inválido
   que GitHub rechazaba antes de crear jobs. Se sustituyó por rutas `/tmp/...`
@@ -490,8 +492,10 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
   (`minimatch`/`@electron/universal`), no incluidos en el runtime empaquetado.
   No se fuerza una actualización rota; se documenta como riesgo de herramienta
   de compilación.
-- CI incorpora un job `packaging` que compila el servidor PyInstaller y ejecuta
-  un smoke test de primer arranque, health check y modo de sincronización.
+- CI incorpora jobs `packaging` y `windows-package`. El primero compila el
+  servidor PyInstaller y ejecuta un smoke test de primer arranque, health check y
+  modo de sincronización. El segundo compila en `windows-latest` el servidor
+  `.exe`, el instalador NSIS y el portable, y los publica como artefacto.
 - La suite Django (291) y las pruebas Electron (15) se repitieron tras la
   actualización de dependencias y el rebuild de artefactos.
 
@@ -504,11 +508,20 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
 - Rama `documentation` publicada de nuevo, sincronizada con el código del RC.
 - Diagnóstico de Actions: el workflow era inválido por `runner.temp` en el
   `env` del job. GitHub creaba un run `failure` sin jobs. Corregido en
-  `ad99b7e`; tras `70ae225` (paquetes regulares para Python 3.12), los tres
-  jobs pasan:
-  - Django checks and test suite.
-  - Electron IPC unit tests.
-  - PyInstaller server build and smoke test.
-- Evidencia: runs `44552242626` (push) y `44552252703` (pull_request), ambos
-  `completed / success`.
+  `ad99b7e`; tras `70ae225` (paquetes regulares para Python 3.12), los jobs
+  de Linux pasan. El build Windows falló primero por `py -3` sin PyInstaller
+  (`ee04cb9`) y después por publicación implícita sin token (`8663968`).
+- Evidencia final (run `44554972353`, push de `8663968`): **4/4 jobs en verde**,
+  incluido `Windows x64 package`. Artefacto `codeguard-windows-x64`
+  (274.774.033 bytes) con instalador NSIS y portable x64.
 - **No se fusiona el PR ni se crea release/tag** sin autorización expresa.
+
+
+### Windows x64 en CI
+
+El job `windows-package` se ejecuta en `windows-latest` para `release/1.0.0` y
+`workflow_dispatch`. Genera `CodeGuardServer.exe` con PyInstaller, verifica su
+hash mediante `verify:server`, produce instalador NSIS y portable con
+electron-builder y sube `dist/*.exe` como artefacto. La compilación está
+verificada; **la instalación limpia, el primer arranque y el cierre en Windows
+siguen pendientes de una máquina Windows real**.

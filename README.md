@@ -94,7 +94,13 @@ ni cambios de esquema.
 
 ## Estado de distribución (QA 16-11-2026)
 
-La compilación Linux x64 y la configuración de build Windows existen, pero la instalación limpia y el primer arranque todavía requieren aceptación. No distribuir como versión estable hasta corregir la inicialización de datos y completar las pruebas de escritorio/offline. Consulta el informe QA integral en la rama `documentation`.
+El AppImage Linux x64 se compiló y verificó con un E2E sobre perfil temporal:
+health check, rutas principales, persistencia de tema y cierre sin procesos
+huérfanos. El job `windows-package` de CI generó instalador NSIS y portable x64
+como artefacto `codeguard-windows-x64`. **La instalación limpia y el primer
+arranque en un host Windows real siguen pendientes de aceptación**, al igual
+que la matriz en equipos limpios. No distribuir como versión estable hasta
+completar esas pruebas. Consulta el informe QA en la rama `documentation`.
 
 ## ⚡ Instalación rápida
 
