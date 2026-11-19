@@ -407,3 +407,5 @@ Sigue sin existir cotejo semántico con el DOCX maestro ASCENSO 3.1. Se mantiene
 
 ### CI: resultado observado tras la última publicación
 La consulta directa de GitHub Actions para el HEAD e13a3897fc8c0e1203e53819b686635c32e587f4 encontró el run 44452070470 (evento push), concluido como failure con total_count=0 y jobs=[]. No se ejecutó ningún job; por tanto no es un fallo demostrado de las pruebas ni una aprobación. La consulta resumida de runs por commit no incluye este evento push, por lo que para auditoría se debe consultar la lista de Actions runs directamente. La causa del run sin jobs sigue sin estar expuesta en la respuesta disponible.
+
+- Se confirmó que los commits de código 7889e4d, 754d19b y 395c687 generan runs push 44451957786, 44452032907 y 44452044606 respectivamente; los tres terminan en failure con cero jobs. No hay logs ni jobs para determinar la causa. El run 44452070470 del commit documental posterior también fue failure sin jobs. No debe interpretarse como que los tests de código hayan fallado: no llegaron a ejecutarse.
