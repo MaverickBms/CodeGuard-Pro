@@ -35,7 +35,7 @@ El equipo destino que instala un paquete final no debería necesitar Python, Nod
 | `electron/main.js` | Ciclo de vida Electron, servidor local, ventana y sincronización opcional |
 | `server_entry.py` | Entrada del servidor Django empaquetado |
 | `requirements.txt` | Dependencias Python fijadas |
-| `docs/INFORME_QA_INTEGRAL_2026-11-16.md` | Hallazgos, riesgos y criterios de liberación |
+| [Informe QA integral](https://github.com/MaverickBms/CodeGuard-Pro/blob/documentation/docs/INFORME_QA_INTEGRAL_2026-11-16.md) | Hallazgos, riesgos y criterios de liberación |
 
 ## Construcción
 
