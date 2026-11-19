@@ -6,6 +6,8 @@ from django.test import TestCase
 
 from apps.audit.models import AuditLog
 from apps.roadmaps.models import (
+    CriterioFinalizacion,
+    CumplimientoCriterio,
     Etapa,
     Modulo,
     Pregunta,
@@ -15,7 +17,7 @@ from apps.roadmaps.models import (
     Prerrequisito,
     Roadmap,
 )
-from apps.roadmaps.services_evaluacion import evaluar_quiz
+from apps.roadmaps.services_evaluacion import evaluar_quiz, registrar_cumplimiento_criterio
 
 
 class QuizPreguntaModelTests(TestCase):
@@ -698,5 +700,44 @@ class QuizBlockedSubmissionTests(TestCase):
         self.assertFalse(
             ResultadoEvaluacion.objects.filter(
                 quiz=self.quiz, usuario=self.usuario
+            ).exists()
+        )
+
+
+
+
+class BlockedStageCriterionTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="estudiante-criterio-bloqueado", password="ClaveSegura123!"
+        )
+        roadmap = Roadmap.objects.create(
+            nombre="ASCENSO criterio bloqueado", edicion="test"
+        )
+        prerequisito = Etapa.objects.create(
+            roadmap=roadmap, numero=0, titulo="Prerrequisito"
+        )
+        self.etapa = Etapa.objects.create(
+            roadmap=roadmap, numero=1, titulo="Etapa bloqueada"
+        )
+        Prerrequisito.objects.create(
+            etapa=self.etapa, etapa_requerida=prerequisito,
+            justificacion="Debe completarse antes.",
+        )
+        self.criterio = CriterioFinalizacion.objects.create(
+            etapa=self.etapa, titulo="Proyecto de etapa",
+            descripcion="Presentar evidencia.", tipo="proyecto",
+            obligatorio=True, orden=1,
+        )
+
+    def test_criterio_de_etapa_bloqueada_no_acepta_evidencia(self):
+        with self.assertRaisesMessage(ValidationError, "prerrequisitos"):
+            registrar_cumplimiento_criterio(
+                self.usuario, self.criterio,
+                evidencia="Evidencia anticipada.", origen="proyecto",
+            )
+        self.assertFalse(
+            CumplimientoCriterio.objects.filter(
+                usuario=self.usuario, criterio=self.criterio
             ).exists()
         )
