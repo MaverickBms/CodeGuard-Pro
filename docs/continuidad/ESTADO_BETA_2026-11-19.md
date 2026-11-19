@@ -16,7 +16,7 @@
 - Las notificaciones limitan título (120 caracteres) y cuerpo (1000 caracteres), y utilizan el icono local de la aplicación.
 - Se añadieron seis casos de regresión en `electron/ipc-security.test.js` y el comando `npm run test:electron`.
 - Se añadió `.github/workflows/ci.yml` para checks Django, migraciones, suite Django y pruebas IPC. En la revisión del 19-11 se amplió el trigger `push` a todas las ramas y se añadieron verificaciones de sintaxis Python y JavaScript antes de ejecutar las suites.
-- Se corrigió el script `codeguard`: ahora exporta `CODEGUARD_DATA_DIR` inmediatamente después de crear el directorio de datos y antes de ejecutar `migrate` y `cargar_ascenso`. Electron hereda la misma variable al iniciar el AppImage. No se usa `--recrear`.
+- Los lanzadores Linux `codeguard` y `run.sh` se ajustaron posteriormente para detectar el AppImage x64 y delegar la inicialización del perfil en el servidor empaquetado; ya no ejecutan migraciones con un Python externo.
 - Se actualizó este documento y la descripción del PR con los hallazgos y límites de verificación.
 
 ## 2. Evidencia y límites de verificación
@@ -66,9 +66,9 @@ El endpoint `config/health.py` comprueba DB, migraciones pendientes y existencia
 
 ### Corrección del launcher `codeguard`
 
-La versión anterior inicializaba Django sin exportar `CODEGUARD_DATA_DIR`, por lo que podía crear/usar `BASE_DIR/data` mientras el AppImage recibía otro directorio. La corrección ya está publicada en esta rama y garantiza que las operaciones previas y Electron hereden el mismo path.
+El launcher ya no inicializa Django por separado con el entorno de desarrollo. `run.sh` exporta `CODEGUARD_DATA_DIR` y el AppImage hereda esa variable; `server_entry.py` ejecuta `migrate` y `cargar_ascenso` en el proceso empaquetado antes de iniciar Waitress. Así se evita exigir Python/Node externos y se mantiene un solo punto de inicialización.
 
-**Estado de validación:** corrección inspeccionada estáticamente; aún no se ejecutó el script en Linux con un perfil temporal. Debe probarse que ambas fases usan el mismo directorio y que la carga idempotente conserva progreso existente.
+**Estado de validación:** corrección inspeccionada estáticamente; aún no se ejecutó el AppImage en Linux con un perfil temporal. Debe probarse que el servidor empaquetado escribe en el directorio esperado y que la carga idempotente conserva progreso existente.
 
 ## 3. Hallazgos operativos abiertos
 
@@ -131,7 +131,7 @@ Esto no significa que el proyecto no pueda ejecutarse en el equipo del propietar
 ## 8. Próximo bloque recomendado
 
 1. Diagnosticar en GitHub por qué las quince ejecuciones de Actions terminaron en failure sin jobs visibles y por qué `paths-ignore` no evita las ejecuciones documentales.
-2. Ejecutar el launcher `codeguard` con un directorio temporal y confirmar que migrate, carga ASCENSO y AppImage comparten `CODEGUARD_DATA_DIR`.
+2. Generar y ejecutar el AppImage Linux en un perfil temporal; confirmar que el servidor empaquetado ejecuta migraciones/carga ASCENSO dentro del `CODEGUARD_DATA_DIR` exportado por `run.sh`.
 3. Probar `server_entry.py` en un directorio vacío y otro con datos de prueba existentes, verificando idempotencia y preservación.
 4. Ejecutar en el entorno del proyecto: `pip check`, `manage.py check`, `makemigrations --check --dry-run`, las siete apps de pruebas Django, `node --check` y `npm run test:electron`.
 5. Ejecutar la aceptación GUI/offline/persistencia/cierre en Linux y la instalación limpia Windows si esa es la plataforma de presentación.
