@@ -119,3 +119,14 @@ Inspección estática de `release/1.0.0` (19-11-2026) confirmó que el proyecto 
 ### Restricciones de implementación
 
 Esta revisión fue de código fuente en GitHub, no una ejecución de la aplicación. Antes de modificar modelos o vistas se debe revisar el flujo completo de versiones, aprobaciones, distribución y permisos; añadir pruebas unitarias, de integración y de interfaz; y ejecutar los checks del proyecto. No se declara implementada ni probada ninguna función nueva por el hecho de documentarla.
+
+
+## Guía de subtítulos para estudiantes
+
+En YouTube, abrir el video → seleccionar **Configuración** → **Subtítulos/CC** → elegir **Español**. Si no aparece, se puede probar **Traducir automáticamente → Español**, siempre que el video tenga una pista de subtítulos disponible. La opción puede no aparecer si el video no ofrece subtítulos.
+
+La traducción automática puede cometer errores; para conceptos técnicos, nombres de APIs, comandos y terminología, contrastar con la explicación escrita y la documentación oficial. No se marcará un video como «subtítulos españoles verificados» solo porque YouTube tenga la opción general de traducción automática: la ficha debe registrar el estado observado en ese video concreto.
+
+**Ayuda oficial de YouTube:**
+- [Administrar la configuración de subtítulos](https://support.google.com/youtube/answer/100078)
+- [Subtítulos automáticos y sus limitaciones](https://support.google.com/youtube/answer/6373554)
