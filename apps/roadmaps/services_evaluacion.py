@@ -17,6 +17,7 @@ from apps.audit.services import registrar_evento
 
 from .models import CumplimientoCriterio, CriterioFinalizacion, Progreso
 from .models_evaluacion import Pregunta, Quiz, ResultadoEvaluacion, ResultadoPregunta
+from .services import etapas_completadas
 
 
 def _normalizar_texto(valor: Any, *, colapsar_espacios: bool = True) -> str:
@@ -166,6 +167,14 @@ def evaluar_quiz(usuario, quiz: Quiz, respuestas_usuario: dict) -> ResultadoEval
         respuestas_usuario = {}
     if not isinstance(respuestas_usuario, dict):
         raise ValidationError("Las respuestas del usuario deben enviarse como un objeto.")
+
+    etapa = quiz.modulo.etapa if quiz.modulo_id else quiz.etapa
+    if etapa is not None and etapa.esta_bloqueada_para(
+        etapas_completadas(usuario, etapa.roadmap)
+    ):
+        raise ValidationError(
+            "No puedes enviar esta evaluación hasta completar los prerrequisitos de la etapa."
+        )
 
     preguntas = list(quiz.preguntas.all())
     total = len(preguntas)
@@ -494,6 +503,22 @@ def registrar_cumplimiento_criterio(
     """Registra evidencia de cumplimiento de un criterio y reevalúa la etapa."""
     if usuario is None or not getattr(usuario, "is_authenticated", False):
         raise ValidationError("Se requiere un usuario autenticado.")
+    if criterio.etapa.esta_bloqueada_para(
+        etapas_completadas(usuario, criterio.etapa.roadmap)
+    ):
+        raise ValidationError(
+            "No puedes registrar criterios de esta etapa hasta completar sus prerrequisitos."
+        )
+    if not isinstance(evidencia, str) or not evidencia.strip():
+        raise ValidationError(
+            "Describe la evidencia realizada antes de marcar el criterio como cumplido."
+        )
+    if len(evidencia) > 5000:
+        raise ValidationError("La evidencia no puede superar los 5.000 caracteres.")
+    if origen not in dict(CumplimientoCriterio.ORIGENES):
+        raise ValidationError("El origen de la evidencia no es válido.")
+    if not isinstance(referencia, str) or len(referencia) > 120:
+        raise ValidationError("La referencia no puede superar los 120 caracteres.")
 
     cumplimiento, _ = CumplimientoCriterio.objects.update_or_create(
         usuario=usuario,

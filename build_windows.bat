@@ -38,6 +38,14 @@ if %ERRORLEVEL%==0 (
     set "PY_CMD=python"
 )
 
+REM --- Verificar version minima de Python ---
+%PY_CMD% -c "import sys; raise SystemExit(0 if sys.version_info >= (3,12) else 1)"
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Se requiere Python 3.12 o superior para compilar CodeGuard Pro.
+    pause
+    exit /b 1
+)
+
 REM --- Verificar Node.js ---
 where node >nul 2>nul
 if %ERRORLEVEL% NEQ 0 (
@@ -48,6 +56,12 @@ if %ERRORLEVEL% NEQ 0 (
 where npm >nul 2>nul
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] npm no esta instalado o no esta en PATH.
+    pause
+    exit /b 1
+)
+node -e "const major = Number(process.versions.node.split('.')[0]); process.exit(major >= 20 ? 0 : 1)"
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Se requiere Node.js 20 o superior para compilar CodeGuard Pro.
     pause
     exit /b 1
 )
@@ -85,14 +99,12 @@ REM La base de datos y ASCENSO se inicializan en el primer arranque del usuario.
 REM build:win genera el servidor con PyInstaller, verifica su hash y solo entonces
 REM permite que electron-builder empaquete el ejecutable recien generado.
 
-echo [INFO] Instalando dependencias Node.js...
-if not exist "node_modules" (
-    call npm install
-    if !ERRORLEVEL! NEQ 0 (
-        echo [ERROR] Fallo npm install.
-        pause
-        exit /b 1
-    )
+echo [INFO] Instalando dependencias Node.js desde package-lock.json...
+call npm ci
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Fallo npm ci. Revisa package-lock.json y la conexion a npm.
+    pause
+    exit /b 1
 )
 
 echo [INFO] Generando servidor y empaquetando Electron para Windows...

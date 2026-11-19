@@ -1,21 +1,48 @@
 # Copias de seguridad y restauración — CodeGuard Pro
 
-> **Estado: creación y verificación del archivo implementadas como servicio interno; restauración e interfaz todavía no implementadas ni disponibles.**
+> **Estado: creación, verificación y restauración implementadas y probadas en Linux.**
 >
-> Este documento fija el contrato mínimo para implementar backup/restore sin poner en riesgo el perfil local. No debe interpretarse como una guía de comandos ejecutables.
+> La restauración sustituye la base y `media/` con staging, validación de
+> esquema, copia de reversión y rollback. En la aplicación empaquetada se
+> invoca desde el menú de Electron; la aceptación en Windows sigue pendiente.
 
 ## Estado real de implementación
 
-El módulo interno `apps/core/backup.py` proporciona `create_backup()` e `inspect_backup()`. Crea un snapshot SQLite mediante la API de backup, incluye `media/`, genera manifiesto SHA-256, verifica CRC e integridad SQLite y publica el ZIP sin sobrescribir un destino existente. Rechaza rutas inseguras, enlaces simbólicos, duplicados y tamaños fuera de los límites configurados. No incluye `.secret_key` ni logs.
+El módulo `apps/core/backup.py` proporciona `create_backup()` e
+`inspect_backup()`. Crea un snapshot SQLite mediante la API de backup, incluye
+`media/`, genera manifiesto SHA-256, verifica CRC e integridad SQLite y publica
+el ZIP sin sobrescribir un destino existente. Rechaza rutas inseguras, enlaces
+simbólicos, duplicados y tamaños fuera de los límites configurados. No incluye
+`.secret_key` ni logs.
 
-Los comandos de administración `crear_backup --output RUTA.zip` y `verificar_backup RUTA.zip` permiten crear y validar el archivo desde un entorno Django. La ruta de destino debe estar fuera del perfil de datos y no puede existir previamente. Ejemplo desde la raíz del proyecto:
+El módulo `apps/core/restore.py` implementa `restore_backup()`:
 
-```bash
-python manage.py crear_backup --output "$HOME/CodeGuard-backup.zip"
-python manage.py verificar_backup "$HOME/CodeGuard-backup.zip"
-```
+- valida el ZIP con `inspect_backup` antes de tocar el perfil;
+- extrae únicamente `database.sqlite3` y `media/**` a un directorio de staging
+  en el mismo volumen;
+- rechaza migraciones desconocidas (esquema futuro) y acepta migraciones
+  pendientes, que se aplican en el siguiente arranque;
+- cierra las conexiones Django, elimina WAL/SHM obsoletos y sustituye base y
+  media mediante renombrados;
+- conserva una copia de reversión del perfil anterior y revierte si falla la
+  verificación final;
+- preserva `.secret_key`, logs y cualquier otro archivo del perfil.
 
-Hay pruebas automatizadas en `apps/core/tests/test_backups.py` y `apps/core/tests/test_backup_commands.py`, pero deben ejecutarse en CI antes de considerar validada esta implementación. Todavía no existe restauración, cifrado de secretos, interfaz de usuario, progreso/cancelación ni prueba empaquetada. Por tanto, el servicio no debe presentarse como una función disponible para usuarios finales.
+Interfaces disponibles:
+
+- `python manage.py crear_backup --output RUTA.zip`
+- `python manage.py verificar_backup RUTA.zip`
+- `python manage.py restaurar_backup RUTA.zip --confirm` (con la aplicación cerrada)
+- Pantalla **Backups** para crear y verificar copias.
+- Menú **CodeGuard Pro → Restaurar copia de seguridad…** en Electron, que
+  detiene Django, ejecuta el modo `--restore-backup` del servidor empaquetado y
+  reinicia la aplicación.
+
+Pruebas automatizadas: `apps/core/tests/test_backups.py`,
+`test_backup_commands.py`, `test_restore.py` y `test_backup_views.py`.
+Verificación manual ejecutada el 19-11-2026 en Linux: backup real, restauración
+en perfil vacío, arranque del servidor empaquetado sobre el perfil restaurado y
+health check con los cuatro estados `ok`.
 
 ## 1. Alcance de los datos
 
@@ -109,4 +136,10 @@ No se permite mezclar la base restaurada con el directorio `media/` actual: ambo
 
 ## 7. Criterio de salida
 
-La función solo puede marcarse como disponible cuando existan implementación, pruebas automatizadas de los casos anteriores, prueba de restauración en instalación limpia Windows y Linux, y una prueba manual de recuperación con perfil de datos desechable. Hasta entonces, la beta debe informar claramente que la copia/restauración integrada no está disponible y recomendar que el usuario cierre la aplicación antes de realizar copias manuales del perfil completo.
+La implementación y las pruebas automatizadas están completas. La aceptación
+en Linux incluye backup real, restauración desde el servidor empaquetado,
+arranque posterior y health check. **Pendiente para declarar la función
+totalmente aceptada:** repetir la matriz de creación/restauración en una
+instalación limpia de Windows y confirmar el cierre/reapertura desde el menú de
+Electron en ese sistema. Hasta entonces, Windows debe describirse como
+implementado pero no aceptado en esa plataforma.

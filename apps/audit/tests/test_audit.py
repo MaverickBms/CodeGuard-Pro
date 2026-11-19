@@ -154,3 +154,4 @@ class AuditoriaSinAutenticacionTests(TestCase):
         self.assertIsNotNone(entrada)
         self.assertIsNone(entrada.usuario)
         self.assertEqual(entrada.descripcion, "Acceso al panel principal.")
+        self.assertEqual(entrada.get_evento_display(), "Acceso al panel principal")

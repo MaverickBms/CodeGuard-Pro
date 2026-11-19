@@ -409,3 +409,73 @@ Sigue sin existir cotejo semántico con el DOCX maestro ASCENSO 3.1. Se mantiene
 La consulta directa de GitHub Actions para el HEAD e13a3897fc8c0e1203e53819b686635c32e587f4 encontró el run 44452070470 (evento push), concluido como failure con total_count=0 y jobs=[]. No se ejecutó ningún job; por tanto no es un fallo demostrado de las pruebas ni una aprobación. La consulta resumida de runs por commit no incluye este evento push, por lo que para auditoría se debe consultar la lista de Actions runs directamente. La causa del run sin jobs sigue sin estar expuesta en la respuesta disponible.
 
 - Se confirmó que los commits de código 7889e4d, 754d19b y 395c687 generan runs push 44451957786, 44452032907 y 44452044606 respectivamente; los tres terminan en failure con cero jobs. No hay logs ni jobs para determinar la causa. El run 44452070470 del commit documental posterior también fue failure sin jobs. No debe interpretarse como que los tests de código hayan fallado: no llegaron a ejecutarse.
+
+
+## 26. Cierre de brechas P0/P1 y verificación empaquetada (19-11-2026)
+
+Esta sección registra trabajo ejecutado en un checkout local, no solo inspección
+estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
+
+### Suite de pruebas
+
+- Se corrigieron cinco pruebas defectuosas sin debilitar validaciones:
+  fixture de etapa bloqueada en criterios, `assertRaises` en examen bloqueado y
+  argumento posicional de `verificar_backup`.
+- Se añadieron pruebas de restauración, índices de evaluaciones/evidencias,
+  pantalla de backups, cabeceras CSP y contraste WCAG de los 12 temas.
+- **Resultado ejecutado:** 291 pruebas Django OK; 15 pruebas Node/Electron OK.
+- `manage.py check`: 0 incidencias. `makemigrations --check --dry-run`: sin cambios.
+
+### Recuperación de datos
+
+- `apps/core/restore.py` implementa restauración con staging, validación de
+  esquema, copia de reversión y rollback.
+- Comando `restaurar_backup RUTA.zip --confirm` y pantalla `/backups/`.
+- Modo `--restore-backup` del servidor empaquetado y menú de Electron
+  **Restaurar copia de seguridad…** con parada de Django y reinicio.
+- Verificación manual: backup real → restauración en perfil vacío → arranque
+  del servidor PyInstaller → `/healthz/` con `database`, `migrations` y
+  `roadmap` en `ok`.
+
+### Frontend y accesibilidad
+
+- Nuevas vistas `/roadmaps/evaluaciones/`, `/roadmaps/evidencias/` y `/backups/`.
+- Navegación y tarjetas del panel actualizadas; los módulos sin implementación
+  (competencias, biblioteca, base de conocimiento, laboratorios, vigencia,
+  ética y desafíos) siguen deshabilitados y rotulados como no disponibles.
+- CSP endurecida con `object-src`/`frame-src` cerrados y `form-action 'self'`.
+- Bordes derivados de ocho temas corregidos para alcanzar 3:1; los HEX
+  oficiales se conservan y una prueba automática lo verifica.
+
+### Artefactos y E2E
+
+- Servidor PyInstaller reconstruido con SHA-256
+  `7320d684679aa9a1e3e613e8c7bc99759863a8329d356bc455e1f7277a8f78c4`.
+- AppImage Linux reconstruido (`CodeGuard-Pro-1.0.0-x86_64.AppImage`,
+  SHA-256 `cbe10c8601eb69d8b245cc7c851b41eb941e78699b5f6099934c909d7c968786`).
+- E2E ejecutado sobre el AppImage con perfil temporal:
+  - `/healthz/` → `{"status":"ok","database":"ok","migrations":"ok","roadmap":"ok"}`.
+  - `/`, `/roadmaps/`, `/roadmaps/evaluaciones/`, `/roadmaps/evidencias/` y
+    `/backups/` → HTTP 200.
+  - 12 controles de tema presentes; `localStorage` + recarga aplican el tema.
+  - Cierre de ventana → Django y Electron terminan; sin procesos huérfanos ni
+    puerto abierto.
+
+### Commits de la rama
+
+`11f957a`, `e684442`, `5afee37`, `58dad2f`, `274a271`, `bf96116`.
+
+### Pendientes y bloqueos
+
+- **Windows:** build, instalación y aceptación E2E no ejecutados en este equipo
+  Linux. No declarar aceptación Windows.
+- **GitHub Actions:** el entorno no resuelve `github.com` (fallo DNS) y `gh` no
+  tiene sesión. No se pueden publicar commits, abrir PR ni diagnosticar los
+  runs con `jobs=[]`. La configuración de Actions requiere intervención del
+  propietario.
+- **macOS/ARM64:** fuera de alcance de 1.0.0.
+- **Sincronización remota de producción:** sin endpoint, allowlist ni claves;
+  el cliente falla cerrado.
+- **Contenido académico:** el JSON conserva 33/212/1946 y los defectos
+  editoriales conocidos (etapa 25 sin objetivo; etapa 10 con proyecto
+  anormalmente extenso). No se modificó contenido sin la fuente maestra.

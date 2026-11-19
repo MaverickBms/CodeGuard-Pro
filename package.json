@@ -12,7 +12,8 @@
     "build": "npm run build:server && npm run verify:server && electron-builder",
     "build:win": "npm run build:server && npm run verify:server && electron-builder --win",
     "build:linux": "npm run build:server && npm run verify:server && electron-builder --linux",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "test:electron": "node --test electron/*.test.js"
   },
   "author": "CodeGuard Pro Team",
   "license": "MIT",
@@ -40,20 +41,23 @@
       "static/icons/icon.png",
       "static/icons/icon.ico",
       "README.md",
-      "README_WINDOWS.md",
-      "IEEE830.md",
-      "docs/**/*"
+      "README_WINDOWS.md"
     ],
     "extraResources": [
       {
         "from": "dist-server/CodeGuardServer",
         "to": "server",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       },
       {
         "from": "static/icons",
         "to": "icons",
-        "filter": ["icon.png", "icon.ico"]
+        "filter": [
+          "icon.png",
+          "icon.ico"
+        ]
       },
       {
         "from": "README.md",
@@ -62,15 +66,6 @@
       {
         "from": "README_WINDOWS.md",
         "to": "README_WINDOWS.md"
-      },
-      {
-        "from": "IEEE830.md",
-        "to": "IEEE830.md"
-      },
-      {
-        "from": "docs",
-        "to": "docs",
-        "filter": ["**/*"]
       }
     ],
     "extraMetadata": {
@@ -84,12 +79,31 @@
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "static/icons/icon.png",
       "category": "Education",
       "artifactName": "CodeGuard-Pro-${version}-${arch}.${ext}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "static/icons/icon.ico"
     }
   },
   "devDependencies": {

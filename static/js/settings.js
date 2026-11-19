@@ -3,6 +3,7 @@
   'use strict';
 
   var trigger = document.getElementById('btnAjustes');
+  var dashboardTrigger = document.getElementById('btnAjustesDashboard');
   var closeButton = document.getElementById('btnCerrarAjustes');
   var doneButton = document.getElementById('btnGuardarAjustes');
   var panel = document.getElementById('ajustesPanel');
@@ -11,6 +12,8 @@
   if (!trigger || !closeButton || !doneButton || !panel || !overlay) return;
 
   var previousFocus = null;
+  var activeTrigger = trigger;
+  var triggers = [trigger, dashboardTrigger].filter(Boolean);
   panel.inert = true;
   var themes = ['light', 'dark', 'high-contrast', 'retro-pixel', 'cyberpunk', 'fantasy', 'sci-fi', 'warrior', 'mage', 'rogue', 'paladin', 'dark-mage'];
 
@@ -43,13 +46,14 @@
     syncThemeButtons(theme);
   }
 
-  function openPanel() {
+  function openPanel(event) {
     if (panel.classList.contains('activo')) return;
+    activeTrigger = event && event.currentTarget ? event.currentTarget : trigger;
     previousFocus = document.activeElement;
     panel.inert = false;
     panel.classList.add('activo');
     panel.setAttribute('aria-hidden', 'false');
-    trigger.setAttribute('aria-expanded', 'true');
+    activeTrigger.setAttribute('aria-expanded', 'true');
     document.body.classList.add('ajustes-abierto');
     closeButton.focus();
   }
@@ -59,10 +63,10 @@
     panel.classList.remove('activo');
     panel.setAttribute('aria-hidden', 'true');
     panel.inert = true;
-    trigger.setAttribute('aria-expanded', 'false');
+    activeTrigger.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('ajustes-abierto');
     if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
-    else trigger.focus();
+    else activeTrigger.focus();
   }
 
   function trapFocus(event) {
@@ -84,7 +88,11 @@
     }
   }
 
-  trigger.addEventListener('click', openPanel);
+  triggers.forEach(function (button) {
+    button.setAttribute('aria-haspopup', 'dialog');
+    button.setAttribute('aria-expanded', 'false');
+    button.addEventListener('click', openPanel);
+  });
   closeButton.addEventListener('click', closePanel);
   doneButton.addEventListener('click', closePanel);
   overlay.addEventListener('click', closePanel);

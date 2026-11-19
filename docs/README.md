@@ -6,7 +6,7 @@ Esta carpeta contiene la documentación técnica, funcional, de operación y ace
 
 | Documento | Uso |
 |---|---|
-| [Control oficial](../PROJECT_CONTROL.md) | Estado vigente, decisiones, restricciones y siguiente paso autorizado |
+| [Estado de beta y continuidad](continuidad/ESTADO_BETA_2026-11-19.md) | Estado vigente, evidencia ejecutada, bloqueos y siguiente paso |
 | [Plan maestro](PLAN_MAESTRO_CODEGUARD.md) | Visión, fases, entregables y criterios de aceptación |
 | [Arquitectura](ARQUITECTURA.md) | Componentes, límites y decisiones técnicas |
 | [Estructura del repositorio](ESTRUCTURA_REPOSITORIO.md) | Ubicación y responsabilidad de carpetas |

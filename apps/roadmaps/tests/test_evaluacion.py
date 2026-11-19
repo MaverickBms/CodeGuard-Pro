@@ -6,15 +6,18 @@ from django.test import TestCase
 
 from apps.audit.models import AuditLog
 from apps.roadmaps.models import (
+    CriterioFinalizacion,
+    CumplimientoCriterio,
     Etapa,
     Modulo,
     Pregunta,
     Quiz,
     ResultadoEvaluacion,
     ResultadoPregunta,
+    Prerrequisito,
     Roadmap,
 )
-from apps.roadmaps.services_evaluacion import evaluar_quiz
+from apps.roadmaps.services_evaluacion import evaluar_quiz, registrar_cumplimiento_criterio
 
 
 class QuizPreguntaModelTests(TestCase):
@@ -657,3 +660,121 @@ class CargaQuizzesTests(TestCase):
     def test_command_cargar_quizzes(self):
         call_command("cargar_quizzes", ruta="apps/roadmaps/data/quizzes_ejemplo.json")
         self.assertEqual(Quiz.objects.count(), 1)
+
+
+
+class QuizBlockedSubmissionTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="estudiante-quiz-bloqueado", password="ClaveSegura123!"
+        )
+        self.roadmap = Roadmap.objects.create(nombre="ASCENSO quiz bloqueado", edicion="test")
+        self.prerrequisito = Etapa.objects.create(
+            roadmap=self.roadmap, numero=0, titulo="Prerrequisito"
+        )
+        self.etapa = Etapa.objects.create(
+            roadmap=self.roadmap, numero=1, titulo="Etapa bloqueada"
+        )
+        Prerrequisito.objects.create(
+            etapa=self.etapa, etapa_requerida=self.prerrequisito,
+            justificacion="Debe completarse antes.",
+        )
+        self.modulo = Modulo.objects.create(
+            etapa=self.etapa, numero="1.1", titulo="Módulo bloqueado"
+        )
+        self.quiz = Quiz.objects.create(
+            nombre="Quiz bloqueado", tipo=Quiz.TIPO_QUIZ,
+            modulo=self.modulo, umbral_aprobacion=70,
+        )
+        self.pregunta = Pregunta.objects.create(
+            quiz=self.quiz, orden=1, formato=Pregunta.FORMATO_RESPUESTA,
+            enunciado="Escribe la respuesta",
+            datos_respuesta={"respuesta_esperada": "variable"},
+        )
+
+    def test_quiz_de_etapa_bloqueada_no_acepta_respuestas(self):
+        with self.assertRaisesMessage(ValidationError, "prerrequisitos"):
+            evaluar_quiz(
+                self.usuario, self.quiz, {str(self.pregunta.id): "variable"}
+            )
+        self.assertFalse(
+            ResultadoEvaluacion.objects.filter(
+                quiz=self.quiz, usuario=self.usuario
+            ).exists()
+        )
+
+
+
+
+class BlockedStageCriterionTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="estudiante-criterio-bloqueado", password="ClaveSegura123!"
+        )
+        roadmap = Roadmap.objects.create(
+            nombre="ASCENSO criterio bloqueado", edicion="test"
+        )
+        prerequisito = Etapa.objects.create(
+            roadmap=roadmap, numero=0, titulo="Prerrequisito"
+        )
+        self.etapa = Etapa.objects.create(
+            roadmap=roadmap, numero=1, titulo="Etapa bloqueada"
+        )
+        Prerrequisito.objects.create(
+            etapa=self.etapa, etapa_requerida=prerequisito,
+            justificacion="Debe completarse antes.",
+        )
+        self.criterio = CriterioFinalizacion.objects.create(
+            etapa=self.etapa, titulo="Proyecto de etapa",
+            descripcion="Presentar evidencia.", tipo="proyecto",
+            obligatorio=True, orden=1,
+        )
+
+    def test_criterio_de_etapa_bloqueada_no_acepta_evidencia(self):
+        with self.assertRaisesMessage(ValidationError, "prerrequisitos"):
+            registrar_cumplimiento_criterio(
+                self.usuario, self.criterio,
+                evidencia="Evidencia anticipada.", origen="proyecto",
+            )
+        self.assertFalse(
+            CumplimientoCriterio.objects.filter(
+                usuario=self.usuario, criterio=self.criterio
+            ).exists()
+        )
+
+
+    def test_criterio_no_se_marca_sin_evidencia(self):
+        with self.assertRaisesMessage(ValidationError, "Describe la evidencia"):
+            registrar_cumplimiento_criterio(
+                self.usuario, self.criterio, evidencia="  ", origen="proyecto"
+            )
+        self.assertFalse(
+            CumplimientoCriterio.objects.filter(
+                usuario=self.usuario, criterio=self.criterio
+            ).exists()
+        )
+
+
+    def test_criterio_rechaza_evidencia_mayor_a_5000_caracteres(self):
+        with self.assertRaisesMessage(ValidationError, "5.000 caracteres"):
+            registrar_cumplimiento_criterio(
+                self.usuario, self.criterio, evidencia="x" * 5001,
+                origen="proyecto",
+            )
+        self.assertFalse(
+            CumplimientoCriterio.objects.filter(
+                usuario=self.usuario, criterio=self.criterio
+            ).exists()
+        )
+
+    def test_criterio_rechaza_origen_no_permitido(self):
+        with self.assertRaisesMessage(ValidationError, "origen"):
+            registrar_cumplimiento_criterio(
+                self.usuario, self.criterio, evidencia="Evidencia válida.",
+                origen="admin_inventado",
+            )
+        self.assertFalse(
+            CumplimientoCriterio.objects.filter(
+                usuario=self.usuario, criterio=self.criterio
+            ).exists()
+        )

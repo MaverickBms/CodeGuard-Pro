@@ -6,11 +6,13 @@
 
 El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicación de escritorio **Electron**, con **SQLite**. CodeGuard es **offline-first**: no requiere Internet para abrir la aplicación, estudiar con el contenido disponible ni consultar el progreso local.
 
-El roadmap ASCENSO 3.1 (33 etapas) ya está implementado y cargable mediante `python manage.py cargar_ascenso`. El proyecto también incorpora bases funcionales de tutoría IA local (Ollama), evaluaciones, gamificación, mundo/avatar y desafíos; consulta `docs/PLAN_MAESTRO_CODEGUARD.md` para distinguir lo implementado de lo que sigue en progreso. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado en la rama principal mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
+El roadmap ASCENSO 3.1 (33 etapas) ya está implementado y cargable mediante `python manage.py cargar_ascenso`. El proyecto también incorpora bases funcionales de tutoría IA local (Ollama), evaluaciones, gamificación, mundo/avatar y desafíos; consulta el plan maestro en la rama `documentation` para distinguir lo implementado de lo que sigue en progreso. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
 
-La auditoría QA integral del 16-11-2026 identifica los pendientes de instalación limpia, portabilidad, pruebas E2E y recuperación de datos: `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
+La auditoría QA integral del 16-11-2026 identifica los pendientes de instalación limpia, portabilidad, pruebas E2E y recuperación de datos (ver informe QA en la rama `documentation`).
 
 El cliente de sincronización pull-only por HTTPS, el comando `sincronizar_conocimiento`, el publicador local y la integración de comprobaciones periódicas con Electron están implementados. **La distribución remota de producción sigue pendiente**: no hay hosting/endpoint público, allowlist ni claves públicas de producción configuradas. Sin esa configuración, el cliente falla cerrado y no realiza conexiones. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
+
+> **Documentación extendida:** la documentación técnica detallada (arquitectura, ADRs, planes, seguridad, modelo de datos, informes QA, etc.) se mantiene en la rama [`documentation`](https://github.com/MaverickBms/CodeGuard-Pro/tree/documentation). La rama `main` se centra en el código y la operación del proyecto.
 
 ---
 
@@ -20,8 +22,7 @@ El cliente de sincronización pull-only por HTTPS, el comando `sincronizar_conoc
 
 Al abrir la aplicación se inicia directamente en el **panel principal**.
 No se solicita usuario ni contraseña. El sistema de autenticación está
-**temporal y opcionalmente desactivado** para uso local directo (ver
-`docs/MODO_SIN_AUTENTICACION.md`).
+**temporal y opcionalmente desactivado** para uso local directo (ver detalles en la rama `documentation`).
 
 El sistema completo de autenticación (usuario, contraseña maestra, frase de
 rescate, bloqueo por intentos y cierre de sesión) se **conserva íntegro** en el
@@ -84,7 +85,7 @@ ni cambios de esquema.
 
 ## Estado de distribución (QA 16-11-2026)
 
-La compilación Linux x64 y la configuración de build Windows existen, pero la instalación limpia y el primer arranque todavía requieren aceptación. No distribuir como versión estable hasta corregir la inicialización de datos y completar las pruebas de escritorio/offline. Consulta `docs/INFORME_QA_INTEGRAL_2026-11-16.md`.
+La compilación Linux x64 y la configuración de build Windows existen, pero la instalación limpia y el primer arranque todavía requieren aceptación. No distribuir como versión estable hasta corregir la inicialización de datos y completar las pruebas de escritorio/offline. Consulta el informe QA integral en la rama `documentation`.
 
 ## ⚡ Instalación rápida
 
@@ -110,7 +111,7 @@ python manage.py cargar_ascenso --settings=config.settings.development
 npm start
 ```
 
-Usa un directorio de datos aislado. Consulta [docs/INSTALACION.md](docs/INSTALACION.md). macOS todavía no está configurado ni validado.
+Usa un directorio de datos aislado. Consulta la guía de instalación en la rama `documentation`. macOS todavía no está configurado ni validado.
 
 Comandos de gestión disponibles:
 
@@ -125,6 +126,19 @@ Comandos de gestión disponibles:
 | `validar_paquete_contenido` | Valida un lote JSON académico sin escribir en la base de datos |
 | `publicar_paquete_conocimiento` | Genera localmente un paquete reproducible, manifiesto y firma Ed25519 desde contenido editorial publicado |
 | `sincronizar_conocimiento` | Comprueba y descarga actualizaciones firmadas desde un endpoint HTTPS configurado |
+| `crear_backup --output RUTA.zip` | Crea una copia ZIP verificada de la base local y `media/` (herramienta interna) |
+| `verificar_backup RUTA.zip` | Verifica estructura, hashes e integridad SQLite de una copia |
+
+### Copias de seguridad (herramientas internas, no función integrada de la UI)
+
+Desde la raíz del proyecto, con el entorno Django configurado:
+
+```bash
+python manage.py crear_backup --output "$HOME/CodeGuard-backup.zip"
+python manage.py verificar_backup "$HOME/CodeGuard-backup.zip"
+```
+
+El destino debe estar fuera de `CODEGUARD_DATA_DIR` y no existir previamente. El formato actual incluye `db.sqlite3` como snapshot consistente y `media/`; excluye `.secret_key` y logs. La restauración todavía no está implementada: no borres ni reemplaces manualmente tu perfil basándote en este ZIP. Consulta [el estado y las limitaciones](docs/BACKUPS_Y_RESTAURACION.md).
 
 ---
 
@@ -160,7 +174,7 @@ Comandos de gestión disponibles:
 
 ## 🧠 Stack técnico
 
-Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/HTMX/SweetAlert2/FontAwesome locales. Dependencias adicionales: `cryptography` (verificación Ed25519 de manifiestos de conocimiento), `PyMuPDF` (procesamiento PDF, fase futura), `pyinstaller` + `pyinstaller-hooks-contrib` (empaquetado del servidor local).
+Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/HTMX/SweetAlert2/FontAwesome locales. Dependencias adicionales: `cryptography` (verificación Ed25519 de manifiestos de conocimiento), `pyinstaller` + `pyinstaller-hooks-contrib` (empaquetado del servidor local). El procesamiento de PDF todavía no tiene una biblioteca activa en `requirements.txt`; se incorporará cuando exista un módulo funcional y se aprueben la licencia y el impacto en el tamaño de distribución.
 
 ## 🧪 Verificación
 
@@ -170,7 +184,7 @@ python manage.py makemigrations --check --dry-run --settings=config.settings.dev
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges --settings=config.settings.development
 ```
 
-Resultado reportado en el repositorio (16-11-2026): **245 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification` y `apps.challenges`, con `--settings=config.settings.development` (system check 0 issues y migraciones al día). El subconjunto de cuatro apps principales figura con 197 pruebas en el historial; 138 corresponde a una línea base anterior. Reproducir el comando completo en el HEAD actual antes de una release. Ver `docs/SEGUIMIENTO_TEMPORAL_USUARIO.md` para el estado por fases y validaciones pendientes.
+Resultado reportado en el repositorio (16-11-2026): **245 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification` y `apps.challenges`, con `--settings=config.settings.development` (system check 0 issues y migraciones al día). El subconjunto de cuatro apps principales figura con 197 pruebas en el historial; 138 corresponde a una línea base anterior. Reproducir el comando completo en el HEAD actual antes de una release. Ver el seguimiento por fases y validaciones pendientes en la rama `documentation`.
 
 ## ❓ Solución de problemas
 
@@ -180,7 +194,11 @@ Resultado reportado en el repositorio (16-11-2026): **245 pruebas OK** en `apps.
 
 ## 🤝 Contribuir · 🛡️ Seguridad · 📄 Licencia
 
-Consulte [el índice de documentación](docs/README.md), [la estructura del repositorio](docs/ESTRUCTURA_REPOSITORIO.md), [las reglas para contribuir](CONTRIBUTING.md), arquitectura, seguridad, modelo de datos, plan de pruebas y manual extendido.
+- [Guía para contribuir](CONTRIBUTING.md)
+- [Instalación y uso en Windows](README_WINDOWS.md)
+- [Licencia](LICENSE)
+
+La documentación técnica extendida (índice, arquitectura, estructura del repositorio, seguridad, modelo de datos, planes, pruebas y manual extendido) se encuentra en la rama [`documentation`](https://github.com/MaverickBms/CodeGuard-Pro/tree/documentation).
 
 ---
 
