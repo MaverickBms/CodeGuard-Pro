@@ -3,8 +3,8 @@
 **Fecha de revisión:** 2026-11-19  
 **Rama de trabajo:** `fix/electron-ipc-origin-validation`  
 **Base:** `main` en `59d08848726550fde442be1eb1e1be5522637f0b`  
-**HEAD de código revisado antes de los commits de continuidad:** `5223e4373aee76837437ebf943f952aa691b2b0f`  
-**Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`, `40cfdf2`, `6907ff6`, `1d025a9`, `a892b5e`, `6178df9`  
+**HEAD actual verificado:** `2e64a0ae45aef90f16ecfb5373dc9db6120631ba`  
+**Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`, `40cfdf2`, `6907ff6`, `1d025a9`, `a892b5e`, `6178df9`, `49f463c`, `2e64a0a`  
 **Pull request:** https://github.com/MaverickBms/CodeGuard-Pro/pull/12 (abierto, borrador)  
 **Alcance:** inspección estática remota y corrección puntual de launcher; no equivale a ejecutar el proyecto.
 
@@ -29,7 +29,7 @@ Las seis pruebas cubren origen exacto, puerto diferente, host que suplanta el pr
 
 ### GitHub Actions
 
-Se consultaron las ejecuciones del workflow. La consulta del 19-11 mostró nueve ejecuciones terminadas en fallo:
+Se consultaron las ejecuciones del workflow. La consulta actual mostró once ejecuciones terminadas en fallo:
 
 | Run | Commit | Estado |
 |---|---|---|
@@ -42,8 +42,10 @@ Se consultaron las ejecuciones del workflow. La consulta del 19-11 mostró nueve
 | 7 | `1d025a90e47e32d4580eacf31136fece5cd50160` | `completed / failure` (run `44445369572`) |
 | 8 | `a892b5e024f19a97cfbb2d25907fd427ab3796d1` | `completed / failure` (run `44445451593`) |
 | 9 | `6178df902159c73b4d19995e6ab245534c7ea9ef` | `completed / failure` (run `44445508444`) |
+| 10 | `49f463c6a98e8dc28e6b1314eafe675d25326b87` | `completed / failure` (run `44445540907`) |
+| 11 | `2e64a0ae45aef90f16ecfb5373dc9db6120631ba` | Sin ejecución asociada al consultar Actions; sin check statuses. |
 
-La inspección directa de Actions para los runs `44444429601`, `44445369572`, `44445451593` y el más reciente (`44445508444`) confirmó `conclusion=failure`, pero `total_count=0` y `jobs=[]`, incluso al consultar los intentos disponibles. El endpoint de check-runs del commit también devolvió `total_count=0`. No hay jobs, steps ni logs de job que permitan identificar un error de ejecución. El run más reciente también está marcado como evento `push` sobre la rama de trabajo. Para que las futuras modificaciones de la rama queden cubiertas de forma explícita, el trigger `push` se amplió a todas las ramas. El nuevo run `44445369572` volvió a terminar en fallo sin exponer jobs; por tanto, ampliar el trigger no resolvió la anomalía. Por tanto:
+La inspección directa de Actions para los runs `44444429601`, `44445369572`, `44445451593`, `44445508444` y `44445540907` confirmó `conclusion=failure`, pero `total_count=0` y `jobs=[]`, incluso al consultar los intentos disponibles. Los check-runs/statuses consultados tampoco aportan validaciones. No hay jobs, steps ni logs de job que permitan identificar un error de ejecución. Los runs se marcan como eventos `push` sobre la rama de trabajo. El workflow en la rama actual incluye `push` sin filtro de ramas y `paths-ignore` para `docs/**` y `**.md`; sin embargo, el commit de dependencias `2e64a0a` no tiene ejecución ni check status asociado al consultar la API, aunque modifica `requirements.txt`. Esto deja dos problemas: ejecuciones fallidas sin jobs y activación inconsistente del workflow. Por tanto:
 
 - **No se conoce la causa del fallo.**
 - No se puede afirmar que hayan fallado las pruebas Django, las pruebas IPC, la instalación de dependencias o la sintaxis del workflow.
@@ -70,7 +72,7 @@ La versión anterior inicializaba Django sin exportar `CODEGUARD_DATA_DIR`, por 
 |---|---|---|
 | P0 | Aceptación de instalación limpia y flujo principal Electron/Django. | Pendiente de ejecución real con perfil temporal. |
 | P1 | Reproducibilidad de la suite Django completa (245 reportadas). | Pendiente de ejecutar sobre el HEAD exacto y registrar salida. |
-| P1 | CI sin resultado verificable. | Nueve ejecuciones reportadas como failure; los runs consultados más recientes devuelven cero jobs. Trigger push ampliado y docs excluidos, sin resolver la anomalía. |
+| P1 | CI sin resultado verificable. | Once runs fallidos; los cinco más recientes consultados devuelven cero jobs. El commit de dependencias más reciente no tiene run ni status asociado. |
 | P1 | Persistencia tras reinicio, modo offline E2E y cierre sin procesos huérfanos. | Pendiente. |
 | P1 | Backup/restauración. | Diseño documentado; implementación/aceptación pendiente. |
 | P1 | Tutor Ollama. | Opcional; validar detección, modelo instalado, timeout, fallback y privacidad. |
@@ -107,10 +109,10 @@ No confundir modelos, rutas o controles visibles con un flujo de usuario termina
 ## 6. Última actualización de la rama
 
 - Workflow CI actualizado para ejecutarse en `push` de cualquier rama.
-- Se agregaron `python -m compileall -q config apps server_entry.py manage.py` y `node --check` para los archivos principales de Electron.
+- Se agregaron `python -m compileall -q config apps server_entry.py manage.py` y `node --check` para los archivos principales de Electron.\n- Se retiró `PyMuPDF==2.1` de `requirements.txt`: no se encontraron importaciones del paquete en el código revisado, está etiquetado como fase futura, añade un motor PDF nativo de gran tamaño y su licencia es AGPL-3.0 o comercial. Reincorporar una biblioteca PDF cuando haya módulo activo y decisión de licencia. Fuente oficial: https://pypi.org/project/pymupdf/2.1/.
 - El trigger `push` cubre todas las ramas y omite cambios exclusivamente documentales (`docs/**`, `**.md`) para evitar ejecuciones de CI innecesarias.
 - Commit publicado: `1d025a90e47e32d4580eacf31136fece5cd50160`.
-- Los runs `44445369572`, `44445451593` y `44445508444` terminaron en `failure` con `jobs=[]`; el estado de CI sigue sin ser interpretable y no se declara aprobado.
+- Los runs `44445369572`, `44445451593`, `44445508444` y `44445540907` terminaron en `failure` con `jobs=[]`; el commit `2e64a0a` no muestra run/status. CI sigue sin ser interpretable y no se declara aprobado.\n- Se eliminó la dependencia PyMuPDF aún no utilizada de `requirements.txt`.
 - La rama está 15 commits por delante de `main`, sin commits por detrás al momento de la consulta. `main` continúa en `59d08848726550fde442be1eb1e1be5522637f0b`.
 
 ## 7. Limitación de esta sesión
@@ -121,7 +123,7 @@ Esto no significa que el proyecto no pueda ejecutarse en el equipo del propietar
 
 ## 8. Próximo bloque recomendado
 
-1. Diagnosticar en GitHub por qué las siete ejecuciones de Actions terminaron en failure sin jobs visibles, incluso tras ampliar el trigger de push.
+1. Diagnosticar en GitHub por qué las once ejecuciones de Actions terminaron en failure sin jobs visibles y por qué el commit `2e64a0a` no generó run/status.
 2. Ejecutar el launcher `codeguard` con un directorio temporal y confirmar que migrate, carga ASCENSO y AppImage comparten `CODEGUARD_DATA_DIR`.
 3. Probar `server_entry.py` en un directorio vacío y otro con datos de prueba existentes, verificando idempotencia y preservación.
 4. Ejecutar en el entorno del proyecto: `pip check`, `manage.py check`, `makemigrations --check --dry-run`, las siete apps de pruebas Django, `node --check` y `npm run test:electron`.
