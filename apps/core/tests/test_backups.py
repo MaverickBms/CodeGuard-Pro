@@ -63,6 +63,34 @@ class BackupTests(unittest.TestCase):
         with self.assertRaises(BackupError):
             inspect_backup(malicious)
 
+    def test_rejects_unexpected_payload_path(self):
+        malicious = Path(self.temporary.name) / "unexpected.zip"
+        with zipfile.ZipFile(malicious, "w") as archive:
+            archive.writestr("manifest.json", json.dumps({
+                "format": "codeguard-backup",
+                "format_version": 1,
+                "files": [
+                    {"path": "database.sqlite3", "size": 1, "sha256": "0" * 64},
+                    {"path": "logs/private.log", "size": 1, "sha256": "0" * 64},
+                ],
+            }))
+            archive.writestr("database.sqlite3", "x")
+            archive.writestr("logs/private.log", "x")
+        with self.assertRaises(BackupError):
+            inspect_backup(malicious)
+
+    def test_rejects_symlink_media_directory(self):
+        outside = Path(self.temporary.name) / "outside"
+        outside.mkdir()
+        (outside / "secret.txt").write_text("secret", encoding="utf-8")
+        (self.root / "media").rmdir()
+        try:
+            (self.root / "media").symlink_to(outside, target_is_directory=True)
+        except (OSError, NotImplementedError):
+            self.skipTest("El sistema no permite crear symlinks.")
+        with self.assertRaises(BackupError):
+            create_backup(Path(self.temporary.name) / "symlink.zip", data_dir=self.root)
+
     def test_rejects_corrupt_archive(self):
         destination = Path(self.temporary.name) / "respaldo.zip"
         create_backup(destination, data_dir=self.root)
