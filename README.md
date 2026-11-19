@@ -126,6 +126,19 @@ Comandos de gestión disponibles:
 | `validar_paquete_contenido` | Valida un lote JSON académico sin escribir en la base de datos |
 | `publicar_paquete_conocimiento` | Genera localmente un paquete reproducible, manifiesto y firma Ed25519 desde contenido editorial publicado |
 | `sincronizar_conocimiento` | Comprueba y descarga actualizaciones firmadas desde un endpoint HTTPS configurado |
+| `crear_backup --output RUTA.zip` | Crea una copia ZIP verificada de la base local y `media/` (herramienta interna) |
+| `verificar_backup RUTA.zip` | Verifica estructura, hashes e integridad SQLite de una copia |
+
+### Copias de seguridad (herramientas internas, no función integrada de la UI)
+
+Desde la raíz del proyecto, con el entorno Django configurado:
+
+```bash
+python manage.py crear_backup --output "$HOME/CodeGuard-backup.zip"
+python manage.py verificar_backup "$HOME/CodeGuard-backup.zip"
+```
+
+El destino debe estar fuera de `CODEGUARD_DATA_DIR` y no existir previamente. El formato actual incluye `db.sqlite3` como snapshot consistente y `media/`; excluye `.secret_key` y logs. La restauración todavía no está implementada: no borres ni reemplaces manualmente tu perfil basándote en este ZIP. Consulta [el estado y las limitaciones](docs/BACKUPS_Y_RESTAURACION.md).
 
 ---
 
