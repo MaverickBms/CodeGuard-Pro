@@ -3,7 +3,7 @@
 **Fecha de revisión:** 2026-11-19  
 **Rama de trabajo:** `fix/electron-ipc-origin-validation`  
 **Base:** `main` en `59d08848726550fde442be1eb1e1be5522637f0b`  
-**HEAD auditado antes de esta actualización:** `ef703b5abdfb3013676db57fcb774cce838821fa`  
+**HEAD auditado antes de esta actualización:** `252168148609e7ff8f041df41741e1a036abd9a4`  
 **Commits correctivos/documentales:** `fcca40d`, `4c32fe8`, `98d354e`, `40cfdf2`, `6907ff6`, `1d025a9`, `a892b5e`, `6178df9`, `49f463c`, `2e64a0a`, `cf963b8`, `80f703a`, `7f3cedd`  
 **Pull request:** https://github.com/MaverickBms/CodeGuard-Pro/pull/12 (abierto, borrador)  
 **Alcance:** inspección estática remota y corrección puntual de launcher; no equivale a ejecutar el proyecto.
@@ -176,3 +176,8 @@ La revisión del empaquetado detectó que `README_WINDOWS.md` y `build_windows.b
 
 
 **Ajuste final de requisitos Windows:** `build_windows.bat` también comprueba Node.js 20+; `README_WINDOWS.md` actualiza la fecha de revisión al 19-11-2026. Estas validaciones siguen siendo estáticas hasta ejecutar el script en Windows.
+
+
+## 11. Verificación adicional de GitHub Actions
+
+Se consultó directamente la colección de ejecuciones del repositorio, además del wrapper de runs de PR. Para el HEAD `252168148609e7ff8f041df41741e1a036abd9a4`, GitHub registra el run `44446813398` como `completed / failure`, evento `push`, pero la consulta directa de `/actions/runs/44446813398/jobs` devuelve `total_count=0` y `jobs=[]`. El run fue creado y actualizado en el mismo segundo, sin inicio visible de jobs. Se repitió la consulta para `44446640625` y `44445950472`, con el mismo resultado. No hay evidencia que permita atribuir el fallo a código, instalación de dependencias o tests; no cambiar tests ni desactivar protecciones para ocultar esta anomalía.
