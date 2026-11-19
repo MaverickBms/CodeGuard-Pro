@@ -99,3 +99,23 @@ Candidato → comprobación de enlace y metadatos → revisión de pertinencia y
 ## Mantenimiento
 
 Revisar los recursos antes de publicar una etapa y periódicamente. Si un enlace deja de funcionar, cambia de idioma o pierde subtítulos, marcarlo para revisión y sustituirlo con trazabilidad. La curación debe mantenerse como datos editoriales versionados, no como enlaces incrustados sin control dentro del texto.
+
+
+## Alineación con capacidades existentes de CodeGuard Pro
+
+Inspección estática de `release/1.0.0` (19-11-2026) confirmó que el proyecto ya contiene modelos y vistas para lecciones, contenido didáctico, ejemplos, ejercicios, intentos, quizzes, resultados, progreso por etapa/módulo/lección/actividad, criterios de finalización, fuentes de conocimiento y versiones editoriales. Por tanto, las funciones propuestas deben ampliar y conectar estas capacidades, no duplicarlas.
+
+| Capacidad | Estado observado en el código | Trabajo recomendado |
+|---|---|---|
+| Lecciones y contenido | Existen `Leccion` y `ContenidoLeccion`; la vista de lección obtiene contenido activo. | Ampliar contenido por plantilla y asociar recursos sin romper el flujo editorial. |
+| Ejemplos y ejercicios | Existen modelos y flujo de intentos para ejercicios. | Añadir actividades específicas de observación/reflexión de videos como actividades normales, si el modelo lo permite. |
+| Quizzes | Existen `Quiz`, preguntas, resultados, historial y vista de evaluación. | Reutilizar para recuperación activa; enriquecer feedback y preguntas de aplicación si la arquitectura lo permite. |
+| Progreso | Existe `Progreso` por distintos niveles y criterios de finalización con evidencias. | Medir objetivos demostrados y no tiempo de reproducción; revisar la semántica actual antes de cambiar porcentajes. |
+| Fuentes y versiones | Existen fuentes de conocimiento y versiones de contenido con flujo editorial. | Registrar videos como referencias externas con metadatos; no asumir que el modelo actual tiene campos de subtítulos o caducidad. |
+| Notas y marcas de tiempo | No se confirmó un modelo específico de notas audiovisuales. | Evaluar si se puede reutilizar notas/actividades existentes o si justifica una extensión pequeña. |
+| Repaso espaciado | No se confirmó un planificador de repetición espaciada. | Diseñar primero reglas, privacidad y persistencia; después decidir implementación. |
+| Catálogo audiovisual | No se confirmó un modelo específico para recursos audiovisuales. | Diseñar integración con fuentes editoriales y evitar almacenar copias de videos. |
+
+### Restricciones de implementación
+
+Esta revisión fue de código fuente en GitHub, no una ejecución de la aplicación. Antes de modificar modelos o vistas se debe revisar el flujo completo de versiones, aprobaciones, distribución y permisos; añadir pruebas unitarias, de integración y de interfaz; y ejecutar los checks del proyecto. No se declara implementada ni probada ninguna función nueva por el hecho de documentarla.
