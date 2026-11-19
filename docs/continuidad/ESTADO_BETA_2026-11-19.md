@@ -450,9 +450,9 @@ estática. Rama de trabajo: `release/1.0.0`, creada desde `main` (`f762166`).
 ### Artefactos y E2E
 
 - Servidor PyInstaller reconstruido con SHA-256
-  `a2d0daf32ae0211db00fb02b7d8925e01d52b5ea9488d6e501b4572776f7568d`.
+  `b991a3e4c06c291bab74c175a4b56f8040f2bdadea13fb11dd2e859806419083`.
 - AppImage Linux reconstruido (`CodeGuard-Pro-1.0.0-x86_64.AppImage`,
-  SHA-256 `5af43286c2e5acab95c34d8f7ac6c176284c2392f57d74904ec744b31d424636`).
+  SHA-256 `c6abefc8b15d47129d587915d4eb2f61eb54f461903d9bd360b91a7bd72a341b`).
 - E2E ejecutado sobre el AppImage con perfil temporal:
   - `/healthz/` → `{"status":"ok","database":"ok","migrations":"ok","roadmap":"ok"}`.
   - `/`, `/roadmaps/`, `/roadmaps/evaluaciones/`, `/roadmaps/evidencias/` y
@@ -525,3 +525,19 @@ hash mediante `verify:server`, produce instalador NSIS y portable con
 electron-builder y sube `dist/*.exe` como artefacto. La compilación está
 verificada; **la instalación limpia, el primer arranque y el cierre en Windows
 siguen pendientes de una máquina Windows real**.
+
+
+## 28. Cierre de artefactos finales (19-11-2026)
+
+- Rebuild final de Linux tras los últimos cambios de documentación y scripts.
+- Servidor PyInstaller: SHA-256
+  `b991a3e4c06c291bab74c175a4b56f8040f2bdadea13fb11dd2e859806419083`.
+- AppImage: `CodeGuard-Pro-1.0.0-x86_64.AppImage`, SHA-256
+  `c6abefc8b15d47129d587915d4eb2f61eb54f461903d9bd360b91a7bd72a341b`.
+- Smoke test: primer arranque, migraciones/ASCENSO, `/healthz/`, cierre del
+  puerto y modo de sincronización, todo correcto.
+- E2E AppImage: `/`, `/roadmaps/`, `/roadmaps/evaluaciones/`,
+  `/roadmaps/evidencias/` y `/backups/` → HTTP 200; tema persistido tras
+  recarga; cierre de ventana sin procesos huérfanos.
+- Windows x64: artefacto CI `codeguard-windows-x64` (instalador NSIS +
+  portable). Instalación limpia en host Windows sigue pendiente.
