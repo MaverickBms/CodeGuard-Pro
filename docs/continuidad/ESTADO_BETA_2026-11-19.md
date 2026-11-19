@@ -325,3 +325,10 @@ Rama de trabajo: fix/electron-ipc-origin-validation. HEAD verificado: 9df0107846
 `electron/main.js` ahora entrega el proceso hijo a `waitForServer`. Durante el sondeo de `/healthz/`, el arranque se interrumpe inmediatamente si el proceso emite un error de spawn o termina antes de estar listo; ya no espera innecesariamente el timeout completo de 120 segundos en ese escenario. El error incluye código de salida o señal y orienta a revisar los logs.
 
 **Validación pendiente:** el cambio está publicado, pero no se ejecutaron `node --check`, pruebas Electron ni una aplicación empaquetada en este entorno. La consulta de ejecuciones para este commit no devolvió runs; no se interpreta como CI aprobado.
+
+
+## 23. Pruebas unitarias de arranque Electron (19-11-2026)
+
+Se aisló `getChildStartupFailure` en `electron/process-health.js` y se añadieron pruebas Node para proceso activo, error de spawn, salida con código, salida por señal y proceso ausente. `electron/main.js` utiliza ahora este helper durante la espera de `/healthz/`.
+
+Las pruebas están añadidas a `npm run test:electron` por el patrón `electron/*.test.js`. No se afirma que estén aprobadas: falta ejecutar Node y obtener un resultado CI válido.
