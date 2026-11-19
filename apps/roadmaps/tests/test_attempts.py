@@ -14,6 +14,7 @@ from apps.roadmaps.models import (
     Leccion,
     Modulo,
     Progreso,
+    Prerrequisito,
     Roadmap,
 )
 from apps.roadmaps.attempts import registrar_intento_ejercicio
@@ -778,3 +779,23 @@ class IntentosEjercicioTests(TestCase):
 
         with self.assertRaisesMessage(ValidationError, "no se eliminan físicamente"):
             intento.delete()
+
+    def test_ejercicio_de_etapa_bloqueada_no_acepta_entregas(self):
+        requerida = Etapa.objects.create(
+            roadmap=self.roadmap, numero=99, titulo="Prerrequisito"
+        )
+        Prerrequisito.objects.create(
+            etapa=self.etapa, etapa_requerida=requerida,
+            justificacion="Debe completarse antes.",
+        )
+
+        with self.assertRaisesMessage(
+            ValidationError, "prerrequisitos"
+        ):
+            registrar_intento_ejercicio(
+                self.usuario, self.ejercicio, "nombre = 'Ada'"
+            )
+
+        self.assertFalse(
+            IntentoEjercicio.objects.filter(ejercicio=self.ejercicio).exists()
+        )
