@@ -487,7 +487,7 @@ Fecha de consulta de los recursos web: **2026-11-19**. Las referencias respaldan
 
 ---
 
-## Recursos audiovisuales curados
+## Recursos audiovisuales candidatos — pendientes de verificación
 
 Los videos complementan la explicación escrita; no sustituyen los ejercicios, las fuentes primarias ni la demostración de competencias. Se prioriza español y se enlaza al video original del creador.
 
@@ -495,13 +495,13 @@ Los videos complementan la explicación escrita; no sustituyen los ejercicios, l
 
 | Recurso | Idioma | Enfoque | Cómo utilizarlo | Estado editorial |
 |---|---|---|---|---|
-| [¿Cómo me ORGANIZO? Mi SECRETO para ser más PRODUCTIVO y APRENDER más rápido programación — midudev](https://www.youtube.com/watch?v=UZarokfByTs) | Español | Organización, apuntes, tareas y seguimiento del aprendizaje. | Verlo después de 0.1.4; diseñar un sistema propio de notas y revisión. No es una receta universal ni se exige usar Notion. | Enlace y descripción contrastados; revisar disponibilidad antes de publicar. |
-| [Cómo Aprender a Programar | Consejos y Recursos — Academia de Hostinger](https://www.youtube.com/watch?v=Zf48b175sKo) | Español | Objetivos, herramientas, práctica y proyectos. | Verlo como orientación inicial y contrastar sus recomendaciones con el orden curricular de ASCENSO. | Enlace y descripción contrastados; material complementario, no fuente normativa. |
+| [¿Cómo me ORGANIZO? Mi SECRETO para ser más PRODUCTIVO y APRENDER más rápido programación — midudev](https://www.youtube.com/watch?v=UZarokfByTs) | Pendiente de verificar escuchando el audio | Organización, apuntes, tareas y seguimiento del aprendizaje (pertinencia prevista por título/descripción). | Actividad propuesta: diseñar un sistema propio de notas y revisión. | Candidato; no aprobado. Verificar audio real en español, contenido completo y disponibilidad antes de recomendar. |
+| [Cómo Aprender a Programar | Consejos y Recursos — Academia de Hostinger](https://www.youtube.com/watch?v=Zf48b175sKo) | Pendiente de verificar escuchando el audio | Objetivos, herramientas, práctica y proyectos (pertinencia prevista por título/descripción). | Actividad propuesta: contrastar sus recomendaciones con el orden curricular de ASCENSO. | Candidato; no aprobado. Verificar audio real en español, contenido completo y disponibilidad antes de recomendar. |
 | [Ruta de estudio: Cómo estudiar programación — MoureDev Pro](https://mouredev.pro/roadmap) | Español | Ruta estructurada de estudio; curso para principiantes de 44 lecciones y 2 horas de video indicado en el sitio. | Consultar como recurso opcional para comparar hábitos y planificación; ASCENSO conserva su propio roadmap. | Página oficial consultada; no es un video individual de YouTube. |
 
 ### Idioma de los recursos
 
-Todos los videos recomendados en ASCENSO deben estar hablados en español. No se incluirán videos en inglés como recursos de aprendizaje en los módulos; tampoco se considerará suficiente la posibilidad de traducción automática de subtítulos para cumplir este requisito.
+Los enlaces de esta tabla son candidatos, no videos aprobados. Antes de recomendar cualquiera, se debe escuchar el audio real y confirmar que está hablado en español y que cubre directamente el objetivo de esta lección. Todos los videos recomendados en ASCENSO deben estar hablados en español. No se incluirán videos en inglés como recursos de aprendizaje en los módulos; tampoco se considerará suficiente la posibilidad de traducción automática de subtítulos para cumplir este requisito.
 
 ### Actividad obligatoria después de cualquier video
 
