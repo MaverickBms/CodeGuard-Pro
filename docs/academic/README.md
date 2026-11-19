@@ -12,7 +12,8 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 | Etapa 0 · Módulo 0.3 — Herramientas | Borrador v0.1.0 |
 | Etapa 0 · Módulo 0.4 — Depuración | Borrador v0.1.0 |
 | Etapa 1 · Módulos 1.1–1.5 — Hardware, representación, arquitectura, arranque y memoria | Borradores didácticos v0.1.0 |
-| Etapas 2–32 | Pendiente |
+| Etapa 2 · Pensamiento computacional, lógica y matemáticas | Borrador didáctico v0.1.0 |
+| Etapas 3–32 | Pendiente |
 
 ## Archivos
 
@@ -27,6 +28,7 @@ Este directorio contiene material didáctico original en desarrollo. No reemplaz
 - [Etapa 1 · Módulo 1.3 — Arquitectura de computadores](ascenso-3.1/etapa-01/modulo-1.3-arquitectura-computadores.md)
 - [Etapa 1 · Módulo 1.4 — Arranque](ascenso-3.1/etapa-01/modulo-1.4-arranque.md)
 - [Etapa 1 · Módulo 1.5 — Memoria](ascenso-3.1/etapa-01/modulo-1.5-memoria.md)
+- [Etapa 2 — Pensamiento computacional, lógica y matemáticas](ascenso-3.1/etapa-02/pensamiento-computacional-logica-matematicas.md)
 
 ## Política de publicación
 
