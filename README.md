@@ -230,7 +230,7 @@ python manage.py makemigrations --check --dry-run --settings=config.settings.dev
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges --settings=config.settings.development
 ```
 
-Resultado verificado en este repositorio (19-11-2026): **299 pruebas OK** en
+Resultado verificado en este repositorio (19-11-2026): **300 pruebas OK** en
 `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`,
 `apps.gamification` y `apps.challenges`, con
 `--settings=config.settings.development` (system check 0 incidencias y
@@ -239,7 +239,7 @@ CSP, contraste WCAG de los 12 temas e índices de evaluaciones/evidencias.
 `npm run test:electron` ejecuta las 20 pruebas de IPC, restauración y
 persistencia de tema; `npm run test:mundo` ejecuta las 8 pruebas del modelo
 del Mundo CodeGuard. Las cifras históricas de 245/197/138 quedan sustituidas por esta
-línea base reproducible (299 Django + 28 Node). El inventario académico y los
+línea base reproducible (300 Django + 28 Node). El inventario académico y los
 hallazgos editoriales están en
 [docs/ROADMAP_ASCENSO_INVENTARIO.md](docs/ROADMAP_ASCENSO_INVENTARIO.md); el mundo
 jugable, en [docs/MUNDO_CODEGUARD.md](docs/MUNDO_CODEGUARD.md).

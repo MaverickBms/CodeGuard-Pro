@@ -34,7 +34,7 @@
 
 | Prueba | Resultado |
 |---|---|
-| Suite Django (7 apps) | **299 pruebas OK** |
+| Suite Django (7 apps) | **300 pruebas OK** |
 | Pruebas Node/Electron | **20 Electron + 8 Mundo = 28 OK** |
 | `manage.py check` | 0 incidencias |
 | `makemigrations --check --dry-run` | Sin cambios |
