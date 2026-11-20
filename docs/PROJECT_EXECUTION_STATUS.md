@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-19  
 **Fase:** release candidate + prototipo vertical del Mundo CodeGuard  
-**Rama:** `feature/mundo-codeguard` (desde `release/1.0.0`, HEAD de código `25de539`)  
+**Rama:** `feature/mundo-codeguard` (desde `release/1.0.0`, HEAD de código `2f0ff1c`)  
 **PR:** https://github.com/MaverickBms/CodeGuard-Pro/pull/13 (abierto, borrador, sin fusionar)  
 **Base:** `main` intacta; no se ha fusionado ni creado tag/release.
 
@@ -110,21 +110,14 @@ la aceptación manual en un equipo limpio.
 
 1. Revisar y aprobar el inventario académico; decidir etapa 25 y alcance cursable.
 2. Aceptación manual en un equipo Windows limpio (hardware real).
-3. Ampliar el Mundo: más regiones, misiones, minijuegos y contenido audiovisual.
-3. Sincronización remota de producción, macOS/ARM64 y contenido académico completo:
-   fuera del alcance de este RC.
+3. Ampliar el Mundo con más regiones, personajes y contenido audiovisual.
+4. Sincronización remota de producción y macOS/ARM64: fuera de este RC.
 
 ## 7. Artefactos del Mundo CodeGuard
 
-- Servidor PyInstaller: `b3a6cb62951df22add63e115638885e9987df5c6e98146d7af9ae994b06d399d`.
-- AppImage con Mundo: `e09ef347f7d44fd44f23cf3bee877ad25c4dab322ae39d7790e19d3f3d54972d`.
+- Servidor PyInstaller: `928e0ebba62f569d2e4184013351fdb29cbee8287be812f6b40facd76535e617`.
+- AppImage con Mundo: `bb30454d82a9173b68e80462f9d5a730a78a05ed2e14f369ee0306fd1471599f`.
 - PR del Mundo: https://github.com/MaverickBms/CodeGuard-Pro/pull/15 (borrador, sin fusionar).
-
-## 8. Artefactos del release base
-
-- Servidor PyInstaller: `c21ff228b40fab302a8081532e227feb3efe54a16194d19b7bbf667f7e84ea53`.
-- AppImage: `3e14314636be75a44665846a0f1a25972352cb847dadbe407d84a9fd11a7f05d`.
-- CI final `6420ba8`: run `44654300417`, **4/4 jobs verdes** (incluye Windows x64).
 
 ## 8. Próximos pasos
 

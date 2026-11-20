@@ -136,5 +136,5 @@ Abre **Mundo CodeGuard** en la barra lateral o entra desde Gamificación.
 - Misión principal reclamada y minijuego completado con respuestas válidas.
 - Inventario final con `insignia-metodo` y `chip-depurador`.
 - Sin errores JavaScript en la consola del renderer.
-- Servidor PyInstaller: `b3a6cb62951df22add63e115638885e9987df5c6e98146d7af9ae994b06d399d`.
-- AppImage: `e09ef347f7d44fd44f23cf3bee877ad25c4dab322ae39d7790e19d3f3d54972d`.
+- Servidor PyInstaller: `928e0ebba62f569d2e4184013351fdb29cbee8287be812f6b40facd76535e617`.
+- AppImage: `bb30454d82a9173b68e80462f9d5a730a78a05ed2e14f369ee0306fd1471599f`.
