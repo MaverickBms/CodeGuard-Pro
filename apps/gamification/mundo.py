@@ -142,6 +142,21 @@ INTERACCIONES = {
 
 # Respuestas privadas del minijuego. Nunca se serializan al cliente.
 _RESPUESTAS_DEPURACION = {"q1": 1, "q2": 2, "q3": 0}
+
+# Región mínima exigida para cada interacción. Evita activar banderas de la
+# biblioteca desde la aldea (y viceversa) con una petición manipulada.
+REGION_POR_INTERACCION = {
+    "ada": "aldea-metodo",
+    "terminal": "aldea-metodo",
+    "guardian": "aldea-metodo",
+    "cartel": "aldea-metodo",
+    "cofre": "aldea-metodo",
+    "byte": "biblioteca-aldear",
+    "estanteria-1": "biblioteca-aldear",
+    "estanteria-2": "biblioteca-aldear",
+    "estanteria-3": "biblioteca-aldear",
+    "nexo": "biblioteca-aldear",
+}
 _PREGUNTAS_DEPURACION = [
     {
         "id": "q1",
@@ -368,6 +383,9 @@ def interactuar(estado: EstadoMundo, objeto: str) -> dict:
     interaccion = INTERACCIONES.get(objeto)
     if interaccion is None:
         raise ValidationError("El objeto interactivo no existe.")
+    region_esperada = REGION_POR_INTERACCION.get(objeto)
+    if region_esperada and estado.region != region_esperada:
+        raise ValidationError("No estás en la región de ese objeto interactivo.")
     banderas = dict(estado.banderas or {})
     banderas[interaccion["bandera"]] = True
     estado.banderas = banderas

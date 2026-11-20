@@ -135,6 +135,12 @@ class MundoCodeGuardTests(TestCase):
             EstadoMundo.objects.get(usuario=self.usuario).region, "biblioteca-aldear"
         )
 
+    def test_no_permite_interactuar_con_objetos_de_otra_region(self):
+        with override_settings(AUTH_DISABLED=True):
+            respuesta = self._post("gamification:interactuar_mundo", {"objeto": "byte"})
+        self.assertEqual(respuesta.status_code, 400)
+        self.assertIn("región", respuesta.json()["error"])
+
     def test_sin_propietario_local_no_permite_guardar(self):
         self.usuario.delete()
         with override_settings(AUTH_DISABLED=True):
