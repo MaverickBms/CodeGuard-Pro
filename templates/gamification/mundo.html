@@ -24,6 +24,8 @@
       <span class="mundo-chip" id="hudXp">0 XP</span>
       <span class="mundo-chip" id="hudMisiones">0/3 misiones</span>
       <button type="button" class="mundo-icon-btn" id="btnMundoAudio" aria-pressed="false" title="Silenciar audio">🔊</button>
+      <a class="mundo-chip mundo-chip-link" href="{% url 'gamification:mapa_mundo' %}" title="Mapa del mundo">Mapa</a>
+      <button type="button" class="mundo-chip mundo-chip-link" id="btnMundoSalon" title="Salón de las Leyendas">Salón</button>
       <button type="button" class="mundo-icon-btn" id="btnMundoPausa" aria-haspopup="dialog" title="Pausa (Esc)">Ⅱ</button>
     </div>
   </div>
@@ -65,6 +67,21 @@
           <p><strong>Controles:</strong> WASD / flechas para moverte · E para interactuar · Esc para pausa · M para silenciar.</p>
           <p>El mundo no aprueba lecciones ni modifica tu progreso académico. Las recompensas son motivacionales.</p>
         </div>
+      </div>
+
+      <div class="mundo-panel mundo-salon" id="mundoSalon" role="dialog" aria-modal="true" aria-labelledby="mundoSalonTitulo" hidden>
+        <div class="mundo-dialogo-cabeza">
+          <h2 id="mundoSalonTitulo">Salón de las Leyendas</h2>
+          <button type="button" class="mundo-icon-btn" id="btnMundoCerrarSalon" aria-label="Cerrar Salón">×</button>
+        </div>
+        <div class="mundo-salon-stats" id="mundoSalonStats"></div>
+        <div class="mundo-salon-grid">
+          <section><h3>Galería de trofeos</h3><ul class="mundo-lista" id="mundoSalonTrofeos"></ul></section>
+          <section><h3>Reliquias y objetos</h3><ul class="mundo-lista" id="mundoSalonReliquias"></ul></section>
+          <section><h3>Armería</h3><ul class="mundo-lista" id="mundoSalonArmeria"></ul></section>
+          <section><h3>Logros académicos</h3><ul class="mundo-lista" id="mundoSalonLogros"></ul></section>
+        </div>
+        <p class="mundo-ayuda">El Salón refleja tu progreso de juego. El progreso académico se consulta en el roadmap y no se modifica desde aquí.</p>
       </div>
 
       <div class="mundo-panel mundo-minijuego" id="mundoMinijuego" role="dialog" aria-modal="true" aria-labelledby="mundoMinijuegoTitulo" hidden>

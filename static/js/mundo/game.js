@@ -34,7 +34,13 @@
     academicoTexto: document.getElementById('mundoAcademicoTexto'),
     academicoEnlace: document.getElementById('mundoAcademicoEnlace'),
     regionNombre: document.getElementById('mundoRegionNombre'),
-    regionSub: document.getElementById('mundoRegionSub')
+    regionSub: document.getElementById('mundoRegionSub'),
+    salon: document.getElementById('mundoSalon'),
+    salonStats: document.getElementById('mundoSalonStats'),
+    salonTrofeos: document.getElementById('mundoSalonTrofeos'),
+    salonReliquias: document.getElementById('mundoSalonReliquias'),
+    salonArmeria: document.getElementById('mundoSalonArmeria'),
+    salonLogros: document.getElementById('mundoSalonLogros')
   };
 
   let running = true;
@@ -142,6 +148,7 @@
     state.xpSiguiente = nuevo.xp_siguiente || 50;
     state.tiempoJugado = nuevo.tiempo_jugado || state.tiempoJugado;
     state.audioSilenciado = Boolean(nuevo.audio_silenciado);
+    if (nuevo.coleccion) config.coleccion = nuevo.coleccion;
     renderHud();
     renderSidebar();
   }
@@ -294,6 +301,11 @@
     player.direction = 'down';
     hideDialogue();
     updateRegionLabel();
+    if (config.coleccion) {
+      const descubiertos = new Set(config.coleccion.descubrimientos || []);
+      descubiertos.add(map.id);
+      config.coleccion.descubrimientos = [...descubiertos];
+    }
     setStatus(`Entrando en ${map.name}…`);
     if (state.puedeGuardar) await saveNow();
     showDialogue(map.name, map.id === 'biblioteca-aldear'
@@ -301,7 +313,74 @@
       : 'Vuelves a la aldea. El camino sigue abierto para explorar y repasar.');
   }
 
+  function renderSalonList(element, items, emptyText) {
+    element.textContent = '';
+    if (!items || !items.length) {
+      const empty = document.createElement('li');
+      empty.className = 'mundo-vacio';
+      empty.textContent = emptyText;
+      element.appendChild(empty);
+      return;
+    }
+    for (const item of items) {
+      const li = document.createElement('li');
+      const strong = document.createElement('strong');
+      strong.textContent = item.nombre;
+      const badge = document.createElement('span');
+      badge.className = 'mundo-mision-estado';
+      badge.textContent = item.rareza || item.categoria || 'reliquia';
+      const description = document.createElement('p');
+      description.className = 'mundo-mision-desc';
+      description.textContent = item.descripcion || '';
+      li.append(strong, badge, description);
+      element.appendChild(li);
+    }
+  }
+
+  function openSalon() {
+    if (!dom.salon) return;
+    const coleccion = config.coleccion || {};
+    dom.salonStats.textContent = '';
+    const stats = [
+      ['Nivel', coleccion.nivel || state.nivel],
+      ['XP', coleccion.experiencia ?? state.experiencia],
+      ['Misiones', `${coleccion.misiones_completadas || 0}/${coleccion.misiones_totales || state.misiones.length}`],
+      ['Monedas', coleccion.monedas || 0],
+      ['Regiones', (coleccion.descubrimientos || []).length],
+    ];
+    for (const [label, value] of stats) {
+      const card = document.createElement('div');
+      card.className = 'mundo-salon-stat';
+      const strong = document.createElement('strong');
+      strong.textContent = value;
+      const span = document.createElement('span');
+      span.textContent = label;
+      card.append(strong, span);
+      dom.salonStats.appendChild(card);
+    }
+    renderSalonList(dom.salonTrofeos, coleccion.trofeos, 'Aún no hay trofeos de misiones. Completa una misión para inaugurar la galería.');
+    renderSalonList(dom.salonReliquias, coleccion.reliquias, 'Las reliquias aparecerán aquí al conseguirlas.');
+    renderSalonList(dom.salonArmeria, coleccion.armeria, 'La armería está vacía. Los objetos de mayor rareza se exhibirán aquí.');
+    renderSalonList(dom.salonLogros, coleccion.logros, 'Los logros académicos aparecerán al completar módulos y etapas.');
+    hideDialogue();
+    dom.salon.hidden = false;
+    modalOpen = true;
+    const close = document.getElementById('btnMundoCerrarSalon');
+    if (close) close.focus();
+  }
+
+  function closeSalon() {
+    if (!dom.salon) return;
+    dom.salon.hidden = true;
+    modalOpen = false;
+    canvas.focus();
+  }
+
   async function interactWith(object) {
+    if (object.tipo === 'salon') {
+      openSalon();
+      return;
+    }
     if (object.tipo === 'puerta') {
       await enterDoor(object);
       return;
@@ -312,7 +391,7 @@
     }
     try {
       const data = await api(config.endpoints.interactuar, { objeto: object.id });
-      applyServerState(data.estado);
+      applyServerState({ ...data.estado, coleccion: data.coleccion });
       tone(660, 0.05, 'triangle');
       const action = questActionFor(object.id);
       showDialogue(data.interaccion.nombre, data.interaccion.texto, action);
@@ -353,7 +432,7 @@
   async function claimQuest(misionId) {
     try {
       const data = await api(config.endpoints.mision, { mision: misionId });
-      applyServerState(data.estado);
+      applyServerState({ ...data.estado, coleccion: data.coleccion });
       tone(880, 0.12, 'triangle');
       hideDialogue();
       showDialogue('Misión completada', `${data.resultado.mensaje} Ganaste ${data.resultado.xp || 0} XP. Las recompensas son motivacionales y no modifican tu progreso académico.`);
@@ -418,7 +497,7 @@
         mision: activeQuest.id,
         respuestas
       });
-      applyServerState(data.estado);
+      applyServerState({ ...data.estado, coleccion: data.coleccion });
       closeMinigame();
       tone(990, 0.15, 'triangle');
       showDialogue('Desafío superado', `${data.resultado.mensaje} Ganaste ${data.resultado.xp || 0} XP. El servidor validó tus respuestas; no se otorga aprobación académica.`);
@@ -446,7 +525,7 @@
     if (!state.puedeGuardar || saving) return false;
     saving = true;
     try {
-      await api(config.endpoints.guardar, {
+      const data = await api(config.endpoints.guardar, {
         region: map.id,
         x: Math.round(player.x - 0.5),
         y: Math.round(player.y - 0.5),
@@ -454,6 +533,7 @@
         tiempo_jugado: Math.floor(state.tiempoJugado),
         audio_silenciado: state.audioSilenciado
       });
+      if (data && data.coleccion) config.coleccion = data.coleccion;
       setStatus(`Partida guardada · ${new Date().toLocaleTimeString()}`);
       return true;
     } catch (error) {
@@ -614,8 +694,10 @@
     const tag = (event.target && event.target.tagName || '').toLowerCase();
     if (['input', 'textarea', 'select'].includes(tag)) return;
     if (event.key === 'Escape') {
-      if (modalOpen) closeMinigame();
-      else togglePause();
+      if (modalOpen) {
+        if (dom.salon && !dom.salon.hidden) closeSalon();
+        else closeMinigame();
+      } else togglePause();
       event.preventDefault();
       return;
     }
@@ -702,6 +784,10 @@
     if (dom.formMinijuego) on(dom.formMinijuego, 'submit', submitMinigame);
     const closeMin = document.getElementById('btnMundoCerrarMinijuego');
     if (closeMin) on(closeMin, 'click', closeMinigame);
+    const salonButton = document.getElementById('btnMundoSalon');
+    if (salonButton) on(salonButton, 'click', openSalon);
+    const closeSalonButton = document.getElementById('btnMundoCerrarSalon');
+    if (closeSalonButton) on(closeSalonButton, 'click', closeSalon);
 
     document.querySelectorAll('[data-mundo-dir]').forEach((button) => {
       const direction = button.dataset.mundoDir;

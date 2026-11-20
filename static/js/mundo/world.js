@@ -84,7 +84,7 @@
     const clear = [
       [14, 10], [14, 11], [13, 10], [15, 10],
       [10, 11], [10, 12], [8, 18], [8, 17],
-      [28, 18], [27, 18], [5, 12], [23, 7], [23, 8]
+      [28, 18], [27, 18], [5, 12], [23, 7], [23, 8], [19, 20], [19, 19]
     ];
     for (const [x, y] of clear) {
       if ([TREE, FLOWER, WALL, ROOF].includes(grid[y][x])) grid[y][x] = GRASS;
@@ -96,7 +96,8 @@
       { id: 'puerta-biblioteca', tipo: 'puerta', nombre: 'Biblioteca de la Aldea', x: 23, y: 7, color: '#8b5e3c', target: 'biblioteca-aldear', targetX: 15, targetY: 17 },
       { id: 'guardian', tipo: 'npc', nombre: 'Guardián del Error', x: 8, y: 18, color: '#ef4444' },
       { id: 'cartel', tipo: 'objeto', nombre: 'Cartel de bienvenida', x: 5, y: 12, color: '#facc15' },
-      { id: 'cofre', tipo: 'objeto', nombre: 'Cofre de la aldea', x: 28, y: 18, color: '#eab308' }
+      { id: 'cofre', tipo: 'objeto', nombre: 'Cofre de la aldea', x: 28, y: 18, color: '#eab308' },
+      { id: 'puerta-salon', tipo: 'puerta', nombre: 'Salón de las Leyendas', x: 19, y: 20, color: '#d4af37', target: 'salon-leyendas', targetX: 15, targetY: 17 }
     ];
 
     return {
@@ -151,9 +152,46 @@
     };
   }
 
+  function buildSalon() {
+    const width = 30;
+    const height = 20;
+    const grid = emptyGrid(width, height, FLOOR);
+    rect(grid, 0, 0, width, 1, WALL);
+    rect(grid, 0, height - 1, width, 1, WALL);
+    rect(grid, 0, 0, 1, height, WALL);
+    rect(grid, width - 1, 0, 1, height, WALL);
+    rect(grid, 3, 2, 24, 1, WALL);
+    rect(grid, 3, 2, 1, 13, WALL);
+    rect(grid, 26, 2, 1, 13, WALL);
+    rect(grid, 13, 8, 4, 8, PLAZA);
+    rect(grid, 10, 6, 10, 2, PLAZA);
+    rect(grid, 10, 14, 10, 1, PLAZA);
+    rect(grid, 15, 18, 1, 1, PATH);
+
+    const objects = [
+      { id: 'cronista', tipo: 'npc', nombre: 'Cronista Elyra', x: 15, y: 5, color: '#d4af37' },
+      { id: 'vitrina-trofeos', tipo: 'salon', nombre: 'Galería de trofeos', x: 8, y: 8, color: '#facc15' },
+      { id: 'armeria-salon', tipo: 'salon', nombre: 'Armería de las Leyendas', x: 22, y: 8, color: '#94a3b8' },
+      { id: 'biblioteca-salon', tipo: 'salon', nombre: 'Biblioteca de descubrimientos', x: 15, y: 12, color: '#38bdf8' },
+      { id: 'salida-salon', tipo: 'puerta', nombre: 'Salir a la aldea', x: 15, y: 18, color: '#8b5e3c', target: 'aldea-metodo', targetX: 19, targetY: 19 }
+    ];
+
+    return {
+      id: 'salon-leyendas',
+      name: 'Salón de las Leyendas',
+      width,
+      height,
+      tile: TILE,
+      grid,
+      objects,
+      spawn: { x: 15, y: 17 }
+    };
+  }
+
   const MAPS = {
     'aldea-metodo': buildAldea(),
-    'biblioteca-aldear': buildBiblioteca()
+    'biblioteca-aldear': buildBiblioteca(),
+    'salon-leyendas': buildSalon()
   };
 
   function getMap(regionId) {

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mapa del mundo — CodeGuard{% endblock %}
+{% block page_title %}Mapa del mundo{% endblock %}
+{% block page_subtitle %}Territorios conocidos y lugares aún por descubrir{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/mundo.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="mundo-mapa-page">
+  <header class="mundo-mapa-hero">
+    <div>
+      <h1>El mundo de CodeGuard</h1>
+      <p>{{ descubiertas }} de {{ regiones|length }} territorios registrados en tu mapa. {{ implementadas }} son explorables en esta versión.</p>
+    </div>
+    <a class="btn cg-btn cg-btn-primary" href="{% url 'gamification:mundo' %}">Volver al mundo</a>
+  </header>
+
+  <div class="mundo-mapa-canvas" role="img" aria-label="Mapa ilustrado del mundo de CodeGuard">
+    {% for region in regiones %}
+      {% if region.jugable %}
+        <a class="mundo-mapa-nodo" data-disponible="1" data-descubierta="{{ region.descubierta|yesno:'1,0' }}"
+           style="left: {{ region.x }}%; top: {{ region.y }}%;"
+           href="{% url 'gamification:mundo' %}"
+           title="{{ region.nombre }}">
+          <strong>{{ region.nombre }}</strong>
+          <small>{% if region.descubierta %}Descubierto · Entrar{% else %}Explorable{% endif %}</small>
+        </a>
+      {% else %}
+        <span class="mundo-mapa-nodo" data-disponible="0" data-descubierta="0"
+              style="left: {{ region.x }}%; top: {{ region.y }}%;"
+              aria-disabled="true" title="Territorio no disponible en esta versión">
+          <strong>{{ region.nombre }}</strong>
+          <small>Bloqueado · Próximamente</small>
+        </span>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <p class="mundo-mapa-leyenda">
+    <span>● Territorio explorable</span>
+    <span>◌ Territorio futuro, no accesible</span>
+    <span>La niebla del mapa no representa contenido jugable.</span>
+  </p>
+
+  <section class="glass-card cg-card" style="margin-top:1rem;">
+    <h2 style="margin-top:0;">Territorios</h2>
+    <ul class="mundo-lista">
+      {% for region in regiones %}
+        <li>
+          <strong>{{ region.nombre }}</strong>
+          <span class="mundo-mision-estado" data-estado="{% if region.jugable %}lista{% else %}disponible{% endif %}">
+            {% if region.jugable %}Explorable{% else %}Bloqueado{% endif %}
+          </span>
+          <p class="mundo-mision-desc">{{ region.descripcion }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+</div>
+{% endblock %}
