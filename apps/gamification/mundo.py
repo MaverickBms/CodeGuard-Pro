@@ -28,6 +28,18 @@ REGIONES = {
         "spawn": {"x": 15, "y": 12},
         "etapa": 0,
     },
+    "salon-leyendas": {
+        "id": "salon-leyendas",
+        "nombre": "Salón de las Leyendas",
+        "descripcion": (
+            "Un museo vivo donde se conservan trofeos, reliquias, armas y "
+            "hazañas de los aventureros de CodeGuard."
+        ),
+        "ancho": 30,
+        "alto": 20,
+        "spawn": {"x": 15, "y": 17},
+        "etapa": 0,
+    },
     "biblioteca-aldear": {
         "id": "biblioteca-aldear",
         "nombre": "Biblioteca de la Aldea",
@@ -62,6 +74,11 @@ OBJETOS = {
         "nombre": "Núcleo lógico",
         "rareza": "oro",
         "descripcion": "Símbolo de haber resuelto un problema con condiciones y evidencia.",
+    },
+    "estandarte-explorador": {
+        "nombre": "Estandarte del Explorador",
+        "rareza": "plata",
+        "descripcion": "Reconocimiento por descubrir los rincones de la aldea.",
     },
     "brujula-aldear": {
         "nombre": "Brújula de la aldea",
@@ -112,6 +129,15 @@ INTERACCIONES = {
         "nombre": "Estantería de foros",
         "texto": "Una respuesta de foro puede orientar, pero no sustituye una especificación.",
     },
+    "cronista": {
+        "bandera": "hablado-cronista",
+        "nombre": "Cronista Elyra",
+        "texto": (
+            "Elyra: «Este salón conserva lo que has aprendido jugando: "
+            "trofeos, reliquias y hazañas. El conocimiento académico vive en "
+            "el roadmap; aquí celebramos el recorrido.»"
+        ),
+    },
     "nexo": {
         "bandera": "hablado-nexo",
         "nombre": "Nexo, mentor de lógica",
@@ -156,6 +182,7 @@ REGION_POR_INTERACCION = {
     "estanteria-2": "biblioteca-aldear",
     "estanteria-3": "biblioteca-aldear",
     "nexo": "biblioteca-aldear",
+    "cronista": "salon-leyendas",
 }
 _PREGUNTAS_DEPURACION = [
     {
@@ -256,6 +283,116 @@ MISIONES = {
 }
 
 
+# Catálogo visible del mapa general. Los territorios no implementados se
+# muestran como misterios bloqueados, nunca como destinos jugables.
+REGIONES_MUNDO = [
+    {"id": "aldea-metodo", "nombre": "Aldea del Método", "implementada": True,
+     "descripcion": "Hogar de la primera etapa: método, investigación y depuración."},
+    {"id": "biblioteca-aldear", "nombre": "Biblioteca de la Aldea", "implementada": True,
+     "descripcion": "Fuentes, tutoriales y lógica en un interior explorable."},
+    {"id": "salon-leyendas", "nombre": "Salón de las Leyendas", "implementada": True,
+     "descripcion": "Trofeos, reliquias y memoria de las hazañas del jugador."},
+    {"id": "reino-sabios", "nombre": "Reino de los Sabios", "implementada": False,
+     "descripcion": "Academias y consejos antiguos. Territorio aún no disponible."},
+    {"id": "tierras-norte", "nombre": "Tierras del Norte", "implementada": False,
+     "descripcion": "Hielo, runas y clanes nórdicos. Territorio aún no disponible."},
+    {"id": "bosque-misterios", "nombre": "Bosque de los Misterios", "implementada": False,
+     "descripcion": "Criaturas y senderos ocultos. Territorio aún no disponible."},
+    {"id": "dominio-dragones", "nombre": "Dominio de los Dragones", "implementada": False,
+     "descripcion": "Montañas y antiguos guardianes. Territorio aún no disponible."},
+]
+
+TROFEOS = {
+    "metodo-principal": {
+        "nombre": "Medalla del Método", "rareza": "plata", "categoria": "mision",
+        "descripcion": "Completaste el primer circuito de aprendizaje de Ada.",
+    },
+    "biblioteca-secundaria": {
+        "nombre": "Sello de las Fuentes", "rareza": "cobre", "categoria": "mision",
+        "descripcion": "Aprendiste a distinguir documentación, tutoriales y foros.",
+    },
+    "desafio-depuracion": {
+        "nombre": "Trofeo del Depurador", "rareza": "oro", "categoria": "desafio",
+        "descripcion": "Resolviste el reto de depuración con evidencia.",
+    },
+    "logica-principal": {
+        "nombre": "Reliquia de las Condiciones", "rareza": "oro", "categoria": "desafio",
+        "descripcion": "Resolviste el reto de lógica de Nexo.",
+    },
+}
+
+
+def contexto_coleccion(usuario) -> dict:
+    """Datos del Salón de las Leyendas; no expone credenciales ni datos ajenos."""
+    from .models import ItemInventario, LogroObtenido
+
+    if usuario is None:
+        return {
+            "trofeos": [], "reliquias": [], "armeria": [], "logros": [],
+            "misiones_completadas": 0, "misiones_totales": len(MISIONES),
+            "descubrimientos": [], "nivel": 1, "experiencia": 0,
+            "xp_siguiente": 50, "monedas": 0,
+        }
+
+    estado = obtener_estado(usuario)
+    completadas = [
+        mid for mid, data in (estado.misiones or {}).items()
+        if isinstance(data, dict) and data.get("estado") == "completada"
+    ]
+    trofeos = []
+    for mid in completadas:
+        catalogo = TROFEOS.get(mid)
+        if catalogo:
+            trofeos.append({"id": mid, **catalogo})
+    logros = [
+        {
+            "nombre": item.logro.nombre,
+            "descripcion": item.logro.descripcion,
+            "rareza": "plata" if item.logro.recompensa_monedas >= 20 else "cobre",
+            "categoria": "logro",
+        }
+        for item in LogroObtenido.objects.filter(usuario=usuario)
+        .select_related("logro").order_by("-obtenido_en")[:24]
+    ]
+    items = list(
+        ItemInventario.objects.filter(usuario=usuario).order_by("-obtenido_en")[:40]
+    )
+    armeria = [
+        {
+            "nombre": item.nombre,
+            "rareza": item.rareza,
+            "descripcion": item.descripcion,
+            "origen": item.origen,
+        }
+        for item in items
+        if item.rareza in {"oro", "diamante", "legendario", "arcano"}
+    ]
+    reliquias = [
+        {
+            "nombre": item.nombre,
+            "rareza": item.rareza,
+            "descripcion": item.descripcion,
+            "origen": item.origen,
+        }
+        for item in items
+    ]
+    from .services import obtener_perfil
+    perfil = obtener_perfil(usuario)
+    return {
+        "trofeos": trofeos,
+        "reliquias": reliquias,
+        "armeria": armeria,
+        "logros": logros,
+        "misiones_completadas": len(completadas),
+        "misiones_totales": len(MISIONES),
+        "descubrimientos": estado.descubrimientos or [],
+        "nivel": 1 + estado.experiencia // 50,
+        "experiencia": estado.experiencia,
+        "xp_siguiente": (1 + estado.experiencia // 50) * 50,
+        "monedas": perfil.saldo_monedas,
+    }
+
+
 def _region(region_id: str) -> dict:
     try:
         return REGIONES[region_id]
@@ -319,6 +456,8 @@ def serializar_estado(estado: EstadoMundo) -> dict:
         "xp_siguiente": nivel * 50,
         "tiempo_jugado": estado.tiempo_jugado,
         "audio_silenciado": estado.audio_silenciado,
+        "descubrimientos": estado.descubrimientos or [],
+        "region_nombre": region["nombre"],
     }
 
 
@@ -369,10 +508,14 @@ def guardar_posicion(
     estado.direccion = direccion
     estado.tiempo_jugado = tiempo_jugado
     estado.audio_silenciado = audio_silenciado
+    descubrimientos = list(estado.descubrimientos or [])
+    if region not in descubrimientos:
+        descubrimientos.append(region)
+        estado.descubrimientos = descubrimientos
     estado.save(
         update_fields=[
             "region", "x", "y", "direccion", "tiempo_jugado",
-            "audio_silenciado", "actualizado_en",
+            "audio_silenciado", "descubrimientos", "actualizado_en",
         ]
     )
     return estado

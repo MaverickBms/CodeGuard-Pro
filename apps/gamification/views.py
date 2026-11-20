@@ -26,8 +26,11 @@ from .models import (
     ZonaMundo,
 )
 from .mundo import (
+    REGIONES,
+    REGIONES_MUNDO,
     completar_mision,
     contexto_academico,
+    contexto_coleccion,
     guardar_posicion,
     interactuar,
     obtener_estado,
@@ -181,6 +184,7 @@ def mundo(request):
         puede_guardar = True
     configuracion = serializar_estado(estado)
     configuracion["academico"] = contexto_academico(usuario)
+    configuracion["coleccion"] = contexto_coleccion(usuario)
     configuracion["endpoints"] = {
         "guardar": reverse("gamification:guardar_mundo"),
         "interactuar": reverse("gamification:interactuar_mundo"),
@@ -218,7 +222,13 @@ def guardar_mundo(request):
         )
     except ValidationError as exc:
         return _error_json(exc)
-    return JsonResponse({"ok": True, "estado": serializar_estado(estado)})
+    return JsonResponse(
+        {
+            "ok": True,
+            "estado": serializar_estado(estado),
+            "coleccion": contexto_coleccion(usuario),
+        }
+    )
 
 
 @requiere_acceso
@@ -238,7 +248,12 @@ def interactuar_mundo(request):
     except ValidationError as exc:
         return _error_json(exc)
     return JsonResponse(
-        {"ok": True, "interaccion": resultado, "estado": serializar_estado(estado)}
+        {
+            "ok": True,
+            "interaccion": resultado,
+            "estado": serializar_estado(estado),
+            "coleccion": contexto_coleccion(usuario),
+        }
     )
 
 
@@ -266,5 +281,43 @@ def completar_mision_mundo(request):
             "creada": creada,
             "resultado": resultado,
             "estado": serializar_estado(estado),
+            "coleccion": contexto_coleccion(usuario),
         }
+    )
+
+
+@requiere_acceso
+def mapa_mundo(request):
+    """Mapa general: solo los territorios implementados son accesibles."""
+    usuario = get_usuario_actual(request)
+    estado = obtener_estado(usuario) if usuario is not None else None
+    descubiertos = set((estado.descubrimientos if estado else []) or [])
+    posiciones = {
+        "aldea-metodo": (18, 28),
+        "biblioteca-aldear": (38, 46),
+        "salon-leyendas": (52, 22),
+        "reino-sabios": (76, 20),
+        "tierras-norte": (82, 54),
+        "bosque-misterios": (62, 76),
+        "dominio-dragones": (32, 76),
+    }
+    regiones = []
+    for region in REGIONES_MUNDO:
+        x, y = posiciones.get(region["id"], (50, 50))
+        regiones.append({
+            **region,
+            "descubierta": region["id"] in descubiertos or region["id"] == "aldea-metodo",
+            "jugable": region["implementada"],
+            "x": x,
+            "y": y,
+        })
+    return render(
+        request,
+        "gamification/mundo_mapa.html",
+        {
+            "regiones": regiones,
+            "descubiertas": len([r for r in regiones if r["descubierta"]]),
+            "implementadas": len([r for r in regiones if r["implementada"]]),
+            "usuario_nombre": usuario.get_username() if usuario else "Visitante local",
+        },
     )

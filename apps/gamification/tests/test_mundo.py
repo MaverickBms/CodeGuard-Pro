@@ -135,6 +135,24 @@ class MundoCodeGuardTests(TestCase):
             EstadoMundo.objects.get(usuario=self.usuario).region, "biblioteca-aldear"
         )
 
+    def test_salon_refleja_trofeo_de_mision_completada(self):
+        with override_settings(AUTH_DISABLED=True):
+            self._post("gamification:interactuar_mundo", {"objeto": "ada"})
+            self._post("gamification:interactuar_mundo", {"objeto": "terminal"})
+            self._post(
+                "gamification:completar_mision_mundo", {"mision": "metodo-principal"}
+            )
+            respuesta = self.client.get(reverse("gamification:mundo"))
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertContains(respuesta, "Medalla del")
+
+    def test_mapa_general_muestra_territorios_futuros_bloqueados(self):
+        with override_settings(AUTH_DISABLED=True):
+            respuesta = self.client.get(reverse("gamification:mapa_mundo"))
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertContains(respuesta, "Reino de los Sabios")
+        self.assertContains(respuesta, "Bloqueado")
+
     def test_no_permite_interactuar_con_objetos_de_otra_region(self):
         with override_settings(AUTH_DISABLED=True):
             respuesta = self._post("gamification:interactuar_mundo", {"objeto": "byte"})

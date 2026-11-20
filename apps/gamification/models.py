@@ -353,6 +353,7 @@ class EstadoMundo(models.Model):
     banderas = models.JSONField(default=dict, blank=True, verbose_name="interacciones")
     inventario = models.JSONField(default=list, blank=True, verbose_name="inventario")
     experiencia = models.PositiveIntegerField(default=0, verbose_name="experiencia")
+    descubrimientos = models.JSONField(default=list, blank=True, verbose_name="regiones descubiertas")
     tiempo_jugado = models.PositiveIntegerField(default=0, verbose_name="tiempo jugado (s)")
     audio_silenciado = models.BooleanField(default=False, verbose_name="audio silenciado")
     actualizado_en = models.DateTimeField(auto_now=True, verbose_name="actualizado en")
