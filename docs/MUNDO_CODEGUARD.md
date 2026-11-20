@@ -3,7 +3,7 @@
 **Estado:** prototipo vertical jugable, integrado en CodeGuard Pro.  
 **Rama:** `feature/mundo-codeguard`  
 **Base:** `release/1.0.0`  
-**Alcance:** una región explorable, tres NPC, dos misiones narrativas, un minijuego validado en servidor y persistencia local.
+**Alcance:** una región con dos mapas explorables, cuatro NPC, cuatro misiones (incluidas dos con minijuego), transiciones y persistencia local.
 
 > El mundo es una capa de gamificación motivacional. **No aprueba lecciones,
 > no modifica notas ni sustituye el progreso académico de ASCENSO 3.1.**
@@ -16,6 +16,7 @@
 | Modelo puro | `static/js/mundo/model.js` | Colisiones, cámara, distancia, interactuables, utilidades; probado con Node |
 | Datos del mapa | `static/js/mundo/world.js` | Mapa 36×24, tiles, NPC y objetos de la Aldea del Método |
 | Sprites | `static/js/mundo/sprites.js` | Pixel art procedural con Canvas; sin recursos externos |
+| Mapas | `static/js/mundo/world.js` | Registro `MAPS` con Aldea y Biblioteca; añadir mapas no exige tocar el motor |
 | Vista | `templates/gamification/mundo.html` | Canvas, HUD, diálogos, misiones, inventario y controles accesibles |
 | Estilos | `static/css/mundo.css` | Integración con las variables de los 12 temas, responsive y movimiento reducido |
 | Dominio | `apps/gamification/mundo.py` | Región, misiones, interacciones, validación y recompensas idempotentes |
@@ -27,12 +28,16 @@ No se añadieron dependencias JavaScript ni imágenes de terceros.
 ## 2. Primera versión jugable incluida
 
 - Región **Aldea del Método** de 36×24 tiles, con río, puente, plaza, casas, árboles y decoración.
+- Interior **Biblioteca de la Aldea** de 30×20, con estanterías, Byte, Nexo y salida a la aldea.
 - Personaje con movimiento WASD/flechas, colisiones, cámara con seguimiento y animación de dos frames.
-- Tres NPC: **Mentora Ada**, **Bibliotecario Byte** y **Guardián del Error**.
+- Cuatro NPC: **Mentora Ada**, **Bibliotecario Byte**, **Guardián del Error** y **Nexo**.
 - Objetos interactivos: terminal, tres estanterías, cartel y cofre.
 - Misión principal **El método de Ada** (hablar, practicar y volver).
 - Misión secundaria **Fuentes con criterio** (tres estanterías y regreso con Byte).
+- Misión de lógica **Condiciones del Nexo** en la biblioteca.
+- Transición Aldea ↔ Biblioteca mediante puertas; la región se persiste.
 - Minijuego **El error en la terminal**: tres preguntas de depuración validadas en el servidor; no se aprueba por azar.
+- Minijuego **Condiciones del Nexo**: condiciones y pruebas de regresión, también validadas en servidor.
 - Recompensas: objetos de inventario, XP y monedas internas idempotentes.
 - Guardado de posición, tiempo, audio, misiones e inventario en SQLite.
 - Pausa, silencio de audio, controles táctiles y enlace a la etapa 0 real del roadmap.
@@ -93,8 +98,9 @@ Para ampliar el mundo:
 
 ## 7. Limitaciones actuales
 
-- Una sola región y un mapa prototipo; no es un mundo completo.
+- Una región con dos mapas piloto; no es un mundo abierto completo. Faltan más regiones y contenido narrativo.
 - No hay spritesheets externos ni música; el audio es un tono sintetizado mínimo.
+- La transición es por puertas; no hay interiores independientes adicionales.
 - El guardado no sincroniza entre equipos (offline-first).
 - Los diálogos y misiones están en español y son contenido narrativo original.
 - No hay editor visual de mapas ni integración con paquetes de conocimiento.

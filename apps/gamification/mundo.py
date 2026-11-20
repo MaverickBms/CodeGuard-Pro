@@ -27,7 +27,19 @@ REGIONES = {
         "alto": 20,
         "spawn": {"x": 15, "y": 12},
         "etapa": 0,
-    }
+    },
+    "biblioteca-aldear": {
+        "id": "biblioteca-aldear",
+        "nombre": "Biblioteca de la Aldea",
+        "descripcion": (
+            "Un interior tranquilo con documentación, tutoriales y foros. "
+            "El Bibliotecario Byte y Nexo esperan aquí."
+        ),
+        "ancho": 30,
+        "alto": 20,
+        "spawn": {"x": 15, "y": 17},
+        "etapa": 0,
+    },
 }
 
 OBJETOS = {
@@ -45,6 +57,11 @@ OBJETOS = {
         "nombre": "Chip depurador",
         "rareza": "oro",
         "descripcion": "Símbolo de haber encontrado errores con evidencia.",
+    },
+    "nucleo-logico": {
+        "nombre": "Núcleo lógico",
+        "rareza": "oro",
+        "descripcion": "Símbolo de haber resuelto un problema con condiciones y evidencia.",
     },
     "brujula-aldear": {
         "nombre": "Brújula de la aldea",
@@ -94,6 +111,14 @@ INTERACCIONES = {
         "bandera": "estanteria-3",
         "nombre": "Estantería de foros",
         "texto": "Una respuesta de foro puede orientar, pero no sustituye una especificación.",
+    },
+    "nexo": {
+        "bandera": "hablado-nexo",
+        "nombre": "Nexo, mentor de lógica",
+        "texto": (
+            "Nexo: «Una condición mal formulada puede parecer correcta. "
+            "Tu reto es razonar el caso, no memorizar una respuesta.»"
+        ),
     },
     "guardian": {
         "bandera": "hablado-guardian",
@@ -147,6 +172,41 @@ _PREGUNTAS_DEPURACION = [
     },
 ]
 
+_RESPUESTAS_LOGICA = {"q1": 1, "q2": 0, "q3": 2}
+_RESPUESTAS_POR_MISION = {
+    "desafio-depuracion": _RESPUESTAS_DEPURACION,
+    "logica-principal": _RESPUESTAS_LOGICA,
+}
+_PREGUNTAS_LOGICA = [
+    {
+        "id": "q1",
+        "pregunta": "Un programa debe aceptar edad >= 18 y país == 'ES'. ¿Qué condición es correcta?",
+        "opciones": [
+            "edad >= 18 OR pais == 'ES'",
+            "edad >= 18 AND pais == 'ES'",
+            "edad < 18 AND pais == 'ES'",
+        ],
+    },
+    {
+        "id": "q2",
+        "pregunta": "Si una lista está vacía, ¿qué comprobación evita acceder al primer elemento?",
+        "opciones": [
+            "Comprobar que la longitud es mayor que cero antes de acceder.",
+            "Acceder siempre y confiar en que no falle.",
+            "Ordenar la lista y acceder al último.",
+        ],
+    },
+    {
+        "id": "q3",
+        "pregunta": "¿Qué describe mejor una prueba de regresión?",
+        "opciones": [
+            "Una prueba que solo comprueba la velocidad.",
+            "Una prueba que se elimina cuando falla.",
+            "Una prueba que evita que un fallo corregido vuelva a aparecer.",
+        ],
+    },
+]
+
 MISIONES = {
     "metodo-principal": {
         "nombre": "El método de Ada",
@@ -161,6 +221,14 @@ MISIONES = {
         "descripcion": "Revisa las tres estanterías y vuelve con Byte.",
         "requisitos": ["hablado-byte", "estanteria-1", "estanteria-2", "estanteria-3"],
         "recompensa": {"objeto": "marca-bibliotecario", "xp": 15, "monedas": 5},
+    },
+    "logica-principal": {
+        "nombre": "Condiciones del Nexo",
+        "tipo": "minijuego",
+        "descripcion": "Resuelve el reto de lógica de Nexo en la biblioteca.",
+        "requisitos": ["hablado-nexo"],
+        "recompensa": {"objeto": "nucleo-logico", "xp": 25, "monedas": 8},
+        "minijuego": {"preguntas": _PREGUNTAS_LOGICA},
     },
     "desafio-depuracion": {
         "nombre": "El error en la terminal",
@@ -312,19 +380,22 @@ def interactuar(estado: EstadoMundo, objeto: str) -> dict:
     }
 
 
-def _validar_respuestas(respuestas) -> int:
+def _validar_respuestas(mision_id: str, respuestas) -> int:
+    esperadas = _RESPUESTAS_POR_MISION.get(mision_id)
+    if esperadas is None:
+        raise ValidationError("La misión no tiene un minijuego validable.")
     if not isinstance(respuestas, dict):
         raise ValidationError("Las respuestas del minijuego no son válidas.")
-    if set(respuestas) != set(_RESPUESTAS_DEPURACION):
+    if set(respuestas) != set(esperadas):
         raise ValidationError("Faltan respuestas del minijuego.")
     aciertos = 0
-    for clave, esperada in _RESPUESTAS_DEPURACION.items():
+    for clave, esperada in esperadas.items():
         valor = respuestas.get(clave)
         if not isinstance(valor, int):
             raise ValidationError("Cada respuesta debe ser una opción entera.")
         if valor == esperada:
             aciertos += 1
-    if aciertos < len(_RESPUESTAS_DEPURACION):
+    if aciertos < len(esperadas):
         raise ValidationError("El desafío requiere acertar todas las preguntas.")
     return aciertos
 
@@ -335,6 +406,9 @@ def completar_mision(estado: EstadoMundo, mision_id: str, respuestas=None) -> tu
     if definicion is None:
         raise ValidationError("La misión no existe.")
 
+    # Bloquea la fila para que dos solicitudes concurrentes no dupliquen XP,
+    # inventario ni recompensas.
+    estado = EstadoMundo.objects.select_for_update().get(pk=estado.pk)
     misiones = dict(estado.misiones or {})
     if (misiones.get(mision_id) or {}).get("estado") == "completada":
         return estado, False, {"mensaje": "La misión ya estaba completada."}
@@ -344,7 +418,7 @@ def completar_mision(estado: EstadoMundo, mision_id: str, respuestas=None) -> tu
 
     puntuacion = None
     if "minijuego" in definicion:
-        puntuacion = _validar_respuestas(respuestas)
+        puntuacion = _validar_respuestas(mision_id, respuestas)
 
     recompensa = definicion.get("recompensa", {})
     inventario = list(estado.inventario or [])

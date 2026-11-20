@@ -107,6 +107,34 @@ class MundoCodeGuardTests(TestCase):
         self.assertEqual(correctas.status_code, 200)
         self.assertTrue(correctas.json()["creada"])
 
+    def test_region_biblioteca_persiste_y_minijuego_logico(self):
+        with override_settings(AUTH_DISABLED=True):
+            guardado = self._post(
+                "gamification:guardar_mundo",
+                {
+                    "region": "biblioteca-aldear",
+                    "x": 15,
+                    "y": 17,
+                    "direccion": "up",
+                    "tiempo_jugado": 20,
+                },
+            )
+            self.assertEqual(guardado.status_code, 200)
+            self._post("gamification:interactuar_mundo", {"objeto": "nexo"})
+            incorrectas = self._post(
+                "gamification:completar_mision_mundo",
+                {"mision": "logica-principal", "respuestas": {"q1": 0, "q2": 0, "q3": 0}},
+            )
+            self.assertEqual(incorrectas.status_code, 400)
+            correctas = self._post(
+                "gamification:completar_mision_mundo",
+                {"mision": "logica-principal", "respuestas": {"q1": 1, "q2": 0, "q3": 2}},
+            )
+        self.assertEqual(correctas.status_code, 200)
+        self.assertEqual(
+            EstadoMundo.objects.get(usuario=self.usuario).region, "biblioteca-aldear"
+        )
+
     def test_sin_propietario_local_no_permite_guardar(self):
         self.usuario.delete()
         with override_settings(AUTH_DISABLED=True):

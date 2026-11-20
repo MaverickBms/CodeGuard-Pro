@@ -62,6 +62,19 @@
     fill(ctx, x + 7, y + 5, 2, 6, '#f472b6');
   }
 
+  function drawFloor(ctx, x, y) {
+    fill(ctx, x, y, T, T, '#c9a978');
+    fill(ctx, x, y + 7, T, 1, '#b08d5f');
+    fill(ctx, x + 7, y, 1, 7, '#b08d5f');
+    fill(ctx, x + 3, y + 8, 1, 8, '#b08d5f');
+  }
+
+  function drawDoor(ctx, px, py) {
+    fill(ctx, px + 3, py + 2, 10, 13, '#5b3a29');
+    fill(ctx, px + 5, py + 4, 6, 6, '#b07a45');
+    fill(ctx, px + 11, py + 9, 2, 2, '#facc15');
+  }
+
   function drawPlaza(ctx, x, y) {
     fill(ctx, x, y, T, T, '#b7b7a8');
     fill(ctx, x + 1, y + 1, 6, 6, '#c9c9b9');
@@ -78,6 +91,7 @@
       case 6: drawBridge(ctx, x, y); break;
       case 7: drawFlower(ctx, x, y); break;
       case 8: drawPlaza(ctx, x, y); break;
+      case 9: drawFloor(ctx, x, y); break;
       default: drawGrass(ctx, x, y);
     }
   }
@@ -108,6 +122,7 @@
   }
 
   function drawObject(ctx, id, px, py, color, tick) {
+    if (id.startsWith('puerta') || id.startsWith('salida')) { drawDoor(ctx, px, py); return; }
     if (id === 'terminal') {
       fill(ctx, px + 2, py + 3, 12, 9, '#334155');
       fill(ctx, px + 3, py + 4, 10, 6, '#38bdf8');

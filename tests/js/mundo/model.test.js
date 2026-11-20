@@ -67,3 +67,14 @@ test('los objetos del mapa tienen identificadores únicos', () => {
     assert.equal(Model.isWalkable(world, item.x, item.y), true, item.id);
   }
 });
+
+test('el registro de mapas permite añadir regiones sin tocar el motor', () => {
+  const library = globalThis.CodeGuardMundoWorld.getMap('biblioteca-aldear');
+  assert.equal(library.id, 'biblioteca-aldear');
+  assert.equal(library.width, 30);
+  assert.equal(library.height, 20);
+  assert.equal(Model.isWalkable(library, library.spawn.x, library.spawn.y), true);
+  const door = library.objects.find((item) => item.id === 'salida-biblioteca');
+  assert.equal(door.target, 'aldea-metodo');
+  assert.equal(Model.isWalkable(globalThis.CodeGuardMundoWorld.getMap(door.target), door.targetX, door.targetY), true);
+});

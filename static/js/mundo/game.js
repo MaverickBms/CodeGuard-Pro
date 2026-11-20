@@ -32,7 +32,9 @@
     audio: document.getElementById('btnMundoAudio'),
     guardado: document.getElementById('mundoEstadoGuardado'),
     academicoTexto: document.getElementById('mundoAcademicoTexto'),
-    academicoEnlace: document.getElementById('mundoAcademicoEnlace')
+    academicoEnlace: document.getElementById('mundoAcademicoEnlace'),
+    regionNombre: document.getElementById('mundoRegionNombre'),
+    regionSub: document.getElementById('mundoRegionSub')
   };
 
   let running = true;
@@ -44,7 +46,7 @@
     return;
   }
 
-  const map = World.world;
+  let map = World.getMap((config.region && config.region.id) || 'aldea-metodo');
   const state = {
     misiones: config.misiones || [],
     banderas: config.banderas || {},
@@ -79,6 +81,8 @@
   let saveTimer = null;
   let saving = false;
   let audioContext = null;
+  let rafId = 0;
+  let eventController = null;
   let activeQuest = null;
   let dialogueAction = null;
 
@@ -273,7 +277,35 @@
     dialogueAction = null;
   }
 
+  function updateRegionLabel() {
+    if (dom.regionNombre) dom.regionNombre.textContent = map.name;
+    if (dom.regionSub) {
+      dom.regionSub.textContent = map.id === 'aldea-metodo'
+        ? 'Región piloto · Etapa 0 de ASCENSO 3.1'
+        : 'Interior · Biblioteca de la aldea';
+    }
+  }
+
+  async function enterDoor(object) {
+    if (!object.target || !World.MAPS[object.target]) return;
+    map = World.getMap(object.target);
+    player.x = Number(object.targetX || map.spawn.x) + 0.5;
+    player.y = Number(object.targetY || map.spawn.y) + 0.5;
+    player.direction = 'down';
+    hideDialogue();
+    updateRegionLabel();
+    setStatus(`Entrando en ${map.name}…`);
+    if (state.puedeGuardar) await saveNow();
+    showDialogue(map.name, map.id === 'biblioteca-aldear'
+      ? 'Entras en la biblioteca. Byte y Nexo pueden ayudarte a estudiar con criterio y lógica.'
+      : 'Vuelves a la aldea. El camino sigue abierto para explorar y repasar.');
+  }
+
   async function interactWith(object) {
+    if (object.tipo === 'puerta') {
+      await enterDoor(object);
+      return;
+    }
     if (!state.puedeGuardar) {
       showDialogue(object.nombre, 'No hay un propietario local configurado. La exploración funciona, pero las misiones y el guardado requieren un perfil local.');
       return;
@@ -307,6 +339,12 @@
       const mision = comandoMision('desafio-depuracion');
       if (mision && mision.estado === 'lista') {
         return { label: 'Abrir desafío de depuración', run: () => openMinigame('desafio-depuracion') };
+      }
+    }
+    if (objectId === 'nexo') {
+      const mision = comandoMision('logica-principal');
+      if (mision && mision.estado === 'lista') {
+        return { label: 'Abrir reto de lógica', run: () => openMinigame('logica-principal') };
       }
     }
     return null;
@@ -409,7 +447,7 @@
     saving = true;
     try {
       await api(config.endpoints.guardar, {
-        region: config.region.id,
+        region: map.id,
         x: Math.round(player.x - 0.5),
         y: Math.round(player.y - 0.5),
         direccion: player.direction,
@@ -446,7 +484,7 @@
         'X-CSRFToken': csrfToken()
       },
       body: JSON.stringify({
-        region: config.region.id,
+        region: map.id,
         x: Math.round(player.x - 0.5),
         y: Math.round(player.y - 0.5),
         direccion: player.direction,
@@ -492,8 +530,8 @@
   }
 
   function drawObject(object, camera) {
-    const px = (object.x - camera.x) * Sprites.T;
-    const py = (object.y - camera.y) * Sprites.T;
+    const px = Math.round((object.x - camera.x) * Sprites.T);
+    const py = Math.round((object.y - camera.y) * Sprites.T);
     if (object.tipo === 'npc') {
       Sprites.drawNpc(ctx, px, py, object.color, Math.floor(elapsed / 300) % 2);
     } else {
@@ -528,9 +566,20 @@
       ) drawObject(object, camera);
     }
 
-    const playerPx = (player.x - 0.5 - camera.x) * Sprites.T;
-    const playerPy = (player.y - 0.5 - camera.y) * Sprites.T;
+    const playerPx = Math.round((player.x - 0.5 - camera.x) * Sprites.T);
+    const playerPy = Math.round((player.y - 0.5 - camera.y) * Sprites.T);
     Sprites.drawPlayer(ctx, playerPx, playerPy, player.direction, player.frame);
+
+    // Luz ambiental simulada: el centro de la escena queda despejado y los
+    // bordes se oscurecen ligeramente para dar profundidad sin assets.
+    const luz = ctx.createRadialGradient(
+      playerPx + 8, playerPy + 8, 20,
+      playerPx + 8, playerPy + 8, Math.max(canvas.width, canvas.height) * .72
+    );
+    luz.addColorStop(0, 'rgba(4, 8, 18, 0)');
+    luz.addColorStop(1, 'rgba(4, 8, 18, .30)');
+    ctx.fillStyle = luz;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const nearest = Model.nearestInteractable(player, map.objects, 1.5);
     if (nearest && !paused && !modalOpen) {
@@ -558,7 +607,7 @@
     elapsed = timestamp;
     update(dt);
     render();
-    requestAnimationFrame(loop);
+    rafId = requestAnimationFrame(loop);
   }
 
   function handleKeyDown(event) {
@@ -605,24 +654,30 @@
   }
 
   function bindEvents() {
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    window.addEventListener('blur', () => keys.clear());
-    window.addEventListener('pagehide', () => {
+    eventController = new AbortController();
+    const signal = eventController.signal;
+    const on = (target, type, handler, options = {}) => {
+      target.addEventListener(type, handler, { ...options, signal });
+    };
+
+    on(window, 'keydown', handleKeyDown);
+    on(window, 'keyup', handleKeyUp);
+    on(window, 'blur', () => keys.clear());
+    on(window, 'pagehide', () => {
       saveOnExit();
       destroy();
     });
-    document.addEventListener('visibilitychange', () => {
+    on(document, 'visibilitychange', () => {
       if (document.hidden) togglePause(true);
     });
-    canvas.addEventListener('click', () => canvas.focus());
+    on(canvas, 'click', () => canvas.focus());
 
     const close = document.getElementById('btnMundoDialogoCerrar');
     const closeX = document.getElementById('btnMundoCerrarDialogo');
-    if (close) close.addEventListener('click', hideDialogue);
-    if (closeX) closeX.addEventListener('click', hideDialogue);
+    if (close) on(close, 'click', hideDialogue);
+    if (closeX) on(closeX, 'click', hideDialogue);
     if (dom.dialogoAccion) {
-      dom.dialogoAccion.addEventListener('click', () => {
+      on(dom.dialogoAccion, 'click', () => {
         if (dialogueAction) {
           const action = dialogueAction;
           hideDialogue();
@@ -634,19 +689,19 @@
     const pause = document.getElementById('btnMundoPausa');
     const resume = document.getElementById('btnMundoReanudar');
     const save = document.getElementById('btnMundoGuardar');
-    if (pause) pause.addEventListener('click', () => togglePause());
-    if (resume) resume.addEventListener('click', () => togglePause(false));
-    if (save) save.addEventListener('click', saveNow);
+    if (pause) on(pause, 'click', () => togglePause());
+    if (resume) on(resume, 'click', () => togglePause(false));
+    if (save) on(save, 'click', saveNow);
     if (dom.audio) {
-      dom.audio.addEventListener('click', () => {
+      on(dom.audio, 'click', () => {
         state.audioSilenciado = !state.audioSilenciado;
         renderHud();
         scheduleSave();
       });
     }
-    if (dom.formMinijuego) dom.formMinijuego.addEventListener('submit', submitMinigame);
+    if (dom.formMinijuego) on(dom.formMinijuego, 'submit', submitMinigame);
     const closeMin = document.getElementById('btnMundoCerrarMinijuego');
-    if (closeMin) closeMin.addEventListener('click', closeMinigame);
+    if (closeMin) on(closeMin, 'click', closeMinigame);
 
     document.querySelectorAll('[data-mundo-dir]').forEach((button) => {
       const direction = button.dataset.mundoDir;
@@ -660,17 +715,30 @@
         keys.delete(key);
         pointers.delete(button);
       };
-      button.addEventListener('pointerdown', press);
-      button.addEventListener('pointerup', release);
-      button.addEventListener('pointerleave', release);
-      button.addEventListener('pointercancel', release);
+      on(button, 'pointerdown', press);
+      on(button, 'pointerup', release);
+      on(button, 'pointerleave', release);
+      on(button, 'pointercancel', release);
     });
     document.querySelectorAll('[data-mundo-action="interact"]').forEach((button) => {
-      button.addEventListener('click', () => {
+      on(button, 'click', () => {
         const nearest = Model.nearestInteractable(player, map.objects, 1.5);
         if (nearest) interactWith(nearest);
       });
     });
+  }
+
+  function maybeTutorial() {
+    if (!state.puedeGuardar) return;
+    if (Object.keys(state.banderas || {}).length > 0) return;
+    if (state.misiones.some((mision) => mision.estado === 'completada')) return;
+    setTimeout(() => {
+      if (!running || !dom.dialogo.hidden) return;
+      showDialogue(
+        'Guía de la aldea',
+        'Bienvenido al Mundo CodeGuard. Muévete con WASD o flechas. Acércate a una persona u objeto y pulsa E para interactuar. Empieza hablando con la Mentora Ada, en la plaza.'
+      );
+    }, 700);
   }
 
   function destroy() {
@@ -679,6 +747,11 @@
     keys.clear();
     pointers.clear();
     if (saveTimer) clearTimeout(saveTimer);
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+    if (eventController) eventController.abort();
     window.removeEventListener('keydown', handleKeyDown);
     window.removeEventListener('keyup', handleKeyUp);
     if (audioContext && audioContext.close) audioContext.close().catch(() => {});
@@ -686,7 +759,9 @@
 
   renderHud();
   renderSidebar();
+  updateRegionLabel();
   bindEvents();
-  requestAnimationFrame(loop);
+  maybeTutorial();
+  rafId = requestAnimationFrame(loop);
   window.CodeGuardMundoApp = { destroy, saveNow, getState: () => state, player };
 })();
