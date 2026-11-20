@@ -329,3 +329,38 @@ class DecisionEvolutiva(models.Model):
 
     def __str__(self) -> str:
         return f"{self.avatar} — {self.clave}: {self.valor}"
+
+
+class EstadoMundo(models.Model):
+    """Estado persistente del Mundo CodeGuard para un usuario.
+
+    Solo almacena posición, interacciones, misiones e inventario del juego.
+    El progreso académico sigue viviendo en ``apps.roadmaps`` y no se modifica
+    desde el mundo virtual.
+    """
+
+    usuario = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="estado_mundo",
+        verbose_name="usuario",
+    )
+    region = models.CharField(max_length=60, default="aldea-metodo", verbose_name="región")
+    x = models.PositiveSmallIntegerField(default=15, verbose_name="posición X")
+    y = models.PositiveSmallIntegerField(default=12, verbose_name="posición Y")
+    direccion = models.CharField(max_length=10, default="down", verbose_name="dirección")
+    misiones = models.JSONField(default=dict, blank=True, verbose_name="misiones")
+    banderas = models.JSONField(default=dict, blank=True, verbose_name="interacciones")
+    inventario = models.JSONField(default=list, blank=True, verbose_name="inventario")
+    experiencia = models.PositiveIntegerField(default=0, verbose_name="experiencia")
+    descubrimientos = models.JSONField(default=list, blank=True, verbose_name="regiones descubiertas")
+    tiempo_jugado = models.PositiveIntegerField(default=0, verbose_name="tiempo jugado (s)")
+    audio_silenciado = models.BooleanField(default=False, verbose_name="audio silenciado")
+    actualizado_en = models.DateTimeField(auto_now=True, verbose_name="actualizado en")
+
+    class Meta:
+        verbose_name = "estado del mundo"
+        verbose_name_plural = "estados del mundo"
+
+    def __str__(self) -> str:
+        return f"Mundo — {self.usuario} ({self.region}, {self.x},{self.y})"

@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mundo CodeGuard — Aldea del Método{% endblock %}
+{% block page_title %}Mundo CodeGuard{% endblock %}
+{% block page_subtitle %}Explora, conversa y aprende en la Aldea del Método{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/mundo.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="mundo-shell" id="mundoShell" data-puede-guardar="{{ puede_guardar|yesno:'1,0' }}">
+  <div class="mundo-topbar">
+    <div class="mundo-brand">
+      <span class="mundo-brand-icon" aria-hidden="true">◆</span>
+      <div>
+        <strong id="mundoRegionNombre">Aldea del Método</strong>
+        <small id="mundoRegionSub">Región piloto · Etapa 0 de ASCENSO 3.1</small>
+      </div>
+    </div>
+    <div class="mundo-hud" aria-live="polite">
+      <span class="mundo-chip" id="hudNivel">Nivel 1</span>
+      <span class="mundo-chip" id="hudXp">0 XP</span>
+      <span class="mundo-chip" id="hudMisiones">0/3 misiones</span>
+      <button type="button" class="mundo-icon-btn" id="btnMundoAudio" aria-pressed="false" title="Silenciar audio">🔊</button>
+      <a class="mundo-chip mundo-chip-link" href="{% url 'gamification:mapa_mundo' %}" title="Mapa del mundo">Mapa</a>
+      <button type="button" class="mundo-chip mundo-chip-link" id="btnMundoSalon" title="Salón de las Leyendas">Salón</button>
+      <button type="button" class="mundo-icon-btn" id="btnMundoPausa" aria-haspopup="dialog" title="Pausa (Esc)">Ⅱ</button>
+    </div>
+  </div>
+
+  <div class="mundo-layout">
+    <div class="mundo-stage-wrap">
+      <canvas id="mundoCanvas" width="480" height="320" tabindex="0"
+              aria-label="Mapa explorable de la Aldea del Método. Usa WASD o flechas para moverte y E para interactuar."></canvas>
+      <div class="mundo-overlay" id="mundoCarga" role="status">
+        <span class="mundo-spinner" aria-hidden="true"></span>
+        <p>Cargando la aldea…</p>
+      </div>
+      <div class="mundo-overlay mundo-error" id="mundoError" role="alert" hidden>
+        <p id="mundoErrorTexto"></p>
+        <button type="button" class="btn cg-btn cg-btn-secondary" id="btnMundoReintentar">Reintentar</button>
+      </div>
+
+      <div class="mundo-dialogo" id="mundoDialogo" role="dialog" aria-modal="false" aria-labelledby="mundoDialogoNombre" hidden>
+        <div class="mundo-dialogo-cabeza">
+          <strong id="mundoDialogoNombre">Habitante</strong>
+          <button type="button" class="mundo-icon-btn" id="btnMundoCerrarDialogo" aria-label="Cerrar diálogo">×</button>
+        </div>
+        <p id="mundoDialogoTexto"></p>
+        <div class="mundo-dialogo-acciones">
+          <button type="button" class="btn cg-btn cg-btn-primary btn-sm" id="btnMundoDialogoAccion" hidden></button>
+          <button type="button" class="btn cg-btn cg-btn-secondary btn-sm" id="btnMundoDialogoCerrar">Continuar</button>
+        </div>
+      </div>
+
+      <div class="mundo-panel" id="mundoPausa" role="dialog" aria-modal="true" aria-labelledby="mundoPausaTitulo" hidden>
+        <h2 id="mundoPausaTitulo">Pausa</h2>
+        <p class="muted">La partida se guarda automáticamente al moverte y al cerrar.</p>
+        <div class="mundo-pausa-acciones">
+          <button type="button" class="btn cg-btn cg-btn-primary" id="btnMundoReanudar">Reanudar</button>
+          <button type="button" class="btn cg-btn cg-btn-secondary" id="btnMundoGuardar">Guardar ahora</button>
+          <a class="btn cg-btn cg-btn-secondary" href="{% url 'gamification:perfil' %}">Salir al perfil</a>
+        </div>
+        <div class="mundo-pausa-ayuda">
+          <p><strong>Controles:</strong> WASD / flechas para moverte · E para interactuar · Esc para pausa · M para silenciar.</p>
+          <p>El mundo no aprueba lecciones ni modifica tu progreso académico. Las recompensas son motivacionales.</p>
+        </div>
+      </div>
+
+      <div class="mundo-panel mundo-salon" id="mundoSalon" role="dialog" aria-modal="true" aria-labelledby="mundoSalonTitulo" hidden>
+        <div class="mundo-dialogo-cabeza">
+          <h2 id="mundoSalonTitulo">Salón de las Leyendas</h2>
+          <button type="button" class="mundo-icon-btn" id="btnMundoCerrarSalon" aria-label="Cerrar Salón">×</button>
+        </div>
+        <div class="mundo-salon-stats" id="mundoSalonStats"></div>
+        <div class="mundo-salon-grid">
+          <section><h3>Galería de trofeos</h3><ul class="mundo-lista" id="mundoSalonTrofeos"></ul></section>
+          <section><h3>Reliquias y objetos</h3><ul class="mundo-lista" id="mundoSalonReliquias"></ul></section>
+          <section><h3>Armería</h3><ul class="mundo-lista" id="mundoSalonArmeria"></ul></section>
+          <section><h3>Logros académicos</h3><ul class="mundo-lista" id="mundoSalonLogros"></ul></section>
+        </div>
+        <p class="mundo-ayuda">El Salón refleja tu progreso de juego. El progreso académico se consulta en el roadmap y no se modifica desde aquí.</p>
+      </div>
+
+      <div class="mundo-panel mundo-minijuego" id="mundoMinijuego" role="dialog" aria-modal="true" aria-labelledby="mundoMinijuegoTitulo" hidden>
+        <h2 id="mundoMinijuegoTitulo">Desafío de depuración</h2>
+        <p class="muted">Responde con evidencia. El servidor valida las respuestas.</p>
+        <form id="mundoFormMinijuego"></form>
+        <div class="mundo-pausa-acciones">
+          <button type="submit" class="btn cg-btn cg-btn-primary" form="mundoFormMinijuego" id="btnMundoEnviarMinijuego">Comprobar respuestas</button>
+          <button type="button" class="btn cg-btn cg-btn-secondary" id="btnMundoCerrarMinijuego">Cerrar</button>
+        </div>
+        <p class="mundo-minijuego-error" id="mundoMinijuegoError" role="alert" hidden></p>
+      </div>
+
+      <div class="mundo-controles-tactiles" aria-label="Controles táctiles">
+        <button type="button" data-mundo-dir="up" aria-label="Arriba">▲</button>
+        <button type="button" data-mundo-dir="left" aria-label="Izquierda">◀</button>
+        <button type="button" data-mundo-dir="down" aria-label="Abajo">▼</button>
+        <button type="button" data-mundo-dir="right" aria-label="Derecha">▶</button>
+        <button type="button" data-mundo-action="interact" aria-label="Interactuar">E</button>
+      </div>
+    </div>
+
+    <aside class="mundo-sidebar">
+      <section class="glass-card cg-card">
+        <h2><i class="fa-solid fa-scroll" aria-hidden="true"></i> Misiones</h2>
+        <ul class="mundo-lista" id="mundoMisiones"></ul>
+      </section>
+      <section class="glass-card cg-card">
+        <h2><i class="fa-solid fa-box-open" aria-hidden="true"></i> Inventario</h2>
+        <ul class="mundo-lista" id="mundoInventario"></ul>
+      </section>
+      <section class="glass-card cg-card" id="mundoAcademico">
+        <h2><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Vínculo académico</h2>
+        <p class="muted" id="mundoAcademicoTexto">La aldea acompaña la etapa 0 de ASCENSO 3.1.</p>
+        <a class="btn cg-btn cg-btn-secondary btn-sm" id="mundoAcademicoEnlace" href="{% url 'roadmaps:lista' %}">Ver roadmap</a>
+      </section>
+      <section class="glass-card cg-card">
+        <h2><i class="fa-solid fa-keyboard" aria-hidden="true"></i> Cómo jugar</h2>
+        <p class="mundo-ayuda">Muévete con <kbd>WASD</kbd> o flechas. Acércate a un habitante u objeto y pulsa <kbd>E</kbd>. Pulsa <kbd>Esc</kbd> para pausar.</p>
+        <p class="mundo-ayuda">El botón <strong>?</strong> de cada misión muestra sus pasos.</p>
+      </section>
+    </aside>
+  </div>
+  <p class="mundo-estado" id="mundoEstadoGuardado" aria-live="polite"></p>
+</div>
+
+<form id="mundoCsrf" hidden>{% csrf_token %}</form>
+{{ mundo_config|json_script:"mundo-config" }}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/mundo/model.js' %}" defer></script>
+<script src="{% static 'js/mundo/world.js' %}" defer></script>
+<script src="{% static 'js/mundo/sprites.js' %}" defer></script>
+<script src="{% static 'js/mundo/game.js' %}" defer></script>
+{% endblock %}

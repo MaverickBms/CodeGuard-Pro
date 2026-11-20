@@ -1,8 +1,8 @@
 # Estado de ejecución del proyecto
 
 **Última actualización:** 2026-11-19  
-**Fase:** release candidate 1.0.0 — validación final y cierre de Windows  
-**Rama:** `release/1.0.0` (`ec278b8`)  
+**Fase:** release candidate + prototipo vertical del Mundo CodeGuard  
+**Rama:** `feature/mundo-codeguard` (desde `release/1.0.0`, HEAD de código `2f0ff1c`)  
 **PR:** https://github.com/MaverickBms/CodeGuard-Pro/pull/13 (abierto, borrador, sin fusionar)  
 **Base:** `main` intacta; no se ha fusionado ni creado tag/release.
 
@@ -20,6 +20,8 @@
 | Roadmap | Corregido el proyecto de la etapa 10 (4.739 → 136 caracteres) y el extractor que absorbía la ampliación | `apps/roadmaps/data/ascenso_3_1.json`, `scripts/extraer_ascenso.py` |
 | Roadmap | Regresión para evitar que una ampliación vuelva a contaminar un proyecto | `apps/roadmaps/tests/test_roadmaps.py` |
 | Documentación | Inventario de las 33 etapas, fuente DOCX/hash y hallazgos editoriales | `docs/ROADMAP_ASCENSO_INVENTARIO.md` |
+| Mundo CodeGuard | Región piloto, NPC, misiones, minijuego validado en servidor, inventario, XP, guardado y controles | `apps/gamification/mundo.py`, `EstadoMundo`, `static/js/mundo/*`, `templates/gamification/mundo.html`, `static/css/mundo.css` |
+| Integración | Entrada en navegación, panel y Gamificación; vínculo con la etapa 0 real | `templates/base.html`, `apps/core/views.py`, `templates/gamification/perfil.html` |
 
 ## 2. Fuente académica
 
@@ -32,8 +34,8 @@
 
 | Prueba | Resultado |
 |---|---|
-| Suite Django (7 apps) | **292 pruebas OK** |
-| Pruebas Node/Electron | **20/20 OK** |
+| Suite Django (7 apps) | **302 pruebas OK** |
+| Pruebas Node/Electron | **20 Electron + 8 Mundo = 28 OK** |
 | `manage.py check` | 0 incidencias |
 | `makemigrations --check --dry-run` | Sin cambios |
 | `pip-audit -r requirements.txt` | Sin vulnerabilidades conocidas |
@@ -42,6 +44,8 @@
 | Smoke PyInstaller Linux | Primer arranque, ASCENSO, health, cierre de puerto y sync OK |
 | Persistencia de tema (AppImage, dos arranques) | `fantasy` persiste tras reiniciar el paquete |
 | E2E AppImage Linux | 5 rutas HTTP 200, 12 temas, responsive, cierre sin huérfanos |
+| E2E Mundo (Electron dev) | Canvas 480×320, 3 misiones, diálogo con Ada, misión principal y minijuego completados, sin errores JS |
+| E2E Mundo (AppImage) | Canvas, 3 misiones, diálogo, reclamar misión principal y minijuego completado; inventario con 2 objetos; sin errores JS |
 | Windows CI run `44574923603` y `44576601446` | **7/7 fases OK**: instalación, primer arranque, health, 5 rutas, tema, progreso, desinstalación, portable y ausencia de huérfanos |
 
 ### Evidencia Windows (CI, no hardware físico)
@@ -91,18 +95,29 @@ la aceptación manual en un equipo limpio.
   ejercicios ni quizzes publicados en un perfil limpio.
 - Windows validado en CI, no en hardware físico.
 
+## 5.1 Mundo CodeGuard — alcance real
+
+- Una región con tres mapas (Aldea 36×24, Biblioteca 30×20 y Salón 30×20), cuatro NPC, cuatro misiones y dos minijuegos.
+- Salón de las Leyendas con trofeos, reliquias, armería, logros y estadísticas; mapa general con territorios futuros bloqueados.
+- Dirección artística y lore documentados; no se incorporaron assets externos.
+- El servidor valida ambos minijuegos y no acepta misiones/inventario del cliente.
+- La persistencia usa `EstadoMundo`; no escribe en `Progreso`, evaluaciones ni criterios.
+- El acceso está integrado en la barra lateral, el panel y Gamificación.
+- **No es un mundo completo ni un RPG terminado**: faltan más regiones, contenido
+  audiovisual, música, editor de mapas y aceptación en el paquete final.
+
 ## 6. Pendientes
 
 1. Revisar y aprobar el inventario académico; decidir etapa 25 y alcance cursable.
 2. Aceptación manual en un equipo Windows limpio (hardware real).
-3. Sincronización remota de producción, macOS/ARM64 y contenido académico completo:
-   fuera del alcance de este RC.
+3. Ampliar el Mundo con más regiones, personajes y contenido audiovisual.
+4. Sincronización remota de producción y macOS/ARM64: fuera de este RC.
 
-## 7. Artefactos finales
+## 7. Artefactos del Mundo CodeGuard
 
-- Servidor PyInstaller: `c21ff228b40fab302a8081532e227feb3efe54a16194d19b7bbf667f7e84ea53`.
-- AppImage: `3e14314636be75a44665846a0f1a25972352cb847dadbe407d84a9fd11a7f05d`.
-- CI push `e4599aa`: run `44576601446`, **4/4 jobs verdes**.
+- Servidor PyInstaller: `928e0ebba62f569d2e4184013351fdb29cbee8287be812f6b40facd76535e617`.
+- AppImage con Mundo: `bb30454d82a9173b68e80462f9d5a730a78a05ed2e14f369ee0306fd1471599f`.
+- PR del Mundo: https://github.com/MaverickBms/CodeGuard-Pro/pull/15 (borrador, sin fusionar).
 
 ## 8. Próximos pasos
 

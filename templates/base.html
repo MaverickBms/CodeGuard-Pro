@@ -91,6 +91,10 @@
           <span class="nav-icon"><i class="fa-solid fa-flask"></i></span>
           <span class="nav-label">Laboratorios</span>
         </button>
+        <button class="nav-item cg-nav-item{% if request.resolver_match.url_name == 'mundo' %} cg-nav-active{% endif %}" data-url="{% url 'gamification:mundo' %}">
+          <span class="nav-icon"><i class="fa-solid fa-gamepad"></i></span>
+          <span class="nav-label">Mundo CodeGuard</span>
+        </button>
       </div>
       <div class="nav-section">
         <div class="nav-section-title">Administración</div>
