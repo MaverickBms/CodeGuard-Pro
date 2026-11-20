@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-19  
 **Fase:** release candidate + prototipo vertical del Mundo CodeGuard  
-**Rama:** `feature/mundo-codeguard` (desde `release/1.0.0`, HEAD de código `6420ba8`)  
+**Rama:** `feature/mundo-codeguard` (desde `release/1.0.0`, HEAD de código `25de539`)  
 **PR:** https://github.com/MaverickBms/CodeGuard-Pro/pull/13 (abierto, borrador, sin fusionar)  
 **Base:** `main` intacta; no se ha fusionado ni creado tag/release.
 
@@ -114,15 +114,15 @@ la aceptación manual en un equipo limpio.
 
 ## 7. Artefactos del Mundo CodeGuard
 
-- Servidor PyInstaller: `5267179a1f7c9e16376fbb2dc5a8f427257b17589e2481fd0f74f2ebd1cf5c10`.
-- AppImage con Mundo: `33cb6a5063ba6a62d1a662fa2b9bfbac3c1bf06666a2a63e59a6863ad9ef5d6a`.
+- Servidor PyInstaller: `b3a6cb62951df22add63e115638885e9987df5c6e98146d7af9ae994b06d399d`.
+- AppImage con Mundo: `e09ef347f7d44fd44f23cf3bee877ad25c4dab322ae39d7790e19d3f3d54972d`.
 - PR del Mundo: https://github.com/MaverickBms/CodeGuard-Pro/pull/15 (borrador, sin fusionar).
 
 ## 8. Artefactos del release base
 
 - Servidor PyInstaller: `c21ff228b40fab302a8081532e227feb3efe54a16194d19b7bbf667f7e84ea53`.
 - AppImage: `3e14314636be75a44665846a0f1a25972352cb847dadbe407d84a9fd11a7f05d`.
-- CI final `6420ba8`: run `44622155382`, **4/4 jobs verdes** (incluye Windows x64).
+- CI final `6420ba8`: run `44654300417`, **4/4 jobs verdes** (incluye Windows x64).
 
 ## 8. Próximos pasos
 
