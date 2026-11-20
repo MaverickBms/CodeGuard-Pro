@@ -34,7 +34,7 @@
 
 | Prueba | Resultado |
 |---|---|
-| Suite Django (7 apps) | **300 pruebas OK** |
+| Suite Django (7 apps) | **302 pruebas OK** |
 | Pruebas Node/Electron | **20 Electron + 8 Mundo = 28 OK** |
 | `manage.py check` | 0 incidencias |
 | `makemigrations --check --dry-run` | Sin cambios |
@@ -97,7 +97,9 @@ la aceptación manual en un equipo limpio.
 
 ## 5.1 Mundo CodeGuard — alcance real
 
-- Una región con dos mapas (Aldea 36×24 y Biblioteca 30×20), cuatro NPC, cuatro misiones y dos minijuegos.
+- Una región con tres mapas (Aldea 36×24, Biblioteca 30×20 y Salón 30×20), cuatro NPC, cuatro misiones y dos minijuegos.
+- Salón de las Leyendas con trofeos, reliquias, armería, logros y estadísticas; mapa general con territorios futuros bloqueados.
+- Dirección artística y lore documentados; no se incorporaron assets externos.
 - El servidor valida ambos minijuegos y no acepta misiones/inventario del cliente.
 - La persistencia usa `EstadoMundo`; no escribe en `Progreso`, evaluaciones ni criterios.
 - El acceso está integrado en la barra lateral, el panel y Gamificación.

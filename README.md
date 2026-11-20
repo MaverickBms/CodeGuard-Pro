@@ -68,13 +68,16 @@ botones, bordes, focus). Se respeta `prefers-reduced-motion` y no se usa
 ### 6. Mundo CodeGuard
 
 Acceso desde **Mundo CodeGuard** en la barra lateral o desde Gamificación.
-Incluye una región piloto pixel art con dos mapas (Aldea del Método y su
-Biblioteca), cuatro NPC, diálogos, cuatro misiones, dos minijuegos validados en
-servidor, inventario, XP, guardado local, pausa, audio y controles táctiles.
+Incluye una región piloto pixel art con tres mapas (Aldea del Método, Biblioteca
+y Salón de las Leyendas), cuatro NPC, diálogos, cuatro misiones, dos minijuegos
+validados en servidor, inventario, XP, Salón de colecciones, mapa general,
+guardado local, pausa, audio y controles táctiles.
 
 El mundo es una capa motivacional: **no modifica el progreso académico ni
 concede aprobaciones**. La etapa 0 real del roadmap se muestra como vínculo.
-Consulta [la arquitectura y limitaciones](docs/MUNDO_CODEGUARD.md).
+Consulta [la arquitectura y limitaciones](docs/MUNDO_CODEGUARD.md), la
+[dirección artística](docs/MUNDO_DIRECCION_ARTISTICA.md) y el
+[universo narrativo](docs/MUNDO_LORE.md).
 
 ### 7. Autenticación (temporalmente desactivada)
 
@@ -230,7 +233,7 @@ python manage.py makemigrations --check --dry-run --settings=config.settings.dev
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges --settings=config.settings.development
 ```
 
-Resultado verificado en este repositorio (19-11-2026): **300 pruebas OK** en
+Resultado verificado en este repositorio (19-11-2026): **302 pruebas OK** en
 `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`,
 `apps.gamification` y `apps.challenges`, con
 `--settings=config.settings.development` (system check 0 incidencias y
@@ -239,7 +242,7 @@ CSP, contraste WCAG de los 12 temas e índices de evaluaciones/evidencias.
 `npm run test:electron` ejecuta las 20 pruebas de IPC, restauración y
 persistencia de tema; `npm run test:mundo` ejecuta las 8 pruebas del modelo
 del Mundo CodeGuard. Las cifras históricas de 245/197/138 quedan sustituidas por esta
-línea base reproducible (300 Django + 28 Node). El inventario académico y los
+línea base reproducible (302 Django + 28 Node). El inventario académico y los
 hallazgos editoriales están en
 [docs/ROADMAP_ASCENSO_INVENTARIO.md](docs/ROADMAP_ASCENSO_INVENTARIO.md); el mundo
 jugable, en [docs/MUNDO_CODEGUARD.md](docs/MUNDO_CODEGUARD.md).
