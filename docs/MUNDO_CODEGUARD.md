@@ -71,6 +71,12 @@ se validan en servidor:
 El mundo no escribe en `Progreso`, `ResultadoEvaluacion`, `CumplimientoCriterio`
 ni en ningún modelo académico.
 
+Cada interacción exige la región correcta: no se puede activar una bandera de
+la Biblioteca desde la Aldea con una petición directa. Aun así, al ser un juego
+local monousuario, el mundo no pretende ser una frontera anti-trampas: un
+cliente modificado podría guardar una posición/región arbitraria. Las recompensas
+siguen siendo cosméticas y nunca acreditan aprendizaje.
+
 ## 5. Integración con ASCENSO 3.1
 
 La región piloto se asocia a la **etapa 0** del roadmap activo mediante su número
