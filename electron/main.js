@@ -17,6 +17,12 @@ const { isTrustedIpcSender } = require('./ipc-security');
 const { getChildStartupFailure } = require('./process-health');
 const { resolveBackupPath } = require('./restore-backup');
 const { FILE_NAME: THEME_FILE, readTheme, writeTheme } = require('./theme-preference');
+const {
+  parseBootEvent,
+  formatBootMessage,
+  startupTimeoutMs,
+  describeHealth
+} = require('./startup-status');
 
 let mainWindow = null;
 let djangoProcess = null;
@@ -27,6 +33,11 @@ let syncInitialTimer = null;
 let syncStatus = { state: 'idle', message: 'Sin comprobaciones recientes.', checkedAt: null };
 let quitting = false;
 let restoring = false;
+let startupStartedAt = 0;
+let lastBootMessage = '';
+let lastHealth = null;
+let splashReady = false;
+let lastDjangoError = '';
 
 const DJANGO_HOST = '127.0.0.1';
 const SYNC_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -99,8 +110,23 @@ function getFreePort() {
   });
 }
 
-function waitForServer(url, child, timeoutMs = 120000) {
+function waitForServer(url, child, timeoutMs = startupTimeoutMs()) {
   const started = Date.now();
+  let lastProgressAt = 0;
+  let lastHealthState = '';
+
+  const reportProgress = (force = false) => {
+    const now = Date.now();
+    if (!force && now - lastProgressAt < 1000) return;
+    lastProgressAt = now;
+    const elapsed = Math.round((now - started) / 1000);
+    const detail = describeHealth(lastHealth);
+    updateSplash(
+      `Comprobando el servidor local… ${elapsed} s`,
+      detail || lastBootMessage || 'El servidor está iniciando en 127.0.0.1.'
+    );
+  };
+
   return new Promise((resolve, reject) => {
     const retry = () => {
       const startupFailure = getChildStartupFailure(child);
@@ -109,12 +135,15 @@ function waitForServer(url, child, timeoutMs = 120000) {
         return;
       }
       if (Date.now() - started > timeoutMs) {
+        const detail = describeHealth(lastHealth);
         reject(new Error(
-          `El servidor local no superó la comprobación de salud en ${Math.round(timeoutMs / 1000)} s. ` +
-          'Revisa la inicialización de la base de datos y el roadmap.'
+          `El servidor local no superó la comprobación de salud en ${Math.round(timeoutMs / 1000)} s.` +
+          (detail ? ` Estado: ${detail}.` : '') +
+          ' Revisa la inicialización de la base de datos y el roadmap.'
         ));
         return;
       }
+      reportProgress();
       setTimeout(attempt, 250);
     };
 
@@ -133,21 +162,31 @@ function waitForServer(url, child, timeoutMs = 120000) {
           if (body.length < 4096) body += chunk;
         });
         response.on('end', () => {
+          let health = null;
+          try {
+            health = JSON.parse(body);
+          } catch (_error) {
+            health = null;
+          }
+          if (health && typeof health === 'object') {
+            lastHealth = health;
+            const summary = describeHealth(health);
+            if (summary && summary !== lastHealthState) {
+              lastHealthState = summary;
+              updateSplash('Comprobando el estado del perfil…', summary);
+            }
+          }
           if (response.statusCode !== 200) {
             scheduleRetry();
             return;
           }
-          try {
-            const health = JSON.parse(body);
-            const ready = health.status === 'ok' &&
-              health.database === 'ok' &&
-              health.migrations === 'ok' &&
-              health.roadmap === 'ok';
-            if (ready) resolve();
-            else scheduleRetry();
-          } catch (_error) {
-            scheduleRetry();
-          }
+          const ready = health &&
+            health.status === 'ok' &&
+            health.database === 'ok' &&
+            health.migrations === 'ok' &&
+            health.roadmap === 'ok';
+          if (ready) resolve();
+          else scheduleRetry();
         });
       });
       request.on('error', scheduleRetry);
@@ -161,25 +200,66 @@ function waitForServer(url, child, timeoutMs = 120000) {
   });
 }
 
+function updateSplash(message, detail) {
+  lastBootMessage = message || lastBootMessage;
+  if (!mainWindow || mainWindow.isDestroyed() || !splashReady) return;
+  const safeMessage = typeof message === 'string' ? message.slice(0, 240) : '';
+  const safeDetail = typeof detail === 'string' ? detail.slice(0, 300) : '';
+  if (!safeMessage) return;
+  const script = `(() => {
+    const message = document.getElementById('bootStatus');
+    const detail = document.getElementById('bootDetail');
+    if (message) message.textContent = ${JSON.stringify(safeMessage)};
+    if (detail) detail.textContent = ${JSON.stringify(safeDetail)};
+  })();`;
+  mainWindow.webContents.executeJavaScript(script, true).catch(() => {});
+}
+
 function attachProcessLogs(child) {
+  let stdoutBuffer = '';
+
+  const handleLine = (line) => {
+    if (!line) return;
+    console.log(`[Django] ${line}`);
+    const event = parseBootEvent(line);
+    if (!event) return;
+    const message = formatBootMessage(event);
+    if (message) {
+      console.log(`[Startup] ${event.phase}:${event.status} ${message}`);
+      updateSplash(message, '');
+    }
+  };
+
   child.stdout.on('data', (data) => {
-    console.log(`[Django] ${data.toString().trim()}`);
+    stdoutBuffer += data.toString();
+    const lines = stdoutBuffer.split(/\r?\n/);
+    stdoutBuffer = lines.pop() || '';
+    if (stdoutBuffer.length > 8192) stdoutBuffer = stdoutBuffer.slice(-8192);
+    lines.forEach(handleLine);
   });
   child.stderr.on('data', (data) => {
-    console.error(`[Django ERR] ${data.toString().trim()}`);
+    const line = data.toString().trim();
+    if (!line) return;
+    console.error(`[Django ERR] ${line.slice(0, 2000)}`);
+    if (/ERROR|Traceback|OperationalError|Exception|Error/i.test(line)) {
+      lastDjangoError = line.slice(-500);
+    }
   });
   child.on('error', (error) => {
     child.spawnError = error;
     console.error('[Django] No se pudo iniciar el proceso:', error);
   });
   child.on('close', (code) => {
+    if (stdoutBuffer) handleLine(stdoutBuffer);
     console.log(`[Django] Proceso terminado con código ${code}`);
     djangoProcess = null;
   });
 }
 
 async function startDjango() {
+  const started = Date.now();
   djangoPort = await getFreePort();
+  updateSplash('Iniciando el servidor local…', 'El servidor escuchará solo en 127.0.0.1.');
   const env = {
     ...process.env,
     DJANGO_SETTINGS_MODULE: app.isPackaged
@@ -221,14 +301,12 @@ async function startDjango() {
       pythonPath = process.platform === 'win32' ? 'python' : 'python3';
     }
 
+    // En desarrollo se usa el mismo punto de entrada que en el paquete:
+    // migraciones pendientes, propietario local y verificación del roadmap.
+    // Así un perfil limpio también funciona con `npm start`.
     djangoProcess = spawn(
       pythonPath,
-      [
-        path.join(projectRoot(), 'manage.py'),
-        'runserver',
-        `${DJANGO_HOST}:${djangoPort}`,
-        '--noreload'
-      ],
+      [path.join(projectRoot(), 'server_entry.py')],
       {
         cwd: projectRoot(),
         env,
@@ -241,6 +319,7 @@ async function startDjango() {
   attachProcessLogs(djangoProcess);
 
   await waitForServer(`http://${DJANGO_HOST}:${djangoPort}/healthz/`, djangoProcess);
+  console.log(`[Startup] Servidor Django listo en ${Date.now() - started} ms.`);
   return `http://${DJANGO_HOST}:${djangoPort}`;
 }
 
@@ -646,6 +725,7 @@ function splashHtml() {
           }
           h1 { margin: 0 0 10px; font-size: 1.6rem; letter-spacing: -.02em; }
           p { margin: 0; color: #cbd5e1; font-size: .95rem; }
+          .detail { margin-top: 8px; color: #94a3b8; font-size: .82rem; min-height: 1.2em; }
           .spinner {
             width: 28px; height: 28px; margin: 26px auto 0;
             border: 3px solid rgba(255,255,255,.18);
@@ -659,7 +739,8 @@ function splashHtml() {
         <div class="card">
           <div class="shield">🛡️</div>
           <h1>CodeGuard Pro</h1>
-          <p>Iniciando el servidor local seguro…</p>
+          <p id="bootStatus">Iniciando el servidor local seguro…</p>
+          <p id="bootDetail" class="detail">Preparando el perfil local.</p>
           <div class="spinner"></div>
         </div>
       </body>
@@ -688,7 +769,15 @@ function createWindow() {
     }
   });
 
+  splashReady = false;
   mainWindow.loadURL(splashHtml());
+  mainWindow.webContents.on('did-finish-load', () => {
+    const currentUrl = mainWindow.webContents.getURL();
+    splashReady = currentUrl.startsWith('data:');
+    if (splashReady && lastBootMessage) {
+      updateSplash(lastBootMessage, '');
+    }
+  });
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
@@ -918,6 +1007,7 @@ if (!gotLock) {
   });
 
   app.whenReady().then(async () => {
+    startupStartedAt = Date.now();
     if (process.platform === 'win32') {
       app.setAppUserModelId('com.codeguard.pro');
     }
@@ -927,14 +1017,22 @@ if (!gotLock) {
     try {
       const url = await startDjango();
       if (mainWindow) {
+        updateSplash('Cargando la interfaz…', 'Aplicando preferencias del perfil.');
+        splashReady = false;
         await mainWindow.loadURL(url);
       }
+      console.log(`[Startup] Aplicación lista en ${Date.now() - startupStartedAt} ms.`);
       scheduleKnowledgeSync();
     } catch (error) {
       console.error('No se pudo iniciar la aplicación:', error);
+      const detalleError = lastDjangoError
+        ? `\n\nÚltimo error del servidor:\n${lastDjangoError}`
+        : '';
+      const mensaje = `${error.message}${detalleError}`;
+      updateSplash('No se pudo iniciar CodeGuard Pro', error.message || '');
       dialog.showErrorBox(
         'No se pudo iniciar CodeGuard Pro',
-        `${error.message}\n\nRevisa los registros en:\n${path.join(dataDir(), 'logs')}`
+        `${mensaje}\n\nRevisa los registros en:\n${path.join(dataDir(), 'logs')}`
       );
       quitting = true;
       stopDjango();

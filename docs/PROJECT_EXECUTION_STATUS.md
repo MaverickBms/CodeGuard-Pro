@@ -1,13 +1,55 @@
 # Estado de ejecución del proyecto
 
-**Última actualización:** 2026-11-19  
-**Fase:** release candidate 1.0.0 — validación final y cierre de Windows  
-**Rama:** `release/1.0.0` (`ec278b8`)  
-**PR:** https://github.com/MaverickBms/CodeGuard-Pro/pull/13 (abierto, borrador, sin fusionar)  
-**Base:** `main` intacta; no se ha fusionado ni creado tag/release.
+**Última actualización:** 2026-11-21
+**Fase:** finalización 1.0.0 — perfil limpio, rendimiento, biblioteca y entrega
+**Rama:** `release/1.0.0-final` (base `release/1.0.0`; sin fusionar)
+**PR de finalización:** https://github.com/MaverickBms/CodeGuard-Pro/pull/17 (contra `release/1.0.0`; sin fusionar).
+**Base:** `main` intacta; PR #15 y #16 fuera de alcance.
 
 > Este documento conserva el historial de ejecución. No sustituye los informes
-> anteriores de la rama `documentation`.
+> anteriores de la rama `documentation` ni el informe final
+> [`INFORME_FINAL_1.0.0.md`](INFORME_FINAL_1.0.0.md).
+
+## 0. Iteración de finalización (21-11-2026)
+
+### Cambios principales
+
+| Área | Cambio |
+|---|---|
+| Perfil limpio | Propietario local creado una sola vez sin credenciales; las escrituras dejan de fallar |
+| Arranque | Verificación idempotente con huella de manifiesto/contenido; 7 consultas frente a ~4.000 |
+| Electron | Splash con fases reales, timeout configurable, detección temprana de errores y `server_entry.py` también en desarrollo |
+| CSRF | `Referrer-Policy` pasa de `no-referrer` a `same-origin`; los POST de Electron ya no envían `Origin: null` |
+| Biblioteca | Módulo nuevo: importación PDF validada, búsqueda, archivo, visor con rangos HTTP y metadatos |
+| Conocimiento | Panel de solo lectura con fuentes, versiones, paquetes y sincronización |
+| Navegación | Biblioteca y Base de conocimiento activas; un solo acceso activo por página |
+| Dev | Waitress + WhiteNoise en desarrollo; recursos estáticos ya no devuelven 404 |
+| Pruebas | 331 Django + 24 Electron + benchmark de arranque en CI |
+
+### Artefactos Linux
+
+- AppImage: `f137bfc900466966f47dffefd319d8f232cbff2fd716080d2db5aff940f9b5c8`.
+- Servidor PyInstaller: `7ad9366963b4f69428827b59c71f29c74b76675b4c2d1f11af4ff151c399262d`.
+
+### Evidencia
+
+- Suite Django: **331 pruebas OK**.
+- Electron: **24/24 OK**.
+- `pip-audit`: sin vulnerabilidades conocidas.
+- `npm audit --omit=dev`: 0 vulnerabilidades de producción.
+- Primer arranque empaquetado: **12,6 s**; segundo: **1,2 s** de servidor y
+  **~2,5 s** con Electron.
+- AppImage: 7 rutas 200, 12 temas, formulario PDF real, visor, cierre limpio.
+- Backup/restore: base y `media/` restauradas; estado curricular reutilizado.
+
+### Pendientes que no se declaran terminados
+
+- Contenido académico de las 1.946 lecciones (solo títulos estructurales).
+- Aceptación física Windows.
+- Sincronización remota de producción (sin endpoint/claves).
+- macOS/ARM64.
+- Laboratorios con sandbox, competencias, vigencia y ética.
+
 
 ## 1. Cambios de esta iteración
 
@@ -43,6 +85,11 @@
 | Persistencia de tema (AppImage, dos arranques) | `fantasy` persiste tras reiniciar el paquete |
 | E2E AppImage Linux | 5 rutas HTTP 200, 12 temas, responsive, cierre sin huérfanos |
 | Windows CI run `44574923603` y `44576601446` | **7/7 fases OK**: instalación, primer arranque, health, 5 rutas, tema, progreso, desinstalación, portable y ausencia de huérfanos |
+
+### Artefactos Linux
+
+- AppImage: `f137bfc900466966f47dffefd319d8f232cbff2fd716080d2db5aff940f9b5c8`.
+- Servidor PyInstaller: `7ad9366963b4f69428827b59c71f29c74b76675b4c2d1f11af4ff151c399262d`.
 
 ### Evidencia Windows (CI, no hardware físico)
 

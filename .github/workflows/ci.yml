@@ -58,8 +58,11 @@ jobs:
         run: |
           python manage.py test \
             apps.core apps.accounts apps.audit apps.roadmaps \
-            apps.tutoring apps.gamification apps.challenges \
+            apps.tutoring apps.gamification apps.challenges apps.library \
             --settings=config.settings.development
+
+      - name: Startup performance regression
+        run: python scripts/benchmark-startup.py
 
   packaging:
     name: PyInstaller server build and smoke test
@@ -176,7 +179,10 @@ jobs:
           node --check electron/process-health.js
           node --check electron/restore-backup.js
           node --check electron/theme-preference.js
+          node --check electron/startup-status.js
           node --check scripts/cdp-smoke.js
+          node --check scripts/cdp-form-smoke.js
+          node --check scripts/cdp-responsive.js
 
       - name: Run Electron unit tests
         run: npm run test:electron

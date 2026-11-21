@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Base de conocimiento — CodeGuard Pro{% endblock %}
+{% block page_title %}Base de conocimiento{% endblock %}
+{% block page_subtitle %}Trazabilidad editorial, licencias y distribución local{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+    <div>
+      <h2 style="margin-top:0;"><i class="fa-solid fa-brain" aria-hidden="true"></i> Estado del conocimiento</h2>
+      <p class="muted" style="margin-bottom:0;">
+        Vista de solo lectura: refleja fuentes, versiones, paquetes firmados y
+        sincronización real. Aprobar, publicar o retirar contenido requiere el
+        flujo editorial auditado; esta pantalla no simula esas decisiones.
+      </p>
+    </div>
+    <span class="cg-badge cg-badge-primary">ASCENSO 3.1</span>
+  </div>
+</section>
+
+<section class="v14-kpis" aria-label="Indicadores de conocimiento" style="margin-bottom:1rem;">
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-book-bookmark"></i></span><div><span class="v14-kpi-label">Fuentes registradas</span><strong class="v14-kpi-value">{{ total_fuentes }}</strong></div></article>
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-code-branch"></i></span><div><span class="v14-kpi-label">Versiones de contenido</span><strong class="v14-kpi-value">{{ total_versiones }}</strong></div></article>
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-circle-check"></i></span><div><span class="v14-kpi-label">Lecciones publicadas</span><strong class="v14-kpi-value">{{ lecciones_publicadas }}</strong></div></article>
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-box-open"></i></span><div><span class="v14-kpi-label">Paquetes instalados</span><strong class="v14-kpi-value">{{ paquetes|length }}</strong></div></article>
+</section>
+
+{% if estados_version %}
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Versiones por estado">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-list-check" aria-hidden="true"></i> Versiones por estado editorial</h3>
+  <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+    {% for estado in estados_version.items %}
+      <span class="cg-badge">{{ estado.0|capfirst }}: {{ estado.1 }}</span>
+    {% endfor %}
+  </div>
+  <p class="muted" style="font-size:.88rem; margin:.75rem 0 0;">
+    Un borrador o una versión en revisión no se considera contenido publicado.
+    Solo las versiones publicadas pueden mostrarse como material definitivo.
+  </p>
+</section>
+{% endif %}
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(340px, 1fr)); gap:1rem; margin-bottom:1rem;">
+  <section class="glass-card cg-card" aria-label="Fuentes de conocimiento">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-link" aria-hidden="true"></i> Fuentes registradas</h3>
+    {% if fuentes %}
+      <div style="overflow-x:auto;">
+        <table class="table" style="width:100%; margin:0; font-size:.9rem;">
+          <thead><tr><th scope="col">Fuente</th><th scope="col">Licencia</th><th scope="col">Activa</th></tr></thead>
+          <tbody>
+            {% for fuente in fuentes %}
+              <tr>
+                <td>
+                  <strong>{{ fuente.titulo }}</strong>
+                  <div class="muted">{{ fuente.publicador }}{% if fuente.edicion %} · {{ fuente.edicion }}{% endif %}</div>
+                </td>
+                <td><span class="cg-badge {% if fuente.estado_revision_licencia == 'compatible' %}cg-badge-success{% elif fuente.estado_revision_licencia == 'no_reutilizable' or fuente.estado_revision_licencia == 'requiere_permiso' %}cg-badge-danger{% else %}cg-badge-warning{% endif %}">{{ fuente.get_estado_revision_licencia_display }}</span></td>
+                <td>{% if fuente.activa %}Sí{% else %}No{% endif %}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="muted" style="font-size:.85rem; margin:.6rem 0 0;">Se muestran hasta 200 fuentes.</p>
+    {% else %}
+      <div class="v14-empty"><i class="fa-solid fa-link-slash" aria-hidden="true"></i><h3>Sin fuentes registradas</h3><p>Registra fuentes con el comando editorial antes de publicar contenido que las utilice.</p></div>
+    {% endif %}
+  </section>
+
+  <section class="glass-card cg-card" aria-label="Distribución y sincronización">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i> Distribución local</h3>
+    {% if sincronizacion %}
+      <ul style="list-style:none; padding:0; margin:0;">
+        {% for estado in sincronizacion %}
+          <li style="padding:.55rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
+            <strong>{{ estado.channel }}</strong>
+            <span class="cg-badge">{% if estado.active_package %}Activo: secuencia {{ estado.active_package.sequence }}{% else %}Sin paquete activo{% endif %}</span>
+            <div class="muted" style="font-size:.86rem;">
+              Última comprobación: {{ estado.last_check_at|date:"Y-m-d H:i"|default:"—" }}
+              · Último éxito: {{ estado.last_success_at|date:"Y-m-d H:i"|default:"—" }}
+              {% if estado.last_error_code %}· Error: {{ estado.last_error_code }}{% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted" style="margin:0;">No hay canales de sincronización inicializados. La aplicación funciona sin conexión.</p>
+    {% endif %}
+
+    {% if paquetes %}
+      <h4 style="margin:1rem 0 .4rem;">Paquetes recientes</h4>
+      <ul style="list-style:none; padding:0; margin:0; font-size:.88rem;">
+        {% for paquete in paquetes %}
+          <li style="padding:.35rem 0;">
+            <span class="cg-badge">{{ paquete.channel }}</span>
+            secuencia {{ paquete.sequence }} · {{ paquete.get_estado_display }} ·
+            <code>{{ paquete.sha256|slice:":12" }}…</code>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </section>
+</div>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Últimas versiones de contenido">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Últimas versiones</h3>
+  {% if versiones %}
+    <div style="overflow-x:auto;">
+      <table class="table" style="width:100%; margin:0; font-size:.9rem;">
+        <thead><tr><th scope="col">Lección</th><th scope="col">Versión</th><th scope="col">Estado</th><th scope="col">Publicada</th></tr></thead>
+        <tbody>
+          {% for version in versiones %}
+            <tr>
+              <td><strong>{{ version.leccion.titulo }}</strong><div class="muted">Etapa {{ version.leccion.modulo.etapa.numero }} · {{ version.leccion.modulo.numero }}</div></td>
+              <td>v{{ version.numero_version }}</td>
+              <td><span class="cg-badge {% if version.estado == 'publicada' %}cg-badge-success{% elif version.estado == 'aprobada' %}cg-badge-primary{% elif version.estado == 'revision' %}cg-badge-warning{% else %}cg-badge-muted{% endif %}">{{ version.get_estado_display }}</span></td>
+              <td>{{ version.publicada_en|date:"Y-m-d H:i"|default:"—" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="muted" style="font-size:.85rem; margin:.6rem 0 0;">Se muestran las 50 versiones más recientes.</p>
+  {% else %}
+    <div class="v14-empty">
+      <i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i>
+      <h3>Sin versiones de contenido</h3>
+      <p>Las 1.946 lecciones conservan su título curricular. Los cuerpos de lección se incorporan únicamente mediante el flujo editorial revisado.</p>
+    </div>
+  {% endif %}
+</section>
+
+{% if publicaciones %}
+<section class="glass-card cg-card" aria-label="Paquetes publicados">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-stamp" aria-hidden="true"></i> Paquetes emitidos</h3>
+  <ul style="list-style:none; padding:0; margin:0; font-size:.9rem;">
+    {% for publicacion in publicaciones %}
+      <li style="padding:.4rem 0; border-bottom:1px solid var(--cg-border,#e5e7eb);">
+        <span class="cg-badge">{{ publicacion.channel }}</span>
+        secuencia {{ publicacion.sequence }} · {{ publicacion.package_version }} ·
+        {{ publicacion.published_at|date:"Y-m-d H:i" }}
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="glass-card cg-card" style="margin-top:1rem;">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-terminal" aria-hidden="true"></i> Flujo editorial por comandos</h3>
+  <p class="muted" style="margin-top:0;">Estas son las operaciones reales disponibles. Cada una valida licencias, estados y hashes antes de publicar.</p>
+  <pre class="code-block" style="white-space:pre-wrap;">python manage.py registrar_fuente_conocimiento ...
+python manage.py revisar_licencia_fuente ...
+python manage.py crear_version_leccion ...
+python manage.py gestionar_version_leccion ...
+python manage.py publicar_paquete_conocimiento ...
+python manage.py validar_paquete_contenido ...
+python manage.py sincronizar_conocimiento</pre>
+  <p class="muted" style="font-size:.86rem; margin-bottom:0;">La sincronización remota de producción no está configurada. Sin endpoint, allowlist y claves públicas, el cliente falla cerrado y no realiza conexiones.</p>
+</section>
+{% endblock %}

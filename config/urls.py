@@ -12,6 +12,7 @@ urlpatterns = [
     path("roadmaps/", include("apps.roadmaps.urls")),
     path("tutoria/", include("apps.tutoring.urls")),
     path("gamificacion/", include("apps.gamification.urls")),
+    path("biblioteca/", include("apps.library.urls")),
     path("", include("apps.core.urls")),
 ]
 

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Biblioteca documental — CodeGuard Pro{% endblock %}
+{% block page_title %}Biblioteca documental{% endblock %}
+{% block page_subtitle %}PDFs locales, organizados y siempre disponibles sin conexión{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+    <div>
+      <h2 style="margin-top:0;"><i class="fa-solid fa-book" aria-hidden="true"></i> Tu biblioteca</h2>
+      <p class="muted" style="margin-bottom:0;">
+        Los documentos se guardan en tu perfil local. CodeGuard no analiza,
+        ejecuta ni envía el contenido de tus PDFs a ningún servicio externo.
+      </p>
+    </div>
+    <a class="btn btn-primary cg-btn cg-btn-primary" href="{% url 'library:importar' %}">
+      <i class="fa-solid fa-file-arrow-up me-2" aria-hidden="true"></i>Importar PDF
+    </a>
+  </div>
+</section>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Filtros de biblioteca">
+  <form method="get" action="{% url 'library:lista' %}" style="display:flex; gap:.6rem; flex-wrap:wrap; align-items:flex-end;">
+    <div style="flex:1 1 240px;">
+      <label for="q" class="form-label">Buscar</label>
+      <input class="form-control" type="search" id="q" name="q" value="{{ busqueda }}" maxlength="120" placeholder="Título, autor, descripción o etiqueta">
+    </div>
+    <div>
+      <label for="categoria" class="form-label">Categoría</label>
+      <select class="form-select" id="categoria" name="categoria">
+        <option value="">Todas</option>
+        {% for valor, etiqueta in categorias %}
+          <option value="{{ valor }}" {% if categoria_seleccionada == valor %}selected{% endif %}>{{ etiqueta }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="estado" class="form-label">Estado</label>
+      <select class="form-select" id="estado" name="estado">
+        <option value="activo" {% if estado_seleccionado == "activo" %}selected{% endif %}>Activos</option>
+        <option value="archivado" {% if estado_seleccionado == "archivado" %}selected{% endif %}>Archivados</option>
+        <option value="todos" {% if estado_seleccionado == "todos" %}selected{% endif %}>Todos</option>
+      </select>
+    </div>
+    <div>
+      <button class="btn btn-primary cg-btn cg-btn-primary" type="submit">
+        <i class="fa-solid fa-magnifying-glass me-2" aria-hidden="true"></i>Filtrar
+      </button>
+      {% if busqueda or categoria_seleccionada or estado_seleccionado != "activo" %}
+        <a class="btn btn-secondary cg-btn" href="{% url 'library:lista' %}">Limpiar</a>
+      {% endif %}
+    </div>
+  </form>
+  <p class="muted" style="margin:.75rem 0 0; font-size:.9rem;">{{ total }} documento{{ total|pluralize:"s" }} en esta vista.</p>
+</section>
+
+{% if documentos %}
+<section class="glass-card cg-card" aria-label="Documentos de la biblioteca">
+  <div style="overflow-x:auto;">
+    <table class="table" style="width:100%; margin:0;">
+      <thead>
+        <tr>
+          <th scope="col">Documento</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Tamaño</th>
+          <th scope="col">Importado</th>
+          <th scope="col" style="text-align:right;">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for documento in documentos %}
+          <tr>
+            <td>
+              <strong>{{ documento.titulo }}</strong>
+              {% if documento.autor %}<div class="muted" style="font-size:.9rem;">{{ documento.autor }}</div>{% endif %}
+              {% if documento.estado == "archivado" %}<span class="cg-badge cg-badge-muted">Archivado</span>{% endif %}
+            </td>
+            <td>{{ documento.get_categoria_display }}</td>
+            <td>{{ documento.tamano_mb }} MB</td>
+            <td>{{ documento.creado_en|date:"Y-m-d" }}</td>
+            <td style="text-align:right; white-space:nowrap;">
+              <a class="btn btn-primary btn-sm cg-btn" href="{% url 'library:detalle' documento.pk %}">Abrir</a>
+              <form method="post" action="{% url 'library:cambiar_estado' documento.pk %}" style="display:inline;">
+                {% csrf_token %}
+                {% if documento.estado == "activo" %}
+                  <input type="hidden" name="accion" value="archivar">
+                  <button class="btn btn-secondary btn-sm cg-btn" type="submit">Archivar</button>
+                {% else %}
+                  <input type="hidden" name="accion" value="restaurar">
+                  <button class="btn btn-secondary btn-sm cg-btn" type="submit">Restaurar</button>
+                {% endif %}
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% if pagina.paginator.num_pages > 1 %}
+<nav aria-label="Paginación de la biblioteca" style="margin-top:1rem; display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap;">
+  {% if pagina.has_previous %}
+    <a class="btn btn-secondary btn-sm cg-btn" href="?page={{ pagina.previous_page_number }}{% if busqueda %}&amp;q={{ busqueda|urlencode }}{% endif %}{% if categoria_seleccionada %}&amp;categoria={{ categoria_seleccionada }}{% endif %}&amp;estado={{ estado_seleccionado }}">Anterior</a>
+  {% endif %}
+  <span class="cg-badge">Página {{ pagina.number }} de {{ pagina.paginator.num_pages }}</span>
+  {% if pagina.has_next %}
+    <a class="btn btn-secondary btn-sm cg-btn" href="?page={{ pagina.next_page_number }}{% if busqueda %}&amp;q={{ busqueda|urlencode }}{% endif %}{% if categoria_seleccionada %}&amp;categoria={{ categoria_seleccionada }}{% endif %}&amp;estado={{ estado_seleccionado }}">Siguiente</a>
+  {% endif %}
+</nav>
+{% endif %}
+
+{% else %}
+<section class="glass-card empty-state cg-card">
+  <i class="fa-solid fa-book-open fa-2x" aria-hidden="true"></i>
+  <h3>{% if busqueda or categoria_seleccionada %}No hay documentos que coincidan{% else %}Tu biblioteca está vacía{% endif %}</h3>
+  <p>{% if busqueda or categoria_seleccionada %}Prueba con otro término o limpia los filtros.{% else %}Importa tu primer PDF para consultarlo sin conexión desde este equipo.{% endif %}</p>
+  <a class="btn btn-primary cg-btn cg-btn-primary" href="{% url 'library:importar' %}">
+    <i class="fa-solid fa-file-arrow-up me-2" aria-hidden="true"></i>Importar PDF
+  </a>
+</section>
+{% endif %}
+{% endblock %}

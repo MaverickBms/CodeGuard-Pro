@@ -111,20 +111,34 @@ class ServerEntryRestoreModeTests(SimpleTestCase):
 
 
 class ServerEntryInitializationTests(SimpleTestCase):
-    """La inicialización normal debe ser idempotente y preservar el progreso."""
+    """La inicialización normal delega en el arranque idempotente auditado."""
 
-    def test_initialization_runs_migrations_then_loads_without_recreate(self):
-        with patch("django.core.management.call_command") as call_command:
+    def test_initialization_delegates_to_bootstrap_without_recreate(self):
+        resultado = {
+            "migraciones_pendientes": 0,
+            "roadmap_cargado": False,
+            "roadmap_reutilizado": True,
+            "etapas": 33,
+            "modulos": 212,
+            "lecciones": 1946,
+            "prerrequisitos": 7,
+            "sobrantes": 0,
+            "milisegundos": 80,
+        }
+        with patch(
+            "apps.roadmaps.bootstrap.preparar_perfil_local",
+            return_value=resultado,
+        ) as preparar:
+            devuelto = server_entry._initialize_database()
+
+        self.assertEqual(devuelto, resultado)
+        preparar.assert_called_once_with()
+
+    def test_initialization_never_uses_recreate(self):
+        with patch(
+            "apps.roadmaps.bootstrap.preparar_perfil_local",
+            return_value={"roadmap_cargado": False, "milisegundos": 1},
+        ) as preparar:
             server_entry._initialize_database()
 
-        self.assertEqual(
-            call_command.call_args_list,
-            [
-                (("migrate",), {"interactive": False, "verbosity": 1}),
-                (("cargar_ascenso",), {"verbosity": 1}),
-            ],
-        )
-        self.assertNotIn(
-            "--recrear",
-            str(call_command.call_args_list),
-        )
+        self.assertNotIn("--recrear", str(preparar.call_args_list))

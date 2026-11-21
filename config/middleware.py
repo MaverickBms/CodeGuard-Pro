@@ -57,12 +57,18 @@ class CabecerasSeguridadMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
 
-        # Evitar clickjacking.
-        response["X-Frame-Options"] = "DENY"
+        # Evitar clickjacking. El visor de la biblioteca necesita incrustar
+        # únicamente su propio PDF del mismo origen; el resto queda denegado.
+        allow_same_origin_frame = bool(
+            getattr(response, "_cg_allow_same_origin_frame", False)
+        )
+        response["X-Frame-Options"] = (
+            "SAMEORIGIN" if allow_same_origin_frame else "DENY"
+        )
         # Evitar MIME-sniffing.
         response["X-Content-Type-Options"] = "nosniff"
         # Control del referrer.
-        response["Referrer-Policy"] = "no-referrer"
+        response["Referrer-Policy"] = "same-origin"
         # Permissions policy restrictiva (sin APIs innecesarias).
         response["Permissions-Policy"] = (
             "camera=(), microphone=(), geolocation=()"
@@ -79,10 +85,11 @@ class CabecerasSeguridadMiddleware:
             "font-src 'self'; "
             "connect-src 'self'; "
             "object-src 'none'; "
-            "frame-src 'none'; "
-            "frame-ancestors 'none'; "
+            "frame-src 'self'; "
+            "frame-ancestors '%s'; "
             "form-action 'self'; "
             "base-uri 'self';"
+            % ("self" if allow_same_origin_frame else "none")
         )
         response["Content-Security-Policy"] = csp
 

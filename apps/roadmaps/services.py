@@ -159,6 +159,12 @@ def cargar_ascenso(ruta: str | Path | None = None, *, recrear: bool = False) -> 
                 documentado=True,
             )
 
+    # Registra la huella del contenido instalado para que el próximo arranque
+    # pueda verificar la integridad sin reconstruir las 1.946 lecciones.
+    from .bootstrap import registrar_estado_instalacion
+
+    registrar_estado_instalacion(roadmap, ruta=ruta)
+
     return roadmap
 
 

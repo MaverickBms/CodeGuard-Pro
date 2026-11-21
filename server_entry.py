@@ -23,16 +23,16 @@ def _die(message: str, code: int = 1) -> int:
     return code
 
 
-def _initialize_database() -> None:
+def _initialize_database() -> dict:
     """Prepara el perfil local sin borrar ni reiniciar el progreso existente.
 
-    `cargar_ascenso` es idempotente por defecto. Nunca se utiliza --recrear,
-    que eliminaría el roadmap y los registros de progreso asociados.
+    Solo aplica migraciones pendientes y solo reconstruye el roadmap cuando el
+    manifiesto, los recuentos o la huella del contenido no coinciden. Nunca se
+    utiliza --recrear, que eliminaría el roadmap y el progreso asociado.
     """
-    from django.core.management import call_command
+    from apps.roadmaps.bootstrap import preparar_perfil_local
 
-    call_command("migrate", interactive=False, verbosity=1)
-    call_command("cargar_ascenso", verbosity=1)
+    return preparar_perfil_local()
 
 
 def main() -> int:
@@ -100,8 +100,13 @@ def main() -> int:
 
     try:
         print("[CodeGuard] Inicializando base de datos y roadmap local...", flush=True)
-        _initialize_database()
-        print("[CodeGuard] Datos locales preparados correctamente.", flush=True)
+        resultado = _initialize_database()
+        print(
+            "[CodeGuard] Datos locales preparados correctamente "
+            f"(roadmap {'reconstruido' if resultado.get('roadmap_cargado') else 'verificado'}, "
+            f"{resultado.get('milisegundos', 0)} ms).",
+            flush=True,
+        )
     except Exception as exc:
         return _die(f"No se pudo inicializar el perfil local: {exc}", 7)
 

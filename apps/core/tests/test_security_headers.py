@@ -11,7 +11,8 @@ class SecurityHeadersTests(TestCase):
         self.assertEqual(respuesta.status_code, 200)
         self.assertEqual(respuesta["X-Frame-Options"], "DENY")
         self.assertEqual(respuesta["X-Content-Type-Options"], "nosniff")
-        self.assertEqual(respuesta["Referrer-Policy"], "no-referrer")
+        self.assertEqual(respuesta["Referrer-Policy"], "same-origin")
+        self.assertContains(respuesta, '<meta name="referrer" content="same-origin">')
         self.assertIn("camera=()", respuesta["Permissions-Policy"])
 
         csp = respuesta["Content-Security-Policy"]
@@ -19,7 +20,7 @@ class SecurityHeadersTests(TestCase):
             "default-src 'self'",
             "script-src 'self'",
             "object-src 'none'",
-            "frame-src 'none'",
+            "frame-src 'self'",
             "frame-ancestors 'none'",
             "form-action 'self'",
             "base-uri 'self'",
