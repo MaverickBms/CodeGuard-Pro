@@ -6,9 +6,9 @@
 
 El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicación de escritorio **Electron**, con **SQLite**. CodeGuard es **offline-first**: no requiere Internet para abrir la aplicación, estudiar con el contenido disponible ni consultar el progreso local.
 
-El roadmap ASCENSO 3.1 (33 etapas) se instala automáticamente en el primer arranque y se verifica sin reconstruirse en los siguientes. La aplicación incluye panel, roadmap, lecciones, evaluaciones, evidencias, biblioteca documental de PDFs, tutoría IA local (Ollama), gamificación, base de conocimiento de solo lectura y copias de seguridad. Consulta el plan maestro en la rama `documentation` para distinguir lo implementado de lo que sigue en progreso. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
+El roadmap ASCENSO 3.1 (33 etapas) se instala automáticamente en el primer arranque y se verifica sin reconstruirse en los siguientes. La aplicación incluye panel, roadmap, lecciones con contenido académico estructurado, evaluaciones, evidencias, biblioteca documental de PDFs, tutoría IA local (Ollama), gamificación, base de conocimiento, espacio editorial y copias de seguridad. Consulta el plan maestro en la rama `documentation` para distinguir lo implementado de lo que sigue en progreso. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
 
-La iteración de finalización del 21-11-2026 validó el perfil limpio, el arranque, los formularios CSRF dentro de Electron, la biblioteca PDF, el benchmark de rendimiento y la restauración transaccional. La aceptación en hardware Windows físico sigue pendiente. El detalle está en [docs/INFORME_FINAL_1.0.0.md](docs/INFORME_FINAL_1.0.0.md).
+La iteración académica del 21-11-2026 añadió 8 lecciones completas del módulo 0.1 con fuentes verificables, ejercicios deterministas y videos en español, además del espacio editorial, la cobertura y la auditoría de estados. El contenido se entrega como **borrador editorial** para estudio; la aprobación y publicación son decisiones explícitas del propietario. La aceptación en hardware Windows físico sigue pendiente. El detalle está en [docs/INFORME_FINAL_1.0.0.md](docs/INFORME_FINAL_1.0.0.md) y [docs/CONTENIDO_ACADEMICO.md](docs/CONTENIDO_ACADEMICO.md).
 
 El cliente de sincronización pull-only por HTTPS, el comando `sincronizar_conocimiento`, el publicador local y la integración de comprobaciones periódicas con Electron están implementados. **La distribución remota de producción sigue pendiente**: no hay hosting/endpoint público, allowlist ni claves públicas de producción configuradas. Sin esa configuración, el cliente falla cerrado y no realiza conexiones. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
 
@@ -58,7 +58,19 @@ datos.
 - Las evidencias de proyecto/manual son declaraciones del estudiante; las
   evaluaciones automáticas se califican por separado.
 
-### 5. Biblioteca documental
+### 5. Contenido académico y espacio editorial
+
+- El módulo 0.1 «Aprender a aprender» incluye 8 lecciones con objetivos,
+  introducción, teoría, explicación sencilla, conceptos, aplicaciones, errores,
+  ejemplos, ejercicios, autoevaluación, fuentes y videos.
+- En un perfil limpio el contenido se siembra una sola vez como **borrador**.
+  Se puede estudiar con un aviso visible; no se contabiliza como publicado.
+- **Editorial** permite editar, crear snapshots, enviar a revisión, aprobar,
+  publicar y retirar. **Cobertura** muestra el estado real por etapa.
+- Los videos se abren en el navegador del sistema mediante un enlace HTTPS
+  verificado; la lección sigue funcionando sin conexión.
+
+### 6. Biblioteca documental
 
 - Importación de PDFs con validación de extensión, firma `%PDF-`, tamaño
   máximo de 50 MB y SHA-256; los duplicados se rechazan.
@@ -69,7 +81,7 @@ datos.
 - Los PDFs se guardan en `media/biblioteca/` dentro del perfil del usuario y se
   incluyen en las copias de seguridad.
 
-### 6. Temas visuales
+### 7. Temas visuales
 
 12 temas con las 12 paletas oficiales (P01–P12): claro (P01), oscuro (P02),
 alto contraste (P04), retro-pixel (P05), cyberpunk (P03), fantasía (P07),
@@ -82,7 +94,7 @@ El texto es blanco/negro según la luminancia para garantizar **WCAG AA
 botones, bordes, focus). Se respeta `prefers-reduced-motion` y no se usa
 `transition: all`.
 
-### 7. Autenticación (temporalmente desactivada)
+### 8. Autenticación (temporalmente desactivada)
 
 El flujo de autenticación original queda preservado y no se ha eliminado:
 
@@ -162,6 +174,7 @@ Comandos de gestión disponibles:
 | Comando | Propósito |
 |---|---|
 | `cargar_ascenso` | Carga o actualiza las 33 etapas del roadmap ASCENSO 3.1 |
+| `cargar_contenido_academico` | Carga el contenido estructurado inicial como borradores editoriales; no publica |
 | `verificar_perfil` | Verifica la integridad del roadmap instalado sin modificar el perfil |
 | `crear_version_leccion` | Genera un snapshot versionado borrador de una lección |
 | `gestionar_version_leccion` | Envía, aprueba, publica o retira una versión de contenido |
@@ -247,19 +260,21 @@ Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/
 python manage.py check --settings=config.settings.development
 python manage.py makemigrations --check --dry-run --settings=config.settings.development
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges apps.library --settings=config.settings.development
+python manage.py cargar_contenido_academico --dry-run
 python scripts/benchmark-startup.py
 ```
 
-Resultado verificado en este repositorio (21-11-2026): **331 pruebas OK** en
+Resultado verificado en este repositorio (21-11-2026): **348 pruebas OK** en
 `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`,
 `apps.gamification`, `apps.challenges` y `apps.library`, con
 `--settings=config.settings.development` (system check 0 incidencias y
 migraciones al día). Las pruebas incluyen restauración de backups, biblioteca
 PDF, cabeceras CSP, contraste WCAG de los 12 temas e índices de
-evaluaciones/evidencias. `npm run test:electron` ejecuta 24 pruebas de IPC,
-arranque, restauración y persistencia de tema.
+evaluaciones/evidencias, carga idempotente de contenido académico y flujo
+editorial. `npm run test:electron` ejecuta 26 pruebas de IPC, arranque,
+restauración, enlaces externos y persistencia de tema.
 
-Rendimiento medido: primer arranque empaquetado ~12,6 s; segundo ~1,2 s en el
+Rendimiento medido: primer arranque empaquetado ~15,2 s; segundo ~1,2 s en el
 servidor y ~2,8 s con Electron. El segundo arranque verifica 1.946 lecciones sin
 reconstruirlas. Detalle y metodología en
 [docs/RENDIMIENTO_ARRANQUE.md](docs/RENDIMIENTO_ARRANQUE.md). El inventario
@@ -274,7 +289,13 @@ académico y los hallazgos editoriales están en
 - Un PDF es rechazado → compruebe que termina en `.pdf`, que es un PDF real
   (firma `%PDF-`) y que no supera 50 MB. Los duplicados por SHA-256 se rechazan.
 - El tutor muestra «no disponible» → Ollama no está en marcha o falta el modelo
-  configurado. La aplicación usa pistas deterministas y sigue funcionando.
+  configurado. La aplicación usa pistas deterministas y sigue funcionando. Si
+  Ollama tarda más de 12 s, también se usa la pista local.
+- Una lección muestra «Contenido en borrador» → es material académico inicial
+  aún no publicado. Puedes estudiarlo; para publicarlo, usa **Editorial** y
+  completa revisión/aprobación/publicación.
+- La cobertura indica 8/1.946 → el resto de lecciones son títulos curriculares
+  sin cuerpo desarrollado. No se rellenan con texto genérico.
 - La importación o un formulario devuelve 403 → no use `Referrer-Policy:
   no-referrer`; esta versión usa `same-origin` para que Chromium envíe un
   `Origin` válido en los POST locales.

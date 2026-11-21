@@ -176,3 +176,20 @@ CODEGUARD_DATA_DIR=/tmp/cg-inv \
 DJANGO_SETTINGS_MODULE=config.settings.development \
 python manage.py cargar_ascenso
 ```
+
+## 13. Actualización de contenido (2026-11-21)
+
+| Comprobación | Resultado |
+|---|---|
+| Lecciones con cuerpo estructurado | 8 (módulo 0.1) |
+| Lecciones con versión borrador | 8 |
+| Lecciones aprobadas | 0 |
+| Lecciones publicadas | 0 |
+| Lecciones pendientes | 1.938 |
+| Videos aprobados por metadatos | 8 |
+| Fuentes registradas para el lote | 13 |
+
+El contenido del módulo 0.1 se entrega como borrador editorial. No se alteró la
+estructura oficial de 33 etapas, 212 módulos ni 1.946 lecciones. La etapa 25
+sigue sin objetivo formal en la fuente maestra. El detalle y el flujo de
+publicación están en [`CONTENIDO_ACADEMICO.md`](CONTENIDO_ACADEMICO.md).

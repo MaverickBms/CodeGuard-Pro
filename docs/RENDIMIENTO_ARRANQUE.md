@@ -76,24 +76,24 @@ Comando:
 Salida en la máquina de referencia (Linux x64, 7,4 GB RAM, carga alta):
 
 ```
-primer_arranque: interno 9.952 ms · pared 11.136 ms · 50 migraciones · roadmap cargado
-segundo_arranque: interno 150 ms · pared 977 ms · roadmap reutilizado · 1.946 lecciones
-perfil_con_historial: interno 152 ms · pared 1.005 ms · roadmap reutilizado
+primer_arranque: interno 13.125 ms · pared 15.157 ms · 52 migraciones · roadmap cargado · 8 contenidos sembrados
+segundo_arranque: interno 145 ms · pared 983 ms · roadmap reutilizado · 1.946 lecciones
+perfil_con_historial: interno 152 ms · pared 920 ms · roadmap reutilizado
 ```
 
 Servidor PyInstaller empaquetado:
 
 ```
-RUN 1 (perfil vacío): 12.636 ms hasta /healthz/ OK
-RUN 2 (perfil existente): 1.167 ms hasta /healthz/ OK
+RUN 1 (perfil vacío, con siembra académica): ~15.2 s hasta /healthz/ OK
+RUN 2 (perfil existente): ~1.0 s hasta /healthz/ OK
 ```
 
 AppImage con datos existentes (extraído; el montaje FUSE de este host se
 bloqueó, ver limitaciones):
 
 ```
-[Startup] Servidor Django listo en 1.993 ms
-[Startup] Aplicación lista en ~2,8 s
+[Startup] Servidor Django listo en ~2.1 s
+[Startup] Aplicación lista en ~3.1 s
 ```
 
 ## 4. Antes y después
@@ -103,8 +103,8 @@ bloqueó, ver limitaciones):
 | Reconstrucción del roadmap en arranque normal | Sí, ~3,4 s | No |
 | Consultas en arranque normal | ~4.000+ | 7 |
 | Verificación de integridad | No existía | Sí, 0,08–0,30 s |
-| Servidor empaquetado, segundo arranque | ~4,0 s | ~1,2 s |
-| Electron, segundo arranque | No medido | ~2,8 s |
+| Servidor empaquetado, segundo arranque | ~4,0 s | ~1,0–1,2 s |
+| Electron, segundo arranque | No medido | ~2,8–3,1 s |
 | Espera máxima silenciosa | 120 s | 90 s con estado visible |
 
 ## 5. Pruebas de regresión

@@ -35,18 +35,18 @@ Se corrigieron tres bloqueos reales:
 
 | Área | Resultado | Evidencia |
 |---|---|---|
-| Backend Django | Operativo | `manage.py check` sin incidencias; 331 pruebas OK |
+| Backend Django | Operativo | `manage.py check` sin incidencias; 348 pruebas OK |
 | Migraciones | Al día | `makemigrations --check --dry-run` sin cambios |
 | Frontend | Operativo | 7 rutas principales HTTP 200; 12 temas; sin desbordamiento a 1024/768 px |
 | Electron | Operativo | IPC, tema persistente, cierre sin huérfanos, formularios CSRF |
 | Base de datos | Operativa | SQLite WAL; migraciones y datos en `CODEGUARD_DATA_DIR` |
 | Roadmap ASCENSO | Completo | 33 etapas, 212 módulos, 1.946 títulos, 7 prerrequisitos |
-| Lecciones | Estructura y visor | Títulos y navegación; 0 cuerpos publicados en perfil limpio |
+| Lecciones | Contenido inicial | 8 lecciones estructuradas en borrador; 1.938 títulos pendientes; 0 publicadas |
 | Tutor IA | Operativo con y sin Ollama | Detección de Ollama/modelo, pistas y fallback determinista |
 | Evaluaciones | Operativo | Quiz publicado de prueba, envío y calificación en servidor |
 | Evidencias | Operativo | Registro de criterio y cierre de etapa por criterios |
 | Biblioteca | Operativa | Importación PDF, búsqueda, archivo, visor y rangos HTTP |
-| Base de conocimiento | Solo lectura | Fuentes, versiones, paquetes y sincronización reales |
+| Base de conocimiento | Consulta y edición | Fuentes, versiones, paquetes y espacio editorial con transiciones auditadas |
 | Gamificación | Operativa | XP/monedas/logros/misiones idempotentes; no altera notas |
 | Backups | Operativo | Crear, verificar, restaurar y rollback con perfil temporal |
 | Seguridad | Sin hallazgos críticos | CSP, loopback, CSRF, uploads validados, Ed25519, backups |
@@ -54,6 +54,29 @@ Se corrigieron tres bloqueos reales:
 | Instalación Linux | Verificada | Servidor PyInstaller + AppImage extraído, E2E completo |
 | Instalación Windows | CI únicamente | Run `44934755981` verde: NSIS, 7 rutas, 12 temas, tema/progreso persistente, desinstalación y portable; falta hardware físico |
 | Offline | Verificado por diseño y E2E | Sin CDN, sin telemetría, sync falla cerrado |
+
+## 2.1 Contenido académico y espacio editorial
+
+Se desarrolló el módulo 0.1 «Aprender a aprender» con **8 lecciones completas**
+(objetivos, conocimientos previos, introducción, teoría, explicación sencilla,
+conceptos, aplicaciones, errores frecuentes, ejemplo, dos ejercicios
+deterministas, autoevaluación, fuentes y video). El contenido es original y
+usa referencias verificables; no se rellenaron lecciones con texto genérico.
+
+La cobertura real es: **8 desarrolladas, 0 aprobadas y 0 publicadas**; las otras
+1.938 permanecen pendientes. El contenido se siembra una sola vez como
+**borrador editorial** y se puede estudiar con un aviso visible. La aprobación
+y publicación requieren una acción explícita del propietario en el nuevo
+**Espacio editorial**, que permite editar, versionar, enviar a revisión,
+aprobar, publicar, retirar, registrar fuentes y revisar licencias. La pantalla
+**Cobertura** separa producción editorial de progreso del estudiante.
+
+Los **8 videos** fueron verificados por metadatos públicos (título, canal, URL,
+duración y pista de audio/captions en español). Se abren en el navegador del
+sistema mediante un IPC restringido a HTTPS; la lección funciona sin conexión.
+La revisión pedagógica completa de cada video queda declarada como pendiente.
+
+Detalle: [`CONTENIDO_ACADEMICO.md`](CONTENIDO_ACADEMICO.md).
 
 ## 3. Datos y persistencia
 
@@ -97,14 +120,14 @@ npm audit --omit=dev
 
 Resultados:
 
-- Django: **331 pruebas OK** (135 s).
-- Electron: **24 pruebas OK**.
+- Django: **348 pruebas OK** (178 s).
+- Electron: **26 pruebas OK**.
 - `pip-audit`: sin vulnerabilidades conocidas.
 - `npm audit --omit=dev`: 0 vulnerabilidades de producción.
 - `npm audit` completo: 6 moderadas en la cadena de build de
   `electron-builder`; no hay corrección compatible sin degradación.
 - Benchmark: primer arranque 13,6 s; segundo 1,0 s de pared; historial 1,5 s.
-- Servidor PyInstaller: primer arranque 12,6 s; segundo 1,2 s.
+- Servidor PyInstaller: primer arranque ~15,2 s; segundo ~1,0 s.
 - AppImage extraído: interfaz lista en ~2,8 s; E2E de 7 rutas, 12 temas,
   formulario PDF y cierre sin procesos huérfanos.
 - Responsive: 11 pantallas sin desbordamiento horizontal a 1024×720 y 768×900
@@ -136,10 +159,11 @@ Resultados:
 
 ## 7. Limitaciones y pendientes externos
 
-1. **Contenido académico:** las 1.946 lecciones conservan sus títulos
-   estructurales; no se publicaron cuerpos genéricos. El contenido revisado de
-   la rama de PR #14 no se importó como publicado porque requiere decisión
-   editorial. La etapa 25 sigue sin objetivo formal en el documento maestro.
+1. **Contenido académico:** 8 lecciones del módulo 0.1 están desarrolladas
+   como borradores; 1.938 siguen pendientes. No se publicaron cuerpos genéricos
+   ni se atribuyó aprobación humana. El contenido de PR #14 se usó como
+   orientación editorial, no como publicación automática. La etapa 25 sigue sin
+   objetivo formal en el documento maestro.
 2. **Windows físico:** la instalación NSIS/portable está validada en CI, no en
    hardware Windows real. No se declara aceptación física.
 3. **Sincronización remota de producción:** no hay endpoint, allowlist ni
@@ -176,6 +200,10 @@ Resultados:
 - `apps/roadmaps/bootstrap.py`, `apps/roadmaps/migrations/0020_*`,
   `apps/roadmaps/management/commands/verificar_perfil.py`.
 - `apps/accounts/bootstrap.py`, migración de auditoría de propietario local.
+- `apps/roadmaps/data/contenido_academico_0_1.json`,
+  `cargar_contenido_academico`, `coverage.py`, `editorial_views.py`,
+  `forms.py`, `templates/roadmaps/editorial*.html` y `cobertura.html`.
+- `apps/roadmaps/models.py` y migración 0021: contenido ampliado y videos.
 - `apps/library/*` y `templates/library/*` (módulo nuevo).
 - `templates/roadmaps/conocimiento.html` y vista de solo lectura.
 - `config/health.py`, `config/middleware.py`, `config/settings/development.py`,
@@ -188,10 +216,10 @@ Resultados:
 ## 10. Artefactos verificados
 
 - Servidor PyInstaller Linux x64:
-  `7ad9366963b4f69428827b59c71f29c74b76675b4c2d1f11af4ff151c399262d`
+  `4fceaa9acc0e209c1446a7f5e8b423e136344759351c35af57fdf1f93af1fd39`
   (`dist-server/CodeGuardServer/CodeGuardServer`).
 - AppImage Linux x64:
-  `f137bfc900466966f47dffefd319d8f232cbff2fd716080d2db5aff940f9b5c8`
+  `aba8922cf79524942a7ae8a80c5d70e7ec25d33ab919634930ccdccdcdd65493`
   (`dist/CodeGuard-Pro-1.0.0-x86_64.AppImage`).
 - El AppImage se verificó extrayéndolo (`--appimage-extract`) por el bloqueo
   FUSE del host de pruebas; el binario extraído ejecutó el mismo E2E.
@@ -215,8 +243,10 @@ Resultados:
 ## 12. Conclusión
 
 CodeGuard Pro 1.0.0 queda operativo como plataforma educativa local para un
-perfil limpio: abre, guarda progreso real, permite estudiar la estructura
-curricular, registrar evidencias y evaluaciones, consultar PDFs, usar el tutor
-con fallback y crear/restaurar copias. Lo que falta es contenido académico
-revisado, aceptación física Windows y la infraestructura remota opcional; nada
-de ello se declara terminado en este informe.
+perfil limpio: abre, siembra 8 lecciones iniciales en borrador, guarda progreso
+real, permite estudiar contenido con fuentes y videos, resolver ejercicios,
+registrar evidencias y evaluaciones, consultar PDFs, usar el tutor con fallback
+y crear/restaurar copias. El espacio editorial permite aprobar y publicar
+contenido cuando el propietario lo decida. Lo que falta es ampliar el contenido
+académico, la revisión humana independiente, la aceptación física Windows y la
+infraestructura remota opcional; nada de ello se declara terminado.

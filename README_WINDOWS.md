@@ -56,8 +56,9 @@ El script instala dependencias Python y ejecuta `npm run build:win`. Ese comando
 
 La compilación no crea ni migra una base de datos de desarrollo. En el primer
 arranque, `CodeGuardServer.exe` aplica las migraciones, crea el propietario local
-sin credenciales (modo sin autenticación) e instala ASCENSO 3.1 dentro del
-directorio de datos del usuario. En los arranques siguientes verifica la huella
+sin credenciales (modo sin autenticación), instala ASCENSO 3.1 y siembra el
+módulo académico inicial de 8 lecciones en estado borrador dentro del directorio
+de datos del usuario. En los arranques siguientes verifica la huella
 del contenido y no reconstruye las 1.946 lecciones. El tiempo medido en Linux
 para el mismo flujo es ~12,6 s en el primer arranque y ~1,2 s en el segundo; el
 splash muestra el estado real de cada fase.
@@ -101,11 +102,12 @@ pruebas antes de distribuir.
 3. Confirmar migraciones y carga de ASCENSO en el directorio correcto.
 4. Abrir panel, roadmap, lección, ejercicio, evaluación, biblioteca y base de conocimiento.
 5. Importar un PDF desde la biblioteca y comprobar el visor; archivar y restaurar.
-6. Registrar una evidencia y comprobar que el panel actualiza el progreso.
-7. Desconectar Internet y repetir los flujos esenciales.
-8. Cerrar desde el menú y comprobar que no queden procesos ni puertos.
-9. Reiniciar y verificar persistencia de progreso, preferencias, tema, PDFs e intentos.
-10. Probar backup y restauración en un perfil aislado.
-11. Medir el arranque normal y el primer arranque; documentar el hardware.
+6. Abrir una lección del módulo 0.1, comprobar el aviso de borrador, el video y el ejercicio determinista.
+7. Registrar una evidencia y comprobar que el panel actualiza el progreso y la cobertura.
+8. Desconectar Internet y repetir los flujos esenciales.
+9. Cerrar desde el menú y comprobar que no queden procesos ni puertos.
+10. Reiniciar y verificar persistencia de progreso, preferencias, tema, PDFs e intentos.
+11. Probar backup y restauración en un perfil aislado.
+12. Medir el arranque normal y el primer arranque; documentar el hardware.
 
 No declarar la distribución aceptada hasta completar estas pruebas.

@@ -24,27 +24,40 @@
 | Conocimiento | Panel de solo lectura con fuentes, versiones, paquetes y sincronización |
 | Navegación | Biblioteca y Base de conocimiento activas; un solo acceso activo por página |
 | Dev | Waitress + WhiteNoise en desarrollo; recursos estáticos ya no devuelven 404 |
-| Pruebas | 331 Django + 24 Electron + benchmark de arranque en CI |
+| Pruebas | 348 Django + 26 Electron + benchmark de arranque en CI |
 
 ### Artefactos Linux
 
-- AppImage: `f137bfc900466966f47dffefd319d8f232cbff2fd716080d2db5aff940f9b5c8`.
-- Servidor PyInstaller: `7ad9366963b4f69428827b59c71f29c74b76675b4c2d1f11af4ff151c399262d`.
+- AppImage: `aba8922cf79524942a7ae8a80c5d70e7ec25d33ab919634930ccdccdcdd65493`.
+- Servidor PyInstaller: `4fceaa9acc0e209c1446a7f5e8b423e136344759351c35af57fdf1f93af1fd39`.
+
+### Contenido académico inicial
+
+- 8 lecciones completas del módulo 0.1 en estado **borrador**.
+- 1.938 lecciones pendientes; 0 publicadas.
+- 8 videos verificados por metadatos en español.
+- 13 fuentes registradas con uso `solo_referencia`.
+- Espacio editorial, cobertura y puerta de calidad del esquema 2.
+- Siembra automática idempotente en el primer arranque; no publica.
+- Detalle: `docs/CONTENIDO_ACADEMICO.md`.
 
 ### Evidencia
 
-- Suite Django: **331 pruebas OK**.
-- Electron: **24/24 OK**.
+- Suite Django: **348 pruebas OK**.
+- Electron: **26/26 OK**.
 - `pip-audit`: sin vulnerabilidades conocidas.
 - `npm audit --omit=dev`: 0 vulnerabilidades de producción.
-- Primer arranque empaquetado: **12,6 s**; segundo: **1,2 s** de servidor y
-  **~2,5 s** con Electron.
-- AppImage: 7 rutas 200, 12 temas, formulario PDF real, visor, cierre limpio.
+- Primer arranque empaquetado: **~15,2 s**; segundo: **~1,0 s** de servidor y
+  **~2,8 s** con Electron (incluye siembra académica solo en el primero).
+- AppImage: 7 rutas 200 (roadmap, evaluaciones, evidencias, conocimiento,
+  cobertura, editorial y backups), 12 temas, formulario PDF real, visor y
+  cierre limpio. El contenido académico y los formularios se validaron en el
+  perfil empaquetado.
 - Backup/restore: base y `media/` restauradas; estado curricular reutilizado.
 
 ### Pendientes que no se declaran terminados
 
-- Contenido académico de las 1.946 lecciones (solo títulos estructurales).
+- Contenido académico: 8/1.946 lecciones desarrolladas (borradores); 1.938 pendientes; 0 publicadas.
 - Aceptación física Windows.
 - Sincronización remota de producción (sin endpoint/claves).
 - macOS/ARM64.
@@ -83,13 +96,23 @@
 | `npm audit` completo | 6 moderadas, solo cadena de build de electron-builder |
 | Smoke PyInstaller Linux | Primer arranque, ASCENSO, health, cierre de puerto y sync OK |
 | Persistencia de tema (AppImage, dos arranques) | `fantasy` persiste tras reiniciar el paquete |
-| E2E AppImage Linux | 5 rutas HTTP 200, 12 temas, responsive, cierre sin huérfanos |
+| E2E AppImage Linux | 7 rutas HTTP 200, 12 temas, responsive, contenido y cierre sin huérfanos |
 | Windows CI run `44574923603` y `44576601446` | **7/7 fases OK**: instalación, primer arranque, health, 5 rutas, tema, progreso, desinstalación, portable y ausencia de huérfanos |
 
 ### Artefactos Linux
 
-- AppImage: `f137bfc900466966f47dffefd319d8f232cbff2fd716080d2db5aff940f9b5c8`.
-- Servidor PyInstaller: `7ad9366963b4f69428827b59c71f29c74b76675b4c2d1f11af4ff151c399262d`.
+- AppImage: `aba8922cf79524942a7ae8a80c5d70e7ec25d33ab919634930ccdccdcdd65493`.
+- Servidor PyInstaller: `4fceaa9acc0e209c1446a7f5e8b423e136344759351c35af57fdf1f93af1fd39`.
+
+### Contenido académico inicial
+
+- 8 lecciones completas del módulo 0.1 en estado **borrador**.
+- 1.938 lecciones pendientes; 0 publicadas.
+- 8 videos verificados por metadatos en español.
+- 13 fuentes registradas con uso `solo_referencia`.
+- Espacio editorial, cobertura y puerta de calidad del esquema 2.
+- Siembra automática idempotente en el primer arranque; no publica.
+- Detalle: `docs/CONTENIDO_ACADEMICO.md`.
 
 ### Evidencia Windows (CI, no hardware físico)
 
