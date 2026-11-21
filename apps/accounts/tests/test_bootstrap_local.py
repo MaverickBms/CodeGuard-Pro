@@ -16,6 +16,7 @@ class PropietarioLocalTests(TestCase):
         self.assertEqual(usuario.username, USERNAME_PROPIETARIO_LOCAL)
         self.assertFalse(usuario.has_usable_password())
         self.assertTrue(usuario.is_active)
+        self.assertTrue(usuario.is_staff)
         self.assertIsNotNone(usuario.fecha_configuracion_inicial)
         self.assertEqual(get_user_model().objects.count(), 1)
         self.assertTrue(ConfiguracionSistema.cargar().configuracion_inicial_completada)

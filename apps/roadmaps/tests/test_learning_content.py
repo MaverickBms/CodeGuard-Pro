@@ -85,7 +85,7 @@ class LeccionDetalleViewTests(TestCase):
             reverse("roadmaps:leccion_detalle", args=[self.leccion.id])
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Teoría técnica")
+        self.assertContains(response, "Explicación teórica")
         self.assertContains(response, "Explicación sencilla")
         self.assertContains(response, "Primer ejemplo")
         self.assertContains(response, "Practica")

@@ -19,6 +19,7 @@ from apps.roadmaps.bootstrap import (
     verificar_instalacion,
 )
 from apps.roadmaps.models import (
+    ContenidoLeccion,
     EstadoInstalacionRoadmap,
     Etapa,
     Leccion,
@@ -217,6 +218,8 @@ class PrepararPerfilTests(TestCase):
         self.assertEqual(resultado["lecciones"], 1946)
         self.assertTrue(any('"phase":"ready"' in linea for linea in eventos))
         self.assertIsNotNone(resultado["propietario_local_id"])
+        self.assertEqual(resultado["contenido_sembrado"], 8)
+        self.assertEqual(ContenidoLeccion.objects.count(), 8)
         self.assertTrue(Roadmap.objects.filter(activo=True).exists())
         self.assertTrue(
             get_user_model().objects.filter(is_active=True).exists()
@@ -226,6 +229,7 @@ class PrepararPerfilTests(TestCase):
         segundo = preparar_perfil_local(emit=eventos.append)
         self.assertFalse(segundo["roadmap_cargado"])
         self.assertTrue(segundo["roadmap_reutilizado"])
+        self.assertEqual(segundo["contenido_sembrado"], 0)
         self.assertTrue(any('"reused":true' in linea for linea in eventos))
 
     def test_no_invoca_migrate_cuando_no_hay_migraciones_pendientes(self):

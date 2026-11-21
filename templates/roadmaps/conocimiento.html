@@ -20,7 +20,7 @@
         flujo editorial auditado; esta pantalla no simula esas decisiones.
       </p>
     </div>
-    <span class="cg-badge cg-badge-primary">ASCENSO 3.1</span>
+    <div style="display:flex; gap:.5rem; flex-wrap:wrap;"><a class="btn btn-secondary cg-btn" href="{% url 'roadmaps:cobertura' %}"><i class="fa-solid fa-chart-simple me-2"></i>Cobertura académica</a><a class="btn btn-primary cg-btn cg-btn-primary" href="{% url 'roadmaps:editorial' %}"><i class="fa-solid fa-pen-ruler me-2"></i>Espacio editorial</a></div>
   </div>
 </section>
 
@@ -29,6 +29,13 @@
   <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-code-branch"></i></span><div><span class="v14-kpi-label">Versiones de contenido</span><strong class="v14-kpi-value">{{ total_versiones }}</strong></div></article>
   <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-circle-check"></i></span><div><span class="v14-kpi-label">Lecciones publicadas</span><strong class="v14-kpi-value">{{ lecciones_publicadas }}</strong></div></article>
   <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-box-open"></i></span><div><span class="v14-kpi-label">Paquetes instalados</span><strong class="v14-kpi-value">{{ paquetes|length }}</strong></div></article>
+</section>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Cobertura editorial resumida">
+  <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:center;">
+    <div><h3 style="margin:0;">Producción académica</h3><p class="muted" style="margin:.3rem 0 0;">{{ cobertura.desarrolladas }} de {{ cobertura.total }} lecciones desarrolladas · {{ cobertura.publicada }} publicadas · {{ cobertura.pendiente }} pendientes.</p></div>
+    <div style="display:flex; gap:.4rem; flex-wrap:wrap;"><span class="cg-badge">Borradores: {{ cobertura.borrador }}</span><span class="cg-badge">Revisión: {{ cobertura.revision }}</span><span class="cg-badge cg-badge-primary">Aprobadas: {{ cobertura.aprobada }}</span><span class="cg-badge cg-badge-success">Publicadas: {{ cobertura.publicada }}</span></div>
+  </div>
 </section>
 
 {% if estados_version %}

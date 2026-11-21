@@ -32,6 +32,16 @@ TOP_KEYS = {"schema_version", "resumen_cambios", "snapshot", "fuentes"}
 SNAPSHOT_KEYS = {"esquema_version", "leccion", "contenido", "ejemplos", "ejercicios"}
 LESSON_KEYS = {"clave", "titulo", "descripcion", "tipo"}
 CONTENT_KEYS = {"objetivos_aprendizaje", "teoria_tecnica", "explicacion_sencilla", "notas"}
+CONTENT_KEYS_OPCIONALES = {
+    "conocimientos_previos",
+    "introduccion",
+    "conceptos_fundamentales",
+    "aplicaciones_practicas",
+    "errores_frecuentes",
+    "evaluacion_aprendizaje",
+    "bibliografia_complementaria",
+    "nivel_dificultad",
+}
 EXAMPLE_KEYS = {"clave", "titulo", "contexto", "lenguaje", "codigo", "salida_esperada", "explicacion", "orden"}
 EXERCISE_KEYS = {"clave", "titulo", "enunciado", "instrucciones", "lenguaje", "nivel", "codigo_inicial", "obligatorio", "orden"}
 SOURCE_KEYS = {"clave", "rol", "localizador", "nota_atribucion", "uso_declarado"}
@@ -141,11 +151,25 @@ def _validate_document(document, filename):
         raise ImportContentError(f"{filename}.snapshot.leccion.tipo: tipo curricular no permitido.")
 
     content = snapshot["contenido"]
-    _expect_keys(content, CONTENT_KEYS, f"{filename}.snapshot.contenido")
+    if not isinstance(content, dict):
+        raise ImportContentError(f"{filename}.snapshot.contenido: se esperaba un objeto JSON.")
+    missing = CONTENT_KEYS - set(content)
+    unknown = set(content) - (CONTENT_KEYS | CONTENT_KEYS_OPCIONALES)
+    if missing:
+        raise ImportContentError(
+            f"{filename}.snapshot.contenido: faltan propiedades: {', '.join(sorted(missing))}."
+        )
+    if unknown:
+        raise ImportContentError(
+            f"{filename}.snapshot.contenido: propiedades no admitidas: {', '.join(sorted(unknown))}."
+        )
     for field in CONTENT_KEYS:
         _string(content[field], f"{filename}.snapshot.contenido.{field}", required=field in {
             "objetivos_aprendizaje", "teoria_tecnica", "explicacion_sencilla"
         })
+    for field in CONTENT_KEYS_OPCIONALES:
+        if field in content:
+            _string(content[field], f"{filename}.snapshot.contenido.{field}")
 
     examples = snapshot["ejemplos"]
     exercises = snapshot["ejercicios"]

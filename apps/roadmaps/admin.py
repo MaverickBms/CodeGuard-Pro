@@ -13,6 +13,7 @@ from .models import (
     Modulo,
     Prerrequisito,
     Progreso,
+    RecursoAudiovisual,
     Roadmap,
 )
 
@@ -100,8 +101,22 @@ class ContenidoLeccionAdmin(admin.ModelAdmin):
     search_fields = ("leccion__titulo", "teoria_tecnica", "explicacion_sencilla")
     fieldsets = (
         ("Lección", {"fields": ("leccion", "publicado")}),
-        ("Aprendizaje", {"fields": ("objetivos_aprendizaje", "teoria_tecnica", "explicacion_sencilla", "notas")}),
+        ("Aprendizaje", {"fields": (
+            "objetivos_aprendizaje", "conocimientos_previos", "introduccion",
+            "teoria_tecnica", "explicacion_sencilla", "conceptos_fundamentales",
+            "aplicaciones_practicas", "errores_frecuentes",
+            "evaluacion_aprendizaje", "bibliografia_complementaria",
+            "nivel_dificultad", "notas",
+        )}),
     )
+
+
+@admin.register(RecursoAudiovisual)
+class RecursoAudiovisualAdmin(admin.ModelAdmin):
+    list_display = ("titulo", "canal", "leccion", "estado_revision", "disponible", "duracion_segundos")
+    list_filter = ("estado_revision", "idioma", "subtitulos", "disponible")
+    search_fields = ("titulo", "canal", "leccion__titulo")
+    readonly_fields = ("video_id", "creado_en", "actualizado_en")
 
 
 @admin.register(EjemploLeccion)

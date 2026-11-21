@@ -592,6 +592,49 @@ def asegurar_roadmap_instalado(
     return roadmap, True
 
 
+def _sembrar_contenido_inicial(*, emit: Callable[[str], None] | None = None) -> int:
+    """Carga una sola vez el lote académico inicial en estado borrador."""
+    from .models import ContenidoLeccion
+
+    if ContenidoLeccion.objects.exists():
+        return 0
+    ruta = Path(__file__).resolve().parent / "data" / "contenido_academico_0_1.json"
+    if not ruta.is_file():
+        return 0
+    try:
+        import json
+
+        from .management.commands.cargar_contenido_academico import (
+            _validar_lote,
+            cargar_lote,
+        )
+
+        datos = json.loads(ruta.read_text(encoding="utf-8"))
+        _validar_lote(datos)
+        resumen = cargar_lote(datos)
+        _emitir(
+            {
+                "phase": "content",
+                "status": "seeded",
+                "lessons": resumen.get("lecciones", 0),
+                "drafts": resumen.get("versiones", 0),
+            },
+            emit=emit,
+        )
+        return int(resumen.get("lecciones", 0))
+    except Exception as exc:  # noqa: BLE001 — el arranque no se bloquea por contenido
+        import logging
+
+        logging.getLogger("codeguard").warning(
+            "No se pudo sembrar el contenido académico inicial: %s", exc
+        )
+        _emitir(
+            {"phase": "content", "status": "unavailable"},
+            emit=emit,
+        )
+        return 0
+
+
 def preparar_perfil_local(
     *,
     ruta: str | Path | None = None,
@@ -688,6 +731,12 @@ def preparar_perfil_local(
 
     estado = getattr(roadmap, "estado_instalacion", None)
     resultado["sobrantes"] = estado.registros_sobrantes if estado else 0
+
+    # Siembra el contenido académico inicial como borradores editoriales. No
+    # publica ni aprueba nada: permite estudiar con el aviso correspondiente y
+    # deja el flujo editorial en manos del propietario.
+    resultado["contenido_sembrado"] = _sembrar_contenido_inicial(emit=emit)
+
     resultado["milisegundos"] = round((time.monotonic() - inicio) * 1000)
 
     _emitir(

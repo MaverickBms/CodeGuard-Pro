@@ -1,0 +1,781 @@
+{
+  "schema_version": 1,
+  "modulo": "0.1",
+  "lecciones": [
+    {
+      "etapa": 0,
+      "modulo": "0.1",
+      "leccion": "Aprendizaje activo.",
+      "nivel": "basico",
+      "objetivos": "- Distinguir estudio activo de estudio pasivo.\n- Aplicar recuperación activa y autoexplicación en una sesión corta.\n- Diseñar un plan de estudio con práctica espaciada y retroalimentación.",
+      "conocimientos_previos": "No se requiere experiencia técnica previa. Solo necesitas un tema concreto que estés estudiando y disposición para intentar recordarlo sin mirar apuntes.",
+      "introduccion": "Leer varias veces un texto produce una sensación cómoda de familiaridad. Esa sensación no demuestra que puedas explicar el contenido ni recuperarlo en una prueba. El aprendizaje activo consiste en producir respuestas, explicaciones y decisiones con el material, en lugar de limitarte a recibirlo. La incomodidad de intentar recordar algo antes de dominarlo es parte del mecanismo: obliga al cerebro a recuperar y reorganizar la información. En esta lección aprenderás qué actividades son realmente activas, cómo combinarlas y cómo evitar las trampas más comunes.",
+      "teoria_tecnica": "La psicología cognitiva distingue codificación, almacenamiento y recuperación. Estudiar de forma pasiva favorece una codificación superficial y una falsa sensación de dominio. La recuperación activa (retrieval practice) consiste en intentar traer información a la memoria sin consultarla; después se verifica la respuesta y se corrige. La evidencia experimental muestra que recuperar mejora la retención a largo plazo más que releer, incluso cuando releer se siente más fácil (Roediger y Karpicke, 2006). La autoexplicación es otra estrategia activa: el estudiante explica por qué un paso se sigue de otro o por qué una afirmación es cierta, y detecta lagunas en su modelo mental (Chi et al., 1989). La generación de ejemplos y preguntas también exige construir relaciones, no solo reconocer texto.\n\nNo toda actividad práctica es aprendizaje activo. Copiar código, ver un video sin pausas o subrayar sin decidir qué preguntar pueden ser formas de consumo. La clave es el esfuerzo cognitivo dirigido a recuperar, explicar, comparar y aplicar. Dunlosky et al. (2013) revisaron técnicas de estudio y encontraron que la práctica de recuperación y la práctica distribuida tienen buena evidencia, mientras que el subrayado y la relectura tienen utilidad limitada. La práctica intercalada, que alterna tipos de problemas, puede mejorar la discriminación entre conceptos, aunque al principio se sienta más difícil.\n\nUna sesión activa bien diseñada alterna cuatro momentos: (1) predicción o pregunta previa; (2) estudio breve y atento; (3) recuperación cerrada, sin apuntes; (4) corrección con retroalimentación y una nueva pregunta. La corrección es indispensable: recuperar una respuesta incorrecta y no corregirla consolida el error. El intervalo entre sesiones también importa: espaciar la práctica produce mejor retención que concentrarla en una sola sesión (Cepeda et al., 2006).",
+      "explicacion_sencilla": "Piensa en aprender a tocar una canción. Mirar al guitarrista no te enseña a tocarla. Necesitas intentar los acordes, equivocarte, escuchar dónde falla y repetir. Estudiar funciona parecido: leer es mirar; recuperar es tocar. Una sesión activa puede durar veinte minutos: lees una parte pequeña, cierras el material, escribes lo que recuerdas, comparas, corriges y vuelves a intentarlo al día siguiente. Si solo relees, puedes reconocer las palabras cuando las ves, pero no necesariamente producirlas cuando las necesitas. La prueba honesta es intentar explicarlo sin ayuda.",
+      "conceptos_fundamentales": "- **Recuperación activa:** traer información desde la memoria sin consultar la fuente, seguida de verificación.\n- **Autoexplicación:** justificar con palabras propias por qué un paso o una idea es correcta.\n- **Generación:** producir ejemplos, preguntas o soluciones antes de recibir la respuesta.\n- **Práctica espaciada:** distribuir los repasos en el tiempo en lugar de concentrarlos.\n- **Intercalado:** alternar tipos de problemas para aprender a distinguirlos.\n- **Retroalimentación:** comparar la respuesta con un criterio y corregir el error.\n- **Fluidez ilusoria:** confundir la facilidad para reconocer con la capacidad de recordar o aplicar.",
+      "aplicaciones_practicas": "1. Antes de leer, escribe dos preguntas que esperas responder. 2. Lee una sección breve y cierra el archivo. 3. Explica en voz alta o por escrito, sin mirar, qué acabas de aprender. 4. Abre el material y marca las diferencias entre tu explicación y la fuente. 5. Convierte cada error en una pregunta para la próxima sesión. 6. Programa un repaso breve a las 24 horas y otro a la semana. 7. Si estudias programación, intenta reconstruir un fragmento de código o predecir su salida antes de ejecutarlo; después verifica. No uses la ejecución como sustituto de la predicción.",
+      "errores_frecuentes": "- **Releer y subrayar como actividad principal.** Aumentan la familiaridad, pero no garantizan recuperación.\n- **Mirar la respuesta demasiado pronto.** El esfuerzo de intentar recordar es parte del aprendizaje; consulta después de un intento real.\n- **No corregir.** Una respuesta equivocada sin retroalimentación puede consolidarse.\n- **Confundir práctica con repetición mecánica.** Repetir sin objetivo ni criterio no corrige el error.\n- **Estudiar solo lo fácil.** Conviene dedicar tiempo a lo que todavía no puedes explicar.\n- **Convertir la sesión en una maratón.** Sesiones cortas, espaciadas y con objetivos concretos suelen ser más sostenibles.",
+      "evaluacion_aprendizaje": "Responde sin mirar los apuntes y después contrasta:\n\n1. ¿Qué diferencia hay entre reconocer una idea y recuperarla?\n2. ¿Por qué la autoexplicación puede revelar una laguna?\n3. Diseña una sesión de 25 minutos para un tema que estés estudiando: indica qué leerás, qué intentarás recordar y cómo corregirás.\n\nCriterios: una respuesta completa menciona la producción de información sin consultar, la verificación y al menos un repaso espaciado. Si solo describes «leer dos veces», la respuesta no cumple el objetivo.",
+      "bibliografia_complementaria": "Amplía con las referencias incluidas al final. Prioriza las fuentes primarias y las revisiones; no necesitas memorizar las citas, sino comprender qué evidencia sostiene cada recomendación.",
+      "ejemplos": [
+        {
+          "titulo": "Sesión activa de 25 minutos",
+          "contexto": "Tema: conceptos básicos de variables en un lenguaje de programación.",
+          "lenguaje": "",
+          "codigo": "Minuto 0-3: escribe dos preguntas previas.\nMinuto 3-10: lee una explicación breve y un ejemplo.\nMinuto 10-16: cierra el material y explica qué es una variable, cómo se asigna y qué error produciría usar un nombre no definido.\nMinuto 16-22: compara con la fuente, corrige y escribe una pregunta nueva.\nMinuto 22-25: programa un repaso para mañana.",
+          "salida_esperada": "",
+          "explicacion": "La sesión incluye generación, recuperación, corrección y espaciado. No se limita a leer: produce una explicación y una pregunta que se usará en la siguiente sesión."
+        }
+      ],
+      "ejercicios": [
+        {
+          "titulo": "Nombrar la técnica de recuperación",
+          "enunciado": "¿Cómo se llama la técnica que consiste en intentar recordar la información sin consultar la fuente?",
+          "instrucciones": "Escribe solo el nombre de la técnica, sin explicación adicional.",
+          "nivel": "basico",
+          "obligatorio": true,
+          "evaluador": {
+            "tipo": "respuesta_exacta",
+            "configuracion": {
+              "respuesta_esperada": "recuperación activa",
+              "sensible_mayusculas": false,
+              "normalizar_espacios": true
+            },
+            "permite_completar_leccion": true
+          }
+        },
+        {
+          "titulo": "Diseñar una corrección",
+          "enunciado": "Explica en tres o cuatro líneas cómo corregirías una respuesta que recordaste mal.",
+          "instrucciones": "Incluye las palabras «error», «fuente» y «repaso».",
+          "nivel": "basico",
+          "obligatorio": false,
+          "evaluador": {
+            "tipo": "codigo_contiene",
+            "configuracion": {
+              "fragmentos_requeridos": [
+                "error",
+                "fuente",
+                "repaso"
+              ],
+              "fragmentos_prohibidos": []
+            },
+            "permite_completar_leccion": false
+          }
+        }
+      ],
+      "fuentes": [
+        {
+          "publicador": "Dunlosky, Rawson, Marsh, Nathan y Willingham",
+          "titulo": "Improving Students' Learning With Effective Learning Techniques",
+          "url": "https://doi.org/10.1177/1529100612453266",
+          "edicion": "2013",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1177/1529100612453266",
+          "nota": "Revisión de técnicas de estudio; solo referencia, no se reproduce el texto.",
+          "localizador": ""
+        },
+        {
+          "publicador": "Roediger y Karpicke",
+          "titulo": "Test-Enhanced Learning: Taking Memory Tests Improves Long-Term Retention",
+          "url": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+          "edicion": "2006",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+          "nota": "Evidencia experimental sobre recuperación; solo referencia.",
+          "localizador": ""
+        },
+        {
+          "publicador": "Karpicke y Blunt",
+          "titulo": "Retrieval Practice Produces More Learning than Elaborative Studying with Concept Mapping",
+          "url": "https://doi.org/10.1126/science.1199327",
+          "edicion": "2011",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1126/science.1199327",
+          "nota": "Comparación de recuperación y mapas conceptuales; solo referencia.",
+          "localizador": ""
+        }
+      ],
+      "videos": [
+        {
+          "titulo": "El método de aprendizaje activo",
+          "canal": "Sprouts Español",
+          "url": "https://www.youtube.com/watch?v=oMPQNOD-2fo",
+          "objetivo": "Reconocer la diferencia entre participación activa y consumo pasivo, y relacionarla con una sesión de estudio propia.",
+          "duracion_segundos": 445,
+          "subtitulos": "manual",
+          "descripcion": "Introducción visual al aprendizaje activo. Complementa la técnica de recuperación, no la sustituye.",
+          "notas_verificacion": "Título, canal, URL, duración y pista de audio/captions en español verificados mediante metadatos públicos de YouTube el 2026-11-21. La revisión pedagógica completa del video queda pendiente."
+        }
+      ]
+    },
+    {
+      "etapa": 0,
+      "modulo": "0.1",
+      "leccion": "Pensamiento crítico.",
+      "nivel": "basico",
+      "objetivos": "- Identificar premisas, conclusiones y evidencia en un argumento.\n- Evaluar la calidad y pertinencia de una fuente.\n- Formular una objeción razonada sin confundir opinión con hecho.",
+      "conocimientos_previos": "Saber leer un texto breve y distinguir una afirmación de una pregunta. No hace falta lógica formal.",
+      "introduccion": "El pensamiento crítico no es desconfiar de todo ni opinar con seguridad. Es un proceso disciplinado para decidir qué creer y qué hacer ante una afirmación. Exige separar lo que se afirma de la evidencia que lo sostiene, detectar supuestos y considerar explicaciones alternativas. En un entorno técnico, esta habilidad evita adoptar soluciones inseguras, interpretar mal una salida o repetir una recomendación sin comprobar su contexto.",
+      "teoria_tecnica": "Un argumento tiene premisas y una conclusión. Las premisas son razones; la conclusión es lo que se quiere sostener. Un argumento puede ser válido en su forma y aun así partir de premisas falsas. Por eso hay que evaluar dos dimensiones: la estructura lógica y la verdad o respaldo de las premisas. En el uso cotidiano, muchas discusiones mezclan afirmaciones descriptivas («ocurrió X»), normativas («debería hacerse Y») y causales («X causó Y»). Cada tipo exige evidencia distinta.\n\nEvaluar una fuente implica preguntar quién la produce, con qué método, para qué fecha y con qué conflicto de interés. Una fuente primaria (norma, especificación, artículo revisado por pares, datos originales) suele ser preferible para afirmaciones técnicas. Una fuente secundaria puede ayudar a interpretar, pero debe remitir a la primaria. La autoridad no sustituye la evidencia: que una persona famosa lo diga no demuestra que sea cierto. Del mismo modo, una anécdota puede inspirar una hipótesis, pero no basta para generalizar.\n\nEl pensamiento crítico incluye corregir sesgos. El sesgo de confirmación favorece la información que apoya lo que ya creemos. El sesgo de disponibilidad hace que un ejemplo reciente parezca más frecuente. La falacia de falsa dicotomía reduce opciones a dos. Una práctica útil es formular la versión más fuerte de la posición contraria (steelman) y preguntar qué evidencia la refutaría. Si una creencia no admite ninguna observación que la contradiga, no es una hipótesis comprobable.\n\nEn decisiones técnicas, conviene registrar la decisión, las alternativas, la evidencia disponible y las condiciones que obligarían a revisarla. Ese registro convierte una opinión en una decisión auditable.",
+      "explicacion_sencilla": "Imagina que alguien dice: «Esta herramienta es la mejor porque la usa mucha gente». La popularidad es una premisa, pero no responde si la herramienta es adecuada para tu problema, si es segura o si tiene costos ocultos. Pregunta: ¿qué significa «mejor»?, ¿para quién?, ¿comparada con qué?, ¿qué evidencia hay? No se trata de responder con escepticismo automático, sino de pedir la información que falta antes de decidir. Una buena decisión puede ser provisional: «la adopto para esta prueba, revisaré estos indicadores y la cambiaré si fallan».",
+      "conceptos_fundamentales": "- **Premisa:** razón que se ofrece para sostener una conclusión.\n- **Conclusión:** afirmación que se quiere justificar.\n- **Validez:** la conclusión se sigue de las premisas; no garantiza que las premisas sean verdaderas.\n- **Evidencia:** observación, dato o documento que puede apoyar o refutar una afirmación.\n- **Fuente primaria:** documento o dato original; **secundaria:** interpretación de otra fuente.\n- **Sesgo de confirmación:** tendencia a buscar y recordar lo que confirma la creencia previa.\n- **Steelman:** reconstruir la posición contraria en su versión más fuerte antes de responder.\n- **Decisión auditable:** registrar criterio, evidencia y condiciones de revisión.",
+      "aplicaciones_practicas": "Antes de aceptar una recomendación técnica, escribe: (1) la afirmación exacta; (2) qué evidencia la sostiene; (3) qué supuestos necesita; (4) qué la refutaría; (5) qué alternativa no se está considerando. En una revisión de código, separa «esto falla» de «creo que esto podría fallar» y adjunta una reproducción. En una discusión de equipo, reformula la posición contraria antes de criticarla. En una búsqueda, comprueba si la fuente es el documento oficial de la versión que usas, no una entrada antigua o un blog sin fecha.",
+      "errores_frecuentes": "- **Confundir criticar con descalificar.** Se evalúan afirmaciones y evidencia, no la identidad de quien habla.\n- **Aceptar una fuente por su apariencia.** Un diseño atractivo o un tono seguro no son evidencia.\n- **Generalizar desde una anécdota.** Un caso puede inspirar una hipótesis, no demostrar una frecuencia.\n- **Buscar solo confirmaciones.** Si no buscas activamente contraejemplos, la conclusión está sesgada.\n- **Falsa dicotomía.** Casi nunca hay solo dos opciones; enumera alternativas y costos.\n- **No distinguir hecho de recomendación.** «La función existe» y «deberías usarla» son afirmaciones diferentes.",
+      "evaluacion_aprendizaje": "1. Escribe un argumento breve sobre una decisión técnica y marca premisas y conclusión.\n2. Busca una fuente que lo apoye y otra que lo cuestione. ¿Qué evidencia falta?\n3. Formula una condición que te haría cambiar de opinión.\n\nCriterio de calidad: la condición debe ser observable y la evidencia debe ser pertinente al problema, no solo popularidad o autoridad.",
+      "bibliografia_complementaria": "Consulta el informe Delphi para una definición operativa de pensamiento crítico y contrasta sus dimensiones con tu propio proceso de decisión.",
+      "ejemplos": [
+        {
+          "titulo": "Evaluar una recomendación de seguridad",
+          "contexto": "Un foro recomienda desactivar una comprobación para que una aplicación funcione.",
+          "lenguaje": "",
+          "codigo": "",
+          "salida_esperada": "",
+          "explicacion": "La afirmación «desactiva la comprobación» es una recomendación. Hay que preguntar qué comprobación se desactiva, qué riesgo introduce, si existe una alternativa compatible, qué dice la documentación oficial de la versión usada y si el foro corresponde a esa versión. La decisión debe registrar el riesgo aceptado y una condición de revisión. Si no hay evidencia suficiente, la opción segura es no desactivar el control y buscar otra solución."
+        }
+      ],
+      "ejercicios": [
+        {
+          "titulo": "Identificar la carga de la prueba",
+          "enunciado": "Si alguien afirma que una herramienta es segura, ¿qué debe aportar para que la afirmación sea evaluable?",
+          "instrucciones": "Responde con una palabra o expresión breve: el tipo de respaldo que falta.",
+          "nivel": "basico",
+          "obligatorio": true,
+          "evaluador": {
+            "tipo": "respuesta_exacta",
+            "configuracion": {
+              "respuesta_esperada": "evidencia",
+              "sensible_mayusculas": false,
+              "normalizar_espacios": true
+            },
+            "permite_completar_leccion": true
+          }
+        },
+        {
+          "titulo": "Construir una objeción",
+          "enunciado": "Escribe una objeción razonada a la frase «funciona en mi equipo, así que es seguro para todos».",
+          "instrucciones": "Incluye «contexto», «evidencia» y «riesgo».",
+          "nivel": "basico",
+          "obligatorio": false,
+          "evaluador": {
+            "tipo": "codigo_contiene",
+            "configuracion": {
+              "fragmentos_requeridos": [
+                "contexto",
+                "evidencia",
+                "riesgo"
+              ],
+              "fragmentos_prohibidos": []
+            },
+            "permite_completar_leccion": false
+          }
+        }
+      ],
+      "fuentes": [
+        {
+          "publicador": "Facione",
+          "titulo": "Critical Thinking: A Statement of Expert Consensus for Purposes of Educational Assessment and Instruction (Delphi Report)",
+          "url": "https://eric.ed.gov/?id=ED315423",
+          "edicion": "1990",
+          "licencia": "ERIC",
+          "evidencia": "https://eric.ed.gov/?id=ED315423",
+          "nota": "Definición de consenso sobre pensamiento crítico; solo referencia.",
+          "localizador": ""
+        }
+      ],
+      "videos": [
+        {
+          "titulo": "5 consejos para mejorar su pensamiento crítico",
+          "canal": "Sé Curioso — TED-Ed",
+          "url": "https://www.youtube.com/watch?v=YO4pwpaH8Fo",
+          "objetivo": "Aplicar al menos dos preguntas de evaluación crítica a una afirmación técnica.",
+          "duracion_segundos": 276,
+          "subtitulos": "manual",
+          "descripcion": "Video divulgativo con subtítulos en español; complementa la lista de comprobación de fuentes.",
+          "notas_verificacion": "Título, canal, URL, duración y pista de audio/captions en español verificados mediante metadatos públicos de YouTube el 2026-11-21. La revisión pedagógica completa del video queda pendiente."
+        }
+      ]
+    },
+    {
+      "etapa": 0,
+      "modulo": "0.1",
+      "leccion": "Método Feynman.",
+      "nivel": "basico",
+      "objetivos": "- Explicar un concepto con lenguaje sencillo sin perder precisión.\n- Detectar lagunas mediante una explicación propia.\n- Mejorar una explicación usando una analogía y sus límites.",
+      "conocimientos_previos": "Elegir un concepto que ya hayas leído al menos una vez. No necesitas memorizar una definición perfecta.",
+      "introduccion": "El llamado método Feynman es una estrategia de estudio en cuatro pasos: elegir un concepto, explicarlo como si lo enseñaras a alguien sin conocimientos previos, detectar dónde te trabas y volver a la fuente para corregir. No es una fórmula mágica ni una teoría científica independiente; es una forma concreta de practicar autoexplicación y detección de lagunas. Su valor está en obligarte a producir una explicación, no en repetir una definición.",
+      "teoria_tecnica": "La autoexplicación consiste en generar razones y conexiones mientras se estudia. Chi et al. (1989) mostraron que los estudiantes que se explican a sí mismos los pasos de un material aprenden más que quienes solo lo leen. El método Feynman operacionaliza esa idea: al explicar con palabras propias, el estudiante debe transformar el lenguaje de la fuente, elegir ejemplos y justificar relaciones. Cuando la explicación se vuelve vaga («esto funciona porque sí», «hay una función que lo hace»), aparece una laguna identificable.\n\nEl método tiene cuatro pasos prácticos. Primero, selecciona un concepto acotado y escribe su nombre. Segundo, explícalo sin mirar la fuente, como si hablaras con alguien que no conoce el tema. Tercero, marca cada punto donde no puedas continuar, donde uses una palabra que no sabrías definir o donde tu ejemplo no sea correcto. Cuarto, vuelve a una fuente fiable, corrige y repite la explicación. Una quinta fase opcional es simplificar y usar una analogía, pero debe declararse como analogía y explicar dónde deja de ser válida.\n\nLa simplificación no debe eliminar matices necesarios. «Una variable es una caja» ayuda a imaginar un nombre que guarda un valor, pero una caja física no explica el alcance, el tipo, la mutabilidad ni las referencias. Una buena explicación sencilla conserva la distinción entre modelo y realidad. El objetivo no es sonar informal, sino ser comprensible sin afirmar algo falso.",
+      "explicacion_sencilla": "Explica el concepto a una persona imaginaria que no sabe nada del tema. Si te descubres diciendo «es obvio» o «simplemente funciona así», detente: ahí hay algo que no estás pudiendo explicar. Vuelve al material, busca la definición y un ejemplo, y prueba otra vez. Una analogía útil es un puente, no el territorio: sirve para entrar, pero debes decir qué parte del puente no coincide con el mapa.",
+      "conceptos_fundamentales": "- **Autoexplicación:** justificar con palabras propias por qué algo es cierto o cómo se relaciona.\n- **Laguna de conocimiento:** punto donde la explicación se detiene o se apoya en una palabra no comprendida.\n- **Analogía:** comparación que facilita la intuición; debe declarar sus límites.\n- **Fuente fiable:** documento que permite corregir la explicación, no una opinión sin respaldo.\n- **Explicación calibrada:** sencilla para el receptor, pero técnicamente correcta.",
+      "aplicaciones_practicas": "Usa el método para preparar una exposición, una entrevista técnica o una revisión de código. Escribe la explicación en un archivo y resalta las frases que no puedas justificar. Si estás aprendiendo una API, explica qué problema resuelve, qué recibe, qué devuelve y qué error aparece si se usa mal; luego verifica en la documentación oficial. Si estás depurando, explica en voz alta qué esperabas que ocurriera y por qué ocurrió otra cosa.",
+      "errores_frecuentes": "- **Copiar la definición de la fuente.** Eso demuestra reconocimiento, no comprensión.\n- **Quedarse en la analogía.** Una analogía no sustituye la definición técnica ni sus excepciones.\n- **Explicale a un experto.** El ejercicio pierde valor si asumes conocimientos que el receptor no tiene.\n- **No volver a la fuente.** Sin corrección, el método puede consolidar una explicación errónea.\n- **Confundir sencillez con imprecisión.** Una explicación simple puede ser rigurosa; una falsa no sirve.",
+      "evaluacion_aprendizaje": "1. Elige un concepto de esta lección y explícalo en cinco frases sin mirar.\n2. Subraya la frase que menos puedas justificar.\n3. Busca una fuente que la aclare y reescribe solo esa parte.\n4. Añade una analogía y una frase que indique su límite.\n\nCriterio: la explicación debe permitir que otra persona prediga un caso concreto sin copiar la definición.",
+      "bibliografia_complementaria": "La referencia de Chi et al. explica la autoexplicación; el método Feynman es una técnica práctica divulgada, no un artículo original revisado por pares.",
+      "ejemplos": [
+        {
+          "titulo": "Explicar una variable a alguien sin experiencia",
+          "contexto": "Estás aprendiendo programación y quieres comprobar si entiendes qué es una variable.",
+          "lenguaje": "",
+          "codigo": "",
+          "salida_esperada": "",
+          "explicacion": "Primera explicación: «una variable es una caja donde guardas un dato». Es útil, pero incompleta: no dice que el nombre se resuelve en un ámbito, que el valor puede cambiar, que tiene un tipo en algunos lenguajes y que una caja física no explica las referencias. Versión corregida: «una variable asocia un nombre con un valor o una referencia; el nombre permite leerlo o cambiarlo desde el código, y su alcance determina dónde es visible». La segunda versión conserva la sencillez y añade los límites del símil."
+        }
+      ],
+      "ejercicios": [
+        {
+          "titulo": "Segundo paso del método",
+          "enunciado": "¿Qué debes hacer inmediatamente después de elegir el concepto en el método Feynman?",
+          "instrucciones": "Escribe una acción breve, no una definición del método.",
+          "nivel": "basico",
+          "obligatorio": true,
+          "evaluador": {
+            "tipo": "respuesta_exacta",
+            "configuracion": {
+              "respuesta_esperada": "explicarlo con palabras propias",
+              "sensible_mayusculas": false,
+              "normalizar_espacios": true
+            },
+            "permite_completar_leccion": true
+          }
+        },
+        {
+          "titulo": "Detectar una laguna",
+          "enunciado": "Escribe una frase que indique que tu explicación tiene una laguna y qué harás para corregirla.",
+          "instrucciones": "Incluye «no puedo explicar», «fuente» y «corregir».",
+          "nivel": "basico",
+          "obligatorio": false,
+          "evaluador": {
+            "tipo": "codigo_contiene",
+            "configuracion": {
+              "fragmentos_requeridos": [
+                "no puedo explicar",
+                "fuente",
+                "corregir"
+              ],
+              "fragmentos_prohibidos": []
+            },
+            "permite_completar_leccion": false
+          }
+        }
+      ],
+      "fuentes": [
+        {
+          "publicador": "Chi, Bassok, Lewis, Reimann y Glaser",
+          "titulo": "Self-Explanations: How Students Study and Use Examples in Learning to Solve Problems",
+          "url": "https://doi.org/10.1207/s15516709cog1302_1",
+          "edicion": "1989",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1207/s15516709cog1302_1",
+          "nota": "Evidencia sobre autoexplicación; solo referencia.",
+          "localizador": ""
+        },
+        {
+          "publicador": "Dunlosky, Rawson, Marsh, Nathan y Willingham",
+          "titulo": "Improving Students' Learning With Effective Learning Techniques",
+          "url": "https://doi.org/10.1177/1529100612453266",
+          "edicion": "2013",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1177/1529100612453266",
+          "nota": "Marco de técnicas de estudio; solo referencia.",
+          "localizador": ""
+        }
+      ],
+      "videos": [
+        {
+          "titulo": "La Técnica de Feynman",
+          "canal": "Sprouts Español",
+          "url": "https://www.youtube.com/watch?v=inZe9kW5djI",
+          "objetivo": "Aplicar los cuatro pasos a un concepto propio y detectar una laguna.",
+          "duracion_segundos": 125,
+          "subtitulos": "manual",
+          "descripcion": "Resumen breve del método; requiere la corrección y las fuentes de esta lección.",
+          "notas_verificacion": "Título, canal, URL, duración y pista de audio/captions en español verificados mediante metadatos públicos de YouTube el 2026-11-21. La revisión pedagógica completa del video queda pendiente."
+        }
+      ]
+    },
+    {
+      "etapa": 0,
+      "modulo": "0.1",
+      "leccion": "Repetición espaciada.",
+      "nivel": "basico",
+      "objetivos": "- Explicar por qué espaciar los repasos mejora la retención.\n- Programar repasos con recuperación activa.\n- Ajustar el intervalo según el desempeño.",
+      "conocimientos_previos": "Haber estudiado un tema y saber qué es la recuperación activa. No necesitas una aplicación de repetición espaciada.",
+      "introduccion": "La repetición espaciada distribuye los repasos a lo largo del tiempo. No consiste en releer más veces, sino en recuperar la información en intervalos crecientes y corregir los errores. La idea central es que olvidar un poco entre sesiones hace que el esfuerzo de recuperación sea más útil que una repetición inmediata y masiva. Es una de las técnicas con mejor respaldo experimental, pero necesita contenido que merezca la pena recordar y una forma honesta de comprobar la respuesta.",
+      "teoria_tecnica": "La curva del olvido describe cómo disminuye la disponibilidad de una información con el tiempo. Ebbinghaus documentó este fenómeno en el siglo XIX; la investigación moderna ha refinado las condiciones. Cepeda et al. (2006) revisaron estudios sobre práctica distribuida y encontraron ventajas consistentes frente a la práctica concentrada. El efecto del espaciado no significa que cualquier intervalo funcione igual: el intervalo óptimo depende del tiempo durante el cual se necesita recordar y del material.\n\nLa repetición espaciada moderna combina dos elementos: recuperación activa y programación. Cada repaso debe intentar traer la respuesta antes de consultarla. Si aciertas con esfuerzo, el intervalo puede crecer; si fallas, conviene acortarlo y volver a estudiar la explicación. Un programa sencillo puede ser: día 0 estudiar y recuperar; día 1 recuperar; día 3 recuperar; día 7 recuperar; día 14 recuperar. No es una receta mágica, sino un punto de partida que se ajusta al desempeño.\n\nLas tarjetas de memoria (flashcards) son una herramienta, no la técnica. Una tarjeta mal diseñada pide reconocer una palabra o copiar una definición. Una tarjeta útil plantea una pregunta que exige explicar, comparar o aplicar. Además, la repetición espaciada no sustituye la práctica de problemas: para aprender a resolver un tipo de tarea, hay que practicar esa tarea, no solo recordar definiciones. El espaciado funciona mejor cuando el contenido está organizado y las preguntas están alineadas con el objetivo.",
+      "explicacion_sencilla": "Piensa en regar una planta: un vaso enorme una vez al mes no compensa la falta de agua diaria, pero tampoco hace falta inundarla cada hora. El repaso funciona mejor distribuido y con la planta «sedienta»: intentas recordar antes de mirar. Si la planta se marchita (fallas), revisas la causa y ajustas. La clave es que el repaso sea una prueba, no una lectura cómoda.",
+      "conceptos_fundamentales": "- **Curva del olvido:** pérdida progresiva de disponibilidad de una información sin repaso.\n- **Efecto del espaciado:** ventaja de distribuir la práctica frente a concentrarla.\n- **Intervalo de repaso:** tiempo entre recuperaciones; se ajusta al desempeño.\n- **Recuperación:** intento de traer la respuesta sin consultar.\n- **Tarjeta de recuperación:** pregunta concreta que exige producir, no reconocer.\n- **Intercalado:** alternar temas o tipos de problema para practicar la discriminación.",
+      "aplicaciones_practicas": "Elige un tema y escribe diez preguntas que cubran definiciones, ejemplos y errores. Programa sesiones breves: 10-15 minutos son suficientes si son activas. Registra el resultado de cada intento: acerté con esfuerzo, acerté fácil, fallé. Ajusta: si fallas, vuelve a la explicación y reduce el intervalo; si aciertas fácilmente, aumenta el intervalo. No acumules tarjetas sin límite: retira o archiva las que ya no aportan y prioriza las que fallas. Para programación, alterna preguntas de concepto con pequeños problemas de predicción y depuración.",
+      "errores_frecuentes": "- **Convertir el repaso en relectura.** Si miras la respuesta antes de intentar, no estás recuperando.\n- **Usar intervalos rígidos.** El calendario debe adaptarse al desempeño.\n- **Crear demasiadas tarjetas.** El volumen sin prioridad produce deuda de repaso.\n- **Solo recordar definiciones.** La transferencia requiere aplicar y comparar.\n- **No corregir los fallos.** Un error repetido se consolida.\n- **Confundir reconocimiento con dominio.** Ver una tarjeta y pensar «ya lo sé» no es una prueba.",
+      "evaluacion_aprendizaje": "1. ¿Por qué un repaso inmediato puede sentirse fácil y aun así ser menos eficaz que uno espaciado?\n2. Diseña una secuencia de cuatro repasos para un examen dentro de 14 días.\n3. ¿Qué harías si fallas dos veces la misma tarjeta?\n\nCriterio: la secuencia debe incluir recuperación, corrección y ajuste del intervalo; no basta con enumerar días.",
+      "bibliografia_complementaria": "Las referencias permiten profundizar en el efecto del espaciado y la recuperación. No es necesario memorizar los estudios; interesa entender las condiciones y los límites.",
+      "ejemplos": [
+        {
+          "titulo": "Programar repasos para una evaluación",
+          "contexto": "Tienes un examen dentro de dos semanas y cuatro temas.",
+          "lenguaje": "",
+          "codigo": "Día 0: estudiar tema 1 + 10 preguntas.\nDía 1: recuperar tema 1; estudiar tema 2.\nDía 3: recuperar temas 1 y 2; estudiar tema 3.\nDía 7: recuperar todos; practicar problemas mezclados.\nDía 12: simulacro con corrección.\nDía 13: repasar solo los errores del simulacro.",
+          "salida_esperada": "",
+          "explicacion": "El plan alterna recuperación y estudio, espacia los contactos y deja una sesión final para los errores. Si un repaso sale mal, se acorta el intervalo y se vuelve a la explicación; si sale fácil, se puede espaciar más. El simulacro no es solo una nota: produce una lista de errores que guía el último repaso."
+        }
+      ],
+      "ejercicios": [
+        {
+          "titulo": "Qué se debe recuperar",
+          "enunciado": "En cada repaso espaciado, ¿qué debes intentar antes de consultar la respuesta?",
+          "instrucciones": "Escribe el nombre de la acción cognitiva, no el nombre de una aplicación.",
+          "nivel": "basico",
+          "obligatorio": true,
+          "evaluador": {
+            "tipo": "respuesta_exacta",
+            "configuracion": {
+              "respuesta_esperada": "recuperar la información",
+              "sensible_mayusculas": false,
+              "normalizar_espacios": true
+            },
+            "permite_completar_leccion": true
+          }
+        },
+        {
+          "titulo": "Ajustar el intervalo",
+          "enunciado": "Explica qué harías si fallas una tarjeta en un repaso programado.",
+          "instrucciones": "Incluye «acortar», «corregir» y «fuente».",
+          "nivel": "basico",
+          "obligatorio": false,
+          "evaluador": {
+            "tipo": "codigo_contiene",
+            "configuracion": {
+              "fragmentos_requeridos": [
+                "acortar",
+                "corregir",
+                "fuente"
+              ],
+              "fragmentos_prohibidos": []
+            },
+            "permite_completar_leccion": false
+          }
+        }
+      ],
+      "fuentes": [
+        {
+          "publicador": "Cepeda, Pashler, Vul, Wixted y Rohrer",
+          "titulo": "Distributed Practice in Verbal Recall Tasks: A Review and Quantitative Synthesis",
+          "url": "https://doi.org/10.1037/0033-2909.132.3.354",
+          "edicion": "2006",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1037/0033-2909.132.3.354",
+          "nota": "Revisión sobre práctica distribuida; solo referencia.",
+          "localizador": ""
+        },
+        {
+          "publicador": "Roediger y Karpicke",
+          "titulo": "Test-Enhanced Learning: Taking Memory Tests Improves Long-Term Retention",
+          "url": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+          "edicion": "2006",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+          "nota": "Evidencia sobre recuperación; solo referencia.",
+          "localizador": ""
+        }
+      ],
+      "videos": [
+        {
+          "titulo": "Repetición Espaciada — Técnicas de Aprendizaje",
+          "canal": "Instituto de Ciencias Interdisciplinarias",
+          "url": "https://www.youtube.com/watch?v=fNadypCpExU",
+          "objetivo": "Relacionar la curva del olvido con un calendario de repasos propio.",
+          "duracion_segundos": 269,
+          "subtitulos": "auto",
+          "descripcion": "Explicación divulgativa en español; complementa la programación y la corrección de esta lección.",
+          "notas_verificacion": "Título, canal, URL, duración y pista de audio/captions en español verificados mediante metadatos públicos de YouTube el 2026-11-21. La revisión pedagógica completa del video queda pendiente."
+        }
+      ]
+    },
+    {
+      "etapa": 0,
+      "modulo": "0.1",
+      "leccion": "Práctica deliberada.",
+      "nivel": "intermedio",
+      "objetivos": "- Diferenciar práctica deliberada de repetición mecánica.\n- Definir un objetivo específico y un criterio de feedback.\n- Diseñar una práctica que ataque una debilidad concreta.",
+      "conocimientos_previos": "Haber practicado una habilidad y haber recibido algún tipo de corrección. Conviene conocer la diferencia entre práctica y evaluación.",
+      "introduccion": "La práctica deliberada es una forma de entrenamiento con un objetivo específico, atención plena, retroalimentación y repetición orientada a mejorar una debilidad. No es simplemente pasar muchas horas haciendo lo que ya sabes hacer. La investigación de Ericsson sobre expertos popularizó el concepto, pero la evidencia posterior matiza la idea de que la práctica explica por sí sola la excelencia. En esta lección aprenderás a convertir una sesión de práctica en un experimento con criterio de mejora.",
+      "teoria_tecnica": "Ericsson, Krampe y Tesch-Römer (1993) describieron la práctica deliberada como una actividad estructurada, diseñada para mejorar el rendimiento en un dominio, con tareas que el aprendiz todavía no domina y con feedback disponible. La práctica deliberada se diferencia de la práctica rutinaria en que tiene un objetivo de mejora, no solo de ejecución. Por ejemplo, repetir una y otra vez un ejercicio que ya resuelves con facilidad puede mantener la habilidad, pero no necesariamente mejorarla.\n\nUn ciclo útil tiene cinco elementos: (1) objetivo observable, por ejemplo «reducir a la mitad los errores de indentación en 10 ejercicios»; (2) tarea en el límite de tu capacidad actual; (3) ejecución atenta; (4) feedback específico, propio o externo; (5) ajuste y nueva repetición. El feedback no debe ser solo una nota: debe indicar qué conducta cambió el resultado. Si no hay feedback, la práctica puede consolidar errores.\n\nLa evidencia no sostiene una regla universal de «10.000 horas». Macnamara, Hambrick y Oswald (2014) encontraron que la cantidad de práctica explica una parte del rendimiento, pero no toda, y que su peso varía mucho entre dominios. Factores como la calidad de la instrucción, la edad de inicio, la estrategia y el contexto también importan. La conclusión práctica no es abandonar la práctica, sino diseñarla mejor y no atribuirle poderes mágicos.",
+      "explicacion_sencilla": "Si quieres mejorar tu tiro libre, no basta con lanzar 500 veces sin mirar. Eliges una debilidad, por ejemplo la alineación del codo; lanzas diez veces concentrado en eso; mides; corriges; repites. Si no sabes qué corregir, pides feedback o grabas el intento. En programación, no es lo mismo escribir otro CRUD completo que practicar específicamente la lectura de un stack trace hasta identificar la causa. La práctica deliberada es incómoda porque trabaja justo en lo que aún no sale bien.",
+      "conceptos_fundamentales": "- **Práctica deliberada:** entrenamiento estructurado para mejorar un aspecto concreto con feedback.\n- **Objetivo específico:** resultado observable y medible, no «practicar más».\n- **Zona de mejora:** tarea difícil pero abordable con esfuerzo y ayuda.\n- **Feedback específico:** información sobre la conducta que produjo el resultado.\n- **Repetición con ajuste:** repetir después de corregir, no repetir el mismo error.\n- **Límite del modelo:** la práctica es importante, pero no explica por sí sola toda la variación del rendimiento.",
+      "aplicaciones_practicas": "1. Elige una debilidad observable. 2. Define un criterio de éxito para 20 minutos. 3. Diseña una tarea pequeña que la ponga a prueba. 4. Registra el resultado. 5. Pide o busca feedback sobre el proceso, no solo sobre el resultado. 6. Ajusta una variable y repite. Ejemplos: reducir errores de nombres en SQL, explicar un error de null en Java, escribir pruebas que fallen por la razón correcta, o mejorar la precisión al estimar la complejidad de una función. No practiques diez habilidades a la vez; elige una y mide.",
+      "errores_frecuentes": "- **Contar horas sin medir mejora.** El tiempo es una condición, no una prueba de aprendizaje.\n- **Practicar solo lo que ya dominas.** Es cómodo, pero no ataca la debilidad.\n- **Feedback vago.** «Bien» o «mal» no indican qué cambiar.\n- **Cambiar demasiadas variables.** Si cambias todo a la vez, no sabes qué produjo la mejora.\n- **Ignorar el descanso y la recuperación.** La consolidación también requiere pausas.\n- **Creer el mito de las 10.000 horas.** La práctica importa, pero no es una garantía mecánica.",
+      "evaluacion_aprendizaje": "1. Define una debilidad concreta en una habilidad que estés aprendiendo.\n2. Escribe un objetivo observable para una sesión de 20 minutos.\n3. Indica qué feedback recogerás y cómo ajustarás el siguiente intento.\n\nCriterio: el objetivo debe permitir comparar el antes y el después; «practicar más» no es un objetivo.",
+      "bibliografia_complementaria": "Contrasta la propuesta original de Ericsson con la revisión de Macnamara et al. para evitar conclusiones simplistas sobre la práctica.",
+      "ejemplos": [
+        {
+          "titulo": "Practicar la lectura de un stack trace",
+          "contexto": "Un estudiante comete errores al interpretar excepciones en Python.",
+          "lenguaje": "Python",
+          "codigo": "",
+          "salida_esperada": "",
+          "explicacion": "Objetivo: en 10 trazas, identificar correctamente la línea de origen y la causa inmediata. Tarea: leer primero sin ejecutar, escribir una hipótesis y después comprobar. Feedback: comparar con la explicación del error y clasificar el fallo (leyó la línea equivocada, confundió causa con síntoma, ignoró el mensaje). Ajuste: repetir con trazas que compartan el mismo patrón y luego intercalar patrones distintos. La sesión no consiste en resolver 50 ejercicios, sino en mejorar una conducta observable."
+        }
+      ],
+      "ejercicios": [
+        {
+          "titulo": "Elemento que convierte la repetición en deliberada",
+          "enunciado": "¿Qué información permite ajustar la práctica después de un intento?",
+          "instrucciones": "Escribe una palabra: el tipo de información que indica qué cambiar.",
+          "nivel": "basico",
+          "obligatorio": true,
+          "evaluador": {
+            "tipo": "respuesta_exacta",
+            "configuracion": {
+              "respuesta_esperada": "feedback",
+              "sensible_mayusculas": false,
+              "normalizar_espacios": true
+            },
+            "permite_completar_leccion": true
+          }
+        },
+        {
+          "titulo": "Diseñar un objetivo",
+          "enunciado": "Escribe un objetivo de práctica deliberada para una habilidad técnica.",
+          "instrucciones": "Incluye «medir», «mejorar» y «criterio».",
+          "nivel": "basico",
+          "obligatorio": false,
+          "evaluador": {
+            "tipo": "codigo_contiene",
+            "configuracion": {
+              "fragmentos_requeridos": [
+                "medir",
+                "mejorar",
+                "criterio"
+              ],
+              "fragmentos_prohibidos": []
+            },
+            "permite_completar_leccion": false
+          }
+        }
+      ],
+      "fuentes": [
+        {
+          "publicador": "Ericsson, Krampe y Tesch-Römer",
+          "titulo": "The Role of Deliberate Practice in the Acquisition of Expert Performance",
+          "url": "https://doi.org/10.1037/0033-295X.100.3.363",
+          "edicion": "1993",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1037/0033-295X.100.3.363",
+          "nota": "Artículo original sobre práctica deliberada; solo referencia.",
+          "localizador": ""
+        },
+        {
+          "publicador": "Macnamara, Hambrick y Oswald",
+          "titulo": "Deliberate Practice and Performance in Music, Games, Sports, Education, and Professions: A Meta-Analysis",
+          "url": "https://doi.org/10.1177/0956797614535810",
+          "edicion": "2014",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1177/0956797614535810",
+          "nota": "Metaanálisis que matiza el alcance de la práctica; solo referencia.",
+          "localizador": ""
+        }
+      ],
+      "videos": [
+        {
+          "titulo": "Práctica deliberada: Logra el dominio en cualquier cosa",
+          "canal": "Sprouts Español",
+          "url": "https://www.youtube.com/watch?v=NLyRe2PQgWY",
+          "objetivo": "Relacionar el ciclo objetivo-feedback-ajuste con una habilidad propia.",
+          "duracion_segundos": 399,
+          "subtitulos": "manual",
+          "descripcion": "Introducción visual; complementa la evidencia y los límites de esta lección.",
+          "notas_verificacion": "Título, canal, URL, duración y pista de audio/captions en español verificados mediante metadatos públicos de YouTube el 2026-11-21. La revisión pedagógica completa del video queda pendiente."
+        }
+      ]
+    },
+    {
+      "etapa": 0,
+      "modulo": "0.1",
+      "leccion": "Resolución de problemas.",
+      "nivel": "basico",
+      "objetivos": "- Aplicar los cuatro pasos de Polya a un problema técnico.\n- Distinguir comprensión, planificación, ejecución y verificación.\n- Usar ejemplos resueltos sin copiarlos mecánicamente.",
+      "conocimientos_previos": "Saber describir un problema en lenguaje natural y comprobar si una solución produce el resultado esperado.",
+      "introduccion": "Resolver problemas no es empezar a escribir código cuanto antes. Es comprender qué se pide, representar el problema, planificar una estrategia, ejecutarla y comprobar el resultado. George Polya describió cuatro pasos que siguen siendo útiles: comprender el problema, concebir un plan, ejecutarlo y examinar la solución. En programación, saltarse la comprensión suele producir soluciones que funcionan para el ejemplo pero fallan en los casos límite.",
+      "teoria_tecnica": "Polya propone empezar por preguntar qué se conoce, qué se busca y qué condiciones hay. En términos técnicos, esto equivale a definir entradas, salidas, restricciones, casos límite y criterio de éxito. La representación importa: un diagrama, una tabla de ejemplos, una función matemática o un conjunto de pruebas pueden revelar la estructura del problema. Si no puedes explicar el problema con un ejemplo pequeño, todavía no lo comprendes.\n\nLa planificación puede usar heurísticas: buscar un problema parecido, dividir en subproblemas, trabajar hacia atrás desde el resultado, resolver un caso más simple o ensayar una hipótesis. Los ejemplos resueltos son útiles para aprender patrones, pero copiarlos sin entender por qué funcionan produce fragilidad. Sweller (1988) mostró que la carga cognitiva de buscar una solución sin guía puede ser alta para novatos; los ejemplos trabajados y la práctica guiada pueden facilitar el aprendizaje inicial. Después conviene retirar la ayuda y resolver problemas nuevos.\n\nLa verificación no es opcional. Incluye comprobar el resultado, probar casos límite, revisar el razonamiento y preguntar si la solución sigue siendo válida si cambian las condiciones. Si el problema es de código, las pruebas deben fallar por la razón correcta antes de corregir; si es de análisis, la conclusión debe poder contrastarse con datos. Un problema resuelto por casualidad no es una solución comprendida.",
+      "explicacion_sencilla": "Antes de cocinar, necesitas saber qué plato quieres, qué ingredientes tienes y para cuántas personas. Si empiezas a cortar sin plan, puedes descubrir a mitad que falta un ingrediente. Polya propone lo mismo: entiende el encargo, haz un plan, cocina y prueba antes de servir. En código, el «probar antes de servir» son las pruebas y los casos límite.",
+      "conceptos_fundamentales": "- **Comprensión:** identificar datos, objetivo, restricciones y criterio de éxito.\n- **Representación:** traducir el problema a un modelo, tabla, diagrama o conjunto de pruebas.\n- **Plan:** estrategia elegida y por qué se espera que funcione.\n- **Heurística:** regla de exploración que orienta sin garantizar la solución.\n- **Verificación:** comprobar resultado, casos límite y validez del razonamiento.\n- **Carga cognitiva:** esfuerzo mental necesario; los ejemplos guiados pueden reducirla al inicio.",
+      "aplicaciones_practicas": "Antes de programar, escribe en un comentario: entradas, salidas, restricciones y tres casos de prueba. Dibuja el flujo si hay estados. Si el problema es grande, resuelve primero una versión mínima. Cuando uses un ejemplo resuelto, cierra la solución, intenta reproducir el razonamiento y luego compara. En una depuración, formula una hipótesis y diseña una observación que pueda refutarla. En una decisión, enumera alternativas y criterios antes de elegir.",
+      "errores_frecuentes": "- **Empezar a codificar sin definir el problema.** Se optimiza lo que no era el objetivo.\n- **Confundir un ejemplo con todos los casos.** Un caso que funciona no demuestra la solución.\n- **Copiar un ejemplo sin entenderlo.** La solución deja de funcionar al cambiar el contexto.\n- **No verificar.** El resultado puede ser correcto por casualidad.\n- **Ignorar los casos límite.** Vacío, cero, negativo, duplicado, muy grande o mal formado.\n- **Cambiar varias cosas a la vez al depurar.** Se pierde la relación causa-efecto.",
+      "evaluacion_aprendizaje": "1. Toma un problema pequeño y escribe sus entradas, salidas y tres casos límite.\n2. Propón un plan antes de resolverlo.\n3. Resuélvelo y verifica con los casos.\n4. Explica qué harías si el caso vacío fallara.\n\nCriterio: el plan debe ser previo a la ejecución y la verificación debe incluir al menos un caso que no sea el ejemplo principal.",
+      "bibliografia_complementaria": "El libro de Polya es una referencia clásica sobre heurísticas; Sweller ayuda a entender por qué los ejemplos guiados son útiles al inicio y cuándo retirarlos.",
+      "ejemplos": [
+        {
+          "titulo": "Comprender antes de programar",
+          "contexto": "Se pide una función que cuente cuántas veces aparece una palabra en una lista.",
+          "lenguaje": "",
+          "codigo": "Entradas: lista de cadenas y palabra buscada.\nSalida: entero no negativo.\nCasos: lista vacía -> 0; una coincidencia -> 1; mayúsculas -> decidir si se normaliza; palabra ausente -> 0.\nPlan: recorrer la lista, comparar y contar; verificar con los casos antes de optimizar.",
+          "salida_esperada": "",
+          "explicacion": "La comprensión produce una tabla de casos y una decisión explícita sobre mayúsculas. Sin esa decisión, la implementación podría ser ambigua. La verificación incluye lista vacía y palabra ausente, no solo el caso feliz."
+        }
+      ],
+      "ejercicios": [
+        {
+          "titulo": "Primer paso de Polya",
+          "enunciado": "¿Cuál es el primer paso para resolver un problema según Polya?",
+          "instrucciones": "Escribe una expresión breve.",
+          "nivel": "basico",
+          "obligatorio": true,
+          "evaluador": {
+            "tipo": "respuesta_exacta",
+            "configuracion": {
+              "respuesta_esperada": "comprender el problema",
+              "sensible_mayusculas": false,
+              "normalizar_espacios": true
+            },
+            "permite_completar_leccion": true
+          }
+        },
+        {
+          "titulo": "Definir un caso límite",
+          "enunciado": "Escribe un caso límite para una función que divide dos números.",
+          "instrucciones": "Incluye «cero» y «error».",
+          "nivel": "basico",
+          "obligatorio": false,
+          "evaluador": {
+            "tipo": "codigo_contiene",
+            "configuracion": {
+              "fragmentos_requeridos": [
+                "cero",
+                "error"
+              ],
+              "fragmentos_prohibidos": []
+            },
+            "permite_completar_leccion": false
+          }
+        }
+      ],
+      "fuentes": [
+        {
+          "publicador": "George Polya",
+          "titulo": "How to Solve It: A New Aspect of Mathematical Method",
+          "url": "https://press.princeton.edu/books/paperback/9780691164076/how-to-solve-it",
+          "edicion": "1945",
+          "licencia": "Princeton University Press",
+          "evidencia": "https://press.princeton.edu/books/paperback/9780691164076/how-to-solve-it",
+          "nota": "Clásico sobre resolución de problemas; solo referencia.",
+          "localizador": ""
+        },
+        {
+          "publicador": "John Sweller",
+          "titulo": "Cognitive Load During Problem Solving: Effects on Learning",
+          "url": "https://doi.org/10.1207/s15516709cog1202_4",
+          "edicion": "1988",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1207/s15516709cog1202_4",
+          "nota": "Teoría de la carga cognitiva; solo referencia.",
+          "localizador": ""
+        }
+      ],
+      "videos": [
+        {
+          "titulo": "George Polya — Estrategias de Resolución de Problemas",
+          "canal": "Fernando Faundez",
+          "url": "https://www.youtube.com/watch?v=odXMHOhcmQA",
+          "objetivo": "Aplicar los cuatro pasos a un problema técnico y verificar el resultado.",
+          "duracion_segundos": 371,
+          "subtitulos": "auto",
+          "descripcion": "Explicación en español de las heurísticas de Polya; complementa la práctica de casos límite.",
+          "notas_verificacion": "Título, canal, URL, duración y pista de audio/captions en español verificados mediante metadatos públicos de YouTube el 2026-11-21. La revisión pedagógica completa del video queda pendiente."
+        }
+      ]
+    },
+    {
+      "etapa": 0,
+      "modulo": "0.1",
+      "leccion": "Descomposición de problemas complejos.",
+      "nivel": "intermedio",
+      "objetivos": "- Dividir un problema complejo en subproblemas con interfaces claras.\n- Identificar dependencias, riesgos y criterios de terminado.\n- Evitar la descomposición excesiva o sin integración.",
+      "conocimientos_previos": "Haber resuelto problemas pequeños y saber describir entradas, salidas y criterios de éxito.",
+      "introduccion": "Un problema complejo suele ser demasiado grande para abordarlo de una vez. Descomponer consiste en dividirlo en partes más pequeñas que puedan comprenderse, resolverse y verificarse por separado. No basta con hacer una lista de tareas: cada parte debe tener una responsabilidad, una interfaz y un criterio de terminado. Una buena descomposición reduce la incertidumbre y permite avanzar sin perder la visión del conjunto.",
+      "teoria_tecnica": "La descomposición aparece en el pensamiento computacional y en el diseño de software. Wing (2006) la describe como una habilidad para abordar un problema complejo dividiéndolo en problemas más manejables. En ingeniería, se relaciona con la modularidad: agrupar responsabilidades coherentes, definir contratos entre módulos y minimizar dependencias innecesarias. Un subproblema debe poder probarse con independencia del resto, aunque su comportamiento final dependa de la integración.\n\nUn método práctico es partir del resultado observable y trabajar hacia atrás: ¿qué debe producir el sistema?, ¿qué entradas necesita?, ¿qué etapas transforman una en otra? Después se identifican dependencias: qué parte necesita a cuál, qué datos comparte y qué puede ejecutarse en paralelo. Las interfaces son acuerdos: nombres, formatos, errores y garantías. Si la interfaz no está clara, dos personas pueden implementar piezas incompatibles.\n\nLa descomposición tiene riesgos. Dividir demasiado produce fragmentación, duplicación y costos de integración. Dividir por capas técnicas sin comprender el flujo funcional puede ocultar el problema real. Una buena regla es que cada parte tenga un valor verificable y que la suma de las partes cubra el objetivo. Conviene identificar primero los riesgos que podrían invalidar el enfoque: una dependencia externa, un requisito ambiguo, un volumen de datos desconocido. Esos riesgos deben resolverse con prototipos o experimentos antes de construir el resto.",
+      "explicacion_sencilla": "Mudarse de casa es un problema grande. No lo resuelves con una lista de «mudarse»: divides en habitaciones, embalaje, transporte, contratos y limpieza. Cada parte tiene un responsable y un momento. Si empiezas por comprar plantas para la casa nueva antes de saber si cabe el sofá, el plan está mal ordenado. En software pasa igual: define qué pieza entrega qué y en qué orden; resuelve antes lo que puede invalidar el plan.",
+      "conceptos_fundamentales": "- **Subproblema:** parte acotada con objetivo y criterio de terminado.\n- **Interfaz:** contrato de entrada, salida, errores y garantías entre partes.\n- **Dependencia:** relación en la que una parte necesita el resultado de otra.\n- **Riesgo:** incertidumbre que puede invalidar el plan.\n- **MVP:** versión mínima que demuestra el flujo principal y permite aprender.\n- **Integración:** comprobación de que las partes funcionan juntas, no solo por separado.\n- **Sobre-descomposición:** exceso de fragmentos que aumenta la complejidad de coordinación.",
+      "aplicaciones_practicas": "Para planificar una aplicación, dibuja el flujo principal de punta a punta y marca los datos que viajan. Divide por responsabilidades, no por ocurrencias. Escribe para cada parte: objetivo, entrada, salida, errores esperados y prueba mínima. Ordena por dependencias y por riesgo. Construye primero una rebanada vertical (una función completa, aunque pequeña) antes de perfeccionar capas. En un problema de datos, separa adquisición, limpieza, análisis y presentación; verifica cada etapa con una muestra. En una investigación, separa pregunta, fuentes, evidencia y conclusión.",
+      "errores_frecuentes": "- **Hacer una lista de tareas sin interfaces.** Las partes no encajan al integrarse.\n- **Dividir por tecnología en vez de por responsabilidad.** Se duplica lógica y se oculta el flujo.\n- **No priorizar riesgos.** Se invierte tiempo en lo fácil y se descubre tarde un bloqueo.\n- **Sobre-descomponer.** Demasiadas piezas pequeñas aumentan la coordinación.\n- **No integrar hasta el final.** Los errores aparecen cuando ya no hay margen.\n- **Confundir un módulo con una carpeta.** La modularidad es responsabilidad y contrato, no solo estructura.",
+      "evaluacion_aprendizaje": "1. Elige un problema complejo de tu área y escribe su resultado observable.\n2. Divídelo en tres a cinco subproblemas con interfaz y criterio de terminado.\n3. Marca el riesgo principal y el experimento que lo reduciría.\n4. Indica cómo verificarías la integración.\n\nCriterio: cada subproblema debe poder explicarse sin depender de detalles internos de los demás.",
+      "bibliografia_complementaria": "Wing sitúa la descomposición en el pensamiento computacional; Polya aporta la lógica de trabajar hacia atrás y resolver un caso más simple.",
+      "ejemplos": [
+        {
+          "titulo": "Dividir una aplicación de recordatorios",
+          "contexto": "Se quiere una aplicación que cree recordatorios, los guarde y avise al usuario.",
+          "lenguaje": "",
+          "codigo": "Flujo: crear -> validar -> guardar -> programar aviso -> notificar.\nSubproblemas: modelo y validación; almacenamiento; programación temporal; entrega de notificación; interfaz.\nInterfaces: el modelo recibe datos y devuelve un recordatorio válido o errores; el almacenamiento recibe un recordatorio y devuelve su identificador; el programador recibe identificador y fecha.\nRiesgo: la entrega de notificaciones puede no estar disponible en el entorno; se prueba primero con un canal simulado.\nIntegración: crear un recordatorio y comprobar que se guarda, se programa y se registra la entrega.",
+          "salida_esperada": "",
+          "explicacion": "La división sigue el flujo funcional y define contratos. El riesgo de notificaciones se aborda antes de construir toda la interfaz. La integración se verifica con una rebanada vertical, no con módulos aislados que nunca se conectan."
+        }
+      ],
+      "ejercicios": [
+        {
+          "titulo": "Qué define el contrato entre partes",
+          "enunciado": "¿Cómo se llama el acuerdo que define entradas, salidas y errores entre dos subproblemas?",
+          "instrucciones": "Escribe una palabra.",
+          "nivel": "basico",
+          "obligatorio": true,
+          "evaluador": {
+            "tipo": "respuesta_exacta",
+            "configuracion": {
+              "respuesta_esperada": "interfaz",
+              "sensible_mayusculas": false,
+              "normalizar_espacios": true
+            },
+            "permite_completar_leccion": true
+          }
+        },
+        {
+          "titulo": "Identificar un riesgo",
+          "enunciado": "Escribe un riesgo de un proyecto que depende de una API externa y cómo lo reducirías.",
+          "instrucciones": "Incluye «dependencia», «prueba» y «alternativa».",
+          "nivel": "basico",
+          "obligatorio": false,
+          "evaluador": {
+            "tipo": "codigo_contiene",
+            "configuracion": {
+              "fragmentos_requeridos": [
+                "dependencia",
+                "prueba",
+                "alternativa"
+              ],
+              "fragmentos_prohibidos": []
+            },
+            "permite_completar_leccion": false
+          }
+        }
+      ],
+      "fuentes": [
+        {
+          "publicador": "Jeannette Wing",
+          "titulo": "Computational Thinking",
+          "url": "https://doi.org/10.1145/1118178.1118215",
+          "edicion": "2006",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1145/1118178.1118215",
+          "nota": "Artículo sobre pensamiento computacional; solo referencia.",
+          "localizador": ""
+        },
+        {
+          "publicador": "George Polya",
+          "titulo": "How to Solve It: A New Aspect of Mathematical Method",
+          "url": "https://press.princeton.edu/books/paperback/9780691164076/how-to-solve-it",
+          "edicion": "1945",
+          "licencia": "Princeton University Press",
+          "evidencia": "https://press.princeton.edu/books/paperback/9780691164076/how-to-solve-it",
+          "nota": "Heurísticas de resolución de problemas; solo referencia.",
+          "localizador": ""
+        }
+      ],
+      "videos": [
+        {
+          "titulo": "Descomposición de Problemas: El Secreto del Pensamiento Computacional",
+          "canal": "Educatic Uruguay",
+          "url": "https://www.youtube.com/watch?v=KAXaLZimk5Q",
+          "objetivo": "Aplicar la descomposición a un problema cotidiano y explicar una interfaz.",
+          "duracion_segundos": 177,
+          "subtitulos": "auto",
+          "descripcion": "Video breve en español sobre descomposición; complementa el diseño de interfaces y riesgos.",
+          "notas_verificacion": "Título, canal, URL, duración y pista de audio/captions en español verificados mediante metadatos públicos de YouTube el 2026-11-21. La revisión pedagógica completa del video queda pendiente."
+        }
+      ]
+    },
+    {
+      "etapa": 0,
+      "modulo": "0.1",
+      "leccion": "Aprendizaje basado en proyectos.",
+      "nivel": "intermedio",
+      "objetivos": "- Diseñar un proyecto con pregunta motriz, producto y criterios de calidad.\n- Planificar hitos, evidencias y reflexión.\n- Evitar que el proyecto se convierta en una actividad sin aprendizaje verificable.",
+      "conocimientos_previos": "Haber planificado una tarea con objetivos y criterios de terminado. Conviene saber dar y recibir retroalimentación.",
+      "introduccion": "El aprendizaje basado en proyectos (ABP) organiza el estudio alrededor de una pregunta o problema significativo que se responde con un producto tangible. No es «hacer un trabajo en grupo» sin más: exige una pregunta que guíe la investigación, actividades que desarrollen conocimientos y habilidades, un producto que demuestre comprensión y una reflexión sobre el proceso. Bien diseñado, conecta el contenido con la práctica; mal diseñado, puede producir productos vistosos con aprendizaje superficial.",
+      "teoria_tecnica": "Blumenfeld et al. (1991) describen el ABP como una enseñanza que parte de una pregunta motriz y culmina en artefactos que los estudiantes construyen y comparten. La pregunta debe ser auténtica, relevante para el currículo y lo bastante abierta para permitir investigación, pero lo bastante acotada para ser abordable. El producto puede ser un prototipo, un informe, una demostración, una aplicación o una exposición; lo importante es que permita inferir qué se aprendió y qué no.\n\nUn proyecto de calidad incluye hitos con entregables parciales, criterios de evaluación conocidos desde el inicio y momentos de reflexión. La evaluación no debe mirar solo el resultado final: también el proceso, la calidad de las fuentes, la colaboración, la capacidad de explicar decisiones y la respuesta a la retroalimentación. La rúbrica debe distinguir criterios técnicos de presentación y de trabajo en equipo; si todo se mezcla en una sola nota, el estudiante no sabe qué mejorar.\n\nEl ABP no elimina la necesidad de instrucción directa. Kirschner, Sweller y Clark (2006) advierten que la enseñanza con mínima guía puede sobrecargar a los novatos; los proyectos funcionan mejor cuando hay modelado, ejemplos, andamiaje y feedback. Un proyecto requiere un equilibrio: autonomía para tomar decisiones, pero con estructura suficiente para no perderse. La reflexión final debe conectar lo hecho con los objetivos curriculares y producir una nueva pregunta de aprendizaje.",
+      "explicacion_sencilla": "Un proyecto es como construir una maqueta para demostrar que entiendes un sistema. La maqueta no es el objetivo: es una excusa para investigar, decidir y explicar. Si pegas piezas sin saber por qué, la maqueta puede quedar bonita pero no demuestra aprendizaje. Una buena pregunta motriz sería: «¿cómo podemos reducir el consumo de agua de nuestra escuela sin perder funcionalidad?». El producto es la propuesta; la evidencia incluye mediciones, fuentes y una explicación de las decisiones.",
+      "conceptos_fundamentales": "- **Pregunta motriz:** pregunta auténtica y acotada que orienta el proyecto.\n- **Producto:** artefacto que demuestra comprensión y puede evaluarse.\n- **Hito:** entrega parcial con criterio de terminado.\n- **Rúbrica:** criterios y niveles de calidad conocidos antes de empezar.\n- **Andamiaje:** apoyos temporales que se retiran progresivamente.\n- **Reflexión:** conexión explícita entre lo hecho, lo aprendido y lo que falta.\n- **Autenticidad:** relación con un problema o audiencia real, sin inventar datos.",
+      "aplicaciones_practicas": "Diseña un proyecto pequeño de dos semanas: elige una pregunta, define el producto y escribe tres hitos. Para cada hito, indica evidencia y criterio de calidad. Incluye una revisión de fuentes y una prueba funcional. Reserva diez minutos al final de cada sesión para registrar qué aprendiste, qué decisión tomaste y qué harás después. Al cerrar, presenta el producto a alguien que no conozca el tema y pídele que explique tu razonamiento; si no puede, la evidencia no es suficientemente clara.",
+      "errores_frecuentes": "- **Empezar por el producto y olvidar el aprendizaje.** El artefacto se vuelve el objetivo.\n- **Pregunta demasiado amplia.** «Hacer una app» no es una pregunta motriz.\n- **Sin hitos ni feedback.** Los problemas aparecen al final.\n- **Rúbrica secreta.** El estudiante no puede orientar su esfuerzo.\n- **Trabajo en grupo sin responsabilidad individual.** Una persona hace todo y las demás no aprenden.\n- **Confundir autonomía con abandono.** El ABP necesita andamiaje y revisión.",
+      "evaluacion_aprendizaje": "1. Escribe una pregunta motriz para un tema de tu ruta.\n2. Define el producto y tres criterios de calidad.\n3. Describe dos hitos con evidencia.\n4. Explica cómo demostrarías que el proyecto enseña el objetivo y no solo produce un entregable.\n\nCriterio: el producto debe permitir observar el aprendizaje; la pregunta debe poder responderse con evidencia, no con una opinión.",
+      "bibliografia_complementaria": "Blumenfeld et al. explican el diseño del ABP; Kirschner et al. recuerdan la necesidad de guía y andamiaje para novatos.",
+      "ejemplos": [
+        {
+          "titulo": "Proyecto: guía de estudio para una etapa",
+          "contexto": "Un estudiante quiere demostrar que comprendió los conceptos de un módulo.",
+          "lenguaje": "",
+          "codigo": "",
+          "salida_esperada": "",
+          "explicacion": "Pregunta motriz: «¿cómo puedo explicar los conceptos centrales del módulo a alguien que empieza, usando ejemplos verificables?». Producto: una guía breve con tres ejemplos, dos errores frecuentes y una autoevaluación. Hitos: mapa de conceptos con fuentes; primer borrador revisado por un par; prueba de la guía con una persona que no conoce el tema. Criterios: precisión técnica, claridad, ejemplos correctos, fuentes trazables y una evaluación que permita comprobar comprensión. La reflexión final registra qué cambió tras la prueba y qué concepto sigue siendo difícil."
+        }
+      ],
+      "ejercicios": [
+        {
+          "titulo": "Elemento que orienta el proyecto",
+          "enunciado": "¿Cómo se llama la pregunta auténtica que guía un proyecto de aprendizaje?",
+          "instrucciones": "Escribe una expresión breve.",
+          "nivel": "basico",
+          "obligatorio": true,
+          "evaluador": {
+            "tipo": "respuesta_exacta",
+            "configuracion": {
+              "respuesta_esperada": "pregunta motriz",
+              "sensible_mayusculas": false,
+              "normalizar_espacios": true
+            },
+            "permite_completar_leccion": true
+          }
+        },
+        {
+          "titulo": "Diseñar un hito",
+          "enunciado": "Escribe un hito de un proyecto con su evidencia y su criterio de calidad.",
+          "instrucciones": "Incluye «evidencia», «criterio» y «revisión».",
+          "nivel": "basico",
+          "obligatorio": false,
+          "evaluador": {
+            "tipo": "codigo_contiene",
+            "configuracion": {
+              "fragmentos_requeridos": [
+                "evidencia",
+                "criterio",
+                "revisión"
+              ],
+              "fragmentos_prohibidos": []
+            },
+            "permite_completar_leccion": false
+          }
+        }
+      ],
+      "fuentes": [
+        {
+          "publicador": "Blumenfeld, Soloway, Marx, Krajcik, Guzdial y Palincsar",
+          "titulo": "Motivating Project-Based Learning: Sustaining the Doing, Supporting the Learning",
+          "url": "https://doi.org/10.1080/00461520.1991.9653139",
+          "edicion": "1991",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1080/00461520.1991.9653139",
+          "nota": "Diseño del aprendizaje basado en proyectos; solo referencia.",
+          "localizador": ""
+        },
+        {
+          "publicador": "Kirschner, Sweller y Clark",
+          "titulo": "Why Minimal Guidance During Instruction Does Not Work",
+          "url": "https://doi.org/10.1207/s15326985ep4102_1",
+          "edicion": "2006",
+          "licencia": "DOI",
+          "evidencia": "https://doi.org/10.1207/s15326985ep4102_1",
+          "nota": "Crítica a la instrucción sin guía; solo referencia.",
+          "localizador": ""
+        }
+      ],
+      "videos": [
+        {
+          "titulo": "Aprendizaje basado en proyectos explicado por Common Craft",
+          "canal": "Eliud Gabriel Porras",
+          "url": "https://www.youtube.com/watch?v=yMl2qlc6Fjc",
+          "objetivo": "Relacionar pregunta motriz, producto y evidencia en un proyecto propio.",
+          "duracion_segundos": 232,
+          "subtitulos": "auto",
+          "descripcion": "Versión en español de una explicación visual; complementa la planificación y la rúbrica.",
+          "notas_verificacion": "Título, canal, URL, duración y pista de audio/captions en español verificados mediante metadatos públicos de YouTube el 2026-11-21. La revisión pedagógica completa del video queda pendiente."
+        }
+      ]
+    }
+  ]
+}

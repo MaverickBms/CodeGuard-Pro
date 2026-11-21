@@ -452,13 +452,46 @@ def leccion_detalle(request, leccion_id):
             actor_auditoria=obtener_actor_auditoria(request),
         )
 
-    contenido_activo = obtener_contenido_activo(leccion)
+    contenido_activo = obtener_contenido_activo(
+        leccion, permitir_borrador=True
+    )
     origen = contenido_activo["origen"]
     contenido = contenido_activo["contenido"]
     ejemplos = contenido_activo["ejemplos"]
     ejercicios = contenido_activo["ejercicios"]
     version_contenido_activa = contenido_activo["version"]
     paquete_contenido_activo = contenido_activo["paquete"]
+    fuentes_contenido = []
+    if version_contenido_activa is not None:
+        for referencia in version_contenido_activa.referencias.select_related("fuente"):
+            fuente = referencia.fuente
+            fuentes_contenido.append(
+                {
+                    "publicador": fuente.publicador,
+                    "titulo": fuente.titulo,
+                    "url": fuente.url_canonica,
+                    "edicion": fuente.edicion,
+                    "licencia": fuente.get_estado_revision_licencia_display(),
+                    "uso": referencia.get_uso_declarado_display(),
+                    "localizador": referencia.localizador,
+                    "nota": referencia.nota_atribucion,
+                }
+            )
+    elif paquete_contenido_activo is not None:
+        for fuente in paquete_contenido_activo.fuentes_catalogo.all():
+            metadatos = fuente.metadatos if isinstance(fuente.metadatos, dict) else {}
+            fuentes_contenido.append(
+                {
+                    "publicador": metadatos.get("publicador", ""),
+                    "titulo": metadatos.get("titulo", "Fuente del paquete"),
+                    "url": metadatos.get("url_canonica", ""),
+                    "edicion": metadatos.get("edicion", ""),
+                    "licencia": metadatos.get("estado_revision_licencia", ""),
+                    "uso": metadatos.get("uso_declarado", ""),
+                    "localizador": metadatos.get("localizador", ""),
+                    "nota": metadatos.get("nota_atribucion", ""),
+                }
+            )
     ejercicios_modelo = list(leccion.ejercicios.all())
 
     if origen in ("paquete", "editorial"):
@@ -478,6 +511,15 @@ def leccion_detalle(request, leccion_id):
             if len(lista_intentos) < 3:
                 lista_intentos.append(intento)
 
+    evaluaciones_leccion = list(
+        Quiz.objects.filter(
+            estado=Quiz.ESTADO_PUBLICADO,
+            preguntas__leccion=leccion,
+        )
+        .distinct()
+        .order_by("nombre")
+    )
+
     ejercicios_por_id = {item.id: item for item in ejercicios_modelo}
     for ejercicio in ejercicios:
         actual = ejercicios_por_id.get(ejercicio.id)
@@ -496,12 +538,25 @@ def leccion_detalle(request, leccion_id):
             "etapa": leccion.modulo.etapa,
             "modulo": leccion.modulo,
             "leccion": leccion,
-            "contenido": contenido if contenido and contenido.publicado else None,
+            "contenido": contenido,
+            "contenido_es_borrador": contenido_activo["es_borrador"],
+            "estado_editorial": contenido_activo["estado_editorial"],
+            "estado_editorial_etiqueta": {
+                "pendiente": "Pendiente",
+                "en_desarrollo": "En desarrollo",
+                "borrador": "Borrador",
+                "revision": "En revisión",
+                "aprobada": "Aprobada",
+                "publicada": "Publicada",
+            }.get(contenido_activo["estado_editorial"], contenido_activo["estado_editorial"]),
             "ejemplos": ejemplos,
             "ejercicios": ejercicios,
+            "videos": contenido_activo.get("videos", []),
             "progreso": progreso,
             "version_contenido_activa": version_contenido_activa,
             "paquete_contenido_activo": paquete_contenido_activo,
+            "fuentes_contenido": fuentes_contenido,
+            "evaluaciones_leccion": evaluaciones_leccion,
             "fuentes_paquete": list(paquete_contenido_activo.fuentes_catalogo.all()) if paquete_contenido_activo else [],
         },
     )
@@ -537,11 +592,14 @@ def conocimiento(request):
         PublicacionPaqueteConocimiento.objects.all().order_by("channel", "-sequence")[:20]
     )
 
+    from .coverage import calcular_cobertura
+
     return render(
         request,
         "roadmaps/conocimiento.html",
         {
             "roadmap": roadmap,
+            "cobertura": calcular_cobertura(roadmap),
             "fuentes": fuentes,
             "total_fuentes": FuenteConocimiento.objects.count(),
             "versiones": list(versiones.order_by("-publicada_en", "-id")[:50]),

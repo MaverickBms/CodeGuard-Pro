@@ -39,6 +39,7 @@ def asegurar_propietario_local():
     Usuario = get_user_model()
     usuario = Usuario.objects.filter(is_active=True).order_by("id").first()
     if usuario is not None:
+        _asegurar_permiso_editorial(usuario)
         _marcar_configuracion_inicial()
         return usuario
 
@@ -49,7 +50,8 @@ def asegurar_propietario_local():
                 password=None,
             )
             usuario.fecha_configuracion_inicial = timezone.now()
-            usuario.save(update_fields=["fecha_configuracion_inicial"])
+            usuario.is_staff = True
+            usuario.save(update_fields=["fecha_configuracion_inicial", "is_staff"])
             registrar_evento(
                 "perfil_local_inicializado",
                 usuario=usuario,
@@ -65,9 +67,23 @@ def asegurar_propietario_local():
         if usuario is None:
             raise
 
+    _asegurar_permiso_editorial(usuario)
     _marcar_configuracion_inicial()
     logger.info("Propietario local disponible: %s", usuario.pk)
     return usuario
+
+
+def _asegurar_permiso_editorial(usuario) -> None:
+    """El propietario local puede administrar el flujo editorial sin login.
+
+    ``is_staff`` no activa autenticación ni sesiones: solo habilita las
+    transiciones editoriales auditadas del modo monousuario. La aplicación
+    empaquetada no instala el admin de Django.
+    """
+    if usuario.is_staff:
+        return
+    usuario.is_staff = True
+    usuario.save(update_fields=["is_staff"])
 
 
 def _marcar_configuracion_inicial() -> None:
