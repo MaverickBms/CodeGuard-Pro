@@ -48,7 +48,7 @@ fi
 CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 DATA_DIR="${CONFIG_HOME}/CodeGuard Pro"
 LEGACY_DATA_DIR="${CONFIG_HOME}/Code Guard Pro/data"
-if [ ! -d "$DATA_DIR" ] && [ -d "$LEGACY_DATA_DIR" ]; then
+if [ -f "$LEGACY_DATA_DIR/db.sqlite3" ] && [ ! -f "$DATA_DIR/db.sqlite3" ]; then
     DATA_DIR="$LEGACY_DATA_DIR"
     echo "Perfil heredado detectado: $DATA_DIR"
 fi
