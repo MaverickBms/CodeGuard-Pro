@@ -34,7 +34,24 @@ if [ "${#APPIMAGES[@]}" -ne 1 ]; then
 fi
 
 APPIMAGE="${APPIMAGES[0]}"
-DATA_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/Code Guard Pro/data"
+
+# Fallback para sistemas con FUSE lento o restringido: extrae el AppImage a
+# un directorio temporal antes de ejecutarlo. Útil en contenedores, sistemas
+# con memoria ajustada o cuando el AppImage se queda bloqueado al montar.
+if [ "${CODEGUARD_APPIMAGE_EXTRACT:-0}" = "1" ]; then
+    export APPIMAGE_EXTRACT_AND_RUN=1
+    echo "Modo extracción activado (CODEGUARD_APPIMAGE_EXTRACT=1)."
+fi
+
+# Misma ruta que app.getPath('userData') de Electron para que abrir el
+# AppImage directamente o mediante ./codeguard use el mismo perfil.
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+DATA_DIR="${CONFIG_HOME}/CodeGuard Pro"
+LEGACY_DATA_DIR="${CONFIG_HOME}/Code Guard Pro/data"
+if [ ! -d "$DATA_DIR" ] && [ -d "$LEGACY_DATA_DIR" ]; then
+    DATA_DIR="$LEGACY_DATA_DIR"
+    echo "Perfil heredado detectado: $DATA_DIR"
+fi
 mkdir -p "$DATA_DIR"
 export CODEGUARD_DATA_DIR="$DATA_DIR"
 
@@ -46,6 +63,7 @@ echo "Datos:    $CODEGUARD_DATA_DIR"
 echo ""
 echo "El servidor local inicializará el perfil al arrancar."
 echo "Usa --ozone-platform=x11 para compatibilidad con Wayland."
+echo "Si el AppImage se bloquea al montar, ejecuta: CODEGUARD_APPIMAGE_EXTRACT=1 ./run.sh"
 echo ""
 
 exec "$APPIMAGE" --ozone-platform=x11 "$@"

@@ -24,7 +24,7 @@ CSRF_TRUSTED_ORIGINS = []
 
 # Endurecimiento adicional para el proceso local.
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_REFERRER_POLICY = "no-referrer"
+SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"
 
 # El servidor empaquetado no necesita el admin de Django: config/urls.py solo lo
