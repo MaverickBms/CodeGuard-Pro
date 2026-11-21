@@ -180,6 +180,7 @@ jobs:
           node --check electron/restore-backup.js
           node --check electron/theme-preference.js
           node --check electron/startup-status.js
+          node --check electron/external-links.js
           node --check scripts/cdp-smoke.js
           node --check scripts/cdp-form-smoke.js
           node --check scripts/cdp-responsive.js

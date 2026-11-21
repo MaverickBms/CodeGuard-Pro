@@ -50,7 +50,7 @@
     var limite = (data && data.limite_pistas) || 3;
     var texto;
     if (disponible) {
-      texto = 'Tutor IA disponible · modelo ' + modelo + ' · ' + limite + ' pistas por ejercicio.';
+      texto = 'Tutor IA disponible · modelo ' + modelo + ' · ' + limite + ' pistas. Si el modelo tarda, se usan pistas locales.';
     } else if (ollama) {
       texto = 'Ollama está activo, pero falta el modelo ' + modelo + '. Se usarán las pistas locales de la lección.';
     } else {

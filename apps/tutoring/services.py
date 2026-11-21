@@ -98,7 +98,7 @@ def _llamar_ollama(
             ],
             "stream": False,
             "keep_alive": "5m",
-            "options": {"temperature": 0.4, "num_predict": 220},
+            "options": {"temperature": 0.3, "num_predict": 90},
         }
     ).encode("utf-8")
 
@@ -136,6 +136,15 @@ def _sistema_tutor() -> str:
         "6. No decidas la aprobación académica; eso corresponde al evaluador determinista.\n"
         "7. Responde en español, de forma concisa y pedagógica.\n"
         "8. No ejecutes ni sugieras ejecutar código arbitrario del estudiante.\n"
+    )
+
+
+def _sistema_tutor_pista() -> str:
+    """Prompt compacto para reducir latencia en equipos sin GPU."""
+    return (
+        "Eres un tutor de programación en español. Da una sola pista concreta, "
+        "máximo dos frases, basada en el enunciado. No reveles la solución, no "
+        "escribas el código final y no decidas la aprobación académica."
     )
 
 
@@ -204,7 +213,7 @@ def entregar_pista(usuario, ejercicio, tipo_pista: str = "orientacion") -> dict:
 
     try:
         contenido_pista = _llamar_ollama(
-            sistema=_sistema_tutor(),
+            sistema=_sistema_tutor_pista(),
             usuario=contexto,
         )
     except TutorNoDisponible:
@@ -265,7 +274,17 @@ def analizar_intento(usuario, ejercicio, intento_ejercicio) -> IntentoTutoria:
         if intento_ejercicio.resultado == "no_aprobado"
         else "pendiente_revision"
     )
+    contenido_leccion = getattr(ejercicio.leccion, "contenido", None)
+    objetivos = (
+        (contenido_leccion.objetivos_aprendizaje or "").strip()[:300]
+        if contenido_leccion is not None
+        else ""
+    )
     contexto = (
+        f"Etapa: {ejercicio.leccion.modulo.etapa.numero}\n"
+        f"Módulo: {ejercicio.leccion.modulo.titulo}\n"
+        f"Lección: {ejercicio.leccion.titulo}\n"
+        f"Objetivos: {objetivos or 'No declarados.'}\n"
         f"Ejercicio: {ejercicio.titulo}\n"
         f"Enunciado: {ejercicio.enunciado}\n"
         f"Intento del estudiante: {intento_ejercicio.respuesta}\n"

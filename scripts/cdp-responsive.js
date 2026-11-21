@@ -6,7 +6,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{await open; await send('Page.enable'); await send('Runtime.enable');
 const ev=async x=>{const r=await send('Runtime.evaluate',{expression:x,awaitPromise:true,returnByValue:true}); return r.result.value};
 const origin=await ev('location.origin');
-const paths=['/','/roadmaps/','/roadmaps/etapa/0/','/roadmaps/leccion/1/','/roadmaps/evaluaciones/','/roadmaps/evidencias/','/roadmaps/conocimiento/','/biblioteca/','/biblioteca/1/','/backups/','/gamificacion/perfil/'];
+const paths=['/','/roadmaps/','/roadmaps/etapa/0/','/roadmaps/leccion/1/','/roadmaps/evaluaciones/','/roadmaps/evidencias/','/roadmaps/conocimiento/','/roadmaps/cobertura/','/roadmaps/editorial/','/roadmaps/editorial/fuentes/','/biblioteca/','/backups/','/gamificacion/perfil/'];
 let bad=[];
 for(const [w,h] of [[1024,720],[768,900]]){
   await send('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:1,mobile:false});

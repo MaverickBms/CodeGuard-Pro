@@ -17,6 +17,7 @@ const { isTrustedIpcSender } = require('./ipc-security');
 const { getChildStartupFailure } = require('./process-health');
 const { resolveBackupPath } = require('./restore-backup');
 const { FILE_NAME: THEME_FILE, readTheme, writeTheme } = require('./theme-preference');
+const { isAllowedExternalUrl } = require('./external-links');
 const {
   parseBootEvent,
   formatBootMessage,
@@ -969,6 +970,18 @@ ipcMain.handle('check-knowledge-updates', event => {
   }
   startKnowledgeSync(true);
   return syncStatus;
+});
+
+// IPC: abre un recurso externo HTTPS (video o fuente) en el navegador del sistema.
+ipcMain.handle('open-external', async (event, url) => {
+  if (!isTrustedIpcEvent(event)) {
+    throw new Error('Origen IPC no autorizado.');
+  }
+  if (!isAllowedExternalUrl(url)) {
+    throw new Error('Enlace externo no permitido.');
+  }
+  await shell.openExternal(url);
+  return true;
 });
 
 // IPC: información del sistema (sin datos sensibles).

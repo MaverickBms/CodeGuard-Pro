@@ -18,6 +18,9 @@ contextBridge.exposeInMainWorld('codeguardAPI', {
     return () => ipcRenderer.removeListener('knowledge-sync-status', handler);
   },
 
+  // Recursos externos verificados (HTTPS) del contenido académico.
+  openExternal: (url) => ipcRenderer.invoke('open-external', url),
+
   // Información del sistema
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
   

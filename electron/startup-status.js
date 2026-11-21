@@ -19,6 +19,8 @@ const BOOT_MESSAGES = {
   'database:ready': 'Base de datos disponible.',
   'profile:checking': 'Preparando el propietario local…',
   'profile:ready': 'Perfil local listo.',
+  'content:seeded': 'Contenido académico inicial preparado en borrador.',
+  'content:unavailable': 'Contenido académico inicial no disponible.',
   'roadmap:verifying': 'Verificando el roadmap ASCENSO…',
   'roadmap:ready': 'Roadmap verificado. No se reconstruye contenido.',
   'roadmap:loaded': 'Roadmap instalado correctamente.',

@@ -57,8 +57,8 @@ async function main() {
   const statuses = await evaluate(`
     (async () => {
       const paths = ['/', '/roadmaps/', '/roadmaps/evaluaciones/',
-        '/roadmaps/evidencias/', '/roadmaps/conocimiento/', '/biblioteca/',
-        '/backups/'];
+        '/roadmaps/evidencias/', '/roadmaps/conocimiento/', '/roadmaps/cobertura/',
+        '/roadmaps/editorial/', '/biblioteca/', '/backups/'];
       const result = {};
       for (const path of paths) {
         const response = await fetch(path, { credentials: 'same-origin' });
