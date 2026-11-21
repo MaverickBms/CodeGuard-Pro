@@ -216,10 +216,10 @@ Resultados:
 ## 10. Artefactos verificados
 
 - Servidor PyInstaller Linux x64:
-  `4fceaa9acc0e209c1446a7f5e8b423e136344759351c35af57fdf1f93af1fd39`
+  `70d428b94ea258ec2e838f37a626435876559c9be3645836e148fbf8ece0e12e`
   (`dist-server/CodeGuardServer/CodeGuardServer`).
 - AppImage Linux x64:
-  `aba8922cf79524942a7ae8a80c5d70e7ec25d33ab919634930ccdccdcdd65493`
+  `f52e96ac337a207ab58731d62521071d52b303dd77532d8e47c2bdd9763ecaf8`
   (`dist/CodeGuard-Pro-1.0.0-x86_64.AppImage`).
 - El AppImage se verificó extrayéndolo (`--appimage-extract`) por el bloqueo
   FUSE del host de pruebas; el binario extraído ejecutó el mismo E2E.
