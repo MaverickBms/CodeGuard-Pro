@@ -17,6 +17,7 @@ class AuditLog(models.Model):
         ("logout", "Cierre de sesión"),
         ("logout_inactividad", "Cierre de sesión por inactividad"),
         ("setup_inicial", "Configuración inicial completada"),
+        ("perfil_local_inicializado", "Propietario local inicializado"),
         ("cambio_contraseña", "Cambio de contraseña"),
         ("uso_frase_rescate", "Uso de frase de rescate"),
         ("acceso_denegado", "Acceso denegado a vista protegida"),
@@ -28,6 +29,16 @@ class AuditLog(models.Model):
         ("roadmap_etapa_reabierta", "Etapa del roadmap reabierta"),
         ("roadmap_leccion_completada", "Lección del roadmap completada"),
         ("roadmap_leccion_reabierta", "Lección del roadmap reabierta"),
+        ("roadmap_leccion_iniciada", "Lección del roadmap iniciada"),
+        ("roadmap_leccion_completada_por_evidencia", "Lección completada por evidencia"),
+        ("roadmap_ejercicio_intento_registrado", "Intento de ejercicio registrado"),
+        ("criterio_finalizacion_cumplido", "Criterio de finalización cumplido"),
+        ("etapa_completada_por_criterios", "Etapa completada por criterios"),
+        ("evaluacion_resultado_registrado", "Resultado de evaluación registrado"),
+        ("progreso_modulo_completado_por_evaluacion", "Módulo completado por evaluación"),
+        ("tutoria_pista_entregada", "Pista de tutoría entregada"),
+        ("documento_biblioteca_importado", "Documento de biblioteca importado"),
+        ("documento_biblioteca_estado", "Estado de documento de biblioteca"),
     ]
 
     usuario = models.ForeignKey(
@@ -38,7 +49,7 @@ class AuditLog(models.Model):
         related_name="eventos_auditoria",
         verbose_name="usuario",
     )
-    evento = models.CharField(max_length=40, choices=EVENTO_CHOICES, verbose_name="evento")
+    evento = models.CharField(max_length=48, choices=EVENTO_CHOICES, verbose_name="evento")
     descripcion = models.TextField(blank=True, verbose_name="descripción")
     ip = models.GenericIPAddressField(null=True, blank=True, verbose_name="IP")
     user_agent = models.CharField(max_length=512, blank=True, verbose_name="user agent")

@@ -5,7 +5,7 @@ from django.db.migrations.executor import MigrationExecutor
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 
-from apps.roadmaps.models import Roadmap
+from apps.roadmaps.models import Etapa, Leccion, Modulo, Roadmap
 
 
 @require_GET
@@ -26,9 +26,25 @@ def healthz(_request):
                 status=503,
             )
 
-        if not Roadmap.objects.filter(activo=True).exists():
+        roadmap = (
+            Roadmap.objects.filter(activo=True).order_by("-actualizado_en").first()
+        )
+        if roadmap is None:
             return JsonResponse(
                 {"status": "starting", "database": "ok", "migrations": "ok", "roadmap": "missing"},
+                status=503,
+            )
+
+        # Un roadmap vacío no es un perfil operativo: Electron debe seguir
+        # esperando (o mostrar el error de inicialización) en lugar de abrir
+        # una interfaz sin etapas, módulos ni lecciones.
+        if (
+            not Etapa.objects.filter(roadmap=roadmap).exists()
+            or not Modulo.objects.filter(etapa__roadmap=roadmap).exists()
+            or not Leccion.objects.filter(modulo__etapa__roadmap=roadmap).exists()
+        ):
+            return JsonResponse(
+                {"status": "starting", "database": "ok", "migrations": "ok", "roadmap": "incomplete"},
                 status=503,
             )
 

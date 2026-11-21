@@ -1480,3 +1480,56 @@ class PublicacionPaqueteConocimiento(models.Model):
 
     def delete(self, *args, **kwargs):
         raise ValidationError("El historial de publicaciones no se elimina físicamente.")
+
+
+class EstadoInstalacionRoadmap(models.Model):
+    """Metadatos persistentes de integridad del roadmap instalado.
+
+    Permite que el arranque normal verifique en milisegundos que el contenido
+    curricular coincide con el manifiesto distribuido y evitar reconstrucciones
+    innecesarias de las 1.946 lecciones. No sustituye la verificación real de
+    la base de datos: el arranque recalcula la huella del contenido y la compara
+    con ``huella_contenido``.
+    """
+
+    ESQUEMA_ACTUAL = 1
+
+    roadmap = models.OneToOneField(
+        Roadmap,
+        on_delete=models.CASCADE,
+        related_name="estado_instalacion",
+        primary_key=True,
+        verbose_name="roadmap",
+    )
+    huella_manifiesto = models.CharField(
+        max_length=64, verbose_name="SHA-256 del manifiesto"
+    )
+    huella_contenido = models.CharField(
+        max_length=64, verbose_name="huella del contenido instalado"
+    )
+    total_etapas = models.PositiveIntegerField(default=0, verbose_name="etapas")
+    total_modulos = models.PositiveIntegerField(default=0, verbose_name="módulos")
+    total_lecciones = models.PositiveIntegerField(default=0, verbose_name="lecciones")
+    total_prerrequisitos = models.PositiveIntegerField(
+        default=0, verbose_name="prerrequisitos"
+    )
+    registros_sobrantes = models.PositiveIntegerField(
+        default=0,
+        verbose_name="registros ajenos al manifiesto",
+        help_text=(
+            "Filas conservadas de versiones anteriores del roadmap. No se "
+            "eliminan automáticamente para no borrar progreso del estudiante."
+        ),
+    )
+    esquema_version = models.PositiveSmallIntegerField(
+        default=ESQUEMA_ACTUAL, verbose_name="versión del esquema de estado"
+    )
+    creado_en = models.DateTimeField(auto_now_add=True)
+    verificado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "estado de instalación del roadmap"
+        verbose_name_plural = "estados de instalación del roadmap"
+
+    def __str__(self) -> str:
+        return f"Estado de {self.roadmap}"
