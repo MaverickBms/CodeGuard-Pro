@@ -91,12 +91,25 @@
     <div style="display:grid; gap:.8rem; margin-bottom:1rem;">
       {% for video in videos %}
         <article style="border:1px solid var(--cg-border); border-radius:12px; padding:.8rem;">
-          <div style="display:flex; justify-content:space-between; gap:.75rem; flex-wrap:wrap;"><div><strong>{{ video.titulo }}</strong><div class="muted">{{ video.canal }} · {{ video.duracion_legible }} · {{ video.get_subtitulos_display }}</div></div><span class="cg-badge {% if video.estado_revision == 'aprobado' %}cg-badge-success{% else %}cg-badge-warning{% endif %}">{{ video.get_estado_revision_display }}</span></div>
+          <div style="display:flex; justify-content:space-between; gap:.75rem; flex-wrap:wrap;"><div><strong>{{ video.titulo }}</strong><div class="muted">{{ video.canal }} · {{ video.duracion_legible }} · {{ video.get_subtitulos_display }}</div></div><div style="display:flex; gap:.35rem; flex-wrap:wrap;"><span class="cg-badge {% if video.estado_revision == 'aprobado' %}cg-badge-success{% else %}cg-badge-warning{% endif %}">Enlace: {{ video.get_estado_revision_display }}</span><span class="cg-badge {% if video.estado_pedagogico == 'aprobado' %}cg-badge-success{% elif video.estado_pedagogico == 'rechazado' %}cg-badge-danger{% else %}cg-badge-warning{% endif %}">{{ video.get_estado_pedagogico_display }}</span></div></div>
           <p class="muted" style="margin:.5rem 0;">{{ video.objetivo_aprendizaje }}</p>
+          {% if video.notas_verificacion %}<p class="muted" style="margin:.35rem 0;"><strong>Verificación técnica:</strong> {{ video.notas_verificacion }}</p>{% endif %}
+          {% if video.notas_pedagogicas %}<p class="muted" style="margin:.35rem 0;"><strong>Revisión pedagógica:</strong> {{ video.notas_pedagogicas }}</p>{% endif %}
           <div style="display:flex; gap:.45rem; flex-wrap:wrap;">
-            <form method="post" style="display:flex; gap:.4rem; flex-wrap:wrap; align-items:center;">{% csrf_token %}<input type="hidden" name="accion" value="revisar_video"><input type="hidden" name="video_id" value="{{ video.id }}"><input type="hidden" name="decision" value="aprobado"><input class="form-control" name="notas_verificacion" required maxlength="1000" placeholder="Notas de verificación" value="{{ video.notas_verificacion }}" style="min-width:220px;"><button class="btn btn-primary btn-sm cg-btn" type="submit">Aprobar</button></form>
-            <form method="post">{% csrf_token %}<input type="hidden" name="accion" value="revisar_video"><input type="hidden" name="video_id" value="{{ video.id }}"><input type="hidden" name="decision" value="rechazado"><button class="btn btn-secondary btn-sm cg-btn" type="submit">Rechazar</button></form>
+            <form method="post" style="display:flex; gap:.4rem; flex-wrap:wrap; align-items:center;">{% csrf_token %}<input type="hidden" name="accion" value="revisar_video"><input type="hidden" name="video_id" value="{{ video.id }}"><input type="hidden" name="decision" value="aprobado"><input class="form-control" name="notas_verificacion" required maxlength="1000" placeholder="Notas de verificación técnica" value="{{ video.notas_verificacion }}" style="min-width:220px;"><button class="btn btn-primary btn-sm cg-btn" type="submit">Aprobar enlace</button></form>
+            <form method="post">{% csrf_token %}<input type="hidden" name="accion" value="revisar_video"><input type="hidden" name="video_id" value="{{ video.id }}"><input type="hidden" name="decision" value="rechazado"><button class="btn btn-secondary btn-sm cg-btn" type="submit">Rechazar enlace</button></form>
           </div>
+          <details style="margin-top:.6rem;"><summary><strong>Revisión pedagógica</strong></summary>
+            <form method="post" style="margin-top:.5rem; display:flex; gap:.4rem; flex-wrap:wrap; align-items:center;">{% csrf_token %}<input type="hidden" name="accion" value="revisar_video_pedagogico"><input type="hidden" name="video_id" value="{{ video.id }}">
+              <select class="form-select" name="decision_pedagogica" aria-label="Decisión pedagógica" style="max-width:260px;">
+                <option value="pendiente" {% if video.estado_pedagogico == "pendiente" %}selected{% endif %}>Pendiente</option>
+                <option value="aprobado" {% if video.estado_pedagogico == "aprobado" %}selected{% endif %}>Aprobada</option>
+                <option value="rechazado" {% if video.estado_pedagogico == "rechazado" %}selected{% endif %}>Rechazada</option>
+              </select>
+              <input class="form-control" name="notas_pedagogicas" maxlength="1000" placeholder="Correspondencia, nivel y utilidad didáctica" value="{{ video.notas_pedagogicas }}" style="min-width:280px;">
+              <button class="btn btn-secondary btn-sm cg-btn" type="submit">Guardar revisión pedagógica</button>
+            </form>
+          </details>
         </article>
       {% endfor %}
     </div>

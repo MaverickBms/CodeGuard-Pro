@@ -37,3 +37,51 @@ class PropietarioLocalTests(TestCase):
         with override_settings(AUTH_DISABLED=False):
             self.assertIsNone(asegurar_propietario_local())
         self.assertFalse(get_user_model().objects.exists())
+
+    def test_no_eleva_una_cuenta_ordinaria_creada_despues(self):
+        propietario = asegurar_propietario_local()
+        ordinaria = get_user_model().objects.create_user(
+            username="cuenta-ordinaria", password="ClaveSegura123!"
+        )
+
+        elegido = asegurar_propietario_local()
+
+        self.assertEqual(elegido.pk, propietario.pk)
+        ordinaria.refresh_from_db()
+        self.assertFalse(ordinaria.es_propietario_local)
+        self.assertFalse(ordinaria.is_staff)
+        self.assertTrue(propietario.es_propietario_local)
+
+    def test_recupera_el_nombre_reservado_heredado_sin_elevar_otras_cuentas(self):
+        heredado = get_user_model().objects.create_user(
+            username=USERNAME_PROPIETARIO_LOCAL, password="ClaveSegura123!"
+        )
+        ordinaria = get_user_model().objects.create_user(
+            username="cuenta-ordinaria", password="ClaveSegura123!"
+        )
+
+        elegido = asegurar_propietario_local()
+
+        self.assertEqual(elegido.pk, heredado.pk)
+        heredado.refresh_from_db()
+        ordinaria.refresh_from_db()
+        self.assertTrue(heredado.es_propietario_local)
+        self.assertTrue(heredado.is_staff)
+        self.assertFalse(ordinaria.es_propietario_local)
+        self.assertFalse(ordinaria.is_staff)
+
+    def test_perfil_ambiguo_no_elige_ni_eleva_una_cuenta(self):
+        get_user_model().objects.create_user(
+            username="cuenta-a", password="ClaveSegura123!"
+        )
+        get_user_model().objects.create_user(
+            username="cuenta-b", password="ClaveSegura123!"
+        )
+
+        self.assertIsNone(asegurar_propietario_local())
+        self.assertFalse(
+            get_user_model().objects.filter(is_staff=True).exists()
+        )
+        self.assertFalse(
+            get_user_model().objects.filter(es_propietario_local=True).exists()
+        )

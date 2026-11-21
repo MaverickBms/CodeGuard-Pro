@@ -71,6 +71,8 @@ class CargaContenidoAcademicoTests(TestCase):
     def test_videos_estan_aprobados_y_relacionados(self):
         for video in RecursoAudiovisual.objects.select_related("leccion"):
             self.assertEqual(video.estado_revision, "aprobado")
+            self.assertEqual(video.estado_pedagogico, "pendiente")
+            self.assertFalse(video.revision_pedagogica_aprobada)
             self.assertTrue(video.disponible)
             self.assertEqual(video.idioma, "es")
             self.assertIsNotNone(video.verificado_en)
@@ -181,6 +183,10 @@ class RecursoAudiovisualTests(TestCase):
         with self.assertRaises(ValidationError):
             self._recurso(url="https://example.com/video").save()
 
+    def test_rechaza_enlaces_http_aunque_sean_de_youtube(self):
+        with self.assertRaises(ValidationError):
+            self._recurso(url="http://www.youtube.com/watch?v=oMPQNOD-2fo").save()
+
     def test_rechaza_audio_no_espanol(self):
         with self.assertRaises(ValidationError):
             self._recurso(idioma="en").save()
@@ -222,6 +228,58 @@ class EditorialViewsTests(TestCase):
         self.assertContains(respuesta, "Contenido editable")
         self.assertContains(respuesta, "Crear snapshot versionado")
         self.assertContains(respuesta, "Recursos audiovisuales")
+        self.assertContains(respuesta, "Revisión pedagógica pendiente")
+
+    def test_formulario_invalido_conserva_los_datos_enviados(self):
+        respuesta = self.client.post(
+            reverse("roadmaps:editorial_leccion", args=[self.leccion.id]),
+            {
+                "accion": "guardar_contenido",
+                "teoria_tecnica": "Texto que el editor no debe perder.",
+                "explicacion_sencilla": "Explicación conservada.",
+                "nivel_dificultad": "nivel-invalido",
+            },
+        )
+
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertContains(respuesta, "Texto que el editor no debe perder.")
+        self.assertIn(
+            "nivel_dificultad", respuesta.context["formulario"].errors
+        )
+
+    def test_revision_pedagogica_es_independiente_de_la_tecnica(self):
+        video = RecursoAudiovisual.objects.filter(leccion=self.leccion).first()
+        url = reverse("roadmaps:editorial_leccion", args=[self.leccion.id])
+
+        respuesta = self.client.post(
+            url,
+            {
+                "accion": "revisar_video_pedagogico",
+                "video_id": video.id,
+                "decision_pedagogica": "aprobado",
+                "notas_pedagogicas": "",
+            },
+        )
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertContains(respuesta, "Documenta la correspondencia temática")
+        video.refresh_from_db()
+        self.assertEqual(video.estado_pedagogico, "pendiente")
+
+        respuesta = self.client.post(
+            url,
+            {
+                "accion": "revisar_video_pedagogico",
+                "video_id": video.id,
+                "decision_pedagogica": "aprobado",
+                "notas_pedagogicas": "Corresponde al objetivo y al nivel de la lección.",
+            },
+        )
+        self.assertEqual(respuesta.status_code, 302)
+        video.refresh_from_db()
+        self.assertEqual(video.estado_pedagogico, "aprobado")
+        self.assertTrue(video.revision_pedagogica_aprobada)
+        self.assertIsNotNone(video.revisado_pedagogicamente_en)
+        self.assertIsNotNone(video.revisado_pedagogicamente_por_id)
 
     def test_video_se_agrega_en_revision_y_se_aprueba(self):
         url = reverse("roadmaps:editorial_leccion", args=[self.leccion.id])

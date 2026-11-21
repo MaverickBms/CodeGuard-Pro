@@ -144,6 +144,38 @@ class ProgresoTest(TestCase):
         self.assertEqual(avance["total"], 33)
         self.assertEqual(avance["porcentaje"], 0)
 
+    def test_recalcular_lecciones_no_revoca_una_etapa_ya_aprobada(self):
+        from apps.roadmaps.services import recalcular_progreso_etapa
+
+        etapa0 = Etapa.objects.get(roadmap=self.roadmap, numero=0)
+        leccion = Leccion.objects.filter(modulo__etapa=etapa0).first()
+        marcar_leccion(self.usuario, leccion, completada=False)
+        progreso = Progreso.objects.get(
+            usuario=self.usuario,
+            etapa=etapa0,
+            modulo__isnull=True,
+            leccion__isnull=True,
+            actividad__isnull=True,
+        )
+        progreso.estado = "completado"
+        progreso.porcentaje = 100
+        progreso.fecha_completado = timezone.now()
+        progreso.save(
+            update_fields=[
+                "estado",
+                "porcentaje",
+                "fecha_completado",
+                "fecha_actualizacion",
+            ]
+        )
+
+        recalcular_progreso_etapa(self.usuario, etapa0)
+
+        progreso.refresh_from_db()
+        self.assertEqual(progreso.estado, "completado")
+        self.assertEqual(progreso.porcentaje, 100)
+        self.assertIsNotNone(progreso.fecha_completado)
+
 
 @override_settings(AUTH_DISABLED=False)
 class VistasRoadmapTest(TestCase):

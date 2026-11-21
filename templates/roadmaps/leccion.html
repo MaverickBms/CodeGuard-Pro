@@ -152,7 +152,14 @@
               <p class="lesson-video-meta">{{ video.canal }} · {{ video.duracion_legible }} · Audio en español{% if video.subtitulos != "ninguno" %} · {{ video.get_subtitulos_display }}{% endif %}</p>
               <p>{{ video.objetivo_aprendizaje }}</p>
               {% if video.descripcion %}<p class="muted">{{ video.descripcion }}</p>{% endif %}
-              {% if video.notas_verificacion %}<p class="lesson-video-verification"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ video.notas_verificacion }}</p>{% endif %}
+              {% if video.notas_verificacion and not video.revision_pedagogica_aprobada %}<p class="lesson-video-verification"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> <strong>Enlace y metadatos:</strong> {{ video.notas_verificacion }}</p>{% endif %}
+              <p class="muted" style="font-size:.85rem; margin:.35rem 0;">
+                {% if video.revision_pedagogica_aprobada %}
+                  <i class="fa-solid fa-circle-check" aria-hidden="true"></i> Enlace, metadatos y revisión pedagógica completados.
+                {% else %}
+                  <i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> Revisión pedagógica pendiente: el enlace es complementario y no se presenta como material validado didácticamente.
+                {% endif %}
+              </p>
               <a class="btn-theme btn-theme-ghost" href="{{ video.url }}" target="_blank" rel="noopener noreferrer" data-external-url="{{ video.url }}">
                 <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Ver video original
               </a>

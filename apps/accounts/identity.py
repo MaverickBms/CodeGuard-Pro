@@ -31,7 +31,27 @@ def obtener_usuario_local(request):
         return None
 
     Usuario = get_user_model()
-    return Usuario.objects.filter(is_active=True).first()
+    propietario = Usuario.objects.filter(
+        is_active=True, es_propietario_local=True
+    ).order_by("id").first()
+    if propietario is not None:
+        return propietario
+
+    heredado = Usuario.objects.filter(
+        is_active=True, username="propietario-local"
+    ).first()
+    if heredado is not None:
+        return heredado
+
+    # Compatibilidad con perfiles anteriores a la marca explícita. Solo se
+    # resuelve una cuenta cuando no hay ambigüedad; con varias cuentas activas
+    # y sin propietario marcado no se elige ninguna al azar.
+    activos = list(
+        Usuario.objects.filter(is_active=True).order_by("id").values_list("id", flat=True)[:2]
+    )
+    if len(activos) == 1:
+        return Usuario.objects.get(pk=activos[0])
+    return None
 
 
 def get_usuario_actual(request):

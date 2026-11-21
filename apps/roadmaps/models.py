@@ -1641,6 +1641,33 @@ class RecursoAudiovisual(models.Model):
     notas_verificacion = models.TextField(
         blank=True, verbose_name="notas de verificación"
     )
+    ESTADOS_PEDAGOGICOS = [
+        ("pendiente", "Revisión pedagógica pendiente"),
+        ("aprobado", "Revisión pedagógica aprobada"),
+        ("rechazado", "Revisión pedagógica rechazada"),
+    ]
+    estado_pedagogico = models.CharField(
+        max_length=12,
+        choices=ESTADOS_PEDAGOGICOS,
+        default="pendiente",
+        verbose_name="revisión pedagógica",
+    )
+    notas_pedagogicas = models.TextField(
+        blank=True,
+        verbose_name="notas de revisión pedagógica",
+        help_text="Correspondencia con el objetivo, nivel y utilidad didáctica observada.",
+    )
+    revisado_pedagogicamente_en = models.DateTimeField(
+        null=True, blank=True, verbose_name="revisado pedagógicamente el"
+    )
+    revisado_pedagogicamente_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="recursos_audiovisuales_revisados_pedagogicamente",
+        verbose_name="revisado pedagógicamente por",
+    )
     orden = models.PositiveSmallIntegerField(default=1, verbose_name="orden")
     creado_en = models.DateTimeField(auto_now_add=True)
     actualizado_en = models.DateTimeField(auto_now=True)
@@ -1668,7 +1695,7 @@ class RecursoAudiovisual(models.Model):
         except ValueError as exc:
             raise ValidationError("La URL del video no es válida.") from exc
         host = (parsed.hostname or "").lower()
-        if parsed.scheme not in {"http", "https"} or parsed.username or parsed.password:
+        if parsed.scheme != "https" or parsed.username or parsed.password:
             raise ValidationError("La URL del video debe ser HTTPS sin credenciales.")
         if host in {"youtu.be", "www.youtu.be"}:
             candidate = parsed.path.strip("/").split("/")[0]
@@ -1708,6 +1735,24 @@ class RecursoAudiovisual(models.Model):
             raise ValidationError(
                 {"disponible": "Un recurso aprobado debe tener un enlace disponible."}
             )
+        if self.estado_pedagogico == "aprobado":
+            if self.estado_revision != "aprobado":
+                raise ValidationError(
+                    {
+                        "estado_pedagogico": (
+                            "No se puede aprobar pedagógicamente un video cuyo "
+                            "enlace y metadatos no han sido verificados."
+                        )
+                    }
+                )
+            if not self.revisado_pedagogicamente_en or not self.notas_pedagogicas.strip():
+                raise ValidationError(
+                    {
+                        "estado_pedagogico": (
+                            "La aprobación pedagógica exige fecha y notas de revisión."
+                        )
+                    }
+                )
 
     def save(self, *args, **kwargs):
         self.video_id = self.extraer_video_id(self.url)
@@ -1718,6 +1763,10 @@ class RecursoAudiovisual(models.Model):
     @property
     def publicado(self) -> bool:
         return self.estado_revision == "aprobado" and self.disponible
+
+    @property
+    def revision_pedagogica_aprobada(self) -> bool:
+        return self.estado_pedagogico == "aprobado"
 
     @property
     def duracion_legible(self) -> str:

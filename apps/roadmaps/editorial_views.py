@@ -136,6 +136,8 @@ def editorial_leccion(request, leccion_id):
         return redirect("core:panel")
 
     contenido = getattr(leccion, "contenido", None)
+    formulario = ContenidoLeccionForm(instance=contenido)
+    video_form = RecursoAudiovisualForm()
     detalle = detalle_editorial(leccion)
 
     if request.method == "POST":
@@ -144,7 +146,7 @@ def editorial_leccion(request, leccion_id):
             if accion == "guardar_contenido":
                 formulario = ContenidoLeccionForm(request.POST, instance=contenido)
                 if not formulario.is_valid():
-                    messages.error(request, "Revisa los campos del contenido.")
+                    messages.error(request, "Revisa los campos del contenido; se conservan los datos enviados.")
                 else:
                     contenido = formulario.save(commit=False)
                     contenido.leccion = leccion
@@ -231,6 +233,47 @@ def editorial_leccion(request, leccion_id):
                 messages.success(request, f"Video marcado como {recurso.get_estado_revision_display().lower()}.")
                 return redirect("roadmaps:editorial_leccion", leccion_id=leccion.id)
 
+            elif accion == "revisar_video_pedagogico":
+                video_id = str(request.POST.get("video_id") or "")
+                if not video_id.isdigit():
+                    raise ValidationError("Identificador de video no válido.")
+                recurso = get_object_or_404(
+                    RecursoAudiovisual, pk=int(video_id), leccion=leccion
+                )
+                decision = (request.POST.get("decision_pedagogica") or "").strip()
+                if decision not in {"pendiente", "aprobado", "rechazado"}:
+                    raise ValidationError("Decisión pedagógica no válida.")
+                notas = (request.POST.get("notas_pedagogicas") or "").strip()
+                if decision == "aprobado":
+                    if recurso.estado_revision != "aprobado":
+                        raise ValidationError(
+                            "Verifica primero el enlace y los metadatos del video."
+                        )
+                    if not notas:
+                        raise ValidationError(
+                            "Documenta la correspondencia temática, el nivel y la utilidad didáctica."
+                        )
+                    from django.utils import timezone
+
+                    recurso.revisado_pedagogicamente_en = timezone.now()
+                    recurso.revisado_pedagogicamente_por = actor
+                elif decision == "pendiente":
+                    recurso.revisado_pedagogicamente_en = None
+                    recurso.revisado_pedagogicamente_por = None
+                else:
+                    from django.utils import timezone
+
+                    recurso.revisado_pedagogicamente_en = timezone.now()
+                    recurso.revisado_pedagogicamente_por = actor
+                recurso.estado_pedagogico = decision
+                recurso.notas_pedagogicas = notas
+                recurso.save()
+                messages.success(
+                    request,
+                    "Revisión pedagógica actualizada; no modifica la verificación técnica.",
+                )
+                return redirect("roadmaps:editorial_leccion", leccion_id=leccion.id)
+
             else:
                 messages.error(request, "Acción editorial no reconocida.")
         except ValidationError as exc:
@@ -240,8 +283,6 @@ def editorial_leccion(request, leccion_id):
         except (ValueError, TypeError) as exc:
             messages.error(request, f"No se pudo completar la acción: {exc}")
 
-    formulario = ContenidoLeccionForm(instance=contenido)
-    video_form = RecursoAudiovisualForm()
     fuentes_disponibles = FuenteConocimiento.objects.filter(activa=True).order_by(
         "publicador", "titulo"
     )
@@ -312,9 +353,8 @@ def editorial_fuentes(request):
                     for mensaje in mensajes:
                         messages.error(request, mensaje)
                 return redirect("roadmaps:editorial_fuentes")
-            messages.error(request, "Revisa la decisión de licencia.")
+            messages.error(request, "Revisa la decisión de licencia; se conservan los datos enviados.")
             formulario = FuenteConocimientoForm()
-            revision_form = RevisionLicenciaForm()
         else:
             messages.error(request, "Acción de fuente no reconocida.")
             formulario = FuenteConocimientoForm()

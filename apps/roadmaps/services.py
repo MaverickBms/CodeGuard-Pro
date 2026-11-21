@@ -270,6 +270,12 @@ def recalcular_progreso_etapa(usuario, etapa: Etapa) -> Progreso:
     la aprobación requerirá evaluaciones y criterios verificables.
     """
     progreso = _progreso_etapa(usuario, etapa)
+    if progreso.estado == "completado":
+        # La etapa ya fue aprobada por criterios/evaluación verificables. El
+        # avance de lecciones es informativo y no debe revocar esa aprobación
+        # ni borrar su fecha de finalización.
+        return progreso
+
     total = Leccion.objects.filter(modulo__etapa=etapa).count()
     completadas = Progreso.objects.filter(
         usuario=usuario,
