@@ -76,8 +76,11 @@ El lote registra referencias como:
 
 Cada registro se marca como `solo_referencia`: la licencia autoriza consulta y
 atribución, no reproducción. La decisión queda con evidencia HTTPS, nota y
-fecha. Las URLs DOI pueden devolver 403 a clientes automatizados; se validaron
-contra la API de Crossref cuando fue posible.
+fecha. **Esta clasificación inicial fue registrada por el importador a partir de
+la evidencia declarada en el lote; no constituye una revisión legal
+independiente.** El propietario debe revisarla antes de publicar. Las URLs DOI
+pueden devolver 403 a clientes automatizados; se validaron contra la API de
+Crossref cuando fue posible.
 
 ## 4. Videos
 

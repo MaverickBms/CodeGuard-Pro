@@ -27,6 +27,9 @@ documenta aquí.
 - Los 8 videos tienen enlace y metadatos verificados, pero **ninguno** tiene
   revisión pedagógica aprobada. La interfaz lo declara como pendiente.
 - No existe revisión humana independiente del módulo 0.1.
+- Las 13 fuentes iniciales se clasificaron como `solo_referencia` a partir de la
+  evidencia declarada en el lote; no hubo revisión legal independiente. Antes de
+  publicar, el propietario debe revisar esa decisión.
 - No hay quizzes publicados en un perfil limpio. Los quizzes de ejemplo se cargan
   como borrador mediante comando.
 
