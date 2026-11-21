@@ -189,7 +189,21 @@ Resultados:
 - El AppImage se verificó extrayéndolo (`--appimage-extract`) por el bloqueo
   FUSE del host de pruebas; el binario extraído ejecutó el mismo E2E.
 
-## 11. Conclusión
+## 11. Entrega
+
+- Rama: `release/1.0.0-final` (publicada en `origin`).
+- Pull request de finalización: https://github.com/MaverickBms/CodeGuard-Pro/pull/17
+  (contra `release/1.0.0`; **no fusionado**).
+- Commits principales:
+  - `5a1862e` fix(arranque): perfil local idempotente y propietario sin credenciales.
+  - `abf5b97` feat(biblioteca): PDFs locales, conocimiento de solo lectura y navegación.
+  - `13c00f1` fix(seguridad,electron): CSRF same-origin y arranque observable.
+  - `ec07181` feat(tutor): detección de modelo, timeout acotado y fallback claro.
+  - `17ec90a` docs: informe final 1.0.0, rendimiento y criterios de aceptación.
+- No se ha creado tag ni release; no se ha fusionado ningún PR.
+- PR #15 y #16 permanecen fuera de alcance y sin modificar.
+
+## 12. Conclusión
 
 CodeGuard Pro 1.0.0 queda operativo como plataforma educativa local para un
 perfil limpio: abre, guarda progreso real, permite estudiar la estructura

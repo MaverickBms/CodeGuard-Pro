@@ -3,7 +3,7 @@
 **Última actualización:** 2026-11-21
 **Fase:** finalización 1.0.0 — perfil limpio, rendimiento, biblioteca y entrega
 **Rama:** `release/1.0.0-final` (base `release/1.0.0`; sin fusionar)
-**PR de finalización:** se publicará al subir la rama; no se fusiona ni se crea tag/release sin autorización.
+**PR de finalización:** https://github.com/MaverickBms/CodeGuard-Pro/pull/17 (contra `release/1.0.0`; sin fusionar).
 **Base:** `main` intacta; PR #15 y #16 fuera de alcance.
 
 > Este documento conserva el historial de ejecución. No sustituye los informes
