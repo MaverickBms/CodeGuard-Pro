@@ -1,7 +1,7 @@
 # Contenido académico inicial y flujo editorial
 
-**Fecha:** 2026-11-21  
-**Alcance:** módulo 0.1 «Aprender a aprender» (8 lecciones).  
+**Fecha:** 2026-11-21
+**Alcance:** módulo 0.1 «Aprender a aprender» (8 lecciones).
 **Estado:** borradores editoriales visibles para estudio; **ninguna lección se declara publicada**.
 
 ## 1. Cobertura real
@@ -15,8 +15,10 @@
 | Lecciones aprobadas | 0 |
 | Lecciones publicadas | 0 |
 | Lecciones pendientes | 1.938 |
-| Videos aprobados por metadatos | 8 |
-| Fuentes registradas en el lote | 13 |
+| Videos con enlace y metadatos verificados | 8 |
+| Videos con revisión pedagógica aprobada | 0 |
+| Fuentes únicas registradas en el lote | 13 |
+| Referencias de fuente asociadas | 16 |
 
 Estas cifras provienen de SQLite y de `apps.roadmaps.coverage`. No se
 confunden con el progreso del estudiante (`Progreso`).
@@ -96,8 +98,11 @@ republican.
 
 **Límite:** la verificación acredita metadatos públicos (título, canal,
 duración y pista de audio/captions en español). No se ha realizado una revisión
-pedagógica completa de cada minuto del video. Esa revisión queda documentada
-como pendiente en `notas_verificacion`; no se presenta como completada.
+pedagógica completa de cada minuto del video. Desde la auditoría final, el estado
+técnico y el pedagógico son campos distintos: `estado_revision` acredita enlace y
+metadatos; `estado_pedagogico` permanece **pendiente** en los 8 videos. La
+interfaz del estudiante lo declara así y no presenta el video como material
+validado didácticamente.
 
 ## 5. Estados editoriales
 
@@ -139,6 +144,9 @@ contenido. No se repite en arranques posteriores.
 4. Enviar a revisión.
 5. Aprobar.
 6. Publicar.
+7. Para videos, revisar primero el enlace y después la ficha pedagógica. Aprobar
+   la revisión pedagógica exige notas sobre correspondencia temática, nivel y
+   utilidad didáctica; no se deduce de los metadatos.
 
 Cada transición exige el propietario local con permiso editorial, queda
 auditada y pasa la puerta de calidad del esquema 2: secciones mínimas, ejemplo,
@@ -149,7 +157,7 @@ explícita; no ocurre durante la siembra.
 
 - 1.938 lecciones sin contenido desarrollado.
 - Revisión humana independiente del módulo 0.1.
-- Revisión pedagógica completa de los videos.
+- Revisión pedagógica completa de los 8 videos (0 aprobados actualmente).
 - Publicación editorial del módulo cuando el propietario la autorice.
 - Ampliar la producción a los módulos 0.2–0.4 y a los prerrequisitos.
 - Contenido de evaluaciones formales (quizzes/exámenes) para el módulo.

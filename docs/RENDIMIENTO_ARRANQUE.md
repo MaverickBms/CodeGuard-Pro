@@ -67,7 +67,19 @@ progreso sin reactivar el login.
 
 ## 3. Resultados reproducibles
 
-Comando:
+### Medición de la auditoría final (commit `24d04b6`)
+
+```
+primer_arranque: interno 8.706 ms · pared 9.650 ms · 54 migraciones · roadmap cargado
+segundo_arranque: interno 144 ms · pared 901 ms · 1.946 lecciones reutilizadas
+perfil_con_historial: interno 129 ms · pared 813 ms
+```
+
+La mejora respecto de la medición anterior se explica por el estado del host y
+por no reconstruir el roadmap. Es una medición local; no se extrapola a otros
+equipos.
+
+### Medición previa de la base
 
 ```bash
 .venv/bin/python scripts/benchmark-startup.py

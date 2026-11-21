@@ -2,251 +2,221 @@
 
 **Fecha:** 2026-11-21
 **Rama:** `release/1.0.0-final` (base: `release/1.0.0`)
+**Commit de código auditado:** `24d04b6`
+**PR:** [#17](https://github.com/MaverickBms/CodeGuard-Pro/pull/17) — abierto, sin fusionar
 **Alcance:** plataforma educativa local (Electron + Django + SQLite).
-**Fuera de alcance:** Mundo CodeGuard, PR #15 y PR #16. No se ha desarrollado contenido de videojuego.
+**Fuera de alcance:** Mundo CodeGuard, PR #15 y PR #16.
 
-> Este informe describe únicamente lo verificado en esta iteración. Las
-> dependencias externas pendientes se indican de forma expresa y no se
-> presentan como completadas.
+> Los documentos de esta carpeta describen el estado real de esta rama. Las
+> comprobaciones no ejecutadas se indican como pendientes. No se copian cifras
+> de iteraciones anteriores sin verificarlas.
 
 ## 1. Resultado ejecutivo
 
-La aplicación arranca en un perfil limpio, crea el propietario local, aplica
-migraciones, instala ASCENSO 3.1 y abre la interfaz. Los módulos operativos
-quedan conectados a SQLite: panel, roadmap, lecciones, evaluaciones,
-evidencias, gamificación, tutor local, biblioteca documental, base de
-conocimiento (solo lectura) y backups.
+CodeGuard Pro 1.0.0 es una plataforma educativa local, offline-first y
+monousuario que arranca en un perfil limpio, aplica migraciones, crea un
+propietario local explícito, instala ASCENSO 3.1 y permite estudiar 8 lecciones
+reales con ejercicios deterministas, progreso persistente, biblioteca PDF,
+tutor local con fallback, gamificación, espacio editorial y backups verificados.
 
-Se corrigieron tres bloqueos reales:
+La auditoría final corrigió dos defectos de integridad relevantes:
 
-1. **Sin propietario local en un perfil limpio.** Todas las escrituras
-   (progreso, intentos, evidencias, gamificación) se rechazaban. Ahora el
-   arranque crea una sola vez un propietario local sin credenciales, solo con
-   `AUTH_DISABLED=True`.
-2. **CSRF roto por `Referrer-Policy: no-referrer`.** Chromium enviaba
-   `Origin: null` en los POST de formularios y Django los rechazaba con 403.
-   Se cambió a `same-origin`; los formularios reales (importación de PDF,
-   archivar, evaluaciones, evidencias) funcionan dentro de Electron.
-3. **Arranque lento por reconstruir el roadmap en cada inicio.** Se añadió
-   verificación de integridad con huella de manifiesto y contenido. El segundo
-   arranque verifica 1.946 lecciones en ~0,1–0,3 s en lugar de reconstruirlas.
+1. **Identidad local:** ya no se eleva la primera cuenta activa. El propietario
+   se marca explícitamente y un perfil ambiguo falla cerrado.
+2. **Progreso:** una etapa aprobada ya no se revierte al recalcular lecciones.
 
-## 2. Funcionalidades verificadas
+También se separó la verificación técnica de videos de su revisión pedagógica,
+se conservaron los formularios editoriales inválidos y se corrigió el CI para
+que el PR de release ejecute los workflows.
 
-| Área | Resultado | Evidencia |
-|---|---|---|
-| Backend Django | Operativo | `manage.py check` sin incidencias; 349 pruebas OK |
-| Migraciones | Al día | `makemigrations --check --dry-run` sin cambios |
-| Frontend | Operativo | 7 rutas principales HTTP 200; 12 temas; sin desbordamiento a 1024/768 px |
-| Electron | Operativo | IPC, tema persistente, cierre sin huérfanos, formularios CSRF |
-| Base de datos | Operativa | SQLite WAL; migraciones y datos en `CODEGUARD_DATA_DIR` |
-| Roadmap ASCENSO | Completo | 33 etapas, 212 módulos, 1.946 títulos, 7 prerrequisitos |
-| Lecciones | Contenido inicial | 8 lecciones estructuradas en borrador; 1.938 títulos pendientes; 0 publicadas |
-| Tutor IA | Operativo con y sin Ollama | Detección de Ollama/modelo, pistas y fallback determinista |
-| Evaluaciones | Operativo | Quiz publicado de prueba, envío y calificación en servidor |
-| Evidencias | Operativo | Registro de criterio y cierre de etapa por criterios |
-| Biblioteca | Operativa | Importación PDF, búsqueda, archivo, visor y rangos HTTP |
-| Base de conocimiento | Consulta y edición | Fuentes, versiones, paquetes y espacio editorial con transiciones auditadas |
-| Gamificación | Operativa | XP/monedas/logros/misiones idempotentes; no altera notas |
-| Backups | Operativo | Crear, verificar, restaurar y rollback con perfil temporal |
-| Seguridad | Sin hallazgos críticos | CSP, loopback, CSRF, uploads validados, Ed25519, backups |
-| Rendimiento | Objetivos cumplidos | Primer arranque 13–16 s; normal ~2,8 s con Electron |
-| Instalación Linux | Verificada | Servidor PyInstaller + AppImage extraído, E2E completo |
-| Instalación Windows | CI únicamente | Run `44945721326` verde: NSIS, 7 rutas, 12 temas, tema/progreso persistente, desinstalación y portable; falta hardware físico |
-| Offline | Verificado por diseño y E2E | Sin CDN, sin telemetría, sync falla cerrado |
+## 2. Estado verificado
 
-## 2.1 Contenido académico y espacio editorial
+| Área | Resultado |
+|---|---|
+| Backend Django | 356 pruebas OK; `check` sin incidencias; migraciones al día |
+| Electron | 26/26 pruebas OK; IPC, cierre y tema persistentes |
+| Frontend | 9 rutas HTTP 200; 12 temas; 13 pantallas responsive |
+| Roadmap | 33 etapas, 212 módulos, 1.946 títulos, 7 prerrequisitos |
+| Contenido | 8 lecciones, 8 ejemplos, 16 ejercicios, 13 fuentes, 8 videos |
+| Cobertura | 8 desarrolladas en borrador; 0 aprobadas; 0 publicadas; 1.938 pendientes |
+| Aprendizaje | Lección completada por ejercicio; persiste tras reiniciar |
+| Biblioteca | PDF importado, visor, archivo y persistencia |
+| Backups | Crear, verificar y restaurar en perfil aislado con datos comprobados |
+| Tutor | Ollama local y fallback determinista; límite de 3 pistas |
+| Seguridad | Sin vulnerabilidades críticas/altas conocidas en el alcance local |
+| Linux | AppImage y servidor PyInstaller actuales verificados |
+| Windows | CI 4/4 sobre `5747ec6`; hardware físico pendiente |
+| macOS/ARM64 | No soportados ni validados |
 
-Se desarrolló el módulo 0.1 «Aprender a aprender» con **8 lecciones completas**
-(objetivos, conocimientos previos, introducción, teoría, explicación sencilla,
-conceptos, aplicaciones, errores frecuentes, ejemplo, dos ejercicios
-deterministas, autoevaluación, fuentes y video). El contenido es original y
-usa referencias verificables; no se rellenaron lecciones con texto genérico.
+## 3. Cambios de esta auditoría
 
-La cobertura real es: **8 desarrolladas, 0 aprobadas y 0 publicadas**; las otras
-1.938 permanecen pendientes. El contenido se siembra una sola vez como
-**borrador editorial** y se puede estudiar con un aviso visible. La aprobación
-y publicación requieren una acción explícita del propietario en el nuevo
-**Espacio editorial**, que permite editar, versionar, enviar a revisión,
-aprobar, publicar, retirar, registrar fuentes y revisar licencias. La pantalla
-**Cobertura** separa producción editorial de progreso del estudiante.
+### 3.1 Identidad y permisos
 
-Los **8 videos** fueron verificados por metadatos públicos (título, canal, URL,
-duración y pista de audio/captions en español). Se abren en el navegador del
-sistema mediante un IPC restringido a HTTPS; la lección funciona sin conexión.
-La revisión pedagógica completa de cada video queda declarada como pendiente.
+- Nueva marca persistente `Usuario.es_propietario_local`.
+- Migración `accounts.0003_usuario_es_propietario_local`.
+- El nombre reservado heredado `propietario-local` se reconoce explícitamente.
+- Varias cuentas sin propietario inequívoco: no se elige ni se eleva ninguna.
+- La siembra de contenido ya no convierte cuentas en staff.
+- Pruebas de cuenta ordinaria, perfil ambiguo y nombre heredado.
 
-Detalle: [`CONTENIDO_ACADEMICO.md`](CONTENIDO_ACADEMICO.md).
+### 3.2 Progreso
 
-## 3. Datos y persistencia
+- `recalcular_progreso_etapa` no revoca una etapa completada.
+- Regresión añadida en `test_roadmaps`.
 
-- El propietario local se crea solo una vez y no tiene contraseña utilizable.
-- El progreso, intentos, resultados, evidencias, monedas y misiones se guardan
-  en SQLite y sobreviven al reinicio.
-- La restauración de una copia conserva `media/` y la tabla de estado del
-  roadmap; el arranque posterior reutiliza el contenido sin reconstruirlo.
-- Los registros ajenos al manifiesto se conservan y se contabilizan para no
-  borrar progreso histórico.
+### 3.3 Editorial y contenido
 
-## 4. Rendimiento medido
+- Formularios inválidos conservan texto y errores.
+- Videos separan `estado_revision` (enlace/metadatos) de `estado_pedagogico`.
+- La aprobación pedagógica exige enlace verificado, fecha, actor y notas.
+- Los 8 videos quedan con revisión pedagógica **pendiente**.
+- Se rechazan URLs `http://` en videos.
+- Migración `roadmaps.0022_recursoaudiovisual_revision_pedagogica`.
 
-Máquina de referencia: Linux x86_64, 7,4 GB RAM, carga media alta durante las
-pruebas. Medición reproducible con `scripts/benchmark-startup.py`.
+### 3.4 Seguridad y CI
 
-| Escenario | Antes (medido) | Después (medido) |
-|---|---|---|
-| `cargar_ascenso` en cada arranque | ~3,4 s (4.000+ consultas) | 0 s en arranque normal |
-| Verificación de 1.946 lecciones | No existía | 0,08–0,30 s |
-| Servidor empaquetado, primer arranque | ~12,6 s (sin cambios de datos) | ~13–16 s según carga del equipo |
-| Servidor empaquetado, segundo arranque | ~4,0 s | **~1,2 s** |
-| Electron completo, segundo arranque | No medido | **~2,8 s** |
-| Benchmark interno, segundo arranque | ~3,4 s | **~0,15 s** |
+- Validación completa de contraseña en el setup conservado.
+- CI se ejecuta en PR contra `release/1.0.0` y `release/**`.
+- Windows se ejecuta también en push a `release/1.0.0-final`.
+- `pip-audit` y `npm audit --omit=dev` añadidos al CI.
+- Opciones futuras de navegación etiquetadas como no disponibles.
+- `transition: all` sustituido por propiedades concretas.
+- Prevención de envíos duplicados en formularios.
 
-Objetivos: normal ≤10 s y primer arranque ≤30 s. Ambos se cumplen en la
-máquina de referencia. El detalle metodológico está en
-[`RENDIMIENTO_ARRANQUE.md`](RENDIMIENTO_ARRANQUE.md).
+## 4. Pruebas
 
-## 5. Pruebas ejecutadas
+La matriz detallada está en [`MATRIZ_PRUEBAS_1.0.0.md`](MATRIZ_PRUEBAS_1.0.0.md).
+
+### Backend
 
 ```bash
-CODEGUARD_DATA_DIR=/tmp/cg-base .venv/bin/python manage.py check
-CODEGUARD_DATA_DIR=/tmp/cg-base .venv/bin/python manage.py makemigrations --check --dry-run
-CODEGUARD_DATA_DIR=/tmp/cg-base .venv/bin/python manage.py test --parallel 1
-npm run test:electron
-.venv/bin/python scripts/benchmark-startup.py
-.venv/bin/python -m pip_audit -r requirements.txt
-npm audit --omit=dev
+CODEGUARD_DATA_DIR=/tmp/cg-audit .venv/bin/python manage.py check --settings=config.settings.development
+CODEGUARD_DATA_DIR=/tmp/cg-audit .venv/bin/python manage.py makemigrations --check --dry-run --settings=config.settings.development
+CODEGUARD_DATA_DIR=/tmp/cg-audit .venv/bin/python manage.py test --settings=config.settings.development --parallel 1
 ```
 
-Resultados:
+Resultado: **356 pruebas OK** en 131 s; migraciones sin cambios.
 
-- Django: **349 pruebas OK** (178 s).
-- Electron: **26 pruebas OK**.
-- `pip-audit`: sin vulnerabilidades conocidas.
-- `npm audit --omit=dev`: 0 vulnerabilidades de producción.
-- `npm audit` completo: 6 moderadas en la cadena de build de
-  `electron-builder`; no hay corrección compatible sin degradación.
-- Benchmark: primer arranque 13,6 s; segundo 1,0 s de pared; historial 1,5 s.
-- Servidor PyInstaller: primer arranque ~15,2 s; segundo ~1,0 s.
-- AppImage extraído: interfaz lista en ~2,8 s; E2E de 7 rutas, 12 temas,
-  formulario PDF y cierre sin procesos huérfanos.
-- Responsive: 11 pantallas sin desbordamiento horizontal a 1024×720 y 768×900
-  (`scripts/cdp-responsive.js`).
-- Backup/restore de integración: base y `media/` restauradas; marcador posterior
-  eliminado; estado curricular reutilizado tras restaurar.
-- Windows (CI, no hardware físico): run `44945721326` verde en 4/4 jobs.
-  Instalación NSIS, primer arranque, 7 rutas 200, 12 temas, tema `fantasy`
-  persistente, `PROGRESS=1`, desinstalación, portable y sin procesos huérfanos.
-  Artefacto `codeguard-windows-x64` (275.077.527 bytes, SHA-256 del ZIP
-  `481351647fa7c64644373fded78d4d3c69fcfcc950f48dd2d0e2f8bf3f7a9ad5`).
+### Electron y UI
 
-## 6. Seguridad
+```bash
+npm run test:electron                 # 26/26 OK
+node scripts/cdp-smoke.js "$WS" basic # 9 rutas 200, 12 temas
+node scripts/cdp-form-smoke.js "$WS"  # PDF real, visor, archivo
+node scripts/cdp-responsive.js "$WS"  # BAD=[]
+```
 
-- Servidor Waitress en `127.0.0.1`; `ALLOWED_HOSTS` local.
-- CSP sin CDN, `script-src 'self'`, `frame-src 'self'`; PDF incrustado solo del
-  mismo origen.
-- CSRF activo. La política de referrer se ajustó a `same-origin` para que
-  Chromium envíe un `Origin` válido en los POST.
-- Subida de PDF: extensión, tamaño máximo 50 MB, firma `%PDF-`, SHA-256,
-  rechazo de duplicados, nombre saneado y descarga con `nosniff`.
-- El tutor solo acepta URLs loopback de Ollama, no sigue redirecciones y no
-  envía datos a hosts remotos.
-- Los backups validan ZIP, rutas, CRC, hashes, SQLite y compatibilidad de
-  esquema antes de restaurar; conservan copia de reversión.
-- La ejecución arbitraria de código sigue deshabilitada. No se añadió sandbox
-  ni se habilitaron laboratorios de ejecución.
-- No se reactivó la autenticación ni se expuso Django a la red.
+### Aprendizaje y persistencia
 
-## 7. Limitaciones y pendientes externos
+- Lección 1 respondida correctamente: `{"ok":true,"done":true,"attempts":1}`.
+- Tras reiniciar: `{"completed":true,"attempt":true,"score":true}`.
+- Tema `fantasy` persiste en `ui-preferences.json` tras reiniciar.
 
-1. **Contenido académico:** 8 lecciones del módulo 0.1 están desarrolladas
-   como borradores; 1.938 siguen pendientes. No se publicaron cuerpos genéricos
-   ni se atribuyó aprobación humana. El contenido de PR #14 se usó como
-   orientación editorial, no como publicación automática. La etapa 25 sigue sin
-   objetivo formal en el documento maestro.
-2. **Windows físico:** la instalación NSIS/portable está validada en CI, no en
-   hardware Windows real. No se declara aceptación física.
-3. **Sincronización remota de producción:** no hay endpoint, allowlist ni
-   claves públicas. El cliente falla cerrado y la aplicación funciona offline.
-4. **macOS y ARM64:** no configurados ni validados.
-5. **Biblioteca:** no se añadió parsing/OCR de PDF; se usa el visor de Chromium.
-   Esto evita dependencias y superficie de ataque adicionales.
-6. **Laboratorios, competencias, vigencia y ética:** siguen fuera del alcance
-   operativo de esta entrega y aparecen como no disponibles en la navegación;
-   no se simulan acciones.
-7. **AppImage en este host:** el montaje FUSE se bloqueó tanto en el artefacto
-   nuevo como en el anterior. Se verificó con extracción
-   (`APPIMAGE_EXTRACT_AND_RUN=1`) y se documentó el fallback en `run.sh`.
+### Backup y restauración
 
-## 8. Matriz de trazabilidad resumida
+- Backup de 2 archivos y 1.511.679 bytes.
+- SHA-256 del ZIP de prueba:
+  `e592c07ce392da8c635d2885341c8c7755485ebfc917ddc0980817746d6f2753`.
+- Restaurado en perfil aislado; progreso, intento y documento archivado
+  recuperados.
 
-| Funcionalidad | Requisito | Backend | Frontend | Persistencia | Prueba | Estado |
-|---|---|---|---|---|---|---|
-| Perfil local | Identidad monousuario | `accounts.bootstrap` | Navegación sin login | `accounts_usuario` | `test_bootstrap_local` | Completo |
-| Panel | RF-016 | `core.views.panel` | `core/panel.html` | SQLite | `test_panel` | Completo |
-| Roadmap | RF-010/011 | `roadmaps.services` | `lista/detalle` | SQLite | `test_roadmaps` | Completo |
-| Lecciones | Fase 2 | `leccion_detalle` | `leccion.html` | SQLite | `test_learning_content` | Estructura; contenido editorial pendiente |
-| Evaluaciones | Fase 4 | `services_evaluacion` | `quiz_*` | SQLite | `test_evaluacion` | Completo con contenido publicado |
-| Evidencias | Fase 5 | `registrar_cumplimiento_criterio` | `evidencias` | SQLite | `test_evaluacion` | Completo |
-| Tutor | Fase 3 | `tutoring.services` | `tutoria.js` | SQLite | `test_tutoria` | Completo con fallback |
-| Biblioteca | Fase 4 | `apps.library` | `library/*` | SQLite + media | `test_library` | Completo |
-| Conocimiento | RF-050–059 | modelos y comandos | `conocimiento.html` | SQLite | `test_publisher` | Backend completo; UI solo lectura |
-| Gamificación | Fase 5 | `gamification.services` | `perfil.html` | SQLite | `test_gamification` | Completo; no altera notas |
-| Backups | Fase 8 | `core.backup/restore` | `backups.html` + IPC | ZIP + SQLite | `test_backups` | Completo |
-| Arranque | RNF rendimiento | `roadmaps.bootstrap` | splash Electron | metadatos SQLite | `test_bootstrap`, benchmark | Completo |
+### Dependencias
 
-## 9. Archivos principales modificados o añadidos
+```text
+pip-audit: sin vulnerabilidades conocidas
+npm audit --omit=dev: 0 vulnerabilidades
+npm audit completo: 6 moderadas (build de electron-builder), 0 altas/críticas
+```
 
-- `apps/roadmaps/bootstrap.py`, `apps/roadmaps/migrations/0020_*`,
-  `apps/roadmaps/management/commands/verificar_perfil.py`.
-- `apps/accounts/bootstrap.py`, migración de auditoría de propietario local.
-- `apps/roadmaps/data/contenido_academico_0_1.json`,
-  `cargar_contenido_academico`, `coverage.py`, `editorial_views.py`,
-  `forms.py`, `templates/roadmaps/editorial*.html` y `cobertura.html`.
-- `apps/roadmaps/models.py` y migración 0021: contenido ampliado y videos.
-- `apps/library/*` y `templates/library/*` (módulo nuevo).
-- `templates/roadmaps/conocimiento.html` y vista de solo lectura.
-- `config/health.py`, `config/middleware.py`, `config/settings/development.py`,
-  `config/urls.py`.
-- `electron/main.js`, `electron/startup-status.js` y pruebas.
-- `scripts/benchmark-startup.py`, `scripts/cdp-form-smoke.js`,
-  `scripts/cdp-smoke.js`.
-- `run.sh`, `.github/workflows/ci.yml`, README y documentación.
+## 5. Rendimiento
 
-## 10. Artefactos verificados
+`python scripts/benchmark-startup.py`:
 
-- Servidor PyInstaller Linux x64:
-  `70d428b94ea258ec2e838f37a626435876559c9be3645836e148fbf8ece0e12e`
-  (`dist-server/CodeGuardServer/CodeGuardServer`).
-- AppImage Linux x64:
-  `95816a1c9e874fa6ffb8a70ce890cf558cc2adeb8bae55203a606456fd2039d2`
-  (`dist/CodeGuard-Pro-1.0.0-x86_64.AppImage`).
-- El AppImage se verificó extrayéndolo (`--appimage-extract`) por el bloqueo
-  FUSE del host de pruebas; el binario extraído ejecutó el mismo E2E.
+| Escenario | Medición local |
+|---|---|
+| Primer arranque | 8,7 s interno / 9,6 s pared |
+| Segundo arranque | 144 ms interno / 901 ms pared |
+| Perfil con historial | 129 ms interno / 813 ms pared |
 
-## 11. Entrega
+Los objetivos (≤10 s normal, ≤30 s primer arranque) se cumplen en este host. No
+se extrapolan a hardware más lento sin repetir el benchmark.
 
-- Rama: `release/1.0.0-final` (publicada en `origin`).
-- Pull request de finalización: https://github.com/MaverickBms/CodeGuard-Pro/pull/17
-  (contra `release/1.0.0`; **no fusionado**).
-- Commits principales:
-  - `5a1862e` fix(arranque): perfil local idempotente y propietario sin credenciales.
-  - `abf5b97` feat(biblioteca): PDFs locales, conocimiento de solo lectura y navegación.
-  - `13c00f1` fix(seguridad,electron): CSRF same-origin y arranque observable.
-  - `ec07181` feat(tutor): detección de modelo, timeout acotado y fallback claro.
-  - `17ec90a` docs: informe final 1.0.0, rendimiento y criterios de aceptación.
-  - `bb457e0` fix(linux): conserva el perfil heredado al lanzar con run.sh.
-  - `937684b` test(ui): smoke responsive de las pantallas principales.
-- No se ha creado tag ni release; no se ha fusionado ningún PR.
-- PR #15 y #16 permanecen fuera de alcance y sin modificar.
+## 6. Contenido académico
 
-## 12. Conclusión
+| Indicador | Valor |
+|---|---:|
+| Etapas | 33 |
+| Módulos | 212 |
+| Títulos | 1.946 |
+| Lecciones con cuerpo | 8 |
+| Versiones borrador | 8 |
+| Aprobadas | 0 |
+| Publicadas | 0 |
+| Pendientes | 1.938 |
+| Ejemplos | 8 |
+| Ejercicios | 16 |
+| Fuentes únicas | 13 |
+| Referencias | 16 |
+| Videos con enlace verificado | 8 |
+| Videos con revisión pedagógica aprobada | 0 |
 
-CodeGuard Pro 1.0.0 queda operativo como plataforma educativa local para un
-perfil limpio: abre, siembra 8 lecciones iniciales en borrador, guarda progreso
-real, permite estudiar contenido con fuentes y videos, resolver ejercicios,
-registrar evidencias y evaluaciones, consultar PDFs, usar el tutor con fallback
-y crear/restaurar copias. El espacio editorial permite aprobar y publicar
-contenido cuando el propietario lo decida. Lo que falta es ampliar el contenido
-académico, la revisión humana independiente, la aceptación física Windows y la
-infraestructura remota opcional; nada de ello se declara terminado.
+El detalle está en [`CONTENIDO_ACADEMICO.md`](CONTENIDO_ACADEMICO.md). Los títulos
+no se presentan como lecciones terminadas.
+
+## 7. Artefactos
+
+| Artefacto | Plataforma | Tamaño | SHA-256 | Commit |
+|---|---|---:|---|---|
+| `CodeGuard-Pro-1.0.0-x86_64.AppImage` | Linux x64 | 129.372.879 B | `7ca64d4e46787aee17cd839d162c965ba549f4f280809a8ca7d4eac915c28202` | `24d04b6` |
+| `CodeGuardServer` | Linux x64 | 7.798.232 B | `6080dc8ca8ed731ecdfe38c84e0906eadfce6dd2b6838036911577479ec3d4a5` | `24d04b6` |
+
+El AppImage actual se ejecutó con `APPIMAGE_EXTRACT_AND_RUN=1` porque el montaje
+FUSE de este host permanece bloqueado. No se reutilizan hashes antiguos.
+
+Windows: el CI construye NSIS y portable. No hay artefacto Windows local ni
+aceptación física; no se inventa un hash.
+
+## 8. Seguridad
+
+Resumen: [`SEGURIDAD_1.0.0.md`](SEGURIDAD_1.0.0.md).
+
+- Servidor solo en `127.0.0.1`.
+- CSRF, CSP, cabeceras y cookies endurecidas.
+- Propietario local explícito y permisos editoriales limitados.
+- Uploads PDF validados por extensión, firma, tamaño y SHA-256.
+- Visor restringido a `MEDIA_ROOT` y rangos HTTP.
+- Electron con context isolation, sandbox, IPC por origen exacto y navegación
+  restringida.
+- Backups con hashes, validación de rutas, SQLite y rollback.
+- Tutor solo loopback y sin redirecciones.
+- Sync remota falla cerrada sin configuración.
+
+## 9. Limitaciones
+
+Detalle: [`LIMITACIONES_1.0.0.md`](LIMITACIONES_1.0.0.md).
+
+1. 1.938 lecciones sin cuerpo.
+2. 8 lecciones en borrador; 0 publicadas.
+3. 0 videos con revisión pedagógica aprobada.
+4. Sin sandbox de ejecución de código.
+5. Sin interfaz docente para resolver respuestas abiertas.
+6. Windows físico pendiente.
+7. macOS y ARM64 no soportados.
+8. Sincronización remota de producción no configurada.
+9. AppImage no probado con montaje FUSE directo en este host.
+10. No se fusionó el PR ni se creó tag/release.
+
+## 10. Estado del PR y veredicto
+
+- Rama: `release/1.0.0-final`, publicada en `origin`.
+- PR #17: abierto, contra `release/1.0.0`, sin fusionar.
+- PR #15 y #16: intactos y fuera de alcance.
+- CI: workflow corregido; el nuevo run se registra tras el push.
+- No se creó etiqueta ni release definitiva.
+
+**Veredicto: LISTO CON LIMITACIONES DOCUMENTADAS.**
+
+La aplicación funciona dentro del alcance local definido y no tiene bloqueos
+críticos conocidos. No se declara aceptación física de Windows ni cobertura
+académica completa. La entrega es honesta sobre lo que falta y deja el PR
+preparado para revisión, sin fusionarlo.

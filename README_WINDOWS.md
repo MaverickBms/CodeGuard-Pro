@@ -59,9 +59,10 @@ arranque, `CodeGuardServer.exe` aplica las migraciones, crea el propietario loca
 sin credenciales (modo sin autenticación), instala ASCENSO 3.1 y siembra el
 módulo académico inicial de 8 lecciones en estado borrador dentro del directorio
 de datos del usuario. En los arranques siguientes verifica la huella
-del contenido y no reconstruye las 1.946 lecciones. El tiempo medido en Linux
-para el mismo flujo es ~12,6 s en el primer arranque y ~1,2 s en el segundo; el
-splash muestra el estado real de cada fase.
+del contenido y no reconstruye las 1.946 lecciones. La auditoría final midió en
+Linux ~9,6 s de pared en el primer arranque (54 migraciones) y ~0,9 s en el
+segundo; el splash muestra el estado real de cada fase. Son mediciones de este
+host, no una promesa para hardware Windows.
 
 ## Datos locales
 
@@ -90,7 +91,7 @@ pruebas antes de distribuir.
 
 | Plataforma | Artefacto configurado | Estado |
 |---|---|---|
-| Windows x64 | NSIS installer + portable | **CI verde en `release/1.0.0-final`** (run `44945721326`: instalación, 9 rutas 200 (incluye editorial y cobertura), 12 temas, tema/progreso persistente, desinstalación y portable; artefacto `codeguard-windows-x64`); aceptación física en host Windows pendiente |
+| Windows x64 | NSIS installer + portable | **CI verde en `release/1.0.0-final`** (commit `5747ec6`, run `44945721326`: instalación, 9 rutas 200 (incluye editorial y cobertura), 12 temas, tema/progreso persistente, desinstalación y portable; artefacto `codeguard-windows-x64`); aceptación física en host Windows pendiente |
 | Linux x64 | AppImage | **Build y E2E verificados** (health check, rutas principales, tema y cierre sin huérfanos); aceptación en equipo limpio pendiente |
 | macOS | No configurado | No soportado/validado todavía |
 | ARM64 | No configurado | No soportado/validado todavía |

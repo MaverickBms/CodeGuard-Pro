@@ -8,7 +8,9 @@ El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicac
 
 El roadmap ASCENSO 3.1 (33 etapas) se instala automáticamente en el primer arranque y se verifica sin reconstruirse en los siguientes. La aplicación incluye panel, roadmap, lecciones con contenido académico estructurado, evaluaciones, evidencias, biblioteca documental de PDFs, tutoría IA local (Ollama), gamificación, base de conocimiento, espacio editorial y copias de seguridad. Consulta el plan maestro en la rama `documentation` para distinguir lo implementado de lo que sigue en progreso. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
 
-La iteración académica del 21-11-2026 añadió 8 lecciones completas del módulo 0.1 con fuentes verificables, ejercicios deterministas y videos en español, además del espacio editorial, la cobertura y la auditoría de estados. El contenido se entrega como **borrador editorial** para estudio; la aprobación y publicación son decisiones explícitas del propietario. La aceptación en hardware Windows físico sigue pendiente. El detalle está en [docs/INFORME_FINAL_1.0.0.md](docs/INFORME_FINAL_1.0.0.md) y [docs/CONTENIDO_ACADEMICO.md](docs/CONTENIDO_ACADEMICO.md).
+La iteración académica del 21-11-2026 añadió 8 lecciones completas del módulo 0.1 con fuentes verificables, ejercicios deterministas y videos en español, además del espacio editorial, la cobertura y la auditoría de estados. El contenido se entrega como **borrador editorial** para estudio; la aprobación y publicación son decisiones explícitas del propietario. Los videos tienen enlace y metadatos verificados, pero su **revisión pedagógica sigue pendiente** y así se muestra en la interfaz. La aceptación en hardware Windows físico sigue pendiente.
+
+La auditoría final corrigió la identidad local (propietario explícito, sin elevar cuentas ordinarias), la integridad del progreso de etapa y la pérdida de datos en formularios editoriales. Consulta [la auditoría](docs/AUDITORIA_FINAL_1.0.0.md), [el estado funcional](docs/ESTADO_FUNCIONAL_1.0.0.md), [la seguridad](docs/SEGURIDAD_1.0.0.md), [las pruebas](docs/MATRIZ_PRUEBAS_1.0.0.md), [las limitaciones](docs/LIMITACIONES_1.0.0.md), [el informe final](docs/INFORME_FINAL_1.0.0.md) y [el contenido académico](docs/CONTENIDO_ACADEMICO.md).
 
 El cliente de sincronización pull-only por HTTPS, el comando `sincronizar_conocimiento`, el publicador local y la integración de comprobaciones periódicas con Electron están implementados. **La distribución remota de producción sigue pendiente**: no hay hosting/endpoint público, allowlist ni claves públicas de producción configuradas. Sin esa configuración, el cliente falla cerrado y no realiza conexiones. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
 
@@ -25,9 +27,12 @@ No se solicita usuario ni contraseña. El sistema de autenticación está
 **temporal y opcionalmente desactivado** para uso local directo (ver detalles en la rama `documentation`).
 
 En un perfil limpio, el arranque crea una sola vez el **propietario local**
-necesario para asociar progreso, intentos y evidencias. No crea credenciales de
-acceso ni reactiva el login. El primer arranque aplica las migraciones e instala
-ASCENSO 3.1; los siguientes verifican la integridad y reutilizan el contenido.
+necesario para asociar progreso, intentos y evidencias. Lo marca de forma
+explícita (`Usuario.es_propietario_local`) y no crea credenciales de acceso ni
+reactiva el login. Si el perfil contiene varias cuentas y ninguna es inequívoca,
+la aplicación no elige ni eleva ninguna: falla cerrado y conserva la lectura. El
+primer arranque aplica las migraciones e instala ASCENSO 3.1; los siguientes
+verifican la integridad y reutilizan el contenido.
 
 El sistema completo de autenticación (usuario, contraseña maestra, frase de
 rescate, bloqueo por intentos y cierre de sesión) se **conserva íntegro** en el
@@ -124,17 +129,20 @@ ni cambios de esquema.
 ## Estado de distribución (QA 21-11-2026)
 
 El AppImage Linux x64 se compiló y verificó con un E2E sobre perfil temporal:
-health check, siete rutas HTTP 200 (incluye Biblioteca y Base de conocimiento),
-12 temas, responsive a 1024/768 px, formulario real de importación PDF con
+health check, nueve rutas HTTP 200 (incluye Biblioteca, Base de conocimiento,
+Editorial y Cobertura), 12 temas, responsive a 1024/768 px, formulario real de importación PDF con
 CSRF, visor PDF, persistencia de tema al reiniciar y cierre sin procesos
-huérfanos ni puertos abiertos. El arranque normal medido fue ~2,8 s con
-Electron y ~1,2 s para el servidor empaquetado; el primer arranque ~13–16 s según carga.
+huérfanos ni puertos abiertos. La auditoría final midió ~9,6 s en el primer
+arranque del AppImage y ~10,2 s hasta interfaz; el segundo arranque reutiliza el
+perfil y no reconstruye el roadmap.
 
 El job `windows-package` de CI ejecutó la aceptación automatizada sobre
-`release/1.0.0-final` (run `44945721326`): instalación NSIS, primer arranque,
-health, 7 rutas HTTP 200 (incluye Biblioteca y Base de conocimiento), 12 temas,
-persistencia de tema y progreso, cierre sin huérfanos, desinstalación y
-portable. Publicó el artefacto `codeguard-windows-x64` (274 MB).
+`release/1.0.0-final` en el commit `5747ec6` (run `44945721326`): instalación
+NSIS, primer arranque, health, 9 rutas HTTP 200 (incluye Biblioteca, Base de
+conocimiento, Editorial y Cobertura), 12 temas, persistencia de tema y progreso,
+cierre sin huérfanos, desinstalación y portable. Publicó el artefacto
+`codeguard-windows-x64` (274 MB). El commit `e17721f` posterior solo cambió
+documentación.
 **La aceptación manual en un equipo Windows físico sigue pendiente**; CI no
 sustituye hardware real. No distribuir como versión estable hasta completar esa matriz. Consulta
 [docs/INFORME_FINAL_1.0.0.md](docs/INFORME_FINAL_1.0.0.md),
@@ -264,7 +272,7 @@ python manage.py cargar_contenido_academico --dry-run
 python scripts/benchmark-startup.py
 ```
 
-Resultado verificado en este repositorio (21-11-2026): **349 pruebas OK** en
+Resultado verificado en este repositorio (21-11-2026): **356 pruebas OK** en
 `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`,
 `apps.gamification`, `apps.challenges` y `apps.library`, con
 `--settings=config.settings.development` (system check 0 incidencias y
@@ -274,9 +282,10 @@ evaluaciones/evidencias, carga idempotente de contenido académico y flujo
 editorial. `npm run test:electron` ejecuta 26 pruebas de IPC, arranque,
 restauración, enlaces externos y persistencia de tema.
 
-Rendimiento medido: primer arranque empaquetado ~15,2 s; segundo ~1,2 s en el
-servidor y ~2,8 s con Electron. El segundo arranque verifica 1.946 lecciones sin
-reconstruirlas. Detalle y metodología en
+Rendimiento medido en la auditoría (commit `24d04b6`): primer arranque ~9,6 s
+de pared; segundo ~0,9 s de servidor y ~10,2 s de AppImage solo en el primer
+arranque. El segundo arranque verifica 1.946 lecciones sin reconstruirlas.
+Detalle y metodología en
 [docs/RENDIMIENTO_ARRANQUE.md](docs/RENDIMIENTO_ARRANQUE.md). El inventario
 académico y los hallazgos editoriales están en
 [docs/ROADMAP_ASCENSO_INVENTARIO.md](docs/ROADMAP_ASCENSO_INVENTARIO.md).

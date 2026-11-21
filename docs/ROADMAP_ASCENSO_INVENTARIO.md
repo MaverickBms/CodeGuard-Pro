@@ -1,15 +1,20 @@
 # Inventario académico ASCENSO 3.1
 
-**Fecha:** 2026-11-19  
-**Estado:** inventario y diagnóstico; **no** sustituye ni modifica el documento maestro.  
+**Fecha:** 2026-11-19
+**Estado:** inventario y diagnóstico; **no** sustituye ni modifica el documento maestro.
 **Fuente oficial localizada:** `PROYECTO_ASCENSO_Roadmap_Maestro_Consolidado_3_1_2026.docx`
-en `/home/mvxbms/Descargas/` (102 KB).  
-**SHA-256 de la fuente:** `15a9ef38c7284de79eedd1ba10ef33cc50b324c9706836740205778eea4704d3`.  
+en `/home/mvxbms/Descargas/` (102 KB).
+**SHA-256 de la fuente:** `15a9ef38c7284de79eedd1ba10ef33cc50b324c9706836740205778eea4704d3`.
 **Copia en el repositorio:** no existe. El JSON `apps/roadmaps/data/ascenso_3_1.json`
 declara el mismo SHA-256; se verificó que ambos coinciden.
 
 > El DOCX no se ha publicado en el repositorio por contener material académico del
 > propietario. Cualquier incorporación al repositorio requiere autorización expresa.
+>
+> **Nota de lectura:** las secciones 1–4 conservan el inventario inicial del
+> 2026-11-19, cuando no había cuerpos de lección. La sección 13 registra la
+> iteración académica posterior (8 lecciones, 16 ejercicios y 13 fuentes), por lo
+> que las cifras de «0 contenido» deben leerse como estado histórico, no actual.
 
 ## 1. Método de verificación
 
@@ -186,10 +191,14 @@ python manage.py cargar_ascenso
 | Lecciones aprobadas | 0 |
 | Lecciones publicadas | 0 |
 | Lecciones pendientes | 1.938 |
-| Videos aprobados por metadatos | 8 |
-| Fuentes registradas para el lote | 13 |
+| Videos con enlace/metadatos verificados | 8 |
+| Videos con revisión pedagógica aprobada | 0 |
+| Fuentes únicas registradas para el lote | 13 |
+| Referencias de fuente | 16 |
 
 El contenido del módulo 0.1 se entrega como borrador editorial. No se alteró la
 estructura oficial de 33 etapas, 212 módulos ni 1.946 lecciones. La etapa 25
-sigue sin objetivo formal en la fuente maestra. El detalle y el flujo de
-publicación están en [`CONTENIDO_ACADEMICO.md`](CONTENIDO_ACADEMICO.md).
+sigue sin objetivo formal en la fuente maestra. Los videos tienen enlace y
+metadatos verificados, pero **0 tienen revisión pedagógica aprobada**; esta se
+registra por separado. El detalle y el flujo de publicación están en
+[`CONTENIDO_ACADEMICO.md`](CONTENIDO_ACADEMICO.md).
