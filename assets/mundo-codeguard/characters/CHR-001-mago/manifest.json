@@ -11,153 +11,32 @@
   "reference": "steps-all.png (referencia visual del usuario)",
   "sprite_sheet": {
     "file": "spritesheets/CHR-001_mago_walk_4dir_4f_concept.png",
-    "status": "concept_generated_pending_binary_commit_and_frame_validation",
-    "canvas_px": [
-      128,
-      128
-    ],
-    "grid": {
-      "columns": 4,
-      "rows": 4,
-      "cell_px": [
-        32,
-        32
-      ]
-    },
-    "row_order": [
-      "south",
-      "west",
-      "east",
-      "north"
-    ],
+    "status": "concept_generated_local_preview_binary_not_yet_committed",
+    "canvas_px": [256, 256],
+    "grid": {"columns": 4, "rows": 4, "cell_px": [64, 64]},
+    "row_order": ["south", "west", "east", "north"],
     "frames_per_direction": 4,
     "fps_recommended": 8,
     "background": "transparent",
     "anchor": "bottom_center",
-    "notes": "Concepto generado en esta conversación. La imagen original debe conservarse y validarse/corregirse a celdas exactas antes de producción."
+    "notes": "Concepto normalizado a 4x4 celdas de 64x64. La grilla se debe revisar y recortar fotograma por fotograma antes de aprobarlo como recurso final."
   },
-  "palette": [
-    "#171D3B",
-    "#29345F",
-    "#8E3548",
-    "#C85B5B",
-    "#8B573B",
-    "#D99A69",
-    "#EBC9A6",
-    "#36CBE8",
-    "#E6C65C"
-  ],
+  "palette": ["#171D3B", "#29345F", "#8E3548", "#C85B5B", "#8B573B", "#D99A69", "#EBC9A6", "#36CBE8", "#E6C65C"],
   "equipment": {
     "weapon": "báculo_cristal_azul",
     "armor": "túnica_azul_marino_con_bordes_carmesí",
-    "accessories": [
-      "capucha",
-      "broche_dorado"
-    ]
+    "accessories": ["capucha", "broche_dorado"]
   },
   "animation_plan": [
-    {
-      "action": "idle",
-      "directions": [
-        "south",
-        "west",
-        "east",
-        "north"
-      ],
-      "frames": 4,
-      "fps": 5,
-      "status": "planned"
-    },
-    {
-      "action": "walk",
-      "directions": [
-        "south",
-        "west",
-        "east",
-        "north"
-      ],
-      "frames": 4,
-      "fps": 8,
-      "status": "concept"
-    },
-    {
-      "action": "run",
-      "directions": [
-        "south",
-        "west",
-        "east",
-        "north"
-      ],
-      "frames": 6,
-      "fps": 10,
-      "status": "planned"
-    },
-    {
-      "action": "cast_spell",
-      "directions": [
-        "south",
-        "west",
-        "east",
-        "north"
-      ],
-      "frames": 6,
-      "fps": 8,
-      "requires": "báculo",
-      "status": "planned"
-    },
-    {
-      "action": "channel_magic",
-      "directions": [
-        "south",
-        "west",
-        "east",
-        "north"
-      ],
-      "frames": 6,
-      "fps": 6,
-      "requires": "báculo",
-      "status": "planned"
-    },
-    {
-      "action": "read_grimoire",
-      "directions": [
-        "south"
-      ],
-      "frames": 6,
-      "fps": 6,
-      "requires": "grimorio",
-      "status": "planned"
-    },
-    {
-      "action": "interact",
-      "directions": [
-        "south",
-        "west",
-        "east",
-        "north"
-      ],
-      "frames": 4,
-      "fps": 7,
-      "status": "planned"
-    },
-    {
-      "action": "sit",
-      "directions": [
-        "south"
-      ],
-      "frames": 4,
-      "fps": 5,
-      "status": "planned"
-    },
-    {
-      "action": "sleep",
-      "directions": [
-        "south"
-      ],
-      "frames": 4,
-      "fps": 4,
-      "status": "planned"
-    }
+    {"action": "idle", "directions": ["south", "west", "east", "north"], "frames": 4, "fps": 5, "status": "planned"},
+    {"action": "walk", "directions": ["south", "west", "east", "north"], "frames": 4, "fps": 8, "status": "concept"},
+    {"action": "run", "directions": ["south", "west", "east", "north"], "frames": 6, "fps": 10, "status": "planned"},
+    {"action": "cast_spell", "directions": ["south", "west", "east", "north"], "frames": 6, "fps": 8, "requires": "báculo", "status": "planned"},
+    {"action": "channel_magic", "directions": ["south", "west", "east", "north"], "frames": 6, "fps": 6, "requires": "báculo", "status": "planned"},
+    {"action": "read_grimoire", "directions": ["south"], "frames": 6, "fps": 6, "requires": "grimorio", "status": "planned"},
+    {"action": "interact", "directions": ["south", "west", "east", "north"], "frames": 4, "fps": 7, "status": "planned"},
+    {"action": "sit", "directions": ["south"], "frames": 4, "fps": 5, "status": "planned"},
+    {"action": "sleep", "directions": ["south"], "frames": 4, "fps": 4, "status": "planned"}
   ],
   "validation": {
     "exact_cell_grid": false,
