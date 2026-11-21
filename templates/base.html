@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="referrer" content="no-referrer">
+  <meta name="referrer" content="same-origin">
   <title>{% block title %}CodeGuard Pro{% endblock %}</title>
 
   <!-- Recursos estáticos locales (sin CDN, offline-first) -->
@@ -56,7 +56,7 @@
       </div>
       <div class="nav-section">
         <div class="nav-section-title">Academia</div>
-        <button class="nav-item cg-nav-item{% if request.resolver_match.app_name == 'roadmaps' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:lista' %}">
+        <button class="nav-item cg-nav-item{% if request.resolver_match.app_name == 'roadmaps' and request.resolver_match.url_name != 'evaluaciones' and request.resolver_match.url_name != 'evidencias' and request.resolver_match.url_name != 'conocimiento' and request.resolver_match.url_name != 'quiz_detalle' and request.resolver_match.url_name != 'quiz_resultado' and request.resolver_match.url_name != 'quiz_historial' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:lista' %}">
           <span class="nav-icon"><i class="fa-solid fa-map"></i></span>
           <span class="nav-label">Roadmap ASCENSO</span>
         </button>
@@ -68,15 +68,15 @@
           <span class="nav-icon"><i class="fa-solid fa-medal"></i></span>
           <span class="nav-label">Competencias</span>
         </button>
-        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item{% if request.resolver_match.app_name == 'library' %} cg-nav-active{% endif %}" data-url="{% url 'library:lista' %}">
           <span class="nav-icon"><i class="fa-solid fa-book"></i></span>
           <span class="nav-label">Biblioteca</span>
         </button>
-        <button class="nav-item cg-nav-item cg-btn-disabled" disabled data-url="#">
+        <button class="nav-item cg-nav-item{% if request.resolver_match.url_name == 'conocimiento' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:conocimiento' %}">
           <span class="nav-icon"><i class="fa-solid fa-brain"></i></span>
           <span class="nav-label">Base de conocimiento</span>
         </button>
-        <button class="nav-item cg-nav-item{% if request.resolver_match.url_name == 'evaluaciones' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:evaluaciones' %}">
+        <button class="nav-item cg-nav-item{% if request.resolver_match.url_name == 'evaluaciones' or request.resolver_match.url_name == 'quiz_detalle' or request.resolver_match.url_name == 'quiz_resultado' or request.resolver_match.url_name == 'quiz_historial' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:evaluaciones' %}">
           <span class="nav-icon"><i class="fa-solid fa-pen-nib"></i></span>
           <span class="nav-label">Evaluaciones</span>
         </button>

@@ -134,17 +134,17 @@ def panel(request):
                 },
                 {
                     "titulo": "Biblioteca documental",
-                    "descripcion": "Importación y gestión de PDFs.",
+                    "descripcion": "Importación, búsqueda y consulta local de PDFs.",
                     "url": "library:lista",
                     "icono": "📚",
-                    "implementado": False,
+                    "implementado": True,
                 },
                 {
                     "titulo": "Base de conocimiento",
-                    "descripcion": "Conceptos, relaciones y trazabilidad documental.",
-                    "url": "knowledge:lista",
+                    "descripcion": "Fuentes, versiones, paquetes y trazabilidad editorial.",
+                    "url": "roadmaps:conocimiento",
                     "icono": "🧠",
-                    "implementado": False,
+                    "implementado": True,
                 },
                 {
                     "titulo": "Evaluaciones",

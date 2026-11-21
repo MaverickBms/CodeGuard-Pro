@@ -24,12 +24,17 @@ from .models import (
     CriterioFinalizacion,
     CumplimientoCriterio,
     EjercicioLeccion,
+    EstadoSincronizacion,
     Etapa,
+    FuenteConocimiento,
     IntentoEjercicio,
     Leccion,
+    PaqueteConocimientoInstalado,
     Pregunta,
+    PublicacionPaqueteConocimiento,
     Quiz,
     ResultadoEvaluacion,
+    VersionContenidoLeccion,
 )
 from .attempts import registrar_intento_ejercicio
 from .services import (
@@ -234,6 +239,23 @@ def detalle(request, numero):
     usuario = get_usuario_actual(request)
 
     etapa = get_object_or_404(Etapa, roadmap=roadmap, numero=numero)
+    etapas_ordenadas = list(
+        roadmap.etapas.only("id", "numero", "titulo").order_by("orden", "numero")
+    )
+    indice_etapa = next(
+        (indice for indice, item in enumerate(etapas_ordenadas) if item.pk == etapa.pk),
+        None,
+    )
+    etapa_anterior = (
+        etapas_ordenadas[indice_etapa - 1]
+        if indice_etapa is not None and indice_etapa > 0
+        else None
+    )
+    etapa_siguiente = (
+        etapas_ordenadas[indice_etapa + 1]
+        if indice_etapa is not None and indice_etapa + 1 < len(etapas_ordenadas)
+        else None
+    )
     modulos = list(etapa.modulos.prefetch_related("lecciones"))
 
     completadas = etapas_completadas(usuario, roadmap)
@@ -279,6 +301,8 @@ def detalle(request, numero):
         {
             "roadmap": roadmap,
             "etapa": etapa,
+            "etapa_anterior": etapa_anterior,
+            "etapa_siguiente": etapa_siguiente,
             "modulos": modulos,
             "progreso": progreso,
             "completada": etapa.numero in completadas,
@@ -479,6 +503,56 @@ def leccion_detalle(request, leccion_id):
             "version_contenido_activa": version_contenido_activa,
             "paquete_contenido_activo": paquete_contenido_activo,
             "fuentes_paquete": list(paquete_contenido_activo.fuentes_catalogo.all()) if paquete_contenido_activo else [],
+        },
+    )
+
+
+@requiere_acceso
+def conocimiento(request):
+    """Panel de solo lectura del flujo editorial y la distribución local.
+
+    No publica, aprueba ni modifica contenido. Expone el estado real de fuentes,
+    versiones, paquetes y sincronización para que el propietario pueda auditar
+    el proceso sin confundir borradores con contenido publicado.
+    """
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
+
+    versiones = VersionContenidoLeccion.objects.filter(
+        leccion__modulo__etapa__roadmap=roadmap
+    ).select_related("leccion__modulo__etapa")
+    estados_version = {
+        fila["estado"]: fila["total"]
+        for fila in versiones.values("estado").annotate(total=Count("id"))
+    }
+    fuentes = FuenteConocimiento.objects.all().order_by("publicador", "titulo")[:200]
+    paquetes = list(
+        PaqueteConocimientoInstalado.objects.all().order_by("channel", "-sequence")[:20]
+    )
+    sincronizacion = list(
+        EstadoSincronizacion.objects.select_related("active_package").order_by("channel")
+    )
+    publicaciones = list(
+        PublicacionPaqueteConocimiento.objects.all().order_by("channel", "-sequence")[:20]
+    )
+
+    return render(
+        request,
+        "roadmaps/conocimiento.html",
+        {
+            "roadmap": roadmap,
+            "fuentes": fuentes,
+            "total_fuentes": FuenteConocimiento.objects.count(),
+            "versiones": list(versiones.order_by("-publicada_en", "-id")[:50]),
+            "estados_version": estados_version,
+            "total_versiones": versiones.count(),
+            "paquetes": paquetes,
+            "sincronizacion": sincronizacion,
+            "publicaciones": publicaciones,
+            "lecciones_publicadas": versiones.filter(
+                estado="publicada"
+            ).values("leccion_id").distinct().count(),
         },
     )
 
