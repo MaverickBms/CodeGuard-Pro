@@ -44,14 +44,42 @@ class EstadoTutoriaTests(TestCase):
     def setUp(self):
         self.client = Client()
 
-    @patch.object(services, "esta_disponible", return_value=True)
-    def test_estado_devuelve_informacion_del_tutor(self, mock_disponible):
+    @patch.object(
+        services,
+        "estado_tutor",
+        return_value={
+            "disponible": True,
+            "ollama": True,
+            "modelo": "modelo-prueba",
+            "modelo_instalado": True,
+            "modo": "ollama",
+        },
+    )
+    def test_estado_devuelve_informacion_del_tutor(self, mock_estado):
         respuesta = self.client.get(reverse("tutoring:estado"))
         self.assertEqual(respuesta.status_code, 200)
         datos = respuesta.json()
         self.assertTrue(datos["disponible"])
+        self.assertEqual(datos["modo"], "ollama")
         self.assertEqual(datos["limite_pistas"], services.LIMITE_PISTAS_TUTORIA)
-        mock_disponible.assert_called_once()
+        mock_estado.assert_called_once()
+
+    @patch.object(services, "_listar_modelos", return_value=["otro-modelo:latest"])
+    def test_estado_detecta_modelo_no_instalado(self, mock_listar):
+        services._estado_cache.update({"checked_at": 0.0, "valor": None})
+        estado = services.estado_tutor(forzar=True)
+        self.assertFalse(estado["disponible"])
+        self.assertTrue(estado["ollama"])
+        self.assertFalse(estado["modelo_instalado"])
+        self.assertEqual(estado["modo"], "determinista")
+
+    @patch.object(services, "_listar_modelos", side_effect=TutorNoDisponible)
+    def test_estado_detecta_ollama_ausente(self, mock_listar):
+        services._estado_cache.update({"checked_at": 0.0, "valor": None})
+        estado = services.estado_tutor(forzar=True)
+        self.assertFalse(estado["disponible"])
+        self.assertFalse(estado["ollama"])
+        self.assertEqual(estado["modo"], "determinista")
 
 
 @override_settings(AUTH_DISABLED=True)

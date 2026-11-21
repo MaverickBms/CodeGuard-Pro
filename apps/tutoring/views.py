@@ -36,10 +36,10 @@ def _sin_propietario() -> JsonResponse:
 @requiere_acceso
 def tutoria_estado(request):
     """Devuelve el estado operativo del tutor IA."""
+    estado = services.estado_tutor()
     return JsonResponse(
         {
-            "disponible": services.esta_disponible(),
-            "modelo": services.TUTOR_MODEL,
+            **estado,
             "limite_pistas": services.LIMITE_PISTAS_TUTORIA,
         }
     )
