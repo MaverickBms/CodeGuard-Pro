@@ -118,11 +118,13 @@ CSRF, visor PDF, persistencia de tema al reiniciar y cierre sin procesos
 huérfanos ni puertos abiertos. El arranque normal medido fue ~2,8 s con
 Electron y ~1,2 s para el servidor empaquetado; el primer arranque ~13–16 s según carga.
 
-El job `windows-package` de CI ejecuta la aceptación automatizada (instalación
-NSIS, primer arranque, health, persistencia de tema y progreso, cierre,
-desinstalación y portable) y publica `codeguard-windows-x64`. **La aceptación
-manual en un equipo Windows físico sigue pendiente**; CI no sustituye hardware
-real. No distribuir como versión estable hasta completar esa matriz. Consulta
+El job `windows-package` de CI ejecutó la aceptación automatizada sobre
+`release/1.0.0-final` (run `44934755981`): instalación NSIS, primer arranque,
+health, 7 rutas HTTP 200 (incluye Biblioteca y Base de conocimiento), 12 temas,
+persistencia de tema y progreso, cierre sin huérfanos, desinstalación y
+portable. Publicó el artefacto `codeguard-windows-x64` (274 MB).
+**La aceptación manual en un equipo Windows físico sigue pendiente**; CI no
+sustituye hardware real. No distribuir como versión estable hasta completar esa matriz. Consulta
 [docs/INFORME_FINAL_1.0.0.md](docs/INFORME_FINAL_1.0.0.md),
 [docs/PROJECT_EXECUTION_STATUS.md](docs/PROJECT_EXECUTION_STATUS.md) y el
 informe QA de la rama `documentation`.

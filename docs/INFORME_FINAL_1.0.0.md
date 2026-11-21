@@ -52,7 +52,7 @@ Se corrigieron tres bloqueos reales:
 | Seguridad | Sin hallazgos críticos | CSP, loopback, CSRF, uploads validados, Ed25519, backups |
 | Rendimiento | Objetivos cumplidos | Primer arranque 13–16 s; normal ~2,8 s con Electron |
 | Instalación Linux | Verificada | Servidor PyInstaller + AppImage extraído, E2E completo |
-| Instalación Windows | CI únicamente | NSIS/portable en CI; falta hardware físico |
+| Instalación Windows | CI únicamente | Run `44934755981` verde: NSIS, 7 rutas, 12 temas, tema/progreso persistente, desinstalación y portable; falta hardware físico |
 | Offline | Verificado por diseño y E2E | Sin CDN, sin telemetría, sync falla cerrado |
 
 ## 3. Datos y persistencia
@@ -111,6 +111,11 @@ Resultados:
   (`scripts/cdp-responsive.js`).
 - Backup/restore de integración: base y `media/` restauradas; marcador posterior
   eliminado; estado curricular reutilizado tras restaurar.
+- Windows (CI, no hardware físico): run `44934755981` verde en 4/4 jobs.
+  Instalación NSIS, primer arranque, 7 rutas 200, 12 temas, tema `fantasy`
+  persistente, `PROGRESS=1`, desinstalación, portable y sin procesos huérfanos.
+  Artefacto `codeguard-windows-x64` (274.921.906 bytes, SHA-256 del ZIP
+  `0db12153944b09ecb0b495517a8a21f84bf2eb17dece222204b3e2df6da32a63`).
 
 ## 6. Seguridad
 
@@ -202,6 +207,8 @@ Resultados:
   - `13c00f1` fix(seguridad,electron): CSRF same-origin y arranque observable.
   - `ec07181` feat(tutor): detección de modelo, timeout acotado y fallback claro.
   - `17ec90a` docs: informe final 1.0.0, rendimiento y criterios de aceptación.
+  - `bb457e0` fix(linux): conserva el perfil heredado al lanzar con run.sh.
+  - `937684b` test(ui): smoke responsive de las pantallas principales.
 - No se ha creado tag ni release; no se ha fusionado ningún PR.
 - PR #15 y #16 permanecen fuera de alcance y sin modificar.
 
