@@ -97,7 +97,7 @@
 | Smoke PyInstaller Linux | Primer arranque, ASCENSO, health, cierre de puerto y sync OK |
 | Persistencia de tema (AppImage, dos arranques) | `fantasy` persiste tras reiniciar el paquete |
 | E2E AppImage Linux | 7 rutas HTTP 200, 12 temas, responsive, contenido y cierre sin huérfanos |
-| Windows CI run `44574923603` y `44576601446` | **7/7 fases OK**: instalación, primer arranque, health, 5 rutas, tema, progreso, desinstalación, portable y ausencia de huérfanos |
+| Windows CI run `44574923603` y `44576601446` (histórico) | **7/7 fases OK**; sustituido por el run académico `44945721326` |
 
 ### Artefactos Linux
 
