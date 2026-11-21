@@ -173,13 +173,19 @@ def _validar_lote(datos):
 
 
 def _propietario_editorial():
+    from django.conf import settings
+
     Usuario = get_user_model()
     usuario = Usuario.objects.filter(is_active=True).order_by("id").first()
     if usuario is None:
         raise ContenidoAcademicoError(
             "No existe propietario local. Ejecuta el arranque normal antes de importar."
         )
-    if not usuario.is_staff:
+    if not getattr(settings, "AUTH_DISABLED", False) and not usuario.is_staff:
+        raise ContenidoAcademicoError(
+            "El modo con autenticación exige un usuario editorial con permisos de staff."
+        )
+    if getattr(settings, "AUTH_DISABLED", False) and not usuario.is_staff:
         usuario.is_staff = True
         usuario.save(update_fields=["is_staff"])
     return usuario

@@ -28,6 +28,10 @@ from apps.roadmaps.models import (
     VersionContenidoLeccion,
 )
 from apps.roadmaps.services import cargar_ascenso, obtener_contenido_activo, roadmap_activo
+from apps.roadmaps.management.commands.cargar_contenido_academico import (
+    ContenidoAcademicoError,
+    _propietario_editorial,
+)
 from apps.roadmaps.templatetags.academic import academico
 
 RUTA_SEED = Path(__file__).resolve().parents[1] / "data" / "contenido_academico_0_1.json"
@@ -126,6 +130,25 @@ class FiltroAcademicoTests(TestCase):
         self.assertIn("<ul><li><strong>Uno:</strong> texto</li>", html)
         self.assertNotIn("<script>", html)
         self.assertIn("&lt;script&gt;", html)
+
+
+@override_settings(AUTH_DISABLED=False)
+class ModoConAutenticacionTests(TestCase):
+    def test_no_eleva_a_staff_ni_siembra_automaticamente(self):
+        usuario = get_user_model().objects.create_user(
+            username="sin-permisos", password="ClaveSegura123!"
+        )
+        self.assertFalse(usuario.is_staff)
+        with self.assertRaises(ContenidoAcademicoError):
+            _propietario_editorial()
+        usuario.refresh_from_db()
+        self.assertFalse(usuario.is_staff)
+        from apps.roadmaps.bootstrap import _sembrar_contenido_inicial
+
+        self.assertEqual(_sembrar_contenido_inicial(), 0)
+        from apps.roadmaps.models import ContenidoLeccion
+
+        self.assertFalse(ContenidoLeccion.objects.exists())
 
 
 class RecursoAudiovisualTests(TestCase):

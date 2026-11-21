@@ -35,7 +35,7 @@ Se corrigieron tres bloqueos reales:
 
 | Área | Resultado | Evidencia |
 |---|---|---|
-| Backend Django | Operativo | `manage.py check` sin incidencias; 348 pruebas OK |
+| Backend Django | Operativo | `manage.py check` sin incidencias; 349 pruebas OK |
 | Migraciones | Al día | `makemigrations --check --dry-run` sin cambios |
 | Frontend | Operativo | 7 rutas principales HTTP 200; 12 temas; sin desbordamiento a 1024/768 px |
 | Electron | Operativo | IPC, tema persistente, cierre sin huérfanos, formularios CSRF |
@@ -52,7 +52,7 @@ Se corrigieron tres bloqueos reales:
 | Seguridad | Sin hallazgos críticos | CSP, loopback, CSRF, uploads validados, Ed25519, backups |
 | Rendimiento | Objetivos cumplidos | Primer arranque 13–16 s; normal ~2,8 s con Electron |
 | Instalación Linux | Verificada | Servidor PyInstaller + AppImage extraído, E2E completo |
-| Instalación Windows | CI únicamente | Run `44934755981` verde: NSIS, 7 rutas, 12 temas, tema/progreso persistente, desinstalación y portable; falta hardware físico |
+| Instalación Windows | CI únicamente | Run `44944410767` verde: NSIS, 7 rutas, 12 temas, tema/progreso persistente, desinstalación y portable; falta hardware físico |
 | Offline | Verificado por diseño y E2E | Sin CDN, sin telemetría, sync falla cerrado |
 
 ## 2.1 Contenido académico y espacio editorial
@@ -120,7 +120,7 @@ npm audit --omit=dev
 
 Resultados:
 
-- Django: **348 pruebas OK** (178 s).
+- Django: **349 pruebas OK** (178 s).
 - Electron: **26 pruebas OK**.
 - `pip-audit`: sin vulnerabilidades conocidas.
 - `npm audit --omit=dev`: 0 vulnerabilidades de producción.
@@ -134,11 +134,11 @@ Resultados:
   (`scripts/cdp-responsive.js`).
 - Backup/restore de integración: base y `media/` restauradas; marcador posterior
   eliminado; estado curricular reutilizado tras restaurar.
-- Windows (CI, no hardware físico): run `44934755981` verde en 4/4 jobs.
+- Windows (CI, no hardware físico): run `44944410767` verde en 4/4 jobs.
   Instalación NSIS, primer arranque, 7 rutas 200, 12 temas, tema `fantasy`
   persistente, `PROGRESS=1`, desinstalación, portable y sin procesos huérfanos.
-  Artefacto `codeguard-windows-x64` (274.921.906 bytes, SHA-256 del ZIP
-  `0db12153944b09ecb0b495517a8a21f84bf2eb17dece222204b3e2df6da32a63`).
+  Artefacto `codeguard-windows-x64` (275.075.760 bytes, SHA-256 del ZIP
+  `906ed6993c8b29efff86452a8e5805fac5c7d861d676ba13a101b6448e5306a5`).
 
 ## 6. Seguridad
 

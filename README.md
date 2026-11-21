@@ -131,7 +131,7 @@ huérfanos ni puertos abiertos. El arranque normal medido fue ~2,8 s con
 Electron y ~1,2 s para el servidor empaquetado; el primer arranque ~13–16 s según carga.
 
 El job `windows-package` de CI ejecutó la aceptación automatizada sobre
-`release/1.0.0-final` (run `44934755981`): instalación NSIS, primer arranque,
+`release/1.0.0-final` (run `44944410767`): instalación NSIS, primer arranque,
 health, 7 rutas HTTP 200 (incluye Biblioteca y Base de conocimiento), 12 temas,
 persistencia de tema y progreso, cierre sin huérfanos, desinstalación y
 portable. Publicó el artefacto `codeguard-windows-x64` (274 MB).
@@ -264,7 +264,7 @@ python manage.py cargar_contenido_academico --dry-run
 python scripts/benchmark-startup.py
 ```
 
-Resultado verificado en este repositorio (21-11-2026): **348 pruebas OK** en
+Resultado verificado en este repositorio (21-11-2026): **349 pruebas OK** en
 `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`,
 `apps.gamification`, `apps.challenges` y `apps.library`, con
 `--settings=config.settings.development` (system check 0 incidencias y

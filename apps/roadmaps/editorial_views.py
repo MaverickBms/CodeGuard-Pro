@@ -206,8 +206,11 @@ def editorial_leccion(request, leccion_id):
                     return redirect("roadmaps:editorial_leccion", leccion_id=leccion.id)
 
             elif accion == "revisar_video":
+                video_id = str(request.POST.get("video_id") or "")
+                if not video_id.isdigit():
+                    raise ValidationError("Identificador de video no válido.")
                 recurso = get_object_or_404(
-                    RecursoAudiovisual, pk=request.POST.get("video_id"), leccion=leccion
+                    RecursoAudiovisual, pk=int(video_id), leccion=leccion
                 )
                 decision = (request.POST.get("decision") or "").strip()
                 if decision not in {"aprobado", "rechazado", "retirado"}:

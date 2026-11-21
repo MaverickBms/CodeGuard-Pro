@@ -24,7 +24,7 @@
 | Conocimiento | Panel de solo lectura con fuentes, versiones, paquetes y sincronización |
 | Navegación | Biblioteca y Base de conocimiento activas; un solo acceso activo por página |
 | Dev | Waitress + WhiteNoise en desarrollo; recursos estáticos ya no devuelven 404 |
-| Pruebas | 348 Django + 26 Electron + benchmark de arranque en CI |
+| Pruebas | 349 Django + 26 Electron + benchmark de arranque en CI |
 
 ### Artefactos Linux
 
@@ -43,7 +43,7 @@
 
 ### Evidencia
 
-- Suite Django: **348 pruebas OK**.
+- Suite Django: **349 pruebas OK**.
 - Electron: **26/26 OK**.
 - `pip-audit`: sin vulnerabilidades conocidas.
 - `npm audit --omit=dev`: 0 vulnerabilidades de producción.

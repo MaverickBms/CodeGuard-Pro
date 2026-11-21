@@ -594,8 +594,14 @@ def asegurar_roadmap_instalado(
 
 def _sembrar_contenido_inicial(*, emit: Callable[[str], None] | None = None) -> int:
     """Carga una sola vez el lote académico inicial en estado borrador."""
+    from django.conf import settings
+
     from .models import ContenidoLeccion
 
+    if not getattr(settings, "AUTH_DISABLED", False):
+        # En modo con autenticación, la siembra requiere un editor humano
+        # explícito y nunca eleva privilegios de una cuenta existente.
+        return 0
     if ContenidoLeccion.objects.exists():
         return 0
     ruta = Path(__file__).resolve().parent / "data" / "contenido_academico_0_1.json"
