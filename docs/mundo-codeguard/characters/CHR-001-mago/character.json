@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Mundo CodeGuard",
+  "character_id": "CHR-001",
+  "name": "Mago",
+  "family": "magia_y_conocimiento",
+  "species": "humano",
+  "role": "hechicero",
+  "art_direction": {
+    "style": "fantasy_2d_pixel_art",
+    "perspective": "top_down_3_4",
+    "reference": "steps-all.png",
+    "frame_size_px": [
+      64,
+      64
+    ],
+    "sheet_grid": [
+      4,
+      4
+    ],
+    "transparent_background": true
+  },
+  "animations": [
+    {
+      "name": "walk",
+      "file": "characters/CHR-001-mago/animations/CHR-001_mago_walk_4dir.png",
+      "directions_by_row": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "frames_per_direction": 4,
+      "fps_recommended": 8,
+      "loop": true,
+      "status": "visual_prototype_pending_frame_validation",
+      "notes": "Primera hoja de locomoción direccional. Validar recorte por celda, pivote y consistencia de ciclo antes de integrarla en runtime."
+    }
+  ],
+  "equipment": [
+    "tunic_hood_indigo_gold",
+    "wooden_wand_gold_orb"
+  ],
+  "next_animations": [
+    "idle_4dir",
+    "cast_spell_4dir",
+    "channel_magic_4dir",
+    "read_grimoire",
+    "sit",
+    "interact"
+  ],
+  "quality_gates": {
+    "alpha_transparency": true,
+    "single_character_per_sheet": true,
+    "consistent_character_design": true,
+    "exact_cell_alignment": "pending",
+    "runtime_validation": "pending"
+  }
+}

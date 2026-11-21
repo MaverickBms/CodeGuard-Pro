@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0.0",
+  "character_id": "CHR-001",
+  "slug": "mago",
+  "display_name": "Mago",
+  "family": "magia_y_conocimiento",
+  "species": "humano",
+  "profession": "mago",
+  "faction": "arcana",
+  "art_direction": "pixel_art_fantasia_chibi_top_down_3_4",
+  "reference": "sprite de referencia aportado por el usuario",
+  "palette": ["#171D3B", "#29345F", "#8E3548", "#C85B5B", "#8B573B", "#D99A69", "#EBC9A6", "#36CBE8", "#E6C65C"],
+  "equipment": {
+    "weapon": "báculo_con_cristal_azul",
+    "armor": "túnica_azul_marino_con_bordes_carmesí",
+    "accessories": ["capucha", "broche_dorado"]
+  },
+  "sprite_sheets": [
+    {
+      "file": "spritesheets/CHR-001_mago_idle_4dir_4f_64px.png",
+      "local_preview": "/mnt/data/CHR-001_mago_idle_4dir_4f_64px.png",
+      "status": "normalized_preview_not_committed_to_repository",
+      "canvas_px": [256, 256],
+      "grid": {"columns": 4, "rows": 4, "cell_px": [64, 64]},
+      "row_order": ["south", "west", "east", "north"],
+      "frames_per_direction": 4,
+      "fps_recommended": 5,
+      "background": "transparent",
+      "anchor": "bottom_center",
+      "validation": {
+        "rgba_alpha": true,
+        "uniform_grid": true,
+        "frame_pose_variation": "insufficient_for_final_idle_loop",
+        "alignment": "normalized_to_fixed_cells",
+        "production_approved": false
+      },
+      "notes": "Preview derivado de concepto generado. Los cuatro fotogramas por dirección tienen variación limitada; debe redibujarse o corregirse para un ciclo idle auténtico."
+    },
+    {
+      "file": "spritesheets/CHR-001_mago_walk_4dir_4f_64px.png",
+      "status": "concept_only_not_committed",
+      "canvas_px": [256, 256],
+      "grid": {"columns": 4, "rows": 4, "cell_px": [64, 64]},
+      "row_order": ["south", "west", "east", "north"],
+      "frames_per_direction": 4,
+      "fps_recommended": 8,
+      "background": "transparent",
+      "anchor": "bottom_center",
+      "validation": {"production_approved": false, "per_frame_alignment": "pending", "loop_continuity": "pending"}
+    }
+  ],
+  "animation_plan": [
+    {"action": "idle", "directions": ["south", "west", "east", "north"], "frames": 4, "fps": 5, "status": "preview_needs_animation_refinement"},
+    {"action": "walk", "directions": ["south", "west", "east", "north"], "frames": 4, "fps": 8, "status": "concept_needs_validation"},
+    {"action": "run", "directions": ["south", "west", "east", "north"], "frames": 6, "fps": 10, "status": "planned"},
+    {"action": "cast_spell", "directions": ["south", "west", "east", "north"], "frames": 6, "fps": 8, "requires": "báculo", "status": "planned"},
+    {"action": "channel_magic", "directions": ["south", "west", "east", "north"], "frames": 6, "fps": 6, "requires": "báculo", "status": "planned"},
+    {"action": "read_grimoire", "directions": ["south"], "frames": 6, "fps": 6, "requires": "grimorio", "status": "planned"},
+    {"action": "interact", "directions": ["south", "west", "east", "north"], "frames": 4, "fps": 7, "status": "planned"},
+    {"action": "sit", "directions": ["south"], "frames": 4, "fps": 5, "status": "planned"},
+    {"action": "sleep", "directions": ["south"], "frames": 4, "fps": 4, "status": "planned"}
+  ],
+  "integration": {
+    "engine": "not_selected",
+    "asset_pipeline": "engine_agnostic_png_spritesheets",
+    "repository_binary_upload": "pending"
+  }
+}
