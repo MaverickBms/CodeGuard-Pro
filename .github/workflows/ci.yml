@@ -182,6 +182,7 @@ jobs:
           node --check electron/startup-status.js
           node --check scripts/cdp-smoke.js
           node --check scripts/cdp-form-smoke.js
+          node --check scripts/cdp-responsive.js
 
       - name: Run Electron unit tests
         run: npm run test:electron

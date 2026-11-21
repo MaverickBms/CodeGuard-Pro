@@ -107,6 +107,8 @@ Resultados:
 - Servidor PyInstaller: primer arranque 12,6 s; segundo 1,2 s.
 - AppImage extraído: interfaz lista en ~2,8 s; E2E de 7 rutas, 12 temas,
   formulario PDF y cierre sin procesos huérfanos.
+- Responsive: 11 pantallas sin desbordamiento horizontal a 1024×720 y 768×900
+  (`scripts/cdp-responsive.js`).
 - Backup/restore de integración: base y `media/` restauradas; marcador posterior
   eliminado; estado curricular reutilizado tras restaurar.
 

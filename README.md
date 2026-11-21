@@ -278,6 +278,8 @@ académico y los hallazgos editoriales están en
   `Origin` válido en los POST locales.
 - El AppImage se queda bloqueado al montar FUSE → ejecute
   `CODEGUARD_APPIMAGE_EXTRACT=1 ./run.sh`.
+- Si usabas `./codeguard` antes de esta versión, `run.sh` detecta el perfil
+  heredado en `Code Guard Pro/data` y lo conserva automáticamente.
 - Para reactivar el inicio de sesión, cambie `AUTH_DISABLED` a `False` en
   `config/settings/base.py` (requiere autorización expresa). El propietario
   local creado sin credenciales necesitará un restablecimiento autorizado.
