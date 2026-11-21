@@ -52,7 +52,7 @@ Se corrigieron tres bloqueos reales:
 | Seguridad | Sin hallazgos críticos | CSP, loopback, CSRF, uploads validados, Ed25519, backups |
 | Rendimiento | Objetivos cumplidos | Primer arranque 13–16 s; normal ~2,8 s con Electron |
 | Instalación Linux | Verificada | Servidor PyInstaller + AppImage extraído, E2E completo |
-| Instalación Windows | CI únicamente | Run `44944410767` verde: NSIS, 7 rutas, 12 temas, tema/progreso persistente, desinstalación y portable; falta hardware físico |
+| Instalación Windows | CI únicamente | Run `44945721326` verde: NSIS, 7 rutas, 12 temas, tema/progreso persistente, desinstalación y portable; falta hardware físico |
 | Offline | Verificado por diseño y E2E | Sin CDN, sin telemetría, sync falla cerrado |
 
 ## 2.1 Contenido académico y espacio editorial
@@ -134,11 +134,11 @@ Resultados:
   (`scripts/cdp-responsive.js`).
 - Backup/restore de integración: base y `media/` restauradas; marcador posterior
   eliminado; estado curricular reutilizado tras restaurar.
-- Windows (CI, no hardware físico): run `44944410767` verde en 4/4 jobs.
+- Windows (CI, no hardware físico): run `44945721326` verde en 4/4 jobs.
   Instalación NSIS, primer arranque, 7 rutas 200, 12 temas, tema `fantasy`
   persistente, `PROGRESS=1`, desinstalación, portable y sin procesos huérfanos.
-  Artefacto `codeguard-windows-x64` (275.075.760 bytes, SHA-256 del ZIP
-  `906ed6993c8b29efff86452a8e5805fac5c7d861d676ba13a101b6448e5306a5`).
+  Artefacto `codeguard-windows-x64` (275.077.527 bytes, SHA-256 del ZIP
+  `481351647fa7c64644373fded78d4d3c69fcfcc950f48dd2d0e2f8bf3f7a9ad5`).
 
 ## 6. Seguridad
 
