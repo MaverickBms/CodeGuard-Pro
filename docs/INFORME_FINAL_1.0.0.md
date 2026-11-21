@@ -219,7 +219,7 @@ Resultados:
   `70d428b94ea258ec2e838f37a626435876559c9be3645836e148fbf8ece0e12e`
   (`dist-server/CodeGuardServer/CodeGuardServer`).
 - AppImage Linux x64:
-  `f52e96ac337a207ab58731d62521071d52b303dd77532d8e47c2bdd9763ecaf8`
+  `95816a1c9e874fa6ffb8a70ce890cf558cc2adeb8bae55203a606456fd2039d2`
   (`dist/CodeGuard-Pro-1.0.0-x86_64.AppImage`).
 - El AppImage se verificó extrayéndolo (`--appimage-extract`) por el bloqueo
   FUSE del host de pruebas; el binario extraído ejecutó el mismo E2E.

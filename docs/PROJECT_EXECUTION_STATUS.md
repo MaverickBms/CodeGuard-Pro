@@ -28,7 +28,7 @@
 
 ### Artefactos Linux
 
-- AppImage: `f52e96ac337a207ab58731d62521071d52b303dd77532d8e47c2bdd9763ecaf8`.
+- AppImage: `95816a1c9e874fa6ffb8a70ce890cf558cc2adeb8bae55203a606456fd2039d2`.
 - Servidor PyInstaller: `70d428b94ea258ec2e838f37a626435876559c9be3645836e148fbf8ece0e12e`.
 
 ### Contenido académico inicial
@@ -101,7 +101,7 @@
 
 ### Artefactos Linux
 
-- AppImage: `f52e96ac337a207ab58731d62521071d52b303dd77532d8e47c2bdd9763ecaf8`.
+- AppImage: `95816a1c9e874fa6ffb8a70ce890cf558cc2adeb8bae55203a606456fd2039d2`.
 - Servidor PyInstaller: `70d428b94ea258ec2e838f37a626435876559c9be3645836e148fbf8ece0e12e`.
 
 ### Contenido académico inicial
