@@ -6,9 +6,9 @@
 
 El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicación de escritorio **Electron**, con **SQLite**. CodeGuard es **offline-first**: no requiere Internet para abrir la aplicación, estudiar con el contenido disponible ni consultar el progreso local.
 
-El roadmap ASCENSO 3.1 (33 etapas) ya está implementado y cargable mediante `python manage.py cargar_ascenso`. El proyecto también incorpora bases funcionales de tutoría IA local (Ollama), evaluaciones, gamificación, mundo/avatar y desafíos; consulta el plan maestro en la rama `documentation` para distinguir lo implementado de lo que sigue en progreso. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
+El roadmap ASCENSO 3.1 (33 etapas) se instala automáticamente en el primer arranque y se verifica sin reconstruirse en los siguientes. La aplicación incluye panel, roadmap, lecciones, evaluaciones, evidencias, biblioteca documental de PDFs, tutoría IA local (Ollama), gamificación, base de conocimiento de solo lectura y copias de seguridad. Consulta el plan maestro en la rama `documentation` para distinguir lo implementado de lo que sigue en progreso. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
 
-La auditoría QA integral del 16-11-2026 mantiene pendientes la instalación limpia, la portabilidad y la aceptación E2E de escritorio (ver informe QA en la rama `documentation`). La recuperación de datos ya está implementada con creación, verificación, restauración transaccional y rollback.
+La iteración de finalización del 21-11-2026 validó el perfil limpio, el arranque, los formularios CSRF dentro de Electron, la biblioteca PDF, el benchmark de rendimiento y la restauración transaccional. La aceptación en hardware Windows físico sigue pendiente. El detalle está en [docs/INFORME_FINAL_1.0.0.md](docs/INFORME_FINAL_1.0.0.md).
 
 El cliente de sincronización pull-only por HTTPS, el comando `sincronizar_conocimiento`, el publicador local y la integración de comprobaciones periódicas con Electron están implementados. **La distribución remota de producción sigue pendiente**: no hay hosting/endpoint público, allowlist ni claves públicas de producción configuradas. Sin esa configuración, el cliente falla cerrado y no realiza conexiones. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
 
@@ -23,6 +23,11 @@ El cliente de sincronización pull-only por HTTPS, el comando `sincronizar_conoc
 Al abrir la aplicación se inicia directamente en el **panel principal**.
 No se solicita usuario ni contraseña. El sistema de autenticación está
 **temporal y opcionalmente desactivado** para uso local directo (ver detalles en la rama `documentation`).
+
+En un perfil limpio, el arranque crea una sola vez el **propietario local**
+necesario para asociar progreso, intentos y evidencias. No crea credenciales de
+acceso ni reactiva el login. El primer arranque aplica las migraciones e instala
+ASCENSO 3.1; los siguientes verifican la integridad y reutilizan el contenido.
 
 El sistema completo de autenticación (usuario, contraseña maestra, frase de
 rescate, bloqueo por intentos y cierre de sesión) se **conserva íntegro** en el
@@ -40,7 +45,8 @@ datos.
 
 - Listado de las **33 etapas** oficiales con filtros (bloque, prioridad, búsqueda).
 - Detalle de etapa: módulos, lecciones, proyecto, criterios, prerrequisitos.
-- Marcado de lecciones y de etapas completas con **recalculo automático de porcentaje**.
+- Progreso de lecciones mediante evidencias de ejercicios aprobados.
+- Etapas completadas únicamente al cumplir sus criterios verificables.
 - Bloqueo de etapas cuyos prerrequisitos no estén completados.
 
 ### 4. Evaluaciones y evidencias
@@ -52,7 +58,18 @@ datos.
 - Las evidencias de proyecto/manual son declaraciones del estudiante; las
   evaluaciones automáticas se califican por separado.
 
-### 5. Temas visuales
+### 5. Biblioteca documental
+
+- Importación de PDFs con validación de extensión, firma `%PDF-`, tamaño
+  máximo de 50 MB y SHA-256; los duplicados se rechazan.
+- Metadatos editables (título, autor, categoría, descripción y etiquetas),
+  búsqueda, filtros, paginación y archivo/restauración.
+- Visor PDF integrado con soporte de rangos HTTP. El archivo se sirve desde el
+  servidor local y nunca se envía a Internet.
+- Los PDFs se guardan en `media/biblioteca/` dentro del perfil del usuario y se
+  incluyen en las copias de seguridad.
+
+### 6. Temas visuales
 
 12 temas con las 12 paletas oficiales (P01–P12): claro (P01), oscuro (P02),
 alto contraste (P04), retro-pixel (P05), cyberpunk (P03), fantasía (P07),
@@ -65,7 +82,7 @@ El texto es blanco/negro según la luminancia para garantizar **WCAG AA
 botones, bordes, focus). Se respeta `prefers-reduced-motion` y no se usa
 `transition: all`.
 
-### 6. Autenticación (temporalmente desactivada)
+### 7. Autenticación (temporalmente desactivada)
 
 El flujo de autenticación original queda preservado y no se ha eliminado:
 
@@ -83,7 +100,7 @@ Mientras `AUTH_DISABLED = True` en `config/settings/base.py`:
 - No se muestran pantallas de login, registro, rescate ni cambio de contraseña.
 - El botón "Cerrar sesión" no aparece en la navegación.
 - Las rutas de autenticación redirigen al panel principal (HTTP 302).
-- El progreso se asocia al propietario local existente de la base de datos.
+- El progreso se asocia al propietario local creado o reutilizado en el arranque.
 - La auditoría registra actor nulo (`usuario=None`).
 
 Para reactivar la autenticación, cambie `AUTH_DISABLED` a `False` únicamente
@@ -92,16 +109,21 @@ ni cambios de esquema.
 
 ---
 
-## Estado de distribución (QA 16-11-2026)
+## Estado de distribución (QA 21-11-2026)
 
 El AppImage Linux x64 se compiló y verificó con un E2E sobre perfil temporal:
-health check, cinco rutas HTTP 200, 12 temas, responsive, persistencia de tema
-tras reiniciar y cierre sin procesos huérfanos. El job `windows-package` de CI
-ejecutó la aceptación automatizada completa (instalación NSIS, primer arranque,
-health, persistencia de tema y progreso, cierre, desinstalación y portable) y
-publicó el artefacto `codeguard-windows-x64`. **La aceptación manual en un
-equipo Windows físico sigue pendiente**; CI no sustituye hardware real. No
-distribuir como versión estable hasta completar esa matriz. Consulta
+health check, siete rutas HTTP 200 (incluye Biblioteca y Base de conocimiento),
+12 temas, responsive a 1024/768 px, formulario real de importación PDF con
+CSRF, visor PDF, persistencia de tema al reiniciar y cierre sin procesos
+huérfanos ni puertos abiertos. El arranque normal medido fue ~2,8 s con
+Electron y ~1,2 s para el servidor empaquetado; el primer arranque ~13–16 s según carga.
+
+El job `windows-package` de CI ejecuta la aceptación automatizada (instalación
+NSIS, primer arranque, health, persistencia de tema y progreso, cierre,
+desinstalación y portable) y publica `codeguard-windows-x64`. **La aceptación
+manual en un equipo Windows físico sigue pendiente**; CI no sustituye hardware
+real. No distribuir como versión estable hasta completar esa matriz. Consulta
+[docs/INFORME_FINAL_1.0.0.md](docs/INFORME_FINAL_1.0.0.md),
 [docs/PROJECT_EXECUTION_STATUS.md](docs/PROJECT_EXECUTION_STATUS.md) y el
 informe QA de la rama `documentation`.
 
@@ -124,10 +146,12 @@ python3 -m venv .venv && source .venv/bin/activate
 python -m pip install -r requirements.txt
 npm ci
 export CODEGUARD_DATA_DIR="$PWD/.local-data"
-python manage.py migrate --settings=config.settings.development
-python manage.py cargar_ascenso --settings=config.settings.development
 npm start
 ```
+
+`npm start` usa el mismo `server_entry.py` que el paquete: aplica migraciones,
+crea el propietario local, instala ASCENSO 3.1 y verifica la integridad en los
+arranques posteriores. Para generar el AppImage: `npm run build:linux`.
 
 Usa un directorio de datos aislado. Consulta la guía de instalación en la rama `documentation`. macOS todavía no está configurado ni validado.
 
@@ -136,6 +160,7 @@ Comandos de gestión disponibles:
 | Comando | Propósito |
 |---|---|
 | `cargar_ascenso` | Carga o actualiza las 33 etapas del roadmap ASCENSO 3.1 |
+| `verificar_perfil` | Verifica la integridad del roadmap instalado sin modificar el perfil |
 | `crear_version_leccion` | Genera un snapshot versionado borrador de una lección |
 | `gestionar_version_leccion` | Envía, aprueba, publica o retira una versión de contenido |
 | `importar_paquete_contenido` | Importa un lote validado como borradores editoriales |
@@ -204,37 +229,58 @@ antes de sustituir el perfil. Consulta
 ├── db.sqlite3
 ├── logs/
 ├── media/
+│   └── biblioteca/
+├── knowledge-packages/
+├── ui-preferences.json
 └── .secret_key
 ```
 
 ## 🧠 Stack técnico
 
-Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/HTMX/SweetAlert2/FontAwesome locales. Dependencias adicionales: `cryptography` (verificación Ed25519 de manifiestos de conocimiento), `pyinstaller` + `pyinstaller-hooks-contrib` (empaquetado del servidor local). El procesamiento de PDF todavía no tiene una biblioteca activa en `requirements.txt`; se incorporará cuando exista un módulo funcional y se aprueben la licencia y el impacto en el tamaño de distribución.
+Electron + Django 5.2 LTS + SQLite + Argon2 + Waitress + WhiteNoise + Bootstrap/HTMX/SweetAlert2/FontAwesome locales. Dependencias adicionales: `cryptography` (verificación Ed25519 de manifiestos de conocimiento), `pyinstaller` + `pyinstaller-hooks-contrib` (empaquetado del servidor local). La biblioteca PDF usa el visor integrado de Chromium y no añade librerías de parsing/OCR; su licencia y superficie de ataque quedan fuera de la distribución.
 
 ## 🧪 Verificación
 
 ```bash
 python manage.py check --settings=config.settings.development
 python manage.py makemigrations --check --dry-run --settings=config.settings.development
-python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges --settings=config.settings.development
+python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges apps.library --settings=config.settings.development
+python scripts/benchmark-startup.py
 ```
 
-Resultado verificado en este repositorio (19-11-2026): **292 pruebas OK** en
+Resultado verificado en este repositorio (21-11-2026): **331 pruebas OK** en
 `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`,
-`apps.gamification` y `apps.challenges`, con
+`apps.gamification`, `apps.challenges` y `apps.library`, con
 `--settings=config.settings.development` (system check 0 incidencias y
-migraciones al día). Las pruebas incluyen restauración de backups, cabeceras
-CSP, contraste WCAG de los 12 temas e índices de evaluaciones/evidencias.
-`npm run test:electron` ejecuta las 20 pruebas de IPC, restauración y
-persistencia de tema de escritorio. Las cifras históricas de 245/197/138 quedan sustituidas por esta
-línea base reproducible. El inventario académico y los hallazgos editoriales
-están en [docs/ROADMAP_ASCENSO_INVENTARIO.md](docs/ROADMAP_ASCENSO_INVENTARIO.md).
+migraciones al día). Las pruebas incluyen restauración de backups, biblioteca
+PDF, cabeceras CSP, contraste WCAG de los 12 temas e índices de
+evaluaciones/evidencias. `npm run test:electron` ejecuta 24 pruebas de IPC,
+arranque, restauración y persistencia de tema.
+
+Rendimiento medido: primer arranque empaquetado ~12,6 s; segundo ~1,2 s en el
+servidor y ~2,8 s con Electron. El segundo arranque verifica 1.946 lecciones sin
+reconstruirlas. Detalle y metodología en
+[docs/RENDIMIENTO_ARRANQUE.md](docs/RENDIMIENTO_ARRANQUE.md). El inventario
+académico y los hallazgos editoriales están en
+[docs/ROADMAP_ASCENSO_INVENTARIO.md](docs/ROADMAP_ASCENSO_INVENTARIO.md).
 
 ## ❓ Solución de problemas
 
 - El panel se abre directamente sin solicitar credenciales (autenticación desactivada).
-- El roadmap muestra "El roadmap todavía no está cargado" → ejecute `python manage.py cargar_ascenso`.
-- Para reactivar el inicio de sesión, cambie `AUTH_DISABLED` a `False` en `config/settings/base.py` (requiere autorización expresa).
+- Si el roadmap no aparece, ejecute `python manage.py verificar_perfil` y después
+  `python manage.py cargar_ascenso`; el arranque normal también lo repara.
+- Un PDF es rechazado → compruebe que termina en `.pdf`, que es un PDF real
+  (firma `%PDF-`) y que no supera 50 MB. Los duplicados por SHA-256 se rechazan.
+- El tutor muestra «no disponible» → Ollama no está en marcha o falta el modelo
+  configurado. La aplicación usa pistas deterministas y sigue funcionando.
+- La importación o un formulario devuelve 403 → no use `Referrer-Policy:
+  no-referrer`; esta versión usa `same-origin` para que Chromium envíe un
+  `Origin` válido en los POST locales.
+- El AppImage se queda bloqueado al montar FUSE → ejecute
+  `CODEGUARD_APPIMAGE_EXTRACT=1 ./run.sh`.
+- Para reactivar el inicio de sesión, cambie `AUTH_DISABLED` a `False` en
+  `config/settings/base.py` (requiere autorización expresa). El propietario
+  local creado sin credenciales necesitará un restablecimiento autorizado.
 
 ## 🤝 Contribuir · 🛡️ Seguridad · 📄 Licencia
 
