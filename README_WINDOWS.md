@@ -91,7 +91,7 @@ pruebas antes de distribuir.
 
 | Plataforma | Artefacto configurado | Estado |
 |---|---|---|
-| Windows x64 | NSIS installer + portable | **CI verde en `release/1.0.0-final`** (commit `5747ec6`, run `44945721326`: instalación, 9 rutas 200 (incluye editorial y cobertura), 12 temas, tema/progreso persistente, desinstalación y portable; artefacto `codeguard-windows-x64`); aceptación física en host Windows pendiente |
+| Windows x64 | NSIS installer + portable | **CI verde en `release/1.0.0-final`** (run `44952905523`, commit `29b836f`/código `24d04b6`: instalación, 9 rutas 200, 12 temas, tema/progreso persistente, desinstalación y portable; artefacto `codeguard-windows-x64`); **sin firma de código**, aceptación física en host Windows pendiente |
 | Linux x64 | AppImage | **Build y E2E verificados** (health check, rutas principales, tema y cierre sin huérfanos); aceptación en equipo limpio pendiente |
 | macOS | No configurado | No soportado/validado todavía |
 | ARM64 | No configurado | No soportado/validado todavía |

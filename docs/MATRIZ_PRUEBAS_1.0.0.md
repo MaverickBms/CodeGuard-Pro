@@ -125,17 +125,24 @@ Comando: `python scripts/benchmark-startup.py`
 | Run | Commit | Resultado | Nota |
 |---|---|---|---|
 | `44945721326` | `5747ec6` | 4/4 jobs verdes | Evidencia Windows anterior a esta auditoría |
-| Nuevo run | Pendiente tras push de `24d04b6` | — | Se actualiza en el informe final |
+| `44952905523` (push) | `29b836f` | **4/4 jobs verdes** | Django, PyInstaller, Electron y Windows |
+| `44952910842` (PR #17) | `29b836f` | **OK** | Workflow corregido para PR contra `release/1.0.0` |
+
+El commit `29b836f` solo añade documentación sobre `24d04b6`; el código validado
+por CI es el mismo.
 
 El workflow se corrigió para ejecutarse también en PR contra `release/1.0.0` y
 ramas `release/**`, y en pushes a `release/1.0.0-final`.
 
 ## 8. Artefactos de esta auditoría
 
-| Artefacto | Tamaño | SHA-256 | Commit de origen |
-|---|---:|---|---|
-| `CodeGuard-Pro-1.0.0-x86_64.AppImage` | 129.372.879 B | `7ca64d4e46787aee17cd839d162c965ba549f4f280809a8ca7d4eac915c28202` | `24d04b6` |
-| `CodeGuardServer` Linux x64 | 7.798.232 B | `6080dc8ca8ed731ecdfe38c84e0906eadfce6dd2b6838036911577479ec3d4a5` | `24d04b6` |
+| Artefacto | Plataforma | Tamaño | SHA-256 | Commit de origen |
+|---|---|---:|---|---|
+| `CodeGuard-Pro-1.0.0-x86_64.AppImage` | Linux x64 | 129.372.879 B | `7ca64d4e46787aee17cd839d162c965ba549f4f280809a8ca7d4eac915c28202` | `24d04b6` |
+| `CodeGuardServer` | Linux x64 | 7.798.232 B | `6080dc8ca8ed731ecdfe38c84e0906eadfce6dd2b6838036911577479ec3d4a5` | `24d04b6` |
+| `codeguard-windows-x64.zip` (artefacto CI) | Windows x64 | 275.098.534 B | `da2fda5aa7878f51fb142a74d1076ea1416991ae3ddb0c23ee7bb78cbe02463a` | `29b836f` (código `24d04b6`) |
+| `CodeGuard Pro Setup 1.0.0.exe` | Windows x64 | 146.505.176 B | `1c814266baa25028a579ed5f7296b9e91ca709867d86d360520679f94a78117b` | `29b836f` |
+| `CodeGuard Pro 1.0.0.exe` (portable) | Windows x64 | 129.364.031 B | `52b1d3d8dd0548edd82bbf2feb67397c84619283a1a6aef837223b8a70497be9` | `29b836f` |
 
 El AppImage se ejecutó con extracción porque el montaje FUSE de este host queda
 bloqueado. El servidor PyInstaller pasó su smoke de primer arranque y
@@ -144,6 +151,7 @@ sincronización cerrada.
 ## 9. Limitaciones de la matriz
 
 - No hay hardware Windows físico; el ciclo Windows se valida en CI.
+- Los artefactos Windows/Linux no tienen firma de código de producción.
 - No se probó macOS ni ARM64.
 - No se hizo revisión pedagógica humana de los videos.
 - No se probó concurrencia real de importación de PDF.

@@ -61,7 +61,16 @@ documenta aquí.
 - El ciclo NSIS/portable se validó en CI (`windows-latest`), no en hardware
   Windows físico.
 - No se probó con antivirus corporativo, políticas de grupo ni hardware real.
+- Los instaladores **no están firmados digitalmente**: el log de CI indica «no
+  code signing certificate configured». Windows SmartScreen puede mostrar una
+  advertencia. No se declara distribución pública sin firma y aceptación física.
 - No se declara aceptación física de Windows.
+
+### Firma de artefactos
+
+- El AppImage y los ejecutables Windows no llevan firma de código de producción.
+- Los hashes SHA-256 permiten verificar integridad, pero no sustituyen una firma
+  de identidad del editor.
 
 ### macOS y ARM64
 

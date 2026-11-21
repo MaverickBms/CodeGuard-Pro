@@ -25,7 +25,9 @@
 | Dependencias | `pip-audit` sin hallazgos; `npm audit --omit=dev` 0 |
 | AppImage actual | `7ca64d4e46787aee17cd839d162c965ba549f4f280809a8ca7d4eac915c28202` |
 | Servidor actual | `6080dc8ca8ed731ecdfe38c84e0906eadfce6dd2b6838036911577479ec3d4a5` |
-| Windows | CI 4/4 en `5747ec6`; hardware físico pendiente |
+| CI push | `44952905523`, 4/4 jobs verdes sobre `29b836f` |
+| CI PR | `44952910842`, verde sobre `29b836f` |
+| Windows | CI 4/4 en `29b836f` (`24d04b6`); hardware físico pendiente |
 
 Correcciones de la auditoría: propietario local explícito, fallo cerrado ante
 perfiles ambiguos, conservación de etapa aprobada, formularios editoriales sin

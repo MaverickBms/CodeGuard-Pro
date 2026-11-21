@@ -136,15 +136,17 @@ huérfanos ni puertos abiertos. La auditoría final midió ~9,6 s en el primer
 arranque del AppImage y ~10,2 s hasta interfaz; el segundo arranque reutiliza el
 perfil y no reconstruye el roadmap.
 
-El job `windows-package` de CI ejecutó la aceptación automatizada sobre
-`release/1.0.0-final` en el commit `5747ec6` (run `44945721326`): instalación
-NSIS, primer arranque, health, 9 rutas HTTP 200 (incluye Biblioteca, Base de
-conocimiento, Editorial y Cobertura), 12 temas, persistencia de tema y progreso,
-cierre sin huérfanos, desinstalación y portable. Publicó el artefacto
-`codeguard-windows-x64` (274 MB). El commit `e17721f` posterior solo cambió
-documentación.
+El job `windows-package` de CI ejecutó la aceptación automatizada en la
+auditoría final sobre `release/1.0.0-final` (run `44952905523`, commit
+`29b836f`, código `24d04b6`): instalación NSIS, primer arranque, health, 9 rutas
+HTTP 200 (incluye Biblioteca, Base de conocimiento, Editorial y Cobertura), 12
+temas, persistencia de tema y progreso, cierre sin huérfanos, desinstalación y
+portable. Publicó el artefacto `codeguard-windows-x64` (275.098.534 bytes). El
+run anterior `44945721326` sobre `5747ec6` también fue verde.
 **La aceptación manual en un equipo Windows físico sigue pendiente**; CI no
-sustituye hardware real. No distribuir como versión estable hasta completar esa matriz. Consulta
+sustituye hardware real. Los artefactos actuales no están firmados
+digitalmente, así que SmartScreen puede advertir. No distribuir como versión
+estable hasta completar esa matriz y la firma. Consulta
 [docs/INFORME_FINAL_1.0.0.md](docs/INFORME_FINAL_1.0.0.md),
 [docs/PROJECT_EXECUTION_STATUS.md](docs/PROJECT_EXECUTION_STATUS.md) y el
 informe QA de la rama `documentation`.

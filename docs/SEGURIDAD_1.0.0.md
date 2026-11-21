@@ -135,6 +135,9 @@ riesgo de cadena de suministro de desarrollo, no de ejecución del producto.
    diseño no promete integridad frente al propietario del sistema operativo.
 6. **Duplicado de PDF concurrente:** la comprobación no tiene restricción única
    en base de datos; el riesgo es bajo en el uso monousuario.
+7. **Artefactos sin firma de código:** los hashes SHA-256 verifican integridad,
+   pero no autentican al editor. Windows SmartScreen puede advertir. La firma
+   Authenticode/AppImage queda pendiente.
 
 ## 10. Conclusión
 

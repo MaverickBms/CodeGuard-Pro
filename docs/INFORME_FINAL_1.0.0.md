@@ -45,7 +45,7 @@ que el PR de release ejecute los workflows.
 | Tutor | Ollama local y fallback determinista; límite de 3 pistas |
 | Seguridad | Sin vulnerabilidades críticas/altas conocidas en el alcance local |
 | Linux | AppImage y servidor PyInstaller actuales verificados |
-| Windows | CI 4/4 sobre `5747ec6`; hardware físico pendiente |
+| Windows | CI 4/4 sobre `29b836f` (`24d04b6`); hardware físico pendiente |
 | macOS/ARM64 | No soportados ni validados |
 
 ## 3. Cambios de esta auditoría
@@ -169,12 +169,18 @@ no se presentan como lecciones terminadas.
 |---|---|---:|---|---|
 | `CodeGuard-Pro-1.0.0-x86_64.AppImage` | Linux x64 | 129.372.879 B | `7ca64d4e46787aee17cd839d162c965ba549f4f280809a8ca7d4eac915c28202` | `24d04b6` |
 | `CodeGuardServer` | Linux x64 | 7.798.232 B | `6080dc8ca8ed731ecdfe38c84e0906eadfce6dd2b6838036911577479ec3d4a5` | `24d04b6` |
+| `codeguard-windows-x64.zip` (artefacto CI) | Windows x64 | 275.098.534 B | `da2fda5aa7878f51fb142a74d1076ea1416991ae3ddb0c23ee7bb78cbe02463a` | `29b836f` |
+| Instalador NSIS | Windows x64 | 146.505.176 B | `1c814266baa25028a579ed5f7296b9e91ca709867d86d360520679f94a78117b` | `29b836f` |
+| Portable | Windows x64 | 129.364.031 B | `52b1d3d8dd0548edd82bbf2feb67397c84619283a1a6aef837223b8a70497be9` | `29b836f` |
 
 El AppImage actual se ejecutó con `APPIMAGE_EXTRACT_AND_RUN=1` porque el montaje
 FUSE de este host permanece bloqueado. No se reutilizan hashes antiguos.
 
-Windows: el CI construye NSIS y portable. No hay artefacto Windows local ni
-aceptación física; no se inventa un hash.
+Windows: el CI construyó y verificó los artefactos; los hashes se calcularon
+descargando el artefacto del run `44952905523`. **No están firmados
+digitalmente** (el log de CI indica que no hay certificado de firma), por lo que
+Windows SmartScreen puede advertir. No hay aceptación física en hardware
+Windows.
 
 ## 8. Seguridad
 
@@ -204,14 +210,15 @@ Detalle: [`LIMITACIONES_1.0.0.md`](LIMITACIONES_1.0.0.md).
 7. macOS y ARM64 no soportados.
 8. Sincronización remota de producción no configurada.
 9. AppImage no probado con montaje FUSE directo en este host.
-10. No se fusionó el PR ni se creó tag/release.
+10. Artefactos sin firma de código de producción (Windows/Linux).
+11. No se fusionó el PR ni se creó tag/release.
 
 ## 10. Estado del PR y veredicto
 
 - Rama: `release/1.0.0-final`, publicada en `origin`.
 - PR #17: abierto, contra `release/1.0.0`, sin fusionar.
 - PR #15 y #16: intactos y fuera de alcance.
-- CI: workflow corregido; el nuevo run se registra tras el push.
+- CI: run `44952905523` (push) y `44952910842` (PR) verdes sobre `29b836f/24d04b6`, 4/4 jobs.
 - No se creó etiqueta ni release definitiva.
 
 **Veredicto: LISTO CON LIMITACIONES DOCUMENTADAS.**
