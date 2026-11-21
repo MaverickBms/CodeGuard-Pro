@@ -39,6 +39,7 @@ class AuditLog(models.Model):
         ("tutoria_pista_entregada", "Pista de tutoría entregada"),
         ("documento_biblioteca_importado", "Documento de biblioteca importado"),
         ("documento_biblioteca_estado", "Estado de documento de biblioteca"),
+        ("contenido_leccion_editado", "Contenido de lección editado"),
     ]
 
     usuario = models.ForeignKey(

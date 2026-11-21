@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cobertura académica — CodeGuard Pro{% endblock %}
+{% block page_title %}Cobertura académica{% endblock %}
+{% block page_subtitle %}Progreso editorial del contenido, separado del progreso del estudiante{% endblock %}
+
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">{% endblock %}
+
+{% block content %}
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+    <div>
+      <h2 style="margin-top:0;"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Estado de la producción académica</h2>
+      <p class="muted" style="margin-bottom:0;">
+        Una lección con título curricular no está desarrollada. Una lección visible
+        para el estudiante no es necesariamente publicada. Este informe solo cuenta
+        contenido real y estados editoriales de SQLite.
+      </p>
+    </div>
+    <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+      <a class="btn btn-primary cg-btn cg-btn-primary" href="{% url 'roadmaps:editorial' %}"><i class="fa-solid fa-pen-ruler me-2" aria-hidden="true"></i>Espacio editorial</a>
+      <a class="btn btn-secondary cg-btn" href="{% url 'roadmaps:conocimiento' %}">Base de conocimiento</a>
+    </div>
+  </div>
+</section>
+
+<section class="v14-kpis" aria-label="Indicadores de cobertura" style="margin-bottom:1rem;">
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-layer-group"></i></span><div><span class="v14-kpi-label">Lecciones totales</span><strong class="v14-kpi-value">{{ cobertura.total }}</strong></div></article>
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-pen-nib"></i></span><div><span class="v14-kpi-label">Desarrolladas</span><strong class="v14-kpi-value">{{ cobertura.desarrolladas }}</strong><span class="v14-kpi-note">Con contenido o versión</span></div></article>
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-circle-check"></i></span><div><span class="v14-kpi-label">Aprobadas</span><strong class="v14-kpi-value">{{ cobertura.aprobada }}</strong></div></article>
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-globe"></i></span><div><span class="v14-kpi-label">Publicadas</span><strong class="v14-kpi-value">{{ cobertura.publicada }}</strong><span class="v14-kpi-note">Visibles como publicadas</span></div></article>
+</section>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-list-check" aria-hidden="true"></i> Distribución por estado</h3>
+  <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+    <span class="cg-badge cg-badge-muted">Pendientes: {{ cobertura.pendiente }}</span>
+    <span class="cg-badge">En desarrollo: {{ cobertura.en_desarrollo }}</span>
+    <span class="cg-badge cg-badge-warning">Borradores: {{ cobertura.borrador }}</span>
+    <span class="cg-badge cg-badge-warning">En revisión: {{ cobertura.revision }}</span>
+    <span class="cg-badge cg-badge-primary">Aprobadas: {{ cobertura.aprobada }}</span>
+    <span class="cg-badge cg-badge-success">Publicadas: {{ cobertura.publicada }}</span>
+    <span class="cg-badge">Con video: {{ cobertura.con_video }}</span>
+    <span class="cg-badge">Con fuentes: {{ cobertura.con_fuentes }}</span>
+  </div>
+</section>
+
+<section class="glass-card cg-card" aria-label="Cobertura por etapa">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-table-list" aria-hidden="true"></i> Detalle por etapa</h3>
+  <div style="overflow-x:auto;">
+    <table class="table" style="width:100%; margin:0; font-size:.9rem;">
+      <thead><tr><th scope="col">Etapa</th><th scope="col">Total</th><th scope="col">Desarrolladas</th><th scope="col">Borrador</th><th scope="col">Revisión</th><th scope="col">Aprobadas</th><th scope="col">Publicadas</th><th scope="col">Pendientes</th><th scope="col"></th></tr></thead>
+      <tbody>
+        {% for etapa in cobertura.por_etapa %}
+          <tr>
+            <td><strong>{{ etapa.numero }}</strong> · {{ etapa.titulo }}</td>
+            <td>{{ etapa.total }}</td>
+            <td>{{ etapa.desarrolladas }}</td>
+            <td>{{ etapa.borrador }}</td>
+            <td>{{ etapa.revision }}</td>
+            <td>{{ etapa.aprobada }}</td>
+            <td>{{ etapa.publicada }}</td>
+            <td>{{ etapa.pendiente }}</td>
+            <td style="text-align:right;"><a class="btn btn-secondary btn-sm cg-btn" href="{% url 'roadmaps:editorial' %}?etapa={{ etapa.numero }}">Revisar</a></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="9" class="muted">No hay etapas en la ruta activa.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="muted" style="font-size:.85rem; margin:.75rem 0 0;">
+    «Desarrolladas» resta las pendientes del total. El contenido desarrollado puede
+    estar en borrador, revisión, aprobado o publicado.
+  </p>
+</section>
+{% endblock %}

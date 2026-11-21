@@ -56,7 +56,7 @@
       </div>
       <div class="nav-section">
         <div class="nav-section-title">Academia</div>
-        <button class="nav-item cg-nav-item{% if request.resolver_match.app_name == 'roadmaps' and request.resolver_match.url_name != 'evaluaciones' and request.resolver_match.url_name != 'evidencias' and request.resolver_match.url_name != 'conocimiento' and request.resolver_match.url_name != 'quiz_detalle' and request.resolver_match.url_name != 'quiz_resultado' and request.resolver_match.url_name != 'quiz_historial' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:lista' %}">
+        <button class="nav-item cg-nav-item{% if request.resolver_match.app_name == 'roadmaps' and request.resolver_match.url_name != 'evaluaciones' and request.resolver_match.url_name != 'evidencias' and request.resolver_match.url_name != 'conocimiento' and request.resolver_match.url_name != 'cobertura' and request.resolver_match.url_name != 'editorial' and request.resolver_match.url_name != 'editorial_leccion' and request.resolver_match.url_name != 'editorial_fuentes' and request.resolver_match.url_name != 'quiz_detalle' and request.resolver_match.url_name != 'quiz_resultado' and request.resolver_match.url_name != 'quiz_historial' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:lista' %}">
           <span class="nav-icon"><i class="fa-solid fa-map"></i></span>
           <span class="nav-label">Roadmap ASCENSO</span>
         </button>
@@ -76,6 +76,12 @@
           <span class="nav-icon"><i class="fa-solid fa-brain"></i></span>
           <span class="nav-label">Base de conocimiento</span>
         </button>
+        {% if request.user.is_staff or request.usuario_local.is_staff %}
+        <button class="nav-item cg-nav-item{% if request.resolver_match.url_name == 'cobertura' or request.resolver_match.url_name == 'editorial' or request.resolver_match.url_name == 'editorial_leccion' or request.resolver_match.url_name == 'editorial_fuentes' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:editorial' %}">
+          <span class="nav-icon"><i class="fa-solid fa-pen-ruler"></i></span>
+          <span class="nav-label">Editorial</span>
+        </button>
+        {% endif %}
         <button class="nav-item cg-nav-item{% if request.resolver_match.url_name == 'evaluaciones' or request.resolver_match.url_name == 'quiz_detalle' or request.resolver_match.url_name == 'quiz_resultado' or request.resolver_match.url_name == 'quiz_historial' %} cg-nav-active{% endif %}" data-url="{% url 'roadmaps:evaluaciones' %}">
           <span class="nav-icon"><i class="fa-solid fa-pen-nib"></i></span>
           <span class="nav-label">Evaluaciones</span>
@@ -260,6 +266,7 @@
   <script src="{% static 'js/sweetalert2.min.js' %}"></script>
   <script src="{% static 'js/onboarding.js' %}"></script>
   <script src="{% static 'js/settings.js' %}"></script>
+  <script src="{% static 'js/lesson-resources.js' %}"></script>
 
   {% block extra_js %}{% endblock %}
 </body>

@@ -144,6 +144,9 @@ class ConocimientoIndexTests(TestCase):
 
 class NavegacionActivaTests(TestCase):
     def setUp(self):
+        from apps.accounts.bootstrap import asegurar_propietario_local
+
+        asegurar_propietario_local()
         self.roadmap = Roadmap.objects.create(
             nombre="ASCENSO navegación", edicion="3.1", activo=True
         )
@@ -158,6 +161,9 @@ class NavegacionActivaTests(TestCase):
             "roadmaps:evaluaciones",
             "roadmaps:evidencias",
             "roadmaps:conocimiento",
+            "roadmaps:cobertura",
+            "roadmaps:editorial",
+            "roadmaps:editorial_fuentes",
             "library:lista",
         ):
             with self.subTest(vista=nombre), override_settings(AUTH_DISABLED=True):

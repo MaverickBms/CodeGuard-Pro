@@ -2,13 +2,17 @@
 
 from django.urls import path
 
-from . import views
+from . import editorial_views, views
 
 app_name = "roadmaps"
 
 urlpatterns = [
     path("", views.lista, name="lista"),
     path("conocimiento/", views.conocimiento, name="conocimiento"),
+    path("cobertura/", editorial_views.cobertura, name="cobertura"),
+    path("editorial/", editorial_views.editorial, name="editorial"),
+    path("editorial/fuentes/", editorial_views.editorial_fuentes, name="editorial_fuentes"),
+    path("editorial/leccion/<int:leccion_id>/", editorial_views.editorial_leccion, name="editorial_leccion"),
     path("evaluaciones/", views.evaluaciones, name="evaluaciones"),
     path("evidencias/", views.evidencias, name="evidencias"),
     path("etapa/<int:numero>/", views.detalle, name="detalle"),

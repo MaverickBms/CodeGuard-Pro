@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Espacio editorial — CodeGuard Pro{% endblock %}
+{% block page_title %}Espacio editorial{% endblock %}
+{% block page_subtitle %}Contenido, revisión, aprobación y publicación local{% endblock %}
+
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">{% endblock %}
+
+{% block content %}
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+    <div>
+      <h2 style="margin-top:0;"><i class="fa-solid fa-pen-ruler" aria-hidden="true"></i> Taller de contenido</h2>
+      <p class="muted" style="margin-bottom:0;">
+        Edita borradores, crea versiones y ejecuta transiciones auditadas. Ninguna
+        lección se publica sin una acción explícita. El progreso editorial no
+        modifica el progreso académico del estudiante.
+      </p>
+    </div>
+    <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+      <a class="btn btn-secondary cg-btn" href="{% url 'roadmaps:cobertura' %}"><i class="fa-solid fa-chart-simple me-2"></i>Cobertura</a>
+      <a class="btn btn-secondary cg-btn" href="{% url 'roadmaps:editorial_fuentes' %}"><i class="fa-solid fa-link me-2"></i>Fuentes y licencias</a>
+      <a class="btn btn-secondary cg-btn" href="{% url 'roadmaps:conocimiento' %}">Base de conocimiento</a>
+    </div>
+  </div>
+</section>
+
+<section class="v14-kpis" aria-label="Resumen editorial" style="margin-bottom:1rem;">
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-layer-group"></i></span><div><span class="v14-kpi-label">Total</span><strong class="v14-kpi-value">{{ cobertura.total }}</strong></div></article>
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-pen-nib"></i></span><div><span class="v14-kpi-label">Desarrolladas</span><strong class="v14-kpi-value">{{ cobertura.desarrolladas }}</strong></div></article>
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-hourglass-half"></i></span><div><span class="v14-kpi-label">En revisión</span><strong class="v14-kpi-value">{{ cobertura.revision }}</strong></div></article>
+  <article class="v14-kpi cg-card"><span class="v14-kpi-icon"><i class="fa-solid fa-circle-check"></i></span><div><span class="v14-kpi-label">Publicadas</span><strong class="v14-kpi-value">{{ cobertura.publicada }}</strong></div></article>
+</section>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Filtros editoriales">
+  <form method="get" action="{% url 'roadmaps:editorial' %}" style="display:flex; gap:.6rem; flex-wrap:wrap; align-items:flex-end;">
+    <div style="flex:1 1 260px;">
+      <label class="form-label" for="q">Buscar lección o módulo</label>
+      <input class="form-control" id="q" name="q" type="search" maxlength="120" value="{{ busqueda }}" placeholder="Título de lección, módulo o etapa">
+    </div>
+    <div>
+      <label class="form-label" for="etapa">Etapa</label>
+      <select class="form-select" id="etapa" name="etapa">
+        <option value="">Todas</option>
+        {% for etapa in etapas %}<option value="{{ etapa.numero }}" {% if etapa_filtro == etapa.numero|stringformat:"s" %}selected{% endif %}>{{ etapa.numero }} · {{ etapa.titulo|truncatechars:45 }}</option>{% endfor %}
+      </select>
+    </div>
+    <div>
+      <label class="form-label" for="estado">Estado</label>
+      <select class="form-select" id="estado" name="estado">
+        <option value="">Todos</option>
+        <option value="pendiente" {% if estado_filtro == "pendiente" %}selected{% endif %}>Pendiente</option>
+        <option value="en_desarrollo" {% if estado_filtro == "en_desarrollo" %}selected{% endif %}>En desarrollo</option>
+        <option value="borrador" {% if estado_filtro == "borrador" %}selected{% endif %}>Borrador</option>
+        <option value="revision" {% if estado_filtro == "revision" %}selected{% endif %}>En revisión</option>
+        <option value="aprobada" {% if estado_filtro == "aprobada" %}selected{% endif %}>Aprobada</option>
+        <option value="publicada" {% if estado_filtro == "publicada" %}selected{% endif %}>Publicada</option>
+      </select>
+    </div>
+    <div>
+      <button class="btn btn-primary cg-btn cg-btn-primary" type="submit"><i class="fa-solid fa-filter me-2"></i>Filtrar</button>
+      <a class="btn btn-secondary cg-btn" href="{% url 'roadmaps:editorial' %}">Limpiar</a>
+    </div>
+  </form>
+  <p class="muted" style="margin:.7rem 0 0; font-size:.88rem;">{{ total_filtrado }} lección{{ total_filtrado|pluralize:"es" }} en esta vista.</p>
+</section>
+
+<section class="glass-card cg-card" aria-label="Lecciones editoriales">
+  {% if lecciones %}
+    <div style="overflow-x:auto;">
+      <table class="table" style="width:100%; margin:0; font-size:.9rem;">
+        <thead><tr><th scope="col">Lección</th><th scope="col">Estado</th><th scope="col">Versión</th><th scope="col">Recursos</th><th scope="col" style="text-align:right;">Acción</th></tr></thead>
+        <tbody>
+          {% for leccion in lecciones %}
+            <tr>
+              <td><strong>{{ leccion.titulo }}</strong><div class="muted">Etapa {{ leccion.modulo.etapa.numero }} · {{ leccion.modulo.numero }} {{ leccion.modulo.titulo }}</div></td>
+              <td><span class="cg-badge {% if leccion.estado_editorial == 'publicada' %}cg-badge-success{% elif leccion.estado_editorial == 'aprobada' %}cg-badge-primary{% elif leccion.estado_editorial == 'revision' or leccion.estado_editorial == 'borrador' %}cg-badge-warning{% else %}cg-badge-muted{% endif %}">{{ leccion.estado_editorial_etiqueta }}</span></td>
+              <td>{% if leccion.version_editorial %}v{{ leccion.version_editorial.numero_version }} · {{ leccion.version_editorial.get_estado_display }}{% else %}—{% endif %}</td>
+              <td>{% if leccion.tiene_fuentes %}<span class="cg-badge">Fuentes</span>{% endif %}{% if leccion.tiene_video %}<span class="cg-badge">Video</span>{% endif %}{% if not leccion.tiene_fuentes and not leccion.tiene_video %}<span class="muted">—</span>{% endif %}</td>
+              <td style="text-align:right;"><a class="btn btn-primary btn-sm cg-btn" href="{% url 'roadmaps:editorial_leccion' leccion.id %}">Editar</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="v14-empty"><i class="fa-solid fa-file-circle-plus"></i><h3>No hay lecciones en este filtro</h3><p>Prueba otro estado o carga un lote académico validado.</p></div>
+  {% endif %}
+</section>
+
+{% if pagina.paginator.num_pages > 1 %}
+<nav aria-label="Paginación editorial" style="margin-top:1rem; display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap;">
+  {% if pagina.has_previous %}<a class="btn btn-secondary btn-sm cg-btn" href="?page={{ pagina.previous_page_number }}{% if busqueda %}&amp;q={{ busqueda|urlencode }}{% endif %}{% if etapa_filtro %}&amp;etapa={{ etapa_filtro }}{% endif %}{% if estado_filtro %}&amp;estado={{ estado_filtro }}{% endif %}">Anterior</a>{% endif %}
+  <span class="cg-badge">Página {{ pagina.number }} de {{ pagina.paginator.num_pages }}</span>
+  {% if pagina.has_next %}<a class="btn btn-secondary btn-sm cg-btn" href="?page={{ pagina.next_page_number }}{% if busqueda %}&amp;q={{ busqueda|urlencode }}{% endif %}{% if etapa_filtro %}&amp;etapa={{ etapa_filtro }}{% endif %}{% if estado_filtro %}&amp;estado={{ estado_filtro }}{% endif %}">Siguiente</a>{% endif %}
+</nav>
+{% endif %}
+{% endblock %}
