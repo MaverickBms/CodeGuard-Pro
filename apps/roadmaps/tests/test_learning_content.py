@@ -8,6 +8,7 @@ from apps.roadmaps.models import (
     Etapa,
     Leccion,
     Modulo,
+    Prerrequisito,
     Roadmap,
 )
 
@@ -89,6 +90,36 @@ class LeccionDetalleViewTests(TestCase):
         self.assertContains(response, "Explicación sencilla")
         self.assertContains(response, "Primer ejemplo")
         self.assertContains(response, "Practica")
+
+    def test_acceso_directo_a_leccion_bloqueada_no_registra_progreso(self):
+        etapa_bloqueada = Etapa.objects.create(
+            roadmap=self.leccion.modulo.etapa.roadmap,
+            numero=1,
+            titulo="Etapa bloqueada",
+        )
+        Prerrequisito.objects.create(
+            etapa=etapa_bloqueada,
+            etapa_requerida=self.leccion.modulo.etapa,
+            justificacion="Completa la etapa anterior.",
+        )
+        modulo = Modulo.objects.create(
+            etapa=etapa_bloqueada, numero="1.1", titulo="Módulo bloqueado"
+        )
+        leccion = Leccion.objects.create(modulo=modulo, titulo="Lección protegida")
+
+        response = self.client.get(
+            reverse("roadmaps:leccion_detalle", args=[leccion.id])
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("roadmaps:detalle", args=[etapa_bloqueada.numero]),
+        )
+        self.assertFalse(
+            __import__("apps.roadmaps.models", fromlist=["Progreso"]).Progreso.objects.filter(
+                leccion=leccion
+            ).exists()
+        )
 
     def test_leccion_sin_contenido_muestra_estado_en_preparacion(self):
         self.leccion.contenido.delete()
