@@ -11,8 +11,9 @@ from django.db.models import Count
 
 def comprobar_hashes_duplicados(apps, schema_editor):
     Documento = apps.get_model("library", "DocumentoBiblioteca")
+    alias = schema_editor.connection.alias
     duplicados = list(
-        Documento.objects.exclude(sha256="")
+        Documento.objects.using(alias).exclude(sha256="")
         .values("sha256")
         .annotate(total=Count("id"))
         .filter(total__gt=1)
@@ -39,6 +40,10 @@ class Migration(migrations.Migration):
         migrations.RunPython(
             comprobar_hashes_duplicados,
             reverse_code=migrations.RunPython.noop,
+        ),
+        migrations.RemoveIndex(
+            model_name="documentobiblioteca",
+            name="library_doc_sha256_7c5c9d_idx",
         ),
         migrations.AddConstraint(
             model_name="documentobiblioteca",
