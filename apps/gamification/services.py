@@ -241,7 +241,9 @@ def evaluar_misiones_academicas(usuario, evento: str) -> None:
     if usuario is None or not getattr(usuario, "is_authenticated", False):
         return
     asegurar_misiones_defecto()
-    actualizar_racha(usuario)
+
+    # La racha se actualiza una sola vez en recompensar_evento_academico,
+    # después de confirmar que el evento produjo una transacción nueva.
 
     # Misiones por evento (incrementales)
     claves_evento = {
