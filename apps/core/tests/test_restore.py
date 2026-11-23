@@ -140,3 +140,18 @@ class RestoreBackupTests(SimpleTestCase):
         with override_settings(DATA_DIR=self.target):
             call_command("restaurar_backup", str(self.archive), confirm=True)
         self.assertIn("datos_origen", self._tablas(self.target / "db.sqlite3"))
+
+
+    def test_restauraciones_rapidas_conservan_cada_copia_de_reversion(self):
+        primera = restore_backup(self.archive, data_dir=self.target, confirm=True)
+        rollback_primero = Path(primera["rollback_path"])
+        self.assertTrue(rollback_primero.is_dir())
+
+        segunda = restore_backup(self.archive, data_dir=self.target, confirm=True)
+        rollback_segundo = Path(segunda["rollback_path"])
+
+        self.assertNotEqual(rollback_primero, rollback_segundo)
+        self.assertTrue(rollback_primero.is_dir())
+        self.assertIn("datos_anterior", self._tablas(rollback_primero / "db.sqlite3"))
+        self.assertTrue(rollback_segundo.is_dir())
+        self.assertIn("datos_origen", self._tablas(rollback_segundo / "db.sqlite3"))
