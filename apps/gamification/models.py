@@ -8,6 +8,7 @@ auditables y no duplicables.
 from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 
 
@@ -135,6 +136,13 @@ class TransaccionMoneda(models.Model):
         ordering = ["-creada_en"]
         indexes = [
             models.Index(fields=["usuario", "creada_en"], name="gamif_tx_usuario_fecha_idx"),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["usuario", "tipo", "referencia"],
+                condition=~Q(referencia=""),
+                name="gamif_tx_ref_unica",
+            )
         ]
 
     def __str__(self) -> str:
