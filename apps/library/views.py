@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from django.db import IntegrityError, transaction
+
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import FileResponse, Http404, HttpResponse, StreamingHttpResponse
@@ -82,17 +84,32 @@ def importar(request):
         else:
             documento = formulario.save(commit=False)
             documento.subido_por = get_usuario_actual(request)
-            documento.save()
-            registrar_evento(
-                "documento_biblioteca_importado",
-                usuario=obtener_actor_auditoria(request),
-                descripcion=(
-                    f"Documento «{documento.titulo}» importado "
-                    f"({documento.tamano_bytes} bytes, sha256 {documento.sha256[:12]}…)."
-                ),
-            )
-            messages.success(request, f"Documento importado: {documento.titulo}.")
-            return redirect("library:detalle", pk=documento.pk)
+            try:
+                # La consulta previa ofrece un mensaje amigable; la restricción
+                # UNIQUE de SQLite es la autoridad ante dos importaciones
+                # simultáneas que superen esa consulta al mismo tiempo.
+                with transaction.atomic():
+                    documento.save()
+            except IntegrityError:
+                # FileField escribe el archivo antes del INSERT. Si la base de
+                # datos rechaza el hash duplicado, retiramos el archivo huérfano.
+                if documento.archivo and documento.archivo.name:
+                    documento.archivo.storage.delete(documento.archivo.name)
+                formulario.add_error(
+                    "archivo",
+                    "Ya existe un documento con el mismo contenido. No se creó una copia.",
+                )
+            else:
+                registrar_evento(
+                    "documento_biblioteca_importado",
+                    usuario=obtener_actor_auditoria(request),
+                    descripcion=(
+                        f"Documento «{documento.titulo}» importado "
+                        f"({documento.tamano_bytes} bytes, sha256 {documento.sha256[:12]}…)."
+                    ),
+                )
+                messages.success(request, f"Documento importado: {documento.titulo}.")
+                return redirect("library:detalle", pk=documento.pk)
 
     return render(
         request,
