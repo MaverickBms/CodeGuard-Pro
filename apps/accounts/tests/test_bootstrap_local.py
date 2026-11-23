@@ -1,9 +1,10 @@
 """Pruebas del propietario local para el modo sin autenticación."""
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase, override_settings
+from django.test import RequestFactory, TestCase, override_settings
 
 from apps.accounts.bootstrap import USERNAME_PROPIETARIO_LOCAL, asegurar_propietario_local
+from apps.accounts.identity import get_usuario_actual
 from apps.core.models import ConfiguracionSistema
 
 
@@ -32,6 +33,27 @@ class PropietarioLocalTests(TestCase):
         tercero = asegurar_propietario_local()
         self.assertEqual(tercero.pk, primero.pk)
         self.assertNotEqual(tercero.pk, existente.pk)
+
+    def test_sesion_heredada_no_sustituye_al_propietario_en_modo_local(self):
+        propietario = asegurar_propietario_local()
+        sesion_antigua = get_user_model().objects.create_user(
+            username="sesion-antigua", password="ClaveSegura123!"
+        )
+        request = RequestFactory().get("/")
+        request.usuario_local = propietario
+        request.user = sesion_antigua
+
+        self.assertEqual(get_usuario_actual(request), propietario)
+
+    def test_perfil_ambiguo_no_usa_usuario_de_sesion_como_respaldo(self):
+        sesion_antigua = get_user_model().objects.create_user(
+            username="sesion-antigua", password="ClaveSegura123!"
+        )
+        request = RequestFactory().get("/")
+        request.usuario_local = None
+        request.user = sesion_antigua
+
+        self.assertIsNone(get_usuario_actual(request))
 
     def test_no_crea_usuarios_si_la_autenticacion_esta_activa(self):
         with override_settings(AUTH_DISABLED=False):
