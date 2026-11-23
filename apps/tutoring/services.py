@@ -301,6 +301,8 @@ def analizar_intento(usuario, ejercicio, intento_ejercicio) -> IntentoTutoria:
             sistema=_sistema_tutor(),
             usuario=contexto,
         )
+        if not analisis or not analisis.strip():
+            raise TutorNoDisponible("Ollama devolvió un análisis vacío.")
     except TutorNoDisponible:
         analisis = (
             f"El validador automático indica que el ejercicio '{ejercicio.titulo}' "
