@@ -29,7 +29,7 @@ contextBridge.exposeInMainWorld('codeguardAPI', {
   },
 
   // Señal explícita: la interfaz principal terminó su inicialización crítica.
-  signalAppInteractive: () => ipcRenderer.send('app-interactive-signal'),
+  signalAppInteractive: (payload) => ipcRenderer.send('app-interactive-signal', payload || { source: 'renderer' }),
 
   // Información del sistema
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
@@ -52,8 +52,8 @@ window.addEventListener('load', () => {
     const href = window.location.href || '';
     if (href.includes('splash.html')) return;
     setTimeout(() => {
-      try { ipcRenderer.send('app-interactive-signal'); } catch (_e) {}
-    }, 4000);
+      try { ipcRenderer.send('app-interactive-signal', { source: 'preload-fallback', ts: Date.now() }); } catch (_e) {}
+    }, 8000);
   } catch (_e) {}
 });
 

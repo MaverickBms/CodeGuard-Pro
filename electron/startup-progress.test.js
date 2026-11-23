@@ -65,3 +65,38 @@ test('las frases no se repiten inmediatamente y respetan intervalo', () => {
   const q4 = p.update({}).quote;
   assert.ok(typeof q4 === 'string');
 });
+
+test('fallback/recovery no marca interactivo verificado ni 100%', () => {
+  const p = createStartupProgress({ now: () => 1000, random: () => 0 });
+  for (const id of ['electron','database','profile','roadmap','services']) {
+    p.update({ phase: id, status: 'done' });
+  }
+  p.update({ phase: 'ui', status: 'active' });
+  const before = p.snapshot();
+  assert.equal(before.interactive, false);
+  assert.ok(before.percent <= 99);
+  // simula recuperación sin interactive:true
+  const rec = p.update({ task: 'Aplicación visible (verificación pendiente)', detail: 'fallback' });
+  assert.equal(rec.interactive, false);
+  assert.ok(rec.percent <= 99);
+});
+
+test('doble señal interactiva no altera el estado final', () => {
+  const p = createStartupProgress({ now: () => 1000, random: () => 0 });
+  p.update({ interactive: true, phase: 'ui', status: 'done' });
+  const a = p.snapshot();
+  const b = p.update({ interactive: true, phase: 'ui', status: 'done' });
+  assert.equal(a.percent, 100);
+  assert.equal(b.percent, 100);
+  assert.equal(b.interactive, true);
+});
+
+test('snapshot sirve como buffer para suscriptores tardíos', () => {
+  const p = createStartupProgress({ now: () => 1000, random: () => 0 });
+  p.update({ phase: 'electron', status: 'done', task: 'Listo' });
+  p.update({ phase: 'database', status: 'active' });
+  const snap = p.snapshot();
+  assert.equal(snap.phases.find(x=>x.id==='electron').status, 'done');
+  assert.equal(snap.phases.find(x=>x.id==='database').status, 'active');
+  assert.ok(snap.percent > 0);
+});

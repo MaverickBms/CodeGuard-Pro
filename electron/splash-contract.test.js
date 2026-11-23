@@ -27,16 +27,30 @@ test('splash tiene spinner animado con prefers-reduced-motion', () => {
   assert.match(html, /prefers-reduced-motion/);
 });
 
-test('main.js mantiene seguridad Electron y señal explícita', () => {
+test('main.js mantiene seguridad Electron y marcas de arranque', () => {
   assert.match(main, /contextIsolation:\s*true/);
   assert.match(main, /nodeIntegration:\s*false/);
   assert.match(main, /sandbox:\s*true/);
   assert.match(main, /isTrustedIpcEvent\(event\)/);
   assert.match(main, /app-interactive-signal/);
   assert.match(main, /splash_window_shown/);
-  assert.match(main, /splash_first_paint/);
   assert.match(main, /splash_dom_ready/);
   assert.match(main, /splash_document_loaded/);
+  assert.match(main, /splash_renderer_frame_ready/);
+  assert.match(main, /main_renderer_frame_ready/);
+  assert.match(main, /app_interactive_fallback/);
+});
+
+test('splash first_paint no se marca en catch de verificación', () => {
+  // El catch del rAF no debe marcar splash_first_paint como éxito.
+  assert.match(main, /splash_renderer_frame_check_failed/);
+  assert.doesNotMatch(main, /catch\(\(err\)\) \{[\s\S]{0,120}splashFirstPaint = true;[\s\S]{0,120}splash_first_paint/);
+});
+
+test('fallback no declara usable=true', () => {
+  // Fallbacks controlados deben registrar usable false.
+  assert.match(main, /writeStartupPerf\(\{ usable: false, interactive_source: 'main-timeout', verified: false \}\)/);
+  assert.match(main, /No se confirmó inicialización completa; se mostró por recuperación controlada/);
 });
 
 test('preload expone señal interactiva y progreso de solo lectura', () => {

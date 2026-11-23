@@ -26,6 +26,7 @@ const {
   describeHealth
 } = require('./startup-status');
 const { createStartupProgress } = require('./startup-progress');
+const { classifyInteractiveSignal, shouldAcceptInteractiveSignal } = require('./startup-ipc');
 
 let mainWindow = null;
 let splashWindow = null;
@@ -41,7 +42,7 @@ let startupStartedAt = 0;
 let lastBootMessage = '';
 let lastHealth = null;
 let splashReady = false;
-let splashFirstPaint = false;
+let splashFrameReady = false;
 let lastDjangoError = '';
 
 const PERF_T0 = performance.now();
@@ -817,7 +818,7 @@ function createSplashWindow() {
   perfMark('splash_window_created');
 
   splashReady = false;
-  splashFirstPaint = false;
+  splashFrameReady = false;
   const markSplashShown = () => {
     if (!startupPerf.marks_ms.splash_window_shown) perfMark('splash_window_shown');
   };
@@ -839,18 +840,29 @@ function createSplashWindow() {
     splashWindow.webContents.send('startup-progress', snapshot);
     emitStartupProgress({ phase: 'electron', status: 'done', task: 'Preparando servicios locales…', detail: 'Pantalla de carga lista.' });
     if (lastBootMessage) updateSplash(lastBootMessage, startupState.detail);
-    // Primer pintado real: esperar a que el renderer pinte el frame.
+    // Frame del renderer listo (rAF x2). No es prueba de pintado físico en pantalla.
     splashWindow.webContents.executeJavaScript(
       'new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))',
       true
     ).then(() => {
       if (!splashWindow || splashWindow.isDestroyed()) return;
-      splashFirstPaint = true;
-      if (!startupPerf.marks_ms.splash_first_paint) perfMark('splash_first_paint');
-      if (startupPerf.marks_ms.app_interactive) closeSplashWindow();
-    }).catch(() => {
-      splashFirstPaint = true;
-      if (!startupPerf.marks_ms.splash_first_paint) perfMark('splash_first_paint');
+      splashFrameReady = true;
+      if (!startupPerf.marks_ms.splash_renderer_frame_ready) perfMark('splash_renderer_frame_ready');
+      // Alias legacy documentado: frame renderer listo, no pintado físico garantizado.
+      if (!startupPerf.marks_ms.splash_first_paint) perfMark('splash_first_paint', { verified: 'renderer_frame_only' });
+      if (startupPerf.marks_ms.app_interactive || startupPerf.marks_ms.app_interactive_fallback) closeSplashWindow();
+    }).catch((err) => {
+      if (!startupPerf.marks_ms.splash_renderer_frame_check_failed) {
+        perfMark('splash_renderer_frame_check_failed', { error: err && err.message ? err.message : String(err) });
+      }
+      // No marcar first_paint. Permitir cierre eventual por seguridad sin afirmar pintado.
+      setTimeout(() => {
+        if (splashWindow && !splashWindow.isDestroyed() && splashReady && !splashFrameReady) {
+          splashFrameReady = true;
+          if (!startupPerf.marks_ms.splash_renderer_frame_ready_fallback) perfMark('splash_renderer_frame_ready_fallback');
+          if (startupPerf.marks_ms.app_interactive || startupPerf.marks_ms.app_interactive_fallback) closeSplashWindow();
+        }
+      }, 3000);
     });
   });
   splashWindow.webContents.on('did-fail-load', (_event, code, desc, validatedURL, isMainFrame) => {
@@ -908,12 +920,14 @@ function createSplashWindow() {
 function closeSplashWindow(force = false) {
   if (!splashWindow || splashWindow.isDestroyed()) return;
   // Nunca cancelar loadFile() antes de que el splash haya terminado de cargar
-  // y el primer frame esté disponible. ERR_FAILED (-2) podía ser consecuencia del cierre prematuro.
-  if (!force && (!splashReady || !splashFirstPaint)) return;
+  // y el frame del renderer esté listo. ERR_FAILED (-2) podía ser consecuencia del cierre prematuro.
+  // Si el check de frame falló, permitir cierre solo cuando app_interactive o force.
+  if (!force && !splashReady) return;
+  if (!force && !splashFrameReady && !startupPerf.marks_ms.app_interactive && !startupPerf.marks_ms.app_interactive_fallback) return;
   try { splashWindow.close(); } catch (_e) {}
   splashWindow = null;
   splashReady = false;
-  splashFirstPaint = false;
+  splashFrameReady = false;
 }
 
 function createMainWindow() {
@@ -948,27 +962,33 @@ function createMainWindow() {
       perfMark('document_loaded', { main_url: currentUrl });
       perfMark('main_did_finish_load', { main_url: currentUrl });
       emitStartupProgress({ phase: 'ui', status: 'active', task: 'Cargando la interfaz…', detail: 'Finalizando la carga de la interfaz.' });
-      // Primer pintado real del renderer principal.
+      // Frame del renderer principal listo (rAF x2, no prueba de pintado físico).
       mainWindow.webContents.executeJavaScript(
         'new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))',
         true
       ).then(() => {
-        if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint');
+        if (!startupPerf.marks_ms.main_renderer_frame_ready) perfMark('main_renderer_frame_ready');
+        if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint', { verified: 'renderer_frame_only' });
       }).catch(() => {});
-      // Fallback de seguridad: si el frontend no envía señal explícita, no bloquear indefinidamente.
+      // Fallback de recuperación: no bloquear al usuario, pero sin afirmar interactividad verificada.
       setTimeout(() => {
-        if (startupPerf.marks_ms.app_interactive) return;
+        if (startupPerf.marks_ms.app_interactive || startupPerf.marks_ms.app_interactive_fallback) return;
         if (!mainWindow || mainWindow.isDestroyed()) return;
-        console.warn('[Startup] Fallback: señal app-interactive no recibida; usando fallback controlado.');
-        if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint');
-        perfMark('app_interactive_fallback');
-        perfMark('app_interactive');
-        emitStartupProgress({ phase: 'ui', status: 'done', task: 'Aplicación lista', detail: 'CodeGuard Pro está listo para usarse.', interactive: true });
-        writeStartupPerf({ usable: true, interactive_source: 'fallback' });
+        console.warn('[Startup] Fallback: señal app-interactive verificada no recibida; recuperación controlada.');
+        if (!startupPerf.marks_ms.main_renderer_frame_ready) perfMark('main_renderer_frame_ready', { source: 'interactive-signal' });
+  if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint', { verified: 'renderer_frame_only' });
+        perfMark('app_interactive_fallback', { source: 'main-timeout' });
+        emitStartupProgress({
+          phase: 'ui',
+          status: 'active',
+          task: 'Aplicación visible (verificación pendiente)',
+          detail: 'No se confirmó inicialización completa; se mostró por recuperación controlada.',
+        });
+        writeStartupPerf({ usable: false, interactive_source: 'main-timeout', verified: false });
         mainWindow.show();
         mainWindow.maximize();
         closeSplashWindow();
-      }, 5000);
+      }, 12000);
     }
   });
   mainWindow.webContents.on('dom-ready', () => {
@@ -981,7 +1001,13 @@ function createMainWindow() {
   mainWindow.webContents.on('did-fail-load', (_event, code, desc, validatedURL, isMainFrame) => {
     if (!isMainFrame) return;
     console.error('[Main] did-fail-load', { code, desc, validatedURL });
+    perfMark('main_did_fail_load', { code, desc, validatedURL });
     emitStartupProgress({ phase: 'ui', status: 'error', task: 'Error al cargar la interfaz', detail: desc || 'Fallo de carga', error: String(desc || code) });
+  });
+  mainWindow.webContents.on('render-process-gone', (_event, details) => {
+    console.error('[Main] render-process-gone', details);
+    perfMark('main_render_process_gone', details || {});
+    emitStartupProgress({ phase: 'ui', status: 'error', task: 'Error en la interfaz', detail: 'El proceso de renderizado se detuvo inesperadamente.', error: String(details && details.reason || 'render-process-gone') });
   });
 
   mainWindow.once('ready-to-show', () => {
@@ -1171,18 +1197,51 @@ ipcMain.handle('check-knowledge-updates', event => {
   return syncStatus;
 });
 
-// IPC: señal explícita de interfaz interactiva enviada por el renderer principal.
-ipcMain.on('app-interactive-signal', (event) => {
-  if (!isTrustedIpcEvent(event)) return;
-  if (!mainWindow || mainWindow.isDestroyed()) return;
-  if (event.sender !== mainWindow.webContents) return;
-  if (startupPerf.marks_ms.app_interactive) return;
+// IPC: señal de interactividad desde el renderer principal.
+ipcMain.on('app-interactive-signal', (event, payload = {}) => {
+  const trusted = isTrustedIpcEvent(event);
+  const senderIsMain = !!(mainWindow && !mainWindow.isDestroyed() && event.sender === mainWindow.webContents);
+  const decision = shouldAcceptInteractiveSignal({
+    trusted,
+    senderIsMain,
+    alreadyInteractive: !!startupPerf.marks_ms.app_interactive,
+    alreadyFallback: !!startupPerf.marks_ms.app_interactive_fallback,
+  });
+  if (!decision.ok) {
+    perfMark('app_interactive_signal_rejected', { reason: decision.reason });
+    return;
+  }
+
+  const { source, verified } = classifyInteractiveSignal(payload);
+  perfMark('app_interactive_signal_received', { source, verified });
+
+  if (!verified) {
+    // Fallback: mostrar para no bloquear al usuario, pero sin declarar usable/100%.
+    console.warn(`[Startup] Señal interactiva no verificada (source=${source}). Se usa recuperación controlada.`);
+    perfMark('app_interactive_fallback', { source });
+    emitStartupProgress({
+      phase: 'ui',
+      status: 'active',
+      task: 'Aplicación visible (verificación pendiente)',
+      detail: 'No se confirmó inicialización completa; se mostró por recuperación controlada.',
+    });
+    writeStartupPerf({ usable: false, interactive_source: source, verified: false });
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.show();
+      mainWindow.maximize();
+    }
+    closeSplashWindow();
+    return;
+  }
+
   if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint');
-  perfMark('app_interactive');
+  perfMark('app_interactive', { source });
   emitStartupProgress({ phase: 'ui', status: 'done', task: 'Aplicación lista', detail: 'CodeGuard Pro está listo para usarse.', interactive: true });
-  writeStartupPerf({ usable: true });
-  mainWindow.show();
-  mainWindow.maximize();
+  writeStartupPerf({ usable: true, interactive_source: source, verified: true });
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.show();
+    mainWindow.maximize();
+  }
   closeSplashWindow();
 });
 
@@ -1244,14 +1303,29 @@ if (!gotLock) {
     createSplashWindow();
     createMainWindow();
 
+    const loadMainWithRetry = async (url, attempt = 1) => {
+      if (!mainWindow || mainWindow.isDestroyed()) throw new Error('Ventana principal no disponible');
+      updateSplash('Cargando la interfaz…', 'Aplicando preferencias del perfil.', { phase: 'ui', status: 'active' });
+      perfMark(attempt === 1 ? 'main_load_start' : `main_load_retry_${attempt}`, { main_url: url, attempt });
+      try {
+        await mainWindow.loadURL(url);
+        perfMark('main_load_resolved', { attempt });
+        return true;
+      } catch (err) {
+        const detail = err && err.message ? err.message : String(err);
+        perfMark('main_load_failed', { attempt, detail, main_url: url });
+        console.error(`[Startup] main load failed (attempt ${attempt}):`, detail);
+        if (attempt < 2 && !quitting) {
+          await new Promise(r => setTimeout(r, 1500));
+          if (mainWindow && !mainWindow.isDestroyed()) return loadMainWithRetry(url, attempt + 1);
+        }
+        throw err;
+      }
+    };
+
     try {
       const url = await startDjango();
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        updateSplash('Cargando la interfaz…', 'Aplicando preferencias del perfil.', { phase: 'ui', status: 'active' });
-        perfMark('main_load_start', { main_url: url });
-        await mainWindow.loadURL(url);
-        perfMark('main_load_resolved');
-      }
+      await loadMainWithRetry(url, 1);
       console.log(`[Startup] Carga principal iniciada en ${Date.now() - startupStartedAt} ms.`);
       scheduleKnowledgeSync();
     } catch (error) {
@@ -1260,8 +1334,13 @@ if (!gotLock) {
         ? `\n\nÚltimo error del servidor:\n${lastDjangoError}`
         : '';
       const mensaje = `${error.message}${detalleError}`;
+      perfMark('startup_failed', { message: (error.message || '').slice(0, 300) });
+      writeStartupPerf({ usable: false, failed: true, error: (error.message || '').slice(0, 300) });
       emitStartupProgress({ task: 'No se pudo iniciar CodeGuard Pro', detail: error.message || '', error: mensaje.slice(0, 500), phase: 'services', status: 'error' });
       updateSplash('No se pudo iniciar CodeGuard Pro', error.message || '', { phase: 'services', status: 'error' });
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        try { mainWindow.show(); } catch (_e) {}
+      }
       dialog.showErrorBox(
         'No se pudo iniciar CodeGuard Pro',
         `${mensaje}\n\nRevisa los registros en:\n${path.join(dataDir(), 'logs')}`
