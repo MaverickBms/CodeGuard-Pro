@@ -12,12 +12,12 @@ funcionalidad terminada.
 | Arranque | Completa | Migraciones, propietario, roadmap y siembra inicial | Primer arranque tarda más por migraciones/siembra |
 | Panel | Completa | Progreso real, próxima etapa, actividad y cobertura | No hay métricas inventadas |
 | Roadmap | Completa | 33 etapas, 212 módulos, 1.946 títulos, filtros y prerrequisitos | La mayoría de títulos no tienen cuerpo |
-| Etapas | Completa | Navegación, bloqueo, criterios y evidencias | Reabrir una etapa es explícito |
+| Etapas | Completa | Navegación, bloqueo, criterios y evidencias; el acceso directo a lecciones, quizzes y tutoría respeta los prerrequisitos | Reabrir una etapa es explícito |
 | Lecciones | Parcial | 8 lecciones completas del módulo 0.1 | 1.938 títulos sin contenido |
 | Ejercicios | Completa (alcance actual) | Evaluadores deterministas, intentos e historial | No ejecuta código; sin sandbox |
 | Evaluaciones | Parcial | Quiz publicables, corrección backend y resultados inmutables | 0 quizzes publicados en perfil limpio; abiertas pendientes de revisión |
 | Progreso | Completa | Lecciones por evidencia, módulos por evaluación y etapas por criterios | No se puede completar manualmente |
-| Tutor | Completa con fallback | Ollama local, detección de modelo, pistas e informe | Sin Ollama usa reglas locales |
+| Tutor | Completa con fallback | Ollama local, detección de modelo, pistas e informe; verifica roadmap activo y prerrequisitos en endpoints directos | Sin Ollama o respuesta vacía usa reglas locales |
 | Biblioteca | Completa | Importación PDF, SHA-256, búsqueda, archivo, visor y rangos | Sin OCR ni parsing |
 | Conocimiento | Completa local | Fuentes, versiones, paquetes y estados reales | Sincronización remota no configurada |
 | Editorial | Completa | Editar, versionar, fuentes, revisión, aprobación, publicación y retirada | El contenido inicial queda en borrador |
