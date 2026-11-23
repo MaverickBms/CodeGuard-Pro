@@ -52,6 +52,13 @@ from .services import (
 from .services_evaluacion import evaluar_quiz, registrar_cumplimiento_criterio
 
 
+def _etapa_bloqueada_para_usuario(etapa, usuario) -> bool:
+    """Comprueba prerrequisitos también en accesos directos a recursos."""
+    completadas = etapas_completadas(usuario, etapa.roadmap) if usuario is not None else set()
+    return etapa.esta_bloqueada_para(completadas)
+
+
+
 @requiere_acceso
 def evaluaciones(request):
     """Índice de evaluaciones publicadas de la ruta activa.
@@ -444,6 +451,14 @@ def leccion_detalle(request, leccion_id):
         modulo__etapa__roadmap=roadmap,
     )
     usuario = get_usuario_actual(request)
+    etapa_leccion = leccion.modulo.etapa
+    if _etapa_bloqueada_para_usuario(etapa_leccion, usuario):
+        messages.warning(
+            request,
+            "Esta lección está bloqueada. Completa primero los prerrequisitos de la etapa.",
+        )
+        return redirect("roadmaps:detalle", numero=etapa_leccion.numero)
+
     progreso = None
     if usuario is not None:
         progreso = iniciar_leccion(
@@ -656,14 +671,24 @@ def _preguntas_seguras(quiz: Quiz):
 @requiere_acceso
 def quiz_detalle(request, quiz_id):
     """Muestra un quiz publicado y procesa su envío."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
     quiz = get_object_or_404(
-        Quiz.objects.select_related("modulo__etapa__roadmap").prefetch_related(
+        Quiz.objects.select_related("modulo__etapa__roadmap", "etapa__roadmap").prefetch_related(
             "preguntas__leccion"
-        ),
+        ).filter(Q(modulo__etapa__roadmap=roadmap) | Q(etapa__roadmap=roadmap)),
         pk=quiz_id,
         estado=Quiz.ESTADO_PUBLICADO,
     )
     usuario = get_usuario_actual(request)
+    etapa_acceso = quiz.modulo.etapa if quiz.modulo_id else quiz.etapa
+    if etapa_acceso is not None and _etapa_bloqueada_para_usuario(etapa_acceso, usuario):
+        messages.warning(
+            request,
+            "Esta evaluación está bloqueada. Completa primero los prerrequisitos de la etapa.",
+        )
+        return redirect("roadmaps:detalle", numero=etapa_acceso.numero)
 
     if request.method == "POST":
         if usuario is None:
@@ -724,8 +749,13 @@ def quiz_detalle(request, quiz_id):
 @requiere_acceso
 def quiz_resultado(request, quiz_id, resultado_id):
     """Muestra el resultado de un intento de quiz del usuario."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
     quiz = get_object_or_404(
-        Quiz.objects.select_related("modulo__etapa"),
+        Quiz.objects.select_related("modulo__etapa", "etapa").filter(
+            Q(modulo__etapa__roadmap=roadmap) | Q(etapa__roadmap=roadmap)
+        ),
         pk=quiz_id,
         estado=Quiz.ESTADO_PUBLICADO,
     )
@@ -757,8 +787,13 @@ def quiz_resultado(request, quiz_id, resultado_id):
 @requiere_acceso
 def quiz_historial(request, quiz_id):
     """Muestra el historial de resultados del usuario para un quiz."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
     quiz = get_object_or_404(
-        Quiz.objects.select_related("modulo__etapa"),
+        Quiz.objects.select_related("modulo__etapa", "etapa").filter(
+            Q(modulo__etapa__roadmap=roadmap) | Q(etapa__roadmap=roadmap)
+        ),
         pk=quiz_id,
         estado=Quiz.ESTADO_PUBLICADO,
     )
