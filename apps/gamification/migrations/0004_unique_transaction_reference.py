@@ -11,6 +11,7 @@ def comprobar_referencias_existentes(apps, schema_editor):
         .values("usuario_id", "tipo", "referencia")
         .annotate(total=Count("id"))
         .filter(total__gt=1)
+        .order_by("usuario_id", "tipo", "referencia")
         .first()
     )
     if duplicada:
