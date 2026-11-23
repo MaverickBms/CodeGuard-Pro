@@ -163,6 +163,23 @@ class PistaTutoriaViewTests(TestCase):
         self.assertEqual(respuesta.status_code, 400)
         self.assertFalse(respuesta.json()["exito"])
 
+    @patch.object(services, "_llamar_ollama", return_value="   ")
+    def test_entrega_pista_vacia_cae_a_reglas_estaticas(self, mock_llamar):
+        self.ejercicio.pista_1 = "Revisa primero el concepto central."
+        self.ejercicio.save(update_fields=["pista_1", "actualizado_en"])
+
+        respuesta = self.client.post(
+            reverse("tutoring:pista", args=[self.ejercicio.id]),
+            {"tipo": "orientacion"},
+        )
+
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertTrue(respuesta.json()["exito"])
+        self.assertEqual(
+            PistaTutoria.objects.get().contenido,
+            "Revisa primero el concepto central.",
+        )
+
     @patch.object(services, "_llamar_ollama", side_effect=TutorNoDisponible)
     def test_entrega_pista_cae_a_reglas_estaticas_sin_ollama(self, mock_llamar):
         self.ejercicio.pista_1 = "Primero identifica el concepto que se evalúa."
