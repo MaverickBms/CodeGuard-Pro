@@ -12,7 +12,7 @@ funcionalidad terminada.
 | Arranque | Completa | Migraciones, propietario, roadmap y siembra inicial | Primer arranque tarda más por migraciones/siembra |
 | Panel | Completa | Progreso real, próxima etapa, actividad y cobertura | No hay métricas inventadas |
 | Roadmap | Completa | 33 etapas, 212 módulos, 1.946 títulos, filtros y prerrequisitos | La mayoría de títulos no tienen cuerpo |
-| Etapas | Completa | Navegación, bloqueo, criterios y evidencias; el acceso directo a lecciones, quizzes y tutoría respeta los prerrequisitos | Reabrir una etapa es explícito |
+| Etapas | Completa | Navegación, bloqueo, criterios y evidencias; la lectura de lecciones bloqueadas es de solo consulta y las entregas/quizzes/tutoría respetan prerrequisitos | Reabrir una etapa es explícito |
 | Lecciones | Parcial | 8 lecciones completas del módulo 0.1 | 1.938 títulos sin contenido |
 | Ejercicios | Completa (alcance actual) | Evaluadores deterministas, intentos e historial | No ejecuta código; sin sandbox |
 | Evaluaciones | Parcial | Quiz publicables, corrección backend y resultados inmutables | 0 quizzes publicados en perfil limpio; abiertas pendientes de revisión |
