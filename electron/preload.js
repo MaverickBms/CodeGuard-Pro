@@ -21,6 +21,13 @@ contextBridge.exposeInMainWorld('codeguardAPI', {
   // Recursos externos verificados (HTTPS) del contenido académico.
   openExternal: (url) => ipcRenderer.invoke('open-external', url),
 
+  // Progreso de arranque (solo lectura, eventos emitidos por el proceso principal).
+  onStartupProgress: (callback) => {
+    const handler = (_event, payload) => callback(payload);
+    ipcRenderer.on('startup-progress', handler);
+    return () => ipcRenderer.removeListener('startup-progress', handler);
+  },
+
   // Información del sistema
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
   

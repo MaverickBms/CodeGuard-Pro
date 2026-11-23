@@ -130,3 +130,26 @@ Para benchmark automatizado:
 ```
 
 Criterio: reportar `usable_ms`/marcas en `startup-perf-electron.json` y tiempos de `/healthz/`.
+
+
+## Misión de pantalla de carga dinámica y optimización adicional (2026-11-23, sesión 2)
+
+### Objetivo
+- Reducir tiempo percibido de arranque y mostrar progreso real por fases.
+- Investigar demoras reportadas por propietario: window_create ~21s, splash_loaded ~41s tras carga, total ~102s.
+
+### Cambios
+- `electron/splash.html`: nueva pantalla de carga local, autocontenida (sin CDN/deps externas), con logo, barra de progreso, porcentaje, tarea actual, fases, frases motivacionales en español y estado de error.
+- `electron/startup-progress.js`: modelo de progreso por fases con pesos, sin avance ficticio, cap 99% hasta `app_interactive`, manejo de eventos duplicados/fuera de orden.
+- `electron/main.js`: emite `startup-progress` por IPC real; marca `splash_dom_ready`, `splash_first_paint`, `document_loaded`, `renderer_first_paint`, `app_interactive`; no marca usable en `loadURL`.
+- `electron/preload.js`: expone `onStartupProgress` (solo lectura).
+- `run.sh`: encabezado TTY no intrusivo; conserva compatibilidad.
+- Tests: `electron/startup-progress.test.js` (5 pruebas).
+
+### Medición en este entorno
+- No se obtuvo medición AppImage GUI end-to-end utilizable en este entorno (mismo límite de entorno ya documentado). No se presentan tiempos AppImage nuevos como validados.
+- Electron tests: 31 pass, 0 fail.
+- AppImage Linux reconstruido con los cambios.
+
+### Limitaciones
+- Las demoras de 21s/41s reportadas por propietario están en creación de ventana/renderizado Chromium en su entorno; no reproducibles aquí. Se requiere validación en equipo del propietario con `startup-perf-electron.json`.

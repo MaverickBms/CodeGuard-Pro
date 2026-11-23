@@ -25,6 +25,7 @@ const {
   startupTimeoutMs,
   describeHealth
 } = require('./startup-status');
+const { createStartupProgress } = require('./startup-progress');
 
 let mainWindow = null;
 let djangoProcess = null;
@@ -70,6 +71,29 @@ function writeStartupPerf(extra = {}) {
   }
 }
 perfMark('electron_main_loaded');
+
+const startupProgress = createStartupProgress();
+const startupState = startupProgress.state;
+
+function renderTerminalProgress(payload) {
+  if (!process.stdout.isTTY) return;
+  const pct = String(payload.percent).padStart(3, ' ');
+  const width = 20;
+  const filled = Math.round((payload.percent / 100) * width);
+  const bar = '█'.repeat(filled) + '░'.repeat(width - filled);
+  const task = (payload.task || '').slice(0, 50);
+  const line = `\r[CodeGuard] [${bar}] ${pct}% ${task}`;
+  try { process.stdout.write(line.padEnd(100)); if (payload.percent === 100) process.stdout.write('\n'); } catch (_e) {}
+}
+
+function emitStartupProgress(update = {}) {
+  if (startupPerf.marks_ms.app_interactive) update.interactive = true;
+  const payload = startupProgress.update(update);
+  if (mainWindow && !mainWindow.isDestroyed() && mainWindow.webContents) {
+    mainWindow.webContents.send('startup-progress', payload);
+  }
+  renderTerminalProgress(payload);
+}
 
 const DJANGO_HOST = '127.0.0.1';
 const SYNC_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -238,18 +262,14 @@ function waitForServer(url, child, timeoutMs = startupTimeoutMs()) {
   });
 }
 
-function updateSplash(message, detail) {
+function updateSplash(message, detail, phaseUpdate) {
   lastBootMessage = message || lastBootMessage;
+  const task = typeof message === 'string' ? message.slice(0, 240) : startupState.task;
+  const det = typeof detail === 'string' ? detail.slice(0, 300) : startupState.detail;
+  const update = { task, detail: det, ...(phaseUpdate || {}) };
+  emitStartupProgress(update);
   if (!mainWindow || mainWindow.isDestroyed() || !splashReady) return;
-  const safeMessage = typeof message === 'string' ? message.slice(0, 240) : '';
-  const safeDetail = typeof detail === 'string' ? detail.slice(0, 300) : '';
-  if (!safeMessage) return;
-  const script = `(() => {
-    const message = document.getElementById('bootStatus');
-    const detail = document.getElementById('bootDetail');
-    if (message) message.textContent = ${JSON.stringify(safeMessage)};
-    if (detail) detail.textContent = ${JSON.stringify(safeDetail)};
-  })();`;
+  const script = `(() => { if (window.__codeguardSetProgress) window.__codeguardSetProgress(${JSON.stringify({task, detail: det, ...(phaseUpdate||{})})}); })();`;
   mainWindow.webContents.executeJavaScript(script, true).catch(() => {});
 }
 
@@ -272,10 +292,18 @@ function attachProcessLogs(child) {
     const event = parseBootEvent(line);
     if (!event) return;
     perfMark(`boot_${event.phase}_${event.status}`, event);
+    const phaseMap = { database: 'database', profile: 'profile', roadmap: 'roadmap', content: 'roadmap', ready: 'services' };
+    const splashPhase = phaseMap[event.phase];
+    let phaseStatus = 'active';
+    if (event.status === 'ready' || event.status === 'ok' || event.status === 'loaded' || event.status === 'seeded') phaseStatus = 'done';
+    if (event.status === 'unavailable' || event.status === 'error') phaseStatus = 'error';
     const message = formatBootMessage(event);
+    const detail = describeHealth(lastHealth) || '';
     if (message) {
       console.log(`[Startup] ${event.phase}:${event.status} ${message}`);
-      updateSplash(message, '');
+      updateSplash(message, detail, splashPhase ? { phase: splashPhase, status: phaseStatus } : undefined);
+    } else if (splashPhase) {
+      emitStartupProgress({ phase: splashPhase, status: phaseStatus, detail });
     }
   };
 
@@ -368,11 +396,13 @@ async function startDjango() {
     );
   }
   perfMark('django_spawned', { django_pid: djangoProcess.pid });
+  emitStartupProgress({ phase: 'services', status: 'active', task: 'Iniciando el servidor local…', detail: 'Arrancando los servicios de aprendizaje.' });
 
   attachProcessLogs(djangoProcess);
 
   await waitForServer(`http://${DJANGO_HOST}:${djangoPort}/healthz/`, djangoProcess);
   perfMark('healthz_ready');
+  emitStartupProgress({ phase: 'services', status: 'done', task: 'Servidor local listo', detail: 'Los servicios locales están disponibles.' });
   console.log(`[Startup] Servidor Django listo en ${Date.now() - started} ms.`);
   return `http://${DJANGO_HOST}:${djangoPort}`;
 }
@@ -827,19 +857,36 @@ function createWindow() {
 
   splashReady = false;
   perfMark('splash_load_start');
-  mainWindow.loadURL(splashHtml());
+  emitStartupProgress({ phase: 'electron', status: 'active', task: 'Inicializando el entorno de escritorio…', detail: 'Cargando la pantalla de inicio.' });
+  mainWindow.loadFile(path.join(__dirname, 'splash.html'));
+  mainWindow.show();
   mainWindow.webContents.on('did-finish-load', () => {
     const currentUrl = mainWindow.webContents.getURL();
-    const wasSplash = currentUrl.startsWith('data:');
+    const wasSplash = currentUrl.startsWith('data:') || currentUrl.includes('splash.html');
     if (wasSplash) {
+      if (!startupPerf.marks_ms.splash_dom_ready) perfMark('splash_dom_ready');
+      if (!startupPerf.marks_ms.splash_first_paint) perfMark('splash_first_paint');
       if (!startupPerf.marks_ms.splash_loaded) perfMark('splash_loaded');
       splashReady = true;
-      if (lastBootMessage) updateSplash(lastBootMessage, '');
+      emitStartupProgress({ phase: 'electron', status: 'done', task: 'Preparando servicios locales…', detail: 'Pantalla de carga lista.' });
+      if (lastBootMessage) updateSplash(lastBootMessage, startupState.detail);
       return;
     }
     if (!startupPerf.marks_ms.main_did_finish_load) {
+      perfMark('document_loaded', { main_url: currentUrl });
       perfMark('main_did_finish_load', { main_url: currentUrl });
-      writeStartupPerf({ usable: true });
+      emitStartupProgress({ phase: 'ui', status: 'active', task: 'Cargando la interfaz…', detail: 'Finalizando la carga de la interfaz.' });
+      mainWindow.webContents.executeJavaScript(
+        'new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))',
+        true
+      ).then(() => {
+        if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint');
+        if (!startupPerf.marks_ms.app_interactive) {
+          perfMark('app_interactive');
+          emitStartupProgress({ phase: 'ui', status: 'done', task: 'Aplicación lista', detail: 'CodeGuard Pro está listo para usarse.' });
+          writeStartupPerf({ usable: true });
+        }
+      }).catch(() => {});
     }
   });
   mainWindow.webContents.on('dom-ready', () => {
@@ -1091,6 +1138,7 @@ if (!gotLock) {
 
   app.whenReady().then(async () => {
     perfMark('electron_app_ready');
+    emitStartupProgress({ phase: 'electron', status: 'active', task: 'Entorno de escritorio listo…', detail: 'Creando la ventana principal.' });
     startupStartedAt = Date.now();
     if (process.platform === 'win32') {
       app.setAppUserModelId('com.codeguard.pro');
@@ -1101,12 +1149,11 @@ if (!gotLock) {
     try {
       const url = await startDjango();
       if (mainWindow) {
-        updateSplash('Cargando la interfaz…', 'Aplicando preferencias del perfil.');
+        updateSplash('Cargando la interfaz…', 'Aplicando preferencias del perfil.', { phase: 'ui', status: 'active' });
         splashReady = false;
         perfMark('main_load_start', { main_url: url });
         await mainWindow.loadURL(url);
         perfMark('main_load_resolved');
-        writeStartupPerf({ usable: true, total_ms: Math.round(performance.now() - PERF_T0) });
       }
       console.log(`[Startup] Aplicación lista en ${Date.now() - startupStartedAt} ms.`);
       scheduleKnowledgeSync();
@@ -1116,7 +1163,8 @@ if (!gotLock) {
         ? `\n\nÚltimo error del servidor:\n${lastDjangoError}`
         : '';
       const mensaje = `${error.message}${detalleError}`;
-      updateSplash('No se pudo iniciar CodeGuard Pro', error.message || '');
+      emitStartupProgress({ task: 'No se pudo iniciar CodeGuard Pro', detail: error.message || '', error: mensaje.slice(0, 500), phase: 'services', status: 'error' });
+      updateSplash('No se pudo iniciar CodeGuard Pro', error.message || '', { phase: 'services', status: 'error' });
       dialog.showErrorBox(
         'No se pudo iniciar CodeGuard Pro',
         `${mensaje}\n\nRevisa los registros en:\n${path.join(dataDir(), 'logs')}`

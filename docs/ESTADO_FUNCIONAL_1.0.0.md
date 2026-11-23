@@ -155,3 +155,14 @@ cuerpo frente a 1.946 títulos curriculares. La aplicación no oculta esa brecha
 | Servidor empaquetado warm | OK medido | ~1.28s a /healthz en temp profile |
 | Servidor empaquetado fresh | OK medido | ~12.45s a /healthz en temp profile |
 | AppImage UI utilizable validado | PENDIENTE VALIDACIÓN EXTERNA | Rebuild OK; ejecución GUI no concluyente en este entorno |
+
+
+## Pantalla de carga dinámica (2026-11-23)
+
+| Área | Estado | Nota |
+|---|---|---|
+| Splash local autocontenido | OK | `electron/splash.html`, sin deps externas |
+| Progreso real por fases | OK | IPC `startup-progress`, pesos, cap 99% hasta interactivo |
+| Frases motivacionales locales | OK | colección local en español, sin red |
+| Terminal progress (TTY) | PARCIAL | línea de progreso desde Electron stdout; run.sh header TTY |
+| Validación AppImage UI | PENDIENTE VALIDACIÓN EXTERNA | rebuild OK, entorno GUI no concluyente |

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:;">
+  <title>CodeGuard Pro</title>
+  <style>
+    :root{--bg:#0f172a;--bg2:#162033;--card:#1e293b;--text:#f8fafc;--muted:#94a3b8;--accent:#3b82f6;--accent2:#60a5fa;--ok:#22c55e;--warn:#f59e0b;--err:#ef4444;--border:#334155;}
+    *{box-sizing:border-box} html,body{height:100%} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at 30% 20%,#1e3a8a 0%,#0f172a 55%,#0b1220 100%);color:var(--text);display:grid;place-items:center;}
+    .wrap{width:min(720px,calc(100vw - 32px));padding:28px;border-radius:20px;background:linear-gradient(180deg,rgba(30,41,59,.96),rgba(15,23,42,.96));border:1px solid rgba(96,165,250,.15);box-shadow:0 24px 80px rgba(0,0,0,.45);}
+    .brand{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+    .logo{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#3b82f6,#1e3a8a);box-shadow:0 10px 30px rgba(59,130,246,.35);font-size:28px;flex:0 0 auto}
+    .brand h1{margin:0;font-size:1.7rem;letter-spacing:-.02em}.brand p{margin:2px 0 0;color:var(--muted);font-size:.92rem}
+    .status-row{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin:18px 0 8px}
+    .task{font-size:1rem;font-weight:600;min-height:1.4em}.pct{font-variant-numeric:tabular-nums;color:var(--accent2);font-weight:700}
+    .bar{height:12px;background:#0b1220;border-radius:999px;overflow:hidden;border:1px solid var(--border)} .fill{height:100%;width:0%;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:999px;transition:width .25s ease}
+    .detail{margin-top:8px;color:var(--muted);font-size:.88rem;min-height:1.3em}
+    .phases{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+    .phase{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(15,23,42,.35);border:1px solid rgba(51,65,85,.45);font-size:.88rem}
+    .dot{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;flex:0 0 auto;border:1px solid var(--border);color:var(--muted);background:#0f172a}
+    .phase.done .dot{background:rgba(34,197,94,.15);color:var(--ok);border-color:rgba(34,197,94,.4)}
+    .phase.active .dot{background:rgba(59,130,246,.15);color:var(--accent2);border-color:rgba(59,130,246,.45)}
+    .phase.error .dot{background:rgba(239,68,68,.15);color:var(--err);border-color:rgba(239,68,68,.45)}
+    .phase.pending{opacity:.65}.phase .name{flex:1}
+    .phase .state{color:var(--muted);font-size:.78rem}.phase.done .state{color:var(--ok)}.phase.active .state{color:var(--accent2)}.phase.error .state{color:var(--err)}
+    .quote{margin-top:18px;padding-top:14px;border-top:1px solid rgba(51,65,85,.6);color:#cbd5e1;font-size:.9rem;line-height:1.45;min-height:3.2em}
+    .quote small{display:block;color:var(--muted);margin-top:4px}
+    .error-box{display:none;margin-top:14px;padding:10px 12px;border-radius:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.35);color:#fecaca;font-size:.84rem}
+    .error-box.show{display:block}
+    @media (prefers-reduced-motion: reduce){.fill{transition:none}}
+  </style>
+</head>
+<body>
+  <div class="wrap" role="status" aria-live="polite">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div><h1>CodeGuard Pro</h1><p>Entorno local de aprendizaje</p></div>
+    </div>
+    <div class="status-row"><div class="task" id="task">Preparando CodeGuard Pro…</div><div class="pct" id="pct">0%</div></div>
+    <div class="bar" aria-hidden="true"><div class="fill" id="fill"></div></div>
+    <div class="detail" id="detail">Iniciando el entorno de escritorio.</div>
+    <ul class="phases" id="phases"></ul>
+    <div class="quote" id="quote"></div>
+    <div class="error-box" id="errorBox"></div>
+  </div>
+  <script>
+    const PHASES = [
+      {id:'electron', label:'Entorno de escritorio'},
+      {id:'database', label:'Base de datos local'},
+      {id:'profile',  label:'Perfil local'},
+      {id:'roadmap',  label:'Estructura ASCENSO'},
+      {id:'services', label:'Servicios de aprendizaje'},
+      {id:'ui',       label:'Interfaz principal'}
+    ];
+    const QUOTES = [
+      {t:'Un paso a la vez sigue siendo avanzar.'},
+      {t:'Hoy estás más cerca de tu meta que ayer.'},
+      {t:'15 minutos diarios superan a 3 horas una vez al mes.'},
+      {t:'La constancia le gana al talento cuando el talento no practica.'},
+      {t:'Ya hiciste lo más difícil: empezar.'},
+      {t:'No tienes que saberlo todo hoy, solo un poco más que ayer.'},
+      {t:'Aprender algo nuevo siempre se siente incómodo al principio. ¡Vas bien!'},
+      {t:'La vida es como andar en bicicleta. Para mantener el equilibrio, debes seguir moviéndote.', a:'Albert Einstein'},
+      {t:'La forma de empezar es dejar de hablar y comenzar a hacer.', a:'Walt Disney'},
+      {t:'No me preocupa que me hayan robado la idea, me preocupa que no tengan ninguna propia.', a:'Nikola Tesla'},
+      {t:'El éxito no es definitivo, el fracaso no es fatal: lo que cuenta es el valor para continuar.', a:'Winston Churchill'},
+      {t:'La calidad no es un acto, es un hábito.', a:'Aristóteles'},
+      {t:'Primero resuelve el problema. Después, escribe el código.', a:'John Johnson'},
+      {t:'La simplicidad es el alma de la eficiencia.', a:'Austin Freeman'},
+      {t:'He fallado una y otra vez en mi vida. Por eso he tenido éxito.', a:'Michael Jordan'},
+      {t:'No puedes poner un límite a nada. Cuanto más sueñas, más lejos llegas.', a:'Michael Phelps'},
+      {t:'Para tener éxito, tu deseo de éxito debe ser mayor que tu miedo al fracaso.', a:'Bill Cosby'},
+      {t:'La paciencia es un elemento clave del éxito.', a:'Bill Gates'}
+    ];
+    const state = {percent:0, phases:Object.fromEntries(PHASES.map(p=>[p.id,'pending'])), quoteIdx:-1, lastQuoteAt:0};
+    function pickQuote(){
+      const now = Date.now();
+      if (state.quoteIdx !== -1 && now - state.lastQuoteAt < 15000) return;
+      let idx;
+      do { idx = Math.floor(Math.random()*QUOTES.length); } while (QUOTES.length>1 && idx===state.quoteIdx);
+      state.quoteIdx = idx; state.lastQuoteAt = now;
+      const q = QUOTES[idx];
+      document.getElementById('quote').innerHTML = '“'+escapeHtml(q.t)+'”' + (q.a?'<small>— '+escapeHtml(q.a)+'</small>':'');
+    }
+    function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+    function renderPhases(){
+      const ul = document.getElementById('phases');
+      ul.innerHTML = PHASES.map(p=>{
+        const st = state.phases[p.id]||'pending';
+        const icon = st==='done'?'✓':st==='active'?'●':st==='error'?'!':'○';
+        const label = st==='done'?'Completado':st==='active'?'En curso':st==='error'?'Error':'Pendiente';
+        return '<li class="phase '+st+'"><span class="dot">'+icon+'</span><span class="name">'+escapeHtml(p.label)+'</span><span class="state">'+label+'</span></li>';
+      }).join('');
+    }
+    function setProgress(p){
+      if(!p || typeof p!=='object') return;
+      if(typeof p.percent==='number') state.percent = Math.max(state.percent, Math.min(100, Math.round(p.percent)));
+      if(p.phase && p.status){
+        const map = {done:'done',active:'active',error:'error',pending:'pending'};
+        if(state.phases[p.phase]!==undefined && map[p.status]) state.phases[p.phase]=map[p.status];
+      }
+      if(Array.isArray(p.phases)){
+        p.phases.forEach(it=>{ if(it&&it.id&&state.phases[it.id]!==undefined) state.phases[it.id]=it.status; });
+      }
+      if(typeof p.task==='string' && p.task) document.getElementById('task').textContent = p.task.slice(0,160);
+      if(typeof p.detail==='string') document.getElementById('detail').textContent = p.detail.slice(0,240);
+      if(p.error){ const eb=document.getElementById('errorBox'); eb.textContent=String(p.error).slice(0,500); eb.classList.add('show'); }
+      document.getElementById('pct').textContent = state.percent+'%';
+      document.getElementById('fill').style.width = state.percent+'%';
+      renderPhases(); pickQuote();
+    }
+    window.__codeguardSetProgress = setProgress;
+    renderPhases(); pickQuote(); setProgress({percent:2,task:'Preparando CodeGuard Pro…',detail:'Iniciando el entorno de escritorio.'});
+    if(window.codeguardAPI && window.codeguardAPI.onStartupProgress){
+      window.codeguardAPI.onStartupProgress(setProgress);
+    }
+  </script>
+</body>
+</html>

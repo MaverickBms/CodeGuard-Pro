@@ -21,8 +21,8 @@ if [ "${#APPIMAGES[@]}" -gt 0 ]; then
 fi
 
 if [ "${#APPIMAGES[@]}" -eq 0 ]; then
-    echo "[ERROR] No se encuentra el AppImage en dist/ (esperado: CodeGuard-Pro-*-x64.AppImage o CodeGuard-Pro-*-x86_64.AppImage)."
-    echo "        Genera primero el paquete con: npm run build:linux"
+    echo "[CodeGuard] ERROR: No se encuentra el AppImage en dist/ (esperado: CodeGuard-Pro-*-x64.AppImage o CodeGuard-Pro-*-x86_64.AppImage)."
+    echo "[CodeGuard] Genera primero el paquete con: npm run build:linux"
     exit 1
 fi
 
@@ -66,4 +66,7 @@ echo "Usa --ozone-platform=x11 para compatibilidad con Wayland."
 echo "Si el AppImage se bloquea al montar, ejecuta: CODEGUARD_APPIMAGE_EXTRACT=1 ./run.sh"
 echo ""
 
+if [ -t 1 ]; then
+  echo "[CodeGuard] Iniciando CodeGuard Pro..."
+fi
 exec "$APPIMAGE" --ozone-platform=x11 "$@"

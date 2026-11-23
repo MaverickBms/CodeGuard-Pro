@@ -393,3 +393,11 @@ lo demostrado en esta iteración. El veredicto completo y la evidencia están en
 - **AppImage:** reconstruido; ejecución GUI en este entorno no alcanzó marca `usable` (limitación de entorno). No se declara RESUELTO Y VALIDADO EN APPIMAGE LINUX en este entorno.
 - **Pruebas:** Django 379 OK, `manage.py check` OK, `makemigrations --check --dry-run` OK, Electron 26 OK.
 - **Veredicto arranque:** **PARCIALMENTE RESUELTO**. Mejora sustancial medida en servidor empaquetado e instrumentación completa; falta validación UI-utilizable en AppImage en equipo representativo/propietario.
+
+
+## 11. Pantalla de carga dinámica (2026-11-23, sesión 2)
+
+- Se implementó splash local autocontenido con progreso real por fases, porcentaje, tarea, estado por fase, frases motivacionales locales y estado de error.
+- Se añadió `electron/startup-progress.js` con pesos/fases, cap 99% hasta `app_interactive`, y manejo de eventos duplicados/fuera de orden.
+- Preload expone `onStartupProgress` solo lectura; sin Node en renderer, sin desactivar contextIsolation/sandbox.
+- Electron tests: 31 OK. AppImage reconstruido. Validación GUI end-to-end en AppImage sigue pendiente en entorno representativo/propietario.

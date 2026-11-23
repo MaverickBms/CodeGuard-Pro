@@ -230,3 +230,17 @@ Se corrigió la colisión de nombres de las copias de reversión al restaurar do
 | Rebuild PyInstaller server | build | OK | `npm run build:server` |
 | Rebuild AppImage Linux | build | OK | `npm run build:linux` |
 | AppImage UI utilizable en este entorno | manual/best-effort | NO CONCLUYENTE | no se obtuvo `startup-perf-electron.json` usable; limitación de entorno |
+
+
+## Pantalla de carga dinámica (2026-11-23)
+
+| Caso | Tipo | Resultado | Evidencia |
+|---|---|---|---|
+| Progreso por fases reales / no retroceso | unit (node) | OK | `startup-progress.test.js` |
+| No 100% antes de interactiva | unit (node) | OK | `startup-progress.test.js` |
+| Eventos fuera de orden/duplicados | unit (node) | OK | `startup-progress.test.js` |
+| Error de arranque visible | unit (node) | OK | `startup-progress.test.js` |
+| Frases sin repetición inmediata / intervalo | unit (node) | OK | `startup-progress.test.js` |
+| Electron suite | automatizada | OK (31) | `npm run test:electron` |
+| AppImage rebuild | build | OK | `npm run build:linux` |
+| AppImage UI utilizable en este entorno | manual | NO CONCLUYENTE | limitación de entorno |
