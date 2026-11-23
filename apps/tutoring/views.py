@@ -28,7 +28,7 @@ def _sin_propietario() -> JsonResponse:
     return JsonResponse(
         {
             "exito": False,
-            "error": "No hay un propietario local configurado. No se puede guardar el tutoría.",
+            "error": "No hay un propietario local configurado. No se puede guardar la tutoría.",
         },
         status=403,
     )
