@@ -28,6 +28,9 @@ contextBridge.exposeInMainWorld('codeguardAPI', {
     return () => ipcRenderer.removeListener('startup-progress', handler);
   },
 
+  // Señal explícita: la interfaz principal terminó su inicialización crítica.
+  signalAppInteractive: () => ipcRenderer.send('app-interactive-signal'),
+
   // Información del sistema
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
   
@@ -42,14 +45,15 @@ contextBridge.exposeInMainWorld('codeguardAPI', {
   }
 });
 
-// Señal explícita de que la interfaz principal está lista para interacción.
+// Fallback de seguridad: si la interfaz no emite señal explícita, evitar bloqueo indefinido.
+// La señal principal debe enviarla el frontend cuando los componentes críticos estén inicializados.
 window.addEventListener('load', () => {
   try {
     const href = window.location.href || '';
     if (href.includes('splash.html')) return;
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      ipcRenderer.send('app-interactive-signal');
-    }));
+    setTimeout(() => {
+      try { ipcRenderer.send('app-interactive-signal'); } catch (_e) {}
+    }, 4000);
   } catch (_e) {}
 });
 

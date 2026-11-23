@@ -269,5 +269,21 @@
   <script src="{% static 'js/lesson-resources.js' %}"></script>
 
   {% block extra_js %}{% endblock %}
+  <script>
+    (function () {
+      function signalReady() {
+        try {
+          if (window.codeguardAPI && typeof window.codeguardAPI.signalAppInteractive === 'function') {
+            window.codeguardAPI.signalAppInteractive();
+          }
+        } catch (_e) {}
+      }
+      if (document.readyState === 'complete') {
+        requestAnimationFrame(signalReady);
+      } else {
+        window.addEventListener('load', function () { requestAnimationFrame(signalReady); }, { once: true });
+      }
+    })();
+  </script>
 </body>
 </html>

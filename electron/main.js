@@ -789,55 +789,6 @@ async function promptRestoreBackup() {
   app.exit(0);
 }
 
-function splashHtml() {
-  return `data:text/html;charset=utf-8,${encodeURIComponent(`
-    <!doctype html>
-    <html lang="es">
-      <head>
-        <meta charset="utf-8">
-        <title>CodeGuard Pro</title>
-        <style>
-          :root { color-scheme: dark; }
-          * { box-sizing: border-box; }
-          body {
-            margin: 0; min-height: 100vh; display: grid; place-items: center;
-            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at 30% 20%, #1e3a8a, #0f172a 65%);
-            color: #f8fafc;
-          }
-          .card { text-align: center; padding: 40px; }
-          .shield {
-            width: 84px; height: 84px; margin: 0 auto 22px;
-            border-radius: 22px; display: grid; place-items: center;
-            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
-            box-shadow: 0 18px 50px rgba(0,0,0,.45);
-            font-size: 42px;
-          }
-          h1 { margin: 0 0 10px; font-size: 1.6rem; letter-spacing: -.02em; }
-          p { margin: 0; color: #cbd5e1; font-size: .95rem; }
-          .detail { margin-top: 8px; color: #94a3b8; font-size: .82rem; min-height: 1.2em; }
-          .spinner {
-            width: 28px; height: 28px; margin: 26px auto 0;
-            border: 3px solid rgba(255,255,255,.18);
-            border-top-color: #60a5fa; border-radius: 50%;
-            animation: spin .9s linear infinite;
-          }
-          @keyframes spin { to { transform: rotate(360deg); } }
-        </style>
-      </head>
-      <body>
-        <div class="card">
-          <div class="shield">🛡️</div>
-          <h1>CodeGuard Pro</h1>
-          <p id="bootStatus">Iniciando el servidor local seguro…</p>
-          <p id="bootDetail" class="detail">Preparando el perfil local.</p>
-          <div class="spinner"></div>
-        </div>
-      </body>
-    </html>
-  `)}`;
-}
-
 function createSplashWindow() {
   if (splashWindow && !splashWindow.isDestroyed()) return splashWindow;
   perfMark('splash_window_create_start');
@@ -867,15 +818,11 @@ function createSplashWindow() {
 
   splashReady = false;
   splashFirstPaint = false;
-  splashWindow.once('ready-to-show', () => {
-    if (splashWindow && !splashWindow.isDestroyed()) {
-      splashWindow.show();
-      splashFirstPaint = true;
-      perfMark('splash_window_shown');
-      perfMark('splash_first_paint');
-      if (startupPerf.marks_ms.app_interactive) closeSplashWindow();
-    }
-  });
+  const markSplashShown = () => {
+    if (!startupPerf.marks_ms.splash_window_shown) perfMark('splash_window_shown');
+  };
+  splashWindow.once('ready-to-show', markSplashShown);
+  splashWindow.once('show', markSplashShown);
 
   splashWindow.webContents.on('dom-ready', () => {
     if (!splashWindow || splashWindow.isDestroyed()) return;
@@ -887,16 +834,30 @@ function createSplashWindow() {
     if (!currentUrl.includes('splash.html')) return;
     if (!startupPerf.marks_ms.splash_document_loaded) perfMark('splash_document_loaded');
     splashReady = true;
+    // Enviar estado actual al splash (buffer de eventos previos a la suscripción).
+    const snapshot = startupProgress.snapshot();
+    splashWindow.webContents.send('startup-progress', snapshot);
     emitStartupProgress({ phase: 'electron', status: 'done', task: 'Preparando servicios locales…', detail: 'Pantalla de carga lista.' });
     if (lastBootMessage) updateSplash(lastBootMessage, startupState.detail);
-    if (startupPerf.marks_ms.app_interactive && splashFirstPaint) closeSplashWindow();
+    // Primer pintado real: esperar a que el renderer pinte el frame.
+    splashWindow.webContents.executeJavaScript(
+      'new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))',
+      true
+    ).then(() => {
+      if (!splashWindow || splashWindow.isDestroyed()) return;
+      splashFirstPaint = true;
+      if (!startupPerf.marks_ms.splash_first_paint) perfMark('splash_first_paint');
+      if (startupPerf.marks_ms.app_interactive) closeSplashWindow();
+    }).catch(() => {
+      splashFirstPaint = true;
+      if (!startupPerf.marks_ms.splash_first_paint) perfMark('splash_first_paint');
+    });
   });
-  splashWindow.webContents.on('did-fail-load', (_event, code, desc, validatedURL) => {
+  splashWindow.webContents.on('did-fail-load', (_event, code, desc, validatedURL, isMainFrame) => {
+    if (!isMainFrame) return;
     console.error('[Splash] did-fail-load', { code, desc, validatedURL });
-    perfMark('splash_load_failed', { code, desc });
-    // Fallback: show main window if it exists so app is not invisible.
-    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
-    closeSplashWindow(true);
+    perfMark('splash_did_fail_load', { code, desc });
+    // No cerrar aquí: loadFile() maneja reintento/recuperación para evitar cerrar durante carga.
   });
   splashWindow.webContents.on('render-process-gone', (_event, details) => {
     console.error('[Splash] render-process-gone', details);
@@ -910,12 +871,37 @@ function createSplashWindow() {
 
   perfMark('splash_load_start');
   emitStartupProgress({ phase: 'electron', status: 'active', task: 'Inicializando el entorno de escritorio…', detail: 'Cargando la pantalla de inicio.' });
-  splashWindow.loadFile(path.join(__dirname, 'splash.html')).catch((err) => {
-    console.error('[Splash] loadFile failed:', err);
-    perfMark('splash_load_failed', { error: err.message });
-    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
-    closeSplashWindow(true);
-  });
+
+  const splashPath = path.join(__dirname, 'splash.html');
+  const attemptSplashLoad = (attempt = 1) => {
+    if (!splashWindow || splashWindow.isDestroyed()) return;
+    splashWindow.loadFile(splashPath).then(() => {
+      if (!startupPerf.marks_ms.splash_loadfile_resolved) perfMark('splash_loadfile_resolved', { attempt });
+    }).catch((err) => {
+      console.error(`[Splash] loadFile failed (attempt ${attempt}):`, err);
+      perfMark('splash_load_failed', { attempt, error: err && err.message ? err.message : String(err) });
+      if (attempt < 2 && splashWindow && !splashWindow.isDestroyed()) {
+        setTimeout(() => attemptSplashLoad(attempt + 1), 250);
+        return;
+      }
+      // Recuperación: no bloquear la app si el splash no puede cargarse.
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.show();
+      }
+      closeSplashWindow(true);
+    });
+  };
+  attemptSplashLoad(1);
+  // Seguridad: si el splash no termina de cargar, no dejar al usuario sin feedback.
+  setTimeout(() => {
+    if (!splashWindow || splashWindow.isDestroyed()) return;
+    if (splashReady) return;
+    console.error('[Splash] timeout esperando carga del splash');
+    perfMark('splash_load_timeout');
+    if (mainWindow && !mainWindow.isDestroyed() && !mainWindow.isVisible()) {
+      mainWindow.show();
+    }
+  }, 15000);
   return splashWindow;
 }
 
@@ -962,25 +948,27 @@ function createMainWindow() {
       perfMark('document_loaded', { main_url: currentUrl });
       perfMark('main_did_finish_load', { main_url: currentUrl });
       emitStartupProgress({ phase: 'ui', status: 'active', task: 'Cargando la interfaz…', detail: 'Finalizando la carga de la interfaz.' });
+      // Primer pintado real del renderer principal.
       mainWindow.webContents.executeJavaScript(
         'new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))',
         true
       ).then(() => {
         if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint');
-        if (!startupPerf.marks_ms.app_interactive) {
-          perfMark('app_interactive');
-          emitStartupProgress({ phase: 'ui', status: 'done', task: 'Aplicación lista', detail: 'CodeGuard Pro está listo para usarse.' });
-          writeStartupPerf({ usable: true });
-        }
-        if (mainWindow && !mainWindow.isDestroyed()) {
-          mainWindow.show();
-          mainWindow.maximize();
-        }
+      }).catch(() => {});
+      // Fallback de seguridad: si el frontend no envía señal explícita, no bloquear indefinidamente.
+      setTimeout(() => {
+        if (startupPerf.marks_ms.app_interactive) return;
+        if (!mainWindow || mainWindow.isDestroyed()) return;
+        console.warn('[Startup] Fallback: señal app-interactive no recibida; usando fallback controlado.');
+        if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint');
+        perfMark('app_interactive_fallback');
+        perfMark('app_interactive');
+        emitStartupProgress({ phase: 'ui', status: 'done', task: 'Aplicación lista', detail: 'CodeGuard Pro está listo para usarse.', interactive: true });
+        writeStartupPerf({ usable: true, interactive_source: 'fallback' });
+        mainWindow.show();
+        mainWindow.maximize();
         closeSplashWindow();
-      }).catch(() => {
-        if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
-        closeSplashWindow();
-      });
+      }, 5000);
     }
   });
   mainWindow.webContents.on('dom-ready', () => {
@@ -1185,7 +1173,7 @@ ipcMain.handle('check-knowledge-updates', event => {
 
 // IPC: señal explícita de interfaz interactiva enviada por el renderer principal.
 ipcMain.on('app-interactive-signal', (event) => {
-  if (!isTrustedIpcSender(event)) return;
+  if (!isTrustedIpcEvent(event)) return;
   if (!mainWindow || mainWindow.isDestroyed()) return;
   if (event.sender !== mainWindow.webContents) return;
   if (startupPerf.marks_ms.app_interactive) return;
