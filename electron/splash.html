@@ -118,7 +118,7 @@
       renderPhases(); pickQuote();
     }
     window.__codeguardSetProgress = setProgress;
-    renderPhases(); pickQuote(); setProgress({percent:2,task:'Preparando CodeGuard Pro…',detail:'Iniciando el entorno de escritorio.'});
+    renderPhases(); pickQuote(); setProgress({percent:0,task:'Preparando CodeGuard Pro…',detail:'Iniciando el entorno de escritorio.'});
     if(window.codeguardAPI && window.codeguardAPI.onStartupProgress){
       window.codeguardAPI.onStartupProgress(setProgress);
     }
