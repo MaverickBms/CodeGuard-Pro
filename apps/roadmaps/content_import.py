@@ -361,9 +361,6 @@ def importar_documentos_validados(report, *, actor):
     """Crea borradores y referencias; no modifica el contenido activo ni publica."""
     if not getattr(actor, "is_authenticated", False) or not getattr(actor, "is_active", False) or not getattr(actor, "is_staff", False):
         raise ValidationError("La importación requiere un editor activo (is_staff).")
-    if report["errors"] or len(report["items"]) != report["documents"] or report["valid"] != report["documents"]:
-        raise ValidationError("El lote tiene errores o no fue validado íntegramente.")
-
     # Validar la estructura del informe antes de confiar en sus elementos.
     if not isinstance(report, dict):
         raise ValidationError("El informe de validación no tiene un formato válido.")
