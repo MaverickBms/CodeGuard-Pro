@@ -17,6 +17,7 @@ from django.views.decorators.http import require_POST
 
 from apps.accounts.identity import get_usuario_actual, requiere_acceso
 from apps.roadmaps.models import EjercicioLeccion, IntentoEjercicio
+from apps.roadmaps.services import etapas_completadas, roadmap_activo
 
 from . import services
 from .models import SesionTutoria
@@ -31,6 +32,33 @@ def _sin_propietario() -> JsonResponse:
         },
         status=403,
     )
+
+
+def _obtener_ejercicio_desbloqueado(usuario, ejercicio_id):
+    """Limita el tutor al roadmap activo y a etapas con prerrequisitos satisfechos."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return None, JsonResponse(
+            {"exito": False, "error": "No hay un roadmap activo disponible."},
+            status=503,
+        )
+    ejercicio = get_object_or_404(
+        EjercicioLeccion.objects.select_related("leccion__modulo__etapa__roadmap"),
+        pk=ejercicio_id,
+        publicado=True,
+        leccion__modulo__etapa__roadmap=roadmap,
+    )
+    etapa = ejercicio.leccion.modulo.etapa
+    if etapa.esta_bloqueada_para(etapas_completadas(usuario, roadmap)):
+        return None, JsonResponse(
+            {
+                "exito": False,
+                "error": "El ejercicio está bloqueado hasta completar los prerrequisitos de la etapa.",
+            },
+            status=403,
+        )
+    return ejercicio, None
+
 
 
 @requiere_acceso
@@ -53,7 +81,9 @@ def tutoria_iniciar(request, ejercicio_id):
     if usuario is None:
         return _sin_propietario()
 
-    ejercicio = get_object_or_404(EjercicioLeccion, pk=ejercicio_id, publicado=True)
+    ejercicio, error = _obtener_ejercicio_desbloqueado(usuario, ejercicio_id)
+    if error is not None:
+        return error
     sesion = SesionTutoria.objects.get_or_create(usuario=usuario, ejercicio=ejercicio)[0]
 
     return JsonResponse(
@@ -74,7 +104,9 @@ def tutoria_pista(request, ejercicio_id):
     if usuario is None:
         return _sin_propietario()
 
-    ejercicio = get_object_or_404(EjercicioLeccion, pk=ejercicio_id, publicado=True)
+    ejercicio, error = _obtener_ejercicio_desbloqueado(usuario, ejercicio_id)
+    if error is not None:
+        return error
     tipo_pista = request.POST.get("tipo") or "orientacion"
     if tipo_pista not in services.TIPOS_PISTA:
         return JsonResponse(
@@ -95,7 +127,9 @@ def tutoria_analizar(request, ejercicio_id):
     if usuario is None:
         return _sin_propietario()
 
-    ejercicio = get_object_or_404(EjercicioLeccion, pk=ejercicio_id, publicado=True)
+    ejercicio, error = _obtener_ejercicio_desbloqueado(usuario, ejercicio_id)
+    if error is not None:
+        return error
     intento_id = request.POST.get("intento_ejercicio_id")
     if not intento_id:
         return JsonResponse(
