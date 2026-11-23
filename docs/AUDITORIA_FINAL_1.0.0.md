@@ -401,3 +401,12 @@ lo demostrado en esta iteración. El veredicto completo y la evidencia están en
 - Se añadió `electron/startup-progress.js` con pesos/fases, cap 99% hasta `app_interactive`, y manejo de eventos duplicados/fuera de orden.
 - Preload expone `onStartupProgress` solo lectura; sin Node en renderer, sin desactivar contextIsolation/sandbox.
 - Electron tests: 31 OK. AppImage reconstruido. Validación GUI end-to-end en AppImage sigue pendiente en entorno representativo/propietario.
+
+
+## 12. Endurecimiento splash/señal interactiva (sesión 4, 2026-11-23)
+
+- Corregido bug IPC: `app-interactive-signal` validaba con `isTrustedIpcSender(event)` sin host/puerto; ahora usa `isTrustedIpcEvent(event)`.
+- Splash: marcas distintas `splash_window_shown/dom_ready/document_loaded/first_paint`; buffer de snapshot al cargar; reintento loadFile; `did-fail-load` no cierra forzadamente para permitir reintento; timeout de seguridad.
+- Interactividad: señal explícita desde frontend (`signalAppInteractive` en preload, llamada en `base.html` tras load). Fallbacks controlados (4s preload, 5s main) marcados; no se usa 2 rAF como confirmación principal.
+- Pruebas Electron: 36 pass. Django check/makemigrations OK. Django suite: 379 OK (269s). Build AppImage Linux: OK. Smoke AppImage en DISPLAY=:0: servidor/healthz OK, carga GUI no concluyente (ERR_FAILED main URL en entorno limitado).
+- Limitación: sin validación gráfica AppImage en este entorno.

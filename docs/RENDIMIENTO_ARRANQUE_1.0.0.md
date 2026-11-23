@@ -170,3 +170,25 @@ Criterio: reportar `usable_ms`/marcas en `startup-perf-electron.json` y tiempos 
 - Spinner CSS animado visible, respeta `prefers-reduced-motion`.
 - Señal explícita `app-interactive-signal` desde preload + fallback rAF; `usable` solo tras interactivo.
 - AppImage reconstruido. Prueba gráfica real en este entorno: no concluyente; requiere validación en equipo del propietario.
+
+
+## Sesión 4 — endurecimiento definitivo de splash/señal interactiva (2026-11-23)
+
+### Hallazgos y correcciones
+- **Bug IPC crítico corregido**: `app-interactive-signal` usaba `isTrustedIpcSender(event)` sin host/puerto, por lo que la validación fallaba y la señal explícita nunca se aceptaba. Corregido a `isTrustedIpcEvent(event)`.
+- **Marcas splash diferenciadas**: `splash_window_shown` (show/ready-to-show), `splash_dom_ready`, `splash_document_loaded` (did-finish-load), `splash_first_paint` (rAF real tras carga). Ya no se usa `ready-to-show` como first paint.
+- **Buffer de progreso**: al cargar el splash se envía snapshot actual por IPC para no perder eventos emitidos antes de la suscripción del renderer.
+- **Señal interactiva explícita**: preload expone `signalAppInteractive()`; `templates/base.html` la invoca al `load` (después de scripts críticos). Fallbacks controlados: preload 4s y main 5s, marcados como fallback; no se usa 2 rAF como confirmación principal.
+- **Carga robusta de splash**: `loadFile()` con reintento (1 reintento), `did-fail-load` solo loguea (isMainFrame) para no interferir con reintento; timeout de seguridad 15s; recuperación mostrando ventana principal si corresponde.
+- **Limpieza**: eliminado `splashHtml()` muerto. Contrato de splash/preload/seguridad cubierto por `electron/splash-contract.test.js`.
+
+### Pruebas ejecutadas (esta sesión)
+- `node --check electron/main.js electron/preload.js electron/startup-progress.js`: OK.
+- `npm run test:electron`: 36 pass, 0 fail (incluye 5 contract tests nuevos).
+- `manage.py check`: OK. `manage.py makemigrations --check --dry-run`: OK.
+- Suite Django completa: 379 tests, 269.325s, OK.
+- Build AppImage Linux: OK (`npm run build:linux`), artefacto `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage` (124M, 2026-11-23 18:34 -05).
+- Smoke AppImage en entorno con DISPLAY=:0 y timeout 45s: servidor arrancó y `healthz_ready` ~17.36s; la carga de URL principal falló con `ERR_FAILED (-2)` en este entorno limitado/no validado gráficamente. No se considera validación GUI.
+
+### Validación gráfica AppImage
+- No ejecutada en este entorno (sin sesión gráfica confiable para validar UI). No se declara splash visualmente validado aquí. Se requiere validación en equipo Linux gráfico con `./codeguard` y revisión de `startup-perf-electron.json`.

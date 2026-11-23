@@ -244,3 +244,18 @@ Se corrigió la colisión de nombres de las copias de reversión al restaurar do
 | Electron suite | automatizada | OK (31) | `npm run test:electron` |
 | AppImage rebuild | build | OK | `npm run build:linux` |
 | AppImage UI utilizable en este entorno | manual | NO CONCLUYENTE | limitación de entorno |
+
+
+## Endurecimiento splash/señal interactiva (2026-11-23 sesión 4)
+
+| Caso | Tipo | Resultado | Evidencia |
+|---|---|---|---|
+| Contract splash: spinner/barra/%/tarea/fases/citas/error | unit (node) | OK | `splash-contract.test.js` |
+| Splash sin recursos externos | unit (node) | OK | `splash-contract.test.js` |
+| Seguridad Electron/IPC/señal interactiva | unit (node) | OK | `splash-contract.test.js` |
+| Electron suite | automatizada | OK (36) | `npm run test:electron` |
+| `manage.py check` | automatizada | OK | ejecución local |
+| `makemigrations --check --dry-run` | automatizada | OK | ejecución local |
+| Django suite completa | automatizada | OK (379, 269s) | ejecución local |
+| Build AppImage Linux | build | OK | `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage` 124M 2026-11-23 18:34 -05 |
+| Smoke AppImage (DISPLAY=:0, timeout 45s) | smoke | PARCIAL | healthz_ready ~17.36s; main URL ERR_FAILED (-2) en entorno limitado; sin validación GUI |

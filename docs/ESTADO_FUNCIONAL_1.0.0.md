@@ -166,3 +166,15 @@ cuerpo frente a 1.946 títulos curriculares. La aplicación no oculta esa brecha
 | Frases motivacionales locales | OK | colección local en español, sin red |
 | Terminal progress (TTY) | PARCIAL | línea de progreso desde Electron stdout; run.sh header TTY |
 | Validación AppImage UI | PENDIENTE VALIDACIÓN EXTERNA | rebuild OK, entorno GUI no concluyente |
+
+
+## Endurecimiento splash/señal interactiva (2026-11-23 sesión 4)
+
+| Área | Estado | Nota |
+|---|---|---|
+| IPC app-interactive-signal | OK | corregida validación `isTrustedIpcEvent` |
+| Marcas splash diferenciadas | OK | shown/dom_ready/document_loaded/first_paint |
+| Buffer progreso splash | OK | snapshot enviado al cargar |
+| Señal interactiva explícita | OK | frontend + fallbacks controlados |
+| Recuperación fallo splash | PARCIAL | reintento/timeout/fallback; requiere validación GUI real |
+| Validación AppImage GUI | PENDIENTE VALIDACIÓN EXTERNA | sin entorno gráfico |
