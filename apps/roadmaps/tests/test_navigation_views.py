@@ -57,6 +57,34 @@ class EvaluacionesIndexTests(TestCase):
         self.assertNotContains(respuesta, "Quiz borrador")
         self.assertContains(respuesta, "1 publicada")
 
+    def test_acceso_directo_a_quiz_bloqueado_redirige_a_etapa(self):
+        etapa_bloqueada = Etapa.objects.create(
+            roadmap=self.roadmap, numero=2, titulo="Etapa protegida"
+        )
+        Prerrequisito.objects.create(
+            etapa=etapa_bloqueada,
+            etapa_requerida=self.etapa,
+            justificacion="Completa primero Fundamentos.",
+        )
+        modulo = Modulo.objects.create(
+            etapa=etapa_bloqueada, numero="2.1", titulo="Módulo protegido"
+        )
+        quiz = Quiz.objects.create(
+            nombre="Quiz protegido",
+            tipo=Quiz.TIPO_QUIZ,
+            modulo=modulo,
+            estado=Quiz.ESTADO_PUBLICADO,
+        )
+
+        with override_settings(AUTH_DISABLED=True):
+            respuesta = self.client.get(
+                reverse("roadmaps:quiz_detalle", args=[quiz.id])
+            )
+
+        self.assertRedirects(
+            respuesta, reverse("roadmaps:detalle", args=[etapa_bloqueada.numero])
+        )
+
     def test_indice_marca_evaluacion_de_etapa_bloqueada(self):
         etapa_bloqueada = Etapa.objects.create(
             roadmap=self.roadmap, numero=1, titulo="Etapa bloqueada"
