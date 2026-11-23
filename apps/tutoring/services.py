@@ -216,6 +216,8 @@ def entregar_pista(usuario, ejercicio, tipo_pista: str = "orientacion") -> dict:
             sistema=_sistema_tutor_pista(),
             usuario=contexto,
         )
+        if not contenido_pista or not contenido_pista.strip():
+            contenido_pista = None
     except TutorNoDisponible:
         contenido_pista = None
 
