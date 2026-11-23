@@ -364,19 +364,52 @@ def importar_documentos_validados(report, *, actor):
     if report["errors"] or len(report["items"]) != report["documents"] or report["valid"] != report["documents"]:
         raise ValidationError("El lote tiene errores o no fue validado íntegramente.")
 
-    # Revalidar los documentos y las relaciones dentro de la transacción para evitar
-    # confiar en informes fabricados o en datos que cambiaron tras la prevalidación.
+    # Validar la estructura del informe antes de confiar en sus elementos.
+    if not isinstance(report, dict):
+        raise ValidationError("El informe de validación no tiene un formato válido.")
+    required_report_keys = {"errors", "items", "documents", "valid"}
+    if not required_report_keys.issubset(report):
+        raise ValidationError("El informe de validación está incompleto.")
+    if (not isinstance(report["errors"], list) or not isinstance(report["items"], list)
+            or type(report["documents"]) is not int or type(report["valid"]) is not int):
+        raise ValidationError("El informe de validación contiene tipos de datos inválidos.")
+    if report["errors"] or len(report["items"]) != report["documents"] or report["valid"] != report["documents"]:
+        raise ValidationError("El lote tiene errores o no fue validado íntegramente.")
+    if not 1 <= report["documents"] <= MAX_DOCUMENTS:
+        raise ValidationError(f"El lote debe contener entre 1 y {MAX_DOCUMENTS} documentos.")
+
+    # Revalidar documentos y relaciones dentro de la transacción. Un informe puede
+    # haber sido alterado desde la prevalidación: no se confía en sus UUID ni hashes.
     items = []
+    seen_lessons = set()
+    seen_resources = set()
     for previous in report["items"]:
+        if not isinstance(previous, dict) or not {"document", "filename", "sha256"}.issubset(previous):
+            raise ValidationError("El informe contiene un elemento incompleto.")
         document = previous["document"]
         filename = previous["filename"]
+        if not isinstance(filename, str) or not filename or Path(filename).name != filename:
+            raise ValidationError("El informe contiene un nombre de archivo inválido.")
         try:
+            lesson_uuid = _validate_document(document, filename)
             lesson, sources, warnings = _validate_against_database(document, filename)
-        except ImportContentError as exc:
-            raise ValidationError(str(exc)) from exc
+        except (ImportContentError, TypeError, KeyError) as exc:
+            raise ValidationError(str(exc) or "Documento inválido.") from exc
+
+        if lesson_uuid in seen_lessons:
+            raise ValidationError(f"{filename}: la misma lección aparece más de una vez en el lote.")
+        if lesson_uuid in seen_resources:
+            raise ValidationError(f"{filename}: el UUID de la lección ya fue asignado a otro recurso.")
+        seen_lessons.add(lesson_uuid)
+        for resource in document["snapshot"]["ejemplos"] + document["snapshot"]["ejercicios"]:
+            resource_uuid = uuid.UUID(resource["clave"])
+            if resource_uuid in seen_lessons or resource_uuid in seen_resources:
+                raise ValidationError(f"{filename}: UUID de recurso duplicado o reasignado en el lote.")
+            seen_resources.add(resource_uuid)
+
         canonical = json.dumps(document["snapshot"], ensure_ascii=False, sort_keys=True, separators=(",", ":"))
         digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
-        if digest != previous["sha256"]:
+        if not isinstance(previous["sha256"], str) or digest != previous["sha256"]:
             raise ValidationError(f"{filename}: el snapshot cambió después de la validación.")
         items.append({
             "filename": filename, "document": document, "lesson": lesson,
