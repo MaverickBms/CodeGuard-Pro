@@ -42,6 +42,17 @@ contextBridge.exposeInMainWorld('codeguardAPI', {
   }
 });
 
+// Señal explícita de que la interfaz principal está lista para interacción.
+window.addEventListener('load', () => {
+  try {
+    const href = window.location.href || '';
+    if (href.includes('splash.html')) return;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      ipcRenderer.send('app-interactive-signal');
+    }));
+  } catch (_e) {}
+});
+
 // Exponer utilidades de SweetAlert2 si está disponible
 contextBridge.exposeInMainWorld('swalUtils', {
   alert: (options) => {

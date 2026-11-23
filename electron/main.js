@@ -28,6 +28,7 @@ const {
 const { createStartupProgress } = require('./startup-progress');
 
 let mainWindow = null;
+let splashWindow = null;
 let djangoProcess = null;
 let djangoPort = null;
 let syncProcess = null;
@@ -89,8 +90,11 @@ function renderTerminalProgress(payload) {
 function emitStartupProgress(update = {}) {
   if (startupPerf.marks_ms.app_interactive) update.interactive = true;
   const payload = startupProgress.update(update);
-  if (mainWindow && !mainWindow.isDestroyed() && mainWindow.webContents) {
-    mainWindow.webContents.send('startup-progress', payload);
+  const targets = [splashWindow, mainWindow];
+  for (const win of targets) {
+    if (win && !win.isDestroyed() && win.webContents) {
+      win.webContents.send('startup-progress', payload);
+    }
   }
   renderTerminalProgress(payload);
 }
@@ -268,9 +272,10 @@ function updateSplash(message, detail, phaseUpdate) {
   const det = typeof detail === 'string' ? detail.slice(0, 300) : startupState.detail;
   const update = { task, detail: det, ...(phaseUpdate || {}) };
   emitStartupProgress(update);
-  if (!mainWindow || mainWindow.isDestroyed() || !splashReady) return;
+  const win = splashWindow && !splashWindow.isDestroyed() ? splashWindow : (mainWindow && !mainWindow.isDestroyed() ? mainWindow : null);
+  if (!win || !splashReady) return;
   const script = `(() => { if (window.__codeguardSetProgress) window.__codeguardSetProgress(${JSON.stringify({task, detail: det, ...(phaseUpdate||{})})}); })();`;
-  mainWindow.webContents.executeJavaScript(script, true).catch(() => {});
+  win.webContents.executeJavaScript(script, true).catch(() => {});
 }
 
 function attachProcessLogs(child) {
@@ -832,7 +837,87 @@ function splashHtml() {
   `)}`;
 }
 
-function createWindow() {
+function createSplashWindow() {
+  if (splashWindow && !splashWindow.isDestroyed()) return splashWindow;
+  perfMark('splash_window_create_start');
+  splashWindow = new BrowserWindow({
+    width: 760,
+    height: 560,
+    resizable: false,
+    minimizable: true,
+    maximizable: false,
+    fullscreenable: false,
+    frame: true,
+    title: 'CodeGuard Pro — Iniciando',
+    icon: iconPath(),
+    backgroundColor: '#0f172a',
+    show: false,
+    autoHideMenuBar: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+      allowRunningInsecureContent: false
+    }
+  });
+  perfMark('splash_window_created');
+
+  splashReady = false;
+  splashWindow.once('ready-to-show', () => {
+    if (splashWindow && !splashWindow.isDestroyed()) {
+      splashWindow.show();
+      perfMark('splash_window_shown');
+    }
+  });
+
+  splashWindow.webContents.on('did-finish-load', () => {
+    if (!splashWindow || splashWindow.isDestroyed()) return;
+    const currentUrl = splashWindow.webContents.getURL();
+    if (!currentUrl.includes('splash.html')) return;
+    if (!startupPerf.marks_ms.splash_dom_ready) perfMark('splash_dom_ready');
+    if (!startupPerf.marks_ms.splash_first_paint) perfMark('splash_first_paint');
+    if (!startupPerf.marks_ms.splash_loaded) perfMark('splash_loaded');
+    splashReady = true;
+    emitStartupProgress({ phase: 'electron', status: 'done', task: 'Preparando servicios locales…', detail: 'Pantalla de carga lista.' });
+    if (lastBootMessage) updateSplash(lastBootMessage, startupState.detail);
+  });
+  splashWindow.webContents.on('did-fail-load', (_event, code, desc, validatedURL) => {
+    console.error('[Splash] did-fail-load', { code, desc, validatedURL });
+    perfMark('splash_load_failed', { code, desc });
+    // Fallback: show main window if it exists so app is not invisible.
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.show();
+    }
+  });
+  splashWindow.webContents.on('render-process-gone', (_event, details) => {
+    console.error('[Splash] render-process-gone', details);
+  });
+  splashWindow.on('closed', () => {
+    splashWindow = null;
+    splashReady = false;
+  });
+
+  perfMark('splash_load_start');
+  emitStartupProgress({ phase: 'electron', status: 'active', task: 'Inicializando el entorno de escritorio…', detail: 'Cargando la pantalla de inicio.' });
+  splashWindow.loadFile(path.join(__dirname, 'splash.html')).catch((err) => {
+    console.error('[Splash] loadFile failed:', err);
+    perfMark('splash_load_failed', { error: err.message });
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+  });
+  return splashWindow;
+}
+
+function closeSplashWindow() {
+  if (!splashWindow || splashWindow.isDestroyed()) return;
+  try { splashWindow.close(); } catch (_e) {}
+  splashWindow = null;
+  splashReady = false;
+}
+
+function createMainWindow() {
+  if (mainWindow && !mainWindow.isDestroyed()) return mainWindow;
   perfMark('window_create_start');
   mainWindow = new BrowserWindow({
     width: 1400,
@@ -855,23 +940,10 @@ function createWindow() {
   });
   perfMark('window_created');
 
-  splashReady = false;
-  perfMark('splash_load_start');
-  emitStartupProgress({ phase: 'electron', status: 'active', task: 'Inicializando el entorno de escritorio…', detail: 'Cargando la pantalla de inicio.' });
-  mainWindow.loadFile(path.join(__dirname, 'splash.html'));
-  mainWindow.show();
   mainWindow.webContents.on('did-finish-load', () => {
+    if (!mainWindow || mainWindow.isDestroyed()) return;
     const currentUrl = mainWindow.webContents.getURL();
-    const wasSplash = currentUrl.startsWith('data:') || currentUrl.includes('splash.html');
-    if (wasSplash) {
-      if (!startupPerf.marks_ms.splash_dom_ready) perfMark('splash_dom_ready');
-      if (!startupPerf.marks_ms.splash_first_paint) perfMark('splash_first_paint');
-      if (!startupPerf.marks_ms.splash_loaded) perfMark('splash_loaded');
-      splashReady = true;
-      emitStartupProgress({ phase: 'electron', status: 'done', task: 'Preparando servicios locales…', detail: 'Pantalla de carga lista.' });
-      if (lastBootMessage) updateSplash(lastBootMessage, startupState.detail);
-      return;
-    }
+    if (currentUrl.includes('splash.html')) return;
     if (!startupPerf.marks_ms.main_did_finish_load) {
       perfMark('document_loaded', { main_url: currentUrl });
       perfMark('main_did_finish_load', { main_url: currentUrl });
@@ -886,25 +958,32 @@ function createWindow() {
           emitStartupProgress({ phase: 'ui', status: 'done', task: 'Aplicación lista', detail: 'CodeGuard Pro está listo para usarse.' });
           writeStartupPerf({ usable: true });
         }
-      }).catch(() => {});
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.show();
+          mainWindow.maximize();
+        }
+        closeSplashWindow();
+      }).catch(() => {
+        if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+        closeSplashWindow();
+      });
     }
   });
   mainWindow.webContents.on('dom-ready', () => {
+    if (!mainWindow || mainWindow.isDestroyed()) return;
     const currentUrl = mainWindow.webContents.getURL();
-    if (!currentUrl.startsWith('data:') && !startupPerf.marks_ms.main_dom_ready) {
+    if (!currentUrl.includes('splash.html') && !startupPerf.marks_ms.main_dom_ready) {
       perfMark('main_dom_ready');
     }
+  });
+  mainWindow.webContents.on('did-fail-load', (_event, code, desc, validatedURL, isMainFrame) => {
+    if (!isMainFrame) return;
+    console.error('[Main] did-fail-load', { code, desc, validatedURL });
+    emitStartupProgress({ phase: 'ui', status: 'error', task: 'Error al cargar la interfaz', detail: desc || 'Fallo de carga', error: String(desc || code) });
   });
 
   mainWindow.once('ready-to-show', () => {
     perfMark('window_ready_to_show');
-    mainWindow.show();
-    // Forzar maximizado después de un breve delay para asegurar que se aplique
-    setTimeout(() => {
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.maximize();
-      }
-    }, 100);
   });
 
   mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
@@ -923,6 +1002,7 @@ function createWindow() {
   });
 
   buildMenu();
+  return mainWindow;
 }
 
 function buildMenu() {
@@ -1089,6 +1169,21 @@ ipcMain.handle('check-knowledge-updates', event => {
   return syncStatus;
 });
 
+// IPC: señal explícita de interfaz interactiva enviada por el renderer principal.
+ipcMain.on('app-interactive-signal', (event) => {
+  if (!isTrustedIpcSender(event)) return;
+  if (!mainWindow || mainWindow.isDestroyed()) return;
+  if (event.sender !== mainWindow.webContents) return;
+  if (startupPerf.marks_ms.app_interactive) return;
+  if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint');
+  perfMark('app_interactive');
+  emitStartupProgress({ phase: 'ui', status: 'done', task: 'Aplicación lista', detail: 'CodeGuard Pro está listo para usarse.', interactive: true });
+  writeStartupPerf({ usable: true });
+  mainWindow.show();
+  mainWindow.maximize();
+  closeSplashWindow();
+});
+
 // IPC: abre un recurso externo HTTPS (video o fuente) en el navegador del sistema.
 ipcMain.handle('open-external', async (event, url) => {
   if (!isTrustedIpcEvent(event)) {
@@ -1144,18 +1239,18 @@ if (!gotLock) {
       app.setAppUserModelId('com.codeguard.pro');
     }
 
-    createWindow();
+    createSplashWindow();
+    createMainWindow();
 
     try {
       const url = await startDjango();
-      if (mainWindow) {
+      if (mainWindow && !mainWindow.isDestroyed()) {
         updateSplash('Cargando la interfaz…', 'Aplicando preferencias del perfil.', { phase: 'ui', status: 'active' });
-        splashReady = false;
         perfMark('main_load_start', { main_url: url });
         await mainWindow.loadURL(url);
         perfMark('main_load_resolved');
       }
-      console.log(`[Startup] Aplicación lista en ${Date.now() - startupStartedAt} ms.`);
+      console.log(`[Startup] Carga principal iniciada en ${Date.now() - startupStartedAt} ms.`);
       scheduleKnowledgeSync();
     } catch (error) {
       console.error('No se pudo iniciar la aplicación:', error);
@@ -1176,7 +1271,8 @@ if (!gotLock) {
 
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow();
+        createSplashWindow();
+        createMainWindow();
       }
     });
   });

@@ -153,3 +153,20 @@ Criterio: reportar `usable_ms`/marcas en `startup-perf-electron.json` y tiempos 
 
 ### Limitaciones
 - Las demoras de 21s/41s reportadas por propietario están en creación de ventana/renderizado Chromium en su entorno; no reproducibles aquí. Se requiere validación en equipo del propietario con `startup-perf-electron.json`.
+
+
+## Corrección crítica: splash no visible (2026-11-23, sesión 3)
+
+### Causa raíz demostrada
+- `createWindow()` cargaba `splash.html` en la misma `BrowserWindow` que luego navegaba a la URL Django con `loadURL()`, pudiendo reemplazar el splash antes de pintarse.
+- Listeners de carga se registraban después de `loadFile()` y no se manejaba fallo de carga.
+- No había evidencia `splash_dom_ready/splash_first_paint/splash_loaded` en logs del propietario.
+- `splash.html` no tenía spinner animado visible.
+
+### Solución
+- Ventana de splash separada (`BrowserWindow` dedicada) y ventana principal oculta hasta señal interactiva.
+- Listeners registrados antes de `loadFile()`, manejo `did-fail-load`/`render-process-gone`.
+- Progreso IPC a splash y main; estado actual enviado al cargar.
+- Spinner CSS animado visible, respeta `prefers-reduced-motion`.
+- Señal explícita `app-interactive-signal` desde preload + fallback rAF; `usable` solo tras interactivo.
+- AppImage reconstruido. Prueba gráfica real en este entorno: no concluyente; requiere validación en equipo del propietario.
