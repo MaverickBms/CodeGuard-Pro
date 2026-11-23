@@ -383,6 +383,7 @@ def importar_documentos_validados(report, *, actor):
     items = []
     seen_lessons = set()
     seen_resources = set()
+    total_document_bytes = 0
     for previous in report["items"]:
         if not isinstance(previous, dict) or not {"document", "filename", "sha256"}.issubset(previous):
             raise ValidationError("El informe contiene un elemento incompleto.")
@@ -406,6 +407,18 @@ def importar_documentos_validados(report, *, actor):
             if resource_uuid in seen_lessons or resource_uuid in seen_resources:
                 raise ValidationError(f"{filename}: UUID de recurso duplicado o reasignado en el lote.")
             seen_resources.add(resource_uuid)
+
+        try:
+            serialized_document = json.dumps(
+                document, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+            ).encode("utf-8")
+        except (TypeError, ValueError, RecursionError) as exc:
+            raise ValidationError(f"{filename}: el documento no se puede serializar de forma segura.") from exc
+        if len(serialized_document) > MAX_DOCUMENT_BYTES:
+            raise ValidationError(f"{filename}: supera el límite de 2 MiB.")
+        total_document_bytes += len(serialized_document)
+        if total_document_bytes > MAX_BATCH_BYTES:
+            raise ValidationError("El lote supera el límite total de 100 MiB.")
 
         canonical = json.dumps(document["snapshot"], ensure_ascii=False, sort_keys=True, separators=(",", ":"))
         digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
