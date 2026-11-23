@@ -156,6 +156,26 @@ Windows no estaba vinculado a su commit exacto.
 - Se bloquean envíos duplicados de formularios deshabilitando el botón tras el
   evento `submit`, con restauración en `pageshow`.
 
+### A-09 — Duplicados PDF bajo concurrencia (Media, corregido en esta revisión)
+
+**Problema.** La vista comprobaba el SHA-256 antes de guardar, pero dos procesos
+podían superar esa consulta simultáneamente y crear dos registros con el mismo
+contenido. El conflicto de base de datos tampoco limpiaba necesariamente el
+archivo que el campo FileField hubiera escrito antes del INSERT.
+
+**Corrección.**
+
+- Restricción única condicional sobre SHA-256 no vacío, aplicada en SQLite.
+- La consulta previa se conserva para ofrecer un mensaje claro; la restricción
+  de base de datos es la autoridad ante carreras concurrentes.
+- La vista traduce únicamente el conflicto cuando ya existe el hash ganador,
+  elimina el archivo huérfano y no oculta otros errores de integridad.
+- Migración library.0002_unique_document_sha256: comprueba duplicados
+  históricos y aborta sin borrar ni modificar documentos si encuentra alguno.
+- Se añadieron dos pruebas para la unicidad a nivel de base de datos y la
+  compatibilidad de registros históricos sin hash. La ejecución de estas
+  pruebas queda pendiente de la CI del commit actual.
+
 ## 4. Funcionalidades verificadas
 
 | Área | Verificación |
