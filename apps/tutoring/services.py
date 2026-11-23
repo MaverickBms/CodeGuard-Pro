@@ -186,13 +186,13 @@ def entregar_pista(usuario, ejercicio, tipo_pista: str = "orientacion") -> dict:
         }
 
     contexto = (
-        f"Ejercicio: {ejercicio.titulo}\\n"
-        f"Enunciado: {ejercicio.enunciado}\\n"
-        f"Instrucciones: {ejercicio.instrucciones or 'Sin instrucciones adicionales.'}\\n"
-        f"Lenguaje: {ejercicio.lenguaje or 'No especificado'}\\n"
-        f"Nivel: {ejercicio.nivel}\\n"
+        f"Ejercicio: {ejercicio.titulo}\n"
+        f"Enunciado: {ejercicio.enunciado}\n"
+        f"Instrucciones: {ejercicio.instrucciones or 'Sin instrucciones adicionales.'}\n"
+        f"Lenguaje: {ejercicio.lenguaje or 'No especificado'}\n"
+        f"Nivel: {ejercicio.nivel}\n"
         "Entrega una pista gradual, sin revelar la solución completa. "
-        "Máximo tres pistas en total para este ejercicio.\\n"
+        "Máximo tres pistas en total para este ejercicio.\n"
     )
 
     if tipo_pista == "orientacion":
