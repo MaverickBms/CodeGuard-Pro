@@ -1,6 +1,7 @@
 """Pruebas del módulo académico (Roadmap ASCENSO)."""
 
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError, transaction
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
@@ -88,6 +89,23 @@ class ProgresoTest(TestCase):
         cls.usuario = get_user_model().objects.create_user(
             username="tester", password="ClaveSegura123!"
         )
+
+    def test_base_datos_impide_progreso_duplicado_en_etapa_modulo_y_leccion(self):
+        etapa = Etapa.objects.get(roadmap=self.roadmap, numero=0)
+        modulo = Modulo.objects.filter(etapa=etapa).first()
+        leccion = Leccion.objects.filter(modulo=modulo).first()
+        objetivos = (
+            {"etapa": etapa, "modulo": None, "leccion": None, "actividad": None},
+            {"etapa": etapa, "modulo": modulo, "leccion": None, "actividad": None},
+            {"etapa": etapa, "modulo": modulo, "leccion": leccion, "actividad": None},
+        )
+
+        for campos in objetivos:
+            with self.subTest(objetivo=campos):
+                Progreso.objects.create(usuario=self.usuario, **campos)
+                with self.assertRaises(IntegrityError):
+                    with transaction.atomic():
+                        Progreso.objects.create(usuario=self.usuario, **campos)
 
     def test_etapa_bloqueada_por_prerrequisito(self):
         etapa10 = Etapa.objects.get(roadmap=self.roadmap, numero=10)
