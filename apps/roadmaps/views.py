@@ -452,15 +452,13 @@ def leccion_detalle(request, leccion_id):
     )
     usuario = get_usuario_actual(request)
     etapa_leccion = leccion.modulo.etapa
-    if _etapa_bloqueada_para_usuario(etapa_leccion, usuario):
-        messages.warning(
-            request,
-            "Esta lección está bloqueada. Completa primero los prerrequisitos de la etapa.",
-        )
-        return redirect("roadmaps:detalle", numero=etapa_leccion.numero)
+    etapa_bloqueada = _etapa_bloqueada_para_usuario(etapa_leccion, usuario)
 
+    # El material de lectura permanece consultable en etapas bloqueadas, pero
+    # no se registra actividad ni se habilitan entregas o tutoría hasta cumplir
+    # los prerrequisitos.
     progreso = None
-    if usuario is not None:
+    if usuario is not None and not etapa_bloqueada:
         progreso = iniciar_leccion(
             usuario,
             leccion,
@@ -551,6 +549,7 @@ def leccion_detalle(request, leccion_id):
         {
             "roadmap": roadmap,
             "etapa": leccion.modulo.etapa,
+            "etapa_bloqueada": etapa_bloqueada,
             "modulo": leccion.modulo,
             "leccion": leccion,
             "contenido": contenido,
