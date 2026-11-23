@@ -188,6 +188,20 @@ pedagógica pendiente (identificados explícitamente como no validados) o aproba
 y excluye los rechazados. Se añadió una prueba de regresión sobre el contenido
 sembrado. La ejecución de esta prueba queda pendiente de la CI del HEAD actual.
 
+### A-11 — Sesión heredada como respaldo de identidad local (Alta, corregido en esta revisión)
+
+**Problema.** Aunque el middleware resolvía el propietario local y fallaba
+cerrado ante perfiles ambiguos, get_usuario_actual() podía recurrir a
+request.user cuando request.usuario_local era None. Una sesión de Django
+heredada podía así convertirse en identidad de escritura mientras
+AUTH_DISABLED=True, saltándose la resolución explícita del propietario.
+
+**Corrección.** En modo sin autenticación, get_usuario_actual() devuelve
+exclusivamente request.usuario_local; nunca usa la sesión de Django como
+respaldo. Con autenticación activa conserva el comportamiento anterior. Se
+añadieron dos pruebas para sesión heredada con propietario y para perfil
+ambiguo. Su ejecución queda pendiente de la CI del HEAD actual.
+
 ## 4. Funcionalidades verificadas
 
 | Área | Verificación |
