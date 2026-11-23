@@ -19,6 +19,20 @@ unicidad de progreso por nivel. La ejecución
 correspondiente se identifica por su run de CI en el PR #17; no se atribuye el
 resultado del commit anterior a estas pruebas.
 
+### Validación funcional incremental — 2026-11-23
+
+CI del PR #17, run [45198026989](https://github.com/MaverickBms/CodeGuard-Pro/actions/runs/45198026989):
+
+- Django: **368 pruebas OK** (75,889 s).
+- `manage.py check`: correcto.
+- `makemigrations --check --dry-run`: `No changes detected`.
+- Rendimiento de arranque: correcto.
+- Electron IPC: pruebas unitarias correctas.
+- PyInstaller: construcción y smoke test correctos.
+- El trabajo de Windows x64 permanece fuera del criterio de aceptación funcional de esta fase; no se usa para declarar terminada la validación del núcleo.
+
+Esta ejecución incluye las doce pruebas de regresión añadidas en esta revisión.
+
 ## 1. Backend Django
 
 | Prueba | Comando / procedimiento | Resultado | Evidencia |
