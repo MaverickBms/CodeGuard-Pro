@@ -194,3 +194,8 @@ sincronización cerrada.
 ### Validación incremental — integridad de recompensas (2026-11-23)
 
 Se incorporó una restricción única condicional sobre `TransaccionMoneda(usuario, tipo, referencia)` para referencias no vacías, además de una migración conservadora que aborta si detecta duplicados históricos y una prueba de inserción duplicada directa. Esta prueba se suma a la suite previa; el total y el resultado solo se actualizarán cuando CI del HEAD `59ff81a` termine. La validación anterior de 368 pruebas corresponde al commit anterior y no incluye esta prueba nueva.
+
+
+### Validación incremental — restauraciones consecutivas (2026-11-23)
+
+Se corrigió la colisión de nombres de las copias de reversión al restaurar dos veces dentro del mismo segundo. Cada operación reserva un directorio único y la prueba de regresión verifica que no se sobrescribe la copia anterior. Esta prueba aún no tiene resultado CI asociado.
