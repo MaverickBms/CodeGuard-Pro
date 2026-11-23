@@ -41,6 +41,7 @@ let startupStartedAt = 0;
 let lastBootMessage = '';
 let lastHealth = null;
 let splashReady = false;
+let splashFirstPaint = false;
 let lastDjangoError = '';
 
 const PERF_T0 = performance.now();
@@ -851,7 +852,7 @@ function createSplashWindow() {
     title: 'CodeGuard Pro — Iniciando',
     icon: iconPath(),
     backgroundColor: '#0f172a',
-    show: false,
+    show: true,
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -868,31 +869,38 @@ function createSplashWindow() {
   splashWindow.once('ready-to-show', () => {
     if (splashWindow && !splashWindow.isDestroyed()) {
       splashWindow.show();
+      splashFirstPaint = true;
       perfMark('splash_window_shown');
+      perfMark('splash_first_paint');
+      if (startupPerf.marks_ms.app_interactive) closeSplashWindow();
     }
   });
 
+  splashWindow.webContents.on('dom-ready', () => {
+    if (!splashWindow || splashWindow.isDestroyed()) return;
+    if (!startupPerf.marks_ms.splash_dom_ready) perfMark('splash_dom_ready');
+  });
   splashWindow.webContents.on('did-finish-load', () => {
     if (!splashWindow || splashWindow.isDestroyed()) return;
     const currentUrl = splashWindow.webContents.getURL();
     if (!currentUrl.includes('splash.html')) return;
-    if (!startupPerf.marks_ms.splash_dom_ready) perfMark('splash_dom_ready');
-    if (!startupPerf.marks_ms.splash_first_paint) perfMark('splash_first_paint');
-    if (!startupPerf.marks_ms.splash_loaded) perfMark('splash_loaded');
+    if (!startupPerf.marks_ms.splash_loaded) perfMark('splash_document_loaded');
     splashReady = true;
     emitStartupProgress({ phase: 'electron', status: 'done', task: 'Preparando servicios locales…', detail: 'Pantalla de carga lista.' });
     if (lastBootMessage) updateSplash(lastBootMessage, startupState.detail);
+    if (startupPerf.marks_ms.app_interactive && splashFirstPaint) closeSplashWindow();
   });
   splashWindow.webContents.on('did-fail-load', (_event, code, desc, validatedURL) => {
     console.error('[Splash] did-fail-load', { code, desc, validatedURL });
     perfMark('splash_load_failed', { code, desc });
     // Fallback: show main window if it exists so app is not invisible.
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.show();
-    }
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+    closeSplashWindow(true);
   });
   splashWindow.webContents.on('render-process-gone', (_event, details) => {
     console.error('[Splash] render-process-gone', details);
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+    closeSplashWindow(true);
   });
   splashWindow.on('closed', () => {
     splashWindow = null;
@@ -905,12 +913,16 @@ function createSplashWindow() {
     console.error('[Splash] loadFile failed:', err);
     perfMark('splash_load_failed', { error: err.message });
     if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+    closeSplashWindow(true);
   });
   return splashWindow;
 }
 
-function closeSplashWindow() {
+function closeSplashWindow(force = false) {
   if (!splashWindow || splashWindow.isDestroyed()) return;
+  // Nunca cancelar loadFile() antes de que el splash haya terminado de cargar
+  // y el primer frame esté disponible. ERR_FAILED (-2) era consecuencia del cierre prematuro.
+  if (!force && (!splashReady || !splashFirstPaint)) return;
   try { splashWindow.close(); } catch (_e) {}
   splashWindow = null;
   splashReady = false;
