@@ -8,6 +8,7 @@ IA para decidir la aprobación académica.
 from __future__ import annotations
 
 import re
+import logging
 from typing import Any
 
 from django.core.exceptions import ValidationError
@@ -18,6 +19,8 @@ from apps.audit.services import registrar_evento
 from .models import CumplimientoCriterio, CriterioFinalizacion, Progreso
 from .models_evaluacion import Pregunta, Quiz, ResultadoEvaluacion, ResultadoPregunta
 from .services import etapas_completadas
+
+logger = logging.getLogger(__name__)
 
 
 def _normalizar_texto(valor: Any, *, colapsar_espacios: bool = True) -> str:
@@ -321,7 +324,13 @@ def actualizar_progreso_por_evaluacion(usuario, quiz: Quiz, resultado: Resultado
                 )
                 evaluar_logros_academicos(usuario)
             except Exception:
-                pass
+                # El resultado académico ya está guardado. No revertimos una
+                # aprobación por un fallo cosmético, pero sí dejamos rastro.
+                logger.exception(
+                    "Falló la recompensa o evaluación de logros del módulo %s para el usuario %s",
+                    modulo.pk,
+                    usuario.pk,
+                )
 
     if quiz.etapa_id is not None and quiz.tipo == Quiz.TIPO_EXAMEN:
         aprobar_etapa_por_evaluacion(usuario, quiz.etapa, quiz, resultado)
