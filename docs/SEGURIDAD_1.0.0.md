@@ -31,6 +31,9 @@ La autenticación permanece desactivada a propósito (`AUTH_DISABLED = True`):
   rechazan operaciones.
 - El nombre reservado heredado `propietario-local` se acepta como identidad
   explícita de compatibilidad.
+- Cuando `AUTH_DISABLED=True`, la identidad de escritura proviene únicamente
+  de `request.usuario_local`; una sesión Django heredada nunca se usa como
+  respaldo si el propietario no puede resolverse.
 - Solo el propietario marcado recibe `is_staff` para el flujo editorial local.
   Una cuenta ordinaria no se eleva por existir.
 - El admin de Django no se instala en el paquete de escritorio.
