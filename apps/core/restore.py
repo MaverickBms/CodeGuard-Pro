@@ -220,7 +220,9 @@ def restore_backup(
     root.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix=".codeguard-restore-", dir=root.parent))
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    rollback = root / f".restore-rollback-{timestamp}"
+    # mkdtemp evita colisiones si se realizan dos restauraciones dentro del
+    # mismo segundo: nunca se debe sobrescribir una copia de reversión anterior.
+    rollback = Path(tempfile.mkdtemp(prefix=f".restore-rollback-{timestamp}-", dir=root))
     moved: list[str] = []
     published: list[str] = []
     try:
@@ -248,6 +250,7 @@ def restore_backup(
     except Exception:
         _close_connections()
         _rollback(root, rollback, moved, published)
+        shutil.rmtree(rollback, ignore_errors=True)
         raise
     finally:
         shutil.rmtree(staging, ignore_errors=True)
