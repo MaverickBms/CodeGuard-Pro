@@ -11,10 +11,11 @@
 
 ### Revisión funcional incremental (HEAD de esta rama)
 
-Se añadieron once pruebas de regresión desde el commit base de esta revisión:
+Se añadieron doce pruebas de regresión desde el commit base de esta revisión:
 dos de biblioteca PDF, una de curación de videos, dos de identidad local, tres
 de bloqueo de acceso directo (lección, quiz y tutoría), dos de fallback de
-respuestas vacías del tutor y una de unicidad de progreso por nivel. La ejecución
+respuestas vacías del tutor, una de formato del contexto de pistas y una de
+unicidad de progreso por nivel. La ejecución
 correspondiente se identifica por su run de CI en el PR #17; no se atribuye el
 resultado del commit anterior a estas pruebas.
 
