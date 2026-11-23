@@ -95,11 +95,12 @@ Verificado con consultas SQLite sobre un perfil temporal y con la suite
 
 ### Revisión posterior — unicidad de PDF
 
-Se añadieron dos pruebas para la restricción de SHA-256 y los registros sin hash,
-y una prueba para asegurar que un video rechazado pedagógicamente no se muestre
-como recomendación. Están incorporadas a los conjuntos apps.library y
-apps.roadmaps que ejecuta CI; el resultado del commit que incorpora esta revisión
-debe confirmarse en el nuevo run, no se hereda el resultado del run anterior.
+Se añadieron cinco pruebas nuevas: dos para la restricción de SHA-256 y los
+registros sin hash; una para excluir videos rechazados pedagógicamente; y dos
+para impedir que sesiones heredadas sustituyan al propietario local. Están
+incorporadas a apps.library, apps.roadmaps y apps.accounts, que ejecuta CI; el
+resultado del HEAD actual debe confirmarse en el nuevo run y no se hereda del
+run anterior.
 
 ## 5. Seguridad y dependencias
 
