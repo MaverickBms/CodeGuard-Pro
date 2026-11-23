@@ -9,6 +9,7 @@ from apps.roadmaps.models import (
     Leccion,
     Modulo,
     Prerrequisito,
+    Progreso,
     Roadmap,
 )
 
@@ -116,9 +117,7 @@ class LeccionDetalleViewTests(TestCase):
             reverse("roadmaps:detalle", args=[etapa_bloqueada.numero]),
         )
         self.assertFalse(
-            __import__("apps.roadmaps.models", fromlist=["Progreso"]).Progreso.objects.filter(
-                leccion=leccion
-            ).exists()
+            Progreso.objects.filter(leccion=leccion).exists()
         )
 
     def test_leccion_sin_contenido_muestra_estado_en_preparacion(self):
