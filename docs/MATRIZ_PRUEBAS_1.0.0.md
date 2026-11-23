@@ -9,6 +9,14 @@
 > La evidencia de CI se identifica por separado. No se atribuyen resultados de un
 > commit a otro.
 
+### Revisión funcional incremental (HEAD de esta rama)
+
+Se añadieron nueve pruebas de regresión desde el commit base de esta revisión:
+dos de biblioteca PDF, una de curación de videos, dos de identidad local, tres
+de bloqueo de acceso directo (lección, quiz y tutoría) y una de respuesta vacía
+del tutor. La ejecución correspondiente se identifica por su run de CI en el
+PR #17; no se atribuye el resultado del commit anterior a estas pruebas.
+
 ## 1. Backend Django
 
 | Prueba | Comando / procedimiento | Resultado | Evidencia |
