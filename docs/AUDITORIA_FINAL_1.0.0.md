@@ -176,6 +176,18 @@ archivo que el campo FileField hubiera escrito antes del INSERT.
   compatibilidad de registros históricos sin hash. La ejecución de estas
   pruebas queda pendiente de la CI del commit actual.
 
+### A-10 — Recomendación de videos rechazados (Media, corregido en esta revisión)
+
+**Problema.** La consulta de recursos para el estudiante filtraba enlaces
+técnicamente aprobados y disponibles, pero no excluía un video que el editor
+hubiera rechazado en la revisión pedagógica. Un recurso considerado
+didácticamente inadecuado podía seguir apareciendo como recomendación.
+
+**Corrección.** El catálogo del estudiante ahora admite videos con revisión
+pedagógica pendiente (identificados explícitamente como no validados) o aprobada,
+y excluye los rechazados. Se añadió una prueba de regresión sobre el contenido
+sembrado. La ejecución de esta prueba queda pendiente de la CI del HEAD actual.
+
 ## 4. Funcionalidades verificadas
 
 | Área | Verificación |
