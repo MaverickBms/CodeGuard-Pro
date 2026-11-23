@@ -212,16 +212,17 @@ class IntegridadConcurrenteBibliotecaTests(BibliotecaBaseTests):
     def test_base_de_datos_impide_hashes_duplicados_incluso_si_se_omite_la_vista(self):
         self._subir(titulo="Original")
         original = DocumentoBiblioteca.objects.get()
-        from django.db import IntegrityError
+        from django.db import IntegrityError, transaction
 
         with self.assertRaises(IntegrityError):
-            DocumentoBiblioteca.objects.create(
-                titulo="Duplicado concurrente",
-                archivo=original.archivo.name,
-                nombre_original="duplicado.pdf",
-                sha256=original.sha256,
-                tamano_bytes=original.tamano_bytes,
-            )
+            with transaction.atomic():
+                DocumentoBiblioteca.objects.create(
+                    titulo="Duplicado concurrente",
+                    archivo=original.archivo.name,
+                    nombre_original="duplicado.pdf",
+                    sha256=original.sha256,
+                    tamano_bytes=original.tamano_bytes,
+                )
 
         self.assertEqual(
             DocumentoBiblioteca.objects.filter(sha256=original.sha256).count(), 1
