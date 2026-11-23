@@ -189,3 +189,8 @@ sincronización cerrada.
 - No se hizo revisión pedagógica humana de los videos.
 - No se probó concurrencia real de importación de PDF.
 - La restauración se probó en un perfil aislado, no sobre el perfil real.
+
+
+### Validación incremental — integridad de recompensas (2026-11-23)
+
+Se incorporó una restricción única condicional sobre `TransaccionMoneda(usuario, tipo, referencia)` para referencias no vacías, además de una migración conservadora que aborta si detecta duplicados históricos y una prueba de inserción duplicada directa. Esta prueba se suma a la suite previa; el total y el resultado solo se actualizarán cuando CI del HEAD `59ff81a` termine. La validación anterior de 368 pruebas corresponde al commit anterior y no incluye esta prueba nueva.
