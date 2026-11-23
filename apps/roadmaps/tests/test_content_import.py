@@ -256,3 +256,13 @@ class ImportacionContenidoTests(TestCase):
         with self.assertRaisesMessage(ValidationError, "informe de validación está incompleto"):
             importar_documentos_validados({"errors": [], "items": []}, actor=self.editor)
         self.assertEqual(VersionContenidoLeccion.objects.count(), 0)
+
+
+    def test_importacion_rechaza_documento_manipulado_que_supera_limite(self):
+        report = validar_directorio_contenido(self.directory)
+        report["items"][0]["document"]["snapshot"]["contenido"]["teoria_tecnica"] = (
+            "x" * (2 * 1024 * 1024 + 1)
+        )
+        with self.assertRaisesMessage(ValidationError, "supera el límite de 2 MiB"):
+            importar_documentos_validados(report, actor=self.editor)
+        self.assertEqual(VersionContenidoLeccion.objects.count(), 0)
