@@ -90,6 +90,16 @@ class CargaContenidoAcademicoTests(TestCase):
         self.assertContains(respuesta, "Fuentes y lectura complementaria")
         self.assertContains(respuesta, "Sprouts Español")
 
+    def test_video_rechazado_pedagogicamente_no_se_recomienda_al_estudiante(self):
+        video = RecursoAudiovisual.objects.get(leccion=self.leccion)
+        video.estado_pedagogico = "rechazado"
+        video.notas_pedagogicas = "No corresponde al objetivo de aprendizaje."
+        video.save()
+
+        resultado = obtener_contenido_activo(self.leccion, permitir_borrador=True)
+
+        self.assertEqual(resultado["videos"], [])
+
     def test_contenido_activo_marca_borrador_y_video(self):
         resultado = obtener_contenido_activo(self.leccion, permitir_borrador=True)
         self.assertEqual(resultado["origen"], "borrador")
