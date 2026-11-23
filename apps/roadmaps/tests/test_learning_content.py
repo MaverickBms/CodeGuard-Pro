@@ -107,18 +107,23 @@ class LeccionDetalleViewTests(TestCase):
             etapa=etapa_bloqueada, numero="1.1", titulo="Módulo bloqueado"
         )
         leccion = Leccion.objects.create(modulo=modulo, titulo="Lección protegida")
+        EjercicioLeccion.objects.create(
+            leccion=leccion,
+            titulo="Ejercicio protegido",
+            enunciado="Debe poder leerse, pero no enviarse aún.",
+            publicado=True,
+        )
 
         response = self.client.get(
             reverse("roadmaps:leccion_detalle", args=[leccion.id])
         )
 
-        self.assertRedirects(
-            response,
-            reverse("roadmaps:detalle", args=[etapa_bloqueada.numero]),
-        )
-        self.assertFalse(
-            Progreso.objects.filter(leccion=leccion).exists()
-        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "puedes consultar el material de estudio")
+        self.assertContains(response, "las entregas y la tutoría se habilitarán")
+        self.assertNotContains(response, 'name="respuesta"')
+        self.assertNotContains(response, "lesson-tutor-pista-btn")
+        self.assertFalse(Progreso.objects.filter(leccion=leccion).exists())
 
     def test_leccion_sin_contenido_muestra_estado_en_preparacion(self):
         self.leccion.contenido.delete()
