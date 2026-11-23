@@ -83,7 +83,6 @@ class DocumentoBiblioteca(models.Model):
         ordering = ["-creado_en", "-id"]
         indexes = [
             models.Index(fields=["estado", "categoria"]),
-            models.Index(fields=["sha256"]),
         ]
         constraints = [
             models.UniqueConstraint(
