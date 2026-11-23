@@ -247,6 +247,15 @@ roadmaps.0023_progreso_unicidad_por_nivel comprueba los datos existentes y se
 detiene sin borrar ni modificar registros si detecta duplicados históricos.
 Se añadió una prueba que intenta duplicar progreso de etapa, módulo y lección.
 
+### A-15 — Contexto de pistas del tutor con separadores literales (Baja, corregido en esta revisión)
+
+**Problema.** El contexto enviado a Ollama para generar pistas incluía los
+caracteres literales \\n en lugar de saltos de línea. El contenido era
+recibido, pero los campos del ejercicio quedaban concatenados y menos claros.
+
+**Corrección.** Se sustituyeron los separadores literales por saltos de línea
+reales y se añadió una prueba que inspecciona el contexto enviado al modelo.
+
 ## 4. Funcionalidades verificadas
 
 | Área | Verificación |
