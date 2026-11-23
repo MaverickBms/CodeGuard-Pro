@@ -48,13 +48,14 @@ def acreditar_monedas(usuario, monto: int, concepto: str, referencia: str = "") 
             usuario=usuario, referencia=referencia[:120], tipo="credito"
         ).first()
         if existente:
+            existente._creada_ahora = False
             return existente
 
     perfil.saldo_monedas = F("saldo_monedas") + int(monto)
     perfil.save(update_fields=["saldo_monedas", "actualizado_en"])
     perfil.refresh_from_db(fields=["saldo_monedas"])
 
-    return TransaccionMoneda.objects.create(
+    transaccion = TransaccionMoneda.objects.create(
         usuario=usuario,
         tipo="credito",
         monto=int(monto),
@@ -62,6 +63,8 @@ def acreditar_monedas(usuario, monto: int, concepto: str, referencia: str = "") 
         concepto=concepto[:160],
         referencia=referencia[:120],
     )
+    transaccion._creada_ahora = True
+    return transaccion
 
 
 @transaction.atomic
@@ -97,6 +100,11 @@ def recompensar_evento_academico(usuario, evento: str, objeto_id: int, concepto:
     actualizar_racha(usuario)
     referencia = f"evento:{evento}:{objeto_id}:usuario:{usuario.id}"
     tx = acreditar_monedas(usuario, int(monto), concepto, referencia=referencia)
+    # Repetir el mismo evento no debe volver a incrementar misiones. La marca
+    # procede de acreditar_monedas DESPUÉS de tomar el bloqueo del perfil, por
+    # lo que también cubre llamadas concurrentes que compiten por la referencia.
+    if not getattr(tx, "_creada_ahora", True):
+        return tx
     try:
         evaluar_misiones_academicas(usuario, evento)
     except Exception:
