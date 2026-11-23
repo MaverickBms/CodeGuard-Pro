@@ -156,3 +156,31 @@ class GamificationFailureHandlingTests(TestCase):
         self.assertEqual(PerfilGamificacion.objects.get(usuario=self.usuario).saldo_monedas, 12)
         self.assertEqual(TransaccionMoneda.objects.filter(usuario=self.usuario).count(), 1)
         self.assertIn("No se pudieron evaluar las misiones", captured.output[0])
+
+
+class GamificationEventIdempotencyTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="gamification-event", password="ClaveSegura123!"
+        )
+
+    def test_repetir_evento_no_incrementa_mision_dos_veces(self):
+        from apps.gamification.services import asegurar_misiones_defecto
+        asegurar_misiones_defecto()
+        mision = Mision.objects.get(clave="completar-modulo")
+        mision.objetivo = 3
+        mision.save(update_fields=["objetivo"])
+
+        primera = recompensar_evento_academico(
+            self.usuario, "modulo_completado", 77, "Módulo completado", monto=10
+        )
+        segunda = recompensar_evento_academico(
+            self.usuario, "modulo_completado", 77, "Módulo completado", monto=10
+        )
+
+        self.assertEqual(primera.pk, segunda.pk)
+        progreso = MisionProgreso.objects.get(usuario=self.usuario, mision=mision)
+        self.assertEqual(progreso.progreso, 1)
+        self.assertFalse(progreso.completada)
+        self.assertEqual(PerfilGamificacion.objects.get(usuario=self.usuario).saldo_monedas, 10)
+        self.assertEqual(TransaccionMoneda.objects.filter(usuario=self.usuario).count(), 1)
