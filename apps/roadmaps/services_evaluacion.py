@@ -13,6 +13,7 @@ from typing import Any
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.db.models import Q
 
 from apps.audit.services import registrar_evento
 
@@ -547,10 +548,23 @@ def registrar_cumplimiento_criterio(
             f"'{criterio.titulo}' ({criterio.get_tipo_display()}); origen={origen}."
         ),
     )
-    _intentar_completar_etapa(
-        usuario,
-        criterio.etapa,
-        origen_evento="etapa_homologacion_pendiente_criterios",
-        contexto=f"Criterio registrado: {criterio.titulo}.",
-    )
+    # Una etapa solo puede completarse por evaluación/criterios verificables.
+    # El registro manual de evidencia no debe conceder aprobación académica por
+    # sí mismo; se reevalúa la etapa únicamente si ya existe una evaluación
+    # aprobada del usuario en esa etapa.
+    evaluacion_aprobada = ResultadoEvaluacion.objects.filter(
+        usuario=usuario,
+        aprobado=True,
+        requiere_revision=False,
+    ).filter(
+        Q(quiz__etapa=criterio.etapa) | Q(quiz__modulo__etapa=criterio.etapa)
+    ).exists()
+    if evaluacion_aprobada:
+        _intentar_completar_etapa(
+            usuario,
+            criterio.etapa,
+            evaluacion_aprobada=True,
+            origen_evento="etapa_homologacion_pendiente_criterios",
+            contexto=f"Criterio registrado: {criterio.titulo}.",
+        )
     return cumplimiento

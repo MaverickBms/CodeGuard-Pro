@@ -119,3 +119,27 @@ Flujo real:
 La versión 1.0.0 es una plataforma educativa local funcional y honesta sobre su
 cobertura. Su mayor limitación no es técnica sino de contenido: 8 lecciones con
 cuerpo frente a 1.946 títulos curriculares. La aplicación no oculta esa brecha.
+
+## 8. Actualización de auditoría autónoma (2026-11-23)
+
+### Estado verificado en esta sesión
+- Suite Django: 379 pruebas OK en entorno local (apps.core, accounts, audit, roadmaps, tutoring, gamification, challenges, library).
+- Electron: 26 pruebas OK.
+- `manage.py check` y `makemigrations --check --dry-run` sin incidencias.
+- Smoke HTTP de rutas principales: 200 en páginas clave; POST-only endpoints devuelven 405 ante GET.
+- CI del HEAD base `66468a5`: 4/4 verde (dos runs).
+
+### Correcciones aplicadas en esta sesión
+- Criterio manual/proyecto ya no completa etapa sin evaluación aprobada (se mantiene registro de evidencia).
+- `codigo_contiene` puede completar lección cuando `permite_completar_leccion=True`.
+- Publisher/distribución/content_import aceptan esquemas de contenido 1 y 2 (validación de compatibilidad; pendiente validación E2E de publicación esquema 2).
+- Manejo de errores robusto en `cargar_contenido_academico` y `importar_documentos_validados` ante datos malformados/carreras.
+- Vista detalle de etapa expone `etapa.completada`.
+
+### Limitaciones funcionales observadas (no resueltas)
+- Cobertura académica: 8 lecciones en borrador, 0 aprobadas/publicadas, 1.938 títulos pendientes. Etapa 25 sin objetivo formal aprobado.
+- Gamificación sin campos de experiencia/nivel en `PerfilGamificacion` (hay monedas, rachas, logros, misiones, avatar).
+- No hay UI de borrado de documentos de biblioteca (solo archivar/restaurar).
+- No hay revisión docente de respuestas abiertas.
+- Sin validación visual automatizada por navegador en esta sesión.
+- Aceptación Windows física, firma de código, sincronización remota de producción, macOS/ARM64 fuera de alcance.

@@ -339,3 +339,46 @@ lo demostrado en esta iteración. El veredicto completo y la evidencia están en
 **Corrección.** Cada restauración crea ahora un directorio exclusivo mediante `tempfile.mkdtemp` dentro del perfil. Si la restauración falla, se revierte el intercambio y se elimina el staging de rollback incompleto; si termina correctamente, la copia anterior se conserva en su directorio único.
 
 **Prueba.** Se añadió un caso que ejecuta dos restauraciones consecutivas y comprueba que ambas copias de reversión existen, tienen rutas distintas y conservan sus respectivas bases de datos. Pendiente de CI del HEAD actual.
+
+### A-18 — Registro manual de criterios podía completar etapa sin evaluación aprobada (Alta, corregido)
+
+**Problema.** `registrar_cumplimiento_criterio` registraba evidencia manual/proyecto y siempre llamaba a `_intentar_completar_etapa`. Un usuario podía satisfacer criterios obligatorios declarativos y obtener la transición de etapa a completada sin una evaluación aprobada, eludiendo la regla de que la etapa se aprueba mediante evaluaciones y criterios verificables.
+
+**Corrección.** El servicio registra la evidencia y solo reevalúa la finalización de etapa cuando existe al menos un `ResultadoEvaluacion` aprobado y sin revisión pendiente para la misma etapa (`apps/roadmaps/services_evaluacion.py`). La finalización por evaluación sigue funcionando a través de `aprobar_etapa_por_evaluacion`.
+
+**Prueba.** `apps/roadmaps/tests/test_evaluacion.py::CumplimientoCriterioValidationTests::test_criterio_manual_no_completa_etapa_sin_evaluacion_aprobada`. La prueba existente `test_cumplimiento_criterio_proyecto_permite_completar_etapa_tras_examen` sigue pasando.
+
+### A-19 — Evaluador estático `codigo_contiene` no completaba lección aunque permitiera completar (Media, corregido)
+
+**Problema.** `_evaluar_configuracion` devolvía `criterios_cumplidos` cuando el chequeo estático pasaba, incluso si `ConfiguracionEvaluacion.permite_completar_leccion` estaba habilitado. `registrar_intento_ejercicio` solo dispara `_completar_leccion_si_corresponde` cuando el resultado es `aprobado`.
+
+**Corrección.** Cuando el chequeo pasa y `permite_completar_leccion=True`, el resultado es `aprobado`; en caso contrario se mantiene `criterios_cumplidos` con la semántica de "no aprobación académica" (`apps/roadmaps/attempts.py`).
+
+**Prueba.** `apps/roadmaps/tests/test_attempts.py::...::test_codigo_contiene_completa_leccion_si_permite_completar`.
+
+### A-20 — Aceptación de esquemas de contenido 1 y 2 en publisher/distribución/importación (Media, corregido parcialmente)
+
+**Problema.** El flujo editorial puede emitir snapshots con `esquema_version` 2 para contenido académico completo, pero publisher, distribución y content_import rechazaban esquema 2, impidiendo empaquetar/publicar ese contenido.
+
+**Corrección.** Se acepta `esquema_version` 1 o 2 en validación de snapshot (publisher, content_import) y `content_schema_version` 1 o 2 en distribución. El publisher emite el `content_schema_version` real del paquete. Queda pendiente validar el flujo editorial completo de esquema 2 extremo a extremo con paquete firmado y publicación real.
+
+### A-21 — Crashes por datos malformados en carga/importación (Media, corregido)
+
+**Problema.** `cargar_contenido_academico` no convertía `ValueError/TypeError/KeyError` de coerciones a `CommandError`. `importar_documentos_validados` no manejaba `Leccion.DoesNotExist` dentro de la transacción.
+
+**Corrección.** Se amplió el manejo de excepciones en el comando y se capturó `DoesNotExist` convirtiéndolo en `ValidationError` con mensaje claro.
+
+### A-22 — `etapa.completada` no se exponía en el contexto de detalle (Baja, corregido)
+
+**Problema.** La plantilla de detalle usaba `etapa.completada`, pero la vista no lo asignaba.
+
+**Corrección.** La vista `detalle` asigna `etapa.completada = etapa.numero in completadas`.
+
+## 9. Auditoría incremental autónoma (2026-11-23, esta sesión)
+
+- Rama: `release/1.0.0-final`. HEAD base auditado: `66468a536554e9747302aa8087ba568d2bda4be1` (CI 4/4 verde en runs 45205752117 y 45205738457).
+- Se verificó el estado de CI del HEAD actual antes de modificar: 4/4 trabajos completados con éxito (Django, Electron, PyInstaller, Windows x64) en los dos workflows registrados.
+- Pruebas ejecutadas en este entorno: `manage.py check` OK; `makemigrations --check --dry-run` OK; `npm run test:electron` 26/26 OK; Django suite `apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges apps.library` **379 pruebas OK**.
+- Smoke HTTP (Django dev server, AUTH_DISABLED, datos sembrados): rutas principales respondieron 200 (`/`, roadmaps, etapa 0/1/25, lección, evaluaciones, evidencias, conocimiento, cobertura, editorial, fuentes editoriales, biblioteca, importar, gamificación perfil, tutoría estado, healthz, backups, login). POST-only endpoints respondieron 405 ante GET. No se observaron trazas 500 en el log del smoke.
+- No se ejecutó auditoría visual automatizada con navegador (no hay Playwright/Selenium configurado; los scripts CDP del repo están orientados a Electron empaquetado). Se realizó revisión estática de plantillas/JS y smoke HTTP. Esta limitación queda documentada.
+- Hallazgos pendientes/no resueltos en esta sesión: brecha de contenido (8 borradores/0 publicadas/1938 pendientes); XP/Niveles no modelados en `PerfilGamificacion` (gamificación muestra monedas/rachas/logros/misiones pero no experiencia/niveles); revisión pedagógica humana de videos pendiente; aceptación Windows física; firma de código; sincronización remota de producción; macOS/ARM64; revisión docente de respuestas abiertas; eliminación de documentos de biblioteca no expuesta en UI; flujo editorial extremo a extremo para esquema 2 requiere validación adicional.

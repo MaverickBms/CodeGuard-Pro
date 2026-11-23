@@ -86,11 +86,22 @@ def _evaluar_configuracion(configuracion: ConfiguracionEvaluacion, respuesta: st
         puntuacion = round(100 * encontrados / len(requeridos))
         if detectados:
             puntuacion = 0
+        resultado = "no_aprobado"
+        if aprobado:
+            resultado = (
+                "aprobado"
+                if configuracion.permite_completar_leccion
+                else "criterios_cumplidos"
+            )
         return {
-            "resultado": "criterios_cumplidos" if aprobado else "no_aprobado",
+            "resultado": resultado,
             "puntuacion": puntuacion,
             "retroalimentacion": (
-                "La comprobación estática encontró todos los elementos requeridos; esto no constituye una aprobación académica."
+                (
+                    "La comprobación estática encontró todos los elementos requeridos y el ejercicio quedó aprobado por su criterio configurado."
+                    if configuracion.permite_completar_leccion
+                    else "La comprobación estática encontró todos los elementos requeridos; esto no constituye una aprobación académica."
+                )
                 if aprobado
                 else "La comprobación estática detectó elementos pendientes o no permitidos. Esto no equivale a ejecutar ni verificar el comportamiento del programa."
             ),
@@ -99,6 +110,7 @@ def _evaluar_configuracion(configuracion: ConfiguracionEvaluacion, respuesta: st
                 "total_fragmentos_requeridos": len(requeridos),
                 "fragmentos_prohibidos_detectados": detectados,
                 "tipo_comprobacion": "estatica",
+                "permite_completar_leccion": configuracion.permite_completar_leccion,
             },
         }
 

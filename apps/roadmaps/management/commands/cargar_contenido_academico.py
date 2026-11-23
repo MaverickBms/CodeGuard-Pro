@@ -432,7 +432,15 @@ class Command(BaseCommand):
                 raise ContenidoAcademicoError("El archivo supera el límite de 2 MiB.")
             datos = json.loads(ruta.read_text(encoding="utf-8"))
             _validar_lote(datos)
-        except (OSError, json.JSONDecodeError, ContenidoAcademicoError, ValidationError) as exc:
+        except (
+            OSError,
+            json.JSONDecodeError,
+            ContenidoAcademicoError,
+            ValidationError,
+            ValueError,
+            TypeError,
+            KeyError,
+        ) as exc:
             raise CommandError(f"Contenido no válido: {exc}") from exc
 
         if options["dry_run"]:

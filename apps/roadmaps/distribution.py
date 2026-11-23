@@ -34,7 +34,7 @@ MAX_CONTENT_FILE_BYTES = 2 * 1024 * 1024
 MAX_TOTAL_UNCOMPRESSED_BYTES = 100 * 1024 * 1024
 MAX_COMPRESSION_RATIO = 100
 SUPPORTED_MANIFEST_VERSION = 1
-SUPPORTED_CONTENT_SCHEMA_VERSION = 1
+SUPPORTED_CONTENT_SCHEMA_VERSIONS = {1, 2}
 ALLOWED_CHANNELS = {"stable", "beta"}
 SEMVER_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*))?$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -126,7 +126,10 @@ def validate_manifest_structure(raw: bytes, *, allowed_hosts):
     _positive_int(manifest["sequence"], "sequence")
     _aware_datetime(manifest["published_at"], "published_at")
     _semver(manifest["minimum_app_version"], "minimum_app_version")
-    if type(manifest["content_schema_version"]) is not int or manifest["content_schema_version"] != SUPPORTED_CONTENT_SCHEMA_VERSION:
+    if (
+        type(manifest["content_schema_version"]) is not int
+        or manifest["content_schema_version"] not in SUPPORTED_CONTENT_SCHEMA_VERSIONS
+    ):
         raise DistributionError("Versión del esquema de contenido no compatible.")
     if not isinstance(manifest["key_id"], str) or not re.fullmatch(r"[A-Za-z0-9._-]{1,80}", manifest["key_id"]):
         raise DistributionError("key_id inválido.")

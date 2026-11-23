@@ -138,7 +138,7 @@ def _validate_document(document, filename):
 
     snapshot = document["snapshot"]
     _expect_keys(snapshot, SNAPSHOT_KEYS, f"{filename}.snapshot")
-    if type(snapshot["esquema_version"]) is not int or snapshot["esquema_version"] != 1:
+    if type(snapshot["esquema_version"]) is not int or snapshot["esquema_version"] not in {1, 2}:
         raise ImportContentError(f"{filename}.snapshot.esquema_version: versión no soportada.")
 
     lesson = snapshot["leccion"]
@@ -429,7 +429,12 @@ def importar_documentos_validados(report, *, actor):
     created = []
     duplicates = []
     for item in items:
-        lesson = Leccion.objects.select_for_update().get(pk=item["lesson"].pk)
+        try:
+            lesson = Leccion.objects.select_for_update().get(pk=item["lesson"].pk)
+        except Leccion.DoesNotExist as exc:
+            raise ValidationError(
+                f"{item['filename']}: la lección ya no existe en el catálogo ASCENSO."
+            ) from exc
         candidates = VersionContenidoLeccion.objects.filter(leccion=lesson, sha256=item["sha256"])
         existing = next((version for version in candidates if _same_provenance(version, item)), None)
         if existing:

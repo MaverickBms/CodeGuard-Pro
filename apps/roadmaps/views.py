@@ -266,6 +266,7 @@ def detalle(request, numero):
     modulos = list(etapa.modulos.prefetch_related("lecciones"))
 
     completadas = etapas_completadas(usuario, roadmap)
+    etapa.completada = etapa.numero in completadas
     progreso = mapa_progreso_etapas(usuario, roadmap).get(etapa.id)
     progresos_lecciones = mapa_progreso_lecciones(usuario, etapa)
     progresos_modulos = mapa_progreso_modulos(usuario, etapa)

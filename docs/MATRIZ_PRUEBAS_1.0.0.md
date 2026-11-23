@@ -199,3 +199,18 @@ Se incorporó una restricción única condicional sobre `TransaccionMoneda(usuar
 ### Validación incremental — restauraciones consecutivas (2026-11-23)
 
 Se corrigió la colisión de nombres de las copias de reversión al restaurar dos veces dentro del mismo segundo. Cada operación reserva un directorio único y la prueba de regresión verifica que no se sobrescribe la copia anterior. Esta prueba aún no tiene resultado CI asociado.
+
+## 10. Validación incremental autónoma (2026-11-23)
+
+| Área | Prueba | Resultado | Evidencia |
+|---|---|---|---|
+| Sistema | `manage.py check --settings=config.settings.development` | OK | Ejecución local, 0 issues |
+| Migraciones | `manage.py makemigrations --check --dry-run --settings=config.settings.development` | OK | No changes detected |
+| Django suite | `manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges apps.library --settings=config.settings.development` | OK | **379 tests**, 173.956s |
+| Electron | `npm run test:electron` | OK | 26/26 pass |
+| Smoke HTTP | Rutas principales con servidor dev + datos sembrados | OK | 200 en /, roadmaps, etapas 0/1/25, lección, evaluaciones, evidencias, conocimiento, cobertura, editorial, fuentes, biblioteca, importar, gamificación/perfil, tutoría estado, healthz, backups, login; 405 en POST-only por GET |
+| Regresión | Criterio manual no completa etapa sin evaluación aprobada | OK | `test_criterio_manual_no_completa_etapa_sin_evaluacion_aprobada` |
+| Regresión | `codigo_contiene` con `permite_completar_leccion` completa lección | OK | `test_codigo_contiene_completa_leccion_si_permite_completar` |
+| CI HEAD base | Runs 45205752117, 45205738457 para `66468a5` | OK | 4/4 jobs success en ambos runs (Django, Electron, PyInstaller, Windows x64) |
+
+**Limitaciones de esta validación:** no se ejecutó navegador automatizado (sin Playwright/Selenium; CDP scripts orientados a Electron empaquetado). No se probó aceptación Windows física. No se ejecutó smoke E2E empaquetado en esta sesión. No se validó flujo de publicación de esquema 2 extremo a extremo con firma.
