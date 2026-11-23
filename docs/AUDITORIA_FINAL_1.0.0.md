@@ -232,6 +232,20 @@ contenido vacío, el tutor podía guardar y mostrar una pista en blanco.
 mismo fallback local determinista que se usa cuando Ollama no está disponible.
 Se añadió una prueba de regresión.
 
+### A-14 — Unicidad de progreso con campos NULL (Alta, corregido en esta revisión)
+
+**Problema.** El modelo declaraba una restricción única compuesta por usuario,
+etapa, módulo, lección y actividad. En SQLite, los valores NULL no se consideran
+iguales para una restricción UNIQUE convencional, por lo que podían existir
+varias filas para el mismo progreso de etapa, módulo o lección. Dos accesos
+simultáneos podían crear progreso duplicado y distorsionar el avance.
+
+**Corrección.** Se reemplazó la restricción compuesta por índices únicos
+parciales por nivel (etapa, módulo, lección y actividad). La migración
+roadmaps.0023_progreso_unicidad_por_nivel comprueba los datos existentes y se
+detiene sin borrar ni modificar registros si detecta duplicados históricos.
+Se añadió una prueba que intenta duplicar progreso de etapa, módulo y lección.
+
 ## 4. Funcionalidades verificadas
 
 | Área | Verificación |
@@ -273,6 +287,7 @@ Se añadió una prueba de regresión.
 | Windows no probado en hardware físico | Medio de distribución | CI 4/4; aceptación física pendiente |
 | Sincronización remota no operativa | Bajo (offline-first) | Falla cerrada; no hay conexiones |
 | Duplicado de PDF en concurrencia | Corregido en esta revisión | Restricción única condicional por SHA-256 y migración conservadora ante duplicados históricos |
+| Progreso duplicado por valores NULL | Corregido en esta revisión | Índices únicos parciales por nivel; migración aborta sin borrar si detecta duplicados históricos |
 | AppImage actual no probado con montaje FUSE directo | Bajo de plataforma | Se ejecutó con extracción; se documenta el fallback |
 
 ## 7. Plan de ejecución aplicado
