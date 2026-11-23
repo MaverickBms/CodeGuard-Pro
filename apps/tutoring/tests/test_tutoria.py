@@ -233,6 +233,23 @@ class AnalisisIntentoTutoriaTests(TestCase):
         self.assertEqual(datos["resultado_evaluacion"], intento.resultado)
         self.assertEqual(datos["analisis_tutor"], "El tutor explica el error.")
 
+    @patch.object(services, "_llamar_ollama", return_value="   ")
+    def test_analizar_intento_vacio_usa_retroalimentacion_local(self, mock_llamar):
+        intento = registrar_intento_ejercicio(self.usuario, self.ejercicio, "nombre = 'Ada'")
+
+        respuesta = self.client.post(
+            reverse("tutoring:analizar", args=[self.ejercicio.id]),
+            {"intento_ejercicio_id": intento.id},
+        )
+
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertTrue(respuesta.json()["exito"])
+        self.assertTrue(respuesta.json()["analisis_tutor"].strip())
+        self.assertIn(
+            "validador automático",
+            respuesta.json()["analisis_tutor"],
+        )
+
     def test_analizar_sin_intento_devuelve_error(self):
         respuesta = self.client.post(
             reverse("tutoring:analizar", args=[self.ejercicio.id]),
