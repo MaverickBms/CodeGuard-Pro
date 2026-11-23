@@ -91,8 +91,12 @@ def importar(request):
                 with transaction.atomic():
                     documento.save()
             except IntegrityError:
+                # No ocultar otros errores de integridad: solo traducimos el
+                # conflicto cuando la restricción de hash ya tiene ganador.
+                if not DocumentoBiblioteca.objects.filter(sha256=sha256).exists():
+                    raise
                 # FileField escribe el archivo antes del INSERT. Si la base de
-                # datos rechaza el hash duplicado, retiramos el archivo huérfano.
+                # datos rechazó el hash duplicado, retiramos el archivo huérfano.
                 if documento.archivo and documento.archivo.name:
                     documento.archivo.storage.delete(documento.archivo.name)
                 formulario.add_error(
