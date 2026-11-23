@@ -330,3 +330,12 @@ lo demostrado en esta iteración. El veredicto completo y la evidencia están en
 **Corrección.** Se añadió una restricción única condicional por usuario, tipo y referencia no vacía. Las transacciones sin referencia siguen permitidas y las referencias de crédito y débito pertenecen a espacios separados. La migración `gamification.0004_unique_transaction_reference` inspecciona primero los datos históricos y aborta con un mensaje diagnóstico si encuentra duplicados; no elimina ni modifica transacciones. Se añadió una prueba que intenta insertar una referencia repetida directamente en la base de datos.
 
 **Validación.** La nueva prueba y la migración deben quedar confirmadas por CI del HEAD `59ff81a`; no se atribuye el resultado del run anterior a estos cambios.
+
+
+### A-17 — Colisión de directorios de reversión en restauraciones consecutivas (Alta, corregido; CI pendiente)
+
+**Problema.** El directorio de rollback se construía usando una marca de tiempo con precisión de un segundo. Dos restauraciones rápidas del mismo perfil podían reutilizar el mismo directorio y sobrescribir una copia de reversión anterior.
+
+**Corrección.** Cada restauración crea ahora un directorio exclusivo mediante `tempfile.mkdtemp` dentro del perfil. Si la restauración falla, se revierte el intercambio y se elimina el staging de rollback incompleto; si termina correctamente, la copia anterior se conserva en su directorio único.
+
+**Prueba.** Se añadió un caso que ejecuta dos restauraciones consecutivas y comprueba que ambas copias de reversión existen, tienen rutas distintas y conservan sus respectivas bases de datos. Pendiente de CI del HEAD actual.
