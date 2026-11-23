@@ -16,7 +16,7 @@ funcionalidad terminada.
 | Lecciones | Parcial | 8 lecciones completas del módulo 0.1 | 1.938 títulos sin contenido |
 | Ejercicios | Completa (alcance actual) | Evaluadores deterministas, intentos e historial | No ejecuta código; sin sandbox |
 | Evaluaciones | Parcial | Quiz publicables, corrección backend y resultados inmutables | 0 quizzes publicados en perfil limpio; abiertas pendientes de revisión |
-| Progreso | Completa | Lecciones por evidencia, módulos por evaluación y etapas por criterios | No se puede completar manualmente |
+| Progreso | Completa | Lecciones por evidencia, módulos por evaluación y etapas por criterios; unicidad de registros protegida por nivel en la base de datos | No se puede completar manualmente |
 | Tutor | Completa con fallback | Ollama local, detección de modelo, pistas e informe; verifica roadmap activo y prerrequisitos en endpoints directos | Sin Ollama o respuesta vacía usa reglas locales |
 | Biblioteca | Completa | Importación PDF, SHA-256, búsqueda, archivo, visor y rangos | Sin OCR ni parsing |
 | Conocimiento | Completa local | Fuentes, versiones, paquetes y estados reales | Sincronización remota no configurada |
