@@ -139,6 +139,18 @@ class PistaTutoriaViewTests(TestCase):
     def setUp(self):
         self.usuario, self.ejercicio = _crear_contexto_tutoria()
 
+    @patch.object(services, "_llamar_ollama", return_value="Pista de prueba.")
+    def test_contexto_de_pista_usa_saltos_de_linea_reales(self, mock_llamar):
+        respuesta = self.client.post(
+            reverse("tutoring:pista", args=[self.ejercicio.id]),
+            {"tipo": "orientacion"},
+        )
+
+        self.assertEqual(respuesta.status_code, 200)
+        contexto = mock_llamar.call_args.kwargs["usuario"]
+        self.assertIn("\nEnunciado:", contexto)
+        self.assertNotIn("\\nEnunciado:", contexto)
+
     @patch.object(services, "_llamar_ollama", return_value="Pista generada por el tutor.")
     def test_entrega_pista_acepta_tipo_valido(self, mock_llamar):
         respuesta = self.client.post(
