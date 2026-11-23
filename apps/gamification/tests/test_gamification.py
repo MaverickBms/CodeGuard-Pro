@@ -204,3 +204,31 @@ class GamificationReplayStreakTests(TestCase):
         perfil = PerfilGamificacion.objects.get(usuario=self.usuario)
         self.assertEqual(perfil.ultima_actividad_fecha, date(2026, 11, 20))
         self.assertEqual(perfil.racha_dias, 1)
+
+
+class GamificationTransactionConstraintTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="gamification-unique-ref", password="ClaveSegura123!"
+        )
+
+    def test_base_de_datos_impide_referencias_no_vacias_duplicadas(self):
+        from django.db import IntegrityError, transaction
+
+        acreditar_monedas(self.usuario, 15, "Primera", referencia="evento:unico:1")
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                TransaccionMoneda.objects.create(
+                    usuario=self.usuario,
+                    tipo="credito",
+                    monto=15,
+                    saldo_resultante=30,
+                    concepto="Duplicada",
+                    referencia="evento:unico:1",
+                )
+        self.assertEqual(
+            TransaccionMoneda.objects.filter(
+                usuario=self.usuario, tipo="credito", referencia="evento:unico:1"
+            ).count(),
+            1,
+        )
