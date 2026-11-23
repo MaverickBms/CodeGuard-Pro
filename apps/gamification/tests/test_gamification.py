@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from unittest.mock import patch
+from datetime import date
 
 from apps.gamification.models import Logro, LogroObtenido, PerfilGamificacion, TransaccionMoneda
 from apps.gamification.services import acreditar_monedas, otorgar_logro, recompensar_evento_academico
@@ -184,3 +185,22 @@ class GamificationEventIdempotencyTests(TestCase):
         self.assertFalse(progreso.completada)
         self.assertEqual(PerfilGamificacion.objects.get(usuario=self.usuario).saldo_monedas, 10)
         self.assertEqual(TransaccionMoneda.objects.filter(usuario=self.usuario).count(), 1)
+
+
+class GamificationReplayStreakTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="gamification-replay", password="ClaveSegura123!"
+        )
+
+    @patch("apps.gamification.services.timezone.localdate", side_effect=[date(2026, 11, 20), date(2026, 11, 21)])
+    def test_repetir_evento_antiguo_no_aumenta_racha_en_otro_dia(self, _mock_localdate):
+        recompensar_evento_academico(
+            self.usuario, "modulo_completado", 88, "Módulo completado", monto=10
+        )
+        recompensar_evento_academico(
+            self.usuario, "modulo_completado", 88, "Módulo completado", monto=10
+        )
+        perfil = PerfilGamificacion.objects.get(usuario=self.usuario)
+        self.assertEqual(perfil.ultima_actividad_fecha, date(2026, 11, 20))
+        self.assertEqual(perfil.racha_dias, 1)
