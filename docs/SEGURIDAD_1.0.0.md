@@ -64,7 +64,8 @@ Implementado y probado:
 ## 4. Validación de entradas y archivos
 
 - PDF: extensión `.pdf`, firma `%PDF-`, máximo 50 MB, nombre saneado y SHA-256.
-- Duplicados por SHA-256 rechazados de forma secuencial.
+- Duplicados por SHA-256 rechazados en la vista y protegidos por una restricción única condicional en SQLite; la base de datos cierra la carrera entre procesos.
+- Si la restricción detecta un conflicto concurrente, se elimina el archivo escrito por el intento perdedor y se muestra un error de duplicado. Otros errores de integridad no se ocultan.
 - El visor sirve únicamente rutas resueltas dentro de `MEDIA_ROOT`.
 - Rangos HTTP validados; respuestas 416 con `Content-Range`.
 - Respuestas de ejercicios limitadas a 20.000 caracteres.
@@ -133,8 +134,9 @@ riesgo de cadena de suministro de desarrollo, no de ejecución del producto.
 4. **Sincronización remota:** no hay infraestructura de producción.
 5. **Usuario con control del equipo:** puede modificar SQLite y archivos. El
    diseño no promete integridad frente al propietario del sistema operativo.
-6. **Duplicado de PDF concurrente:** la comprobación no tiene restricción única
-   en base de datos; el riesgo es bajo en el uso monousuario.
+6. **Duplicados históricos de PDF:** la migración de unicidad comprueba los datos
+   existentes y se detiene sin borrar documentos si detecta hashes repetidos; el
+   propietario debe resolverlos conservando los archivos.
 7. **Artefactos sin firma de código:** los hashes SHA-256 verifican integridad,
    pero no autentican al editor. Windows SmartScreen puede advertir. La firma
    Authenticode/AppImage queda pendiente.
