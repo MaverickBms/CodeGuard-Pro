@@ -12,6 +12,12 @@
 
 {% block content %}
 <div class="lesson-page">
+  {% if etapa_bloqueada %}
+    <div class="lesson-empty" role="status" style="margin-bottom:1rem;">
+      <i class="fa-solid fa-lock" aria-hidden="true"></i>
+      <span>Etapa bloqueada: puedes consultar el material de estudio, pero el progreso, las entregas y la tutoría se habilitarán al completar los prerrequisitos.</span>
+    </div>
+  {% endif %}
   <nav class="roadmap-breadcrumb lesson-breadcrumb" aria-label="Migas de pan">
     <a href="{% url 'roadmaps:detalle' etapa.numero %}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i><span>Volver a la etapa {{ etapa.numero }}</span></a>
     <span class="breadcrumb-sep" aria-hidden="true">/</span>
@@ -186,7 +192,9 @@
           {% if ejercicio.instrucciones %}<div class="lesson-exercise-instructions"><strong>Instrucciones</strong><div class="lesson-prose">{{ ejercicio.instrucciones|academico }}</div></div>{% endif %}
           {% if ejercicio.codigo_inicial %}<pre class="lesson-code"><code>{{ ejercicio.codigo_inicial }}</code></pre>{% endif %}
 
-          {% if ejercicio.id %}
+          {% if etapa_bloqueada %}
+            <div class="lesson-empty"><i class="fa-solid fa-lock" aria-hidden="true"></i><span>Puedes estudiar este contenido, pero las entregas y la tutoría se habilitarán cuando completes los prerrequisitos de la etapa.</span></div>
+          {% elif ejercicio.id %}
             <form class="lesson-submission" method="post" action="{% url 'roadmaps:enviar_intento' ejercicio.id %}" data-ejercicio-id="{{ ejercicio.id }}">
               {% csrf_token %}
               <label for="respuesta-{{ ejercicio.id }}">Tu respuesta</label>
@@ -200,7 +208,7 @@
             <div class="lesson-empty"><i class="fa-solid fa-lock" aria-hidden="true"></i><span>Este ejercicio pertenece a una versión histórica y se conserva para consulta. No admite nuevas entregas.</span></div>
           {% endif %}
 
-          {% if ejercicio.id %}
+          {% if ejercicio.id and not etapa_bloqueada %}
             <div class="lesson-tutor-actions">
               <button class="btn-theme btn-theme-ghost lesson-tutor-pista-btn" type="button" data-ejercicio-id="{{ ejercicio.id }}" data-tipo="orientacion">
                 <i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Pedir pista
