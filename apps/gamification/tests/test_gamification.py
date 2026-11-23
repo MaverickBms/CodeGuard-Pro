@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from unittest.mock import patch
 
 from apps.gamification.models import Logro, LogroObtenido, PerfilGamificacion, TransaccionMoneda
-from apps.gamification.services import acreditar_monedas, otorgar_logro
+from apps.gamification.services import acreditar_monedas, otorgar_logro, recompensar_evento_academico
 
 
 class GamificationServicesTests(TestCase):
@@ -137,3 +138,21 @@ class MisionesRachaTests(TestCase):
         mp = MisionProgreso.objects.get(usuario=self.usuario, mision=mision)
         self.assertTrue(mp.completada)
         self.assertEqual(mp.progreso, 1)
+
+
+class GamificationFailureHandlingTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="gamification-fail", password="ClaveSegura123!"
+        )
+
+    @patch("apps.gamification.services.evaluar_misiones_academicas", side_effect=RuntimeError("fallo simulado"))
+    def test_fallo_de_misiones_se_registra_sin_perder_recompensa(self, _mock_misiones):
+        with self.assertLogs("apps.gamification.services", level="ERROR") as captured:
+            tx = recompensar_evento_academico(
+                self.usuario, "modulo_completado", 42, "Recompensa de prueba", monto=12
+            )
+        self.assertEqual(tx.monto, 12)
+        self.assertEqual(PerfilGamificacion.objects.get(usuario=self.usuario).saldo_monedas, 12)
+        self.assertEqual(TransaccionMoneda.objects.filter(usuario=self.usuario).count(), 1)
+        self.assertIn("No se pudieron evaluar las misiones", captured.output[0])
