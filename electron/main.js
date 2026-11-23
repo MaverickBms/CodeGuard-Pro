@@ -866,6 +866,7 @@ function createSplashWindow() {
   perfMark('splash_window_created');
 
   splashReady = false;
+  splashFirstPaint = false;
   splashWindow.once('ready-to-show', () => {
     if (splashWindow && !splashWindow.isDestroyed()) {
       splashWindow.show();
@@ -884,7 +885,7 @@ function createSplashWindow() {
     if (!splashWindow || splashWindow.isDestroyed()) return;
     const currentUrl = splashWindow.webContents.getURL();
     if (!currentUrl.includes('splash.html')) return;
-    if (!startupPerf.marks_ms.splash_loaded) perfMark('splash_document_loaded');
+    if (!startupPerf.marks_ms.splash_document_loaded) perfMark('splash_document_loaded');
     splashReady = true;
     emitStartupProgress({ phase: 'electron', status: 'done', task: 'Preparando servicios locales…', detail: 'Pantalla de carga lista.' });
     if (lastBootMessage) updateSplash(lastBootMessage, startupState.detail);
@@ -921,11 +922,12 @@ function createSplashWindow() {
 function closeSplashWindow(force = false) {
   if (!splashWindow || splashWindow.isDestroyed()) return;
   // Nunca cancelar loadFile() antes de que el splash haya terminado de cargar
-  // y el primer frame esté disponible. ERR_FAILED (-2) era consecuencia del cierre prematuro.
+  // y el primer frame esté disponible. ERR_FAILED (-2) podía ser consecuencia del cierre prematuro.
   if (!force && (!splashReady || !splashFirstPaint)) return;
   try { splashWindow.close(); } catch (_e) {}
   splashWindow = null;
   splashReady = false;
+  splashFirstPaint = false;
 }
 
 function createMainWindow() {
