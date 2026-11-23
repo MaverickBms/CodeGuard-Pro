@@ -178,3 +178,15 @@ cuerpo frente a 1.946 títulos curriculares. La aplicación no oculta esa brecha
 | Señal interactiva explícita | OK | frontend + fallbacks controlados |
 | Recuperación fallo splash | PARCIAL | reintento/timeout/fallback; requiere validación GUI real |
 | Validación AppImage GUI | PENDIENTE VALIDACIÓN EXTERNA | sin entorno gráfico |
+
+
+## Auditoría de cierre sesión 5 (2026-11-23)
+
+| Área | Estado | Nota |
+|---|---|---|
+| Señal interactiva verificada | OK | solo `frontend-explicit` desde main window confiable |
+| Fallback sin usable/100% | OK | recuperación controlada, `verified:false` |
+| Métricas splash/main frame | OK | `splash_renderer_frame_ready`, no first_paint en catch |
+| Recuperación loadURL principal | PARCIAL | retry + diagnóstico; validación real pendiente |
+| CI Windows acceptance (8b4063c) | FALLA CORREGIDA | causa probable pages[0] splash; fix en f22fddb |
+| Validación gráfica AppImage | PENDIENTE | entorno sin GUI |

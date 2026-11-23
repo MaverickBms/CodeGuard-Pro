@@ -192,3 +192,23 @@ Criterio: reportar `usable_ms`/marcas en `startup-perf-electron.json` y tiempos 
 
 ### Validación gráfica AppImage
 - No ejecutada en este entorno (sin sesión gráfica confiable para validar UI). No se declara splash visualmente validado aquí. Se requiere validación en equipo Linux gráfico con `./codeguard` y revisión de `startup-perf-electron.json`.
+
+
+## Sesión 5 — auditoría de cierre: interactividad verificable y métricas honestas (2026-11-23)
+
+### Correcciones
+- **Señal interactiva verificable**: `app-interactive-signal` acepta solo payload `source=frontend-explicit` desde la ventana principal confiable; rechaza duplicados y señales de otras ventanas; registra `app_interactive_signal_received/rejected` con origen.
+- **Fallbacks no declaran usable**: fallbacks (main-timeout, preload-fallback) muestran la UI por recuperación controlada, marcan `app_interactive_fallback` y `writeStartupPerf({usable:false, verified:false,...})`; no marcan 100% ni `app_interactive` verificado.
+- **Métricas de pintado honestas**: `splash_renderer_frame_ready` se marca solo en éxito de rAF; en catch se marca `splash_renderer_frame_check_failed` y no se afirma `splash_first_paint`. `main_renderer_frame_ready` análogo. `splash_first_paint/renderer_first_paint` quedan como alias legacy con `verified: renderer_frame_only`.
+- **Recuperación de carga principal**: retry de `loadURL` (1 reintento), `main_did_fail_load`, `main_render_process_gone`, `startup_failed` con diagnóstico.
+
+### Pruebas
+- `npm run test:electron`: 46 pass, 0 fail.
+- Django check/makemigrations: OK (previos). Django suite: 379 OK (sesión anterior, sin cambios Python).
+
+### CI / Build
+- CI 45290793853 (SHA 8b4063c): failure en "Windows installation acceptance" (Windows x64 package); Django/Electron/PyInstaller smoke jobs verdes. Causa probable: `scripts/windows-acceptance.ps1` usaba `pages[0]` de CDP; con la ventana splash separada, `file://.../splash.html` puede aparecer primero. Corregido en `f22fddb` filtrando la primera página `http://127.0.0.1:*`.
+- Build AppImage sesión 5: OK. `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage`, 124M, 2026-11-23 18:52 -05, SHA256 `411ae6756c1dd362cad64371235bea0c8936958a148583d7a822fe02ee8c5281`. Contenido verificado en asar (contiene `app_interactive_signal_rejected`, `splash_renderer_frame_ready`).
+
+### Limitación
+- Sin validación gráfica real del AppImage. El smoke previo con timeout mostró ERR_FAILED(-2) en loadURL principal; coherente con aborto por timeout/entorno, no confirmado como regresión de producto.

@@ -259,3 +259,18 @@ Se corrigió la colisión de nombres de las copias de reversión al restaurar do
 | Django suite completa | automatizada | OK (379, 269s) | ejecución local |
 | Build AppImage Linux | build | OK | `dist/CodeGuard-Pro-1.0.0-x86_64.AppImage` 124M 2026-11-23 18:34 -05 |
 | Smoke AppImage (DISPLAY=:0, timeout 45s) | smoke | PARCIAL | healthz_ready ~17.36s; main URL ERR_FAILED (-2) en entorno limitado; sin validación GUI |
+
+
+## Auditoría de cierre sesión 5 (2026-11-23)
+
+| Caso | Tipo | Resultado | Evidencia |
+|---|---|---|---|
+| classifyInteractiveSignal verificada/fallback | unit (node) | OK | `startup-ipc.test.js` |
+| shouldAcceptInteractiveSignal rechaza untrusted/otra ventana/duplicado | unit (node) | OK | `startup-ipc.test.js` |
+| Fallback no marca 100%/interactivo verificado | unit (node) | OK | `startup-progress.test.js` |
+| Snapshot buffer suscriptor tardío | unit (node) | OK | `startup-progress.test.js` |
+| Contract: no splash_first_paint en catch; fallback usable false | unit (node) | OK | `splash-contract.test.js` |
+| Electron suite completa | automatizada | OK (46) | `npm run test:electron` |
+| CI 45290793853 (8b4063c) | CI | FAILURE | Windows installation acceptance; otros jobs OK |
+| CI f22fddb (final sesión 5) | CI | IN_PROGRESS | runs 45292424018/45292415438 |
+| AppImage sesión 5 rebuild | build | OK | 124M, SHA256 411ae6756c1dd362... |
