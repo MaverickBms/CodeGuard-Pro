@@ -10,8 +10,11 @@ from django.db import transaction
 from django.db.models import F
 
 from datetime import date, timedelta
+import logging
 
 from django.utils import timezone
+
+logger = logging.getLogger(__name__)
 
 from .models import (
     AvatarPerfil,
@@ -35,14 +38,18 @@ def acreditar_monedas(usuario, monto: int, concepto: str, referencia: str = "") 
     if monto <= 0:
         raise ValueError("El monto a acreditar debe ser mayor que cero.")
 
+    # Bloquear primero el perfil serializa los créditos del mismo usuario.
+    # La comprobación idempotente debe ocurrir DESPUÉS del bloqueo: de lo
+    # contrario, dos operaciones simultáneas pueden observar que no existe
+    # la referencia y acreditar ambas.
+    perfil = PerfilGamificacion.objects.select_for_update().get_or_create(usuario=usuario)[0]
     if referencia:
-        existente = TransaccionMoneda.objects.select_for_update().filter(
-            usuario=usuario, referencia=referencia, tipo="credito"
+        existente = TransaccionMoneda.objects.filter(
+            usuario=usuario, referencia=referencia[:120], tipo="credito"
         ).first()
         if existente:
             return existente
 
-    perfil = PerfilGamificacion.objects.select_for_update().get_or_create(usuario=usuario)[0]
     perfil.saldo_monedas = F("saldo_monedas") + int(monto)
     perfil.save(update_fields=["saldo_monedas", "actualizado_en"])
     perfil.refresh_from_db(fields=["saldo_monedas"])
@@ -93,7 +100,13 @@ def recompensar_evento_academico(usuario, evento: str, objeto_id: int, concepto:
     try:
         evaluar_misiones_academicas(usuario, evento)
     except Exception:
-        pass
+        # Las misiones no deben invalidar una recompensa ya registrada, pero
+        # el fallo debe quedar visible para diagnóstico en lugar de silenciarse.
+        logger.exception(
+            "No se pudieron evaluar las misiones del evento académico %s para el usuario %s",
+            evento,
+            usuario.pk,
+        )
     return tx
 
 
