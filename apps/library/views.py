@@ -202,13 +202,25 @@ def archivo(request, pk):
         return _cabeceras_pdf(respuesta, documento)
 
     inicio_texto, fin_texto = coincidencia.groups()
-    if not inicio_texto and not fin_texto:
+    if (
+        (inicio_texto and len(inicio_texto) > 20)
+        or (fin_texto and len(fin_texto) > 20)
+        or (not inicio_texto and not fin_texto)
+    ):
         respuesta = HttpResponse(status=416)
         respuesta["Content-Range"] = f"bytes */{tamano}"
         return respuesta
 
-    if not inicio_texto:
-        longitud = int(fin_texto)
+    try:
+        inicio_solicitado = int(inicio_texto) if inicio_texto else None
+        fin_solicitado = int(fin_texto) if fin_texto else None
+    except ValueError:
+        respuesta = HttpResponse(status=416)
+        respuesta["Content-Range"] = f"bytes */{tamano}"
+        return respuesta
+
+    if inicio_solicitado is None:
+        longitud = fin_solicitado
         if longitud <= 0:
             respuesta = HttpResponse(status=416)
             respuesta["Content-Range"] = f"bytes */{tamano}"
@@ -216,8 +228,8 @@ def archivo(request, pk):
         inicio = max(tamano - longitud, 0)
         fin = tamano - 1
     else:
-        inicio = int(inicio_texto)
-        fin = int(fin_texto) if fin_texto else tamano - 1
+        inicio = inicio_solicitado
+        fin = fin_solicitado if fin_solicitado is not None else tamano - 1
         if inicio >= tamano or fin < inicio:
             respuesta = HttpResponse(status=416)
             respuesta["Content-Range"] = f"bytes */{tamano}"
