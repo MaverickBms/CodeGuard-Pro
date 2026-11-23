@@ -237,3 +237,22 @@ class ImportacionContenidoTests(TestCase):
             importar_documentos_validados(report, actor=get_user_model().objects.create_user(
                 username="no_editor", password="ClaveSegura123!"
             ))
+
+
+    def test_importacion_rechaza_informe_manipulado_con_leccion_duplicada(self):
+        report = validar_directorio_contenido(self.directory)
+        item = report["items"][0]
+        manipulated = {
+            "documents": 2,
+            "valid": 2,
+            "errors": [],
+            "items": [item, item],
+        }
+        with self.assertRaisesMessage(ValidationError, "misma lección aparece más de una vez"):
+            importar_documentos_validados(manipulated, actor=self.editor)
+        self.assertEqual(VersionContenidoLeccion.objects.count(), 0)
+
+    def test_importacion_rechaza_informe_con_formato_incompleto(self):
+        with self.assertRaisesMessage(ValidationError, "informe de validación está incompleto"):
+            importar_documentos_validados({"errors": [], "items": []}, actor=self.editor)
+        self.assertEqual(VersionContenidoLeccion.objects.count(), 0)
