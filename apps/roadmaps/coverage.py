@@ -6,6 +6,7 @@ dimensiones distintas. Este módulo calcula la segunda sin modificar datos.
 
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass, field
 
 from .models import (
@@ -15,6 +16,9 @@ from .models import (
     RecursoAudiovisual,
     VersionContenidoLeccion,
 )
+
+_COBERTURA_CACHE: dict[int, tuple[float, "Cobertura"]] = {}
+_COBERTURA_TTL_S = 60.0
 
 ESTADOS = (
     "pendiente",
@@ -41,6 +45,15 @@ _ESTADO_VERSION = {
     "publicada": "publicada",
     "sustituida": "borrador",
     "retirada": "pendiente",
+}
+
+_ETIQUETA_VERSION = {
+    "borrador": "Borrador",
+    "revision": "En revisión",
+    "aprobada": "Aprobada",
+    "publicada": "Publicada",
+    "sustituida": "Sustituida",
+    "retirada": "Retirada",
 }
 
 
@@ -94,21 +107,27 @@ def _mapas_editoriales(roadmap):
         .select_related("modulo__etapa")
         .order_by("modulo__etapa__numero", "modulo__orden", "orden", "id")
     )
-    contenidos = {
-        fila.leccion_id: fila
-        for fila in ContenidoLeccion.objects.filter(
+    contenidos_ids = set(
+        ContenidoLeccion.objects.filter(
             leccion__modulo__etapa__roadmap=roadmap
-        )
-    }
+        ).values_list("leccion_id", flat=True)
+    )
     versiones = {}
-    for version in (
+    for fila in (
         VersionContenidoLeccion.objects.filter(
             leccion__modulo__etapa__roadmap=roadmap
         )
-        .select_related("leccion")
         .order_by("leccion_id", "-numero_version")
+        .values("leccion_id", "estado", "numero_version")
     ):
-        versiones.setdefault(version.leccion_id, version)
+        versiones.setdefault(
+            fila["leccion_id"],
+            {
+                "estado": fila["estado"],
+                "numero_version": fila["numero_version"],
+                "estado_display": _ETIQUETA_VERSION.get(fila["estado"], fila["estado"]),
+            },
+        )
     activos = set(
         ContenidoLeccionActivo.objects.filter(
             leccion__modulo__etapa__roadmap=roadmap
@@ -127,23 +146,35 @@ def _mapas_editoriales(roadmap):
             disponible=True,
         ).values_list("leccion_id", flat=True)
     )
-    return lecciones, contenidos, versiones, activos, fuentes_por_leccion, videos_por_leccion
+    return lecciones, contenidos_ids, versiones, activos, fuentes_por_leccion, videos_por_leccion
 
 
-def _estado(leccion_id, contenidos, versiones, activos):
+def _estado(leccion_id, contenidos_ids, versiones, activos):
     if leccion_id in activos:
         return "publicada", versiones.get(leccion_id)
     version = versiones.get(leccion_id)
     if version is not None:
-        return _ESTADO_VERSION.get(version.estado, "borrador"), version
-    if leccion_id in contenidos:
+        return _ESTADO_VERSION.get(version.get("estado"), "borrador"), version
+    if leccion_id in contenidos_ids:
         return "en_desarrollo", None
     return "pendiente", None
+
+
+def invalidar_cache_cobertura(roadmap_id: int | None = None) -> None:
+    if roadmap_id is None:
+        _COBERTURA_CACHE.clear()
+    else:
+        _COBERTURA_CACHE.pop(roadmap_id, None)
 
 
 def calcular_cobertura(roadmap) -> Cobertura:
     if roadmap is None:
         return Cobertura(por_estado={estado: 0 for estado in ESTADOS})
+
+    ahora = time.monotonic()
+    cacheada = _COBERTURA_CACHE.get(roadmap.id)
+    if cacheada and ahora - cacheada[0] < _COBERTURA_TTL_S:
+        return cacheada[1]
 
     (
         lecciones,
@@ -180,6 +211,7 @@ def calcular_cobertura(roadmap) -> Cobertura:
 
     cobertura.por_etapa = [por_etapa[numero] for numero in sorted(por_etapa)]
     cobertura.por_estado = {estado: getattr(cobertura, estado) for estado in ESTADOS}
+    _COBERTURA_CACHE[roadmap.id] = (ahora, cobertura)
     return cobertura
 
 
@@ -216,13 +248,32 @@ def detalle_editorial(leccion: Leccion) -> dict:
     }
 
 
+class _VersionInfo:
+    __slots__ = ("numero_version", "estado")
+
+    def __init__(self, numero_version, estado):
+        self.numero_version = numero_version
+        self.estado = estado
+
+    def get_estado_display(self):
+        return _ETIQUETA_VERSION.get(self.estado, self.estado)
+
+
+def _version_info(version):
+    if version is None:
+        return None
+    if isinstance(version, dict):
+        return _VersionInfo(version.get("numero_version"), version.get("estado"))
+    return version
+
+
 def mapa_estados(roadmap) -> dict:
     """Mapa por lección para listados editoriales sin consultas N+1."""
     if roadmap is None:
         return {}
     (
         lecciones,
-        contenidos,
+        contenidos_ids,
         versiones,
         activos,
         fuentes_por_leccion,
@@ -230,12 +281,12 @@ def mapa_estados(roadmap) -> dict:
     ) = _mapas_editoriales(roadmap)
     resultado = {}
     for leccion in lecciones:
-        estado, version = _estado(leccion.id, contenidos, versiones, activos)
+        estado, version = _estado(leccion.id, contenidos_ids, versiones, activos)
         resultado[leccion.id] = {
             "estado": estado,
             "etiqueta": ETIQUETAS.get(estado, estado),
-            "version": version,
-            "contenido": contenidos.get(leccion.id),
+            "version": _version_info(version),
+            "contenido": None,
             "tiene_fuentes": leccion.id in fuentes_por_leccion,
             "tiene_video": leccion.id in videos_por_leccion,
         }

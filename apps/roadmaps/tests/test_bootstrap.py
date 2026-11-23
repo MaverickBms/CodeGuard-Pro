@@ -99,7 +99,7 @@ class BootstrapRoadmapTests(TestCase):
             "apps.roadmaps.services.cargar_ascenso",
             side_effect=AssertionError("no debe recargar"),
         ):
-            with self.assertNumQueries(7):
+            with self.assertNumQueries(6):
                 roadmap, cargado = asegurar_roadmap_instalado(self.ruta)
 
         self.assertFalse(cargado)

@@ -18,7 +18,7 @@ from django.views.decorators.http import require_POST
 from apps.accounts.identity import get_usuario_actual, obtener_actor_auditoria, requiere_acceso
 from apps.audit.services import registrar_evento
 
-from .coverage import calcular_cobertura, detalle_editorial, mapa_estados
+from .coverage import calcular_cobertura, detalle_editorial, invalidar_cache_cobertura, mapa_estados
 from .forms import (
     ContenidoLeccionForm,
     FuenteConocimientoForm,
@@ -158,6 +158,7 @@ def editorial_leccion(request, leccion_id):
                         descripcion=f"Contenido editado para la lección {leccion.id}.",
                     )
                     messages.success(request, "Contenido guardado como borrador editable.")
+                    invalidar_cache_cobertura(roadmap.id)
                     return redirect("roadmaps:editorial_leccion", leccion_id=leccion.id)
 
             elif accion == "crear_version":
@@ -176,6 +177,7 @@ def editorial_leccion(request, leccion_id):
                     ],
                 )
                 messages.success(request, f"Versión {version.pk} creada en borrador.")
+                invalidar_cache_cobertura(roadmap.id)
                 return redirect("roadmaps:editorial_leccion", leccion_id=leccion.id)
 
             elif accion in {"enviar_revision", "aprobar", "publicar", "retirar"}:
@@ -194,6 +196,7 @@ def editorial_leccion(request, leccion_id):
                     motivo = (request.POST.get("motivo") or "").strip()
                     retirar_version_publicada(version.pk, actor=actor, motivo=motivo)
                     messages.success(request, "Versión publicada retirada.")
+                invalidar_cache_cobertura(roadmap.id)
                 return redirect("roadmaps:editorial_leccion", leccion_id=leccion.id)
 
             elif accion == "crear_video":
@@ -205,6 +208,7 @@ def editorial_leccion(request, leccion_id):
                     recurso.leccion = leccion
                     recurso.save()
                     messages.success(request, "Video añadido en revisión; no se mostrará hasta aprobarlo.")
+                    invalidar_cache_cobertura(roadmap.id)
                     return redirect("roadmaps:editorial_leccion", leccion_id=leccion.id)
 
             elif accion == "revisar_video":
@@ -231,6 +235,7 @@ def editorial_leccion(request, leccion_id):
                     recurso.disponible = True
                 recurso.save()
                 messages.success(request, f"Video marcado como {recurso.get_estado_revision_display().lower()}.")
+                invalidar_cache_cobertura(roadmap.id)
                 return redirect("roadmaps:editorial_leccion", leccion_id=leccion.id)
 
             elif accion == "revisar_video_pedagogico":
@@ -329,6 +334,7 @@ def editorial_fuentes(request):
                 fuente.consultada_en = None
                 fuente.save()
                 messages.success(request, "Fuente registrada; revisa su licencia antes de usarla.")
+                invalidar_cache_cobertura()
                 return redirect("roadmaps:editorial_fuentes")
             messages.error(request, "Revisa los datos de la fuente.")
             revision_form = RevisionLicenciaForm()
@@ -348,6 +354,7 @@ def editorial_fuentes(request):
                         nota=revision_form.cleaned_data["nota"],
                     )
                     messages.success(request, "Decisión de licencia registrada.")
+                    invalidar_cache_cobertura()
                 except ValidationError as exc:
                     mensajes = exc.messages if getattr(exc, "messages", None) else [str(exc)]
                     for mensaje in mensajes:

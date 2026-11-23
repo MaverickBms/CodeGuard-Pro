@@ -454,8 +454,18 @@ def _huella_base_datos(
     return _digest(lineas), [], sobrantes
 
 
-def verificar_instalacion(roadmap, manifiesto: Manifiesto) -> Verificacion:
-    """Comprueba que SQLite contiene exactamente el contenido del manifiesto."""
+def verificar_instalacion(
+    roadmap,
+    manifiesto: Manifiesto,
+    *,
+    profunda: bool = False,
+) -> Verificacion:
+    """Comprueba que SQLite contiene exactamente el contenido del manifiesto.
+
+    Siempre realiza verificación profunda de huella para conservar integridad
+    real. Los metadatos de instalación se usan para detectar desactualización,
+    no para omitir la comprobación de contenido.
+    """
     if roadmap is None:
         return Verificacion(
             ok=False,
@@ -566,9 +576,11 @@ def asegurar_roadmap_instalado(
     from .services import cargar_ascenso
 
     manifiesto = cargar_manifiesto(ruta)
-    roadmap = Roadmap.objects.filter(
-        nombre=manifiesto.nombre, edicion=manifiesto.edicion
-    ).first()
+    roadmap = (
+        Roadmap.objects.filter(nombre=manifiesto.nombre, edicion=manifiesto.edicion)
+        .select_related("estado_instalacion")
+        .first()
+    )
 
     if roadmap is not None:
         verificacion = verificar_instalacion(roadmap, manifiesto)
@@ -651,7 +663,8 @@ def preparar_perfil_local(
     Los eventos van a stdout con el prefijo ``[CodeGuard BOOT]`` para que
     Electron pueda mostrar el estado real en la pantalla de inicio.
     """
-    inicio = time.monotonic()
+    inicio = time.perf_counter()
+    fases: dict[str, float] = {}
     resultado: dict = {
         "migraciones_pendientes": 0,
         "roadmap_cargado": False,
@@ -662,8 +675,10 @@ def preparar_perfil_local(
         "prerrequisitos": 0,
         "sobrantes": 0,
         "milisegundos": 0,
+        "fases_ms": fases,
     }
 
+    t_fase = time.perf_counter()
     _emitir({"phase": "database", "status": "start"}, emit=emit)
     from django.core.management import call_command
 
@@ -683,8 +698,15 @@ def preparar_perfil_local(
 
     resultado["migraciones_pendientes"] = max(pendientes, 0)
     if pendientes == 0:
+        fases["database_ms"] = round((time.perf_counter() - t_fase) * 1000, 2)
         _emitir(
-            {"phase": "database", "status": "ready", "pending": 0, "migrated": False},
+            {
+                "phase": "database",
+                "status": "ready",
+                "pending": 0,
+                "migrated": False,
+                "ms": fases["database_ms"],
+            },
             emit=emit,
         )
     else:
@@ -698,8 +720,15 @@ def preparar_perfil_local(
             emit=emit,
         )
         call_command("migrate", interactive=False, verbosity=1)
+        fases["database_ms"] = round((time.perf_counter() - t_fase) * 1000, 2)
         _emitir(
-            {"phase": "database", "status": "ready", "pending": 0, "migrated": True},
+            {
+                "phase": "database",
+                "status": "ready",
+                "pending": 0,
+                "migrated": True,
+                "ms": fases["database_ms"],
+            },
             emit=emit,
         )
 
@@ -707,22 +736,27 @@ def preparar_perfil_local(
     # aunque el login esté desactivado. Se crea una sola vez, sin credenciales.
     from apps.accounts.bootstrap import asegurar_propietario_local
 
+    t_fase = time.perf_counter()
     _emitir({"phase": "profile", "status": "checking"}, emit=emit)
     propietario = asegurar_propietario_local()
     resultado["propietario_local_id"] = propietario.pk if propietario else None
+    fases["profile_ms"] = round((time.perf_counter() - t_fase) * 1000, 2)
     _emitir(
         {
             "phase": "profile",
             "status": "ready" if propietario else "unavailable",
             "owner": bool(propietario),
+            "ms": fases["profile_ms"],
         },
         emit=emit,
     )
 
+    t_fase = time.perf_counter()
     _emitir({"phase": "roadmap", "status": "verifying"}, emit=emit)
     roadmap, cargado = asegurar_roadmap_instalado(ruta)
     resultado["roadmap_cargado"] = cargado
     resultado["roadmap_reutilizado"] = not cargado
+    fases["roadmap_ms"] = round((time.perf_counter() - t_fase) * 1000, 2)
 
     from .models import Etapa, Leccion, Modulo, Prerrequisito
 
@@ -741,9 +775,11 @@ def preparar_perfil_local(
     # Siembra el contenido académico inicial como borradores editoriales. No
     # publica ni aprueba nada: permite estudiar con el aviso correspondiente y
     # deja el flujo editorial en manos del propietario.
+    t_fase = time.perf_counter()
     resultado["contenido_sembrado"] = _sembrar_contenido_inicial(emit=emit)
+    fases["content_seed_ms"] = round((time.perf_counter() - t_fase) * 1000, 2)
 
-    resultado["milisegundos"] = round((time.monotonic() - inicio) * 1000)
+    resultado["milisegundos"] = round((time.perf_counter() - inicio) * 1000, 2)
 
     _emitir(
         {
@@ -755,7 +791,8 @@ def preparar_perfil_local(
             "lessons": resultado["lecciones"],
             "prerequisites": resultado["prerrequisitos"],
             "preserved": resultado["sobrantes"],
-            "ms": resultado["milisegundos"],
+            "ms": fases.get("roadmap_ms", resultado["milisegundos"]),
+            "total_ms": resultado["milisegundos"],
         },
         emit=emit,
     )
@@ -764,7 +801,14 @@ def preparar_perfil_local(
             "phase": "ready",
             "status": "ok",
             "ms": resultado["milisegundos"],
+            "fases_ms": fases,
         },
         emit=emit,
     )
+    try:
+        from config.health import mark_ready
+
+        mark_ready()
+    except Exception:
+        pass
     return resultado

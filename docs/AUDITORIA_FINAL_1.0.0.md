@@ -382,3 +382,14 @@ lo demostrado en esta iteración. El veredicto completo y la evidencia están en
 - Smoke HTTP (Django dev server, AUTH_DISABLED, datos sembrados): rutas principales respondieron 200 (`/`, roadmaps, etapa 0/1/25, lección, evaluaciones, evidencias, conocimiento, cobertura, editorial, fuentes editoriales, biblioteca, importar, gamificación perfil, tutoría estado, healthz, backups, login). POST-only endpoints respondieron 405 ante GET. No se observaron trazas 500 en el log del smoke.
 - No se ejecutó auditoría visual automatizada con navegador (no hay Playwright/Selenium configurado; los scripts CDP del repo están orientados a Electron empaquetado). Se realizó revisión estática de plantillas/JS y smoke HTTP. Esta limitación queda documentada.
 - Hallazgos pendientes/no resueltos en esta sesión: brecha de contenido (8 borradores/0 publicadas/1938 pendientes); XP/Niveles no modelados en `PerfilGamificacion` (gamificación muestra monedas/rachas/logros/misiones pero no experiencia/niveles); revisión pedagógica humana de videos pendiente; aceptación Windows física; firma de código; sincronización remota de producción; macOS/ARM64; revisión docente de respuestas abiertas; eliminación de documentos de biblioteca no expuesta en UI; flujo editorial extremo a extremo para esquema 2 requiere validación adicional.
+
+
+## 10. Misión crítica de rendimiento de arranque (2026-11-23, esta sesión)
+
+- **Problema reportado:** ~165 s desde `./codeguard` hasta UI utilizable en Linux AppImage (propietario). No reproducible 1:1 en este entorno.
+- **Instrumentación añadida:** marcas monotónicas en `server_entry.py`, `apps/roadmaps/bootstrap.py`, `electron/main.js`; reportes `startup-perf.json` y `startup-perf-electron.json`; benchmark extendido `scripts/benchmark-startup.py` con modos `--packaged-server` y `--appimage`.
+- **Optimizaciones aplicadas:** caché de migraciones en `/healthz/` (sin omitir comprobación de roadmap), caché de cobertura 60s con invalidación, Waitress 8 hilos configurable, invalidación de caché en servicios editoriales/conocimiento.
+- **Medición servidor empaquetado nuevo (temp profiles):** fresh /healthz 12,446 ms; warm 1,279 ms; historial 1,302 ms; página `/` 277–389 ms. Antes (viejo, ad-hoc): warm ~5,295 ms, fresh ~10,520 ms.
+- **AppImage:** reconstruido; ejecución GUI en este entorno no alcanzó marca `usable` (limitación de entorno). No se declara RESUELTO Y VALIDADO EN APPIMAGE LINUX en este entorno.
+- **Pruebas:** Django 379 OK, `manage.py check` OK, `makemigrations --check --dry-run` OK, Electron 26 OK.
+- **Veredicto arranque:** **PARCIALMENTE RESUELTO**. Mejora sustancial medida en servidor empaquetado e instrumentación completa; falta validación UI-utilizable en AppImage en equipo representativo/propietario.

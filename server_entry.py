@@ -11,8 +11,10 @@ exclusivamente en 127.0.0.1.
 
 from __future__ import annotations
 
+import json
 import os
 import sys
+import time
 import traceback
 
 
@@ -35,21 +37,52 @@ def _initialize_database() -> dict:
     return preparar_perfil_local()
 
 
+def _emit_perf(phase: str, started: float, perf: dict, **extra) -> float:
+    now = time.perf_counter()
+    ms = round((now - started) * 1000, 2)
+    perf[phase] = ms
+    payload = {"phase": phase, "ms": ms, **extra}
+    print(f"[CodeGuard PERF] {json.dumps(payload, ensure_ascii=False)}", flush=True)
+    return now
+
+
+def _write_perf_report(perf: dict) -> None:
+    data_dir = os.environ.get("CODEGUARD_DATA_DIR", "").strip()
+    if not data_dir:
+        return
+    try:
+        path = os.path.join(data_dir, "startup-perf.json")
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(perf, fh, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+
 def main() -> int:
+    t0 = time.perf_counter()
+    perf = {"pid": os.getpid(), "argv": sys.argv[1:]}
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.desktop")
 
     print("[CodeGuard] Iniciando servidor Django empaquetado...", flush=True)
 
     try:
-        import django
+        t = time.perf_counter()
+        import django  # noqa: F401
+        _emit_perf("import_django_ms", t, perf)
         print("[CodeGuard] Django importado correctamente.", flush=True)
     except Exception as exc:
+        perf["error"] = str(exc)
+        _write_perf_report(perf)
         return _die(f"No se pudo importar Django: {exc}", 2)
 
     try:
+        t = time.perf_counter()
         django.setup()
+        _emit_perf("django_setup_ms", t, perf)
         print("[CodeGuard] Django configurado correctamente.", flush=True)
     except Exception as exc:
+        perf["error"] = str(exc)
+        _write_perf_report(perf)
         return _die(f"No se pudo configurar Django: {exc}", 3)
 
     # Restauración solicitada desde Electron con la aplicación detenida. Este
@@ -100,7 +133,14 @@ def main() -> int:
 
     try:
         print("[CodeGuard] Inicializando base de datos y roadmap local...", flush=True)
+        t = time.perf_counter()
         resultado = _initialize_database()
+        _emit_perf(
+            "initialize_profile_ms",
+            t,
+            perf,
+            roadmap_cargado=bool(resultado.get("roadmap_cargado")),
+        )
         print(
             "[CodeGuard] Datos locales preparados correctamente "
             f"(roadmap {'reconstruido' if resultado.get('roadmap_cargado') else 'verificado'}, "
@@ -108,29 +148,53 @@ def main() -> int:
             flush=True,
         )
     except Exception as exc:
+        perf["error"] = str(exc)
+        _write_perf_report(perf)
         return _die(f"No se pudo inicializar el perfil local: {exc}", 7)
 
     port = os.environ.get("CODEGUARD_PORT", "8000").strip() or "8000"
     print(f"[CodeGuard] Puerto: {port}", flush=True)
 
     try:
+        t = time.perf_counter()
         from config.wsgi import application
+        _emit_perf("import_wsgi_ms", t, perf)
         print("[CodeGuard] Aplicación WSGI cargada correctamente.", flush=True)
     except Exception as exc:
+        perf["error"] = str(exc)
+        _write_perf_report(perf)
         return _die(f"No se pudo importar config.wsgi: {exc}", 5)
 
     try:
+        t = time.perf_counter()
         from waitress import serve
+        _emit_perf("import_waitress_ms", t, perf)
         print("[CodeGuard] Waitress importado correctamente.", flush=True)
     except Exception as exc:
+        perf["error"] = str(exc)
+        _write_perf_report(perf)
         return _die(f"No se pudo importar waitress: {exc}", 6)
 
+    perf["ready_to_serve_ms"] = round((time.perf_counter() - t0) * 1000, 2)
+    print(
+        f"[CodeGuard PERF] {json.dumps({'phase': 'ready_to_serve', 'ms': perf['ready_to_serve_ms']}, ensure_ascii=False)}",
+        flush=True,
+    )
+    _write_perf_report(perf)
+
     try:
-        print(f"[CodeGuard] Sirviendo en http://127.0.0.1:{port}/ ...", flush=True)
+        threads = int(os.environ.get("CODEGUARD_WAITRESS_THREADS", "8"))
+        threads = max(4, min(threads, 32))
+        perf["waitress_threads"] = threads
+        _write_perf_report(perf)
+        print(f"[CodeGuard] Sirviendo en http://127.0.0.1:{port}/ (threads={threads}) ...", flush=True)
         serve(
             application,
             host="127.0.0.1",
             port=int(port),
+            threads=threads,
+            url_scheme="http",
+            ident="CodeGuardPro/1.0.0",
         )
     except Exception as exc:
         print(f"[CodeGuard] Error iniciando el servidor Waitress: {exc}", file=sys.stderr, flush=True)

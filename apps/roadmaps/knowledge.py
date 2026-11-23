@@ -149,6 +149,8 @@ def crear_version_contenido_leccion(
             referencia.full_clean()
             referencia.save()
 
+        from .coverage import invalidar_cache_cobertura
+        invalidar_cache_cobertura()
         return version
 
 
@@ -320,6 +322,8 @@ def enviar_version_a_revision(version_id: int, *, actor) -> VersionContenidoLecc
     version.enviada_por = actor
     version.enviada_en = timezone.now()
     version.save(update_fields=["estado", "enviada_por", "enviada_en"])
+    from .coverage import invalidar_cache_cobertura
+    invalidar_cache_cobertura()
     return version
 
 
@@ -337,6 +341,8 @@ def aprobar_version_contenido(version_id: int, *, actor) -> VersionContenidoLecc
     version.revisada_en = timezone.now()
     version.revisada_por = actor
     version.save(update_fields=["estado", "revisada_en", "revisada_por"])
+    from .coverage import invalidar_cache_cobertura
+    invalidar_cache_cobertura()
     return version
 
 
@@ -371,6 +377,8 @@ def publicar_version_contenido(version_id: int, *, actor) -> VersionContenidoLec
         leccion=version.leccion,
         defaults={"version": version},
     )
+    from .coverage import invalidar_cache_cobertura
+    invalidar_cache_cobertura()
     return version
 
 
@@ -396,6 +404,8 @@ def retirar_version_publicada(
     puntero = ContenidoLeccionActivo.objects.filter(version=version).first()
     if puntero:
         puntero.delete()
+    from .coverage import invalidar_cache_cobertura
+    invalidar_cache_cobertura()
     return version
 
 

@@ -120,3 +120,8 @@ documenta aquí.
 7. Definir la infraestructura remota y las claves de firma de producción.
 
 Ninguna de estas decisiones se tomó de forma unilateral.
+
+## Arranque AppImage Linux (2026-11-23)
+
+- El servidor empaquetado mejoró sustancialmente en mediciones de temp profile (warm ~1.28s a `/healthz/`), pero **no existe evidencia de UI utilizable end-to-end en AppImage en este entorno**. La validación final debe hacerse en el equipo del propietario o en un entorno Linux gráfico representativo.
+- La causa original reportada de ~165s puede incluir factores de entorno (GPU/Chromium/FUSE/disco). La instrumentación añadida (`startup-perf-electron.json`, `startup-perf.json`) permite medirlo con precisión.

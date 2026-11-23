@@ -4,9 +4,12 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.roadmaps.models import Etapa, Leccion, Modulo, Roadmap
+from config.health import reset_ready
 
 
 class HealthEndpointTests(TestCase):
+    def setUp(self):
+        reset_ready()
     def _roadmap_operativo(self):
         roadmap = Roadmap.objects.create(
             nombre="ASCENSO de prueba",

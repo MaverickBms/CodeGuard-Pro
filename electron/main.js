@@ -13,6 +13,7 @@ const fs = require('fs');
 const os = require('os');
 const http = require('http');
 const net = require('net');
+const { performance } = require('perf_hooks');
 const { isTrustedIpcSender } = require('./ipc-security');
 const { getChildStartupFailure } = require('./process-health');
 const { resolveBackupPath } = require('./restore-backup');
@@ -39,6 +40,36 @@ let lastBootMessage = '';
 let lastHealth = null;
 let splashReady = false;
 let lastDjangoError = '';
+
+const PERF_T0 = performance.now();
+const startupPerf = {
+  process_start_iso: new Date().toISOString(),
+  marks_ms: {},
+};
+
+function perfMark(name, extra = {}) {
+  const ms = Math.round((performance.now() - PERF_T0) * 100) / 100;
+  startupPerf.marks_ms[name] = ms;
+  Object.assign(startupPerf, extra);
+  console.log(`[Startup] ${name} ${ms}ms`);
+  return ms;
+}
+
+function writeStartupPerf(extra = {}) {
+  try {
+    Object.assign(startupPerf, extra);
+    startupPerf.written_at_iso = new Date().toISOString();
+    const dir = dataDir();
+    fs.writeFileSync(
+      path.join(dir, 'startup-perf-electron.json'),
+      JSON.stringify(startupPerf, null, 2),
+      'utf-8'
+    );
+  } catch (error) {
+    console.warn('[Startup] No se pudo escribir startup-perf-electron.json:', error.message);
+  }
+}
+perfMark('electron_main_loaded');
 
 const DJANGO_HOST = '127.0.0.1';
 const SYNC_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -178,8 +209,14 @@ function waitForServer(url, child, timeoutMs = startupTimeoutMs()) {
             }
           }
           if (response.statusCode !== 200) {
+            if (!startupPerf.marks_ms.healthz_first_response) {
+              perfMark('healthz_first_response', { healthz_first_status: response.statusCode });
+            }
             scheduleRetry();
             return;
+          }
+          if (!startupPerf.marks_ms.healthz_first_200) {
+            perfMark('healthz_first_200');
           }
           const ready = health &&
             health.status === 'ok' &&
@@ -222,8 +259,19 @@ function attachProcessLogs(child) {
   const handleLine = (line) => {
     if (!line) return;
     console.log(`[Django] ${line}`);
+    if (line.startsWith('[CodeGuard PERF] ')) {
+      try {
+        const payload = JSON.parse(line.slice('[CodeGuard PERF] '.length));
+        if (payload && payload.phase) {
+          perfMark(`server_${payload.phase}`, payload);
+        }
+      } catch (_e) {
+        // ignore
+      }
+    }
     const event = parseBootEvent(line);
     if (!event) return;
+    perfMark(`boot_${event.phase}_${event.status}`, event);
     const message = formatBootMessage(event);
     if (message) {
       console.log(`[Startup] ${event.phase}:${event.status} ${message}`);
@@ -260,6 +308,7 @@ function attachProcessLogs(child) {
 async function startDjango() {
   const started = Date.now();
   djangoPort = await getFreePort();
+  perfMark('django_port_allocated', { django_port: djangoPort });
   updateSplash('Iniciando el servidor local…', 'El servidor escuchará solo en 127.0.0.1.');
   const env = {
     ...process.env,
@@ -285,6 +334,7 @@ async function startDjango() {
       );
     }
 
+    perfMark('django_spawn_start', { packaged: true });
     djangoProcess = spawn(serverPath, [], {
       cwd: serverDir,
       env,
@@ -305,6 +355,7 @@ async function startDjango() {
     // En desarrollo se usa el mismo punto de entrada que en el paquete:
     // migraciones pendientes, propietario local y verificación del roadmap.
     // Así un perfil limpio también funciona con `npm start`.
+    perfMark('django_spawn_start', { packaged: false });
     djangoProcess = spawn(
       pythonPath,
       [path.join(projectRoot(), 'server_entry.py')],
@@ -316,10 +367,12 @@ async function startDjango() {
       }
     );
   }
+  perfMark('django_spawned', { django_pid: djangoProcess.pid });
 
   attachProcessLogs(djangoProcess);
 
   await waitForServer(`http://${DJANGO_HOST}:${djangoPort}/healthz/`, djangoProcess);
+  perfMark('healthz_ready');
   console.log(`[Startup] Servidor Django listo en ${Date.now() - started} ms.`);
   return `http://${DJANGO_HOST}:${djangoPort}`;
 }
@@ -750,6 +803,7 @@ function splashHtml() {
 }
 
 function createWindow() {
+  perfMark('window_create_start');
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
@@ -769,18 +823,34 @@ function createWindow() {
       allowRunningInsecureContent: false
     }
   });
+  perfMark('window_created');
 
   splashReady = false;
+  perfMark('splash_load_start');
   mainWindow.loadURL(splashHtml());
   mainWindow.webContents.on('did-finish-load', () => {
     const currentUrl = mainWindow.webContents.getURL();
-    splashReady = currentUrl.startsWith('data:');
-    if (splashReady && lastBootMessage) {
-      updateSplash(lastBootMessage, '');
+    const wasSplash = currentUrl.startsWith('data:');
+    if (wasSplash) {
+      if (!startupPerf.marks_ms.splash_loaded) perfMark('splash_loaded');
+      splashReady = true;
+      if (lastBootMessage) updateSplash(lastBootMessage, '');
+      return;
+    }
+    if (!startupPerf.marks_ms.main_did_finish_load) {
+      perfMark('main_did_finish_load', { main_url: currentUrl });
+      writeStartupPerf({ usable: true });
+    }
+  });
+  mainWindow.webContents.on('dom-ready', () => {
+    const currentUrl = mainWindow.webContents.getURL();
+    if (!currentUrl.startsWith('data:') && !startupPerf.marks_ms.main_dom_ready) {
+      perfMark('main_dom_ready');
     }
   });
 
   mainWindow.once('ready-to-show', () => {
+    perfMark('window_ready_to_show');
     mainWindow.show();
     // Forzar maximizado después de un breve delay para asegurar que se aplique
     setTimeout(() => {
@@ -1020,6 +1090,7 @@ if (!gotLock) {
   });
 
   app.whenReady().then(async () => {
+    perfMark('electron_app_ready');
     startupStartedAt = Date.now();
     if (process.platform === 'win32') {
       app.setAppUserModelId('com.codeguard.pro');
@@ -1032,7 +1103,10 @@ if (!gotLock) {
       if (mainWindow) {
         updateSplash('Cargando la interfaz…', 'Aplicando preferencias del perfil.');
         splashReady = false;
+        perfMark('main_load_start', { main_url: url });
         await mainWindow.loadURL(url);
+        perfMark('main_load_resolved');
+        writeStartupPerf({ usable: true, total_ms: Math.round(performance.now() - PERF_T0) });
       }
       console.log(`[Startup] Aplicación lista en ${Date.now() - startupStartedAt} ms.`);
       scheduleKnowledgeSync();

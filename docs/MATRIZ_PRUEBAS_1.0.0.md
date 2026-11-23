@@ -214,3 +214,19 @@ Se corrigió la colisión de nombres de las copias de reversión al restaurar do
 | CI HEAD base | Runs 45205752117, 45205738457 para `66468a5` | OK | 4/4 jobs success en ambos runs (Django, Electron, PyInstaller, Windows x64) |
 
 **Limitaciones de esta validación:** no se ejecutó navegador automatizado (sin Playwright/Selenium; CDP scripts orientados a Electron empaquetado). No se probó aceptación Windows física. No se ejecutó smoke E2E empaquetado en esta sesión. No se validó flujo de publicación de esquema 2 extremo a extremo con firma.
+
+## Rendimiento de arranque (2026-11-23)
+
+| Caso | Tipo | Resultado | Evidencia |
+|---|---|---|---|
+| `manage.py check` | automatizada | OK | salida local |
+| `makemigrations --check --dry-run` | automatizada | OK | No changes detected |
+| Django suite completa | automatizada | OK (379) | `manage.py test -v 0` |
+| Electron tests | automatizada | OK (26) | `npm run test:electron` |
+| Benchmark Django fuente | automatizada | OK | `scripts/benchmark-startup.py --json` |
+| Benchmark servidor empaquetado fresh | automatizada | OK | 12,446 ms /healthz, 277 ms `/` |
+| Benchmark servidor empaquetado warm | automatizada | OK | 1,279 ms /healthz, 347 ms `/` |
+| Benchmark servidor empaquetado historial | automatizada | OK | 1,302 ms /healthz, 389 ms `/` |
+| Rebuild PyInstaller server | build | OK | `npm run build:server` |
+| Rebuild AppImage Linux | build | OK | `npm run build:linux` |
+| AppImage UI utilizable en este entorno | manual/best-effort | NO CONCLUYENTE | no se obtuvo `startup-perf-electron.json` usable; limitación de entorno |

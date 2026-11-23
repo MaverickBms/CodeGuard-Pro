@@ -143,3 +143,15 @@ cuerpo frente a 1.946 títulos curriculares. La aplicación no oculta esa brecha
 - No hay revisión docente de respuestas abiertas.
 - Sin validación visual automatizada por navegador en esta sesión.
 - Aceptación Windows física, firma de código, sincronización remota de producción, macOS/ARM64 fuera de alcance.
+
+## Arranque / rendimiento (2026-11-23)
+
+| Área | Estado | Nota |
+|---|---|---|
+| Instrumentación arranque server/bootstrap/Electron | OK | `startup-perf.json`, `startup-perf-electron.json`, eventos BOOT/PERF |
+| `/healthz/` caché migraciones | OK | Solo cachea migraciones; sigue verificando roadmap |
+| Cobertura panel con caché | OK | TTL 60s, invalidación en mutaciones editoriales/conocimiento |
+| Waitress hilos arranque local | OK | 8 hilos por defecto, configurable `CODEGUARD_WAITRESS_THREADS` |
+| Servidor empaquetado warm | OK medido | ~1.28s a /healthz en temp profile |
+| Servidor empaquetado fresh | OK medido | ~12.45s a /healthz en temp profile |
+| AppImage UI utilizable validado | PENDIENTE VALIDACIÓN EXTERNA | Rebuild OK; ejecución GUI no concluyente en este entorno |
