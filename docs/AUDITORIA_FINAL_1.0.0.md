@@ -202,6 +202,36 @@ respaldo. Con autenticación activa conserva el comportamiento anterior. Se
 añadieron dos pruebas para sesión heredada con propietario y para perfil
 ambiguo. Su ejecución queda pendiente de la CI del HEAD actual.
 
+### A-12 — Acceso directo a recursos de etapas bloqueadas (Alta, corregido en esta revisión)
+
+**Problema.** La navegación del roadmap mostraba correctamente las etapas
+bloqueadas y el envío de ejercicios/evaluaciones validaba prerrequisitos, pero
+las vistas de detalle de lección y algunos endpoints del tutor confiaban en que
+el estudiante llegaría desde la navegación. Conociendo un ID, era posible abrir
+directamente una lección o solicitar tutoría de un ejercicio de una etapa aún
+bloqueada. El detalle del quiz tampoco limitaba su consulta al roadmap activo.
+
+**Corrección.**
+
+- La vista de lección comprueba los prerrequisitos antes de iniciar o registrar
+  progreso; si está bloqueada, redirige a la etapa y muestra un aviso.
+- La vista del quiz limita la consulta al roadmap activo y bloquea el acceso
+  directo a evaluaciones de etapas bloqueadas. Resultados e historial también
+  quedan limitados al roadmap activo.
+- Iniciar sesión de tutoría, solicitar pistas y analizar intentos comprueba que
+  el ejercicio pertenezca al roadmap activo y que la etapa esté desbloqueada.
+- Se añadieron tres pruebas de regresión para el acceso directo a lecciones,
+  quizzes y tutoría.
+
+### A-13 — Respuesta vacía del modelo de tutoría (Media, corregido en esta revisión)
+
+**Problema.** Si Ollama respondía correctamente a nivel HTTP pero devolvía un
+contenido vacío, el tutor podía guardar y mostrar una pista en blanco.
+
+**Corrección.** Las respuestas vacías o compuestas solo por espacios activan el
+mismo fallback local determinista que se usa cuando Ollama no está disponible.
+Se añadió una prueba de regresión.
+
 ## 4. Funcionalidades verificadas
 
 | Área | Verificación |
@@ -242,7 +272,7 @@ ambiguo. Su ejecución queda pendiente de la CI del HEAD actual.
 | Respuestas abiertas pendientes para siempre | Medio funcional | Documentado; no se autoaprueban |
 | Windows no probado en hardware físico | Medio de distribución | CI 4/4; aceptación física pendiente |
 | Sincronización remota no operativa | Bajo (offline-first) | Falla cerrada; no hay conexiones |
-| Duplicado de PDF en concurrencia | Bajo | La comprobación secuencial existe; no hay restricción única en SQLite |
+| Duplicado de PDF en concurrencia | Corregido en esta revisión | Restricción única condicional por SHA-256 y migración conservadora ante duplicados históricos |
 | AppImage actual no probado con montaje FUSE directo | Bajo de plataforma | Se ejecutó con extracción; se documenta el fallback |
 
 ## 7. Plan de ejecución aplicado
