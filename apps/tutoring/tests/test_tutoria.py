@@ -13,6 +13,7 @@ from apps.roadmaps.models import (
     Modulo,
     Progreso,
     Roadmap,
+    Prerrequisito,
 )
 from apps.roadmaps.attempts import registrar_intento_ejercicio
 from apps.tutoring import services
@@ -96,6 +97,37 @@ class SesionTutoriaViewTests(TestCase):
         sesion = SesionTutoria.objects.get(pk=datos["sesion_id"])
         self.assertEqual(sesion.usuario_id, self.usuario.id)
         self.assertEqual(sesion.ejercicio_id, self.ejercicio.id)
+
+    def test_tutor_no_inicia_sesion_ni_da_pistas_en_etapa_bloqueada(self):
+        etapa_origen = self.ejercicio.leccion.modulo.etapa
+        etapa_bloqueada = Etapa.objects.create(
+            roadmap=etapa_origen.roadmap,
+            numero=1,
+            titulo="Etapa bloqueada",
+        )
+        Prerrequisito.objects.create(
+            etapa=etapa_bloqueada,
+            etapa_requerida=etapa_origen,
+            justificacion="Completa la etapa anterior.",
+        )
+        modulo = Modulo.objects.create(
+            etapa=etapa_bloqueada, numero="1.1", titulo="Módulo bloqueado"
+        )
+        leccion = Leccion.objects.create(modulo=modulo, titulo="Lección bloqueada")
+        ejercicio = EjercicioLeccion.objects.create(
+            leccion=leccion,
+            titulo="Ejercicio bloqueado",
+            enunciado="No debe recibir tutoría antes de desbloquearse.",
+            publicado=True,
+        )
+
+        iniciar = self.client.post(reverse("tutoring:iniciar", args=[ejercicio.id]))
+        pista = self.client.post(reverse("tutoring:pista", args=[ejercicio.id]))
+
+        self.assertEqual(iniciar.status_code, 403)
+        self.assertEqual(pista.status_code, 403)
+        self.assertFalse(SesionTutoria.objects.filter(ejercicio=ejercicio).exists())
+        self.assertFalse(PistaTutoria.objects.filter(sesion__ejercicio=ejercicio).exists())
 
     def test_iniciar_con_ejercicio_inexistente(self):
         respuesta = self.client.post(reverse("tutoring:iniciar", args=[99999]))
