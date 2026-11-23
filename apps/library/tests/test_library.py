@@ -197,6 +197,11 @@ class ServicioArchivoTests(BibliotecaBaseTests):
         self.assertEqual(respuesta.status_code, 416)
         self.assertEqual(respuesta["Content-Range"], f"bytes */{len(PDF_MINIMO)}")
 
+    def test_rango_con_entero_excesivamente_largo_devuelve_416(self):
+        respuesta = self.client.get(self.url, HTTP_RANGE="bytes=" + ("9" * 5000) + "-")
+        self.assertEqual(respuesta.status_code, 416)
+        self.assertEqual(respuesta["Content-Range"], f"bytes */{len(PDF_MINIMO)}")
+
     def test_archivo_ausente_devuelve_404(self):
         Path(self.documento.archivo.path).unlink()
         respuesta = self.client.get(self.url)
