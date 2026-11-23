@@ -97,7 +97,6 @@ def recompensar_evento_academico(usuario, evento: str, objeto_id: int, concepto:
     """
     if usuario is None or not getattr(usuario, "is_authenticated", False):
         return None
-    actualizar_racha(usuario)
     referencia = f"evento:{evento}:{objeto_id}:usuario:{usuario.id}"
     tx = acreditar_monedas(usuario, int(monto), concepto, referencia=referencia)
     # Repetir el mismo evento no debe volver a incrementar misiones. La marca
@@ -105,6 +104,7 @@ def recompensar_evento_academico(usuario, evento: str, objeto_id: int, concepto:
     # lo que también cubre llamadas concurrentes que compiten por la referencia.
     if not getattr(tx, "_creada_ahora", True):
         return tx
+    actualizar_racha(usuario)
     try:
         evaluar_misiones_academicas(usuario, evento)
     except Exception:
