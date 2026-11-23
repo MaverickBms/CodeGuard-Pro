@@ -321,3 +321,12 @@ alcance local, pero la aceptación Windows física, la revisión pedagógica de
 videos, la ampliación del contenido y la infraestructura remota siguen fuera de
 lo demostrado en esta iteración. El veredicto completo y la evidencia están en
 [`INFORME_FINAL_1.0.0.md`](INFORME_FINAL_1.0.0.md).
+
+
+### A-16 — Referencias de transacciones de monedas sin unicidad en base de datos (Alta, corregido; CI pendiente)
+
+**Problema.** La idempotencia de `acreditar_monedas` dependía de consultar la referencia antes de insertar. El bloqueo del perfil serializa las llamadas por usuario en bases de datos que implementan `SELECT FOR UPDATE`, pero la integridad no quedaba protegida frente a escrituras directas, errores futuros del servicio o motores donde el bloqueo de filas no ofrece la misma garantía.
+
+**Corrección.** Se añadió una restricción única condicional por usuario, tipo y referencia no vacía. Las transacciones sin referencia siguen permitidas y las referencias de crédito y débito pertenecen a espacios separados. La migración `gamification.0004_unique_transaction_reference` inspecciona primero los datos históricos y aborta con un mensaje diagnóstico si encuentra duplicados; no elimina ni modifica transacciones. Se añadió una prueba que intenta insertar una referencia repetida directamente en la base de datos.
+
+**Validación.** La nueva prueba y la migración deben quedar confirmadas por CI del HEAD `59ff81a`; no se atribuye el resultado del run anterior a estos cambios.
