@@ -441,9 +441,36 @@ class Progreso(models.Model):
         ordering = ["-fecha_actualizacion"]
         constraints = [
             models.UniqueConstraint(
-                fields=["usuario", "etapa", "modulo", "leccion", "actividad"],
-                name="progreso_unico_por_objetivo",
-            )
+                fields=["usuario", "etapa"],
+                condition=models.Q(
+                    modulo__isnull=True,
+                    leccion__isnull=True,
+                    actividad__isnull=True,
+                ),
+                name="progreso_unico_etapa",
+            ),
+            models.UniqueConstraint(
+                fields=["usuario", "modulo"],
+                condition=models.Q(
+                    modulo__isnull=False,
+                    leccion__isnull=True,
+                    actividad__isnull=True,
+                ),
+                name="progreso_unico_modulo",
+            ),
+            models.UniqueConstraint(
+                fields=["usuario", "leccion"],
+                condition=models.Q(
+                    leccion__isnull=False,
+                    actividad__isnull=True,
+                ),
+                name="progreso_unico_leccion",
+            ),
+            models.UniqueConstraint(
+                fields=["usuario", "actividad"],
+                condition=models.Q(actividad__isnull=False),
+                name="progreso_unico_actividad",
+            ),
         ]
 
     def __str__(self) -> str:
