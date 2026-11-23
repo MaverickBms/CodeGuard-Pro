@@ -462,7 +462,7 @@ def obtener_contenido_activo(
           conservar como evidencia en IntentoEjercicio.snapshot_ejercicio)
         - version: VersionContenidoLeccion o None
         - paquete: PaqueteConocimientoInstalado o None
-        - videos: recursos audiovisuales aprobados y disponibles
+        - videos: enlaces técnicamente verificados y disponibles; los rechazados pedagógicamente se excluyen, los pendientes se identifican como no validados
         - es_borrador: True si el contenido no está publicado
         - estado_editorial: pendiente/en_desarrollo/borrador/revision/aprobada/publicada
     """
@@ -476,7 +476,9 @@ def obtener_contenido_activo(
     ejercicios_modelo = list(leccion.ejercicios.filter(publicado=True))
     videos = list(
         leccion.recursos_audiovisuales.filter(
-            estado_revision="aprobado", disponible=True
+            estado_revision="aprobado",
+            disponible=True,
+            estado_pedagogico__in=["pendiente", "aprobado"],
         ).order_by("orden", "id")
     )
 
