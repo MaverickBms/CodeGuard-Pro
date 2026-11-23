@@ -213,15 +213,16 @@ bloqueada. El detalle del quiz tampoco limitaba su consulta al roadmap activo.
 
 **Corrección.**
 
-- La vista de lección comprueba los prerrequisitos antes de iniciar o registrar
-  progreso; si está bloqueada, redirige a la etapa y muestra un aviso.
+- La lectura de lecciones sigue disponible en etapas bloqueadas, como indica
+  el diseño del roadmap; no se registra progreso y se ocultan entregas/tutoría
+  hasta cumplir los prerrequisitos.
 - La vista del quiz limita la consulta al roadmap activo y bloquea el acceso
   directo a evaluaciones de etapas bloqueadas. Resultados e historial también
   quedan limitados al roadmap activo.
 - Iniciar sesión de tutoría, solicitar pistas y analizar intentos comprueba que
   el ejercicio pertenezca al roadmap activo y que la etapa esté desbloqueada.
 - Se añadieron tres pruebas de regresión para el acceso directo a lecciones,
-  quizzes y tutoría.
+  quizzes y tutoría, incluyendo lectura de solo consulta sin progreso.
 
 ### A-13 — Respuesta vacía del modelo de tutoría (Media, corregido en esta revisión)
 
