@@ -11,11 +11,12 @@
 
 ### Revisión funcional incremental (HEAD de esta rama)
 
-Se añadieron nueve pruebas de regresión desde el commit base de esta revisión:
+Se añadieron once pruebas de regresión desde el commit base de esta revisión:
 dos de biblioteca PDF, una de curación de videos, dos de identidad local, tres
-de bloqueo de acceso directo (lección, quiz y tutoría) y una de respuesta vacía
-del tutor. La ejecución correspondiente se identifica por su run de CI en el
-PR #17; no se atribuye el resultado del commit anterior a estas pruebas.
+de bloqueo de acceso directo (lección, quiz y tutoría), dos de fallback de
+respuestas vacías del tutor y una de unicidad de progreso por nivel. La ejecución
+correspondiente se identifica por su run de CI en el PR #17; no se atribuye el
+resultado del commit anterior a estas pruebas.
 
 ## 1. Backend Django
 
