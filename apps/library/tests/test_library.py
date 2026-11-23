@@ -206,3 +206,28 @@ class ServicioArchivoTests(BibliotecaBaseTests):
         respuesta = self.client.get(reverse("library:lista"))
         self.assertEqual(respuesta["X-Frame-Options"], "DENY")
         self.assertIn("frame-ancestors 'none'", respuesta["Content-Security-Policy"])
+
+
+class IntegridadConcurrenteBibliotecaTests(BibliotecaBaseTests):
+    def test_base_de_datos_impide_hashes_duplicados_incluso_si_se_omite_la_vista(self):
+        self._subir(titulo="Original")
+        original = DocumentoBiblioteca.objects.get()
+        from django.db import IntegrityError
+
+        with self.assertRaises(IntegrityError):
+            DocumentoBiblioteca.objects.create(
+                titulo="Duplicado concurrente",
+                archivo=original.archivo.name,
+                nombre_original="duplicado.pdf",
+                sha256=original.sha256,
+                tamano_bytes=original.tamano_bytes,
+            )
+
+        self.assertEqual(
+            DocumentoBiblioteca.objects.filter(sha256=original.sha256).count(), 1
+        )
+
+    def test_documentos_legacy_sin_hash_no_colisionan(self):
+        DocumentoBiblioteca.objects.create(titulo="Sin hash A", sha256="")
+        DocumentoBiblioteca.objects.create(titulo="Sin hash B", sha256="")
+        self.assertEqual(DocumentoBiblioteca.objects.filter(sha256="").count(), 2)
