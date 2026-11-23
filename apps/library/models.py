@@ -85,6 +85,13 @@ class DocumentoBiblioteca(models.Model):
             models.Index(fields=["estado", "categoria"]),
             models.Index(fields=["sha256"]),
         ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["sha256"],
+                condition=models.Q(sha256__gt=""),
+                name="library_unique_document_sha256",
+            ),
+        ]
 
     def __str__(self) -> str:
         return self.titulo
