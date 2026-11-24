@@ -143,7 +143,6 @@ Comandos de gestión disponibles:
 | `registrar_fuente_conocimiento` | Registra una fuente documental para el flujo editorial |
 | `revisar_licencia_fuente` | Registra una decisión editorial auditada sobre la licencia de una fuente |
 | `validar_paquete_contenido` | Valida un lote JSON académico sin escribir en la base de datos |
-
 | `publicar_paquete_conocimiento` | Genera localmente un paquete reproducible, manifiesto y firma Ed25519 desde contenido editorial publicado |
 | `sincronizar_conocimiento` | Comprueba y descarga actualizaciones firmadas desde un endpoint HTTPS configurado |
 | `crear_backup --output RUTA.zip` | Crea una copia ZIP verificada de la base local y `media/` |
