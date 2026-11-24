@@ -217,3 +217,10 @@ La revisión se mantuvo dentro de los encabezados de las lecciones oficiales. Se
 Se añadieron claves modelo para los siete temas de investigación técnica: documentación y versiones; diagnóstico de errores; evaluación de respuestas comunitarias; trazabilidad issue/PR/commit/release; licencia y adopción de repositorios; calibración de afirmaciones; y reporte reproducible. Los ejemplos están marcados como simulados. Se creó `etapa-00/revision-tecnica-pedagogica-modulo-0.2.md` con matriz por tema, riesgos y criterios de salida.
 
 **Estado:** 7/7 temas con talleres; 7/7 con claves o retroalimentación modelo añadidas; 0 revisiones independientes; 0 laboratorios ejecutados; 0 videos verificados; 0 aprobaciones. No se ejecutaron comandos ni código ni se clonaron repositorios.
+
+
+### 11. Revisiones de escritorio de los módulos 0.3 y 0.4
+
+Se crearon informes de revisión de escritorio para los módulos de herramientas y depuración. El primero inspecciona los ocho temas, con énfasis en portabilidad de comandos por shell, operaciones Git potencialmente destructivas, privacidad en DevTools y conservación de fuentes editables de diagramas. El segundo inspecciona los siete temas y la lógica del laboratorio de factura: el contrato y los tres resultados esperados son aritméticamente coherentes por revisión estática, pero ni el código ni las pruebas se ejecutaron.
+
+**Estado común de módulos 0.1–0.4:** existen revisiones de escritorio documentales para los cuatro módulos; ninguna equivale a revisión independiente ni validación práctica. Se mantienen 0 laboratorios ejecutados, 0 videos verificados, 0 módulos aprobados y 0 módulos publicados. Los informes están enlazados desde el README académico.
