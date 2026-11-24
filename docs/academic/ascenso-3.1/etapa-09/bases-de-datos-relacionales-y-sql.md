@@ -52,6 +52,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué diferencia existe entre los datos almacenados y el software que los administra?
 
+**Laboratorio de profundización — Inventario de datos de un dominio.**
+
+1. Toma el caso de una biblioteca. 2. Identifica entidades, datos maestros, transacciones y catálogos. 3. Define quién crea, consulta y modifica cada dato. 4. Propón reglas de retención y respaldo.
+
+**Evidencia esperada.** El inventario separa hechos, catálogos y transacciones y relaciona cada dato con una necesidad del negocio.
+
+**Seguridad y límites.** Usar datos ficticios; no almacenar información personal real en el ejercicio.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.1.2 — DBMS (Sistema Gestor de Bases de Datos)
 
 **Propósito y modelo.** Un DBMS es el software que define, almacena, consulta, protege y administra bases de datos. Gestiona concurrencia, transacciones, permisos, recuperación, índices y metadatos. MySQL y PostgreSQL son DBMS relacionales; no son el mismo producto ni comparten todas las funciones y sintaxis.
@@ -67,6 +77,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Confundir el motor con una interfaz gráfica o suponer que elegir un DBMS resuelve automáticamente el diseño del esquema.
 
 **Comprobación.** ¿Qué responsabilidad del DBMS protege la consistencia cuando dos usuarios modifican datos al mismo tiempo?
+
+**Laboratorio de profundización — Matriz de responsabilidades de un DBMS.**
+
+1. Compara MySQL y PostgreSQL en transacciones, concurrencia, usuarios, respaldo e índices. 2. Identifica qué funciones resuelve el DBMS y cuáles corresponden a la aplicación. 3. Elabora criterios de selección para un sistema de ventas.
+
+**Evidencia esperada.** La matriz distingue motor, base de datos, cliente y aplicación y utiliza criterios verificables.
+
+**Seguridad y límites.** No asumir equivalencia completa entre motores ni utilizar versiones sin soporte en un despliegue.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
 
 #### 9.1.3 — Servidor de bases de datos
 
@@ -84,6 +104,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué el backend suele ser el único componente autorizado para conectarse al DBMS?
 
+**Laboratorio de profundización — Arquitectura de conexión restringida.**
+
+1. Dibuja navegador, backend, servidor DBMS y almacenamiento. 2. Define qué componente puede abrir conexión al DBMS. 3. Identifica interfaz de escucha, firewall y autenticación. 4. Explica por qué el puerto no debe exponerse al navegador.
+
+**Evidencia esperada.** La arquitectura limita el acceso al backend y diferencia proceso servidor, instancia y base de datos.
+
+**Seguridad y límites.** No abrir puertos ni exponer servicios de bases de datos reales.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.1.4 — Cliente de bases de datos
 
 **Propósito y modelo.** Un cliente de base de datos es una herramienta o biblioteca que establece conexiones y envía consultas al servidor. Puede ser una interfaz gráfica, CLI o driver embebido en una aplicación. El cliente no sustituye al DBMS ni debe almacenar credenciales de producción de forma insegura.
@@ -99,6 +129,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Confundir Workbench con el motor MySQL o incrustar credenciales en código fuente.
 
 **Comprobación.** ¿Qué componente traduce las llamadas de una aplicación al protocolo de conexión del DBMS?
+
+**Laboratorio de profundización — Comparación de clientes y drivers.**
+
+1. Compara una GUI, una CLI y un driver de aplicación. 2. Registra cómo autentican, ejecutan consultas y manejan resultados. 3. Diseña conexión con credenciales de laboratorio mediante variables o almacén seguro. 4. Explica qué nunca debe quedar en el repositorio.
+
+**Evidencia esperada.** La comparación diferencia cliente y servidor y describe manejo seguro de credenciales.
+
+**Seguridad y límites.** No almacenar contraseñas en texto plano ni incluirlas en capturas o commits.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
 
 #### 9.1.5 — Bases relacionales
 
@@ -116,6 +156,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué una relación muchos-a-muchos suele representarse mediante una tabla asociativa?
 
+**Laboratorio de profundización — Diseño de relaciones para biblioteca.**
+
+1. Diseña Libro, Usuario y Préstamo. 2. Define claves primarias y foráneas. 3. Identifica atributos atómicos y reglas de integridad. 4. Explica cómo se representa una relación muchos-a-muchos.
+
+**Evidencia esperada.** El esquema relaciona entidades mediante claves y evita duplicar atributos de otra entidad sin justificación.
+
+**Seguridad y límites.** Usar datos ficticios y no confundir modelo relacional con una hoja de cálculo.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.1.6 — Tablas
 
 **Propósito y modelo.** Una tabla representa una relación lógica con columnas definidas y filas de datos. El esquema establece nombres, tipos, restricciones y relaciones. Las tablas no garantizan por sí mismas un orden físico o lógico de las filas; el orden de consulta requiere ORDER BY.
@@ -131,6 +181,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Utilizar posiciones de columnas como contrato o asumir que la tabla conserva el orden de inserción.
 
 **Comprobación.** ¿Qué garantía aporta ORDER BY que la estructura física de la tabla no aporta?
+
+**Laboratorio de profundización — Diseño de estructura tabular.**
+
+1. Define columnas, tipos y restricciones para una tabla Producto. 2. Distingue nombre de columna, valor y metadato. 3. Identifica clave primaria y columnas que no deberían admitir NULL. 4. Evalúa una fila de ejemplo.
+
+**Evidencia esperada.** La tabla tiene propósito único, atributos definidos y restricciones coherentes con el dominio.
+
+**Seguridad y límites.** No diseñar una única tabla universal que mezcle entidades no relacionadas.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
 
 #### 9.1.7 — Filas
 
@@ -148,6 +208,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué una clave primaria es más estable que utilizar el nombre de una persona como identificador?
 
+**Laboratorio de profundización — Integridad de registros.**
+
+1. Crea tres registros ficticios de producto. 2. Comprueba unicidad de clave y obligatoriedad de campos. 3. Explica diferencia entre fila duplicada y dos entidades distintas con atributos similares. 4. Define qué identifica un registro de manera estable.
+
+**Evidencia esperada.** Cada fila representa una instancia y posee una identidad inequívoca dentro de la tabla.
+
+**Seguridad y límites.** No usar datos personales reales ni asumir que el número de fila es una identidad estable.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.1.8 — Columnas
 
 **Propósito y modelo.** Una columna representa un atributo con nombre, tipo y restricciones. La selección de tipo debe corresponder al dominio y precisión requerida: enteros, decimales, fechas, texto o tipos específicos del motor. Evitar tipos ambiguos facilita validación y consulta.
@@ -164,6 +234,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué conviene elegir DECIMAL para valores monetarios que requieren precisión exacta?
 
+**Laboratorio de profundización — Selección de atributos y tipos.**
+
+1. Define atributos para producto, precio, fecha y estado. 2. Selecciona tipos de datos apropiados. 3. Explica precisión decimal para dinero y longitud de cadenas. 4. Identifica atributos derivados que quizá no deban almacenarse.
+
+**Evidencia esperada.** Cada columna tiene significado, tipo y nulabilidad justificados.
+
+**Seguridad y límites.** Evitar usar FLOAT para importes monetarios cuando se requiere precisión decimal exacta.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.1.9 — Esquemas
 
 **Propósito y modelo.** Un esquema agrupa objetos de base de datos como tablas, vistas, secuencias y funciones y proporciona un espacio de nombres y límites administrativos. La semántica exacta varía entre DBMS: PostgreSQL utiliza esquemas como contenedores dentro de una base; MySQL usa database y schema como sinónimos en muchos contextos.
@@ -179,6 +259,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Suponer que schema significa exactamente lo mismo en todos los motores o confiar en el nombre del esquema como único control de seguridad.
 
 **Comprobación.** ¿Qué ventaja aporta calificar una tabla con el nombre de su esquema?
+
+**Laboratorio de profundización — Organización y namespaces.**
+
+1. Dibuja dos esquemas para separar ventas y auditoría. 2. Define propietarios y permisos por esquema. 3. Explica diferencia entre esquema y base de datos según motor. 4. Diseña nombres consistentes.
+
+**Evidencia esperada.** La propuesta explica el alcance del esquema y no asume que todos los motores implementan idéntica jerarquía.
+
+**Seguridad y límites.** No conceder permisos globales cuando basta acceso a un esquema.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
 
 #### 9.1.10 — Tipos de datos
 
@@ -198,6 +288,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 ### 9.2 — Modelado
 
+**Laboratorio de profundización — Catálogo de tipos y validación.**
+
+1. Selecciona tipos para identificadores, texto, fecha, importe, booleano y JSON. 2. Compara precisión y rango. 3. Define restricciones CHECK y NOT NULL cuando sean apropiadas. 4. Explica conversiones implícitas peligrosas.
+
+**Evidencia esperada.** El catálogo evita pérdida de precisión y valida valores según reglas de negocio.
+
+**Seguridad y límites.** No guardar fechas como texto libre ni importes como punto flotante sin analizar precisión.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.2.1 — Entidades
 
 **Propósito y modelo.** Una entidad representa un objeto o concepto del dominio sobre el que se necesita almacenar información. Puede ser tangible, como Producto, o conceptual, como Pedido o Suscripción. Una entidad debe tener identidad y atributos definidos; no todo sustantivo del requisito se convierte automáticamente en tabla.
@@ -213,6 +313,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Crear una tabla por cada palabra del requisito o mezclar entidad y atributo.
 
 **Comprobación.** ¿Qué diferencia existe entre Libro y Ejemplar en un sistema bibliotecario?
+
+**Laboratorio de profundización — Identificación de entidades del dominio.**
+
+1. Analiza el proceso de ventas. 2. Separa Cliente, Producto, Pedido, LíneaPedido y Pago. 3. Distingue entidades de atributos y eventos. 4. Define identidad y ciclo de vida de cada entidad.
+
+**Evidencia esperada.** Cada entidad representa un concepto persistente con identidad y responsabilidad claras.
+
+**Seguridad y límites.** No convertir cada sustantivo del texto en una tabla sin validar significado y reglas.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
 
 #### 9.2.2 — Atributos
 
@@ -230,6 +340,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué problema de consistencia puede aparecer si se almacena un valor derivado y no se actualiza cuando cambia su origen?
 
+**Laboratorio de profundización — Diccionario de atributos.**
+
+1. Para Cliente y Producto define atributos, descripción, tipo, nulabilidad y ejemplo. 2. Distingue atributo simple, compuesto, multivaluado y derivado. 3. Identifica datos sensibles. 4. Documenta restricciones.
+
+**Evidencia esperada.** El diccionario es consistente y evita duplicación o ambigüedad semántica.
+
+**Seguridad y límites.** Minimizar datos personales y definir propósito y retención.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.2.3 — Relaciones
 
 **Propósito y modelo.** Una relación expresa asociación entre entidades. En el modelo relacional se implementa normalmente mediante claves foráneas, tablas asociativas o estructuras específicas. Debe describirse con verbo y reglas del negocio: Cliente realiza Pedido, Pedido contiene Producto.
@@ -245,6 +365,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Crear relaciones solo por similitud de nombres o almacenar el nombre del relacionado en lugar de su clave estable.
 
 **Comprobación.** ¿Qué ventaja aporta una clave foránea frente a copiar el nombre del cliente en cada pedido?
+
+**Laboratorio de profundización — Mapa de relaciones entre entidades.**
+
+1. Relaciona Cliente con Pedido, Pedido con LíneaPedido y Producto con LíneaPedido. 2. Define sentido de cada relación. 3. Identifica opcionalidad. 4. Traduce el modelo a claves foráneas conceptuales.
+
+**Evidencia esperada.** Las relaciones reflejan reglas del negocio y evitan vínculos implícitos o ambiguos.
+
+**Seguridad y límites.** No asumir que una relación existe solo porque dos tablas comparten nombres de columnas.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
 
 #### 9.2.4 — Cardinalidad
 
@@ -262,6 +392,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué diferencia hay entre una relación 1:N y una N:M?
 
+**Laboratorio de profundización — Casos de cardinalidad y opcionalidad.**
+
+1. Modela uno-a-uno, uno-a-muchos y muchos-a-muchos. 2. Para cada relación define mínimo y máximo en ambos extremos. 3. Justifica con reglas del negocio. 4. Explica qué cardinalidad requiere una tabla asociativa.
+
+**Evidencia esperada.** Cada extremo de relación tiene multiplicidad y opcionalidad documentadas.
+
+**Seguridad y límites.** No deducir cardinalidad solo a partir de ejemplos de datos pequeños.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.2.5 — Claves primarias
 
 **Propósito y modelo.** Una clave primaria identifica de forma única cada fila y no admite NULL. Puede ser natural o sustituta; debe ser estable, mínima y no depender de atributos que cambian con frecuencia. En SQL la restricción PRIMARY KEY impone unicidad y no nulidad.
@@ -277,6 +417,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Utilizar correo electrónico como clave sin analizar cambios o creer que una PK debe ser siempre un entero autoincremental.
 
 **Comprobación.** ¿Qué características hacen que una clave sea adecuada como identificador primario?
+
+**Laboratorio de profundización — Selección de clave primaria.**
+
+1. Compara clave natural y sustituta para Cliente. 2. Define unicidad, no nulidad y estabilidad. 3. Explica claves compuestas y cuándo evitar exceso de columnas. 4. Diseña una restricción primaria.
+
+**Evidencia esperada.** La clave identifica de forma estable cada fila y no depende de atributos volátiles sin justificación.
+
+**Seguridad y límites.** No usar email o teléfono como clave primaria sin analizar cambios, privacidad y unicidad.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
 
 #### 9.2.6 — Claves foráneas
 
@@ -294,6 +444,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué anomalía evita una clave foránea cuando se inserta una fila hija?
 
+**Laboratorio de profundización — Integridad referencial entre tablas.**
+
+1. Define Pedido con FK hacia Cliente. 2. Simula inserción válida y referencia inexistente. 3. Compara RESTRICT, CASCADE y SET NULL. 4. Decide qué política corresponde al borrado de un cliente con pedidos históricos.
+
+**Evidencia esperada.** La relación impide referencias huérfanas y la política de borrado responde a reglas de negocio.
+
+**Seguridad y límites.** No usar ON DELETE CASCADE por defecto en datos financieros o históricos.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.2.7 — Restricciones
 
 **Propósito y modelo.** Las restricciones expresan reglas que el DBMS debe hacer cumplir: NOT NULL, UNIQUE, CHECK, PRIMARY KEY y FOREIGN KEY. Son una defensa de integridad incluso cuando varias aplicaciones escriben datos. Las reglas complejas pueden requerir triggers o lógica transaccional, pero no deben reemplazar restricciones declarativas disponibles.
@@ -309,6 +469,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Confiar solo en validación frontend o asumir que CHECK trata NULL como falso en todos los casos.
 
 **Comprobación.** ¿Por qué una regla de integridad debe imponerse también en la base de datos y no solo en la interfaz?
+
+**Laboratorio de profundización — Reglas de integridad de dominio.**
+
+1. Define NOT NULL, UNIQUE, CHECK y DEFAULT para Producto. 2. Diseña ejemplos que deben aceptarse y rechazarse. 3. Explica diferencia entre validación de aplicación y restricción del DBMS. 4. Documenta mensajes de error esperados.
+
+**Evidencia esperada.** Las restricciones protegen invariantes aun cuando distintos clientes escriban en la base.
+
+**Seguridad y límites.** No depender exclusivamente de validación en interfaz para proteger integridad.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
 
 #### 9.2.8 — Diagramas entidad-relación
 
@@ -326,6 +496,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué información comunica la cardinalidad que no se deduce solo del nombre de la relación?
 
+**Laboratorio de profundización — Construcción y lectura de un DER.**
+
+1. Modela ventas con Cliente, Pedido, Producto y LíneaPedido. 2. Añade cardinalidades y opcionalidad. 3. Marca claves y atributos. 4. Revisa el diagrama con dos escenarios de negocio.
+
+**Evidencia esperada.** El DER puede transformarse a tablas sin perder relaciones ni reglas principales.
+
+**Seguridad y límites.** No omitir relaciones de detalle ni representar muchos-a-muchos sin resolver.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.2.9 — Modelo conceptual
 
 **Propósito y modelo.** El modelo conceptual describe el dominio desde la perspectiva del negocio sin comprometerse con un DBMS o tipos físicos. Define conceptos, reglas, entidades y asociaciones. Debe poder validarse con usuarios y responsables del proceso.
@@ -342,6 +522,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué el modelo conceptual debe ser comprensible para personas que no conocen SQL?
 
+**Laboratorio de profundización — Modelo independiente del motor.**
+
+1. Describe entidades, relaciones y reglas sin elegir MySQL o PostgreSQL. 2. Valida el modelo con escenarios de venta, devolución y pago parcial. 3. Identifica conceptos ambiguos. 4. Registra decisiones y preguntas abiertas.
+
+**Evidencia esperada.** El modelo representa el dominio y puede revisarse con usuarios no técnicos.
+
+**Seguridad y límites.** No incluir decisiones físicas como índices o tipos específicos antes de definir el dominio.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
+
 #### 9.2.10 — Modelo lógico
 
 **Propósito y modelo.** El modelo lógico transforma conceptos en estructuras de datos independientes del almacenamiento físico concreto. Define tablas o relaciones, atributos, claves, restricciones y relaciones normalizadas. Debe resolver N:M y precisar dominios antes de elegir índices y parámetros del motor.
@@ -357,6 +547,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Saltar directamente a CREATE TABLE sin validar relaciones o copiar datos derivados en múltiples tablas sin estrategia.
 
 **Comprobación.** ¿Qué decisiones pertenecen al modelo lógico y cuáles se reservan para el modelo físico?
+
+**Laboratorio de profundización — Transformación a relaciones.**
+
+1. Convierte el DER en tablas, atributos, claves y restricciones. 2. Resuelve relaciones muchos-a-muchos. 3. Revisa dependencias funcionales iniciales. 4. Comprueba que el modelo cubra escenarios del negocio.
+
+**Evidencia esperada.** El modelo lógico tiene tablas, claves y relaciones completas sin depender aún de un motor concreto.
+
+**Seguridad y límites.** No confundir modelo lógico con diseño de almacenamiento físico.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
 
 #### 9.2.11 — Modelo físico
 
@@ -376,6 +576,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 ### 9.3 — MySQL
 
+
+**Laboratorio de profundización — Diseño específico del motor.**
+
+1. Selecciona un motor y versión de laboratorio. 2. Traduce tipos y restricciones a DDL. 3. Define índices iniciales según consultas esperadas. 4. Documenta charset, collation, almacenamiento y respaldo.
+
+**Evidencia esperada.** El modelo físico puede implementarse en el motor elegido y registra decisiones dependientes de versión.
+
+**Seguridad y límites.** No copiar DDL entre motores sin revisar diferencias de tipos, índices y restricciones.
+
+**Registro sugerido.** Documenta supuestos, diccionario de datos, diagrama o DDL propuesto, casos aceptados/rechazados y decisiones pendientes. No marques implementación como ejecutada sin evidencia real.
 #### 9.3.1 — Instalación de MySQL Server
 
 **Propósito y modelo.** MySQL Server es el proceso DBMS que administra instancias y acepta conexiones. La instalación depende del sistema operativo, versión, repositorio y método de distribución. En entornos productivos se debe usar una versión soportada, verificar origen e integridad de paquetes, definir cuentas y restringir exposición de red.
