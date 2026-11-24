@@ -1,7 +1,7 @@
 # Etapa 26 — Active Directory y seguridad empresarial Windows
 
 **Prioridad:** P2 · Especialización  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** comprender cómo funcionan los entornos corporativos Windows y cómo protegerlos.  
 **Proyecto oficial:** crear un pequeño dominio de Active Directory en laboratorio, configurar usuarios y políticas y elaborar una evaluación de seguridad.
 
@@ -99,4 +99,4 @@ No se incluyen videos aprobados. Solo se incorporarán recursos hablados en espa
 - BloodHound Documentation: https://bloodhound.specterops.io/
 - Sysinternals: https://learn.microsoft.com/en-us/sysinternals/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se creó un dominio ni se ejecutaron herramientas en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se creó un dominio ni se ejecutaron herramientas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
