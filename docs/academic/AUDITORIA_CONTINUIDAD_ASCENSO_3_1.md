@@ -246,3 +246,14 @@ Se incorporó el desglose de las entradas oficiales de las etapas 23–25:
 - **Etapa 25 — Seguridad de aplicaciones web y APIs:** 50 entradas en arquitectura web, vulnerabilidades, OWASP, Burp Suite, seguridad de APIs y herramientas.
 
 Se mantuvieron las restricciones de autorización, alcance, aislamiento y cierre responsable para cualquier práctica de reconocimiento o pentesting. El campo oficial `objetivo` de la etapa 25 sigue vacío: no se completó ni se sustituyó por una formulación inventada. No se escanearon activos, no se ejecutaron herramientas de explotación y no se probaron sistemas externos. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
+
+
+### Expansión granular — etapas 26 a 28
+
+Se incorporó el desglose individual de las entradas oficiales de las etapas 26–28:
+
+- **Etapa 26 — Active Directory y seguridad empresarial Windows:** 39 entradas en Active Directory, protocolos, administración, seguridad, herramientas y hardening.
+- **Etapa 27 — Blue Team, SOC, SIEM e ingeniería de detección:** 58 entradas en defensa, SOC, logs, indicadores, IDS/IPS, herramientas, SIEM e ingeniería de detección.
+- **Etapa 28 — Threat Hunting, respuesta a incidentes y forense digital:** 46 entradas en hunting, inteligencia de amenazas, respuesta, DFIR, herramientas y estándares.
+
+Se mantuvo el enfoque defensivo y la necesidad de preservar evidencia, controlar accesos y trabajar con autorización. No se conectó a dominios Active Directory, no se instalaron SIEM/IDS, no se procesaron imágenes forenses ni se ejecutaron investigaciones reales. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
