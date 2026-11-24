@@ -184,7 +184,7 @@ La etapa 25 mantiene el campo `objetivo` vacío en el JSON. No se propone ni se 
 5. Obtener el manifiesto privado real desde la instalación de desarrollo, sin subir sus UUID al repositorio público.
 6. Solo entonces diseñar y validar en seco un primer paquete JSON v1 con UUID y fuentes existentes.
 
-**Estado general de la etapa 0:** EN_DESARROLLO documental; los cuatro módulos continúan en BORRADOR. Ninguna lección se declara REVISADA, APROBADA o PUBLICADA.
+**Estado general de la etapa 0:** BASE DE TRABAJO ACTIVA. Los cuatro módulos son la referencia operativa vigente. Esta condición no significa que cada lección esté revisada de forma independiente, aprobada o publicada; esas distinciones se mantienen según las evidencias registradas.
 
 
 ### 7. Proyecto integrador ASCENSO-Knowledge-Base
@@ -238,4 +238,4 @@ Se volvió a contrastar el JSON curricular oficial con los encabezados de los cu
 
 En 0.2 se normalizó la etiqueta de los siete encabezados canónicos de «Taller» a «Lección», sin cambiar su numeración ni sus títulos, para que la unidad curricular no se confunda con el formato de actividad. Las claves de práctica y los encabezados de apéndices no se cuentan como lecciones adicionales. En 0.3, los seis encabezados introductorios y los apéndices heredados tampoco se suman al conteo: la serie numerada de la profundización es la que cubre las ocho unidades del JSON.
 
-**Límite de esta comprobación:** la coincidencia 8/7/8/7 demuestra trazabilidad estructural de las unidades, no que cada lección haya superado revisión técnica, pedagógica, práctica o de fuentes. Los cuatro módulos continúan en BORRADOR; no se eleva ningún estado editorial.
+**Límite de esta comprobación:** la coincidencia 8/7/8/7 demuestra trazabilidad estructural de las unidades, no que cada lección haya superado revisión técnica, pedagógica, práctica o de fuentes. Los cuatro módulos se mantienen como BASE DE TRABAJO ACTIVA; no se declara aprobación ni publicación.
