@@ -495,6 +495,18 @@ No se exige una herramienta específica en esta lección; Git y GitHub se estudi
 | Revisión | Errores corregidos y cambios registrados |
 | Comunicación | README comprensible para otra persona |
 
+### Criterios de aceptación por hito
+
+| Hito | Se considera entregado cuando… | Evidencia revisable |
+|---|---|---|
+| 1. Estructura | Existe README, carpetas con nombres consistentes y una convención breve | Árbol de archivos y README |
+| 2. Tres conceptos | Hay tres notas redactadas con palabras propias, cada una con ejemplo y duda abierta | Tres notas fechadas |
+| 3. Ejercicios | Cada nota incluye al menos un ejercicio, resultado esperado y resultado obtenido | Registro de ejercicios y correcciones |
+| 4. Revisión | Se comprobaron enlaces, se identificaron afirmaciones sin respaldo y se corrigió al menos un error real | Lista de revisión con cambios |
+| 5. Presentación | Otra persona puede localizar una nota, seguir su fuente y entender qué se aprendió | Demostración breve y reflexión |
+
+**Regla de integridad:** no inventes ejercicios realizados, fuentes consultadas ni errores corregidos para completar la tabla. Si un hito no se ha ejecutado, márcalo «pendiente». El historial de cambios debe reflejar modificaciones reales.
+
 ### 4. Ejercicio de reflexión
 Al finalizar, responde:
 - ¿Qué decisión de organización te ayudó más?
