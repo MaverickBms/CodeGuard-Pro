@@ -113,3 +113,182 @@ No se incluyen videos aprobados. Se añadirán solo recursos hablados en españo
 - LinkedIn Help: https://www.linkedin.com/help/linkedin
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** proyecto final no implementado ni desplegado en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 32
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Las orientaciones organizan el estudio y la aplicación en proyectos controlados; no equivalen a validación de proveedores, certificación, ejecución de laboratorios ni experiencia laboral demostrada.
+
+### Módulo 32.1 — Portafolio de desarrollo
+
+#### 32.1.01 — GitHub Profile
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.1.02 — Repositories
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.1.03 — README
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.1.04 — Technical Documentation
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.1.05 — Architecture Documentation
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.1.06 — API Documentation
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.1.07 — Screenshots
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.1.08 — Demo
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.1.09 — Deployment
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.1.10 — Project Presentation
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+### Módulo 32.2 — Proyectos Full Stack
+
+#### 32.2.01 — Sistema de autenticación
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.2.02 — Sistema de inventario
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.2.03 — Sistema de ventas
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.2.04 — E-commerce
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.2.05 — Dashboard administrativo
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.2.06 — Sistema de reservas
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.2.07 — Sistema de gestión empresarial
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.2.08 — Aplicación con comunicación en tiempo real
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+### Módulo 32.3 — Proyectos de infraestructura
+
+#### 32.3.01 — Servidor Linux
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.3.02 — API desplegada
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.3.03 — Aplicación Dockerizada
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.3.04 — Nginx Reverse Proxy
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.3.05 — Pipeline CI/CD
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.3.06 — Monitorización
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.3.07 — Gestión de logs
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+### Módulo 32.4 — Proyectos de seguridad
+
+#### 32.4.01 — Auditoría de una aplicación propia
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.4.02 — Laboratorio de reconocimiento
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.4.03 — Evaluación de vulnerabilidades
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.4.04 — Pentesting documentado
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.4.05 — Laboratorio SOC
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.4.06 — Reglas Sigma
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.4.07 — Threat Hunting
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.4.08 — Análisis de incidentes
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.4.09 — Automatización de seguridad
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.4.10 — Cloud Security Assessment
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+### Módulo 32.5 — Trabajo colaborativo
+
+#### 32.5.01 — Code Review
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.5.02 — Pull Requests
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.5.03 — Git Flow
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.5.04 — Scrum
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.5.05 — Kanban
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.5.06 — Trabajo en equipo
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.5.07 — Comunicación técnica
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.5.08 — Gestión de tareas
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.5.09 — Resolución de conflictos
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+### Módulo 32.6 — Preparación laboral
+
+#### 32.6.01 — Hoja de vida
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.6.02 — LinkedIn
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.6.03 — Portafolio web
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.6.04 — Entrevistas técnicas
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.6.05 — Entrevistas conductuales
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.6.06 — Resolución de algoritmos
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.6.07 — SQL Interviews
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.6.08 — System Design
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.6.09 — Comunicación en inglés
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+
+#### 32.6.10 — Presentación de proyectos
+Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
