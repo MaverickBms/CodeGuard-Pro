@@ -484,6 +484,7 @@ No fue posible completar en esta sesión el desarrollo profundo y validado de la
 Continuar por lotes: 7-10 (sistemas/datos), 11-16 (full stack), 17-20 (ingeniería/infra/AppSec), 21-25 (ciberseguridad), 26-32 (especialización/proyecto), con auditoría por lote, verificación de referencias y ejecución de ejemplos en entorno controlado.
 
 
+
 ## Addendum de profundización didáctica — 2026-11-24 (continuación)
 
 ### Lote trabajado: etapas 7–10
@@ -1345,3 +1346,27 @@ Se añadieron prácticas de fundamentos JavaScript, DOM, asincronía, Web APIs, 
 **Estado:** desarrollo documental de la etapa 12 completado en esta pasada; ejecución reproducible, verificación de referencias y aprobación independiente pendientes. La cobertura 89/89 no equivale a pruebas ejecutadas ni a aprobación.
 
 El roadmap JSON permanece sin cambios. No se importó ni publicó contenido.
+
+
+## Addendum — verificación en entorno local (2026-11-24, sesión autónoma)
+
+### Estado de rama y sincronización
+- Rama: `content/ascenso-stage-0-learning-method`.
+- El worktree local estaba en `343ee6e` y la rama remota estaba adelantada en `e9ca043` (incluye `500be8c`, `2f84ce0`, `40ff751`, `e9ca043` y documentos previos). Se hizo `fetch` + rebase de los cambios locales sobre `origin/content/ascenso-stage-0-learning-method`.
+- El documento `docs/academic/ASCENSO_3_1_ESTADO_REAL_Y_PLAN_INTEGRACION_2026-11-24.md` **sí existe** en la rama remota; no estaba presente en el estado local desactualizado.
+
+### Exportador (`exportar_manifiesto_academico`)
+- Inspección: comando de solo lectura; no crea UUID ni modifica modelos. Argumentos implementados: `--nombre`, `--edicion`, `--salida`, `--incluir-fuentes` (coinciden con la documentación revisada).
+- Cobertura observada en código actual: incluye UUID/metadatos curriculares, contenido legacy, contenido activo, versiones editoriales por estado, ejemplos, ejercicios y fuentes (incluyendo evidencia de licencia) cuando se solicita `--incluir-fuentes`.
+- Pruebas ejecutadas en SQLite en memoria (venv temporal `/tmp/opencode/cg-venv`, Django 5.2.19): `apps.roadmaps.tests.test_exportar_manifiesto_academico` (4 OK) y `apps.roadmaps.tests.test_content_import` (11 OK). `python manage.py check` sin incidencias.
+
+### Ejecución contra DB de desarrollo real
+- **Bloqueado en este entorno.** `config/settings/base.py` apunta a `DATA_DIR/db.sqlite3` (por defecto `./data/db.sqlite3`); el archivo no existe. No hay variables de entorno `DATABASE*`/`POSTGRES*`/`MYSQL*` definidas. No se creó ni modificó ninguna DB de producción. No se generó manifiesto real.
+
+### Auditoría documental automatizada (estructural)
+- JSON oficial: 33 etapas, 212 módulos, 1946 lecciones, 7 prerrequisitos; Etapa 25 `objetivo == ""` confirmado.
+- Cobertura por encabezados de lección en `docs/academic/ascenso-3.1/**/*.md` (normalizando ceros iniciales): **1946/1946 IDs presentes**. Esto verifica presencia de identificadores, **no** calidad pedagógica completa, corrección técnica, ejecución de ejemplos, verificación exhaustiva de referencias ni aprobación.
+
+### Lotes de importación
+- **No generados.** El contrato JSON v1 y el validador/importador exigen UUID reales existentes en DB y fuentes registradas/activas. Sin manifiesto real no es posible preparar lotes válidos sin inventar UUID.
+
