@@ -64,6 +64,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué ventaja de seguridad aporta separar invitados y equipos administrativos en VLAN distintas?
 
+**Laboratorio de profundización — Mapa físico y lógico de una LAN.**
+
+1. Dibuja tres equipos, un switch y el router de salida. 2. Asigna direcciones RFC1918 ficticias dentro de una misma subred. 3. Identifica enlaces físicos, dominio de broadcast y gateway. 4. Describe qué cambiaría al separar dos grupos en VLAN distintas.
+
+**Evidencia esperada.** El diagrama distingue topología física y lógica, switch y router, subred y dominio de broadcast.
+
+**Seguridad y límites.** Usar direcciones de documentación o rangos privados de laboratorio; no escanear redes ajenas.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.1.2 — Redes WAN
 
 **Propósito y modelo.** Una WAN interconecta redes geográficamente separadas mediante enlaces de operadores, túneles, infraestructura privada o Internet. La disponibilidad, latencia, ancho de banda, redundancia y acuerdos de servicio condicionan su diseño. Una WAN no es sinónimo de Internet: puede ser privada o superpuesta.
@@ -79,6 +89,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Confundir una WAN con un único cable de larga distancia o asumir que una VPN resuelve disponibilidad y segmentación.
 
 **Comprobación.** ¿Qué propiedades debe evaluar una organización además del ancho de banda al elegir un enlace WAN?
+
+**Laboratorio de profundización — Diseño de conectividad entre sedes.**
+
+1. Dibuja dos LAN en ubicaciones distintas y un enlace WAN entre routers. 2. Identifica proveedor, demarcación, direccionamiento y rutas. 3. Compara conectividad privada, Internet con VPN y enlace dedicado. 4. Registra disponibilidad y redundancia esperadas.
+
+**Evidencia esperada.** La propuesta diferencia LAN y WAN, identifica puntos de fallo y explica la necesidad de routing entre sedes.
+
+**Seguridad y límites.** No publicar topologías, direcciones o credenciales reales de una organización.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.1.3 — Redes MAN
 
@@ -96,6 +116,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué diferencia operativa existe entre administrar la LAN de una sede y contratar la conectividad metropolitana?
 
+**Laboratorio de profundización — Caso de interconexión metropolitana.**
+
+1. Diseña tres edificios de una misma ciudad conectados a una red metropolitana. 2. Identifica enlaces de acceso y agregación. 3. Compara fibra, Ethernet metropolitana y enlaces inalámbricos según latencia, disponibilidad y distancia.
+
+**Evidencia esperada.** El diseño explica alcance metropolitano y compara tecnologías mediante criterios verificables.
+
+**Seguridad y límites.** No asumir que MAN es una tecnología específica; es una clasificación por alcance y diseño.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.1.4 — Internet
 
 **Propósito y modelo.** Internet es una red global de redes autónomas que intercambian tráfico mediante IP y acuerdos de interconexión. No tiene un único propietario ni un centro de control universal. Sistemas autónomos, operadores, puntos de intercambio, DNS y protocolos de enrutamiento participan en su operación.
@@ -111,6 +141,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Usar Internet y Web como sinónimos o interpretar un salto sin respuesta como prueba concluyente de caída.
 
 **Comprobación.** ¿Por qué la Web es un servicio que utiliza Internet, pero no constituye toda la infraestructura de Internet?
+
+**Laboratorio de profundización — Ruta conceptual hacia un servicio público.**
+
+1. Dibuja equipo, LAN, router doméstico, proveedor, redes de tránsito y servidor destino. 2. Distingue DNS, direccionamiento IP y transporte. 3. Explica dónde puede aplicarse NAT. 4. Enumera qué datos de una conexión son visibles para cada tramo.
+
+**Evidencia esperada.** El flujo distingue resolución de nombres, encaminamiento y transporte y evita describir Internet como una sola red centralizada.
+
+**Seguridad y límites.** No realizar captura de tráfico de terceros ni compartir direcciones públicas sensibles.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.1.5 — Intranet
 
@@ -128,6 +168,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué una intranet también necesita controles de seguridad de aplicación e identidad?
 
+**Laboratorio de profundización — Diseño de un servicio interno.**
+
+1. Define un portal interno para una organización ficticia. 2. Identifica usuarios autorizados, DNS interno, autenticación y segmentos de red. 3. Explica cómo se accede desde sede y VPN. 4. Define controles de registro y disponibilidad.
+
+**Evidencia esperada.** La propuesta delimita usuarios, servicios y rutas de acceso y diferencia intranet de Internet.
+
+**Seguridad y límites.** No publicar datos personales o documentos internos en una intranet de laboratorio.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.1.6 — Extranet
 
 **Propósito y modelo.** Una extranet habilita acceso controlado a determinados recursos internos para terceros, socios o clientes. La exposición debe limitarse a servicios concretos, con identidad verificable, autorización, segmentación, monitoreo y acuerdos de uso.
@@ -143,6 +193,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Dar a un socio acceso VPN amplio cuando solo necesita una aplicación o mantener cuentas de terceros después de finalizar el contrato.
 
 **Comprobación.** ¿Qué principio permite que un proveedor acceda a un portal sin tener acceso a toda la LAN corporativa?
+
+**Laboratorio de profundización — Acceso controlado de terceros.**
+
+1. Diseña acceso de un proveedor a un portal concreto. 2. Limita identidad, recursos, horarios y protocolos. 3. Define MFA, registros y caducidad. 4. Compara extranet con VPN de acceso completo.
+
+**Evidencia esperada.** El diseño aplica mínimo privilegio y permite revocar el acceso de terceros sin afectar a usuarios internos.
+
+**Seguridad y límites.** No conceder acceso lateral general ni reutilizar cuentas compartidas.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.1.7 — Cliente-servidor
 
@@ -160,6 +220,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué ventaja de seguridad ofrece colocar una API entre el cliente y la base de datos?
 
+**Laboratorio de profundización — Secuencia de solicitud y respuesta.**
+
+1. Modela cliente, servidor, DNS y conexión TCP. 2. Dibuja solicitud, respuesta y cierre. 3. Identifica qué componente escucha y cuál inicia conexión. 4. Añade una falla de servidor y describe los síntomas del cliente.
+
+**Evidencia esperada.** El diagrama distingue cliente y servidor por el rol en una interacción, no por el tipo de hardware.
+
+**Seguridad y límites.** No exponer servicios de prueba en interfaces públicas sin autenticación ni firewall.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.1.8 — Peer-to-peer
 
 **Propósito y modelo.** En una arquitectura peer-to-peer, los nodos pueden actuar como clientes y servidores según el intercambio. Puede distribuir carga y evitar un punto central único, pero complica descubrimiento, confianza, control de acceso, actualización y auditoría.
@@ -175,6 +245,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Asumir que un archivo recibido de varios pares es auténtico o que descentralización elimina todos los puntos de falla.
 
 **Comprobación.** ¿Por qué la verificación criptográfica sigue siendo necesaria en una red P2P?
+
+**Laboratorio de profundización — Modelo P2P y confianza.**
+
+1. Dibuja cinco nodos que consumen y ofrecen recursos. 2. Identifica descubrimiento, transferencia y verificación de integridad. 3. Compara centralización de índices y distribución total. 4. Describe riesgos de identidad y disponibilidad.
+
+**Evidencia esperada.** La comparación explica roles simultáneos de pares y diferencia el modelo P2P de cliente-servidor.
+
+**Seguridad y límites.** No compartir archivos protegidos ni utilizar redes P2P para distribuir material no autorizado.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.1.9 — Router
 
@@ -192,6 +272,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué una ruta más específica suele prevalecer sobre la ruta por defecto?
 
+**Laboratorio de profundización — Decisión de reenvío de paquetes.**
+
+1. Construye una tabla de rutas ficticia con redes conectadas, ruta específica y ruta por defecto. 2. Determina el siguiente salto para tres destinos. 3. Explica qué sucede si no hay coincidencia. 4. Distingue plano de control y plano de reenvío.
+
+**Evidencia esperada.** Las decisiones seleccionan la ruta más específica y reconocen gateway de siguiente salto.
+
+**Seguridad y límites.** No cambiar rutas del host o router productivo durante la práctica.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.1.10 — Switch
 
 **Propósito y modelo.** Un switch Ethernet aprende direcciones MAC de origen y mantiene una tabla de reenvío para decidir por qué puerto enviar tramas. En redes modernas puede soportar VLAN, enlaces troncales, STP, PoE y controles de capa 2. La tabla MAC no es una tabla de rutas IP.
@@ -207,6 +297,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Confundir la tabla MAC con ARP o conectar equipos no confiables a puertos de acceso corporativos sin control.
 
 **Comprobación.** ¿Qué información utiliza un switch de capa 2 para seleccionar el puerto de salida?
+
+**Laboratorio de profundización — Aprendizaje de direcciones MAC.**
+
+1. Dibuja un switch con cuatro puertos. 2. Simula tramas entrantes con MAC origen y destino. 3. Actualiza una tabla CAM ficticia. 4. Explica flooding de unicast desconocido y broadcast.
+
+**Evidencia esperada.** La tabla aprende MAC origen por puerto y explica cómo se reenvía una trama según destino.
+
+**Seguridad y límites.** No conectar equipos de laboratorio a una red productiva para generar tráfico de prueba.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.1.11 — Firewall
 
@@ -224,6 +324,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué riesgo introduce permitir cualquier origen hacia todos los puertos de un servidor?
 
+**Laboratorio de profundización — Política de mínimo acceso.**
+
+1. Define tres flujos requeridos entre cliente, servidor web y base de datos. 2. Redacta reglas por origen, destino, protocolo y puerto. 3. Añade una regla de denegación por defecto. 4. Explica cómo registrar bloqueos sin capturar datos sensibles.
+
+**Evidencia esperada.** Las reglas permiten solo los flujos necesarios y describen orden, dirección y alcance.
+
+**Seguridad y límites.** No desactivar firewalls ni crear reglas Any/Any para facilitar una demostración.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.1.12 — Gateway
 
 **Propósito y modelo.** Gateway es un término contextual para un punto que conecta redes o traduce entre protocolos y dominios. En una LAN IP, el gateway por defecto suele ser la dirección del router al que se envía tráfico destinado a redes no locales. No todos los gateways son routers IP convencionales.
@@ -239,6 +349,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Confundir puerta de enlace con DNS o configurar como gateway una dirección que no es alcanzable en el enlace local.
 
 **Comprobación.** ¿Qué papel cumple el gateway cuando el destino no pertenece a la subred local?
+
+**Laboratorio de profundización — Resolución de tráfico fuera de subred.**
+
+1. Asigna una IP, máscara y gateway a un host ficticio. 2. Calcula si dos destinos son locales o remotos. 3. Describe cuándo se usa ARP para resolver la MAC del gateway. 4. Explica el papel del gateway por defecto.
+
+**Evidencia esperada.** El estudiante determina correctamente cuándo el host entrega una trama al destino local o al router.
+
+**Seguridad y límites.** No modificar el gateway real del equipo durante esta práctica.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.1.13 — Access Point
 
@@ -258,6 +378,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 ## 8.2 — Modelos de comunicación
 
+**Laboratorio de profundización — Diseño de cobertura y seguridad Wi-Fi.**
+
+1. Dibuja un punto de acceso y tres clientes. 2. Define SSID, banda, canal y ubicación. 3. Compara WPA2-AES y WPA3 según compatibilidad. 4. Separa red de invitados y red administrativa.
+
+**Evidencia esperada.** El diseño contempla cobertura, interferencia, autenticación y segmentación de clientes.
+
+**Seguridad y límites.** No utilizar redes abiertas para información sensible ni probar contraseñas contra redes ajenas.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.2.1 — Modelo OSI
 
 **Propósito y modelo.** El modelo OSI es un marco conceptual de siete capas que ayuda a separar funciones de comunicación y localizar problemas. No es una pila de protocolos que todos los sistemas implementen literalmente. Cada capa ofrece servicios a la superior y utiliza servicios de la inferior.
@@ -273,6 +403,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Tratar OSI como una implementación real obligatoria o memorizar capas sin relacionarlas con el flujo de datos.
 
 **Comprobación.** ¿Cómo ayuda la separación por capas a aislar una falla de conectividad?
+
+**Laboratorio de profundización — Mapeo de una comunicación a capas.**
+
+1. Elige una consulta HTTPS. 2. Asocia aplicación, transporte, red, enlace y físico con funciones OSI. 3. Explica dónde actúan TLS, TCP, IP y Ethernet. 4. Señala que el modelo es una herramienta conceptual.
+
+**Evidencia esperada.** El mapeo es consistente y reconoce que las correspondencias entre modelos no siempre son uno a uno.
+
+**Seguridad y límites.** No afirmar que cada protocolo real pertenece exclusivamente a una única capa sin matices.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.2.2 — Las siete capas OSI
 
@@ -290,6 +430,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué un error visible en una aplicación puede originarse en una capa inferior?
 
+**Laboratorio de profundización — Diagnóstico por capas.**
+
+1. Recibe un escenario: equipo conectado al Wi-Fi sin acceso a una web. 2. Formula una prueba por capa desde enlace físico hasta aplicación. 3. Ordena pruebas para aislar el fallo. 4. Explica qué evidencia confirmaría o descartaría cada hipótesis.
+
+**Evidencia esperada.** La secuencia avanza de conectividad local a aplicación y separa síntomas de causa raíz.
+
+**Seguridad y límites.** No cambiar varias configuraciones simultáneamente ni utilizar datos de usuarios reales.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.2.3 — Modelo TCP/IP
 
 **Propósito y modelo.** El modelo TCP/IP agrupa funciones en capas de acceso a red, Internet, transporte y aplicación (las denominaciones pueden variar entre fuentes). Es una descripción práctica de la arquitectura de Internet y no coincide uno a uno con OSI.
@@ -305,6 +455,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Afirmar que OSI y TCP/IP tienen idéntico número de capas o colocar DNS en la capa de transporte.
 
 **Comprobación.** ¿Por qué TCP/IP es una arquitectura de protocolos y OSI se utiliza principalmente como modelo de referencia?
+
+**Laboratorio de profundización — Correspondencia TCP/IP y OSI.**
+
+1. Clasifica DNS, TCP, IP y Ethernet en el modelo TCP/IP. 2. Relaciónalos con capas OSI. 3. Explica cómo se transporta una consulta DNS sobre UDP o TCP. 4. Documenta un caso que use TLS sobre TCP.
+
+**Evidencia esperada.** El estudiante reconoce el modelo de cuatro capas y sus correspondencias aproximadas con OSI.
+
+**Seguridad y límites.** Evitar memorizar equivalencias rígidas cuando la arquitectura real incluye protocolos transversales.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.2.4 — Encapsulamiento
 
@@ -322,6 +482,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué un router reemplaza la trama de enlace al reenviar un paquete por otra interfaz?
 
+**Laboratorio de profundización — Seguimiento de cabeceras.**
+
+1. Parte de datos de aplicación. 2. Añade conceptualmente cabecera de transporte, IP y Ethernet. 3. Identifica puertos, IP origen/destino y MAC del siguiente salto. 4. Explica qué cabecera cambia al atravesar un router.
+
+**Evidencia esperada.** El esquema muestra el orden de encapsulamiento y diferencia direcciones de enlace, red y transporte.
+
+**Seguridad y límites.** No capturar payloads reales que contengan credenciales o información personal.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.2.5 — Desencapsulamiento
 
 **Propósito y modelo.** El desencapsulamiento es el proceso inverso en el receptor: cada capa interpreta y retira la información de control correspondiente y entrega la carga a la capa superior. La validación puede incluir integridad de trama, destino IP, puerto, estado de transporte y formato de aplicación.
@@ -337,6 +507,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Suponer que recibir una trama garantiza que la aplicación recibirá datos o que cada capa valida la misma información.
 
 **Comprobación.** ¿Qué sucede si el paquete IP llega al host, pero no existe un socket asociado al puerto TCP de destino?
+
+**Laboratorio de profundización — Lectura de una trama hasta la aplicación.**
+
+1. Recibe una trama ficticia con Ethernet, IP, TCP y datos de aplicación. 2. Identifica qué campos permiten entregar cada PDU a la capa superior. 3. Describe comprobaciones de longitud y protocolo. 4. Compara con el proceso inverso de encapsulamiento.
+
+**Evidencia esperada.** El estudiante explica la extracción ordenada de cabeceras y la demultiplexación por protocolo/puerto.
+
+**Seguridad y límites.** No asumir que todos los paquetes llegan sin fragmentación, pérdida, retransmisión o cifrado.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.2.6 — Paquetes
 
@@ -354,6 +534,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué dirección utiliza el router para tomar una decisión de encaminamiento IP?
 
+**Laboratorio de profundización — Diferencia entre PDU y paquete IP.**
+
+1. Analiza un ejemplo con cabecera IPv4, protocolo, TTL, origen y destino. 2. Distingue paquete IP de segmento TCP y trama Ethernet. 3. Explica qué campos cambian en un router. 4. Relaciona TTL con prevención de bucles.
+
+**Evidencia esperada.** Se usan correctamente los términos paquete, segmento y trama en cada capa.
+
+**Seguridad y límites.** No inferir contenido de aplicación a partir de metadatos de red cifrada.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.2.7 — Tramas
 
 **Propósito y modelo.** Una trama es una unidad de datos de enlace que transporta un paquete o carga superior sobre un medio local. En Ethernet incluye direcciones MAC, tipo/longitud, datos y secuencia de verificación FCS. La trama se interpreta dentro del dominio de enlace y puede cambiar en cada salto enrutado.
@@ -370,6 +560,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué la MAC destino de una trama puede ser la del router y no la del servidor remoto?
 
+**Laboratorio de profundización — Análisis de trama Ethernet.**
+
+1. Dibuja destino MAC, origen MAC, EtherType y carga útil. 2. Explica FCS y su función de detección de errores. 3. Distingue una trama unicast, multicast y broadcast. 4. Identifica qué direcciones se reemplazan al pasar por un router.
+
+**Evidencia esperada.** El diagrama identifica campos y diferencia dirección MAC de dirección IP.
+
+**Seguridad y límites.** Usar tramas sintéticas o capturas de laboratorio autorizadas.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.2.8 — Segmentos
 
 **Propósito y modelo.** En TCP, un segmento contiene cabecera TCP y datos de aplicación. Incluye puertos, números de secuencia y acuse, flags, ventana y checksum. En UDP la unidad se denomina datagrama, aunque algunos materiales usan términos genéricos. La segmentación permite transportar flujos y controlar entrega ordenada.
@@ -385,6 +585,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Suponer que cada segmento corresponde a una sola llamada de escritura de la aplicación o que TCP conserva límites de mensajes.
 
 **Comprobación.** ¿Por qué TCP es un flujo de bytes y no un protocolo que preserve automáticamente los límites de mensajes?
+
+**Laboratorio de profundización — Análisis de segmento TCP.**
+
+1. Identifica puertos origen/destino, números de secuencia y confirmación, flags y ventana. 2. Describe SYN, SYN-ACK y ACK. 3. Explica cómo se reensambla el flujo y qué hace una retransmisión.
+
+**Evidencia esperada.** El estudiante interpreta los campos principales y diferencia segmento TCP de datagrama UDP.
+
+**Seguridad y límites.** No interpretar una captura parcial como prueba suficiente de un fallo o ataque.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.2.9 — MTU
 
@@ -404,6 +614,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 ## 8.3 — Direccionamiento
 
+
+**Laboratorio de profundización — Diagnóstico de MTU y fragmentación.**
+
+1. Registra la MTU de una interfaz de laboratorio. 2. Explica el efecto de una MTU menor en el camino. 3. Diseña pruebas controladas con paquetes de tamaño variable y DF cuando la plataforma lo permita. 4. Relaciona ICMP necesario con Path MTU Discovery.
+
+**Evidencia esperada.** El diagnóstico explica fragmentación IPv4, comportamiento IPv6 y fallos de PMTUD con evidencia controlada.
+
+**Seguridad y límites.** No saturar enlaces ni modificar MTU de interfaces productivas.
+
+**Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 ### 8.3.1 — Dirección MAC
 
 **Propósito y modelo.** Una dirección MAC identifica una interfaz en una tecnología de enlace como Ethernet o Wi-Fi. En Ethernet tradicional tiene 48 bits y suele expresarse en hexadecimal. Puede ser globalmente administrada o localmente administrada; sistemas modernos también pueden usar direcciones aleatorias para privacidad.
