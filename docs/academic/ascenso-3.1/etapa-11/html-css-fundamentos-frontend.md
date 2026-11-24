@@ -699,54 +699,132 @@ canvas dibuja mediante JavaScript, pero sus formas no son nodos DOM accesibles a
 **Comprobación:** ¿Qué pierde quien no percibe el bitmap sin alternativa?
 
 #### 11.2.01 — WCAG
-WCAG 2.2 organiza la accesibilidad en principios perceptible, operable, comprensible y robusto, con criterios verificables y niveles A, AA y AAA. Selecciona el nivel exigido por el producto o normativa, registra evidencia por criterio y no declares conformidad a partir de una única herramienta automática.
 
+WCAG define principios POUR: perceptible, operable, comprensible y robusto. Los criterios tienen niveles A, AA y AAA; la conformidad requiere evaluar páginas y procesos completos, no solo ejecutar una herramienta automática.
 
-**Práctica y evidencia:** Evalúa una página con una lista de comprobación WCAG 2.2 AA para teclado, contraste, estructura y formularios. **Evidencia:** registra criterio, resultado y corrección, sin afirmar conformidad completa por una revisión parcial.
+**Ejemplo técnico:** Una aplicación puede tener contraste correcto y aun fallar porque el formulario no anuncia errores o el flujo no opera con teclado.
+
+**Práctica guiada:** Evalúa una página con lista de verificación POUR y registra evidencia para cada principio.
+
+**Actividad independiente:** Prioriza cinco barreras y propone correcciones verificables.
+
+**Criterios de aceptación:** Relaciona hallazgo con criterio y nivel WCAG aplicable; no declara conformidad por una sola prueba.
+
+**Errores frecuentes:** Confundir accesibilidad con contraste o afirmar cumplimiento por escaneo automático.
+
+**Comprobación:** ¿Por qué WCAG exige revisar procesos completos y no solo elementos aislados?
 
 #### 11.2.02 — ARIA
-ARIA añade roles, propiedades y estados para comunicar semántica a tecnologías de asistencia cuando HTML nativo no alcanza. Prioriza controles HTML estándar; un `role` no implementa teclado, foco ni comportamiento, por lo que un widget personalizado debe reproducir el patrón de interacción completo.
 
+WAI-ARIA aporta roles, estados y propiedades para comunicar semántica a tecnologías de asistencia cuando HTML nativo no basta. No reemplaza elementos nativos ni agrega comportamiento por sí sola; un widget ARIA debe implementar teclado, foco y estados.
 
-**Práctica y evidencia:** Usa ARIA solo donde HTML nativo no exprese el patrón; implementa un control expandible con estado actualizado. **Evidencia:** comprueba nombre, rol y estado con herramientas de accesibilidad.
+**Ejemplo técnico:** aria-expanded informa estado de un control, pero el código también debe abrir/cerrar el panel y mantener el foco coherente.
+
+**Práctica guiada:** Inspecciona un acordeón nativo y otro custom; identifica rol, estado y comportamiento de teclado.
+
+**Actividad independiente:** Diseña un menú custom solo si un elemento nativo no cubre el caso; especifica teclado y estados.
+
+**Criterios de aceptación:** ARIA coincide con comportamiento real y no duplica semántica nativa.
+
+**Errores frecuentes:** Agregar role=button a un botón nativo o usar ARIA sin implementar interacción.
+
+**Comprobación:** ¿Por qué se prefiere HTML nativo antes de añadir ARIA?
 
 #### 11.2.03 — Navegación por teclado
-La navegación por teclado debe permitir alcanzar, operar y abandonar los controles sin ratón. Verifica orden de tabulación, foco visible, activación con Enter/Espacio según el control y gestión de foco en diálogos; no crees trampas ni elimines el indicador de foco.
 
+Toda funcionalidad debe poder operarse con teclado sin trampas de foco. Tab y Shift+Tab recorren controles; Enter y Space activan según semántica; flechas se utilizan en widgets con patrón definido. El orden de foco debe seguir el orden lógico del contenido.
 
-**Práctica y evidencia:** Navega toda la interfaz solo con teclado y comprueba foco visible, orden lógico y ausencia de trampas. **Evidencia:** registra secuencia de Tab/Shift+Tab y puntos problemáticos.
+**Ejemplo técnico:** Un botón nativo recibe foco y se activa con teclado; un div con onclick no lo hace automáticamente.
+
+**Práctica guiada:** Recorre una página solo con teclado y registra foco visible, orden y posibilidad de salir de componentes.
+
+**Actividad independiente:** Corrige un menú que atrapa foco o tiene orden distinto al visual.
+
+**Criterios de aceptación:** Todas las acciones principales son alcanzables, identificables y operables sin ratón.
+
+**Errores frecuentes:** Eliminar outline sin alternativa o usar tabindex positivo para forzar orden.
+
+**Comprobación:** ¿Qué problema causa un componente que recibe foco pero no permite salir de él?
 
 #### 11.2.04 — Etiquetas accesibles
-Una etiqueta accesible proporciona el nombre que una tecnología de asistencia anuncia para un control. Vincula `label` con `for`/`id` o utiliza el mecanismo semántico apropiado; el texto de ayuda y los errores deben asociarse al campo sin reemplazar su nombre.
 
+Los controles necesitan nombre accesible que comunique propósito. label asociado, texto visible, aria-label y aria-labelledby tienen usos distintos; placeholder no reemplaza label. El nombre debe coincidir con la etiqueta visible para facilitar reconocimiento por voz.
 
-**Práctica y evidencia:** Asocia cada campo con un nombre accesible y prueba el anuncio con tecnología de asistencia o inspector del navegador. **Evidencia:** muestra nombre y rol del control.
+**Ejemplo técnico:** Un input con label for/id conserva nombre al desaparecer placeholder; aria-label puede nombrar un control sin texto visible, pero debe usarse con criterio.
+
+**Práctica guiada:** Inspecciona nombre accesible de botones e inputs en herramientas del navegador.
+
+**Actividad independiente:** Repara formulario donde campos solo tienen placeholder y botones solo iconos.
+
+**Criterios de aceptación:** Cada control tiene nombre único, descriptivo y asociado correctamente.
+
+**Errores frecuentes:** Usar texto ambiguo como «clic aquí» o duplicar nombres en controles distintos sin contexto.
+
+**Comprobación:** ¿Por qué placeholder no es sustituto de label?
 
 #### 11.2.05 — Contraste
-El contraste compara la luminancia del primer plano y el fondo para comprobar legibilidad. Evalúa texto normal, texto grande, iconos y componentes de interfaz según WCAG; revisa también estados de foco, error y deshabilitado, y no comuniques información solo mediante color.
 
+El contraste entre texto y fondo debe evaluarse con luminancia relativa y umbrales WCAG aplicables al tamaño y tipo de texto. El color no debe ser el único medio para transmitir estado; foco, errores y gráficos necesitan señales adicionales.
 
-**Práctica y evidencia:** Mide contraste de texto normal, texto grande y controles contra sus fondos. **Evidencia:** registra ratios y umbrales aplicables; corrige combinaciones que no alcancen el criterio.
+**Ejemplo técnico:** Texto normal suele requerir ratio 4.5:1 en WCAG AA; texto grande tiene umbral distinto. Componentes gráficos y foco también tienen criterios aplicables.
+
+**Práctica guiada:** Mide combinaciones de una página con herramienta y registra colores, ratio y tamaño de texto.
+
+**Actividad independiente:** Rediseña alertas para que estado no dependa solo de rojo/verde.
+
+**Criterios de aceptación:** Contraste cumple umbral pertinente y estados incluyen texto/ícono u otra señal.
+
+**Errores frecuentes:** Evaluar solo el color del botón o usar color como única señal.
+
+**Comprobación:** ¿Por qué un mensaje de error debe tener texto además de color?
 
 #### 11.2.06 — Lectores de pantalla
-Un lector de pantalla anuncia nombres, roles, estados y relaciones expuestos por el árbol de accesibilidad. Prueba recorridos reales con al menos una combinación navegador/lector disponible, escucha el orden de lectura y corrige semántica antes de añadir atributos ARIA redundantes.
 
+Los lectores de pantalla exponen estructura, nombres, roles, estados y relaciones del árbol de accesibilidad. La experiencia depende de semántica HTML, orden de lectura, etiquetas, encabezados y actualizaciones dinámicas anunciadas apropiadamente.
 
-**Práctica y evidencia:** Recorre una página con lector de pantalla y compara el orden anunciado con el orden visual. **Evidencia:** identifica encabezados, landmarks y controles sin nombre.
+**Ejemplo técnico:** Una región de resultados que cambia puede requerir aria-live o un mecanismo de foco apropiado, evitando anunciar cada cambio irrelevante.
+
+**Práctica guiada:** Prueba navegación por headings, landmarks, enlaces y formularios con lector de pantalla disponible o inspección del árbol accesible.
+
+**Actividad independiente:** Diseña una actualización dinámica que informe el resultado sin mover foco innecesariamente.
+
+**Criterios de aceptación:** La información y acciones esenciales se entienden sin depender de vista visual.
+
+**Errores frecuentes:** Agregar aria-live a contenedores enormes o anunciar mensajes repetitivos.
+
+**Comprobación:** ¿Qué diferencia existe entre anunciar una actualización y mover el foco?
 
 #### 11.2.07 — Formularios accesibles
-Un formulario accesible identifica cada campo, comunica requisitos, conserva datos y presenta errores comprensibles. Asocia mensajes con `aria-describedby` cuando corresponda, resume errores importantes y mueve el foco de manera predecible sin interrumpir innecesariamente al usuario.
 
+Un formulario accesible asocia etiquetas, instrucciones, agrupaciones y errores con controles. fieldset/legend agrupan opciones relacionadas; aria-describedby enlaza ayuda; el error debe identificarse en texto y asociarse al campo. La validación debe preservar datos y permitir corregir.
 
-**Práctica y evidencia:** Implementa mensajes de error asociados al campo y resumen de errores que no dependan solo del color. **Evidencia:** prueba formulario inválido mediante teclado y verifica anuncio comprensible.
+**Ejemplo técnico:** Tras un envío inválido, un resumen de errores puede enlazar a campos y el foco puede dirigirse al resumen o primer error según diseño.
+
+**Práctica guiada:** Crea formulario con fieldset, legend, labels y mensajes asociados; prueba teclado y lector de pantalla.
+
+**Actividad independiente:** Diseña flujo de errores para campos requeridos, formato inválido y fallo del servidor.
+
+**Criterios de aceptación:** Errores identificables, asociados y corregibles sin perder valores.
+
+**Errores frecuentes:** Mostrar errores solo en tooltip o depender de color y placeholder.
+
+**Comprobación:** ¿Qué debe poder comprender y hacer una persona después de recibir un error de validación?
 
 #### 11.2.08 — HTML semántico
-La semántica HTML proporciona estructura interoperable para encabezados, regiones, listas, tablas y controles. Comprueba el documento con el árbol de accesibilidad y utiliza elementos nativos antes de construir roles personalizados; una estructura correcta facilita teclado, lectores de pantalla e indexación.
 
+La semántica nativa ofrece roles y comportamientos reconocibles. Utilizar elementos adecuados reduce ARIA y código adicional. La estructura debe probarse con tecnologías de asistencia y teclado, porque una etiqueta semántica mal aplicada puede confundir.
 
-**Práctica y evidencia:** Comprueba que regiones y controles usan elementos HTML semánticos antes de añadir roles ARIA. **Evidencia:** documenta un caso donde HTML nativo evita ARIA innecesario.
+**Ejemplo técnico:** button para acción, a para navegación y table para datos tabulares ofrecen comportamientos esperados sin roles manuales.
 
-### Módulo 11.3 — CSS
+**Práctica guiada:** Audita un componente y reemplaza roles redundantes por HTML nativo cuando corresponda.
+
+**Actividad independiente:** Reestructura un dashboard para que controles, navegación y tablas expongan semántica correcta.
+
+**Criterios de aceptación:** El árbol accesible refleja intención y el teclado opera los controles.
+
+**Errores frecuentes:** Usar role=link en un span sin implementar interacción o role redundante sobre elemento nativo.
+
+**Comprobación:** ¿Qué se gana al usar la semántica HTML correcta desde el inicio?
 
 #### 11.3.01 — Selectores
 Los selectores CSS identifican elementos por tipo, clase, ID, atributo, estado o relación. Prefiere clases con significado de componente y selectores acotados; selectores globales complejos aumentan acoplamiento y hacen más difícil predecir qué regla afecta a cada elemento.
