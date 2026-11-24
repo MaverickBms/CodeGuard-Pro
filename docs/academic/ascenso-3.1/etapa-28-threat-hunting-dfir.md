@@ -106,149 +106,156 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Las guías d
 ### Módulo 28.1 — Threat Hunting
 
 #### 28.1.01 — Hipótesis
-Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Una hipótesis de Threat Hunting plantea una explicación comprobable sobre actividad posiblemente maliciosa o no esperada. Formula qué buscar, por qué es plausible, qué fuentes lo pueden confirmar y qué evidencia refutaría la hipótesis.
 
 #### 28.1.02 — Telemetría
-Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Telemetría reúne eventos, métricas y registros de endpoints, red, identidad y aplicaciones. Evalúa cobertura, integridad, sincronización y retención antes de concluir que la ausencia de eventos significa ausencia de actividad.
 
 #### 28.1.03 — Threat Indicators
-Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Threat Indicators son señales que pueden asociarse con actividad de amenaza, como hashes, dominios o comportamientos. Registra procedencia, confianza y vigencia y evita bloquear automáticamente indicadores sin contexto.
 
 #### 28.1.04 — Anomaly Detection
-Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Anomaly Detection identifica desviaciones respecto de líneas base de comportamiento. Considera cambios legítimos, estacionalidad y calidad de datos; una anomalía es una pista, no una confirmación de incidente.
 
 #### 28.1.05 — Event Correlation
-Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Event Correlation relaciona eventos de distintas fuentes mediante tiempo, identidad, activo y comportamiento. Normaliza datos, controla desfases de reloj y documenta reglas de correlación.
 
 #### 28.1.06 — TTP
-Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+TTP describe tácticas, técnicas y procedimientos observados en comportamientos adversarios. Mapea a marcos como MITRE ATT&CK con versión y plataforma, sin atribuir actor a partir de una sola técnica.
 
 #### 28.1.07 — Threat Investigation
-Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Threat Investigation valida hipótesis, delimita alcance y determina si existe actividad maliciosa. Conserva evidencia, separa hechos de inferencias y escala cuando el impacto o incertidumbre supera la autoridad del analista.
 
 #### 28.1.08 — Documentation
-Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Documentation registra hipótesis, consultas, fuentes, timestamps, hallazgos, limitaciones y conclusiones. Permite reproducibilidad y revisión por pares y debe proteger datos sensibles.
 
 ### Módulo 28.2 — Inteligencia de amenazas
 
 #### 28.2.01 — Threat Intelligence
-Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Threat Intelligence transforma información sobre amenazas en conocimiento contextual y accionable para decisiones defensivas. Define requisitos de inteligencia, fuentes, confianza y audiencia; evita coleccionar indicadores sin uso operativo.
 
 #### 28.2.02 — Threat Actors
-Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Threat Actors son personas o grupos que realizan actividades con objetivos y capacidades determinadas. Usa atribución con cautela y diferencia identidad confirmada, agrupación analítica e hipótesis.
 
 #### 28.2.03 — Campaigns
-Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Campaigns agrupan actividades relacionadas en un periodo y contexto, posiblemente asociadas a un objetivo. Correlaciona infraestructura, TTP y víctimas con evidencia y registra incertidumbre.
 
 #### 28.2.04 — Attack Patterns
-Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Attack Patterns describen secuencias o métodos recurrentes que pueden conducir a compromisos. Úsalos para diseñar controles y detecciones, sin tratarlos como una receta de ejecución.
 
 #### 28.2.05 — IOC
-Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+IOC son artefactos observables asociados a posible compromiso. Añade fuente, fecha, confianza, contexto y expiración; los indicadores pueden ser compartidos o reutilizados por actividad legítima.
 
 #### 28.2.06 — IOA
-Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+IOA se centra en comportamientos que indican una posible acción adversaria. Diseña detecciones resistentes a cambios superficiales de infraestructura y valida con actividad benigna.
 
 #### 28.2.07 — MITRE ATT&CK
-Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+MITRE ATT&CK organiza tácticas y técnicas observadas en plataformas y entornos. Mapea detecciones y brechas con versión y fuente; cobertura de técnicas no equivale a cobertura completa de amenazas.
 
 #### 28.2.08 — Threat Feeds
-Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Threat Feeds distribuyen indicadores y contexto desde proveedores o comunidades. Evalúa calidad, licencias, frescura y falsos positivos y evita integrar feeds sin proceso de validación.
 
 #### 28.2.09 — Threat Reports
-Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Threat Reports comunican actores, campañas, TTP, indicadores, impacto y recomendaciones. Distingue observaciones de atribución, incluye fecha y fuentes y adapta detalle a la audiencia.
 
 ### Módulo 28.3 — Incident Response
 
 #### 28.3.01 — Preparation
-Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Preparation establece políticas, responsables, herramientas, contactos, respaldos y ejercicios antes de un incidente. Comprueba que accesos y procedimientos funcionen y que las decisiones críticas tengan autoridad asignada.
 
 #### 28.3.02 — Identification
-Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Identification determina si un evento constituye incidente y cuál es su alcance inicial. Correlaciona fuentes, clasifica impacto y conserva evidencia sin retrasar contención cuando exista riesgo inmediato.
 
 #### 28.3.03 — Analysis
-Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Analysis investiga causa, alcance, vector y efectos del incidente con evidencia verificable. Mantén línea temporal, hipótesis y nivel de confianza y evita modificar fuentes originales.
 
 #### 28.3.04 — Containment
-Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Containment limita propagación e impacto mediante aislamiento, bloqueo o restricción temporal. Selecciona acciones proporcionales, coordina con operaciones y documenta efectos colaterales y autorizaciones.
 
 #### 28.3.05 — Eradication
-Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Eradication elimina causa y persistencia del incidente mediante limpieza, parcheo, rotación de credenciales o reconstrucción. Verifica que no queden mecanismos asociados y conserva evidencia necesaria.
 
 #### 28.3.06 — Recovery
-Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Recovery restaura servicios desde estados confiables y valida integridad y monitoreo reforzado. Define criterios de retorno, comunicación y observación posterior para detectar recurrencia.
 
 #### 28.3.07 — Lessons Learned
-Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Lessons Learned analiza causas, decisiones, controles y oportunidades después del incidente. Convierte hallazgos en acciones con responsable y fecha y evita una retrospectiva centrada en culpabilizar.
 
 #### 28.3.08 — Incident Reporting
-Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Incident Reporting documenta cronología, impacto, decisiones, evidencias, comunicaciones y acciones. Adapta el reporte a destinatarios y obligaciones y evita exponer datos personales o detalles sensibles innecesarios.
 
 ### Módulo 28.4 — Forense digital (DFIR)
 
 #### 28.4.01 — Digital Forensics
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Digital Forensics aplica métodos reproducibles para identificar, adquirir, preservar y analizar evidencia digital. Mantén integridad, documentación y cadena de custodia y trabaja sobre copias verificadas.
 
 #### 28.4.02 — Incident Response
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Incident Response coordina decisiones para gestionar un incidente y reducir impacto. Se articula con forense, operaciones, legal y comunicaciones; preservación de evidencia debe equilibrarse con urgencia de contención.
 
 #### 28.4.03 — Evidence Preservation
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Evidence Preservation protege artefactos contra modificación, pérdida o acceso no autorizado. Registra origen, hora, herramienta, operador, hash y almacenamiento y conserva originales protegidos.
 
 #### 28.4.04 — Chain of Custody
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Chain of Custody registra cada transferencia, acceso y manipulación de evidencia. Mantén identidad de custodios, fecha, propósito y controles de integridad para permitir revisión posterior.
 
 #### 28.4.05 — Disk Forensics
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Disk Forensics analiza medios de almacenamiento y estructuras de archivos para reconstruir actividad. Adquiere imágenes con procedimientos adecuados, verifica hashes y analiza copias para evitar alterar originales.
 
 #### 28.4.06 — Memory Forensics
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Memory Forensics examina volcados de memoria para buscar procesos, conexiones y artefactos volátiles. Documenta método y versión de herramientas y protege dumps porque pueden contener credenciales y datos personales.
 
 #### 28.4.07 — File System Analysis
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+File System Analysis estudia metadatos, estructuras, timestamps y artefactos de sistemas de archivos. Considera zona horaria, precisión y cambios de reloj y evita interpretar timestamps como evidencia aislada.
 
 #### 28.4.08 — Metadata
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Metadata describe atributos asociados a archivos y artefactos, como creación, modificación, autor o dispositivo. Puede ser alterada o heredada; corrobora con otras fuentes y minimiza exposición de datos personales.
 
 #### 28.4.09 — Timeline Analysis
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Timeline Analysis ordena eventos de múltiples fuentes para reconstruir secuencias. Normaliza zonas horarias y precisión, documenta huecos y distingue hora del evento de hora de recolección.
 
 #### 28.4.10 — Log Analysis
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Log Analysis interpreta registros de seguridad, aplicaciones y sistemas para identificar actividad relevante. Conserva fuente y contexto, correlaciona eventos y evita conclusiones basadas en logs incompletos.
 
 #### 28.4.11 — Incident Reconstruction
-Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Incident Reconstruction integra evidencias para explicar qué ocurrió, cuándo, cómo y con qué impacto. Presenta hipótesis alternativas, nivel de confianza y limitaciones sin afirmar más de lo que sostienen los datos.
 
 ### Módulo 28.5 — Herramientas
 
 #### 28.5.01 — Autopsy
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Autopsy ofrece una interfaz para análisis forense digital y casos basados en imágenes de evidencia. Trabaja sobre copias verificadas, registra módulos utilizados y protege bases de casos.
 
 #### 28.5.02 — Sleuth Kit
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+The Sleuth Kit proporciona herramientas para analizar sistemas de archivos e imágenes forenses. Verifica hashes, documenta comandos y versiones y evita operar sobre el medio original.
 
 #### 28.5.03 — Volatility
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Volatility analiza volcados de memoria para extraer información de procesos, módulos y artefactos. Selecciona versión y símbolos compatibles y trata resultados como evidencia que requiere corroboración.
 
 #### 28.5.04 — KAPE
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+KAPE recopila y procesa artefactos forenses de Windows mediante objetivos y módulos configurados. Define alcance, evita recolección indiscriminada y protege resultados sensibles.
 
 #### 28.5.05 — Sysmon
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Sysmon aporta telemetría detallada de Windows que puede apoyar investigación y hunting. Verifica configuración, retención y continuidad y correlaciona eventos con otras fuentes.
 
 #### 28.5.06 — Eric Zimmerman Tools (introducción)
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Eric Zimmerman Tools reúne utilidades para analizar artefactos de Windows y sistemas de archivos. Documenta herramienta y versión, trabaja con copias y corrobora resultados con fuentes independientes.
 
 ### Módulo 28.6 — Estándares
 
 #### 28.6.01 — NIST SP 800-61
-Comprender el concepto, los datos o controles involucrados y su papel dentro de estándares; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+NIST SP 800-61 proporciona orientación para manejo de incidentes de seguridad informática. Consulta la revisión vigente y adapta roles, preparación, detección, respuesta y mejora al entorno organizacional.
 
 #### 28.6.02 — NIST CSF 2.0
-Comprender el concepto, los datos o controles involucrados y su papel dentro de estándares; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+NIST CSF 2.0 organiza resultados de gestión de riesgo mediante Govern, Identify, Protect, Detect, Respond y Recover. Utilízalo para conectar hunting y DFIR con gobernanza y mejora continua.
 
 #### 28.6.03 — MITRE ATT&CK
-Comprender el concepto, los datos o controles involucrados y su papel dentro de estándares; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+MITRE ATT&CK sirve como base de conocimiento para mapear comportamientos, detecciones y cobertura defensiva. Registra versión, plataforma y fuentes y no lo uses como sustituto de evidencia forense.
 
 #### 28.6.04 — CSRC
-Comprender el concepto, los datos o controles involucrados y su papel dentro de estándares; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+CSRC es el Computer Security Resource Center de NIST, un repositorio de publicaciones y recursos técnicos, no un estándar único. Identifica cada publicación por número, título, revisión y fecha antes de incorporarla a procedimientos.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 46 orientaciones genéricas por explicaciones específicas de Threat Hunting, inteligencia de amenazas, respuesta a incidentes, DFIR, herramientas y estándares.
+
+**Revisión interna:** 46/46 entradas desarrolladas y cotejadas con el roadmap. Se reforzaron hipótesis verificables, confianza de indicadores, preservación de evidencia, cadena de custodia, protección de volcados/logs y distinción entre hallazgos e inferencias. La entrada CSRC se aclara como repositorio de recursos NIST, no como estándar individual. Pendiente: validar procedimientos con evidencia sintética en laboratorio, comprobar compatibilidad de herramientas y revisión especializada. No se procesaron imágenes forenses ni se investigaron incidentes reales; no se declara aprobación externa.
