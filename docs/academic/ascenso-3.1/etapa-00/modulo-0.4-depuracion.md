@@ -169,7 +169,7 @@ Esta ampliación conserva los siete temas nominales del módulo. Los fragmentos 
 
 No siempre existe una única causa raíz. En sistemas distribuidos pueden interactuar varias condiciones; documenta el alcance de la conclusión.
 
-### 0.4.undefined — Debugging: seguir un procedimiento repetible
+### 0.4.1 — Debugging: seguir un procedimiento repetible
 
 **Caso:** una función calcula un descuento incorrecto para un importe límite.
 
@@ -186,21 +186,23 @@ Proceso:
 
 **Ejercicio:** describe el resultado esperado para importes inferiores, iguales y superiores al umbral. Explica por qué probar únicamente un importe alto no detectaría todos los defectos de comparación.
 
-### 0.4.undefined — Reproducción de errores: fijar las condiciones
+### 0.4.2 — Breakpoints: observar el estado sin adivinar
 
-Un reporte reproducible identifica el estado inicial. Incluye:
-- versión de lenguaje/runtime y dependencias;
-- sistema operativo y arquitectura cuando sean relevantes;
-- comando exacto de ejecución;
-- configuración pertinente, sin secretos;
-- entrada mínima;
-- pasos ordenados;
-- resultado esperado y real;
-- frecuencia y condiciones de aparición.
+En Visual Studio Code:
+1. Abre la carpeta del proyecto.
+2. Confirma que el runtime/SDK del lenguaje está instalado.
+3. Coloca un breakpoint en una línea ejecutable antes del cálculo sospechoso.
+4. Inicia una sesión de depuración con la configuración adecuada.
+5. Inspecciona argumentos y variables.
+6. Avanza una línea cada vez y observa dónde diverge el valor esperado.
+7. Comprueba el call stack y el contexto.
+8. Retira breakpoints temporales y repite la prueba sin depurador.
 
-**Ejercicio:** entrega un caso que otra persona pueda ejecutar sin tener que adivinar variables de entorno o archivos de entrada. Si no puede reproducirlo, registra qué dato falta; no declares el defecto corregido.
+En Python también se puede utilizar `breakpoint()` o `python -m pdb archivo.py`. La experiencia depende de la versión de Python y de la configuración del entorno.
 
-### 0.4.undefined — Stack traces: leer desde el error hacia el contexto
+**Ejercicio:** registra tres valores antes y después de una operación. No entregues solo una captura: explica qué hipótesis confirma o descarta cada observación.
+
+### 0.4.3 — Stack traces: leer desde el error hacia el contexto
 
 Un stack trace de Python puede tener esta forma ilustrativa:
 
@@ -222,23 +224,7 @@ TypeError: can only concatenate str (not "int") to str
 
 **Ejercicio:** explica por qué convertir cualquier valor a número sin validar podría ocultar datos mal formados. Propón una validación explícita y un mensaje de error útil.
 
-### 0.4.undefined — Breakpoints: observar el estado sin adivinar
-
-En Visual Studio Code:
-1. Abre la carpeta del proyecto.
-2. Confirma que el runtime/SDK del lenguaje está instalado.
-3. Coloca un breakpoint en una línea ejecutable antes del cálculo sospechoso.
-4. Inicia una sesión de depuración con la configuración adecuada.
-5. Inspecciona argumentos y variables.
-6. Avanza una línea cada vez y observa dónde diverge el valor esperado.
-7. Comprueba el call stack y el contexto.
-8. Retira breakpoints temporales y repite la prueba sin depurador.
-
-En Python también se puede utilizar `breakpoint()` o `python -m pdb archivo.py`. La experiencia depende de la versión de Python y de la configuración del entorno.
-
-**Ejercicio:** registra tres valores antes y después de una operación. No entregues solo una captura: explica qué hipótesis confirma o descarta cada observación.
-
-### 0.4.undefined — Logs: observabilidad útil y segura
+### 0.4.4 — Logs: observabilidad útil y segura
 
 Un evento de log debería responder, según el caso: qué ocurrió, cuándo, en qué componente, con qué resultado y bajo qué contexto no sensible.
 
@@ -257,7 +243,7 @@ No registres contraseñas, tokens, cookies, claves, datos bancarios ni cuerpos c
 
 **Ejercicio:** redacta seis eventos para un flujo de compra ficticio: inicio, validación, cálculo, rechazo, finalización y error inesperado. Cada evento debe aportar contexto sin revelar información sensible.
 
-### 0.4.undefined — Hipótesis: diseñar pruebas que distingan explicaciones
+### 0.4.5 — Hipótesis: diseñar pruebas que distingan explicaciones
 
 Una hipótesis útil tiene:
 - observación verificable;
@@ -272,6 +258,20 @@ Una hipótesis útil tiene:
 No cambies simultáneamente umbral, tasa, formato de entrada y entorno. Si el resultado cambia, no podrás atribuirlo a una sola causa.
 
 **Ejercicio:** escribe dos hipótesis alternativas para un cálculo incorrecto y una prueba que permita distinguirlas sin introducir múltiples cambios.
+
+### 0.4.6 — Reproducción de errores: fijar las condiciones
+
+Un reporte reproducible identifica el estado inicial. Incluye:
+- versión de lenguaje/runtime y dependencias;
+- sistema operativo y arquitectura cuando sean relevantes;
+- comando exacto de ejecución;
+- configuración pertinente, sin secretos;
+- entrada mínima;
+- pasos ordenados;
+- resultado esperado y real;
+- frecuencia y condiciones de aparición.
+
+**Ejercicio:** entrega un caso que otra persona pueda ejecutar sin tener que adivinar variables de entorno o archivos de entrada. Si no puede reproducirlo, registra qué dato falta; no declares el defecto corregido.
 
 ### 0.4.7 — Análisis de causas: corregir y prevenir regresiones
 
