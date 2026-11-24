@@ -167,3 +167,211 @@ No se incluyen videos aprobados. Se incorporarán solo tras confirmar audio habl
 - OWASP API Security Top 10: https://owasp.org/www-project-api-security/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se han consumido APIs externas ni ejecutado pruebas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 13
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados desarrollan las lecciones a partir del contenido conceptual de esta guía; no representan evaluación, aprobación ni ejecución práctica.
+
+### Módulo 13.1 — Arquitectura web
+
+#### 13.1.01 — Cliente-servidor
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.02 — Navegador
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.03 — Servidor
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.04 — DNS
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.05 — IP
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.06 — Puertos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.07 — Hosting
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.08 — HTTP
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.09 — HTTPS
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.10 — TLS
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.11 — Certificados
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.12 — Cookies
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.1.13 — Sesiones
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de arquitectura web. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 13.2 — HTTP en profundidad
+
+#### 13.2.01 — Requests
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.2.02 — Responses
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.2.03 — Métodos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.2.04 — Headers
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.2.05 — Body
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.2.06 — Status codes
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.2.07 — Content-Type
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.2.08 — Authorization
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.2.09 — Caching
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.2.10 — Idempotencia
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.2.11 — Statelessness
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de http en profundidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 13.3 — APIs
+
+#### 13.3.01 — Qué es una API
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.02 — API pública
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.03 — API privada
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.04 — API REST
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.05 — Endpoints
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.06 — Resources
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.07 — JSON
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.08 — XML (introducción)
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.09 — Serialización
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.10 — Deserialización
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.11 — CRUD
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.12 — Paginación
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.13 — Filtrado
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.3.14 — Versionado
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 13.4 — Consumo de APIs
+
+#### 13.4.01 — Fetch
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de consumo de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.4.02 — Axios
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de consumo de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.4.03 — Postman
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de consumo de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.4.04 — Insomnia
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de consumo de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.4.05 — Thunder Client
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de consumo de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.4.06 — Manejo de errores
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de consumo de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.4.07 — Autenticación
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de consumo de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.4.08 — Headers
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de consumo de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.4.09 — Tokens
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de consumo de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.4.10 — Documentación
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de consumo de apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 13.5 — Otros estilos de comunicación
+
+#### 13.5.01 — GraphQL
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de otros estilos de comunicación. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.5.02 — WebSockets
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de otros estilos de comunicación. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.5.03 — gRPC
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de otros estilos de comunicación. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.5.04 — Webhooks
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de otros estilos de comunicación. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.5.05 — Server-Sent Events
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de otros estilos de comunicación. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 13.6 — Seguridad
+
+#### 13.6.01 — CORS
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seguridad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.6.02 — API Keys
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seguridad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.6.03 — JWT
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seguridad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.6.04 — Cookies seguras
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seguridad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.6.05 — Refresh tokens
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seguridad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.6.06 — Rate limiting
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seguridad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 13.7 — Documentación
+
+#### 13.7.01 — OpenAPI
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de documentación. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.7.02 — Swagger
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de documentación. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.7.03 — Postman Collections
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de documentación. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 13.7.04 — API versioning
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de documentación. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
