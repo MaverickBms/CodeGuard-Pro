@@ -1,7 +1,7 @@
 # Etapa 20 — Desarrollo seguro de software (AppSec)
 
 **Prioridad:** P1 · Obligatoria  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** aprender a desarrollar aplicaciones seguras desde su diseño.  
 **Proyecto oficial:** construir una aplicación web deliberadamente vulnerable en un entorno controlado, identificar debilidades, corregirlas y realizar pruebas de regresión de seguridad.
 
@@ -122,4 +122,4 @@ No se incluyen videos aprobados. Solo se añadirán recursos hablados en españo
 - MITRE CWE: https://cwe.mitre.org/
 - MDN Web Security: https://developer.mozilla.org/en-US/docs/Web/Security
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se desplegó aplicación vulnerable ni se ejecutaron pruebas en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se desplegó aplicación vulnerable ni se ejecutaron pruebas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
