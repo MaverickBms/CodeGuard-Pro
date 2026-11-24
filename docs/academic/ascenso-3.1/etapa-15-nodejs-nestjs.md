@@ -110,3 +110,179 @@ No se aprueban videos todavía. Solo se añadirán piezas con audio hablado en e
 - OWASP API Security: https://owasp.org/www-project-api-security/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** proyecto no ejecutado en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 15
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados organizan el estudio de los conceptos y los relacionan con la guía técnica y el proyecto de la etapa; no representan evaluación, aprobación ni ejecución práctica.
+
+### Módulo 15.1 — Node.js
+
+#### 15.1.01 — Runtime
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.02 — V8
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.03 — Event Loop
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.04 — Modules
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.05 — CommonJS
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.06 — ES Modules
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.07 — npm
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.08 — pnpm
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.09 — Filesystem
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.10 — Events
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.11 — Streams
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.12 — Buffers
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.13 — HTTP Module
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.1.14 — Async Programming
+Estudiar el concepto y su función dentro de node.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 15.2 — Express.js
+
+#### 15.2.01 — Routing
+Estudiar el concepto y su función dentro de express.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.2.02 — Middleware
+Estudiar el concepto y su función dentro de express.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.2.03 — Controllers
+Estudiar el concepto y su función dentro de express.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.2.04 — Error Handling
+Estudiar el concepto y su función dentro de express.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.2.05 — Request
+Estudiar el concepto y su función dentro de express.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.2.06 — Response
+Estudiar el concepto y su función dentro de express.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.2.07 — REST APIs
+Estudiar el concepto y su función dentro de express.js; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 15.3 — NestJS
+
+#### 15.3.01 — Modules
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.02 — Controllers
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.03 — Providers
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.04 — Services
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.05 — Dependency Injection
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.06 — DTOs
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.07 — Pipes
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.08 — Guards
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.09 — Interceptors
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.10 — Middleware
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.11 — Exception Filters
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.12 — Validation
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.3.13 — Configuration
+Estudiar el concepto y su función dentro de nestjs; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 15.4 — Persistencia
+
+#### 15.4.01 — Prisma
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.4.02 — TypeORM
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.4.03 — MySQL
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.4.04 — PostgreSQL
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.4.05 — MongoDB
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.4.06 — Redis
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 15.5 — Seguridad
+
+#### 15.5.01 — Authentication
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.5.02 — Authorization
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.5.03 — Passport
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.5.04 — JWT
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.5.05 — OAuth2
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.5.06 — RBAC
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.5.07 — Rate Limiting
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 15.6 — Avanzado
+
+#### 15.6.01 — WebSockets
+Estudiar el concepto y su función dentro de avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.6.02 — Queues
+Estudiar el concepto y su función dentro de avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.6.03 — Background jobs
+Estudiar el concepto y su función dentro de avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.6.04 — Event-driven architecture
+Estudiar el concepto y su función dentro de avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.6.05 — Microservices
+Estudiar el concepto y su función dentro de avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 15.6.06 — Testing
+Estudiar el concepto y su función dentro de avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
