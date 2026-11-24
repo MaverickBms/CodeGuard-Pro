@@ -1334,6 +1334,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué problema de consulta y actualización aparece cuando una fila almacena una lista de valores independientes?
 
+**Laboratorio de profundización — Detección de atributos no atómicos.**
+
+1. Revisa una tabla que almacena varios teléfonos en una celda. 2. Explica por qué dificulta búsquedas y restricciones. 3. Rediseña con una tabla relacionada de teléfonos. 4. Compara consultas antes y después.
+
+**Evidencia esperada.** Cada celda representa un valor según el dominio y los valores repetidos se modelan mediante filas relacionadas.
+
+**Seguridad y límites.** No dividir valores con separadores sin conocer semántica ni perder trazabilidad del dato original.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.5.2 — Segunda forma normal (2NF)
 
 **Propósito y modelo.** La segunda forma normal requiere 1NF y que cada atributo no primo dependa de la clave candidata completa, no solo de una parte de una clave compuesta. Se analiza principalmente cuando una tabla tiene claves compuestas y dependencias funcionales parciales.
@@ -1349,6 +1359,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Aplicar la definición sin identificar primero claves candidatas o dividir tablas sin preservar dependencias y uniones.
 
 **Comprobación.** ¿Por qué un atributo que depende solo de una parte de una clave compuesta viola 2NF?
+
+**Laboratorio de profundización — Dependencias parciales en claves compuestas.**
+
+1. Analiza una tabla PedidoProducto con clave compuesta. 2. Identifica atributos que dependen solo de una parte de la clave. 3. Separa entidades en tablas apropiadas. 4. Explica qué anomalías desaparecen.
+
+**Evidencia esperada.** Se identifican dependencias parciales y la descomposición conserva relaciones mediante claves.
+
+**Seguridad y límites.** No descomponer mecánicamente sin validar dependencias funcionales reales.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.5.3 — Tercera forma normal (3NF)
 
@@ -1366,6 +1386,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué anomalía de actualización puede evitar separar un departamento repetido en muchos registros de empleados?
 
+**Laboratorio de profundización — Eliminación de dependencias transitivas.**
+
+1. Revisa una tabla Cliente que almacena código postal y ciudad. 2. Evalúa dependencia entre código postal y ciudad según reglas del dominio. 3. Propón separación si la dependencia es válida. 4. Explica anomalías de actualización.
+
+**Evidencia esperada.** El diseño evita dependencias transitivas no clave bajo las dependencias definidas.
+
+**Seguridad y límites.** No asumir dependencias universales si el dominio permite excepciones o cambios administrativos.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.5.4 — BCNF
 
 **Propósito y modelo.** Boyce-Codd Normal Form exige que todo determinante de una dependencia funcional no trivial sea una superclave. Es más estricta que 3NF y puede requerir descomposiciones adicionales. El análisis debe considerar todas las dependencias funcionales reales del dominio, no solo los datos de muestra.
@@ -1381,6 +1411,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Declarar BCNF solo observando filas actuales o asumir que toda descomposición conserva automáticamente todas las dependencias.
 
 **Comprobación.** ¿Qué condición adicional impone BCNF respecto a 3NF?
+
+**Laboratorio de profundización — Evaluación de determinantes.**
+
+1. Analiza una relación con varias claves candidatas y dependencias funcionales. 2. Identifica determinantes que no sean superclaves. 3. Descompón para BCNF. 4. Comprueba si la descomposición conserva dependencias y unión sin pérdida.
+
+**Evidencia esperada.** El análisis distingue 3NF de BCNF y documenta efectos de la descomposición.
+
+**Seguridad y límites.** No afirmar que BCNF siempre conserva todas las dependencias; comprobar propiedades formales.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.5.5 — Redundancia
 
@@ -1398,6 +1438,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué diferencia existe entre redundancia accidental y desnormalización controlada?
 
+**Laboratorio de profundización — Anomalías de inserción, actualización y borrado.**
+
+1. Construye una tabla desnormalizada con datos de cliente repetidos por pedido. 2. Simula cambiar una dirección, insertar un cliente sin pedido y eliminar un pedido. 3. Identifica anomalías. 4. Propón normalización.
+
+**Evidencia esperada.** Se demuestra cómo la redundancia genera inconsistencias y se propone un diseño alternativo.
+
+**Seguridad y límites.** No eliminar redundancia deliberadamente sin medir y documentar la necesidad de rendimiento.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.5.6 — Integridad referencial
 
 **Propósito y modelo.** La integridad referencial garantiza que las relaciones entre filas mantengan coherencia mediante claves foráneas y acciones referenciales. Debe decidirse cómo tratar borrado, actualización, registros huérfanos y ciclos. Las reglas deben reflejar retención e historia del negocio.
@@ -1413,6 +1463,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Usar cascadas para simplificar sin evaluar eliminación masiva o desactivar restricciones para cargar datos sin validación posterior.
 
 **Comprobación.** ¿Qué riesgo introduce ON DELETE CASCADE en tablas que representan historial legal o financiero?
+
+**Laboratorio de profundización — Políticas de actualización y borrado.**
+
+1. Diseña FK entre Cliente y Pedido. 2. Compara RESTRICT, CASCADE y SET NULL. 3. Evalúa un cliente con historial de facturación. 4. Elige una política y justifica retención y auditoría.
+
+**Evidencia esperada.** La política evita referencias huérfanas y conserva historial según las reglas del negocio.
+
+**Seguridad y límites.** No usar cascadas destructivas para datos financieros o históricos sin política formal.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.5.7 — Relaciones uno a uno
 
@@ -1430,6 +1490,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué restricción garantiza que una FK no se repita y por tanto limite la relación a 1:1?
 
+**Laboratorio de profundización — Implementación de relación 1:1.**
+
+1. Modela Usuario y PerfilPrivado. 2. Elige PK compartida o FK UNIQUE. 3. Define opcionalidad y ciclo de vida. 4. Explica cuándo conviene separar datos por sensibilidad o frecuencia de acceso.
+
+**Evidencia esperada.** La restricción garantiza como máximo un perfil por usuario y documenta opcionalidad.
+
+**Seguridad y límites.** No separar tablas solo por estética; justificar seguridad, ciclo de vida o acceso.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.5.8 — Uno a muchos
 
 **Propósito y modelo.** En una relación 1:N, una fila del lado uno puede asociarse con muchas filas del lado N; cada fila del lado N referencia como máximo una fila del lado uno mediante FK. La FK se ubica normalmente en la tabla del lado muchos.
@@ -1445,6 +1515,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Almacenar una lista de IDs en la fila del lado uno o colocar la FK en el lado incorrecto sin necesidad de una relación inversa.
 
 **Comprobación.** ¿En qué tabla se coloca normalmente la clave foránea en una relación 1:N?
+
+**Laboratorio de profundización — Implementación de relación 1:N.**
+
+1. Modela Cliente y Pedido. 2. Ubica la FK en el lado muchos. 3. Define comportamiento al borrar o actualizar el padre. 4. Consulta pedidos por cliente y valida cardinalidad.
+
+**Evidencia esperada.** La FK se ubica correctamente y las consultas devuelven pedidos vinculados sin duplicación inesperada.
+
+**Seguridad y límites.** No almacenar lista de IDs como texto para simular una relación.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.5.9 — Muchos a muchos
 
@@ -1464,6 +1544,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 ### 9.6 — Bases de datos avanzadas
 
+**Laboratorio de profundización — Tabla asociativa con atributos propios.**
+
+1. Modela Pedido y Producto mediante LíneaPedido. 2. Define PK compuesta o sustituta y restricciones de unicidad. 3. Añade cantidad y precio aplicado. 4. Explica por qué esos atributos pertenecen a la asociación.
+
+**Evidencia esperada.** La tabla asociativa resuelve N:M y conserva datos propios de cada participación.
+
+**Seguridad y límites.** No duplicar filas de la misma pareja sin regla de negocio explícita.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.6.1 — Índices
 
 **Propósito y modelo.** Un índice es una estructura auxiliar que permite localizar filas sin recorrer toda la tabla en determinados patrones de consulta. Mejora algunas lecturas, pero consume espacio y añade trabajo a INSERT, UPDATE y DELETE. El optimizador decide si utilizarlo según estadísticas y costo estimado.
@@ -1479,6 +1569,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Indexar todas las columnas o asumir que la presencia de índice garantiza que el optimizador lo utilizará.
 
 **Comprobación.** ¿Por qué un índice puede mejorar SELECT y empeorar una carga con muchas escrituras?
+
+**Laboratorio de profundización — Selección de índices según consultas.**
+
+1. Identifica una consulta frecuente de búsqueda. 2. Compara plan con y sin índice en dataset de laboratorio. 3. Registra costo, filas examinadas y latencia. 4. Evalúa impacto en INSERT/UPDATE/DELETE.
+
+**Evidencia esperada.** La decisión se sustenta en consulta y medición y reconoce costo de almacenamiento y escritura.
+
+**Seguridad y límites.** No crear índices indiscriminadamente ni medir con datos insuficientes para representar carga.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.6.2 — B-Tree
 
@@ -1496,6 +1596,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué un índice ordenado puede acelerar consultas de rango?
 
+**Laboratorio de profundización — Estructura y búsqueda ordenada.**
+
+1. Dibuja nodos raíz, internos y hojas de un B-Tree simplificado. 2. Explica búsqueda por igualdad y rango. 3. Relaciona altura y crecimiento. 4. Consulta documentación del motor sobre estructura de índice real.
+
+**Evidencia esperada.** El esquema explica búsqueda balanceada y diferencia modelo conceptual de implementación concreta.
+
+**Seguridad y límites.** No asumir que todos los índices o motores utilizan idéntica estructura física.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.6.3 — Índices compuestos
 
 **Propósito y modelo.** Un índice compuesto incluye varias columnas y su orden importa. El principio de prefijo izquierdo en muchos índices B-Tree permite aprovechar las columnas iniciales; cambiar el orden puede alterar utilidad y selectividad. Debe diseñarse según filtros, joins y ordenamientos frecuentes.
@@ -1511,6 +1621,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Elegir orden alfabético de columnas o duplicar índices que comparten prefijos sin medir beneficio.
 
 **Comprobación.** ¿Por qué un índice (A,B) no necesariamente optimiza una consulta que filtra solo por B?
+
+**Laboratorio de profundización — Orden de columnas y prefijo izquierdo.**
+
+1. Diseña índice sobre (cliente_id, fecha). 2. Compara consultas filtradas por primera columna, ambas columnas y solo segunda. 3. Analiza ordenamiento. 4. Verifica plan con EXPLAIN.
+
+**Evidencia esperada.** La elección de columnas responde a filtros y ordenamientos reales y explica limitaciones de prefijo.
+
+**Seguridad y límites.** No duplicar índices similares sin medir ni suponer que el orden de columnas es intercambiable.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.6.4 — Vistas
 
@@ -1528,6 +1648,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué diferencia operativa existe entre una vista normal y una materializada?
 
+**Laboratorio de profundización — Abstracción y control de acceso con vistas.**
+
+1. Crea una vista de ventas que exponga solo columnas necesarias. 2. Compara resultado con consulta base. 3. Diseña permisos sobre la vista. 4. Explica vistas actualizables y dependencias.
+
+**Evidencia esperada.** La vista presenta el conjunto esperado y reduce exposición de columnas innecesarias.
+
+**Seguridad y límites.** No considerar una vista como sustituto de autorización o como anonimización automática.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.6.5 — Triggers
 
 **Propósito y modelo.** Un trigger ejecuta lógica asociada a eventos de INSERT, UPDATE o DELETE, antes o después según motor. Puede imponer reglas, auditar o mantener datos derivados, pero introduce efectos secundarios implícitos y dificulta depuración. Debe documentarse y probarse con transacciones.
@@ -1543,6 +1673,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Ocultar lógica de negocio crítica en múltiples triggers o crear recursión y efectos difíciles de rastrear.
 
 **Comprobación.** ¿Qué dificultad de mantenimiento puede generar un trigger que modifica varias tablas sin que la aplicación lo indique?
+
+**Laboratorio de profundización — Automatización con disparadores.**
+
+1. Diseña un trigger de auditoría en tabla de laboratorio. 2. Define evento y momento BEFORE/AFTER. 3. Prueba inserción y actualización. 4. Explica efectos secundarios y orden de ejecución.
+
+**Evidencia esperada.** El trigger actúa solo en eventos previstos y su efecto queda documentado y probado.
+
+**Seguridad y límites.** No ocultar lógica crítica en triggers ni generar recursión o efectos laterales no controlados.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.6.6 — Stored Procedures
 
@@ -1560,6 +1700,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué riesgo introduce construir SQL dinámico concatenando parámetros no confiables?
 
+**Laboratorio de profundización — Procedimientos almacenados y parámetros.**
+
+1. Diseña un procedimiento que consulte ventas por rango de fecha. 2. Define parámetros y validación. 3. Compara permisos EXECUTE y acceso directo a tablas. 4. Explica portabilidad y manejo de errores por motor.
+
+**Evidencia esperada.** El procedimiento encapsula una operación clara y controla parámetros y permisos.
+
+**Seguridad y límites.** No concatenar SQL dinámico inseguro ni conceder privilegios amplios al definidor sin revisar modo de ejecución.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.6.7 — Transacciones
 
 **Propósito y modelo.** Una transacción agrupa operaciones para preservar consistencia ante concurrencia y fallos. Sus límites se controlan con BEGIN/START TRANSACTION, COMMIT y ROLLBACK, según motor. La atomicidad requiere soporte del motor de almacenamiento y las operaciones deben mantener invariantes del dominio.
@@ -1575,6 +1725,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Mantener transacciones abiertas demasiado tiempo o asumir que una llamada a API externa se revierte con rollback SQL.
 
 **Comprobación.** ¿Por qué una transacción de base de datos no puede deshacer automáticamente un cobro realizado por un proveedor externo?
+
+**Laboratorio de profundización — Atomicidad de una operación de negocio.**
+
+1. Modela venta con inserción de pedido, detalle y actualización de inventario. 2. Agrupa operaciones en transacción. 3. Simula fallo a mitad del proceso. 4. Comprueba que no queda estado parcial tras rollback.
+
+**Evidencia esperada.** La operación conserva invariantes de negocio ante éxito o fallo y documenta límites transaccionales.
+
+**Seguridad y límites.** No mantener transacciones abiertas durante interacción humana ni incluir llamadas externas lentas sin diseño.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.6.8 — ACID
 
@@ -1592,6 +1752,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué propiedad describe que una transacción confirmada sobreviva a un reinicio conforme a las garantías configuradas?
 
+**Laboratorio de profundización — Evaluación de propiedades ACID.**
+
+1. Asocia atomicidad, consistencia, aislamiento y durabilidad con un escenario de transferencia. 2. Diseña una falla para cada propiedad. 3. Identifica qué controles dependen del motor y configuración. 4. Explica qué ACID no garantiza por sí solo.
+
+**Evidencia esperada.** Cada propiedad se explica con un ejemplo y se reconocen límites de aplicación y operación.
+
+**Seguridad y límites.** No asumir que ACID evita errores de negocio, pérdida por mala configuración o fallos externos.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.6.9 — Commit
 
 **Propósito y modelo.** COMMIT confirma los cambios de una transacción y los hace visibles conforme al aislamiento y las garantías de durabilidad del motor. Una vez confirmado, no se revierte con ROLLBACK ordinario; la corrección posterior requiere otra transacción o recuperación desde respaldo.
@@ -1607,6 +1777,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Confirmar antes de validar resultados o asumir que cerrar la conexión equivale siempre a rollback.
 
 **Comprobación.** ¿Qué opciones quedan después de un COMMIT si se detecta un dato incorrecto?
+
+**Laboratorio de profundización — Confirmación y persistencia.**
+
+1. Abre una transacción de laboratorio. 2. Realiza un cambio. 3. Comprueba visibilidad desde sesiones según aislamiento. 4. Ejecuta COMMIT y verifica persistencia en una nueva sesión.
+
+**Evidencia esperada.** Se demuestra el momento de confirmación y se diferencia visibilidad transaccional de persistencia.
+
+**Seguridad y límites.** No confirmar cambios sin revisar el conjunto afectado.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.6.10 — Rollback
 
@@ -1624,6 +1804,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué un rollback SQL no puede deshacer un archivo ya enviado a un sistema externo?
 
+**Laboratorio de profundización — Reversión y límites.**
+
+1. Inicia transacción. 2. Realiza cambios en tablas transaccionales. 3. Ejecuta ROLLBACK. 4. Verifica qué cambios desaparecen y documenta operaciones que pueden producir commits implícitos en el motor.
+
+**Evidencia esperada.** El estudiante identifica qué cambios se revierten y reconoce diferencias de motor/DDL.
+
+**Seguridad y límites.** No asumir que rollback revierte correos, archivos, llamadas externas o toda operación DDL.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.6.11 — Locks
 
 **Propósito y modelo.** Los locks coordinan acceso concurrente a recursos y protegen operaciones frente a conflictos. Pueden ser de fila, página, tabla, predicado o estructuras internas según motor. El alcance y granularidad influyen en concurrencia; bloquear más de lo necesario reduce rendimiento.
@@ -1639,6 +1829,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Mantener transacciones abiertas durante interacción de usuario o asumir que todos los motores bloquean filas de la misma manera.
 
 **Comprobación.** ¿Qué efecto puede producir una transacción larga sobre otras sesiones que necesitan las mismas filas?
+
+**Laboratorio de profundización — Bloqueos y concurrencia.**
+
+1. Abre dos sesiones de laboratorio. 2. Actualiza la misma fila en una transacción no confirmada. 3. Observa espera de la segunda sesión. 4. Explica bloqueo de fila frente a tabla según motor.
+
+**Evidencia esperada.** Se describe quién bloquea, qué recurso y cuándo se libera; se diferencia bloqueo de contención.
+
+**Seguridad y límites.** No bloquear tablas compartidas ni mantener transacciones abiertas para provocar espera en producción.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.6.12 — Deadlocks
 
@@ -1656,6 +1856,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué acceder a recursos en un orden consistente puede reducir deadlocks?
 
+**Laboratorio de profundización — Prevención y análisis de interbloqueos.**
+
+1. Diseña dos transacciones que bloqueen filas en orden inverso. 2. Dibuja el ciclo de espera. 3. Explica cómo el motor detecta y aborta una transacción. 4. Propón orden consistente de adquisición y reintento controlado.
+
+**Evidencia esperada.** El ciclo se representa correctamente y la mitigación incluye transacción abortada y retry limitado.
+
+**Seguridad y límites.** No crear deadlocks en sistemas compartidos ni reintentar indefinidamente.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.6.13 — Isolation Levels
 
 **Propósito y modelo.** Los niveles de aislamiento regulan anomalías de lectura/escritura concurrente. READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ y SERIALIZABLE son niveles habituales, pero comportamientos exactos, MVCC y anomalías permitidas dependen del DBMS. No se debe inferir equivalencia solo por el nombre del nivel.
@@ -1672,6 +1882,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué anomalía evita impedir que una transacción vea cambios no confirmados de otra?
 
+**Laboratorio de profundización — Anomalías de aislamiento.**
+
+1. Compara Read Uncommitted, Read Committed, Repeatable Read y Serializable. 2. Relaciona dirty read, non-repeatable read y phantom. 3. Comprueba comportamiento del motor de laboratorio. 4. Documenta diferencias entre motores.
+
+**Evidencia esperada.** La matriz relaciona niveles con anomalías y aclara variaciones de implementación.
+
+**Seguridad y límites.** No asumir que los nombres de niveles garantizan idéntico comportamiento en todos los DBMS.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.6.14 — Optimización
 
 **Propósito y modelo.** Optimizar consultas implica medir, comprender planes, revisar índices, cardinalidad, estadísticas, selectividad, volumen y patrón de acceso. No consiste en añadir índices indiscriminadamente ni reescribir SQL por intuición. Debe utilizarse datos representativos y comparar antes/después.
@@ -1687,6 +1907,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Medir una sola vez, optimizar sin conocer el objetivo o comparar datasets y cachés distintos.
 
 **Comprobación.** ¿Por qué un plan de ejecución es más informativo que afirmar que una consulta «parece lenta»?
+
+**Laboratorio de profundización — Diagnóstico de consulta costosa.**
+
+1. Selecciona consulta de laboratorio y define resultado correcto. 2. Mide tiempo y filas examinadas. 3. Revisa filtros, joins, índices y volumen. 4. Cambia una variable por vez y compara resultados.
+
+**Evidencia esperada.** La optimización se basa en mediciones reproducibles y preserva semántica de la consulta.
+
+**Seguridad y límites.** No optimizar solo por microbenchmarks ni alterar índices de producción sin plan.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.6.15 — EXPLAIN
 
@@ -1706,6 +1936,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 ### 9.7 — PostgreSQL
 
+
+**Laboratorio de profundización — Lectura de plan de ejecución.**
+
+1. Ejecuta EXPLAIN para SELECT de laboratorio. 2. Identifica acceso, índice, estimación de filas y joins. 3. Compara con EXPLAIN ANALYZE solo en dataset controlado si está disponible. 4. Relaciona estimaciones y mediciones.
+
+**Evidencia esperada.** El informe interpreta el plan y diferencia estimaciones de ejecución real.
+
+**Seguridad y límites.** EXPLAIN ANALYZE ejecuta la consulta en motores que lo soportan; no usar sobre sentencias destructivas ni cargas productivas.
+
+**Registro sugerido.** Registra motor y versión, dataset sintético, SQL, resultados, mediciones y diferencias observadas. No marques la práctica como ejecutada sin evidencia real.
 #### 9.7.1 — Arquitectura
 
 **Propósito y modelo.** PostgreSQL utiliza una arquitectura cliente-servidor. El proceso servidor administra una instancia, acepta conexiones mediante procesos backend y coordina memoria compartida, WAL, checkpoints, autovacuum y almacenamiento. La arquitectura exacta evoluciona entre versiones y debe consultarse en documentación oficial.
