@@ -38,43 +38,163 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 #### 9.1.1 — Qué es una base de datos
 
-Una base de datos es una colección organizada de datos mantenida para consulta, actualización y administración. Distingue datos, información, esquema y motor de almacenamiento. **Práctica:** define qué datos necesita el sistema de ventas del proyecto y qué preguntas debe responder. **Evidencia:** presenta cinco requisitos de consulta y relaciona cada uno con datos necesarios.
+**Propósito y modelo.** Una base de datos es una colección organizada de datos administrada para persistencia, consulta y actualización. Su diseño representa entidades y relaciones de un dominio y define reglas de integridad. No equivale a un archivo aislado: incluye estructuras, metadatos y mecanismos de acceso.
+
+**Ejemplo desarrollado.** Un sistema académico almacena estudiantes, cursos, matrículas y calificaciones. Cada dato debe tener significado, formato, reglas de validación y relaciones claras para evitar inconsistencias.
+
+**Práctica guiada.** Identifica entidades y atributos de un escenario de biblioteca. Distingue datos maestros, transacciones y catálogos.
+
+**Actividad independiente.** Redacta requisitos de datos para un inventario pequeño: qué se almacena, quién consulta, quién modifica y cuánto tiempo se conserva.
+
+**Criterios de aceptación.** Explica propósito, persistencia y organización y propone un conjunto coherente de entidades.
+
+**Errores frecuentes.** Confundir base de datos con DBMS o diseñar tablas sin conocer las reglas del negocio.
+
+**Comprobación.** ¿Qué diferencia existe entre los datos almacenados y el software que los administra?
 
 #### 9.1.2 — DBMS (Sistema Gestor de Bases de Datos)
 
-Un DBMS administra almacenamiento, consultas, concurrencia, integridad, seguridad y recuperación. Distingue el gestor del modelo de datos y de la aplicación cliente. **Práctica:** compara las responsabilidades de MySQL Server y PostgreSQL con las de un cliente SQL. **Evidencia:** clasifica cinco tareas según correspondan al gestor, al cliente o a la aplicación.
+**Propósito y modelo.** Un DBMS es el software que define, almacena, consulta, protege y administra bases de datos. Gestiona concurrencia, transacciones, permisos, recuperación, índices y metadatos. MySQL y PostgreSQL son DBMS relacionales; no son el mismo producto ni comparten todas las funciones y sintaxis.
+
+**Ejemplo desarrollado.** Una aplicación envía SQL al DBMS; el gestor valida permisos, planifica la consulta, accede a estructuras y devuelve resultados. La aplicación no debería acceder directamente a archivos internos de datos.
+
+**Práctica guiada.** Compara las funciones que ofrece un DBMS en documentación del producto: usuarios, transacciones, respaldos, índices y registro de actividad.
+
+**Actividad independiente.** Selecciona requisitos para elegir un DBMS en un sistema pequeño: compatibilidad, consistencia, concurrencia, respaldo, operación y licencia.
+
+**Criterios de aceptación.** Diferencia DBMS, base de datos, servidor y cliente; explica al menos cuatro responsabilidades del gestor.
+
+**Errores frecuentes.** Confundir el motor con una interfaz gráfica o suponer que elegir un DBMS resuelve automáticamente el diseño del esquema.
+
+**Comprobación.** ¿Qué responsabilidad del DBMS protege la consistencia cuando dos usuarios modifican datos al mismo tiempo?
 
 #### 9.1.3 — Servidor de bases de datos
 
-El servidor de bases de datos ejecuta el motor y atiende conexiones, autenticación, consultas y transacciones. Puede ser un proceso local o un servicio remoto. **Práctica:** dibuja cliente, red, puerto y proceso servidor para una instalación de laboratorio. **Evidencia:** identifica dónde residen los datos y qué componente escucha las conexiones.
+**Propósito y modelo.** El servidor de bases de datos ejecuta el proceso del DBMS y acepta conexiones según interfaces, puertos, autenticación y configuración. Puede alojar varias bases y esquemas. La ubicación del servidor no determina por sí sola su exposición: importan interfaces de escucha, firewall, rutas y controles de acceso.
+
+**Ejemplo desarrollado.** Una aplicación puede conectarse a PostgreSQL mediante una red privada y una cuenta limitada. Exponer el puerto del motor a Internet aumenta riesgo y rara vez es necesario para una arquitectura de aplicación bien segmentada.
+
+**Práctica guiada.** Dibuja cliente, servidor DBMS, almacenamiento y firewall. Identifica dirección de escucha, puerto y método de autenticación en una configuración de laboratorio, sin abrir puertos.
+
+**Actividad independiente.** Diseña una arquitectura de base de datos para una aplicación web con acceso solo desde el backend.
+
+**Criterios de aceptación.** Distingue proceso servidor, instancia y base de datos; delimita clientes autorizados.
+
+**Errores frecuentes.** Publicar el puerto de base de datos para que el navegador conecte directamente o usar la cuenta administrativa desde la aplicación.
+
+**Comprobación.** ¿Por qué el backend suele ser el único componente autorizado para conectarse al DBMS?
 
 #### 9.1.4 — Cliente de bases de datos
 
-Un cliente de bases de datos envía instrucciones y presenta resultados; puede ser una CLI, interfaz gráfica, ORM o aplicación. **Práctica:** ejecuta una consulta equivalente desde una terminal y una herramienta gráfica. **Evidencia:** compara conexión, consulta y resultado sin confundir el cliente con el servidor.
+**Propósito y modelo.** Un cliente de base de datos es una herramienta o biblioteca que establece conexiones y envía consultas al servidor. Puede ser una interfaz gráfica, CLI o driver embebido en una aplicación. El cliente no sustituye al DBMS ni debe almacenar credenciales de producción de forma insegura.
+
+**Ejemplo desarrollado.** MySQL Workbench y psql son clientes; una biblioteca JDBC también actúa como cliente desde una aplicación Java. Cada uno se autentica y opera con los permisos de la cuenta configurada.
+
+**Práctica guiada.** Identifica clientes gráficos, CLI y drivers para MySQL y PostgreSQL. En un entorno de laboratorio consulta versión y configuración de conexión sin guardar contraseñas en texto plano.
+
+**Actividad independiente.** Elige un cliente para administración y otro para integración de aplicación; justifica trazabilidad, automatización y manejo de secretos.
+
+**Criterios de aceptación.** Distingue cliente, driver y servidor y explica cómo se establece una conexión.
+
+**Errores frecuentes.** Confundir Workbench con el motor MySQL o incrustar credenciales en código fuente.
+
+**Comprobación.** ¿Qué componente traduce las llamadas de una aplicación al protocolo de conexión del DBMS?
 
 #### 9.1.5 — Bases relacionales
 
-El modelo relacional organiza datos en relaciones (tablas) y define operaciones sobre conjuntos, con integridad mediante claves y restricciones. **Práctica:** modela clientes y pedidos como relaciones separadas. **Evidencia:** explica por qué una tabla no es simplemente una hoja de cálculo y cómo se representa una asociación.
+**Propósito y modelo.** Una base relacional organiza datos en relaciones (representadas habitualmente como tablas), con atributos, tuplas y restricciones. La teoría relacional utiliza conjuntos y relaciones matemáticas; el SQL práctico incorpora características como NULL, duplicados y orden de salida que requieren cuidado.
+
+**Ejemplo desarrollado.** Las tablas Estudiante y Curso se relacionan mediante Matrícula. Una clave foránea representa la relación y permite aplicar integridad referencial.
+
+**Práctica guiada.** Diseña tres tablas para biblioteca: Libro, Usuario y Préstamo. Identifica claves y restricciones necesarias.
+
+**Actividad independiente.** Explica por qué guardar una lista de cursos separados por comas en una columna dificulta integridad, consultas y relaciones.
+
+**Criterios de aceptación.** Identifica relación, atributo, tupla y claves; modela una relación muchos-a-muchos mediante tabla intermedia.
+
+**Errores frecuentes.** Suponer que el orden de filas está garantizado o almacenar múltiples valores independientes en una sola columna sin justificación.
+
+**Comprobación.** ¿Por qué una relación muchos-a-muchos suele representarse mediante una tabla asociativa?
 
 #### 9.1.6 — Tablas
 
-Una tabla representa una relación con atributos y tuplas; cada columna tiene dominio y restricciones. **Práctica:** diseña la tabla `cliente` con identificador, correo y fecha de alta, justificando nulabilidad y unicidad. **Evidencia:** presenta DDL y explica cada atributo.
+**Propósito y modelo.** Una tabla representa una relación lógica con columnas definidas y filas de datos. El esquema establece nombres, tipos, restricciones y relaciones. Las tablas no garantizan por sí mismas un orden físico o lógico de las filas; el orden de consulta requiere ORDER BY.
+
+**Ejemplo desarrollado.** Una tabla Producto puede tener id, nombre, precio y estado. Una restricción CHECK puede limitar precio a valores no negativos y una clave primaria identifica cada fila.
+
+**Práctica guiada.** Diseña definición de tabla Producto y marca tipos, clave primaria, NOT NULL y restricción de dominio. No uses datos reales personales.
+
+**Actividad independiente.** Revisa un esquema con columnas repetidas y determina si corresponde separar una entidad en otra tabla.
+
+**Criterios de aceptación.** Identifica columnas, filas, esquema y restricciones; explica por qué SELECT sin ORDER BY no garantiza orden.
+
+**Errores frecuentes.** Utilizar posiciones de columnas como contrato o asumir que la tabla conserva el orden de inserción.
+
+**Comprobación.** ¿Qué garantía aporta ORDER BY que la estructura física de la tabla no aporta?
 
 #### 9.1.7 — Filas
 
-Una fila representa una tupla o registro con valores para las columnas de una tabla. La identidad lógica debe establecerse mediante una clave, no por la posición física de la fila. **Práctica:** inserta dos clientes de prueba y consulta ambos sin depender del orden natural. **Evidencia:** explica por qué se necesita `ORDER BY` para garantizar orden.
+**Propósito y modelo.** Una fila o tupla representa una instancia de la entidad descrita por la tabla. Cada valor debe respetar el tipo, restricciones y semántica de la columna. La clave primaria permite identificar una fila sin depender de su posición.
+
+**Ejemplo desarrollado.** En Producto, una fila puede representar un artículo específico. Dos filas pueden compartir nombre si el dominio lo permite, pero no deben compartir la clave primaria.
+
+**Práctica guiada.** Crea cinco registros sintéticos y valida qué atributos deben ser únicos, obligatorios o pueden quedar ausentes.
+
+**Actividad independiente.** Define reglas de calidad para filas de una tabla Cliente sin utilizar datos personales reales.
+
+**Criterios de aceptación.** Explica registro, identidad y restricciones de fila; identifica duplicidad semántica frente a duplicidad de clave.
+
+**Errores frecuentes.** Identificar registros por número de fila o asumir que dos nombres iguales representan necesariamente la misma entidad.
+
+**Comprobación.** ¿Por qué una clave primaria es más estable que utilizar el nombre de una persona como identificador?
 
 #### 9.1.8 — Columnas
 
-Una columna define un atributo con nombre, tipo y restricciones. La elección del tipo afecta validación, almacenamiento, comparación y operaciones. **Práctica:** selecciona tipos para precio, fecha, correo y estado de pedido. **Evidencia:** justifica precisión, longitud, nulabilidad y posibles restricciones.
+**Propósito y modelo.** Una columna representa un atributo con nombre, tipo y restricciones. La selección de tipo debe corresponder al dominio y precisión requerida: enteros, decimales, fechas, texto o tipos específicos del motor. Evitar tipos ambiguos facilita validación y consulta.
+
+**Ejemplo desarrollado.** Un precio requiere DECIMAL con precisión definida y no FLOAT si se necesita exactitud decimal de negocio. Una fecha debe almacenarse como DATE/TIMESTAMP, no como texto libre.
+
+**Práctica guiada.** Asigna tipos a atributos de una tabla Pedido: id, fecha, total, estado y observaciones. Justifica precisión, nulabilidad y longitud.
+
+**Actividad independiente.** Detecta problemas de diseño en columnas que almacenan fecha como texto, precio como VARCHAR o varios valores separados por coma.
+
+**Criterios de aceptación.** Selecciona tipos según dominio y explica impacto de precisión y nulabilidad.
+
+**Errores frecuentes.** Utilizar VARCHAR para todo o asumir que FLOAT representa importes monetarios exactos.
+
+**Comprobación.** ¿Por qué conviene elegir DECIMAL para valores monetarios que requieren precisión exacta?
 
 #### 9.1.9 — Esquemas
 
-Un esquema agrupa objetos de base de datos y organiza nombres, permisos y dependencias; su significado exacto varía entre motores. **Práctica:** identifica bases de datos y esquemas en MySQL y PostgreSQL. **Evidencia:** describe la diferencia entre database y schema en ambos motores sin asumir que son equivalentes.
+**Propósito y modelo.** Un esquema agrupa objetos de base de datos como tablas, vistas, secuencias y funciones y proporciona un espacio de nombres y límites administrativos. La semántica exacta varía entre DBMS: PostgreSQL utiliza esquemas como contenedores dentro de una base; MySQL usa database y schema como sinónimos en muchos contextos.
+
+**Ejemplo desarrollado.** Una aplicación puede separar objetos en esquemas ventas, inventario y auditoría, otorgando permisos diferentes. El esquema no sustituye a la separación por instancias cuando se requieren límites operativos más fuertes.
+
+**Práctica guiada.** Consulta esquemas disponibles en una instancia de laboratorio y localiza una tabla mediante su nombre calificado esquema.tabla.
+
+**Actividad independiente.** Diseña una convención de esquemas para separar módulos de una aplicación y define quién puede crear o modificar objetos.
+
+**Criterios de aceptación.** Explica esquema como espacio de nombres y reconoce diferencias entre MySQL y PostgreSQL.
+
+**Errores frecuentes.** Suponer que schema significa exactamente lo mismo en todos los motores o confiar en el nombre del esquema como único control de seguridad.
+
+**Comprobación.** ¿Qué ventaja aporta calificar una tabla con el nombre de su esquema?
 
 #### 9.1.10 — Tipos de datos
 
-Los tipos de datos limitan y describen valores: enteros, decimales, texto, fechas, booleanos y tipos específicos del motor. Evita almacenar importes monetarios en coma flotante binaria cuando se requiere exactitud decimal. **Práctica:** define tipos para precio, cantidad y fecha de pedido. **Evidencia:** explica por qué usar DECIMAL para importes y cómo se controlan rangos.
+**Propósito y modelo.** Los tipos de datos determinan representación, rango, operaciones y validación de valores. Deben elegirse según semántica y motor: INTEGER, BIGINT, DECIMAL, VARCHAR, TEXT, DATE, TIMESTAMP, BOOLEAN y tipos binarios, entre otros. Diferencias entre motores afectan límites, coerción, zona horaria y almacenamiento.
+
+**Ejemplo desarrollado.** Una fecha de nacimiento suele ser DATE; un instante de evento con zona horaria requiere una decisión explícita sobre TIMESTAMP y normalización. Guardar fechas como cadenas complica ordenamiento y comparación.
+
+**Práctica guiada.** Construye una matriz de atributos y tipos para una tabla Evento. Indica rango, precisión, nulabilidad y portabilidad entre MySQL y PostgreSQL.
+
+**Actividad independiente.** Revisa un esquema hipotético y propone cambios para mejorar precisión, restricciones y compatibilidad.
+
+**Criterios de aceptación.** Justifica tipo, precisión, longitud y tratamiento de NULL; reconoce particularidades del motor.
+
+**Errores frecuentes.** Confundir NULL con cadena vacía, no definir zona horaria o asumir que tipos homónimos tienen comportamiento idéntico en todos los DBMS.
+
+**Comprobación.** ¿Qué problemas puede generar almacenar fechas y números como texto?
 
 ### 9.2 — Modelado
 
