@@ -178,204 +178,393 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 #### 13.1.01 — Cliente-servidor
 El modelo cliente-servidor separa al consumidor de una capacidad y al sistema que la ofrece mediante un protocolo. Identifica quién inicia la solicitud, quién procesa y dónde se aplica autenticación; no presupongas que cliente siempre significa navegador.
 
+
+**Práctica y evidencia:** Dibuja una solicitud desde un navegador hasta un servicio web y la respuesta de retorno. **Evidencia:** identifica cliente, servidor, protocolo y límites de confianza.
+
 #### 13.1.02 — Navegador
 El navegador obtiene recursos, interpreta HTML/CSS, ejecuta JavaScript y aplica políticas de seguridad de origen. Usa sus herramientas de desarrollo para inspeccionar solicitudes, consola, almacenamiento y errores sin asumir que el comportamiento local representa todos los navegadores.
+
+
+**Práctica y evidencia:** Inspecciona una solicitud generada por el navegador en DevTools, pestaña Network. **Evidencia:** registra URL, método, estado y recursos cargados.
 
 #### 13.1.03 — Servidor
 Un servidor recibe solicitudes y ofrece recursos o servicios mediante procesos y puertos. Distingue servidor físico, sistema operativo, proceso de aplicación y servidor HTTP; limita interfaces de administración y expón solo los servicios necesarios.
 
+
+**Práctica y evidencia:** Levanta un servidor local de prueba y realiza una solicitud desde otro proceso cliente. **Evidencia:** identifica puerto de escucha, proceso y respuesta.
+
 #### 13.1.04 — DNS
 DNS traduce nombres de dominio a registros como A, AAAA, CNAME y MX mediante una jerarquía distribuida y cachés. Comprende TTL, resolución recursiva/autoritativa y propagación; DNS no cifra por sí solo el contenido de las conexiones.
+
+
+**Práctica y evidencia:** Consulta registros A, AAAA y CNAME de un dominio de laboratorio con una herramienta DNS. **Evidencia:** explica resolución y TTL sin confundir DNS con HTTP.
 
 #### 13.1.05 — IP
 IP identifica interfaces y permite enrutar paquetes entre redes. IPv4 e IPv6 tienen tamaños y mecanismos distintos; una dirección puede ser privada, pública, dinámica o asignada a una interfaz, y no identifica necesariamente a una persona.
 
+
+**Práctica y evidencia:** Inspecciona direcciones locales y rutas de la máquina que ejecuta el servidor. **Evidencia:** diferencia IP de interfaz, IP de destino y dirección pública observada.
+
 #### 13.1.06 — Puertos
 Un puerto identifica un punto lógico de comunicación de transporte en TCP o UDP. El número de puerto por sí solo no confirma qué servicio está activo; comprueba protocolo, proceso, reglas de red y exposición real.
+
+
+**Práctica y evidencia:** Consulta sockets en escucha y relaciona puertos con procesos en un entorno propio. **Evidencia:** explica por qué un puerto identifica un punto de comunicación y no una aplicación por sí solo.
 
 #### 13.1.07 — Hosting
 Hosting proporciona infraestructura y servicios para publicar aplicaciones o sitios. Compara recursos, disponibilidad, copias, TLS, soporte, residencia de datos y responsabilidad operativa; la contratación no sustituye la configuración segura del servicio.
 
+
+**Práctica y evidencia:** Compara hosting compartido, VPS, dedicado y plataforma administrada para una aplicación de prueba. **Evidencia:** justifica la opción por control, aislamiento, coste y responsabilidad operativa.
+
 #### 13.1.08 — HTTP
 HTTP define un protocolo de aplicación basado en mensajes de solicitud y respuesta. Estudia métodos, recursos, headers, códigos de estado y semántica de caché; HTTP no implica cifrado si no se protege mediante TLS.
+
+
+**Práctica y evidencia:** Captura una petición HTTP de prueba y analiza línea inicial, cabeceras y respuesta. **Evidencia:** explica el intercambio sin confundir HTTP con el transporte subyacente.
 
 #### 13.1.09 — HTTPS
 HTTPS es HTTP transportado sobre una conexión protegida con TLS y validación de identidad del servidor. Comprueba certificado, nombre de host y cadena de confianza; el candado no garantiza que el sitio sea legítimo o que su aplicación sea segura.
 
+
+**Práctica y evidencia:** Compara una URL HTTP con HTTPS y verifica el certificado del servidor de prueba. **Evidencia:** explica qué protege TLS y qué información sigue visible en metadatos de conexión.
+
 #### 13.1.10 — TLS
 TLS proporciona confidencialidad, integridad y autenticación del canal mediante negociación criptográfica y certificados. Utiliza versiones y suites modernas soportadas por plataformas mantenidas; evita describir TLS como cifrado de extremo a extremo de toda la aplicación.
+
+
+**Práctica y evidencia:** Inspecciona una negociación TLS en una herramienta de diagnóstico autorizada. **Evidencia:** identifica versión, certificado y parámetros negociados sin recomendar versiones obsoletas.
 
 #### 13.1.11 — Certificados
 Los certificados digitales vinculan una identidad con una clave pública y son validados mediante una cadena de confianza. Revisa sujeto/SAN, emisor, vigencia y revocación; nunca aceptes advertencias de certificado como una solución permanente.
 
+
+**Práctica y evidencia:** Examina la cadena de certificados de un dominio propio o de documentación. **Evidencia:** identifica sujeto, emisor, SAN, vigencia y validación de nombre.
+
 #### 13.1.12 — Cookies
 Las cookies permiten que el navegador almacene y envíe pequeños datos según dominio, ruta y políticas. Comprende `Secure`, `HttpOnly`, `SameSite`, `Path`, `Domain` y expiración; evita guardar secretos innecesarios y protege contra CSRF según el flujo.
 
+
+**Práctica y evidencia:** Configura una cookie de prueba con Secure, HttpOnly, SameSite y Path adecuados. **Evidencia:** demuestra el alcance y explica por qué una cookie no debe contener credenciales en claro.
+
 #### 13.1.13 — Sesiones
 Una sesión mantiene contexto entre solicitudes HTTP que, por diseño, no dependen de una conexión persistente. El servidor suele asociar un identificador aleatorio con estado de sesión; rota el identificador tras autenticación y revoca sesiones al cerrar o detectar riesgo.
+
+
+**Práctica y evidencia:** Implementa una sesión de laboratorio con identificador aleatorio y expiración. **Evidencia:** prueba rotación al autenticar, cierre de sesión e invalidación del identificador.
 
 ### Módulo 13.2 — HTTP en profundidad
 
 #### 13.2.01 — Requests
 Una request HTTP incluye método, destino, versión/protocolo, headers y opcionalmente body. Inspecciona una solicitud real y diferencia URL, query parameters, headers y contenido; nunca registres credenciales o datos personales sin necesidad y controles.
 
+
+**Práctica y evidencia:** Construye una solicitud con método, URI, cabeceras y cuerpo, y envíala a un endpoint de prueba. **Evidencia:** identifica cada parte y su función.
+
 #### 13.2.02 — Responses
 Una response HTTP contiene estado, headers y, según el caso, un body. El cliente debe interpretar código y tipo de contenido antes de procesar el cuerpo; maneja respuestas vacías, redirecciones y errores de forma explícita.
+
+
+**Práctica y evidencia:** Analiza una respuesta HTTP real y separa línea de estado, cabeceras y cuerpo. **Evidencia:** explica cómo el cliente interpreta el resultado.
 
 #### 13.2.03 — Métodos
 Los métodos expresan la intención de una solicitud: GET, HEAD, POST, PUT, PATCH, DELETE y otros. Distingue seguridad e idempotencia; no uses GET para modificar estado ni asumas que todos los servidores implementan métodos de la misma manera.
 
+
+**Práctica y evidencia:** Compara GET, POST, PUT, PATCH, DELETE, HEAD y OPTIONS por semántica, seguridad e idempotencia. **Evidencia:** selecciona el método adecuado para cinco operaciones.
+
 #### 13.2.04 — Headers
 Los headers transportan metadatos de negociación, autenticación, caché, representación y control. Separa headers de solicitud, respuesta y contenido; evita duplicados contradictorios y no expongas tokens en URLs o logs.
+
+
+**Práctica y evidencia:** Inspecciona cabeceras como Host, Accept, Content-Type, Cache-Control y Authorization. **Evidencia:** clasifica cuáles describen contenido, negociación, caché o identidad.
 
 #### 13.2.05 — Body
 El body contiene la representación enviada o recibida, por ejemplo JSON, texto o datos binarios. Define límites de tamaño y `Content-Type`, valida estructura y codificación y no confíes en el body por el mero hecho de que el cliente lo haya enviado.
 
+
+**Práctica y evidencia:** Envía un cuerpo JSON en POST y verifica su interpretación en servidor. **Evidencia:** distingue cuerpo de solicitud, parámetros de ruta y query string.
+
 #### 13.2.06 — Status codes
 Los status codes comunican el resultado general: 2xx éxito, 3xx redirección, 4xx problema asociado a la solicitud/cliente y 5xx fallo del servidor. Selecciona códigos semánticamente correctos y no uses 200 para ocultar errores de negocio.
+
+
+**Práctica y evidencia:** Clasifica códigos 2xx, 3xx, 4xx y 5xx y selecciona códigos apropiados para un endpoint. **Evidencia:** justifica diferencia entre 400, 401, 403, 404, 409 y 500.
 
 #### 13.2.07 — Content-Type
 `Content-Type` declara el tipo de medio del contenido y guía su interpretación. Comprueba que coincida con el body y utiliza tipos específicos como `application/json`; no confundas `Content-Type` con `Accept`, que expresa formatos que el cliente puede recibir.
 
+
+**Práctica y evidencia:** Envía JSON y texto con Content-Type correcto y observa la negociación Accept. **Evidencia:** explica diferencia entre formato enviado y formato solicitado.
+
 #### 13.2.08 — Authorization
 Authorization transporta credenciales o pruebas de autorización según un esquema como Bearer. Envía credenciales por canal TLS, aplica scopes mínimos y valida identidad/permisos en el servidor; un token presente no significa que autorice todas las operaciones.
+
+
+**Práctica y evidencia:** Compara autenticación básica, bearer token y cookie de sesión en un entorno de prueba. **Evidencia:** identifica cómo se transporta la credencial y qué protección requiere.
 
 #### 13.2.09 — Caching
 La caché HTTP reutiliza respuestas según directivas como `Cache-Control`, `ETag`, `Last-Modified` y `Vary`. Configura políticas distintas para contenido público y privado; evita que respuestas personalizadas queden almacenadas en cachés compartidas.
 
+
+**Práctica y evidencia:** Configura Cache-Control para un recurso estático y otro personalizado. **Evidencia:** explica max-age, no-store, private y riesgos de cachear datos de usuario.
+
 #### 13.2.10 — Idempotencia
 Idempotencia significa que repetir una operación produce el mismo efecto previsto en el estado del servidor. PUT y DELETE se definen como idempotentes por semántica HTTP, mientras POST no lo es necesariamente; claves de idempotencia pueden ayudar en operaciones de creación.
 
+
+**Práctica y evidencia:** Diseña un endpoint de creación con clave de idempotencia o PUT sobre recurso conocido. **Evidencia:** demuestra que repetir una solicitud no duplica efectos no deseados.
+
 #### 13.2.11 — Statelessness
 Statelessness significa que cada solicitud contiene la información necesaria para interpretarse sin depender del estado conversacional de la conexión anterior. No prohíbe sesiones ni almacenamiento en servidor; exige que el contexto se transporte o se recupere mediante un mecanismo definido.
+
+
+**Práctica y evidencia:** Explica por qué una API REST se diseña sin depender de estado de sesión implícito entre solicitudes. **Evidencia:** identifica qué contexto debe acompañar cada solicitud y dónde se mantiene el estado del recurso.
 
 ### Módulo 13.3 — APIs
 
 #### 13.3.01 — Qué es una API
 Una API define un contrato para que componentes o sistemas intercambien capacidades y datos. Documenta operaciones, entradas, salidas, errores, autenticación y límites; una API es una interfaz contractual, no necesariamente una URL REST.
 
+
+**Práctica y evidencia:** Define el contrato de una API para consultar productos, crear pedidos y consultar su estado. **Evidencia:** lista operaciones, entradas, salidas y errores.
+
 #### 13.3.02 — API pública
 Una API pública está disponible para consumidores externos bajo condiciones, límites y políticas explícitas. Revisa términos, cuotas, versiones y tratamiento de datos; pública no significa anónima, ilimitada ni libre de requisitos de autorización.
+
+
+**Práctica y evidencia:** Diseña una API pública con cuotas, autenticación, documentación y política de compatibilidad. **Evidencia:** identifica riesgos de abuso y expectativas del consumidor externo.
 
 #### 13.3.03 — API privada
 Una API privada se limita a sistemas, usuarios o redes autorizadas de una organización. Aplica autenticación, autorización, segmentación y observabilidad; no dependas únicamente de que el endpoint no sea conocido públicamente.
 
+
+**Práctica y evidencia:** Diseña una API privada entre servicios internos y delimita quién puede invocarla. **Evidencia:** especifica autenticación de servicio, autorización y segmentación de red.
+
 #### 13.3.04 — API REST
 REST es un estilo arquitectónico que utiliza recursos, representaciones, interfaz uniforme y restricciones como statelessness. No toda API JSON es REST; diseña recursos y semántica HTTP coherentes y documenta desviaciones del estilo.
+
+
+**Práctica y evidencia:** Evalúa una API según restricciones REST y distingue estilo arquitectónico de una simple API HTTP con JSON. **Evidencia:** analiza recursos, representaciones, interfaz uniforme y estado de aplicación.
 
 #### 13.3.05 — Endpoints
 Un endpoint es una dirección y operación concreta expuesta por una API. Documenta método, ruta, parámetros, autenticación, respuestas y errores; evita incluir datos sensibles en segmentos de URL que pueden registrarse en historial y logs.
 
+
+**Práctica y evidencia:** Define endpoints con rutas de recursos y métodos HTTP coherentes. **Evidencia:** evita verbos innecesarios en URI y documenta códigos de respuesta.
+
 #### 13.3.06 — Resources
 Un resource representa una entidad o concepto sobre el que opera la API. Diseña identificadores estables, relaciones explícitas y representaciones adecuadas; no expongas directamente tablas internas si eso acopla el contrato público al modelo de persistencia.
+
+
+**Práctica y evidencia:** Modela recursos como clientes, pedidos y productos con identificadores estables. **Evidencia:** explica relaciones, subrecursos y límites de agregación.
 
 #### 13.3.07 — JSON
 JSON representa objetos, arrays, cadenas, números, booleanos y null mediante una sintaxis textual. Valida tipos y límites, recuerda que JSON no incluye comentarios ni fechas nativas y evita asumir que números grandes conservan precisión en todos los runtimes.
 
+
+**Práctica y evidencia:** Valida un documento JSON y define esquema de campos obligatorios, opcionales y tipos. **Evidencia:** detecta un documento inválido y explica la diferencia entre sintaxis y validez de negocio.
+
 #### 13.3.08 — XML (introducción)
 XML representa datos jerárquicos mediante elementos, atributos y namespaces. Comprende esquemas y codificación; al procesar XML no confiable deshabilita entidades externas y configuraciones peligrosas para prevenir XXE y acceso no autorizado a recursos.
+
+
+**Práctica y evidencia:** Compara XML con JSON mediante un ejemplo equivalente y analiza namespaces y atributos. **Evidencia:** identifica contextos donde XML sigue siendo relevante y sus costes.
 
 #### 13.3.09 — Serialización
 Serialización convierte estructuras de datos a una representación transferible o almacenable, como JSON o XML. Define formatos, codificación, compatibilidad y tratamiento de valores no representables; no confundas serialización con cifrado o validación.
 
+
+**Práctica y evidencia:** Serializa un objeto de dominio a JSON con reglas explícitas para fechas, decimales e identificadores. **Evidencia:** comprueba que la representación no expone campos internos o secretos.
+
 #### 13.3.10 — Deserialización
 Deserialización reconstruye estructuras a partir de datos recibidos. Trata el contenido como no confiable, valida esquema y tamaño y evita mecanismos que instancien clases arbitrarias o ejecuten lógica al reconstruir objetos.
+
+
+**Práctica y evidencia:** Deserializa una entrada externa y valida estructura, tipos, límites y reglas de negocio antes de persistir. **Evidencia:** demuestra rechazo seguro de campos inesperados o inválidos.
 
 #### 13.3.11 — CRUD
 CRUD resume crear, leer, actualizar y eliminar recursos. Relaciona cada operación con métodos HTTP y reglas de negocio, controla concurrencia y autorización y evita que una operación de lectura revele campos no permitidos.
 
+
+**Práctica y evidencia:** Mapea operaciones CRUD a métodos y endpoints de una API. **Evidencia:** explica cómo se reflejan creación, consulta, actualización y eliminación sin confundirlas con sentencias SQL concretas.
+
 #### 13.3.12 — Paginación
 La paginación limita el volumen devuelto por una consulta mediante páginas, cursores o tokens de continuación. Define orden estable, tamaño máximo y comportamiento ante cambios concurrentes; evita offsets enormes cuando la colección crece.
+
+
+**Práctica y evidencia:** Implementa paginación por límite/desplazamiento y analiza cuándo conviene cursor. **Evidencia:** demuestra orden estable, límites máximos y comportamiento ante cambios concurrentes.
 
 #### 13.3.13 — Filtrado
 El filtrado restringe resultados mediante criterios declarados por el consumidor. Valida campos y operadores permitidos, parametriza consultas y limita combinaciones costosas para evitar inyección y agotamiento de recursos.
 
+
+**Práctica y evidencia:** Añade filtros validados para estado, fecha y categoría mediante parámetros de consulta. **Evidencia:** limita campos y operadores permitidos para evitar consultas arbitrarias.
+
 #### 13.3.14 — Versionado
 El versionado permite evolucionar contratos sin romper consumidores. Define política para cambios incompatibles, periodo de soporte y migración; no incrementes versiones por cambios internos que no afectan al contrato observable.
+
+
+**Práctica y evidencia:** Define política de versionado de API y documenta cambios incompatibles y compatibles. **Evidencia:** muestra estrategia de transición y retirada de una versión antigua.
 
 ### Módulo 13.4 — Consumo de APIs
 
 #### 13.4.01 — Fetch
 Fetch consume recursos HTTP desde JavaScript y devuelve promesas. Comprueba `response.ok`, parsea según `Content-Type`, gestiona cancelación y errores de red y no almacenes tokens sensibles en el código fuente del cliente.
 
+
+**Práctica y evidencia:** Consume un endpoint con Fetch y gestiona HTTP no exitoso, red, timeout y parseo. **Evidencia:** distingue fallo de transporte de respuesta 4xx/5xx.
+
 #### 13.4.02 — Axios
 Axios es una biblioteca cliente HTTP que facilita configuración, interceptores y transformación de datos. Evalúa si el proyecto necesita la dependencia adicional, configura timeouts y evita interceptores que registren credenciales o reintenten indefinidamente.
+
+
+**Práctica y evidencia:** Implementa una solicitud Axios con configuración central, interceptores y cancelación cuando aplique. **Evidencia:** evita duplicar credenciales o registrar tokens en logs.
 
 #### 13.4.03 — Postman
 Postman permite construir solicitudes, organizar colecciones y documentar pruebas de APIs. Usa variables de entorno para endpoints y credenciales de prueba, nunca exportes secretos y diferencia una colección ejecutada de una especificación de comportamiento validada.
 
+
+**Práctica y evidencia:** Crea una colección Postman con variables de entorno y pruebas de respuesta. **Evidencia:** exporta una colección sin secretos y documenta los asserts.
+
 #### 13.4.04 — Insomnia
 Insomnia permite explorar y probar APIs mediante solicitudes, entornos y colecciones. Mantén los entornos separados, controla secretos y registra método, headers, body y respuesta para que otra persona pueda reproducir la prueba.
+
+
+**Práctica y evidencia:** Reproduce una solicitud en Insomnia y guarda un entorno de laboratorio con variables no sensibles. **Evidencia:** documenta método, URL, cabeceras y respuesta.
 
 #### 13.4.05 — Thunder Client
 Thunder Client integra pruebas HTTP en el editor y facilita trabajar junto al código. Guarda colecciones sin credenciales reales, documenta dependencias del entorno y no confundas una prueba manual aislada con cobertura automatizada.
 
+
+**Práctica y evidencia:** Utiliza Thunder Client para enviar solicitudes a un servidor local y comparar respuestas. **Evidencia:** registra configuración y resultado sin incluir tokens reales.
+
 #### 13.4.06 — Manejo de errores
 El manejo de errores distingue fallo de conexión, timeout, rechazo HTTP, respuesta inválida y error de negocio. Muestra mensajes útiles al usuario, conserva identificadores de correlación para soporte y evita filtrar stack traces o detalles internos.
+
+
+**Práctica y evidencia:** Diseña un formato uniforme de error con código, mensaje seguro, correlación y detalles internos solo en logs protegidos. **Evidencia:** demuestra que el cliente no recibe stack traces ni secretos.
 
 #### 13.4.07 — Autenticación
 La autenticación verifica quién realiza la solicitud y debe separarse de la autorización, que decide qué puede hacer. Utiliza mecanismos mantenidos, protege credenciales y aplica controles de sesión, rotación y revocación según el riesgo.
 
+
+**Práctica y evidencia:** Implementa autenticación de prueba y verifica identidad en servidor antes de acceder a recursos. **Evidencia:** diferencia autenticación de autorización y prueba acceso anónimo y autenticado.
+
 #### 13.4.08 — Headers
 Los headers del cliente incluyen negociación de contenido, idioma, autorización y trazabilidad. Añade solo los necesarios, respeta políticas CORS y no pongas secretos en headers que puedan copiarse a registros o herramientas compartidas.
+
+
+**Práctica y evidencia:** Define cabeceras requeridas para correlación, caché, contenido y autenticación. **Evidencia:** documenta cuáles son obligatorias y cómo se validan.
 
 #### 13.4.09 — Tokens
 Los tokens representan credenciales o concesiones con alcance y vigencia definidos. Valida emisor, audiencia, expiración y firma cuando aplique; almacénalos con controles apropiados y evita registrarlos, compartirlos o incluirlos en URLs.
 
+
+**Práctica y evidencia:** Compara tokens opacos y autocontenidos, expiración, audiencia, emisor y revocación. **Evidencia:** explica almacenamiento y transmisión seguros sin incluir tokens reales en el repositorio.
+
 #### 13.4.10 — Documentación
 La documentación de consumo explica cómo configurar entorno, autenticar, llamar operaciones y tratar errores. Incluye ejemplos sin secretos, respuestas representativas, límites y versiones; verifica que los ejemplos coincidan con el contrato desplegado.
+
+
+**Práctica y evidencia:** Documenta un endpoint con propósito, parámetros, esquema, ejemplos y errores. **Evidencia:** permite que otra persona reproduzca una solicitud usando solo la documentación.
 
 ### Módulo 13.5 — Otros estilos de comunicación
 
 #### 13.5.01 — GraphQL
 GraphQL permite solicitar datos mediante un esquema tipado y operaciones como query, mutation y subscription. Controla profundidad, complejidad, autorización por campo y exposición de introspección según el entorno; evita resolver datos sin límites.
 
+
+**Práctica y evidencia:** Diseña una consulta GraphQL que solicite campos concretos y compara con endpoints REST equivalentes. **Evidencia:** explica resolvers, esquema y riesgos de consultas costosas.
+
 #### 13.5.02 — WebSockets
 WebSockets mantiene un canal bidireccional persistente después de un handshake HTTP. Define autenticación, autorización por mensaje, límites, reconexión y heartbeat; valida el origen y no asumas que el canal permanece confiable tras la conexión inicial.
+
+
+**Práctica y evidencia:** Construye un intercambio WebSocket en un servidor de laboratorio y gestiona cierre/reconexión. **Evidencia:** documenta autenticación, origen permitido y límites de mensajes.
 
 #### 13.5.03 — gRPC
 gRPC utiliza contratos definidos mediante Protocol Buffers y transporte HTTP/2 para comunicación entre servicios. Es útil para APIs tipadas y streaming; documenta compatibilidad de esquemas, deadlines, errores y autenticación entre servicios.
 
+
+**Práctica y evidencia:** Define un servicio gRPC con mensajes protobuf y un método RPC. **Evidencia:** explica contrato, generación de stubs y negociación de transporte.
+
 #### 13.5.04 — Webhooks
 Un webhook envía una notificación HTTP cuando ocurre un evento en un sistema. Verifica firmas, limita reintentos, soporta entregas duplicadas y procesa de forma idempotente; responde rápido y delega tareas largas a una cola.
 
+
+**Práctica y evidencia:** Implementa un webhook receptor que valide firma, timestamp y repetición de eventos. **Evidencia:** demuestra rechazo de firma incorrecta y procesamiento idempotente.
+
 #### 13.5.05 — Server-Sent Events
 Server-Sent Events permite que el servidor envíe eventos unidireccionales al navegador mediante una conexión HTTP. Define reconexión, identificadores de evento y control de acceso; el cliente no puede enviar mensajes por el mismo canal SSE.
+
+
+**Práctica y evidencia:** Construye un flujo SSE que envíe eventos unidireccionales desde servidor al navegador. **Evidencia:** compara SSE con WebSocket y explica reconexión y formato de eventos.
 
 ### Módulo 13.6 — Seguridad
 
 #### 13.6.01 — CORS
 CORS es un mecanismo del navegador que controla si un origen puede leer respuestas de otro origen. Configura orígenes, métodos y headers permitidos de forma específica; CORS no es autenticación ni impide que clientes no navegador llamen a la API.
 
+
+**Práctica y evidencia:** Configura CORS para permitir solo orígenes necesarios, métodos y cabeceras concretas. **Evidencia:** prueba solicitud preflight y explica que CORS no sustituye autenticación.
+
 #### 13.6.02 — API Keys
 Una API key identifica una aplicación o proyecto y puede servir para cuotas o control de acceso limitado. No la consideres secreto seguro si está embebida en frontend público; combina controles de servidor, restricciones y rotación.
+
+
+**Práctica y evidencia:** Diseña una API key de prueba con alcance, rotación, almacenamiento seguro y revocación. **Evidencia:** demuestra que la clave no se expone en código cliente ni logs.
 
 #### 13.6.03 — JWT
 JWT es un formato de token con claims codificados y, habitualmente, firma o cifrado según el perfil. Verifica algoritmo permitido, firma, emisor, audiencia y expiración; el payload firmado no está cifrado necesariamente y puede ser legible.
 
+
+**Práctica y evidencia:** Valida un JWT comprobando firma, algoritmo permitido, issuer, audience y expiración. **Evidencia:** demuestra rechazo de token manipulado y aclara que el payload no está cifrado por defecto.
+
 #### 13.6.04 — Cookies seguras
 Las cookies seguras de sesión deben configurarse con `Secure`, `HttpOnly` y `SameSite` según el flujo. Usa TLS, limita alcance con `Path`/`Domain`, rota identificadores y añade defensas CSRF cuando la arquitectura lo requiera.
+
+
+**Práctica y evidencia:** Configura cookies de autenticación con Secure, HttpOnly, SameSite y protección CSRF acorde al flujo. **Evidencia:** inspecciona atributos y prueba cierre de sesión.
 
 #### 13.6.05 — Refresh tokens
 Refresh tokens permiten obtener nuevos access tokens sin volver a autenticar al usuario en cada ciclo. Almacénalos de forma protegida, rótalos cuando corresponda, detecta reutilización y permite revocación por dispositivo o sesión.
 
+
+**Práctica y evidencia:** Diseña rotación de refresh tokens con detección de reutilización y revocación de familia. **Evidencia:** describe estados, almacenamiento y respuesta ante robo/reuso.
+
 #### 13.6.06 — Rate limiting
 Rate limiting restringe solicitudes por usuario, token, IP u otra clave para proteger disponibilidad y cuotas. Define ventanas y respuestas consistentes, considera proxies confiables y evita que una sola dirección compartida bloquee injustamente a muchos usuarios.
+
+
+**Práctica y evidencia:** Implementa un límite de solicitudes por usuario o cliente con respuesta 429 y cabeceras informativas. **Evidencia:** prueba ventana, concurrencia y bypasses por identidades compartidas.
 
 ### Módulo 13.7 — Documentación
 
 #### 13.7.01 — OpenAPI
 OpenAPI describe contratos HTTP mediante un documento estructurado que puede generar documentación, clientes y validaciones. Mantén el esquema junto al código, especifica seguridad y errores y comprueba que las rutas documentadas coincidan con la implementación.
 
+
+**Práctica y evidencia:** Escribe una especificación OpenAPI para un endpoint de lectura y otro de escritura. **Evidencia:** valida el documento y comprueba que ejemplos coincidan con esquemas.
+
 #### 13.7.02 — Swagger
 Swagger es un conjunto de herramientas del ecosistema OpenAPI para visualizar, editar y probar especificaciones. Distingue la especificación OpenAPI de Swagger UI/Editor y protege las interfaces interactivas en entornos no públicos.
+
+
+**Práctica y evidencia:** Utiliza Swagger UI para explorar una especificación y enviar una solicitud al entorno de prueba. **Evidencia:** documenta cómo se autentica el explorador y qué operaciones están disponibles.
 
 #### 13.7.03 — Postman Collections
 Postman Collections agrupa solicitudes, variables y scripts para reproducir flujos de API. Incluye datos de prueba no sensibles, assertions sobre status/body y documentación de precondiciones; versiona colecciones sin credenciales ni datos personales.
 
+
+**Práctica y evidencia:** Organiza una colección Postman por recurso y flujo de negocio con variables no sensibles. **Evidencia:** demuestra ejecución reproducible y ausencia de credenciales incrustadas.
+
 #### 13.7.04 — API versioning
 API versioning mantiene compatibilidad mientras evolucionan rutas, representaciones o contratos. Documenta cambios deprecados, soporte y migración; usa versionado explícito y pruebas contractuales para detectar consumidores afectados antes de retirar una versión.
 
+
+
+**Práctica y evidencia:** Documenta política de versionado, compatibilidad, deprecación y retirada para una API. **Evidencia:** crea una matriz de cambios y plan de migración para consumidores.
 
 ## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
 
