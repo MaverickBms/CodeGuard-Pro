@@ -694,3 +694,18 @@ Se añadieron prácticas y evidencias a **167 lecciones**:
 **Límites:** no se ejecutaron pruebas de infraestructura, imágenes/containers, pipelines, servicios cloud, clústeres Kubernetes, Terraform ni despliegues. No se crearon recursos cloud facturables. No se verificaron todas las referencias y versiones. El resultado es ampliación documental y estructural, no validación técnica por ejecución ni aprobación externa.
 
 **Acumulado:** etapas 1–6: 265; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63; etapa 14: 58; etapas 15–16: 99; etapa 17: 61; etapas 18–19: 167. Total de etapas 1–19 con desarrollo documental ampliado: **1.146 lecciones**. Etapas 20–32: 770 lecciones requieren profundización equivalente. No se importó ni publicó contenido.
+
+
+## Addendum de profundización didáctica — etapas 20–22 — 2026-11-24
+
+Se añadieron prácticas y evidencias a **197 lecciones**:
+
+- **Etapa 20 — Desarrollo seguro/AppSec: 57 lecciones.** Secure coding, modelado de amenazas, vulnerabilidades web/API, OWASP, identidad, sesiones, criptografía aplicada, cabeceras y validación.
+- **Etapa 21 — Fundamentos de ciberseguridad, riesgos y ética: 82 lecciones.** Activos, amenazas, riesgo, controles, malware desde enfoque defensivo, marcos de referencia, ética, autorización, privacidad e IAM.
+- **Etapa 22 — Laboratorio y hardening: 58 lecciones.** Virtualización aislada, Linux/Windows, SSH, firewall, auditoría, segmentación y plataformas vulnerables de entrenamiento.
+
+**Comprobación documental:** se releyeron los tres archivos desde la rama; se contaron 57, 82 y 58 encabezados y el mismo número de apartados de práctica/evidencia. No se detectaron encabezados vacíos.
+
+**Límites:** no se ejecutaron laboratorios, pruebas de penetración, escaneos, servicios, configuraciones de hardening ni máquinas virtuales. Las prácticas ofensivas se limitan explícitamente a activos propios o autorizados y entornos aislados. No se verificaron individualmente todas las referencias ni versiones. La ampliación es documental y estructural, no validación por ejecución ni aprobación externa.
+
+**Acumulado:** etapas 1–6: 265; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63; etapa 14: 58; etapas 15–16: 99; etapa 17: 61; etapas 18–19: 167; etapas 20–22: 197. Total de etapas 1–22 con desarrollo documental ampliado: **1.343 lecciones**. Etapas 23–32: 573 lecciones requieren profundización equivalente. No se importó ni publicó contenido.
