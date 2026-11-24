@@ -1,7 +1,7 @@
 # Etapa 32 — Proyecto profesional, portafolio y preparación laboral
 
 **Prioridad:** P1 · Obligatoria  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** consolidar los conocimientos en proyectos demostrables y prepararte para trabajar profesionalmente.  
 **Proyecto final:** construir una aplicación integral que reúna frontend, backend, bases de datos, infraestructura, arquitectura, pruebas automatizadas y seguridad. La aplicación tendrá documentación técnica y un informe de seguridad independiente.
 
@@ -112,4 +112,4 @@ No se incluyen videos aprobados. Se añadirán solo recursos hablados en españo
 - Europass: https://europa.eu/europass/
 - LinkedIn Help: https://www.linkedin.com/help/linkedin
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** proyecto final no implementado ni desplegado en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** proyecto final no implementado ni desplegado en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
