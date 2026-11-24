@@ -349,3 +349,10 @@ Se completó la primera pasada de desarrollo individual de las 1.916 entradas no
 Se completó una profundización documental de las 84 lecciones de la etapa 7: fundamentos de sistemas operativos (14), Linux (17), administración Linux (20), Bash (12), Windows (12) y virtualización (9). Cada lección contiene explicación específica, práctica guiada, actividad independiente, criterios de aceptación y comprobación; además se incorporan ejemplos, escenarios y precauciones operativas según el tema.
 
 Este resultado es una revisión y profundización documental interna. No significa que las prácticas se hayan ejecutado en máquinas virtuales ni que las lecciones estén validadas técnicamente por terceros. Permanecen pendientes la ejecución con evidencia, verificación bibliográfica completa y revisión experta independiente. La auditoría de continuidad contiene el alcance y las limitaciones detalladas. No se modificó el JSON oficial, no se importó ni publicó contenido.
+
+
+### Desarrollo documental individual — etapa 8 (24-11-2026)
+
+Se desarrollaron las 81 lecciones oficiales de Redes informáticas y protocolos: fundamentos (13), modelos de comunicación (9), direccionamiento (13), protocolos (16), routing/switching (10), seguridad de redes (9) y herramientas (11). Las lecciones incluyen explicación técnica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación. Las actividades de captura, escaneo y administración de red se limitan a sistemas propios o expresamente autorizados.
+
+La cobertura es documental y estructural; no se ejecutaron laboratorios ni escaneos, no se verificó exhaustivamente la bibliografía y no existe aprobación técnica independiente. La auditoría de continuidad registra alcance y límites. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
