@@ -362,3 +362,18 @@ Se desarrollaron individualmente las 197 entradas oficiales de las etapas 20–2
 Se sustituyeron las orientaciones genéricas por explicaciones específicas y se reforzaron límites de autorización, controles de aplicación, gestión de riesgos, protección de datos, IAM y aislamiento de laboratorios. La referencia a OWASP Top 10:2025 se verificó en el sitio oficial, que identifica 2025 como la versión publicada más reciente al momento de esta revisión. Se añadieron referencias oficiales de Colombia para Ley 1273/2009 y Ley 1581/2012, con advertencia de verificación jurídica vigente.
 
 **Validación interna:** conteos cotejados con el JSON y ausencia de placeholders genéricos comprobada. Pendiente: verificar legislación consolidada y normativa sectorial, ejecutar análisis AppSec/DAST y laboratorios de hardening en entornos aislados autorizados, y obtener segunda revisión especializada. No se ejecutaron pruebas ni se declara aprobación externa.
+
+
+## Desarrollo profundo individual — etapas 23 a 25 — 2026-11-24
+
+Se desarrollaron individualmente las 155 entradas oficiales de las etapas 23–25:
+
+- **Etapa 23 — Reconocimiento, OSINT y vulnerabilidades:** 58/58 lecciones.
+- **Etapa 24 — Pentesting de redes y sistemas:** 47/47 lecciones.
+- **Etapa 25 — Seguridad web y APIs:** 50/50 lecciones.
+
+Se sustituyeron las orientaciones genéricas por explicaciones específicas y se reforzaron autorización, alcance, límites de escaneo, protección de evidencias, validación de hallazgos y pruebas no destructivas. Las herramientas de reconocimiento, pentesting y seguridad web se restringen a activos propios o expresamente autorizados, en laboratorios aislados.
+
+**Nota curricular:** el campo oficial `objetivo` de la etapa 25 sigue vacío. No se añadió ni propuso un objetivo alternativo.
+
+**Validación interna:** conteos cotejados con el JSON y ausencia de placeholders genéricos comprobada. Pendiente: verificar versiones/licencias de herramientas y ejecutar prácticas únicamente en laboratorios autorizados con segunda revisión. No se escanearon activos ni se declara aprobación externa.
