@@ -111,189 +111,196 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Las guías d
 ### Módulo 27.1 — Blue Team
 
 #### 27.1.01 — Defensive Security
-Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Defensive Security protege activos mediante prevención, detección, respuesta y recuperación. Parte de inventario, clasificación y riesgo y coordina controles técnicos con procesos y responsables.
 
 #### 27.1.02 — Defense in Depth
-Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Defense in Depth combina controles en endpoint, identidad, red, aplicación y datos. Diseña capas independientes y comprueba que una falla no deje el activo sin protección ni visibilidad.
 
 #### 27.1.03 — Preventive Controls
-Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Preventive Controls reducen probabilidad de incidentes mediante hardening, parches, MFA y segmentación. Define cobertura y excepciones y valida que los controles estén activos.
 
 #### 27.1.04 — Detective Controls
-Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Detective Controls identifican actividad anómala o incumplimientos mediante logs, alertas y monitoreo. Mide cobertura, tiempo de detección y falsos positivos.
 
 #### 27.1.05 — Corrective Controls
-Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Corrective Controls contienen o corrigen condiciones detectadas y restauran operación segura. Incluye aislamiento, revocación, parcheo y recuperación, con autorización y preservación de evidencia.
 
 #### 27.1.06 — Zero Trust
-Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Zero Trust evita confianza implícita basada únicamente en ubicación de red y exige verificación contextual. Integra identidad, dispositivo, recurso y política; no es un producto aislado.
 
 #### 27.1.07 — Security Monitoring
-Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Security Monitoring observa eventos y estado de controles para detectar desviaciones. Define fuentes, casos de uso, retención, responsables y alertas accionables.
 
 ### Módulo 27.2 — SOC
 
 #### 27.2.01 — Security Operations Center
-Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Security Operations Center coordina monitoreo, triage, investigación y respuesta de seguridad. Define turnos, escalamiento, herramientas, métricas y coordinación con TI y negocio.
 
 #### 27.2.02 — SOC Analyst
-Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+SOC Analyst interpreta alertas, valida contexto, recopila evidencia y escala incidentes. Sigue procedimientos, registra decisiones y evita acciones disruptivas sin autorización.
 
 #### 27.2.03 — Alert Triage
-Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Alert Triage prioriza alertas según severidad, confianza, alcance e impacto potencial. Correlaciona activo, usuario, tiempo y contexto y documenta por qué se cierra o escala.
 
 #### 27.2.04 — Event Classification
-Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Event Classification categoriza eventos por tipo, severidad y relación con incidentes. Usa taxonomía consistente y evita asignar severidad únicamente por el nombre de la alerta.
 
 #### 27.2.05 — Incident Escalation
-Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Incident Escalation transfiere casos a equipos con autoridad o especialidad adecuada. Define umbrales, tiempos, contactos y evidencia mínima para evitar retrasos o pérdida de contexto.
 
 #### 27.2.06 — Security Monitoring
-Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Security Monitoring en SOC integra telemetría de endpoints, identidad, red, aplicaciones y cloud. Evalúa cobertura de activos críticos y detecta interrupciones en la ingestión de datos.
 
 #### 27.2.07 — Threat Detection
-Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Threat Detection identifica patrones asociados a actividad maliciosa o comportamiento anómalo. Combina inteligencia, contexto y reglas y valida hipótesis antes de declarar un compromiso.
 
 ### Módulo 27.3 — Logs
 
 #### 27.3.01 — Application Logs
-Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Application Logs registran eventos funcionales y técnicos de aplicaciones. Estandariza campos, niveles y correlación, evita secretos y datos personales innecesarios y conserva contexto de error.
 
 #### 27.3.02 — System Logs
-Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+System Logs registran eventos de sistema operativo, servicios, recursos y cambios. Sincroniza tiempo, centraliza fuentes relevantes y protege integridad y retención.
 
 #### 27.3.03 — Authentication Logs
-Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Authentication Logs registran intentos, resultados y cambios de identidad. Detecta patrones de fallo, MFA y accesos anómalos, y redacta credenciales o tokens.
 
 #### 27.3.04 — Network Logs
-Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Network Logs reflejan conexiones, flujos, DNS, firewall y dispositivos de red. Relaciona origen/destino y tiempo con activos y evita interpretar metadatos aislados como prueba concluyente.
 
 #### 27.3.05 — Security Events
-Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Security Events son sucesos relevantes para controles, políticas o amenazas. Define taxonomía y severidad y diferencia evento individual, alerta correlacionada e incidente confirmado.
 
 #### 27.3.06 — Event Correlation
-Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Event Correlation relaciona múltiples registros mediante tiempo, identidad, activo y comportamiento. Controla desfases de reloj y duplicados y documenta reglas de correlación.
 
 #### 27.3.07 — Timelines
-Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Timelines ordenan eventos para reconstruir secuencias y relaciones temporales. Conserva zona horaria, origen y precisión de timestamp y distingue tiempos observados de inferidos.
 
 ### Módulo 27.4 — Indicadores
 
 #### 27.4.01 — IOC (Indicators of Compromise)
-Comprender el concepto, los datos o controles involucrados y su papel dentro de indicadores; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+IOC son indicadores asociados a posible compromiso, como hashes, dominios o direcciones IP. Añade fuente, vigencia y confianza; evita bloquear indicadores sin evaluar impacto y contexto.
 
 #### 27.4.02 — IOA (Indicators of Attack)
-Comprender el concepto, los datos o controles involucrados y su papel dentro de indicadores; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+IOA describe comportamientos o secuencias que sugieren actividad de ataque, en lugar de depender solo de artefactos conocidos. Diseña detecciones centradas en comportamiento y valida con actividad legítima.
 
 #### 27.4.03 — TTP (Tactics, Techniques and Procedures)
-Comprender el concepto, los datos o controles involucrados y su papel dentro de indicadores; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+TTP resume tácticas, técnicas y procedimientos observados o modelados de adversarios. Mapea a MITRE ATT&CK con versión y plataforma y no atribuyas actor por una técnica aislada.
 
 #### 27.4.04 — Anomalies
-Comprender el concepto, los datos o controles involucrados y su papel dentro de indicadores; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Anomalies son desviaciones respecto de una línea base de comportamiento. Considera estacionalidad, cambios legítimos y calidad de datos antes de clasificarlas como amenaza.
 
 #### 27.4.05 — Behavioral Analysis
-Comprender el concepto, los datos o controles involucrados y su papel dentro de indicadores; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Behavioral Analysis estudia patrones de usuarios, procesos y redes para identificar actividad inusual. Minimiza datos personales, define finalidad y aplica controles de acceso y retención.
 
 ### Módulo 27.5 — IDS/IPS
 
 #### 27.5.01 — Intrusion Detection System
-Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Intrusion Detection System detecta actividad potencialmente maliciosa y genera alertas sin necesariamente bloquearla. Define fuentes, firmas, umbrales y proceso de triage.
 
 #### 27.5.02 — Intrusion Prevention System
-Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Intrusion Prevention System puede bloquear tráfico o acciones que coincidan con políticas de detección. Prueba reglas para evitar falsos bloqueos y define modo de operación y recuperación.
 
 #### 27.5.03 — Signature-based Detection
-Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Signature-based Detection compara eventos con patrones conocidos de amenazas. Es eficaz para amenazas identificadas, pero requiere actualización y no detecta necesariamente variantes nuevas.
 
 #### 27.5.04 — Anomaly-based Detection
-Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Anomaly-based Detection identifica desviaciones frente a modelos o líneas base. Ajusta sensibilidad y contexto para reducir falsos positivos y vigila cambios de comportamiento legítimos.
 
 #### 27.5.05 — Network Monitoring
-Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Network Monitoring observa disponibilidad, flujos, protocolos y eventos de infraestructura. Define puntos de captura, privacidad y retención; una vista parcial de red no representa todo el tráfico.
 
 #### 27.5.06 — Traffic Analysis
-Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Traffic Analysis interpreta metadatos y contenido permitido para comprender comunicaciones y anomalías. Minimiza captura de payloads sensibles, documenta filtros y protege archivos PCAP.
 
 ### Módulo 27.6 — Herramientas
 
 #### 27.6.01 — Wireshark
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Wireshark permite analizar paquetes capturados para investigar protocolos y anomalías. Captura solo tráfico autorizado, filtra datos sensibles y protege PCAP porque pueden contener credenciales o información privada.
 
 #### 27.6.02 — tcpdump
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+tcpdump captura tráfico desde interfaces y permite filtros para reducir volumen. Verifica interfaz y alcance antes de capturar y protege archivos resultantes.
 
 #### 27.6.03 — Suricata
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Suricata es un motor de IDS/IPS y monitoreo de seguridad de red basado en reglas y protocolos. Ajusta reglas a la red, valida alertas y controla impacto si opera en modo prevención.
 
 #### 27.6.04 — Zeek
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Zeek analiza tráfico y genera registros de actividad de protocolos y conexiones. Utiliza logs para contexto y hunting, verifica cobertura de interfaces y protege datos capturados.
 
 #### 27.6.05 — Sysmon
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Sysmon registra eventos detallados de actividad en Windows mediante configuración definida. Selecciona eventos útiles, controla volumen, protege logs y valida que la versión y configuración sean consistentes.
 
 ### Módulo 27.7 — SIEM
 
 #### 27.7.01 — Security Information and Event Management
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Security Information and Event Management centraliza y correlaciona eventos de múltiples fuentes para apoyar detección e investigación. Define casos de uso, cobertura, retención y responsabilidades.
 
 #### 27.7.02 — Log Collection
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Log Collection ingiere eventos desde endpoints, aplicaciones, redes y servicios cloud. Valida continuidad, timestamps, formato y volumen y detecta fuentes que dejaron de reportar.
 
 #### 27.7.03 — Log Normalization
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Log Normalization convierte fuentes heterogéneas a campos y formatos comunes. Conserva campos originales, mapea correctamente semántica y registra pérdida o transformación de datos.
 
 #### 27.7.04 — Correlation Rules
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Correlation Rules relacionan eventos para generar alertas con contexto. Documenta lógica, fuentes, ventanas temporales y excepciones y prueba con datos históricos y casos benignos.
 
 #### 27.7.05 — Dashboards
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Dashboards muestran estado, tendencias y métricas para analistas y responsables. Diseña vistas por función y evita métricas decorativas que no guían decisiones.
 
 #### 27.7.06 — Alerts
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Alerts notifican condiciones que requieren revisión o respuesta. Define severidad, responsable, contexto, deduplicación y umbral para evitar fatiga y omisiones.
 
 #### 27.7.07 — Detection
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Detection identifica señales de amenazas mediante reglas, analítica y contexto. Mide cobertura y eficacia, y actualiza detecciones ante cambios de infraestructura y adversarios.
 
 #### 27.7.08 — Incident Investigation
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Incident Investigation valida una alerta, delimita alcance y reúne evidencia para decidir contención. Mantén cadena de custodia cuando aplique y separa hechos, hipótesis y conclusiones.
 
 #### 27.7.09 — Herramientas
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+La entrada «Herramientas» del roadmap agrupa plataformas de SIEM que se estudian en las siguientes lecciones. Se conserva como rótulo de agrupación curricular y no como producto o procedimiento independiente.
 
 #### 27.7.10 — Splunk
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Splunk indexa y consulta datos de máquina para monitoreo e investigación. Define fuentes, campos, permisos y retención; protege búsquedas y dashboards que puedan exponer datos sensibles.
 
 #### 27.7.11 — Elastic Stack (ELK)
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Elastic Stack integra componentes para ingestión, almacenamiento, búsqueda y visualización de datos. Dimensiona ingestión y retención, protege acceso y valida mappings y reglas.
 
 #### 27.7.12 — Wazuh
-Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Wazuh ofrece capacidades de seguridad de endpoint, análisis de logs y monitoreo de integridad. Configura agentes y reglas según activos, revisa alertas y protege la consola y sus credenciales.
 
 ### Módulo 27.8 — Detection Engineering
 
 #### 27.8.01 — Sigma
-Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Sigma es un formato genérico para describir reglas de detección que pueden convertirse a distintos backends. Declara logsource, condición y referencias y valida traducción en el SIEM objetivo.
 
 #### 27.8.02 — Detection Rules
-Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Detection Rules formalizan condiciones que identifican comportamientos o eventos de interés. Incluye hipótesis, fuentes, umbral, excepciones, severidad y pasos de validación.
 
 #### 27.8.03 — Detection-as-Code
-Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Detection-as-Code versiona reglas, pruebas y configuración de detección como artefactos mantenibles. Revisa cambios por pares, automatiza validación y conserva historial de despliegue.
 
 #### 27.8.04 — Alert Tuning
-Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Alert Tuning ajusta umbrales, filtros y contexto para mejorar precisión sin perder cobertura. Registra motivo y efecto de cada ajuste y mide falsos positivos y falsos negativos.
 
 #### 27.8.05 — False Positives
-Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+False Positives son alertas que no corresponden a actividad maliciosa o incumplimiento real. Analiza causa, conserva contexto y ajusta detección sin suprimir señales relevantes.
 
 #### 27.8.06 — Alert Fatigue
-Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Alert Fatigue ocurre cuando volumen o baja calidad de alertas reduce atención del analista. Prioriza por riesgo, deduplica, automatiza enriquecimiento seguro y mide carga de trabajo.
 
 #### 27.8.07 — Log Sources
-Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Log Sources son sistemas y componentes que generan datos para detección. Prioriza fuentes según activos y amenazas y monitorea retrasos, pérdida y cambios de formato.
 
 #### 27.8.08 — Rule Validation
-Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Rule Validation prueba una detección con eventos positivos, negativos y casos límite antes de desplegarla. Documenta cobertura, rendimiento y falsos resultados y repite pruebas tras cambios de fuente.
 
 #### 27.8.09 — Correlation
-Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Correlation combina señales de varias fuentes para identificar secuencias o patrones con mayor contexto. Define ventanas y claves de unión, controla duplicados y valida que la regla no una eventos de usuarios distintos.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 58 orientaciones genéricas por explicaciones específicas de Blue Team, SOC, logs, indicadores, IDS/IPS, herramientas, SIEM e ingeniería de detección.
+
+**Revisión interna:** 58/58 entradas desarrolladas y cotejadas con el roadmap. Se aclaró que «Herramientas» en 27.7 es un rótulo curricular, no una plataforma. Se reforzaron protección de PCAP/logs, privacidad, sincronización temporal, tuning y validación de reglas. Pendiente: desplegar SIEM/IDS en laboratorio aislado, validar ingestión y reglas con datos sintéticos, medir cobertura/falsos positivos y obtener segunda revisión. No se conectaron entornos empresariales ni se declara aprobación externa.
