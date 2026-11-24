@@ -577,23 +577,83 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 #### 10.4.1 — Document databases
 
-Las bases documentales almacenan registros flexibles como documentos y facilitan consultas sobre campos y estructuras anidadas. **Práctica:** compara el modelo de un catálogo de productos en MongoDB y relacional. **Evidencia:** identifica consultas favorecidas y riesgos de duplicación.
+**Propósito y modelo.** Las bases documentales almacenan registros como documentos con campos, objetos anidados y arreglos. Favorecen agregados consultados juntos y esquemas evolutivos, pero requieren validación, control de crecimiento y decisiones de embedding/referencing. MongoDB es un ejemplo conocido; otros motores difieren en consultas, consistencia e índices.
+
+**Ejemplo desarrollado.** Un documento de perfil puede agrupar preferencias y direcciones activas; el historial de pedidos puede residir en otra colección por volumen y ciclo de vida.
+
+**Práctica guiada.** Modela un perfil JSON y define campos obligatorios, opcionales y validaciones. Identifica qué atributo debería referenciarse por su crecimiento.
+
+**Actividad independiente.** Compara una base documental con un esquema relacional para catálogo multilingüe y explica consultas, actualizaciones y consistencia.
+
+**Criterios de aceptación.** Explica documento y colección y justifica modelado según patrones de acceso.
+
+**Errores frecuentes.** Interpretar esquema flexible como ausencia de contrato o embeber datos ilimitados.
+
+**Comprobación.** ¿Qué criterio permite decidir si un subdocumento debe embebirse o almacenarse por separado?
 
 #### 10.4.2 — Key-value databases
 
-Las bases key-value optimizan acceso por clave y suelen ofrecer operaciones simples de baja latencia; su consulta por atributos internos puede ser limitada. **Práctica:** modela tokens temporales o caché de configuración con claves explícitas. **Evidencia:** define ciclo de vida, colisiones y estrategia de expiración.
+**Propósito y modelo.** Una base clave-valor asocia claves únicas con valores, con operaciones optimizadas para recuperar por clave. Puede ofrecer estructuras adicionales, persistencia y replicación, pero las consultas por atributos internos suelen ser limitadas o dependen de índices específicos.
+
+**Ejemplo desarrollado.** Un servicio de sesiones puede recuperar estado por token opaco. La clave necesita alta entropía, namespace y TTL; el valor debe minimizar datos sensibles.
+
+**Práctica guiada.** Diseña esquema de claves para sesiones, caché y contadores, definiendo expiración, tamaño y política de invalidación.
+
+**Actividad independiente.** Evalúa Redis frente a una tabla SQL para un servicio de rate limiting y justifica latencia, atomicidad y persistencia requerida.
+
+**Criterios de aceptación.** Identifica ventajas y límites de lookup por clave y documenta política de expiración.
+
+**Errores frecuentes.** Suponer que una clave difícil de adivinar sustituye autorización o usar caché como fuente de verdad sin respaldo.
+
+**Comprobación.** ¿Qué patrón de acceso favorece una base clave-valor y cuál resulta menos natural?
 
 #### 10.4.3 — Column-family databases
 
-Las bases de columnas anchas organizan datos por familias de columnas y se diseñan alrededor de consultas y particiones distribuidas. **Práctica:** diseña una clave de partición y clustering para eventos por dispositivo y tiempo. **Evidencia:** explica riesgo de particiones calientes y consultas que requieren escaneo.
+**Propósito y modelo.** Las bases de datos de familia de columnas o wide-column organizan datos en filas identificadas por clave y conjuntos de columnas agrupadas en familias. Están diseñadas para distribución y grandes volúmenes con patrones de consulta previstos. No equivalen a columnas de una tabla relacional ni a bases columnares analíticas.
+
+**Ejemplo desarrollado.** Cassandra organiza particiones mediante partition key y clustering columns. Una mala clave de partición puede concentrar carga o crear particiones enormes; el modelado suele partir de consultas que deben soportarse.
+
+**Práctica guiada.** Diseña una tabla conceptual para eventos por dispositivo y fecha, identificando partition key y clustering order. Evalúa tamaño y distribución.
+
+**Actividad independiente.** Compara wide-column y relacional para telemetría de alto volumen, incluyendo consistencia, consultas, modelado y operación.
+
+**Criterios de aceptación.** Diferencia wide-column de almacenamiento columnar analítico y justifica claves según consulta.
+
+**Errores frecuentes.** Diseñar primero entidades normalizadas sin patrón de consulta o usar una partition key de baja cardinalidad.
+
+**Comprobación.** ¿Cómo puede una partition key mal elegida generar hotspots en un clúster distribuido?
 
 #### 10.4.4 — Graph databases
 
-Las bases de grafos representan entidades como nodos y relaciones como aristas, con propiedades asociadas. Son útiles para recorridos de relaciones, no para cualquier dato conectado. **Práctica:** modela usuarios, dispositivos y conexiones sospechosas como grafo. **Evidencia:** formula una consulta de dos saltos y explica su utilidad analítica.
+**Propósito y modelo.** Las bases de grafos representan entidades como nodos y relaciones como aristas, a menudo con propiedades. Son útiles cuando las consultas recorren relaciones de profundidad variable o patrones conectados. El rendimiento depende de estructura, índices, dirección y cardinalidad de relaciones.
+
+**Ejemplo desarrollado.** Una red social puede modelar Persona-[:SIGUE]->Persona; una consulta de caminos de amigos explora relaciones sin reconstruir múltiples joins manuales.
+
+**Práctica guiada.** Dibuja grafo de usuarios, productos y compras. Identifica nodos, relaciones y propiedades; formula tres preguntas que requieran recorrido de grafo.
+
+**Actividad independiente.** Evalúa una base de grafos para detección de fraude o dependencias de software frente a un modelo relacional.
+
+**Criterios de aceptación.** Distingue nodos/aristas/propiedades y justifica consultas centradas en relaciones.
+
+**Errores frecuentes.** Elegir grafos solo porque existen relaciones o no limitar profundidad y cardinalidad en consultas de recorrido.
+
+**Comprobación.** ¿Qué tipo de consulta puede ser más natural en un grafo que en un modelo tabular?
 
 #### 10.4.5 — Time-series databases
 
-Las bases de series temporales optimizan datos ordenados por tiempo, etiquetas, retención y agregaciones por ventana. **Práctica:** diseña un esquema para métricas de CPU por host y minuto. **Evidencia:** define timestamp, etiquetas, política de retención y consulta de promedio por intervalo.
+**Propósito y modelo.** Las bases de series temporales optimizan datos asociados a marcas de tiempo, etiquetas y valores medidos. Incorporan funciones de retención, agregación temporal, compresión y downsampling según producto. El diseño debe considerar resolución, cardinalidad de etiquetas, orden de ingestión y consultas por ventana.
+
+**Ejemplo desarrollado.** Métricas de CPU pueden almacenarse por host y timestamp. Una etiqueta por cada solicitud única puede disparar cardinalidad y consumo; conviene elegir dimensiones acotadas.
+
+**Práctica guiada.** Diseña un esquema para métricas de temperatura de sensores con timestamp, sensor_id y valor. Define retención y agregación horaria.
+
+**Actividad independiente.** Compara almacenamiento relacional, wide-column y series temporales para telemetría de 10.000 dispositivos.
+
+**Criterios de aceptación.** Explica puntos temporales, etiquetas, cardinalidad y retención; justifica estrategia de agregación.
+
+**Errores frecuentes.** Crear etiquetas de cardinalidad ilimitada o conservar todas las muestras de alta resolución indefinidamente sin política.
+
+**Comprobación.** ¿Por qué una etiqueta única por evento puede ser problemática en un motor de series temporales?
 
 ## Resultados de aprendizaje
 
