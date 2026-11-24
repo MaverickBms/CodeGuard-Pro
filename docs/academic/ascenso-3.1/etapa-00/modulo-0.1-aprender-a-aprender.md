@@ -2,7 +2,7 @@
 
 **Roadmap:** ASCENSO 3.1 · Etapa 0 «Preparación y método de aprendizaje»  
 **Prioridad:** P1 · Obligatoria  
-**Estado editorial:** borrador académico piloto; no publicado en CodeGuard Pro  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · referencia operativa vigente para el desarrollo de ASCENSO 3.1. No implica publicación en CodeGuard Pro ni aprobación editorial.  
 **Versión:** 0.1.0 · **Fecha:** 2026-11-19  
 **Público:** principiante sin experiencia técnica previa  
 **Prerrequisitos:** ninguno  
