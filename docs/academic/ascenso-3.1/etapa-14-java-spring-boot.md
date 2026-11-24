@@ -161,11 +161,19 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 El modelo cliente-servidor separa consumidores y proveedores de capacidades mediante solicitudes y respuestas. En backend identifica límites de confianza, responsabilidades de cada proceso y cómo se autentican las llamadas entre componentes.
 
 
+**Escenario aplicado.** Una aplicación de comercio separa el frontend que solicita el estado del pedido y el backend que aplica reglas de acceso y consulta datos. El navegador no debe conectarse directamente a la base de datos.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Qué responsabilidades y límites de confianza deben quedar entre cliente, API y persistencia?
+
 **Práctica y evidencia:** Dibuja el intercambio entre cliente HTTP, controlador y servidor de aplicación para una consulta de pedido. **Evidencia:** identifica límites de red y responsabilidad de cada componente.
 
 #### 14.1.02 — Request-response
 Request-response describe el intercambio de una solicitud con una respuesta que contiene estado, headers y representación. Define contratos, timeouts, códigos de error e idempotencia para que clientes puedan recuperarse de fallos y reintentos.
 
+
+**Escenario aplicado.** Un cliente pierde la conexión después de enviar una solicitud. El backend debe definir timeout, estado de operación y posibilidad segura de reintento para no duplicar una compra.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Qué información necesita el cliente para distinguir una operación fallida de una respuesta perdida?
 
 **Práctica y evidencia:** Traza una petición con método, ruta, cabeceras y respuesta con estado y cuerpo. **Evidencia:** registra un caso exitoso y uno fallido y explica cómo el cliente interpreta ambos.
 
@@ -173,11 +181,19 @@ Request-response describe el intercambio de una solicitud con una respuesta que 
 MVC separa modelo, vista y controlador, aunque en una API el controlador suele coordinar entrada/salida sin renderizar vistas. Evita introducir lógica de negocio en controladores y mantén el modelo de dominio independiente del transporte.
 
 
+**Escenario aplicado.** En una API MVC, el controlador interpreta la entrada y coordina la respuesta; la lógica de negocio permanece en el modelo/servicio y no en la capa de transporte.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Qué problemas aparecen si se concentran reglas de negocio en los controladores?
+
 **Práctica y evidencia:** Separa una pantalla, controlador y modelo de dominio en un ejemplo MVC. **Evidencia:** explica qué componente recibe interacción y cuál contiene reglas del negocio.
 
 #### 14.1.04 — Middleware
 Middleware intercepta solicitudes o respuestas para aplicar funciones transversales como autenticación, logging, CORS o correlación. El orden de ejecución importa; limita los datos registrados y evita que middleware genérico oculte errores o modifique contratos sin documentarlo.
 
+
+**Escenario aplicado.** Un filtro de correlación añade un identificador a cada solicitud y un manejador de errores transforma excepciones en respuestas uniformes. El middleware no registra credenciales.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Por qué el orden de filtros y middleware puede cambiar la autenticación y el manejo de errores?
 
 **Práctica y evidencia:** Implementa o analiza un middleware/filtro que registre correlación sin registrar credenciales. **Evidencia:** muestra orden de ejecución y cómo se propaga la solicitud.
 
@@ -185,11 +201,19 @@ Middleware intercepta solicitudes o respuestas para aplicar funciones transversa
 Un controller recibe solicitudes, interpreta parámetros y delega el caso de uso a servicios. Valida formato y devuelve respuestas HTTP coherentes, pero no debe concentrar reglas de negocio, consultas complejas ni acceso directo a infraestructura.
 
 
+**Escenario aplicado.** Un controller recibe un DTO, valida el formato y delega el caso de uso. No consulta directamente repositorios ni decide reglas de negocio complejas.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Qué responsabilidad debe conservar el controller y cuál debe delegar?
+
 **Práctica y evidencia:** Crea un controlador REST que delegue la lógica de negocio y no acceda directamente a infraestructura. **Evidencia:** prueba rutas y códigos HTTP con un cliente de API.
 
 #### 14.1.06 — Services
 Un service implementa casos de uso y coordina reglas de negocio. Mantén sus dependencias explícitas y separa la lógica del framework para facilitar pruebas unitarias y cambios de transporte.
 
+
+**Escenario aplicado.** Un servicio de pedidos verifica disponibilidad y calcula el total antes de solicitar persistencia. Puede probarse sin levantar un servidor HTTP si sus dependencias están abstraídas.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Qué hace que una regla de negocio sea comprobable sin depender de HTTP?
 
 **Práctica y evidencia:** Implementa un servicio con una regla de negocio y pruebas unitarias aisladas. **Evidencia:** demuestra que la regla no depende de HTTP ni de la base de datos.
 
@@ -197,17 +221,29 @@ Un service implementa casos de uso y coordina reglas de negocio. Mantén sus dep
 Un repository abstrae operaciones de persistencia y consultas sobre agregados o entidades. Define métodos con intención de dominio y evita exponer detalles de SQL/ORM a capas que no deberían conocerlos.
 
 
+**Escenario aplicado.** Un repositorio ofrece métodos de dominio para consultar pedidos y evita que el controlador conozca SQL o detalles de Hibernate. Las consultas complejas se inspeccionan y miden.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Qué ventaja aporta el repositorio y qué riesgo existe si oculta consultas costosas?
+
 **Práctica y evidencia:** Define un repositorio para persistencia y separa consultas de reglas de negocio. **Evidencia:** prueba el contrato con datos de prueba y explica límites de la abstracción.
 
 #### 14.1.08 — Models
 Un model representa datos y, según la arquitectura, puede representar entidades de dominio o modelos de transporte/persistencia. No mezcles automáticamente entidad JPA, DTO público y modelo de vista: sus ciclos de vida y contratos son distintos.
 
 
+**Escenario aplicado.** Una entidad persistente contiene relaciones y metadatos internos, mientras un modelo de dominio puede expresar invariantes y un DTO define el contrato externo. No se intercambian automáticamente.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Por qué entidad, modelo de dominio y DTO pueden requerir clases diferentes?
+
 **Práctica y evidencia:** Modela una entidad de dominio con invariantes y distingue modelo de dominio de DTO. **Evidencia:** prueba una transición válida y otra que debe rechazarse.
 
 #### 14.1.09 — DTOs
 Un DTO transporta datos entre límites de una aplicación o API sin exponer necesariamente la estructura interna del dominio. Define campos permitidos, valida entrada y evita serializar entidades completas que puedan revelar relaciones o atributos privados.
 
+
+**Escenario aplicado.** El DTO de creación acepta nombre y dirección, pero no permite que el cliente defina id, rol administrativo ni marcas de auditoría. La respuesta expone solo los campos autorizados.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Cómo reduce un DTO el riesgo de asignación masiva y exposición de datos?
 
 **Práctica y evidencia:** Define DTOs distintos para entrada y salida y evita exponer entidades internas. **Evidencia:** demuestra validación de campos y que la respuesta omite atributos sensibles.
 
@@ -217,11 +253,19 @@ Un DTO transporta datos entre límites de una aplicación o API sin exponer nece
 Inversion of Control desplaza la creación y coordinación de dependencias desde las clases hacia un contenedor o mecanismo externo. Esto reduce acoplamiento, pero introduce ciclo de vida y configuración que deben ser explícitos y verificables.
 
 
+**Escenario aplicado.** La aplicación deja de construir dependencias concretas dentro de cada clase y delega su ciclo de vida al contenedor. Esto facilita reemplazar implementaciones en pruebas.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Qué acoplamiento se reduce con IoC y qué complejidad introduce el contenedor?
+
 **Práctica y evidencia:** Compara creación manual de dependencias con un contenedor IoC. **Evidencia:** dibuja quién controla el ciclo de vida y qué problema reduce la inversión de control.
 
 #### 14.2.02 — Dependency Injection
 Dependency Injection entrega a un componente las dependencias que necesita, en lugar de construirlas directamente. Prefiere inyección por constructor para hacer requisitos visibles y facilitar pruebas con implementaciones sustitutas.
 
+
+**Escenario aplicado.** Un controlador recibe un servicio por constructor. En pruebas, una implementación sustituta simula el servicio sin acceder a base de datos ni red.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Por qué la inyección por constructor hace más visibles las dependencias?
 
 **Práctica y evidencia:** Inyecta una interfaz de servicio en un controlador mediante constructor. **Evidencia:** sustituye la implementación por un doble de prueba sin modificar el consumidor.
 
@@ -229,11 +273,19 @@ Dependency Injection entrega a un componente las dependencias que necesita, en l
 Un Bean es un objeto administrado por el contenedor Spring, que controla su creación, configuración y ciclo de vida. Declara componentes con intención y evita convertir cada clase en Bean si no requiere gestión del framework.
 
 
+**Escenario aplicado.** Un Bean singleton con estado mutable compartido puede provocar condiciones de carrera entre solicitudes concurrentes. Los servicios stateless suelen ser más sencillos de gestionar.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Qué precaución requiere un Bean singleton cuando atiende múltiples solicitudes?
+
 **Práctica y evidencia:** Declara un Bean con configuración explícita y consulta su tipo en el contexto. **Evidencia:** explica alcance y ciclo de vida configurado.
 
 #### 14.2.04 — Application Context
 ApplicationContext es el contenedor central de Spring que registra beans, resuelve dependencias y publica eventos. Comprende cómo se construye y consulta, pero evita usarlo como localizador global de servicios porque oculta dependencias.
 
+
+**Escenario aplicado.** El ApplicationContext detecta beans ambiguos cuando varias implementaciones satisfacen el mismo tipo. La aplicación debe resolver la selección mediante configuración explícita, qualifier o primary.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Por qué usar el contenedor como localizador global puede ocultar dependencias?
 
 **Práctica y evidencia:** Inspecciona el ApplicationContext y localiza un bean por nombre o tipo en una prueba. **Evidencia:** identifica cómo se resuelven dependencias y qué ocurre ante ambigüedad.
 
@@ -241,11 +293,19 @@ ApplicationContext es el contenedor central de Spring que registra beans, resuel
 La configuración define cómo se construye y comporta una aplicación, mediante propiedades, clases de configuración y perfiles. Separa configuración por entorno, valida valores requeridos y no almacenes secretos en archivos versionados.
 
 
+**Escenario aplicado.** La URL de base de datos cambia por entorno y el secreto se inyecta desde un gestor seguro. Los valores requeridos se validan al arrancar para fallar pronto ante configuración incompleta.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Qué configuración puede versionarse y qué información debe mantenerse fuera del repositorio?
+
 **Práctica y evidencia:** Externaliza parámetros no secretos en configuración y separa secretos por mecanismo de entorno seguro. **Evidencia:** demuestra valores por perfil sin incluir credenciales en el repositorio.
 
 #### 14.2.06 — Component Scanning
 Component Scanning detecta clases anotadas en paquetes configurados y las registra como componentes. Mantén paquetes raíz coherentes y evita escaneos demasiado amplios que incorporen accidentalmente implementaciones o configuraciones ajenas.
 
+
+**Escenario aplicado.** Un componente no aparece porque su paquete está fuera del alcance del escaneo. Ajustar el paquete raíz o declarar configuración explícita corrige el problema sin ampliar indiscriminadamente el escaneo.
+
+**Criterio de análisis.** La explicación debe identificar responsabilidades, dependencias y consecuencias observables, no limitarse a repetir definiciones. **Pregunta de comprensión:** ¿Qué riesgos introduce un component scan demasiado amplio?
 
 **Práctica y evidencia:** Configura escaneo de componentes y observa qué paquetes quedan incluidos. **Evidencia:** diagnostica un bean no detectado y justifica la estructura de paquetes.
 
