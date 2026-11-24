@@ -106,3 +106,196 @@ No se incluyen videos aprobados. Se incorporarán únicamente recursos en españ
 - OWASP: https://owasp.org/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se realizaron escaneos ni consultas OSINT en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 23
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados son guías de estudio, no evidencias de ejecución ni autorización para evaluar sistemas de terceros.
+
+### Módulo 23.1 — Reconocimiento
+
+#### 23.1.01 — Reconnaissance
+Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.1.02 — Passive Reconnaissance
+Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.1.03 — Active Reconnaissance
+Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.1.04 — Scope
+Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.1.05 — Asset Discovery
+Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.1.06 — Attack Surface Mapping
+Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.1.07 — Reconnaissance Methodology
+Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 23.2 — OSINT (Open Source Intelligence)
+
+#### 23.2.01 — Fuentes abiertas
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.02 — Motores de búsqueda
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.03 — Operadores de búsqueda avanzada
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.04 — Información pública
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.05 — Registros de dominios
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.06 — DNS Records
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.07 — Certificados digitales
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.08 — Certificate Transparency
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.09 — Repositorios públicos
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.10 — Metadatos
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.11 — Documentos expuestos
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.2.12 — Correlación de información
+Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 23.3 — Herramientas OSINT
+
+#### 23.3.01 — Maltego
+Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.3.02 — WHOIS
+Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.3.03 — DNSdumpster
+Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.3.04 — theHarvester
+Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.3.05 — Amass
+Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.3.06 — Google Dorking
+Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.3.07 — ExifTool
+Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 23.4 — Identificación de activos
+
+#### 23.4.01 — Dominios
+Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.4.02 — Subdominios
+Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.4.03 — Direcciones IP
+Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.4.04 — Servidores
+Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.4.05 — Aplicaciones
+Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.4.06 — Tecnologías
+Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.4.07 — Servicios
+Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.4.08 — Infraestructura expuesta
+Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 23.5 — Escaneo y enumeración
+
+#### 23.5.01 — Host Discovery
+Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.5.02 — Port Scanning
+Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.5.03 — TCP Scanning
+Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.5.04 — UDP Scanning
+Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.5.05 — Service Enumeration
+Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.5.06 — Version Detection
+Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.5.07 — OS Detection
+Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.5.08 — Nmap
+Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.5.09 — Nmap Scripting Engine (NSE)
+Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 23.6 — Gestión de vulnerabilidades
+
+#### 23.6.01 — Vulnerability Assessment
+Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.6.02 — CVE
+Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.6.03 — CWE
+Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.6.04 — CVSS
+Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.6.05 — Severidad
+Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.6.06 — Impacto
+Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.6.07 — Probabilidad
+Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.6.08 — Priorización
+Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.6.09 — Falsos positivos
+Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.6.10 — Remediación
+Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 23.7 — Herramientas
+
+#### 23.7.01 — Nessus
+Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.7.02 — OpenVAS
+Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.7.03 — Greenbone
+Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.7.04 — Nmap
+Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 23.7.05 — Nmap NSE
+Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
