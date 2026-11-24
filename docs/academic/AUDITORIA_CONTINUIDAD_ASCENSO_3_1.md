@@ -176,3 +176,8 @@ La etapa 6 quedó alineada con las 57 lecciones del roadmap: 9 de estructuras li
 ### Expansión granular — etapa 7
 
 La etapa 7 quedó alineada con 84 lecciones oficiales: 14 de fundamentos de sistemas operativos, 17 de Linux, 20 comandos de administración Linux, 12 de Bash, 12 de Windows y 9 de virtualización. Se separaron conceptos de kernel/espacios de ejecución, procesos/hilos/planificador, llamadas al sistema/drivers, elementos de administración Linux, comandos individuales, componentes de Bash, administración de Windows y modos de virtualización/red. Se conservaron el proyecto de servidores virtuales Ubuntu y Windows Server y las advertencias de seguridad para comandos destructivos, privilegios y redes expuestas. Las prácticas siguen siendo propuestas; no se declara ejecución en VMs reales.
+
+
+### Expansión granular — etapa 8
+
+La etapa 8 quedó alineada con 81 lecciones oficiales: 13 de fundamentos de redes, 9 de modelos de comunicación, 13 de direccionamiento, 16 protocolos, 10 de routing/switching, 9 de seguridad y 11 herramientas. Se separaron los tipos de redes y equipos, capas y unidades de datos, elementos de direccionamiento, protocolos individuales, conceptos de rutas/VLAN/subredes, controles de seguridad y herramientas de diagnóstico. Se mantuvieron las restricciones para capturas y escaneos: únicamente laboratorios propios o sistemas con autorización expresa. El proyecto de red virtual continúa como práctica propuesta, no como laboratorio ejecutado.
