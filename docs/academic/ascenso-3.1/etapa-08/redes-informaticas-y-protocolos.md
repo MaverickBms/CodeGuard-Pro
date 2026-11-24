@@ -1660,6 +1660,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué una política permisiva de salida también puede representar un riesgo?
 
+**Laboratorio de profundización — Matriz de reglas y orden de evaluación.**
+
+1. Diseña reglas de entrada y salida para una aplicación web ficticia. 2. Limita origen, destino, protocolo y puerto. 3. Añade registro y denegación por defecto. 4. Explica cómo probar una regla sin desactivar el firewall.
+
+**Evidencia esperada.** La política permite solo flujos necesarios y describe alcance, dirección y orden.
+
+**Seguridad y límites.** No utilizar reglas Any/Any ni deshabilitar el firewall para resolver fallos.
+
+**Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.6.2 — VPN
 
 **Propósito y modelo.** Una VPN crea un túnel lógico sobre una red subyacente para proteger tráfico o conectar redes. Puede ser acceso remoto o site-to-site, y operar en capa 2 o 3 según tecnología. Cifrado, autenticación de pares, gestión de claves, rutas, DNS y segmentación determinan su seguridad.
@@ -1675,6 +1685,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Considerar VPN como anonimato total o permitir acceso amplio sin revisar rutas y políticas.
 
 **Comprobación.** ¿Por qué una VPN cifrada no garantiza que el usuario solo acceda a los recursos que necesita?
+
+**Laboratorio de profundización — Diseño de túnel y control de acceso.**
+
+1. Compara VPN site-to-site y acceso remoto. 2. Identifica extremos, autenticación, cifrado, rutas y DNS. 3. Diseña acceso por grupos y MFA. 4. Explica split tunneling y sus implicaciones.
+
+**Evidencia esperada.** La propuesta diferencia tipo de VPN, protege el canal y limita recursos accesibles.
+
+**Seguridad y límites.** No crear túneles hacia redes ajenas ni compartir perfiles o claves privadas.
+
+**Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.6.3 — DMZ
 
@@ -1692,6 +1712,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué debe ocurrir con el tráfico desde la DMZ hacia la red interna que no esté expresamente autorizado?
 
+**Laboratorio de profundización — Arquitectura de zona desmilitarizada.**
+
+1. Dibuja Internet, firewall perimetral, DMZ y red interna. 2. Ubica proxy/web, aplicación y base de datos. 3. Define flujos permitidos por origen y destino. 4. Explica por qué la DMZ no debe ser puente libre hacia la LAN.
+
+**Evidencia esperada.** El diseño limita la exposición pública y restringe movimiento desde DMZ hacia redes internas.
+
+**Seguridad y límites.** No desplegar servicios de laboratorio en una DMZ real ni permitir rutas amplias hacia la red corporativa.
+
+**Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.6.4 — ACL
 
 **Propósito y modelo.** Una ACL es una lista de reglas que permite o deniega tráfico o acceso a recursos según criterios definidos. En redes, puede filtrar direcciones, protocolos y puertos en interfaces; en sistemas, controla acceso a objetos. La ubicación, orden y semántica de evaluación son específicas de plataforma.
@@ -1707,6 +1737,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Colocar reglas específicas después de una regla general o asumir que todas las plataformas procesan ACL de forma idéntica.
 
 **Comprobación.** ¿Por qué el orden de reglas puede cambiar el resultado de una ACL?
+
+**Laboratorio de profundización — Diseño y lectura de listas de control.**
+
+1. Construye ACL ficticias para permitir DNS y HTTPS desde una subred de usuarios a destinos concretos. 2. Añade denegación del resto. 3. Explica orden, coincidencia y regla implícita final según plataforma. 4. Define prueba de casos permitidos y bloqueados.
+
+**Evidencia esperada.** Las reglas tienen orden y alcance explícitos y evitan ambigüedad de origen/destino.
+
+**Seguridad y límites.** No aplicar ACL a interfaces productivas sin revisar dirección, orden y rollback.
+
+**Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.6.5 — Puertos abiertos
 
@@ -1724,6 +1764,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué diferencia existe entre un puerto en escucha en 127.0.0.1 y uno en 0.0.0.0?
 
+**Laboratorio de profundización — Inventario de sockets y servicios escuchando.**
+
+1. En una VM propia consulta `ss -lntup` o `Get-NetTCPConnection -State Listen`. 2. Relaciona puerto con proceso y dirección de escucha. 3. Clasifica exposición local, privada o pública. 4. Prioriza revisión de listeners innecesarios.
+
+**Evidencia esperada.** El inventario incluye protocolo, dirección local, puerto, proceso y justificación de exposición.
+
+**Seguridad y límites.** No escanear rangos ajenos ni publicar puertos de administración para facilitar la prueba.
+
+**Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.6.6 — Servicios expuestos
 
 **Propósito y modelo.** Un servicio expuesto es una aplicación o función accesible desde una zona de red determinada. La exposición se evalúa por interfaz de escucha, rutas, NAT, firewall, balanceadores, autenticación, versión y datos procesados. Inventariar exposición es una actividad continua, no una fotografía única.
@@ -1739,6 +1789,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Mantener interfaces de administración públicas o asumir que un servicio está protegido solo porque usa HTTPS.
 
 **Comprobación.** ¿Qué preguntas deben responderse antes de publicar un nuevo servicio en Internet?
+
+**Laboratorio de profundización — Evaluación de exposición de un servicio.**
+
+1. Selecciona un servicio ficticio. 2. Identifica interfaz, autenticación, versión, cifrado, dependencias y audiencia. 3. Define controles de acceso, logging y parcheo. 4. Crea una ficha de aceptación antes de exponerlo.
+
+**Evidencia esperada.** La ficha evalúa superficie y controles más allá de la mera disponibilidad del puerto.
+
+**Seguridad y límites.** No exponer servicios reales ni probar vulnerabilidades sin autorización escrita.
+
+**Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.6.7 — Superficie de ataque
 
@@ -1756,6 +1816,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué reducir componentes innecesarios puede disminuir riesgo aunque no se haya descubierto una vulnerabilidad concreta?
 
+**Laboratorio de profundización — Inventario y priorización de activos de red.**
+
+1. Dibuja activos, interfaces, protocolos y dependencias de una red ficticia. 2. Identifica entradas desde Internet, usuarios, terceros y administración. 3. Clasifica exposición y criticidad. 4. Prioriza reducción de servicios innecesarios.
+
+**Evidencia esperada.** El inventario relaciona activos, entradas y riesgos; la prioridad se justifica por impacto y exposición.
+
+**Seguridad y límites.** No publicar diagramas reales, nombres internos o direcciones de infraestructura sensible.
+
+**Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.6.8 — Filtrado de tráfico
 
 **Propósito y modelo.** El filtrado de tráfico aplica reglas a paquetes o flujos según origen, destino, protocolo, puerto, estado y zona. Puede ocurrir en host, router, firewall, nube o aplicación. El filtrado stateful mantiene contexto de conexiones; stateless evalúa cada paquete según reglas sin mantener estado de sesión equivalente.
@@ -1771,6 +1841,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Permitir rangos amplios para simplificar reglas o no considerar el tráfico de retorno y los protocolos auxiliares.
 
 **Comprobación.** ¿Qué contexto conserva un firewall stateful que un filtro stateless no mantiene de la misma forma?
+
+**Laboratorio de profundización — Validación de política con casos de prueba.**
+
+1. Define cinco flujos permitidos y cinco denegados. 2. Predice el resultado según reglas diseñadas. 3. Define evidencias de logs y contadores. 4. Explica cómo detectar una regla sombra o redundante.
+
+**Evidencia esperada.** Cada flujo tiene resultado esperado y se explica qué evidencia demuestra el filtrado.
+
+**Seguridad y límites.** No generar tráfico de prueba en redes productivas sin autorización y ventana aprobada.
+
+**Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.6.9 — Políticas de filtrado
 
@@ -1790,6 +1870,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 ## 8.7 — Herramientas
 
+
+**Laboratorio de profundización — Ciclo de vida y revisión de reglas.**
+
+1. Define propietario, motivo, origen, destino, servicio, vigencia y aprobación de una regla. 2. Diseña revisión trimestral y caducidad temporal. 3. Explica gestión de excepciones. 4. Crea checklist para retirar reglas obsoletas.
+
+**Evidencia esperada.** La política es auditable, tiene responsable y fecha de revisión y evita excepciones permanentes sin justificación.
+
+**Seguridad y límites.** No eliminar reglas de producción por antigüedad sin análisis de dependencias y plan de reversión.
+
+**Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
 ### 8.7.1 — Wireshark
 
 **Propósito y modelo.** Wireshark captura y analiza paquetes mediante una interfaz gráfica y disectores de protocolos. Permite filtrar captura y visualización, reconstruir conversaciones y examinar cabeceras. La captura puede contener credenciales, cookies, datos personales o contenido confidencial; debe limitarse a interfaces y redes autorizadas y protegerse como evidencia sensible.
