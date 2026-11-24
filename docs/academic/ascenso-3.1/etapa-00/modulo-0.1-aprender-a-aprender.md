@@ -734,11 +734,14 @@ Antes de cambiar código:
 
 | Lección | Evidencia mínima | Señal de dominio |
 |---|---|---|
+| 0.1.1 | Registro de recuperación: cinco ideas recordadas, contraste con una fuente y correcciones | Distingue reconocimiento de recuperación y convierte una exposición en preguntas y aplicación |
+| 0.1.2 | Ficha de verificación de una afirmación técnica con fuente, versión/fecha, evidencia y límites | La conclusión está calibrada y otra persona puede localizar la evidencia |
 | 0.1.3 | Explicación propia con ejemplo y límite | Conceptos precisos sin analogía engañosa |
-| 0.1.4 | Agenda de repaso y registro de recuperación | Recupera, comprueba y ajusta intervalos |
-| 0.1.5 | Dos sesiones con feedback y revisión | Mejora observable en una habilidad delimitada |
-| 0.1.6 | Informe de problema con hipótesis y pruebas | Distingue datos, hipótesis y conclusión |
-| 0.1.7 | Descomposición y pruebas de aceptación | Subtareas completas y dependencias explícitas |
+| 0.1.4 | Agenda de repaso y registro de intentos, aciertos, errores y siguiente revisión | Recupera antes de consultar, comprueba y ajusta el repaso según resultados |
+| 0.1.5 | Registro de dos sesiones enfocadas con objetivo, intento, feedback y ajuste | Mejora observable en una habilidad delimitada, no solo aumento de tiempo |
+| 0.1.6 | Informe de problema con entradas, resultado esperado, hipótesis, pruebas y conclusión | Distingue datos, hipótesis y conclusión; la solución cubre los casos definidos |
+| 0.1.7 | Descomposición de un sistema con responsabilidades, dependencias y criterios de aceptación | Las subtareas son verificables, cubren el objetivo y hacen visibles sus dependencias |
+| 0.1.8 | Propuesta de alcance del proyecto, hitos, entregables y reflexión de aprendizaje | Cada hito produce evidencia observable y se puede revisar contra criterios de aceptación |
 
 **Criterio de corrección:** una respuesta se considera suficiente cuando aporta razonamiento y evidencia coherentes. La coincidencia literal con una respuesta modelo no es el criterio de dominio.
 
