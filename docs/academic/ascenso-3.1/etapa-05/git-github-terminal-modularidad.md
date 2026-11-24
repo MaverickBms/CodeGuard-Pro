@@ -1,6 +1,6 @@
 # Etapa 5 — Git, GitHub, terminal y modularidad
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 5.  
 **Prioridad:** P1 · Obligatoria.  
 **Objetivo oficial:** comenzar a trabajar como un desarrollador que forma parte de un equipo.
@@ -406,4 +406,4 @@ No se incluye video en esta versión: no se ha validado una pieza concreta con a
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** comandos y laboratorio propuestos; no ejecutados en un entorno de terminal real.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado..
