@@ -39,49 +39,85 @@ Al completar esta etapa podrás explicar el rol del kernel; distinguir procesos 
 
 Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a los programas. Gestiona CPU, memoria, dispositivos, almacenamiento, usuarios, aislamiento y comunicación entre procesos. No es únicamente una interfaz gráfica: un servidor puede operar sin escritorio y continuar ejecutando servicios y atendiendo solicitudes.
 
-### Kernel, Kernel Space y User Space
+### 7.1.1 — Kernel
 
-El kernel es el núcleo privilegiado del sistema operativo. Gestiona recursos y expone servicios controlados a los programas. Kernel Space es el espacio de ejecución privilegiado donde opera el kernel y ciertos componentes; User Space aloja aplicaciones con privilegios restringidos. La separación contribuye al aislamiento de fallos y limita el impacto de errores de aplicaciones.
+El kernel es el núcleo privilegiado del sistema operativo. Coordina recursos, ofrece abstracciones y media el acceso al hardware.
 
-Una aplicación normalmente no accede directamente a dispositivos arbitrarios: solicita operaciones al sistema mediante interfaces definidas.
+### 7.1.2 — Kernel Space
 
-### System Calls y drivers
+Kernel Space es el espacio privilegiado donde opera el kernel y ciertos componentes autorizados.
 
-Una llamada al sistema es una interfaz controlada mediante la cual un programa solicita un servicio del kernel, como abrir un archivo, crear un proceso o comunicarse con un dispositivo. Una función de biblioteca puede preparar argumentos y finalmente invocar una llamada al sistema, pero ambos conceptos no son idénticos.
+### 7.1.3 — User Space
 
-Los drivers permiten que el sistema operativo interactúe con dispositivos concretos mediante interfaces compatibles. Un driver defectuoso puede afectar estabilidad o seguridad, por lo que debe obtenerse de fuentes confiables y compatibles con el sistema.
+User Space aloja aplicaciones y servicios con privilegios restringidos. La separación contribuye al aislamiento de fallos.
 
-### Procesos, hilos y scheduler
+### 7.1.4 — System Calls
 
-Un proceso es una instancia de programa en ejecución con recursos y contexto propios, como espacio de direcciones y descriptores. Un hilo es una secuencia de ejecución dentro de un proceso. Los hilos de un proceso suelen compartir memoria y recursos, aunque cada hilo conserva su propio estado de ejecución y pila.
+Una llamada al sistema permite que un programa solicite un servicio controlado al kernel. Una función de biblioteca puede preparar argumentos e invocarla, pero ambos conceptos no son idénticos.
 
-El scheduler decide qué tarea ejecutable recibe tiempo de CPU según la política del sistema. Un context switch ocurre cuando el procesador deja una tarea y pasa a otra, preservando y restaurando el estado necesario. El cambio de contexto tiene coste y no constituye trabajo útil de la aplicación.
+### 7.1.10 — Drivers
 
-### Memoria virtual
+Los drivers permiten al sistema operativo interactuar con dispositivos. Obténlos de fuentes confiables y compatibles.
+
+### 7.1.5 — Procesos
+
+Un proceso es una instancia de programa en ejecución con recursos y contexto propios.
+
+### 7.1.6 — Hilos
+
+Un hilo es una secuencia de ejecución dentro de un proceso. Los hilos suelen compartir memoria, pero conservan estado y pila propios.
+
+### 7.1.7 — Scheduler
+
+El scheduler decide qué tarea ejecutable recibe tiempo de CPU según la política del sistema.
+
+### 7.1.8 — Context Switching
+
+Un context switch cambia la tarea que ejecuta el procesador y preserva/restaura su estado. Tiene coste y no es trabajo útil de la aplicación.
+
+### 7.1.9 — Memoria virtual
 
 La memoria virtual proporciona a cada proceso una vista lógica de memoria y permite aislar espacios de direcciones. El sistema traduce direcciones virtuales a físicas, administra páginas y puede respaldar parte de la memoria en almacenamiento secundario. Memoria virtual no significa que el disco sea tan rápido como RAM: una paginación intensa puede degradar severamente el rendimiento.
 
-### Sistema de archivos e IPC
+### 7.1.11 — Sistema de archivos
 
-El sistema de archivos organiza nombres, directorios, metadatos y contenido persistente. Un dispositivo, un sistema de archivos y un punto de montaje son conceptos distintos: el punto de montaje presenta un sistema de archivos en una ruta del árbol.
+Organiza nombres, directorios, metadatos y contenido persistente. Un dispositivo, un sistema de archivos y un punto de montaje son conceptos distintos.
 
-Los procesos pueden intercambiar información mediante pipes, sockets, memoria compartida, colas de mensajes y señales. Cada mecanismo presenta compromisos de rendimiento, sincronización y alcance. La memoria compartida puede ser rápida, pero requiere sincronización correcta.
+### 7.1.12 — IPC (comunicación entre procesos)
 
-### Concurrencia y paralelismo
+Los procesos se comunican mediante pipes, sockets, memoria compartida, colas de mensajes y señales. La memoria compartida requiere sincronización correcta.
 
-La concurrencia organiza varias tareas que progresan de forma intercalada o solapada. El paralelismo implica ejecución simultánea, por ejemplo en varios núcleos. Puede existir concurrencia sin paralelismo.
+### 7.1.13 — Concurrencia
 
-Ambos conceptos requieren considerar condiciones de carrera, exclusión mutua, orden de operaciones, bloqueos e interbloqueos. Ejercicio: explica qué sucede si dos hilos incrementan una variable compartida sin sincronización y por qué leer, sumar y escribir no necesariamente es una operación atómica.
+La concurrencia organiza tareas que progresan de forma intercalada o solapada. Considera condiciones de carrera, exclusión mutua e interbloqueos.
+
+### 7.1.14 — Paralelismo
+
+El paralelismo implica ejecución simultánea, por ejemplo en varios núcleos. No es sinónimo de concurrencia.
 
 ## 7.2 — Linux
 
-### Distribuciones y kernel Linux
+### 7.2.1 — Distribuciones
 
-Linux es el kernel; una distribución integra el kernel con utilidades, bibliotecas, gestor de paquetes, configuración y políticas para formar un sistema utilizable. Ubuntu y Debian son distribuciones. Pueden compartir componentes, pero difieren en ciclos de publicación, políticas, versiones y soporte. Consulta la documentación de la versión instalada antes de aplicar instrucciones.
+Linux es el kernel; una distribución integra kernel, utilidades, bibliotecas, gestor de paquetes y políticas. Las distribuciones difieren en soporte y versiones.
 
-### Estructura del sistema de archivos
+### 7.2.2 — Kernel Linux
+
+El kernel Linux administra procesos, memoria, dispositivos, redes y llamadas al sistema.
+
+### 7.2.3 — Ubuntu
+
+Ubuntu es una distribución basada en Debian con políticas propias de publicación, soporte y empaquetado.
+
+### 7.2.4 — Debian
+
+Debian es una distribución comunitaria con ramas y políticas propias. Consulta documentación oficial antes de actualizar.
+
+### 7.2.5 — Estructura del sistema de archivos
 
 El árbol parte de la raíz /.
+
+### 7.2.6 — Directorios del sistema de archivos
 
 | Directorio | Uso habitual |
 |---|---|
@@ -94,13 +130,27 @@ El árbol parte de la raíz /.
 
 La distribución concreta puede incorporar enlaces simbólicos o convenciones adicionales. No elimines contenido de estas rutas sin comprender su función.
 
-### Usuarios, grupos, propietarios y root
+### 7.2.7 — Usuarios
+
+Una cuenta identifica una entidad que puede iniciar sesión o ejecutar procesos. Aplica mínimo privilegio.
+
+### 7.2.8 — Grupos
+
+Los grupos permiten asignar permisos a conjuntos de usuarios.
+
+### 7.2.10 — Propietarios
+
+Los archivos y directorios tienen propietario y grupo asociados.
+
+### 7.2.11 — Root
+
+Root es la cuenta privilegiada tradicional; evita usarla en tareas rutinarias.
 
 Linux identifica usuarios y grupos mediante IDs. Los permisos controlan acciones para propietario, grupo y otros. Root es la cuenta privilegiada tradicional. Sudo permite ejecutar comandos autorizados con privilegios elevados según la política configurada.
 
 Aplica mínimo privilegio: utiliza una cuenta normal para tareas cotidianas, eleva privilegios solo cuando sea necesario y revisa el comando antes de usar sudo. No compartas contraseñas ni habilites root remoto sin una necesidad y controles claros.
 
-### Permisos
+### 7.2.9 — Permisos
 
 Los permisos tradicionales se expresan como lectura (r), escritura (w) y ejecución (x) para propietario, grupo y otros. En directorios, x permite atravesarlo; r permite listar nombres; w permite modificar entradas si se combinan los permisos necesarios.
 
@@ -110,42 +160,111 @@ Ejemplos:
 
 No utilices permisos 777 como solución general. Conceder escritura a todos aumenta el riesgo.
 
-### Procesos, servicios, paquetes, logs y variables
+### 7.2.12 — Sudo
 
-- Procesos: instancias en ejecución; identifica PID, usuario, consumo y relación padre-hijo.
-- Servicios: procesos o unidades administradas por el sistema; sistemas modernos basados en systemd suelen utilizar systemctl.
-- Paquetes: software distribuido con metadatos y dependencias, instalado mediante el gestor de la distribución.
-- Logs: registros de eventos y actividad; pueden contener información sensible y requieren controles de acceso y retención.
-- Variables de entorno: configuración heredada por procesos hijos; evita incluir secretos en comandos visibles o registros.
+Sudo permite ejecutar comandos autorizados con privilegios elevados. Revisa el comando antes de elevar privilegios.
+
+### 7.2.13 — Procesos
+
+Identifica PID, usuario, consumo y relación padre-hijo antes de intervenir.
+
+### 7.2.14 — Servicios
+
+Los servicios son unidades administradas por el sistema; systemd suele utilizar systemctl.
+
+### 7.2.15 — Paquetes
+
+Los paquetes distribuyen software con metadatos y dependencias. Revisa origen y versión.
+
+### 7.2.16 — Logs
+
+Los logs registran eventos y pueden contener información sensible; controla acceso y redacción.
+
+### 7.2.17 — Variables de entorno
+
+Transmiten configuración a procesos hijos. No incluyas secretos en comandos visibles ni historiales.
 
 ## 7.3 — Administración Linux
 
-### Comandos del temario
+### 7.3.1 — pwd
 
-| Comando | Función | Práctica |
-|---|---|---|
-| pwd | muestra directorio actual | consulta dónde estás |
-| ls | lista contenido | lista archivos ocultos y permisos |
-| cd | cambia directorio | navega a una ruta de laboratorio |
-| mkdir | crea directorio | crea laboratorio |
-| touch | crea archivo vacío o actualiza fecha | crea notas.txt |
-| cp | copia archivos/directorios | copia un archivo de práctica |
-| mv | mueve o renombra | renombra una copia |
-| rm | elimina | elimina solo un archivo temporal |
-| find | busca en directorios | encuentra archivos por nombre |
-| grep | busca texto | busca una palabra en un log de prueba |
-| chmod | modifica permisos | establece permisos 640 |
-| chown | cambia propietario/grupo | practica solo con autorización |
-| ps | muestra procesos | consulta procesos del usuario |
-| top | muestra procesos y recursos dinámicamente | identifica consumo |
-| kill | envía señales a procesos | utiliza un proceso propio de laboratorio |
-| systemctl | consulta/administra unidades systemd | consulta un servicio no crítico |
-| journalctl | consulta journal systemd | inspecciona logs del laboratorio |
-| df | informa espacio de sistemas de archivos | revisa espacio disponible |
-| du | estima uso de archivos/directorios | mide el directorio de práctica |
-| mount | muestra/administra montajes | inspecciona montajes existentes |
+Muestra el directorio actual.
 
-**Precaución:** rm puede eliminar sin papelera. No practiques rm -rf en rutas reales ni con variables sin validar. Comprueba el directorio actual y el destino. No detengas servicios esenciales ni modifiques montajes del host.
+### 7.3.2 — ls
+
+Lista contenido, permisos y metadatos.
+
+### 7.3.3 — cd
+
+Cambia el directorio actual de la shell.
+
+### 7.3.4 — mkdir
+
+Crea directorios; evita colisiones con carpetas existentes.
+
+### 7.3.5 — touch
+
+Crea un archivo vacío o actualiza sus marcas de tiempo.
+
+### 7.3.6 — cp
+
+Copia archivos y directorios; verifica destino y sobrescrituras.
+
+### 7.3.7 — mv
+
+Mueve o renombra; comprueba rutas y posibles sobrescrituras.
+
+### 7.3.8 — rm
+
+Elimina entradas. Practica solo con archivos temporales; evita patrones amplios y rm -rf sobre rutas reales.
+
+### 7.3.9 — find
+
+Busca entradas por nombre, tipo, fecha u otros criterios. Empieza con consultas de solo lectura.
+
+### 7.3.10 — grep
+
+Busca patrones en texto. Cita patrones y rutas con espacios o metacaracteres.
+
+### 7.3.11 — chmod
+
+Modifica permisos mediante notación simbólica u octal. Evita permisos excesivos.
+
+### 7.3.12 — chown
+
+Cambia propietario y grupo. Practica solo en archivos de laboratorio y con autorización.
+
+### 7.3.13 — ps
+
+Muestra información de procesos en un instante.
+
+### 7.3.14 — top
+
+Presenta procesos y consumo de recursos dinámicamente.
+
+### 7.3.15 — kill
+
+Envía una señal a un proceso; no garantiza que termine inmediatamente. Usa procesos propios de laboratorio.
+
+### 7.3.16 — systemctl
+
+Consulta y administra unidades de systemd. Comprueba dependencias e impacto antes de cambiar estado.
+
+### 7.3.17 — journalctl
+
+Consulta el journal. Filtra por unidad o periodo y redacta datos sensibles.
+
+### 7.3.18 — df
+
+Informa espacio utilizado y disponible en sistemas de archivos montados.
+
+### 7.3.19 — du
+
+Estima el espacio utilizado por archivos y directorios.
+
+### 7.3.20 — mount
+
+Muestra o administra sistemas de archivos montados. Practica solo con discos virtuales.
 
 ### Permisos y propietarios
 
@@ -161,23 +280,45 @@ Journalctl consulta el journal de systemd; df informa espacio de sistemas de arc
 
 ## 7.4 — Bash
 
-### Variables, operadores, condicionales y bucles
+### 7.4.1 — Variables
 
-Las variables de shell almacenan valores para utilizarlos durante la ejecución. En Bash la asignación no lleva espacios alrededor del signo igual y la expansión se realiza con el signo dólar. Los operadores permiten comparar cadenas o números, combinar condiciones y realizar operaciones aritméticas.
+En Bash las variables se asignan sin espacios alrededor del igual. Cita las expansiones para preservar espacios.
 
-If permite ramificar; for recorre elementos; while repite mientras una condición se cumpla. Evita ciclos sin una condición de salida alcanzable.
+### 7.4.2 — Operadores
 
-### Funciones y arrays
+Bash ofrece operadores de comparación, aritmética y lógica; [[ ]], (( )) y [ ] tienen reglas distintas.
 
-Las funciones encapsulan operaciones reutilizables. Los arrays agrupan elementos indexados. Bash tiene reglas particulares de expansión y quoting: utiliza comillas para preservar espacios y caracteres especiales.
+### 7.4.3 — Condicionales
 
-### Pipes, redirecciones y exit codes
+if ejecuta ramas según el estado de una condición. Comprueba códigos de salida.
 
-Un pipe conecta la salida estándar de un proceso con la entrada del siguiente. Las redirecciones envían salida o errores a archivos y descriptores. Cada comando devuelve un código de salida; convencionalmente cero indica éxito y un valor distinto de cero indica alguna condición de error.
+### 7.4.4 — Bucles
 
-En pipelines, revisa pipefail y el código que realmente necesitas validar. No asumas que el último comando representa siempre el éxito de todos los anteriores.
+for recorre listas; while repite mientras una condición tenga éxito. Diseña una salida alcanzable.
 
-### Scripts y automatización
+### 7.4.5 — Funciones
+
+Encapsulan operaciones reutilizables. Define argumentos, variables locales y códigos de retorno.
+
+### 7.4.6 — Arrays
+
+Agrupan valores indexados. Usa "${array[@]}" entre comillas para conservar cada elemento como argumento.
+
+### 7.4.7 — Pipes
+
+Conectan salida estándar de un proceso con la entrada del siguiente.
+
+### 7.4.8 — Redirecciones
+
+Envían salida o errores a archivos y descriptores. > suele sobrescribir; >> añade. Verifica el destino.
+
+### 7.4.9 — Exit codes
+
+Convencionalmente cero indica éxito y otro valor indica error. pipefail permite detectar fallos previos de un pipeline en Bash.
+
+### 7.4.10 — Scripts
+
+Un script robusto valida argumentos, cita variables, comprueba rutas, gestiona errores y termina con un código de salida coherente.
 
 Un script robusto valida argumentos, cita variables, comprueba rutas, gestiona errores, evita exponer secretos y termina con un código de salida coherente. Debe ejecutarse con el intérprete esperado y documentar sus requisitos.
 
@@ -208,29 +349,65 @@ Ejemplo educativo:
 
 Este ejemplo ilustra argumentos, validación y códigos de salida. En scripts de producción define cómo manejar errores de cada comando y si necesitas pipefail, traps o compatibilidad con otras shells.
 
-### Cron
+### 7.4.11 — Cron
+
+Cron programa tareas periódicas. El entorno puede diferir de una sesión interactiva: PATH, directorio, permisos y variables pueden ser distintos.
+
+### 7.4.12 — Automatización
+
+Combina scripts, programación y supervisión para tareas repetibles. Diseña ejecuciones idempotentes, registra resultados sin secretos y contempla fallos parciales.
 
 Cron programa tareas periódicas en sistemas que lo utilizan. Verifica la sintaxis del calendario y recuerda que el entorno puede diferir de una sesión interactiva: PATH, directorio de trabajo, permisos y variables pueden ser distintos. No programes tareas destructivas o repetitivas sin logs, control de errores y una forma de detenerlas.
 
 ## 7.5 — Windows
 
-### Arquitectura y NTFS
+### 7.5.1 — Arquitectura de Windows
 
-Windows organiza ejecución, memoria, seguridad, dispositivos y servicios mediante componentes del sistema. NTFS es un sistema de archivos con permisos y metadatos. No confundas permisos NTFS con permisos compartidos de red: el acceso efectivo puede depender de ambos conjuntos y de la identidad del usuario.
+Windows organiza ejecución, memoria, seguridad, dispositivos y servicios mediante componentes del sistema.
 
-### Usuarios, grupos, permisos y procesos
+### 7.5.2 — Sistema de archivos NTFS
 
-Las cuentas y grupos permiten asignar derechos y controlar acceso. Aplica mínimo privilegio y separa cuentas administrativas de cuentas de uso cotidiano cuando corresponda. El Administrador de tareas permite observar aplicaciones, procesos y recursos.
+NTFS gestiona archivos, directorios, metadatos y permisos. El acceso efectivo puede depender también de permisos compartidos de red.
 
-### Servicios, Registro y Visor de eventos
+### 7.5.3 — Usuarios y grupos
 
-Los servicios son componentes que pueden ejecutarse en segundo plano. El Visor de eventos permite consultar registros de sistema, seguridad y aplicaciones según permisos y configuración.
+Las cuentas y grupos permiten asignar derechos. Aplica mínimo privilegio.
 
-El Registro es una base jerárquica de configuración del sistema y aplicaciones. Modificar claves incorrectas puede afectar el arranque, seguridad o funcionamiento. Antes de cambiarlo, confirma la clave exacta, consulta documentación oficial, exporta la rama relevante cuando proceda, crea un punto de restauración o snapshot y define cómo revertir.
+### 7.5.4 — Permisos
 
-No ejecutes archivos .reg de procedencia desconocida.
+Los permisos NTFS definen acciones sobre archivos y carpetas; considera herencia y grupos.
 
-### Firewall y PowerShell
+### 7.5.5 — Procesos
+
+El Administrador de tareas permite observar procesos y consumo. Identifica contexto antes de terminar uno.
+
+### 7.5.6 — Servicios
+
+Antes de detener un servicio, revisa dependencias, función e impacto.
+
+### 7.5.7 — Registro de Windows
+
+El Registro es una base jerárquica de configuración. Confirma la clave exacta y prepara reversión; no ejecutes archivos .reg desconocidos.
+
+### 7.5.8 — Administrador de tareas
+
+Permite observar aplicaciones, procesos, rendimiento y usuarios.
+
+### 7.5.9 — Visor de eventos
+
+Consulta registros de sistema, seguridad y aplicaciones. Filtra y redacta datos sensibles antes de compartir.
+
+### 7.5.10 — Firewall
+
+Aplica reglas de tráfico según perfiles. No lo desactives para solucionar un problema sin identificar regla y alcance.
+
+### 7.5.11 — PowerShell
+
+Es una shell y lenguaje de automatización basado en objetos. Cmdlets de exploración: Get-Process, Get-Service, Get-WinEvent, Get-Help y Get-Command.
+
+### 7.5.12 — Administración de servicios
+
+Consulta nombre, estado, tipo de inicio y dependencias antes de cambiar un servicio. Practica en una VM.
 
 El Firewall aplica reglas de tráfico entrante y saliente según perfiles y configuración. No lo desactives para solucionar un problema sin identificar la regla, el perfil y el alcance. Crea excepciones mínimas y documentadas.
 
@@ -240,21 +417,41 @@ Para administrar servicios, consulta primero el estado y nombre exacto; después
 
 ## 7.6 — Virtualización
 
-### Máquinas virtuales y recursos
+### 7.6.1 — VirtualBox
 
-Una máquina virtual presenta hardware virtual a un sistema operativo invitado. El hipervisor gestiona recursos físicos y virtuales. La VM consume CPU, RAM y almacenamiento del host; asignar demasiados recursos puede degradar ambos. VirtualBox y VMware son plataformas de virtualización; sus funciones dependen de edición, versión, host y configuración.
+VirtualBox permite crear y administrar máquinas virtuales. Sus funciones dependen de versión, host y configuración.
 
-### Snapshots
+### 7.6.2 — VMware
 
-Un snapshot captura un estado de una VM para volver a él durante pruebas. No es una copia de seguridad completa ni sustituye backups independientes. Puede depender de discos base y cadenas de diferencias; muchos snapshots consumen almacenamiento y pueden afectar el rendimiento.
+VMware ofrece plataformas y productos con capacidades y licencias distintas.
 
-Crea snapshots antes de prácticas riesgosas, nómbralos con fecha y objetivo y elimina los obsoletos solo después de confirmar que no se necesitan.
+### 7.6.3 — Máquinas virtuales
 
-### Redes NAT y Host-only
+Una VM presenta hardware virtual a un sistema invitado. Consume CPU, RAM y almacenamiento del host.
 
-NAT permite que la VM acceda a redes externas a través del host según la configuración; las conexiones entrantes requieren reglas o mecanismos específicos. Host-only crea una red privada entre host y VMs participantes y normalmente no ofrece acceso externo por sí sola. Los adaptadores virtuales conectan las VMs a redes definidas por la plataforma.
+### 7.6.4 — Snapshots
 
-No expongas servicios de laboratorio a Internet. Comprueba direcciones, rutas y reglas del host antes de habilitar adaptadores puente u otros modos de red.
+Un snapshot captura un estado para volver a él durante pruebas. No sustituye backups independientes y puede consumir almacenamiento.
+
+### 7.6.5 — Recursos virtualizados
+
+CPU, memoria, almacenamiento y red se asignan a la VM. Deja recursos suficientes al host.
+
+### 7.6.6 — Redes virtuales
+
+Conectan VMs entre sí, con el host o con redes externas según el modo. Documenta topología y reglas.
+
+### 7.6.7 — NAT
+
+NAT permite acceso externo mediado por el host; las conexiones entrantes requieren reglas específicas.
+
+### 7.6.8 — Host-only
+
+Crea una red privada entre host y VMs participantes y normalmente no ofrece acceso externo por sí sola.
+
+### 7.6.9 — Adaptadores de red virtuales
+
+Conectan VMs a redes definidas por la plataforma. Comprueba modo, interfaz, IP y rutas antes de habilitar modo puente.
 
 ## Proyecto oficial — Dos servidores virtuales
 
