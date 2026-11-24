@@ -171,282 +171,289 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 ### Módulo 12.1 — JavaScript
 
 #### 12.1.01 — Variables
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+`let`, `const` y `var` declaran enlaces con reglas distintas de ámbito y reasignación. Prefiere `const` cuando no reasignas, `let` cuando sí y evita `var` en código moderno; recuerda que `const` no vuelve inmutable un objeto.
 
 #### 12.1.02 — Tipos
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+JavaScript es dinámicamente tipado: un valor tiene tipo en tiempo de ejecución y una variable puede referirse a valores de tipos distintos. Distingue `undefined`, `null`, boolean, number, bigint, string, symbol y object; usa comprobaciones explícitas al validar entradas externas.
 
 #### 12.1.03 — Operadores
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los operadores realizan operaciones aritméticas, comparación, asignación, lógica y acceso. Comprende precedencia, coerción y diferencia entre `===` y `==`; usa comparación estricta por defecto y agrupa expresiones complejas para hacer visible la intención.
 
 #### 12.1.04 — Condicionales
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Las condicionales ejecutan rutas según una expresión booleana mediante `if`, `else` o `switch`. Convierte las reglas del negocio en condiciones mutuamente comprensibles y prueba valores ausentes, límites y tipos inesperados.
 
 #### 12.1.05 — Bucles
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los bucles `for`, `while`, `do...while` y `for...of` repiten operaciones bajo distintos criterios. Selecciona el bucle según si recorres una colección o esperas una condición, y evita mutar la colección mientras la iteras sin comprender el efecto.
 
 #### 12.1.06 — Funciones
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Una función encapsula comportamiento y puede recibir parámetros y devolver un valor. JavaScript admite declaraciones, expresiones y funciones flecha; elige nombres descriptivos, define contratos de entrada/salida y evita mezclar cálculo, acceso a red y manipulación visual en una sola función.
 
 #### 12.1.07 — Objetos
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los objetos agrupan propiedades y métodos y pueden crearse con literales, constructores o clases. Accede de forma segura a propiedades opcionales, evita asumir que datos JSON externos tienen la forma esperada y valida el contrato antes de utilizarlos.
 
 #### 12.1.08 — Arrays
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los arrays son colecciones ordenadas con métodos de iteración, transformación y búsqueda. Practica `map`, `filter`, `reduce`, `find` y `some`; distingue métodos que mutan el array de los que producen uno nuevo y no uses índices como identificadores persistentes.
 
 #### 12.1.09 — Strings
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Las cadenas son secuencias UTF-16 y ofrecen métodos de búsqueda, extracción y transformación. Ten presente que longitud e índices no siempre equivalen a caracteres visuales Unicode; valida y normaliza texto según el requisito de la aplicación.
 
 #### 12.1.10 — Destructuring
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Destructuring extrae valores de arrays u objetos en variables mediante patrones. Permite asignar valores predeterminados y renombrar propiedades; úsalo para hacer explícita la forma de los datos, sin ocultar estructuras complejas en una sola línea.
 
 #### 12.1.11 — Spread
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Spread (`...`) expande elementos iterables o propiedades enumerables en un nuevo array u objeto. Es una copia superficial: los objetos anidados siguen compartiendo referencias, por lo que no garantiza inmutabilidad profunda.
 
 #### 12.1.12 — Rest
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Rest (`...`) agrupa los argumentos restantes o propiedades no extraídas en una nueva colección. En parámetros de función debe ser el último parámetro; úsalo para APIs flexibles sin perder claridad sobre qué argumentos son obligatorios.
 
 #### 12.1.13 — Scope
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Scope determina dónde puede resolverse un identificador: global, de función o de bloque. `let` y `const` tienen ámbito de bloque y zona temporal muerta; limita variables al menor ámbito útil para reducir efectos colaterales.
 
 #### 12.1.14 — Closures
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Una closure conserva acceso al entorno léxico donde se creó una función, incluso después de terminar la función externa. Es útil para encapsular estado y crear funciones especializadas; controla referencias retenidas para no mantener memoria innecesaria.
 
 #### 12.1.15 — Hoisting
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Hoisting describe cómo el motor procesa declaraciones antes de ejecutar el código, pero no significa que todas las variables puedan usarse antes de declararse. Las declaraciones `var`, `let`, `const` y `function` tienen reglas distintas; escribe declaraciones antes de su uso.
 
 #### 12.1.16 — Prototypes
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los prototypes permiten delegar la búsqueda de propiedades a otros objetos y forman la base de la herencia basada en prototipos. Comprende `Object.getPrototypeOf` y la cadena de prototipos; evita modificar prototipos globales de objetos nativos.
 
 #### 12.1.17 — This
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+`this` se determina principalmente por cómo se invoca una función, no por dónde se declara; las funciones flecha capturan `this` léxico. Analiza llamadas como método, función independiente, constructor y `bind` para evitar referencias inesperadas.
 
 #### 12.1.18 — ES6+
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+ES6+ agrupa mejoras del lenguaje como `let`/`const`, funciones flecha, clases, módulos, destructuring, iteradores y promesas. No trates la etiqueta como una versión única: verifica compatibilidad del runtime y del navegador objetivo antes de utilizar una API.
 
 #### 12.1.19 — Modules
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los módulos separan código mediante `export` e `import`, con ámbitos propios y dependencias explícitas. Define una interfaz pública pequeña, evita ciclos innecesarios y distingue módulos ECMAScript de formatos históricos como CommonJS.
 
 ### Módulo 12.2 — DOM
 
 #### 12.2.01 — Document Object Model
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+El DOM representa el documento como un árbol de nodos que scripts pueden consultar y modificar. Comprende la diferencia entre HTML fuente y DOM vivo, y evita asumir que la estructura permanece igual después de scripts, componentes o interacciones.
 
 #### 12.2.02 — Selección de elementos
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+La selección de elementos utiliza APIs como `getElementById`, `querySelector` y `querySelectorAll`. Prefiere selectores específicos y comprueba si la búsqueda devuelve `null` o una colección vacía antes de modificar nodos.
 
 #### 12.2.03 — Manipulación del DOM
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Manipular el DOM incluye crear, insertar, actualizar y eliminar nodos y atributos. Usa `textContent` para texto no confiable, evita insertar HTML sin sanitización y agrupa cambios cuando sea posible para reducir trabajo de renderizado.
 
 #### 12.2.04 — Eventos
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Un evento representa una interacción o suceso como clic, teclado, envío o carga. Identifica el objetivo, la fase de propagación y el contexto; no supongas que todos los eventos se comportan igual en ratón, teclado y pantallas táctiles.
 
 #### 12.2.05 — Event listeners
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+`addEventListener` registra una función para responder a un evento y permite opciones como `once`, `capture` y `signal`. Retira listeners cuando su ciclo de vida termina o usa una señal de aborto para evitar fugas y respuestas duplicadas.
 
 #### 12.2.06 — Event bubbling
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Event bubbling describe cómo muchos eventos se propagan desde el objetivo hacia sus ancestros. `event.target` identifica el origen y `currentTarget` el nodo que ejecuta el listener; detén propagación solo cuando exista una razón funcional clara.
 
 #### 12.2.07 — Event delegation
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Event delegation coloca un listener en un ancestro para gestionar eventos de varios descendientes. Es útil para listas dinámicas; filtra el objetivo con `closest`, verifica que pertenezca al contenedor y considera eventos que no hacen bubbling.
 
 #### 12.2.08 — Formularios
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los formularios del DOM exponen controles, valores y eventos de envío. Gestiona `submit` en el formulario, permite la interacción por teclado y evita depender únicamente del clic del botón; el servidor debe volver a validar todos los datos.
 
 #### 12.2.09 — Validaciones
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+La validación de formularios combina restricciones nativas, lógica de interfaz y validación de servidor. Comunica el campo, el motivo y cómo corregirlo; normaliza entradas y nunca uses validación cliente como control de seguridad.
 
 ### Módulo 12.3 — Asincronía
 
 #### 12.3.01 — Synchronous programming
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+La programación síncrona ejecuta operaciones en secuencia y una operación bloqueante impide avanzar en ese hilo. Es sencilla de razonar, pero una operación lenta de I/O puede congelar la interfaz o retrasar otras tareas.
 
 #### 12.3.02 — Asynchronous programming
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+La programación asíncrona permite iniciar una operación y continuar mientras se espera su resultado. No significa necesariamente ejecución paralela; distingue concurrencia, asincronía y paralelismo al explicar cómo se programan las tareas.
 
 #### 12.3.03 — Callbacks
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Un callback es una función entregada a otra operación para invocarse posteriormente o durante un proceso. Es común en eventos y APIs, pero anidar muchos callbacks dificulta el manejo de errores y la lectura; promesas suelen expresar mejor cadenas asíncronas.
 
 #### 12.3.04 — Promises
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Una Promise representa un resultado futuro con estados pending, fulfilled o rejected. Encadena con `then`, `catch` y `finally`, devuelve siempre una nueva promesa desde callbacks y maneja rechazos para evitar errores no observados.
 
 #### 12.3.05 — Async/Await
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+`async` declara una función que devuelve una promesa y `await` pausa su continuación hasta que la promesa se resuelve o rechaza. Usa `try/catch` para errores y evita esperar en serie tareas independientes que podrían ejecutarse concurrentemente.
 
 #### 12.3.06 — Event Loop
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+El Event Loop coordina la pila de ejecución, colas de tareas y trabajos de microtareas del entorno. Comprende que JavaScript ejecuta código de usuario en un hilo principal en muchos entornos, mientras ciertas operaciones las realiza el runtime o el navegador.
 
 #### 12.3.07 — Microtasks
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Las microtasks incluyen continuaciones de promesas y se procesan en puntos específicos del ciclo de eventos antes de continuar con la siguiente tarea. Una cadena interminable de microtasks puede retrasar renderizado y otras tareas.
 
 #### 12.3.08 — Macrotasks
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Las macrotasks (término didáctico habitual para tareas del event loop) incluyen callbacks de temporizadores y eventos según el entorno. Los temporizadores establecen un tiempo mínimo de espera, no garantizan ejecución exacta en ese instante.
 
 #### 12.3.09 — Error handling
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+El manejo de errores asíncronos requiere capturar rechazos, propagar contexto y distinguir fallos de red, HTTP y parseo. `fetch` no rechaza automáticamente por respuestas HTTP 4xx/5xx; comprueba `response.ok` y presenta errores sin filtrar secretos.
 
 #### 12.3.10 — Race conditions
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Race conditions ocurren cuando el resultado depende del orden de operaciones concurrentes o asíncronas. Cancela solicitudes obsoletas, usa identificadores de petición o controles de versión y evita que una respuesta antigua sobrescriba datos más recientes.
 
 ### Módulo 12.4 — Web APIs
 
 #### 12.4.01 — Fetch API
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Fetch API realiza solicitudes de red y devuelve una promesa con un objeto `Response`. Configura método, headers y body según el contrato; comprueba `ok`, tipo de contenido y errores, y no asumas que una respuesta siempre contiene JSON.
 
 #### 12.4.02 — LocalStorage
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+LocalStorage persiste pares clave/valor de texto en el origen del navegador y sobrevive al cierre de pestaña. No almacenes contraseñas, tokens sensibles ni datos de alto riesgo; los scripts del mismo origen pueden leerlo y una vulnerabilidad XSS expone su contenido.
 
 #### 12.4.03 — SessionStorage
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+SessionStorage conserva datos por origen y contexto de pestaña durante la sesión de página. Úsalo para estado temporal de interfaz, no como almacén seguro; define qué ocurre al recargar, duplicar o cerrar pestañas.
 
 #### 12.4.04 — Cookies
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Las cookies son pequeños datos enviados en solicitudes según dominio, ruta y políticas del navegador. Para sesiones, configura `Secure`, `HttpOnly` y `SameSite` apropiadamente, define expiración y evita guardar información sensible legible por JavaScript.
 
 #### 12.4.05 — Geolocation
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Geolocation API solicita permiso para acceder a una ubicación estimada del dispositivo. Explica el propósito, solicita el dato solo cuando sea necesario y minimiza retención; la precisión y disponibilidad dependen del dispositivo, permisos y entorno.
 
 #### 12.4.06 — Clipboard
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Clipboard API permite leer o escribir en el portapapeles bajo restricciones de seguridad y permisos del navegador. Ofrece una acción explícita, maneja rechazo de permisos y proporciona alternativa manual para copiar cuando la API no esté disponible.
 
 #### 12.4.07 — File API
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+File API permite que una página lea archivos que el usuario selecciona o suelta, sin conceder acceso arbitrario al sistema de archivos. Valida tipo, tamaño y contenido en servidor; el nombre o MIME declarado no demuestra que el archivo sea seguro.
 
 ### Módulo 12.5 — TypeScript
 
 #### 12.5.01 — Tipos
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los tipos TypeScript describen las formas de valores y permiten detectar incompatibilidades durante el análisis estático. El sistema se elimina en la compilación y no valida datos en runtime; valida entradas externas con esquemas o comprobaciones reales.
 
 #### 12.5.02 — Interfaces
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Una `interface` define la forma de objetos y puede extender otras interfaces o participar en declaración abierta. Úsala para contratos de objetos y servicios; recuerda que las interfaces desaparecen al compilar y no son validadores de datos.
 
 #### 12.5.03 — Type aliases
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Un `type alias` asigna un nombre a un tipo, que puede ser primitivo, unión, intersección, tupla o forma de objeto. Selecciona `type` o `interface` según la composición y extensibilidad que necesite el contrato.
 
 #### 12.5.04 — Union types
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los union types permiten que un valor pertenezca a uno de varios tipos, por ejemplo `string | number`. Reduce la unión mediante comprobaciones de tipo y maneja todos los casos posibles antes de utilizar operaciones específicas.
 
 #### 12.5.05 — Intersection types
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los intersection types combinan requisitos de varios tipos en uno solo. Son útiles para componer contratos, pero pueden producir propiedades incompatibles; evita combinaciones que generen tipos imposibles o difíciles de interpretar.
 
 #### 12.5.06 — Generics
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los generics parametrizan funciones, interfaces y clases para conservar relaciones entre tipos sin recurrir a `any`. Define restricciones con `extends` cuando una operación necesita propiedades concretas y prueba inferencia con diferentes entradas.
 
 #### 12.5.07 — Type narrowing
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Type narrowing reduce una unión a un tipo más específico mediante `typeof`, `in`, igualdad, discriminantes o guards. Modela estados con etiquetas discriminantes y evita asumir que una conversión de tipo modifica el valor en runtime.
 
 #### 12.5.08 — Utility types
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Utility types como `Partial`, `Pick`, `Omit`, `Record`, `Readonly` y `ReturnType` derivan nuevos tipos a partir de otros. Úsalos para expresar transformaciones de contrato y evita construir tipos excesivamente complejos solo para ahorrar unas líneas.
 
 #### 12.5.09 — Enums
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los enums representan conjuntos de constantes nombradas, aunque pueden generar código JavaScript dependiendo de su forma. Considera uniones literales o `as const` cuando sea más sencillo y documenta cómo se serializan los valores.
 
 #### 12.5.10 — Type inference
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Type inference permite que TypeScript deduzca tipos a partir de valores, parámetros contextuales y expresiones. Añade anotaciones en límites públicos o cuando aclaren intención; no anotes cada variable de forma redundante ni confíes en inferencia para datos no validados.
 
 #### 12.5.11 — Strict mode
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Strict mode activa comprobaciones estrictas del compilador, incluida la gestión de nullability y parámetros implícitos. Actívalo progresivamente en proyectos heredados y corrige los contratos reales en vez de silenciar errores con `any` o aserciones indiscriminadas.
 
 ### Módulo 12.6 — React
 
 #### 12.6.01 — Components
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Un componente React encapsula una parte de interfaz y suele expresarse como función que devuelve JSX. Divide por responsabilidad y reutilización, mantén componentes puros cuando sea posible y no llames componentes como funciones ordinarias.
 
 #### 12.6.02 — JSX
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+JSX es una sintaxis que permite describir estructuras similares a HTML dentro de JavaScript y se transforma durante el build. Usa `className`, expresiones entre llaves y claves estables en listas; JSX no es HTML literal y aplica reglas de JavaScript.
 
 #### 12.6.03 — Props
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Props son entradas de solo lectura que el componente recibe de su padre. Define nombres y tipos claros, evita mutarlas y pasa callbacks para comunicar acciones hacia arriba en lugar de modificar directamente el estado de otro componente.
 
 #### 12.6.04 — State
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+State representa información que puede cambiar y cuya actualización provoca un nuevo render. Trata el estado como inmutable, calcula actualizaciones desde el valor previo cuando dependa de él y evita duplicar datos derivados que puedan calcularse.
 
 #### 12.6.05 — Hooks
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Hooks permiten utilizar estado y otras capacidades de React desde componentes funcionales. Llámalos en el nivel superior y en el mismo orden en cada render; no los invoques dentro de condiciones, ciclos o funciones anidadas.
 
 #### 12.6.06 — useState
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+`useState` añade estado local y devuelve el valor actual y una función de actualización. Si el nuevo valor depende del anterior, utiliza la forma funcional; no modifiques arrays u objetos existentes directamente.
 
 #### 12.6.07 — useEffect
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+`useEffect` sincroniza un componente con sistemas externos después del render, como suscripciones o temporizadores. Declara dependencias correctas y limpieza; no lo uses para calcular valores derivados que pueden obtenerse durante el render.
 
 #### 12.6.08 — useContext
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+`useContext` lee el valor del contexto más cercano para compartir datos a través del árbol. Mantén el contexto para información realmente transversal y divide contextos de alta frecuencia de cambio para evitar renders innecesarios.
 
 #### 12.6.09 — useRef
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+`useRef` conserva un objeto mutable entre renders sin provocar un render al cambiar su propiedad `current`. Sirve para referencias DOM y valores persistentes no visuales; si un cambio debe reflejarse en pantalla, normalmente corresponde a state.
 
 #### 12.6.10 — Forms
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Los formularios React pueden ser controlados por estado o utilizar referencias y APIs nativas. Define validación y mensajes accesibles, evita actualizar estado de manera innecesaria por cada pulsación y protege datos sensibles en el flujo de envío.
 
 #### 12.6.11 — Routing
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Routing asocia rutas de URL con vistas y navegación de una aplicación. Distingue rutas cliente de navegación de servidor, maneja rutas desconocidas y protege recursos en backend; ocultar un enlace no constituye autorización.
 
 #### 12.6.12 — Context API
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Context API distribuye valores compartidos sin pasar props por cada nivel. Es adecuada para temas, idioma o sesión de interfaz, pero no sustituye automáticamente una estrategia de estado compleja ni el almacenamiento seguro de credenciales.
 
 #### 12.6.13 — Component lifecycle
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+El ciclo de vida describe montaje, actualización y desmontaje de componentes. En componentes funcionales, efectos y su limpieza expresan sincronización con sistemas externos; el modo estricto de desarrollo puede repetir ciclos para revelar efectos no seguros.
 
 #### 12.6.14 — State management
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+State management define cómo se representa, actualiza y comparte el estado de una aplicación. Separa estado local, estado de servidor, estado de URL y estado global; selecciona la herramienta menos compleja que cubra las necesidades reales.
 
 #### 12.6.15 — Custom Hooks
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Custom Hooks encapsulan lógica reutilizable que usa otros hooks y devuelve datos o acciones. Sus nombres comienzan con `use`, respetan las reglas de hooks y abstraen comportamiento, no necesariamente interfaz visual.
 
 #### 12.6.16 — Error Boundaries
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Error Boundaries capturan errores de renderizado en partes del árbol React y muestran una interfaz alternativa. No capturan todos los errores asíncronos ni eventos; registra contexto sin exponer datos privados y ofrece recuperación o navegación segura.
 
 ### Módulo 12.7 — Next.js
 
 #### 12.7.01 — App Router
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+App Router organiza rutas y layouts mediante la estructura de archivos de `app` en Next.js. Comprende segmentos, layouts anidados, loading, error y not-found; consulta la documentación de la versión del proyecto porque convenciones pueden evolucionar.
 
 #### 12.7.02 — Routing
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+El routing de Next.js convierte segmentos de carpetas y archivos especiales en rutas. Diseña rutas legibles, parámetros dinámicos y layouts compartidos; evita asumir que toda navegación se ejecuta exclusivamente en el cliente.
 
 #### 12.7.03 — Server Components
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Server Components se ejecutan en el servidor y permiten obtener datos y reducir JavaScript enviado al navegador. No acceden a APIs exclusivas del navegador ni manejan estado cliente; evita enviar secretos o datos no autorizados en sus props.
 
 #### 12.7.04 — Client Components
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Client Components habilitan estado, eventos y APIs del navegador mediante la directiva `use client` en el límite apropiado. Mantén el límite cliente pequeño y no confundas la ejecución inicial de render con la disponibilidad de APIs del navegador.
 
 #### 12.7.05 — Server-side rendering
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Server-side rendering genera HTML en el servidor para una solicitud o estrategia configurada. Considera hidratación, caché, datos personalizados y coste de render; evita que datos de usuario se filtren por cachés compartidas.
 
 #### 12.7.06 — Static site generation
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Static site generation produce páginas durante la compilación o regeneración configurada, reduciendo trabajo por solicitud. Es apropiada para contenido que puede servirse estáticamente; define cómo se actualiza y evita publicar datos privados o obsoletos.
 
 #### 12.7.07 — Data fetching
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Data fetching obtiene datos desde servicios o bases de datos dentro de los límites de ejecución de Next.js. Define caché, revalidación, timeout, manejo de errores y permisos; el lugar de la solicitud afecta rendimiento y exposición de secretos.
 
 #### 12.7.08 — Authentication
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+La autenticación identifica al usuario y la autorización determina qué puede hacer. Usa bibliotecas y protocolos mantenidos, valida sesión y permisos en el servidor y no confíes en rutas protegidas solo por controles de interfaz.
 
 #### 12.7.09 — Metadata
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Metadata permite definir título, descripción, iconos y otras propiedades de página desde la configuración de Next.js. Genera metadatos coherentes por ruta, evita duplicados y no incluyas datos personales o secretos en valores públicos.
 
 #### 12.7.10 — Deployment
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Deployment publica la aplicación y su configuración en un entorno de ejecución. Documenta variables de entorno, build, runtime, migraciones, observabilidad, rollback y dominio; no incluyas secretos en repositorio ni confundas build exitoso con servicio saludable.
 
 ### Módulo 12.8 — Herramientas
 
 #### 12.8.01 — npm
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+npm instala paquetes, ejecuta scripts y administra dependencias mediante `package.json` y un lockfile. Revisa scripts antes de ejecutarlos, fija versiones según política y evita instalar paquetes de nombres parecidos sin verificar el mantenedor.
 
 #### 12.8.02 — pnpm
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+pnpm gestiona dependencias con un almacén de contenido direccionado y enlaces, optimizando espacio y consistencia. Conserva `pnpm-lock.yaml`, documenta la versión del gestor y no mezcles lockfiles sin una decisión explícita del equipo.
 
 #### 12.8.03 — Vite
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Vite ofrece servidor de desarrollo y proceso de build para aplicaciones frontend. Configura plugins y variables con cuidado, recuerda que las variables expuestas al cliente son públicas y valida el artefacto de producción además del servidor local.
 
 #### 12.8.04 — ESLint
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+ESLint analiza patrones de código y aplica reglas para detectar errores potenciales y mantener convenciones. Configura reglas compatibles con la versión del lenguaje y framework; no desactives globalmente reglas para ocultar advertencias recurrentes.
 
 #### 12.8.05 — Prettier
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Prettier formatea código de manera consistente y reduce discusiones de estilo. Fija configuración compartida y ejecútalo en el flujo del proyecto; el formateador no reemplaza linting, revisión ni pruebas.
 
 #### 12.8.06 — Tailwind CSS
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+Tailwind CSS ofrece utilidades de bajo nivel para expresar estilos directamente en el marcado. Mantén tokens y patrones reutilizables, revisa el tamaño del CSS generado y evita construir nombres de clase dinámicos que el proceso de detección no pueda identificar.
 
 #### 12.8.07 — React DevTools
-Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+React DevTools permite inspeccionar árbol de componentes, props, estado y rendimiento en desarrollo. Utilízalo para localizar renders y estructura; evita compartir capturas con datos de usuario o tokens y no lo confundas con una prueba de rendimiento completa.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 89 orientaciones genéricas del desglose por explicaciones específicas de cada entrada oficial. Se añadieron precisiones sobre semántica y coerción de JavaScript, closures/prototypes/this, propagación de eventos, ciclo de eventos y microtasks, almacenamiento del navegador, límites de TypeScript en runtime, reglas de hooks, Server/Client Components, caché, autenticación y seguridad de dependencias.
+
+**Revisión interna:** 89/89 entradas desarrolladas y cotejadas con el roadmap. La guía principal conserva ejemplos, proyecto y evaluación. Pendiente: fijar versiones exactas de Node.js, TypeScript, React y Next.js para ejecución reproducible; compilar, ejecutar pruebas de componentes y accesibilidad, validar APIs y revisar el despliegue. Esta revisión documental no acredita ejecución ni aprobación externa.
