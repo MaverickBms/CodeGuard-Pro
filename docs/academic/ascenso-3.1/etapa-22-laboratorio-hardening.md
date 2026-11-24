@@ -122,185 +122,192 @@ Este desglose conserva las entradas del roadmap maestro, incluidas las notas exp
 ### Módulo 22.1 — Virtualización
 
 #### 22.1.01 — Hipervisores
-Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Un hipervisor crea y administra máquinas virtuales y asigna recursos físicos a sistemas invitados. Distingue tipo 1 y tipo 2 y mantén el hipervisor actualizado; la virtualización no elimina todos los riesgos entre host y guest.
 
 #### 22.1.02 — Máquinas virtuales
-Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Una máquina virtual ejecuta un sistema operativo invitado con CPU, memoria, disco y dispositivos virtuales. Usa imágenes confiables, recursos limitados y credenciales de laboratorio; no conectes máquinas deliberadamente vulnerables a redes públicas.
 
 #### 22.1.03 — Snapshots
-Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Snapshots registran un estado de VM para volver a un punto anterior, según capacidades del hipervisor. No son copias de seguridad completas; documenta su ciclo de vida y no dependas de snapshots como única protección de datos.
 
 #### 22.1.04 — Redes aisladas
-Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Redes aisladas restringen comunicación de laboratorio para que ejercicios no afecten redes externas. Verifica rutas, interfaces y reglas antes de iniciar y confirma que el segmento no tenga salida no prevista.
 
 #### 22.1.05 — NAT
-Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+NAT permite que máquinas virtuales compartan una salida mediante traducción de direcciones del host o hipervisor. Comprende qué conexiones entrantes se permiten y no asumas que NAT equivale a aislamiento total.
 
 #### 22.1.06 — Host-only
-Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Host-only conecta host y máquinas virtuales dentro de una red privada sin exponerlas directamente a la LAN externa. Revisa interfaces y rutas para impedir puentes accidentales.
 
 #### 22.1.07 — Segmentación
-Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Segmentación separa sistemas según función, sensibilidad y nivel de confianza. Define flujos permitidos entre segmentos y verifica que reglas de red hagan cumplir el diseño.
 
 #### 22.1.08 — Laboratorios vulnerables
-Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Laboratorios vulnerables ofrecen aplicaciones o sistemas intencionalmente inseguros para aprender pruebas defensivas. Ejecútalos aislados, con datos ficticios, alcance escrito y sin publicar puertos en redes accesibles desde Internet.
 
 ### Módulo 22.2 — Distribuciones Linux
 
 #### 22.2.01 — Ubuntu
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Ubuntu es una distribución Linux con ciclos de soporte y paquetes definidos. Selecciona una versión soportada para el laboratorio, aplica actualizaciones y consulta documentación de esa versión.
 
 #### 22.2.02 — Debian
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Debian es una distribución comunitaria con ramas y políticas de estabilidad. Identifica versión y repositorios configurados antes de instalar o actualizar software.
 
 #### 22.2.03 — Kali Linux
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Kali Linux es una distribución orientada a pruebas de seguridad y análisis, con herramientas especializadas. No es una distribución de uso general obligatorio ni autoriza a probar sistemas ajenos.
 
 #### 22.2.04 — Kali Tools
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Kali Tools agrupa herramientas para tareas de seguridad y análisis. Instala solo lo necesario desde repositorios confiables, comprende el propósito y ejecuta cada herramienta dentro del alcance autorizado.
 
 #### 22.2.05 — Gestión de paquetes
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+La gestión de paquetes instala, actualiza y elimina software junto con sus dependencias. Verifica origen de repositorios, firmas y versiones y evita descargar instaladores de sitios desconocidos.
 
 #### 22.2.06 — Usuarios
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Usuarios identifican cuentas que ejecutan procesos y acceden a recursos. Usa cuentas nominales, deshabilita cuentas innecesarias y evita iniciar sesiones de trabajo cotidiano como root.
 
 #### 22.2.07 — Grupos
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Grupos facilitan asignar permisos compartidos a conjuntos de usuarios. Mantén membresías mínimas y revisa cambios de grupo, especialmente en grupos con privilegios administrativos.
 
 #### 22.2.08 — Permisos
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Permisos Linux controlan lectura, escritura y ejecución para propietario, grupo y otros, con ACL y atributos adicionales. Comprueba contexto de archivo/directorio y evita `chmod 777` como solución universal.
 
 #### 22.2.09 — Servicios
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Servicios son procesos administrados por el sistema de inicio, como systemd en muchas distribuciones. Deshabilita solo servicios identificados y necesarios, y conserva un procedimiento de recuperación.
 
 #### 22.2.10 — Logs
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Logs registran eventos de sistema, autenticación, servicios y aplicaciones. Protege acceso e integridad, sincroniza reloj y controla retención para preservar utilidad de auditoría.
 
 #### 22.2.11 — Procesos
-Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Procesos son instancias de programas en ejecución con PID, usuario y recursos. Identifica el proceso y su función antes de terminarlo y evita intervenir servicios críticos sin plan.
 
 ### Módulo 22.3 — Seguridad Linux
 
 #### 22.3.01 — SSH Hardening
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+SSH Hardening reduce superficie de acceso remoto mediante autenticación fuerte, restricciones de usuarios, configuración y monitoreo. Prueba cambios en una sesión secundaria antes de cerrar la actual para evitar perder administración.
 
 #### 22.3.02 — Gestión de usuarios
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+La gestión de usuarios Linux controla altas, bajas, grupos, shells y expiración de cuentas. Aplica proceso formal de provisión y desprovisión y revisa cuentas inactivas.
 
 #### 22.3.03 — Sudo
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Sudo permite ejecutar comandos con privilegios delegados según reglas explícitas. Limita comandos y grupos, valida sintaxis de sudoers y evita permisos amplios que equivalgan a root sin justificación.
 
 #### 22.3.04 — File Permissions
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+File Permissions define acceso sobre archivos y directorios, incluyendo propietario, grupo, ACL y permisos especiales. Evalúa permisos efectivos y herencia y evita cambios recursivos sin conocer el alcance.
 
 #### 22.3.05 — Firewall
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Firewall en Linux controla tráfico entrante, saliente y reenviado mediante el framework disponible. Documenta reglas, orden y política por defecto y conserva acceso administrativo durante la aplicación de cambios.
 
 #### 22.3.06 — UFW
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+UFW ofrece una interfaz simplificada para administrar reglas de firewall en sistemas compatibles. Comprueba estado y reglas efectivas, permite primero el acceso remoto necesario y valida desde una segunda conexión autorizada.
 
 #### 22.3.07 — Fail2ban
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Fail2ban analiza registros y aplica bloqueos temporales ante patrones configurados de abuso. Ajusta filtros y umbrales para evitar falsos positivos y no lo uses como sustituto de autenticación fuerte.
 
 #### 22.3.08 — Actualizaciones
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Actualizaciones corrigen vulnerabilidades y errores en sistema y aplicaciones. Define ventanas, pruebas, priorización y rollback; aplica parches desde fuentes oficiales y registra excepciones temporales.
 
 #### 22.3.09 — Servicios innecesarios
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Los servicios innecesarios aumentan superficie y consumo de recursos. Inventaría listeners y dependencias, deshabilita solo servicios no requeridos y verifica que no rompas funciones legítimas.
 
 #### 22.3.10 — Logs de seguridad
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Logs de seguridad registran autenticaciones, privilegios, cambios y eventos relevantes. Protege su integridad, centraliza cuando proceda y redacta secretos y datos personales de los mensajes.
 
 #### 22.3.11 — Auditoría básica
-Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Auditoría básica compara configuración real con una línea base definida y registra desviaciones. Usa listas de comprobación versionadas, evidencia con fecha y responsable y vuelve a medir tras remediar.
 
 ### Módulo 22.4 — Seguridad Windows
 
 #### 22.4.01 — Windows Defender
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Windows Defender agrupa capacidades de protección integradas, como antivirus y controles de seguridad de endpoint. Verifica estado, actualizaciones y políticas administradas y no desactives protección para ejecutar herramientas desconocidas.
 
 #### 22.4.02 — Windows Firewall
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Windows Firewall filtra conexiones según perfiles, aplicaciones, direcciones y puertos. Mantén reglas mínimas, revisa perfiles Domain/Private/Public y prueba conectividad sin abrir rangos innecesarios.
 
 #### 22.4.03 — Windows Update
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Windows Update distribuye actualizaciones del sistema y componentes. Define anillos, ventanas y validación, prioriza parches críticos y registra sistemas que no pueden actualizarse.
 
 #### 22.4.04 — UAC
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+UAC solicita elevación cuando una acción requiere privilegios administrativos. Mantén configuración adecuada y usa cuentas estándar para tareas cotidianas; no desactives UAC para evitar avisos.
 
 #### 22.4.05 — NTFS Permissions
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+NTFS Permissions utiliza ACL para controlar acceso a archivos y carpetas. Revisa permisos heredados, grupos y acceso efectivo; evita conceder control total a Everyone o cuentas amplias.
 
 #### 22.4.06 — Users and Groups
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Users and Groups administran identidades locales o de dominio y sus pertenencias. Usa cuentas individuales, grupos por función y procesos de baja; protege cuentas administrativas separadas.
 
 #### 22.4.07 — Process Security
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Process Security examina identidad, privilegios, integridad y comportamiento de procesos. Investiga procesos desconocidos con fuentes confiables y no finalices servicios críticos sin comprender su función.
 
 #### 22.4.08 — Services
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Services son componentes ejecutados en segundo plano bajo cuentas y permisos configurados. Limita privilegios, revisa rutas y dependencias y deshabilita únicamente servicios no necesarios.
 
 #### 22.4.09 — Registry
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Registry almacena configuración de Windows y aplicaciones mediante claves y valores. Realiza cambios solo con justificación, exporta respaldo cuando proceda y evita importar archivos de registro de origen desconocido.
 
 #### 22.4.10 — Event Viewer
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Event Viewer permite consultar registros de sistema, seguridad y aplicaciones. Filtra por periodo, origen e identificador, conserva contexto y protege exportaciones que puedan contener datos sensibles.
 
 #### 22.4.11 — PowerShell
-Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+PowerShell automatiza administración mediante comandos, objetos y scripts. Firma o controla procedencia, valida parámetros, aplica mínimo privilegio y evita ejecutar scripts descargados sin inspección.
 
 ### Módulo 22.5 — Seguridad de redes
 
 #### 22.5.01 — Firewall Rules
-Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Firewall Rules permiten aceptar o bloquear tráfico según política de red. Documenta origen, destino, servicio, dirección y motivo, aplica denegación por defecto y revisa reglas obsoletas.
 
 #### 22.5.02 — ACL
-Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+ACL filtra tráfico o acceso a recursos mediante reglas ordenadas. Comprueba orden de evaluación y política final y prueba tanto el tráfico permitido como el que debe denegarse.
 
 #### 22.5.03 — NAT
-Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+NAT traduce direcciones y, en algunos casos, puertos entre redes. Comprende NAT de origen/destino y sus efectos sobre trazabilidad y conectividad; no lo consideres control de seguridad suficiente.
 
 #### 22.5.04 — VLAN
-Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+VLAN separa dominios de broadcast en una infraestructura conmutada. Define VLAN de acceso y trunking, limita VLAN nativa y verifica segmentación con reglas de capa 3.
 
 #### 22.5.05 — DMZ
-Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+DMZ ubica servicios expuestos en una zona separada de redes internas sensibles. Permite solo flujos necesarios y monitorea conexiones entre DMZ, Internet y redes corporativas.
 
 #### 22.5.06 — Network Segmentation
-Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Network Segmentation separa activos por función, sensibilidad y riesgo. Define matriz de flujos y valida controles entre segmentos, incluyendo administración y servicios compartidos.
 
 #### 22.5.07 — Network Access Control
-Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Network Access Control evalúa identidad o postura de dispositivo antes de permitir acceso a red. Define criterios transparentes, excepciones controladas y procedimientos para dispositivos no conformes.
 
 #### 22.5.08 — Exposed Ports
-Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Exposed Ports son puertos accesibles desde una red que pueden revelar servicios. Inventaría listeners, justifica cada exposición y limita origen; un puerto abierto no demuestra por sí mismo una vulnerabilidad.
 
 #### 22.5.09 — Unnecessary Services
-Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Unnecessary Services son servicios sin necesidad operativa que incrementan superficie y mantenimiento. Identifica propietario y dependencias antes de retirarlos y verifica que la desactivación no afecte procesos críticos.
 
 #### 22.5.10 — Network Hardening
-Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Network Hardening combina segmentación, reglas mínimas, protocolos seguros, gestión de equipos, monitoreo y actualización. Mantén una línea base y evidencia de pruebas autorizadas de conectividad y denegación.
 
 ### Módulo 22.6 — Laboratorios
 
 #### 22.6.01 — Kali Linux
-Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Kali Linux se utiliza en el laboratorio como estación de análisis con herramientas de seguridad. Mantén la VM aislada, actualizada y con snapshots controlados; no conectes adaptadores bridge a redes no autorizadas.
 
 #### 22.6.02 — Ubuntu Server
-Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Ubuntu Server funciona como objetivo de administración y hardening defensivo dentro de una red de práctica. Usa cuentas ficticias, snapshots y servicios mínimos y restaura el entorno al terminar.
 
 #### 22.6.03 — Windows
-Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Windows en laboratorio permite practicar configuración de firewall, cuentas, permisos y eventos en un sistema no productivo. Evita unirlo a dominios reales y no reutilices credenciales corporativas.
 
 #### 22.6.04 — Windows Server
-Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Windows Server permite estudiar roles, políticas y administración de servicios en un dominio ficticio aislado. Documenta DNS, red y cuentas del laboratorio y evita puentes con redes empresariales.
 
 #### 22.6.05 — OWASP Juice Shop
-Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+OWASP Juice Shop es una aplicación intencionalmente vulnerable para formación y práctica de seguridad web. Despliega solo en entorno aislado, utiliza datos ficticios y limita el acceso al laboratorio.
 
 #### 22.6.06 — DVWA
-Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+DVWA es una aplicación vulnerable diseñada para enseñar conceptos de seguridad web. Mantén sus modos inseguros dentro de una VM/red aislada, registra el alcance y destruye/restaura el entorno al concluir.
 
 #### 22.6.07 — Máquinas de entrenamiento vulnerables
-Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Las máquinas de entrenamiento vulnerables simulan configuraciones o aplicaciones con debilidades deliberadas. Verifica licencia y procedencia, usa snapshots y redes privadas, y no las expongas a Internet ni a redes compartidas.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 58 orientaciones genéricas por explicaciones específicas de virtualización, distribuciones, administración segura de Linux/Windows, hardening de red y laboratorios.
+
+**Revisión interna:** 58/58 entradas desarrolladas y cotejadas con el roadmap. Se reforzaron aislamiento de redes, límites de snapshots, mínimo privilegio, firewall, protección de logs y secretos, y uso de máquinas intencionalmente vulnerables. Todo laboratorio debe permanecer en entornos propios, aislados y autorizados. Pendiente: ejecutar la matriz de hardening en VMs desechables, comprobar reglas y restauración, y obtener revisión especializada. No se ejecutaron herramientas ni se declara aprobación externa.
