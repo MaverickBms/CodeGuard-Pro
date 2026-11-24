@@ -1,6 +1,6 @@
 # Etapa 2 — Pensamiento computacional, lógica y matemáticas
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 2.  
 **Prioridad:** P1 · Obligatoria.  
 **Objetivo oficial:** desarrollar la capacidad de solucionar problemas antes de escribir código.
