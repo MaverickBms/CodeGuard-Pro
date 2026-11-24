@@ -1632,9 +1632,6 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué relación existe entre una VLAN y una subred IP, y por qué no son el mismo concepto?
 
-## 8.6 — Seguridad de redes
-
-
 **Laboratorio de profundización — Plan integral de direccionamiento y routing.**
 
 1. Divide un bloque privado para cuatro áreas con VLSM. 2. Asigna gateway, broadcast y reservas. 3. Resume rutas que deberían anunciarse. 4. Comprueba ausencia de solapamiento y capacidad de crecimiento.
@@ -1644,6 +1641,9 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Seguridad y límites.** Documentar reservas y validar que el espacio no choque con VPNs o redes conectadas.
 
 **Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
+
+## 8.6 — Seguridad de redes
+
 ### 8.6.1 — Firewalls
 
 **Propósito y modelo.** Un firewall controla tráfico que cruza un límite de seguridad mediante reglas de origen, destino, protocolo, puerto, estado y, en algunos productos, aplicación o identidad. Puede ser de red, host, nube o aplicación. Su efectividad depende de política, orden, inspección, logging y mantenimiento.
@@ -1748,7 +1748,33 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
 
-### 8.6.5 — Puertos abiertos
+### 8.6.5 — Segmentación
+
+**Propósito y modelo.** La segmentación divide una red en zonas con límites de comunicación definidos para reducir movimiento lateral, separar niveles de confianza y contener incidentes. Puede implementarse mediante VLAN, subredes, firewalls, ACL, microsegmentación o controles definidos por identidad. Crear VLAN sin controlar el enrutamiento entre ellas no garantiza aislamiento.
+
+**Ejemplo desarrollado.** Una organización separa usuarios, servidores, invitados e infraestructura de administración. Las estaciones de usuarios solo acceden a servicios publicados; los administradores llegan a interfaces de gestión desde una red dedicada; invitados solo obtienen salida a Internet. El diseño documenta los flujos necesarios y deniega el resto.
+
+**Práctica guiada.** Dibuja cuatro zonas (usuarios, servidores, administración e invitados). Construye una matriz origen-destino-protocolo-puerto-justificación. Señala los puntos donde se aplican ACL o firewall y qué registros permitirían auditar los flujos.
+
+**Actividad independiente.** Diseña la segmentación de una pequeña empresa con Wi-Fi corporativo, Wi-Fi de invitados, servidores internos, cámaras IoT y administración. Incluye amenazas de movimiento lateral, servicios compartidos y excepciones temporales.
+
+**Criterios de aceptación.** Distingue segmentación física y lógica; explica la relación entre VLAN, subred y política de filtrado; identifica al menos tres flujos permitidos y tres denegados con justificación.
+
+**Errores frecuentes.** Tratar VLAN como control de seguridad suficiente, permitir enrutamiento abierto entre segmentos, usar una red de administración compartida con usuarios y olvidar DNS, DHCP u otros servicios auxiliares.
+
+**Comprobación.** ¿Por qué dos VLAN diferentes pueden seguir comunicándose y qué control debe limitar esa comunicación?
+
+**Laboratorio de profundización — Diseño de segmentación por zonas.**
+
+1. Define zonas de usuarios, servidores, administración, invitados e IoT. 2. Asigna subredes de documentación sin solapamiento. 3. Construye matriz de flujos mínimos. 4. Ubica controles de capa 2 y capa 3. 5. Define pruebas de conectividad permitida y denegada y evidencia de logs.
+
+**Evidencia esperada.** Diagrama, tabla de direccionamiento y matriz de flujos coherentes; cada excepción tiene propietario, necesidad y revisión.
+
+**Seguridad y límites.** No modificar VLAN, ACL ni firewalls productivos. La práctica es de diseño o simulación en un entorno autorizado.
+
+**Registro sugerido.** Conserva diagrama, matriz, supuestos, resultados de simulación y límites de validación. No marques la práctica como ejecutada sin evidencia real.
+
+### 8.6.6 — Puertos abiertos
 
 **Propósito y modelo.** Un puerto abierto indica que un proceso o dispositivo acepta conexiones en una combinación de dirección, protocolo y puerto. Un puerto TCP en escucha no demuestra vulnerabilidad por sí mismo; debe identificarse servicio, versión, exposición, autenticación y necesidad de negocio. UDP no utiliza el mismo concepto de handshake, por lo que la detección es distinta.
 
@@ -1774,7 +1800,7 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
 
-### 8.6.6 — Servicios expuestos
+### 8.6.7 — Servicios expuestos
 
 **Propósito y modelo.** Un servicio expuesto es una aplicación o función accesible desde una zona de red determinada. La exposición se evalúa por interfaz de escucha, rutas, NAT, firewall, balanceadores, autenticación, versión y datos procesados. Inventariar exposición es una actividad continua, no una fotografía única.
 
@@ -1800,7 +1826,7 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
 
-### 8.6.7 — Superficie de ataque
+### 8.6.8 — Superficie de ataque
 
 **Propósito y modelo.** La superficie de ataque comprende interfaces, servicios, identidades, dependencias, rutas de red y funciones que un adversario podría intentar utilizar. Se reduce eliminando componentes innecesarios, limitando privilegios, segmentando, parcheando y monitoreando. No se mide solo contando puertos.
 
@@ -1826,7 +1852,7 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
 
-### 8.6.8 — Filtrado de tráfico
+### 8.6.9 — Filtrado de tráfico
 
 **Propósito y modelo.** El filtrado de tráfico aplica reglas a paquetes o flujos según origen, destino, protocolo, puerto, estado y zona. Puede ocurrir en host, router, firewall, nube o aplicación. El filtrado stateful mantiene contexto de conexiones; stateless evalúa cada paquete según reglas sin mantener estado de sesión equivalente.
 
@@ -1852,7 +1878,7 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Registro sugerido.** Documenta activo, alcance, regla o flujo, resultado esperado y evidencia observada. No marques la práctica como ejecutada sin evidencia real.
 
-### 8.6.9 — Políticas de filtrado
+#### Gobierno de reglas y excepciones
 
 **Propósito y modelo.** Una política de filtrado traduce requisitos de negocio y seguridad en reglas ordenadas, revisables y verificables. Debe establecer zonas, propietarios, flujos autorizados, denegación por defecto, logging, excepciones temporales, revisión y proceso de cambio. Las reglas huérfanas y duplicadas degradan la claridad y el control.
 
