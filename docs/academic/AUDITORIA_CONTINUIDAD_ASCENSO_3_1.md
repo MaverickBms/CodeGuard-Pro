@@ -142,3 +142,10 @@ Se alinearon los módulos 1.1 y 1.2 con la granularidad exacta de sus lecciones 
 - **Módulo 1.2 — Representación de información:** 9 encabezados de lección, separando sistemas binario, decimal y hexadecimal, y ASCII, Unicode y UTF-8.
 
 La separación conserva las explicaciones y ejemplos existentes y mejora la correspondencia entre identificador curricular y contenido. No se afirma ejecución del laboratorio de hardware ni del codificador. Los módulos 1.3, 1.4 y 1.5 ya presentan 8, 7 y 6 encabezados temáticos respectivamente, en correspondencia con las cantidades nominales del roadmap.
+
+
+### Expansión granular — etapa 2
+
+El documento de la etapa 2 se reorganizó para que cada uno de sus 39 temas nominales tenga un encabezado con identificador curricular exacto (2.1.1–2.5.7). Se separaron las entradas, el procesamiento y las salidas; pseudocódigo y diagramas; contadores y acumuladores; proporciones y porcentajes; relaciones y grafos; y los conceptos lógicos que antes compartían un encabezado. El orden de las lecciones de algoritmos se ajustó al roadmap.
+
+Se conservaron las explicaciones, ejemplos, proyecto y ejercicios existentes. Esta alineación mejora la navegación y trazabilidad; no representa una evaluación formal ni ejecución del proyecto.
