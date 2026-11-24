@@ -709,3 +709,59 @@ Se añadieron prácticas y evidencias a **197 lecciones**:
 **Límites:** no se ejecutaron laboratorios, pruebas de penetración, escaneos, servicios, configuraciones de hardening ni máquinas virtuales. Las prácticas ofensivas se limitan explícitamente a activos propios o autorizados y entornos aislados. No se verificaron individualmente todas las referencias ni versiones. La ampliación es documental y estructural, no validación por ejecución ni aprobación externa.
 
 **Acumulado:** etapas 1–6: 265; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63; etapa 14: 58; etapas 15–16: 99; etapa 17: 61; etapas 18–19: 167; etapas 20–22: 197. Total de etapas 1–22 con desarrollo documental ampliado: **1.343 lecciones**. Etapas 23–32: 573 lecciones requieren profundización equivalente. No se importó ni publicó contenido.
+
+
+## Addendum de cierre de desarrollo documental por lección — etapas 23–32 — 2026-11-24
+
+Se añadieron prácticas y evidencias específicas a las **573 lecciones** de las etapas 23–32:
+
+| Etapa | Lecciones | Área |
+|---:|---:|---|
+| 23 | 58 | OSINT, reconocimiento y evaluación de vulnerabilidades |
+| 24 | 47 | Pentesting autorizado y documentación de hallazgos |
+| 25 | 50 | Seguridad web y APIs |
+| 26 | 39 | Active Directory y seguridad Windows |
+| 27 | 58 | Blue Team, SOC, SIEM y detección |
+| 28 | 46 | Threat Hunting y DFIR |
+| 29 | 71 | Cloud Security, DevSecOps y cadena de suministro |
+| 30 | 75 | IA, automatización y criptografía |
+| 31 | 75 | Bajo nivel, análisis de memoria, ingeniería inversa y análisis defensivo de malware |
+| 32 | 54 | Proyecto profesional, portafolio y preparación laboral |
+| **Total** | **573** | |
+
+### Comprobación documental y curricular
+
+- Se cotejaron los conteos de encabezados por etapa contra el JSON oficial para las etapas 7–32.
+- En las etapas 7–32 no se detectaron encabezados de lección vacíos.
+- Las etapas 11–32 cuentan con un apartado de práctica/evidencia por lección; las etapas 7–10 contienen desarrollo específico, actividades y comprobaciones según su estructura documental.
+- Se verificó nuevamente que el roadmap contiene 33 etapas, 212 módulos y 1.946 títulos nominales.
+- La etapa 25 conserva su objetivo oficial vacío. No se creó ni modificó un objetivo.
+- `apps/roadmaps/data/ascenso_3_1.json` permanece sin cambios.
+
+### Cobertura documental acumulada
+
+| Bloque | Lecciones |
+|---|---:|
+| Etapas 1–6 — informe de OpenCode | 265 |
+| Etapas 7–10 — desarrollo ampliado | 284 |
+| Etapas 11–12 — prácticas/evidencias | 149 |
+| Etapa 13 | 63 |
+| Etapa 14 | 58 |
+| Etapas 15–16 | 99 |
+| Etapa 17 | 61 |
+| Etapas 18–19 | 167 |
+| Etapas 20–22 | 197 |
+| Etapas 23–32 | 573 |
+| **Etapas 1–32** | **1.916** |
+
+**Estado:** las 1.916 lecciones de las etapas 1–32 tienen una base de desarrollo documental individual ampliada y actividades/evidencias en los lotes descritos. Esto no equivale a validación técnica por ejecución ni a aprobación académica final.
+
+### Validaciones que siguen pendientes
+
+1. Ejecutar los ejemplos, scripts, consultas, configuraciones y laboratorios en entornos definidos y seguros.
+2. Verificar individualmente URLs, versiones, licencias y pertinencia de las referencias.
+3. Revisar accesibilidad, seguridad y compatibilidad según la tecnología.
+4. Obtener revisión técnica y pedagógica independiente.
+5. Registrar evidencia de ejecución y resolver hallazgos antes de cualquier importación.
+
+No se importó, aprobó ni publicó contenido. No se modificaron UUID ni se inventaron identificadores. No se fusionó el PR.
