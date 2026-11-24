@@ -1218,35 +1218,131 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 #### 9.7.1 — Arquitectura
 
-PostgreSQL utiliza una arquitectura cliente-servidor con procesos backend, memoria compartida y archivos de datos/WAL. **Práctica:** consulta `version()` y vistas de actividad en una instancia de laboratorio. **Evidencia:** explica conexión, proceso servidor y persistencia sin confundir proceso cliente con backend.
+**Propósito y modelo.** PostgreSQL utiliza una arquitectura cliente-servidor. El proceso servidor administra una instancia, acepta conexiones mediante procesos backend y coordina memoria compartida, WAL, checkpoints, autovacuum y almacenamiento. La arquitectura exacta evoluciona entre versiones y debe consultarse en documentación oficial.
+
+**Ejemplo desarrollado.** Una conexión cliente crea o utiliza un proceso backend; las transacciones generan cambios que se registran en WAL antes de persistirse según garantías de durabilidad. Checkpoints y recuperación permiten reconstruir estado tras fallos.
+
+**Práctica guiada.** Consulta versión con `SELECT version();`, parámetros no sensibles y vistas de actividad en una instancia de laboratorio. Distingue proceso cliente, backend y servicio principal.
+
+**Actividad independiente.** Dibuja arquitectura de PostgreSQL con clientes, backend, memoria, WAL, archivos de datos y mecanismos de mantenimiento.
+
+**Criterios de aceptación.** Identifica componentes y describe flujo de conexión y recuperación sin confundir memoria compartida con almacenamiento persistente.
+
+**Errores frecuentes.** Confundir cluster de PostgreSQL con una base de datos o asumir que cada conexión es un hilo dentro de un único proceso.
+
+**Comprobación.** ¿Qué función cumple WAL en la recuperación y durabilidad?
 
 #### 9.7.2 — Roles
 
-Los roles de PostgreSQL representan identidades y pueden actuar como usuarios o grupos, con atributos de inicio de sesión y privilegios. **Práctica:** inspecciona roles de laboratorio con `\du` o vistas de catálogo. **Evidencia:** distingue LOGIN, pertenencia y privilegios de superusuario.
+**Propósito y modelo.** PostgreSQL utiliza roles para representar usuarios, grupos y capacidades. Un rol puede iniciar sesión (LOGIN), heredar privilegios, crear bases o roles según atributos concedidos. Los privilegios sobre objetos se administran aparte de atributos de rol; crear un rol no implica acceso automático a todas las tablas.
+
+**Ejemplo desarrollado.** Un rol de aplicación con LOGIN recibe CONNECT sobre una base y SELECT/INSERT sobre tablas necesarias, sin CREATEDB ni SUPERUSER. Los roles de grupo permiten asignar privilegios por función.
+
+**Práctica guiada.** Consulta `\du` en psql o catálogos equivalentes de una instancia de laboratorio. Identifica LOGIN, atributos administrativos y membresías sin mostrar secretos.
+
+**Actividad independiente.** Diseña roles para migración, aplicación y lectura de reportes con herencia controlada y mínimo privilegio.
+
+**Criterios de aceptación.** Diferencia rol, usuario tradicional y privilegios sobre objetos; justifica atributos y membresías.
+
+**Errores frecuentes.** Conceder SUPERUSER a la aplicación o asumir que ser miembro de un rol concede automáticamente todos los privilegios sin revisar INHERIT/SET ROLE.
+
+**Comprobación.** ¿Por qué separar el rol de despliegue del rol de ejecución de la aplicación?
 
 #### 9.7.3 — Esquemas
 
-Los esquemas de PostgreSQL organizan objetos dentro de una base de datos y participan en resolución de nombres mediante search_path. **Práctica:** crea un esquema de laboratorio y una tabla cualificada por esquema. **Evidencia:** explica cómo cambia la resolución de una tabla según search_path.
+**Propósito y modelo.** En PostgreSQL un esquema es un espacio de nombres dentro de una base de datos que contiene tablas, vistas, funciones y otros objetos. Los privilegios USAGE y CREATE controlan acceso al esquema, mientras los permisos de objeto controlan operaciones sobre tablas y funciones. search_path afecta resolución de nombres y debe configurarse con cuidado.
+
+**Ejemplo desarrollado.** Una consulta a tabla sin calificar puede resolverse mediante search_path. Si un usuario puede crear objetos en un esquema que aparece antes que uno confiable, puede producir riesgos de resolución de nombres.
+
+**Práctica guiada.** Consulta `SHOW search_path;` y lista esquemas con psql. Identifica el esquema actual y practica nombres calificados como `ventas.pedido`.
+
+**Actividad independiente.** Diseña esquemas para ventas, inventario y auditoría con permisos separados y search_path explícito.
+
+**Criterios de aceptación.** Diferencia base y esquema y explica USAGE, CREATE y resolución de nombres.
+
+**Errores frecuentes.** Confiar en search_path implícito o conceder CREATE en esquemas compartidos a roles no confiables.
+
+**Comprobación.** ¿Qué riesgo puede producir un search_path que incluya un esquema donde un usuario no confiable puede crear objetos?
 
 #### 9.7.4 — Tipos de datos
 
-PostgreSQL ofrece tipos nativos como UUID, arrays, interval, JSON/JSONB y tipos geométricos, además de tipos SQL comunes. **Práctica:** selecciona tipos para identificador, fecha de evento y estado. **Evidencia:** justifica precisión, operadores disponibles y validación.
+**Propósito y modelo.** PostgreSQL ofrece tipos escalares, temporales, numéricos, UUID, arrays, rangos, JSON/JSONB y tipos definidos por usuario. La elección debe responder a semántica, validación, índices y portabilidad. TIMESTAMP WITH TIME ZONE normaliza instantes; no conserva literalmente la zona original ingresada.
+
+**Ejemplo desarrollado.** NUMERIC ofrece precisión decimal exacta; JSONB almacena datos JSON en representación binaria optimizada para procesamiento; UUID puede servir como identificador distribuido.
+
+**Práctica guiada.** Diseña tabla Evento con id UUID, instante timestamptz, monto numeric y metadatos jsonb. Consulta tipos y valores de ejemplo sin datos personales.
+
+**Actividad independiente.** Compara JSONB con columnas relacionales para atributos que requieren filtros frecuentes y restricciones.
+
+**Criterios de aceptación.** Justifica tipo según dominio y explica al menos dos particularidades de PostgreSQL.
+
+**Errores frecuentes.** Guardar todos los datos en JSONB sin modelar campos críticos o asumir que timestamptz almacena la zona horaria original.
+
+**Comprobación.** ¿Qué diferencia práctica existe entre JSON y JSONB en PostgreSQL?
 
 #### 9.7.5 — JSONB
 
-JSONB almacena documentos JSON en una representación binaria que permite operadores e índices específicos; no sustituye automáticamente un modelo relacional. **Práctica:** inserta un documento pequeño y consulta una clave con operadores JSONB. **Evidencia:** compara JSON y JSONB y justifica qué campos deben seguir normalizados.
+**Propósito y modelo.** JSONB almacena documentos JSON en formato binario descompuesto, lo que permite operaciones e índices especializados. No conserva necesariamente formato textual, orden de claves ni espacios originales. Debe combinarse con restricciones y diseño relacional cuando ciertos atributos requieren integridad fuerte.
+
+**Ejemplo desarrollado.** Una columna metadata JSONB puede contener atributos variables; consultas con operadores de existencia o extracción pueden aprovechar índices GIN apropiados. El diseño del índice depende de operadores y patrón de consulta.
+
+**Práctica guiada.** En una instancia desechable inserta documentos JSONB sintéticos y consulta claves con operadores ->, ->> y ?. Compara resultado textual y valor JSON.
+
+**Actividad independiente.** Diseña un modelo híbrido con columnas relacionales para campos obligatorios y JSONB para atributos variables; define validaciones y consultas frecuentes.
+
+**Criterios de aceptación.** Diferencia JSON y JSONB, interpreta operadores y justifica cuándo utilizar estructura relacional.
+
+**Errores frecuentes.** Tratar JSONB como sustituto universal de normalización o crear GIN sin conocer consultas.
+
+**Comprobación.** ¿Qué costo de integridad puede aparecer si se almacenan campos críticos exclusivamente dentro de JSONB?
 
 #### 9.7.6 — Índices
 
-PostgreSQL admite índices B-tree, Hash, GiST, SP-GiST, GIN y BRIN con casos de uso diferentes. **Práctica:** analiza un índice B-tree para igualdad/rango y un GIN para búsqueda en JSONB o arrays. **Evidencia:** explica por qué el tipo de índice debe corresponder al operador y patrón de consulta.
+**Propósito y modelo.** PostgreSQL soporta varios tipos de índices, como B-tree, Hash, GiST, SP-GiST, GIN y BRIN. Cada uno se adapta a operadores y estructuras diferentes. Los índices aumentan espacio y costo de escritura; el planificador decide su uso según estadísticas, selectividad y costo.
+
+**Ejemplo desarrollado.** B-tree suele ser apropiado para igualdad y rangos; GIN puede apoyar búsquedas en JSONB o arrays; BRIN puede ser útil para tablas grandes cuyos datos correlacionan con orden físico. No son intercambiables.
+
+**Práctica guiada.** En una tabla de laboratorio crea un índice B-tree y consulta EXPLAIN. Si se dispone de JSONB, compara una consulta con GIN. Mide sin extrapolar resultados de tablas pequeñas.
+
+**Actividad independiente.** Selecciona tipo de índice para tres patrones y justifica operadores, cardinalidad, tamaño y mantenimiento.
+
+**Criterios de aceptación.** Relaciona tipo de índice con consulta y valida con plan de ejecución.
+
+**Errores frecuentes.** Asumir que GIN siempre mejora JSONB o crear índices redundantes sin medir.
+
+**Comprobación.** ¿Por qué un índice BRIN puede resultar útil cuando los datos están físicamente correlacionados con una columna?
 
 #### 9.7.7 — Transacciones
 
-Las transacciones PostgreSQL siguen el modelo ACID y MVCC para gestionar concurrencia; vacuum mantiene versiones y espacio reutilizable. **Práctica:** observa una transacción en dos sesiones y consulta el estado de actividad. **Evidencia:** explica snapshots y por qué una fila antigua puede permanecer temporalmente visible.
+**Propósito y modelo.** PostgreSQL implementa transacciones con MVCC, snapshots y niveles de aislamiento. Las lecturas pueden observar versiones consistentes sin bloquear todas las escrituras, pero existen conflictos y bloqueos. SERIALIZABLE utiliza detección de dependencias y puede abortar transacciones que deben reintentarse.
+
+**Ejemplo desarrollado.** Dos transacciones actualizan filas distintas y pueden continuar concurrentemente; si compiten por la misma fila, una espera o encuentra conflicto. En SERIALIZABLE una operación puede abortarse para preservar equivalencia serial.
+
+**Práctica guiada.** En una instancia local abre dos sesiones y analiza lecturas bajo READ COMMITTED y REPEATABLE READ usando datos sintéticos. No ejecutes experimentos de bloqueo en producción.
+
+**Actividad independiente.** Diseña una operación de reserva y define aislamiento, reintento y tratamiento de errores de serialización.
+
+**Criterios de aceptación.** Explica MVCC y diferencias de aislamiento de PostgreSQL sin generalizar a otros motores.
+
+**Errores frecuentes.** Suponer que MVCC elimina todos los bloqueos o ignorar que una transacción SERIALIZABLE puede abortarse.
+
+**Comprobación.** ¿Por qué una aplicación debe estar preparada para reintentar una transacción abortada por serialización?
 
 #### 9.7.8 — Consultas avanzadas
 
-Las consultas avanzadas combinan CTE, funciones de ventana, agregaciones, JSONB y joins según el problema. **Práctica:** calcula ranking de ventas por cliente con una función de ventana y CTE. **Evidencia:** explica PARTITION BY, ORDER BY y diferencia entre ranking y agrupación.
+**Propósito y modelo.** Las consultas avanzadas en PostgreSQL pueden utilizar CTE, ventanas, agregaciones FILTER, funciones, JSONB, arrays y operadores específicos. La sintaxis debe ajustarse a la versión y el planificador debe evaluarse con EXPLAIN/ANALYZE en datos representativos.
+
+**Ejemplo desarrollado.** Una función de ventana como ROW_NUMBER() OVER (PARTITION BY cliente_id ORDER BY fecha DESC) permite numerar pedidos por cliente sin colapsar filas como GROUP BY.
+
+**Práctica guiada.** Construye una consulta con CTE y función de ventana sobre datos sintéticos. Identifica partición, orden y número de fila.
+
+**Actividad independiente.** Diseña un reporte de último pedido por cliente y otro de ranking de ventas por categoría; compara ventana y subconsulta.
+
+**Criterios de aceptación.** Explica OVER, PARTITION BY y ORDER BY de ventana; valida resultados con datos límite.
+
+**Errores frecuentes.** Confundir función de ventana con agregado que reduce filas o usar orden no determinista en ranking con empates.
+
+**Comprobación.** ¿Qué diferencia existe entre GROUP BY y una función de ventana?
 
 ## Resultados de aprendizaje
 
