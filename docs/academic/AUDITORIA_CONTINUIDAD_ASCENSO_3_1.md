@@ -156,3 +156,8 @@ Se conservaron las explicaciones, ejemplos, proyecto y ejercicios existentes. Es
 El documento de programación inicial con Java quedó alineado con las 48 lecciones nominales del roadmap mediante encabezados curriculares individuales: 13 de fundamentos, 9 de control de flujo, 7 de métodos, 7 de manejo de información, 6 de manejo de errores y 6 de archivos. Se separaron conceptos que antes compartían encabezado (JDK/JVM/JRE, compilación/ejecución, sintaxis/semántica, variables/constantes, ramas de control, parámetros/argumentos, entrada/Scanner, throw/throws y lectura/escritura/directorios/rutas).
 
 Se conservaron los ejemplos y el proyecto de inventario, y se mantuvo explícito que los comandos y ejemplos no se han compilado ni ejecutado en esta sesión.
+
+
+### Expansión granular — etapa 4
+
+El documento de POO y paradigmas quedó alineado con sus 33 lecciones nominales: 12 de POO, 5 de relaciones, 5 de conceptos de diseño, 5 de paradigmas y 6 de UML. Se separaron clases, objetos e instancias; atributos y métodos; y los elementos de UML para clases, objetos, relaciones, herencia, interfaces y secuencia. Se conservaron el ejemplo de dominio de biblioteca, el proyecto y sus entregables.
