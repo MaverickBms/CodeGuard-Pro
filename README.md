@@ -282,3 +282,8 @@ Se incorporaron encabezados individuales para las 197 entradas oficiales de las 
 ### Continuidad ASCENSO 3.1 — etapas 23 a 25
 
 Se incorporaron encabezados individuales para las 155 entradas curriculares de las etapas 23–25: etapa 23 (58), etapa 24 (47) y etapa 25 (50). Se mantienen las condiciones de autorización y alcance para laboratorios; el objetivo oficial vacío de la etapa 25 no fue alterado ni completado. Es base de trabajo activa, sin ejecución de herramientas ni aprobación editorial.
+
+
+### Continuidad ASCENSO 3.1 — etapas 26 a 28
+
+Se incorporaron encabezados individuales para las 143 entradas oficiales de las etapas 26–28: etapa 26 (39), etapa 27 (58) y etapa 28 (46). El desarrollo mantiene el enfoque defensivo, de monitoreo, respuesta y preservación de evidencia. Es base de trabajo activa; no se declara conexión a entornos empresariales ni ejecución de herramientas forenses o SIEM.
