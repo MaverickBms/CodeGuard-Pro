@@ -23,83 +23,107 @@ Podrás seleccionar estructuras según las operaciones dominantes; implementar e
 
 ## 6.1 — Estructuras lineales
 
-### Arrays y matrices
+### 6.1.1 — Arrays
 
-Un array almacena elementos en posiciones indexadas. En arrays de tamaño fijo, acceder por índice suele ser O(1), mientras que insertar o eliminar en medio puede requerir desplazar elementos O(n).
+Un array almacena elementos en posiciones indexadas. En Java su longitud se fija al crearlo y los índices válidos van de 0 a longitud menos uno. Acceder por índice suele ser O(1); insertar o eliminar en medio puede requerir desplazar elementos O(n).
 
-Una matriz es una estructura bidimensional, que puede implementarse como array de arrays. Su representación en memoria depende del lenguaje y la implementación.
+### 6.1.2 — Matrices
 
-### Arrays dinámicos
+Una matriz representa datos en dos dimensiones. En Java suele implementarse como un array de arrays, por lo que las filas pueden incluso tener longitudes distintas. Antes de recorrerla, verifica dimensiones y límites; no asumas que toda matriz es rectangular.
+
+### 6.1.3 — Arrays dinámicos
 
 Un array dinámico mantiene una capacidad que puede crecer. Cuando se agota la capacidad, suele reservarse un bloque mayor y copiar elementos. Por ello, añadir al final puede tener coste amortizado O(1), aunque una expansión individual cuesta O(n).
 
 No confundas tamaño lógico (elementos usados) con capacidad reservada.
 
-### Linked Lists
+### 6.1.4 — Linked Lists
 
-Una lista enlazada simple contiene nodos con valor y referencia al siguiente. Insertar/eliminar al inicio puede ser O(1), pero buscar una posición por índice suele ser O(n).
+Una lista enlazada simple contiene nodos con valor y referencia al siguiente. Insertar o eliminar al inicio puede ser O(1); buscar una posición por índice suele ser O(n).
 
-Una lista doblemente enlazada mantiene referencias al siguiente y anterior, facilitando recorridos en ambas direcciones, a costa de memoria adicional y más invariantes.
+### 6.1.5 — Doubly Linked Lists
 
-Una lista circular enlaza el último nodo con el primero. Debes controlar condiciones de terminación para evitar recorridos infinitos.
+Una lista doblemente enlazada mantiene referencias al nodo siguiente y al anterior. Facilita recorridos en ambas direcciones y ciertas eliminaciones si ya se tiene la referencia al nodo, a costa de memoria adicional y de mantener dos enlaces coherentes.
 
-### Stacks
+### 6.1.6 — Circular Linked Lists
+
+En una lista circular, el último nodo enlaza con el primero. La condición de terminación debe detectar el regreso al punto de partida; esperar encontrar un enlace nulo puede provocar un ciclo infinito.
+
+### 6.1.7 — Stacks
 
 Una pila sigue LIFO: el último elemento en entrar es el primero en salir. Operaciones típicas: push, pop y peek.
 
 Usos: pila de llamadas, deshacer acciones, análisis de expresiones y recorridos iterativos.
 
-### Queues y deques
+### 6.1.8 — Queues
 
-Una cola sigue FIFO: primero en entrar, primero en salir. Operaciones: enqueue y dequeue.
+Una cola sigue FIFO: el primer elemento en entrar es el primero en salir. Operaciones habituales: enqueue y dequeue. Una implementación eficiente mantiene referencias a extremos o utiliza un buffer circular.
 
-Un deque permite insertar y retirar por ambos extremos. Puede utilizarse como cola o pila y es útil en algoritmos de ventana deslizante.
+### 6.1.9 — Deques
 
-**Comparación de selección:** arrays favorecen acceso indexado; listas enlazadas favorecen ciertas inserciones con referencia al nodo; pilas/colas expresan restricciones de acceso; deques permiten ambos extremos. No elijas solo por nombre: analiza operaciones, memoria y localidad de caché.
+Un deque permite insertar y retirar por ambos extremos. Puede utilizarse como cola o pila y resulta útil en algoritmos de ventana deslizante. Define claramente qué operaciones están permitidas y sus costes.
 
 ## 6.2 — Estructuras asociativas
 
-### Hash tables
+### 6.2.1 — Hash Tables
 
-Una tabla hash utiliza una función hash para transformar una clave en una posición o índice de almacenamiento. Permite búsquedas, inserciones y eliminaciones con coste esperado cercano a O(1) bajo supuestos adecuados; el peor caso puede ser O(n).
+Una tabla hash transforma claves mediante una función hash para ubicarlas en una tabla. Las operaciones de búsqueda, inserción y eliminación tienen coste esperado cercano a O(1) bajo supuestos adecuados; el peor caso puede ser O(n). El rendimiento depende de la distribución, capacidad y estrategia de colisiones.
 
-### HashMap, HashSet, diccionarios y sets
+### 6.2.2 — HashMap
 
-- **HashMap/diccionario:** asocia claves con valores.
-- **HashSet/set:** mantiene elementos únicos según su criterio de igualdad.
-- Los nombres y contratos concretos dependen del lenguaje.
+Un HashMap asocia claves únicas con valores. En Java, la unicidad de claves depende de `equals()` y la distribución utiliza `hashCode()`. La API no garantiza un orden de iteración estable.
 
-En Java, `HashMap` y `HashSet` dependen de `hashCode()` y `equals()`. Si dos objetos se consideran iguales, deben producir códigos hash iguales. No modifiques campos que afectan hash/equality mientras el objeto sea clave dentro de una tabla hash.
+### 6.2.3 — HashSet
 
-### Funciones hash y colisiones
+Un HashSet mantiene elementos únicos según igualdad lógica. En Java, su comportamiento depende del contrato coherente entre `equals()` y `hashCode()`.
 
-Una colisión ocurre cuando dos claves producen el mismo índice/hash relevante. Las implementaciones resuelven colisiones mediante estrategias como encadenamiento o direccionamiento abierto.
+### 6.2.4 — Diccionarios
 
-Una buena función hash distribuye claves razonablemente, pero no elimina matemáticamente todas las colisiones en un espacio finito. Hash de tablas no es lo mismo que hash criptográfico: tienen objetivos y propiedades diferentes.
+Un diccionario es una abstracción clave-valor. El nombre y sus garantías varían por lenguaje: verifica si conserva orden, cómo compara claves y qué ocurre al consultar una clave ausente.
+
+### 6.2.5 — Sets
+
+Un set representa una colección de elementos únicos. Algunas implementaciones no conservan orden; otras mantienen orden de inserción o de comparación. La elección debe responder al contrato requerido.
+
+### 6.2.6 — Hash Functions
+
+Una función hash transforma una clave en un valor entero o código que la tabla utiliza para ubicarla. Una buena función distribuye las claves razonablemente, pero no evita todas las colisiones en un espacio finito.
+
+### 6.2.7 — Hash Collisions
+
+Una colisión ocurre cuando claves distintas comparten un índice o código relevante. Las tablas pueden resolverlas mediante encadenamiento o direccionamiento abierto. El hash de una tabla no es equivalente a un hash criptográfico: persiguen objetivos distintos.
 
 ## 6.3 — Árboles
 
-Un árbol es una estructura jerárquica de nodos conectados. Conceptos: raíz, padre, hijo, hoja, profundidad, altura y subárbol.
+### 6.3.1 — Trees
 
-### Binary Trees
+Un árbol es una estructura jerárquica de nodos conectados. Conceptos esenciales: raíz, padre, hijo, hoja, profundidad, altura y subárbol. En un árbol, cada nodo (salvo la raíz) tiene un único padre.
+
+### 6.3.2 — Binary Trees
 
 Cada nodo tiene como máximo dos hijos. Un árbol binario no necesariamente está ordenado.
 
-### Binary Search Trees
+### 6.3.3 — Binary Search Trees
 
 En un árbol binario de búsqueda, los valores se organizan según una regla de orden. La búsqueda, inserción y eliminación dependen de la altura: O(h). En un árbol balanceado h es O(log n); en uno degenerado puede ser O(n).
 
 Define qué ocurre con claves duplicadas antes de implementar.
 
-### AVL Trees
+### 6.3.4 — AVL Trees
 
 Un AVL es un árbol binario de búsqueda autoequilibrado que mantiene una diferencia acotada de alturas entre subárboles mediante rotaciones. Las operaciones básicas mantienen O(log n).
 
-### Heaps y priority queues
+### 6.3.5 — Heaps
 
 Un heap binario es un árbol casi completo que mantiene una propiedad de prioridad (min-heap o max-heap). Insertar y extraer el extremo prioritario suelen costar O(log n); consultar el extremo, O(1).
 
-Una priority queue es una abstracción que permite obtener el elemento de mayor o menor prioridad. Puede implementarse con heap, no es sinónimo de heap.
+### 6.3.6 — Priority Queues
+
+Una priority queue es una abstracción que permite obtener el elemento de mayor o menor prioridad. Puede implementarse con un heap, pero no es sinónimo de heap. Debe definirse cómo se resuelven empates.
+
+### 6.3.7 — Tries
+
+Un trie organiza claves, a menudo cadenas, por prefijos. La búsqueda depende de la longitud de la clave y de la representación del alfabeto. Es útil para autocompletado y búsquedas por prefijo, aunque puede consumir bastante memoria.
 
 ### Tries
 
@@ -107,133 +131,147 @@ Un trie organiza claves, a menudo cadenas, por prefijos. La búsqueda depende de
 
 ## 6.4 — Grafos
 
-Un grafo contiene vértices y aristas. Puede modelar rutas, dependencias, redes y relaciones.
+### 6.4.1 — Grafos dirigidos
 
-- **Dirigido:** cada arista tiene dirección.
-- **No dirigido:** la relación es bidireccional.
-- **Ponderado:** las aristas tienen un peso o coste.
+Un grafo dirigido contiene aristas con orientación: una arista de A a B no implica necesariamente una arista de B a A. Modela dependencias, flujos y relaciones asimétricas.
 
-### Matriz de adyacencia
+### 6.4.2 — Grafos no dirigidos
 
-Representa conexiones mediante una matriz V×V. Consultar si existe una arista puede ser O(1), pero el espacio es O(V²), incluso si el grafo es disperso.
+En un grafo no dirigido, una arista conecta dos vértices de forma bidireccional. La relación es simétrica y el grado de un vértice cuenta sus aristas incidentes (con el tratamiento habitual de lazos múltiples según el modelo).
 
-### Lista de adyacencia
+### 6.4.3 — Grafos ponderados
 
-Almacena vecinos de cada vértice. El espacio suele ser O(V+E), por lo que es conveniente para grafos dispersos. Consultar una arista depende del grado del vértice y de la estructura usada.
+Un grafo ponderado asigna un peso o coste a cada arista. El significado del peso debe documentarse (distancia, tiempo, costo, etc.). Algunos algoritmos requieren pesos no negativos.
 
-### BFS
+### 6.4.4 — Matrices de adyacencia
 
-Breadth-First Search explora por niveles usando una cola. En listas de adyacencia recorre el grafo en O(V+E). En grafos no ponderados permite encontrar caminos con el menor número de aristas.
+Una matriz de adyacencia representa conexiones mediante una matriz V×V. Consultar si existe una arista puede ser O(1), pero el espacio es O(V²), incluso si el grafo es disperso. En grafos ponderados, la celda puede almacenar el peso.
 
-### DFS
+### 6.4.5 — Listas de adyacencia
 
-Depth-First Search explora tan profundo como sea posible antes de retroceder. Puede implementarse recursivamente o con una pila. También tiene coste O(V+E) con listas de adyacencia y ayuda a detectar componentes, ciclos y dependencias.
+Una lista de adyacencia almacena los vecinos de cada vértice. El espacio suele ser O(V+E), por lo que resulta conveniente para grafos dispersos. Consultar una arista depende del grado y de la estructura usada.
 
-En grafos grandes, la versión recursiva puede agotar la pila de llamadas; considera implementación iterativa.
+### 6.4.6 — BFS
+
+Breadth-First Search explora por niveles usando una cola. Con listas de adyacencia recorre el grafo en O(V+E). En grafos no ponderados permite encontrar caminos con el menor número de aristas.
+
+### 6.4.7 — DFS
+
+Depth-First Search explora tan profundo como sea posible antes de retroceder. Puede implementarse recursivamente o con una pila. Con listas de adyacencia tiene coste O(V+E) y ayuda a detectar componentes, ciclos y dependencias. En grafos grandes, la versión recursiva puede agotar la pila de llamadas; considera una implementación iterativa.
 
 ## 6.5 — Algoritmos
 
-### Búsquedas
+### 6.5.1 — Linear Search
 
-- **Linear Search:** examina elementos hasta encontrar el objetivo o agotar la colección; O(n).
-- **Binary Search:** reduce repetidamente el intervalo a la mitad; O(log n), pero requiere datos ordenados y acceso apropiado al elemento medio.
+Examina elementos hasta encontrar el objetivo o agotar la colección. Su coste temporal es O(n) en el peor caso y O(1) en el mejor si el primer elemento coincide.
 
-La búsqueda binaria aplicada a datos no ordenados no produce resultados fiables.
+### 6.5.2 — Binary Search
 
-### Ordenamientos
+Reduce repetidamente el intervalo a la mitad; su coste es O(log n). Requiere datos ordenados y una representación con acceso eficiente al elemento medio. Mantén una convención coherente para límites inclusivos/exclusivos y evita desbordamientos al calcular el punto medio.
 
-| Algoritmo | Mejor/medio/peor (general) | Estable | Observación |
-|---|---|---|---|
-| Bubble Sort | O(n) optimizado / O(n²) / O(n²) | Sí, con implementación usual | Didáctico; poco eficiente a gran escala |
-| Selection Sort | O(n²) / O(n²) / O(n²) | No, en implementación usual | Pocas escrituras |
-| Insertion Sort | O(n) / O(n²) / O(n²) | Sí | Bueno para arreglos pequeños o casi ordenados |
-| Merge Sort | O(n log n) / O(n log n) / O(n log n) | Sí, implementación usual | Requiere memoria auxiliar para arrays |
-| Quick Sort | O(n log n) esperado / O(n log n) esperado / O(n²) | No, usualmente | Depende de pivote y partición |
-| Heap Sort | O(n log n) en casos habituales | No | Orden in-place con heap |
+### 6.5.3 — Bubble Sort
 
-Las propiedades pueden variar con la implementación. En proyectos reales, usa bibliotecas estándar salvo que el objetivo sea aprender o exista una necesidad justificada.
+Compara elementos adyacentes e intercambia los que están en orden incorrecto. Con una bandera de intercambio puede terminar en O(n) en el mejor caso; promedio y peor caso son O(n²). La implementación habitual es estable.
 
-### Dijkstra
+### 6.5.4 — Selection Sort
 
-Encuentra caminos mínimos desde un origen en grafos con pesos no negativos. Con cola de prioridad y listas de adyacencia, su complejidad depende de la implementación (por ejemplo, O((V+E) log V) con heap binario). No debe aplicarse sin más a aristas con pesos negativos.
+Selecciona el mínimo restante y lo coloca en la siguiente posición. Su coste es O(n²) en mejor, promedio y peor caso. La implementación habitual no es estable, pero realiza pocas escrituras.
 
-### A*
+### 6.5.5 — Insertion Sort
 
-Busca rutas utilizando coste acumulado y heurística estimada hacia el destino. La calidad y admisibilidad de la heurística afectan optimalidad y rendimiento. A* no es automáticamente óptimo si la heurística viola sus condiciones.
+Inserta cada elemento en la posición adecuada de la parte ya ordenada. Es O(n) en el mejor caso y O(n²) en promedio y peor caso; suele ser estable y útil en arreglos pequeños o casi ordenados.
 
-### Prim y Kruskal
+### 6.5.6 — Merge Sort
 
-Ambos construyen un árbol de expansión mínima en un grafo no dirigido, conexo y ponderado:
-- Prim crece un árbol seleccionando aristas de menor coste que conectan el árbol con un nuevo vértice.
-- Kruskal ordena aristas y agrega aquellas que no crean ciclos, normalmente usando Union-Find.
+Divide el arreglo, ordena las mitades y combina los resultados. Su coste temporal es O(n log n) en todos los casos para la versión estándar y suele requerir memoria auxiliar O(n) en arreglos. La combinación habitual es estable.
 
-Si el grafo no es conexo, el resultado natural es un bosque de expansión mínima.
+### 6.5.7 — Quick Sort
+
+Selecciona un pivote y particiona los elementos. Su coste esperado es O(n log n), pero puede degradarse a O(n²) con particiones muy desequilibradas. La versión habitual no es estable; la elección de pivote y partición influye en el rendimiento.
+
+### 6.5.8 — Heap Sort
+
+Construye un heap y extrae repetidamente el extremo prioritario. Tiene coste O(n log n) en mejor, promedio y peor caso, usa espacio auxiliar O(1) en implementaciones in-place y no es estable.
+
+### 6.5.9 — Dijkstra
+
+Encuentra caminos mínimos desde un origen en grafos con pesos no negativos. Con cola de prioridad y listas de adyacencia, una implementación con heap binario suele tener coste O((V+E) log V). No lo apliques directamente a aristas con pesos negativos.
+
+### 6.5.10 — A*
+
+Busca rutas utilizando el coste acumulado y una heurística estimada hacia el destino. La admisibilidad de la heurística es importante para garantizar optimalidad en las condiciones habituales; consistencia facilita la gestión de nodos cerrados. A* no es automáticamente óptimo si la heurística incumple sus condiciones.
+
+### 6.5.11 — Prim
+
+Construye un árbol de expansión mínima en un grafo no dirigido, conexo y ponderado, creciendo desde un vértice y seleccionando una arista de menor peso que conecte el árbol con un vértice nuevo. Para grafos no conexos, se puede repetir por componente para obtener un bosque.
+
+### 6.5.12 — Kruskal
+
+Ordena las aristas por peso y agrega aquellas que no crean ciclos, normalmente mediante una estructura Union-Find. En un grafo no conexo obtiene un bosque de expansión mínima.
 
 ## 6.6 — Técnicas
 
-### Recursividad
+### 6.6.1 — Recursividad
 
-Resuelve un problema mediante subproblemas del mismo tipo. Requiere caso base y progreso hacia él. Considera profundidad y coste de llamadas.
+Resuelve un problema mediante subproblemas del mismo tipo. Requiere un caso base y progreso hacia él. Considera profundidad, coste de llamadas y riesgo de desbordar la pila.
 
-### Divide and Conquer
+### 6.6.2 — Divide and Conquer
 
-Divide un problema en subproblemas, resuelve cada uno y combina resultados. Merge Sort es un ejemplo clásico.
+Divide un problema en subproblemas, resuelve cada uno y combina resultados. Merge Sort es un ejemplo clásico. Analiza el número de subproblemas, su tamaño y el coste de combinar.
 
-### Greedy
+### 6.6.3 — Greedy
 
-Toma decisiones locales que parecen mejores en cada paso. Solo produce una solución óptima cuando el problema y la estrategia satisfacen propiedades que lo justifican. No basta con que una elección «parezca buena».
+Toma decisiones locales que parecen mejores en cada paso. Solo produce una solución óptima cuando el problema y la estrategia satisfacen propiedades que lo justifican. No basta con que una elección parezca buena.
 
-### Backtracking
+### 6.6.4 — Backtracking
 
-Explora posibilidades y retrocede cuando una decisión parcial viola restricciones o no puede conducir a una solución. Es útil para problemas de combinaciones, laberintos y restricciones, aunque puede tener coste exponencial.
+Explora posibilidades y retrocede cuando una decisión parcial viola restricciones o no puede conducir a una solución. Es útil para combinaciones, laberintos y problemas de restricciones, aunque puede tener coste exponencial.
 
-### Dynamic Programming
+### 6.6.5 — Dynamic Programming
 
-Resuelve subproblemas solapados y reutiliza resultados mediante memoización o tabulación. Se justifica cuando hay subestructura óptima y repetición de subproblemas.
+Resuelve subproblemas solapados y reutiliza resultados mediante memoización o tabulación. Se justifica cuando existe subestructura óptima y repetición de subproblemas. Documenta el estado, transición y casos base.
 
-### Two Pointers
+### 6.6.6 — Two Pointers
 
-Utiliza dos índices que avanzan según una regla. Puede reducir una solución O(n²) a O(n) en problemas con condiciones adecuadas, por ejemplo arreglos ordenados.
+Utiliza dos índices que avanzan según una regla. Puede reducir una solución O(n²) a O(n) en problemas con condiciones adecuadas, por ejemplo, arreglos ordenados. Justifica por qué mover cada puntero no descarta una solución válida.
 
-### Sliding Window
+### 6.6.7 — Sliding Window
 
-Mantiene una ventana sobre una secuencia y actualiza su estado al mover los límites. Es útil para subarreglos/subcadenas contiguos. La eficiencia depende de poder actualizar la ventana incrementalmente.
+Mantiene una ventana sobre una secuencia y actualiza su estado al mover los límites. Es útil para subarreglos o subcadenas contiguos. La eficiencia depende de poder actualizar la ventana incrementalmente y de las propiedades del problema.
 
 ## 6.7 — Complejidad
 
-### Complejidad temporal y espacial
+### 6.7.1 — Big O
 
-La complejidad temporal describe cómo crece el trabajo de un algoritmo respecto al tamaño de entrada. La espacial describe cómo crece la memoria adicional utilizada, aclarando si se cuenta o no la entrada.
+Big O expresa una cota asintótica superior: el crecimiento queda acotado por una función multiplicada por una constante para tamaños suficientemente grandes. No significa necesariamente «peor caso» si no se especifica el objeto analizado.
 
-### Big O, Big Ω y Big Θ
+### 6.7.2 — Big Ω
 
-- **O(g(n)):** cota asintótica superior.
-- **Ω(g(n)):** cota asintótica inferior.
-- **Θ(g(n)):** cota ajustada, superior e inferior del mismo orden.
+Big Ω expresa una cota asintótica inferior. Tampoco equivale por sí sola al «mejor caso»: describe una cota para la función de coste que se esté estudiando.
 
-Estas notaciones describen crecimiento cuando n aumenta; no indican segundos exactos ni velocidad de un equipo.
+### 6.7.3 — Big Θ
 
-### Mejor, promedio y peor caso
+Big Θ expresa una cota asintótica ajustada, superior e inferior del mismo orden. Indica que el crecimiento queda acotado por arriba y por abajo por múltiplos constantes de la misma función.
 
-- mejor caso: entrada más favorable para la métrica;
-- caso promedio: promedio bajo una distribución de entradas declarada;
-- peor caso: máximo coste entre entradas de tamaño n.
+### 6.7.4 — Complejidad temporal
 
-No se debe afirmar un caso promedio sin especificar supuestos de distribución.
+Describe cómo crece el trabajo de un algoritmo respecto al tamaño de entrada. Explicita qué operación se cuenta y cuál es el parámetro de tamaño.
 
-### Reglas de análisis inicial
+### 6.7.5 — Complejidad espacial
 
-- operaciones secuenciales: sumar costes y conservar el término dominante;
-- ciclos anidados: analizar cuántas veces se ejecuta cada uno;
-- dividir el tamaño por una constante: suele producir crecimiento logarítmico;
-- recursión: formular una recurrencia y resolverla;
-- estructuras de datos: considerar coste de operaciones y supuestos de implementación.
+Describe cómo crece la memoria utilizada. Aclara si se cuenta memoria auxiliar, estructuras de salida o la propia entrada; la convención debe mantenerse en la comparación.
 
-Ejemplos:
-- recorrer n elementos: O(n);
-- dos bucles completos anidados: O(n²);
-- búsqueda binaria: O(log n);
-- merge sort: O(n log n).
+### 6.7.6 — Mejor caso
+
+Es el menor coste entre las entradas de tamaño n para la métrica definida. No debe confundirse con una cota Ω sin especificar la función de coste.
+
+### 6.7.7 — Caso promedio
+
+Es el coste esperado o promedio bajo una distribución de entradas declarada. Sin distribución o modelo probabilístico, «promedio» queda indefinido.
+
+### 6.7.8 — Peor caso
+
+Es el máximo coste entre entradas de tamaño n bajo el modelo definido. Es útil para establecer garantías superiores, aunque no describe necesariamente el comportamiento típico.
 
 ## Proyecto oficial — Biblioteca de estructuras de datos en Java
 
