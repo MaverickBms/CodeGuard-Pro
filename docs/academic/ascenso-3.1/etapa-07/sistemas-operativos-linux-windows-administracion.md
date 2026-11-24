@@ -917,6 +917,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Comprobación.** ¿Qué diferencia existe entre una variable de shell y una variable exportada al entorno?
 
+
+**Laboratorio aplicado — Variables.**
+
+1. Define una variable con espacios. 2. Imprime el valor con printf y comillas. 3. Lanza un proceso hijo con y sin exportación. 4. Registra la diferencia sin utilizar secretos.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
+
 ### 7.4.2 — Operadores
 
 **Desarrollo conceptual.** Bash ofrece pruebas condicionales, aritmética y operadores de control. [[ ... ]] evalúa condiciones de shell; (( ... )) evalúa expresiones aritméticas. La sintaxis y reglas de expansión no son intercambiables con [ ... ].
@@ -932,6 +941,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 **Errores frecuentes.** Confundir sintaxis de prueba o evaluar entrada no confiable mediante eval.
 
 **Comprobación.** ¿Por qué [[ ... ]] suele ser preferible a [ ... ] en scripts Bash nuevos?
+
+
+**Laboratorio aplicado — Operadores.**
+
+1. Crea un archivo y un directorio temporales. 2. Evalúa -f y -d. 3. Realiza una operación aritmética con (( )). 4. Prueba entradas vacías y valores límite.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
 
 ### 7.4.3 — Condicionales
 
@@ -949,6 +967,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Comprobación.** ¿Por qué el código de salida de una orden no es lo mismo que el texto que imprime?
 
+
+**Laboratorio aplicado — Condicionales.**
+
+1. Crea un script que reciba una ruta. 2. Comprueba argumento presente. 3. Distingue directorio, archivo y ruta inexistente. 4. Comprueba el código de salida de cada caso.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
+
 ### 7.4.4 — Bucles
 
 **Desarrollo conceptual.** for recorre listas o expansiones; while repite mientras una condición tenga éxito; until repite hasta que la condición tenga éxito. El quoting evita que los espacios dividan elementos.
@@ -964,6 +991,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 **Errores frecuentes.** Usar for x in $(cat archivo) para leer líneas o crear un ciclo infinito por no actualizar su condición.
 
 **Comprobación.** ¿Qué ventaja ofrece while IFS= read -r linea para procesar texto?
+
+
+**Laboratorio aplicado — Bucles.**
+
+1. Define una lista con tres elementos, uno con espacios. 2. Itera con "${lista[@]}". 3. Lee un archivo sintético con while IFS= read -r. 4. Confirma que no se pierden espacios ni líneas.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
 
 ### 7.4.5 — Funciones
 
@@ -981,6 +1017,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Comprobación.** ¿Cuándo conviene devolver un código de estado y cuándo imprimir un resultado?
 
+
+**Laboratorio aplicado — Funciones.**
+
+1. Define validar_directorio. 2. Pasa una ruta con espacios. 3. Captura el estado devuelto. 4. Comprueba el comportamiento con argumentos ausentes.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
+
 ### 7.4.6 — Arrays
 
 **Desarrollo conceptual.** Los arrays indexados almacenan secuencias; los asociativos relacionan claves y valores. Las expansiones [@] y [*] difieren especialmente al utilizar comillas. Los arrays asociativos requieren Bash compatible.
@@ -996,6 +1041,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 **Errores frecuentes.** Confundir [*] con [@] en expansión citada o asumir que POSIX sh ofrece arrays Bash.
 
 **Comprobación.** ¿Por qué importa citar "${array[@]}" cuando un elemento contiene espacios?
+
+
+**Laboratorio aplicado — Arrays.**
+
+1. Construye un array indexado con valores de prueba. 2. Mide su longitud. 3. Recorre "${array[@]}". 4. Si la versión de Bash lo permite, crea un array asociativo y consulta una clave inexistente.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
 
 ### 7.4.7 — Pipes
 
@@ -1013,6 +1067,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Comprobación.** ¿Qué fallo podría quedar oculto si solo se consulta el estado de la última orden?
 
+
+**Laboratorio aplicado — Pipes.**
+
+1. Genera líneas sintéticas con printf. 2. Filtra con grep. 3. Cuenta resultados con wc. 4. Introduce un fallo controlado en una etapa y compara el estado con pipefail activado y desactivado.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
+
 ### 7.4.8 — Redirecciones
 
 **Desarrollo conceptual.** Los descriptores habituales son stdin 0, stdout 1 y stderr 2. > trunca, >> añade, 2> redirige errores y 2>&1 duplica un descriptor según el orden de evaluación.
@@ -1028,6 +1091,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 **Errores frecuentes.** Sobrescribir archivos importantes o asumir que 2>&1 >archivo equivale a >archivo 2>&1.
 
 **Comprobación.** ¿Por qué el orden de las redirecciones cambia el resultado?
+
+
+**Laboratorio aplicado — Redirecciones.**
+
+1. Ejecuta una orden con salida normal. 2. Provoca un error inocuo mediante una ruta inexistente. 3. Redirige stdout y stderr a archivos separados. 4. Repite con un destino común y explica el orden de descriptores.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
 
 ### 7.4.9 — Exit codes
 
@@ -1045,6 +1117,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Comprobación.** ¿Por qué debe guardarse inmediatamente el código de salida?
 
+
+**Laboratorio aplicado — Exit codes.**
+
+1. Ejecuta una orden exitosa. 2. Ejecuta una búsqueda sin coincidencias. 3. Ejecuta una búsqueda sobre ruta inexistente. 4. Guarda inmediatamente cada código y explica qué significa.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
+
 ### 7.4.10 — Scripts
 
 **Desarrollo conceptual.** Un script es un archivo de órdenes interpretado. Debe declarar el intérprete, validar entradas, citar variables, gestionar errores y devolver un estado útil. set -e tiene excepciones y no sustituye el manejo explícito.
@@ -1060,6 +1141,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 **Errores frecuentes.** No citar variables, ocultar errores o suponer que set -e detiene todos los fallos.
 
 **Comprobación.** ¿Qué debe comprobarse antes de usar una variable de entrada en una ruta?
+
+
+**Laboratorio aplicado — Scripts.**
+
+1. Crea un script con shebang. 2. Valida cantidad de argumentos. 3. Valida una ruta con espacios. 4. Envía errores a stderr y devuelve estado coherente en cada escenario.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
 
 ### 7.4.11 — Cron
 
@@ -1077,6 +1167,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Comprobación.** ¿Por qué una orden que funciona en terminal puede fallar bajo cron?
 
+
+**Laboratorio aplicado — Cron.**
+
+1. Interpreta una expresión de cinco campos. 2. Convierte la expresión a una descripción en lenguaje natural. 3. Identifica PATH y zona horaria esperados. 4. Diseña logging y prevención de ejecuciones simultáneas sin instalar la tarea.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
+
 ### 7.4.12 — Automatización
 
 **Desarrollo conceptual.** La automatización fiable combina repetibilidad, idempotencia, registros, manejo de errores, control de concurrencia y mínimo privilegio. Una tarea debe permitir detectar fallos sin exponer secretos.
@@ -1092,6 +1191,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 **Errores frecuentes.** Automatizar acciones destructivas sin dry-run, ignorar concurrencia o guardar contraseñas en texto plano.
 
 **Comprobación.** ¿Qué propiedad permite repetir una tarea sin duplicar efectos no deseados?
+
+
+**Laboratorio aplicado — Automatización.**
+
+1. Crea una carpeta de laboratorio si no existe. 2. Escribe un registro con timestamp. 3. Ejecuta el script dos veces. 4. Comprueba idempotencia, permisos, logging y tratamiento de errores.
+
+**Evidencia exigida.** Adjunta el script o transcripción saneada, entradas utilizadas, salidas observadas, códigos de retorno y breve explicación. Si no se ejecutó en un entorno real, registra el ejercicio como diseñado/no ejecutado.
+
+**Límites de seguridad.** Ejecuta únicamente dentro de una carpeta y cuenta de laboratorio. No eleves privilegios ni alteres servicios, tareas programadas o archivos del sistema para completar la práctica.
 
 ## 7.5 — Windows
 
