@@ -2058,6 +2058,16 @@ App Router organiza rutas mediante estructura de carpetas y archivos especiales.
 
 **Comprobación:** ¿Qué función cumple layout frente a page?
 
+**Laboratorio de profundización — Estructura de rutas en App Router.**
+
+1. Organiza app/ con layout, page y loading. 2. Define segmentos dinámicos. 3. Explica convenciones de error y not-found. 4. Comprueba rutas generadas.
+
+**Evidencia esperada.** La estructura corresponde a convenciones App Router y separa layout de contenido de ruta.
+
+**Seguridad y límites.** No colocar secretos o lógica privilegiada en módulos compartidos con cliente.
+
+**Registro sugerido.** Registra versión de Next.js/Node, estrategia de renderizado, rutas, variables ficticias y resultado de build en entorno de laboratorio. No marques despliegue como ejecutado sin evidencia real.
+
 #### 12.7.02 — Routing
 
 Next.js resuelve rutas estáticas y dinámicas mediante segmentos, grupos, parámetros y navegación. La estructura debe evitar rutas ambiguas y contemplar not-found, redirects y parámetros validados.
@@ -2073,6 +2083,16 @@ Next.js resuelve rutas estáticas y dinámicas mediante segmentos, grupos, pará
 **Errores frecuentes:** Confiar en parámetros URL sin validarlos en backend.
 
 **Comprobación:** ¿Por qué un segmento dinámico debe validarse antes de consultar datos?
+
+**Laboratorio de profundización — Parámetros, navegación y rutas anidadas.**
+
+1. Diseña rutas anidadas y dinámicas. 2. Lee params y searchParams. 3. Implementa navegación con Link. 4. Define comportamiento para rutas inexistentes.
+
+**Evidencia esperada.** Las rutas tienen jerarquía clara y parámetros validados.
+
+**Seguridad y límites.** No confiar en parámetros de URL como autorización ni aceptar rutas abiertas sin validación.
+
+**Registro sugerido.** Registra versión de Next.js/Node, estrategia de renderizado, rutas, variables ficticias y resultado de build en entorno de laboratorio. No marques despliegue como ejecutado sin evidencia real.
 
 #### 12.7.03 — Server Components
 
@@ -2090,6 +2110,16 @@ React Server Components permiten renderizar componentes en servidor y reducir Ja
 
 **Comprobación:** ¿Qué beneficio aporta mantener un componente como Server Component?
 
+**Laboratorio de profundización — Renderizado de componentes servidor.**
+
+1. Identifica componentes servidor por defecto en App Router. 2. Consulta datos en servidor. 3. Pasa al cliente solo props serializables necesarias. 4. Explica límites de hooks y APIs del navegador.
+
+**Evidencia esperada.** El componente ejecuta lógica compatible con servidor y minimiza JavaScript enviado al cliente.
+
+**Seguridad y límites.** No serializar secretos ni enviar datos internos innecesarios a componentes cliente.
+
+**Registro sugerido.** Registra versión de Next.js/Node, estrategia de renderizado, rutas, variables ficticias y resultado de build en entorno de laboratorio. No marques despliegue como ejecutado sin evidencia real.
+
 #### 12.7.04 — Client Components
 
 Client Components se habilitan con 'use client' y pueden usar estado, efectos y APIs del navegador. La directiva crea frontera de cliente y sus dependencias forman parte del bundle; secretos de servidor nunca deben importarse allí.
@@ -2105,6 +2135,16 @@ Client Components se habilitan con 'use client' y pueden usar estado, efectos y 
 **Errores frecuentes:** Importar variables privadas de servidor o usar hooks sin directiva.
 
 **Comprobación:** ¿Por qué 'use client' debe colocarse en la frontera y no por defecto en cada archivo?
+
+**Laboratorio de profundización — Límite interactivo con use client.**
+
+1. Añade directiva use client en el límite necesario. 2. Implementa estado y eventos. 3. Analiza bundle y árbol de imports. 4. Evita convertir todo el árbol en cliente.
+
+**Evidencia esperada.** La directiva se aplica al límite interactivo mínimo y las dependencias son compatibles.
+
+**Seguridad y límites.** No importar módulos con secretos o acceso privilegiado al cliente.
+
+**Registro sugerido.** Registra versión de Next.js/Node, estrategia de renderizado, rutas, variables ficticias y resultado de build en entorno de laboratorio. No marques despliegue como ejecutado sin evidencia real.
 
 #### 12.7.05 — Server-side rendering
 
@@ -2122,6 +2162,16 @@ SSR genera HTML en servidor para cada solicitud o render según estrategia. Pued
 
 **Comprobación:** ¿Qué riesgo introduce cachear SSR personalizado con una clave de caché incorrecta?
 
+**Laboratorio de profundización — SSR y renderizado inicial.**
+
+1. Compara renderizado servidor y cliente. 2. Identifica hidratación. 3. Reproduce una diferencia de contenido dependiente de hora solo en laboratorio. 4. Corrige mismatch usando datos deterministas.
+
+**Evidencia esperada.** La salida inicial es consistente y la hidratación no produce discrepancias evitables.
+
+**Seguridad y límites.** No incluir datos personalizados en HTML cacheable sin controlar aislamiento de caché.
+
+**Registro sugerido.** Registra versión de Next.js/Node, estrategia de renderizado, rutas, variables ficticias y resultado de build en entorno de laboratorio. No marques despliegue como ejecutado sin evidencia real.
+
 #### 12.7.06 — Static site generation
 
 SSG genera HTML en build o prerender para rutas conocidas. Reduce costo de solicitud y mejora distribución, pero el contenido puede quedar desactualizado; revalidación y rutas dinámicas deben planificarse.
@@ -2137,6 +2187,16 @@ SSG genera HTML en build o prerender para rutas conocidas. Reduce costo de solic
 **Errores frecuentes:** Generar información sensible en HTML estático o asumir frescura infinita.
 
 **Comprobación:** ¿Qué trade-off introduce SSG entre rendimiento y actualidad?
+
+**Laboratorio de profundización — Generación estática y revalidación.**
+
+1. Identifica páginas aptas para generación estática. 2. Define parámetros estáticos cuando aplique. 3. Compara build-time y runtime. 4. Explica revalidación y datos cambiantes.
+
+**Evidencia esperada.** La estrategia coincide con frecuencia de actualización y requisitos de personalización.
+
+**Seguridad y límites.** No generar estáticamente contenido privado o específico de usuario en una caché compartida.
+
+**Registro sugerido.** Registra versión de Next.js/Node, estrategia de renderizado, rutas, variables ficticias y resultado de build en entorno de laboratorio. No marques despliegue como ejecutado sin evidencia real.
 
 #### 12.7.07 — Data fetching
 
@@ -2154,6 +2214,16 @@ Next.js ofrece mecanismos de obtención de datos en servidor y cliente; caché, 
 
 **Comprobación:** ¿Qué criterio determina si una respuesta puede almacenarse en caché compartida?
 
+**Laboratorio de profundización — Obtención de datos y estados de carga.**
+
+1. Obtén datos desde Server Component o route handler según arquitectura. 2. Maneja loading, error y empty states. 3. Define caché y revalidación explícitas. 4. Valida respuesta externa.
+
+**Evidencia esperada.** El flujo tiene política de caché clara y maneja estados de datos incompletos o fallidos.
+
+**Seguridad y límites.** No exponer claves de API al bundle ni confiar en datos externos sin validación.
+
+**Registro sugerido.** Registra versión de Next.js/Node, estrategia de renderizado, rutas, variables ficticias y resultado de build en entorno de laboratorio. No marques despliegue como ejecutado sin evidencia real.
+
 #### 12.7.08 — Authentication
 
 La autenticación verifica identidad; autorización decide acceso. Next.js puede integrar proveedores o sesiones, pero la protección real debe aplicarse en servidor/API y en cada recurso. Cookies seguras, rotación, expiración y CSRF forman parte del diseño.
@@ -2169,6 +2239,16 @@ La autenticación verifica identidad; autorización decide acceso. Next.js puede
 **Errores frecuentes:** Proteger solo rutas cliente o almacenar credenciales en localStorage.
 
 **Comprobación:** ¿Por qué ocultar una página no sustituye autorización en el endpoint?
+
+**Laboratorio de profundización — Autenticación y autorización en Next.js.**
+
+1. Distingue autenticación de autorización. 2. Diseña sesión segura con cookie HttpOnly/Secure/SameSite. 3. Verifica permisos en servidor para cada recurso. 4. Explica middleware/proxy como capa complementaria, no única.
+
+**Evidencia esperada.** Las rutas y acciones verifican identidad y permisos en servidor y no dependen de ocultar botones.
+
+**Seguridad y límites.** No guardar tokens sensibles en localStorage ni confiar exclusivamente en middleware o controles cliente.
+
+**Registro sugerido.** Registra versión de Next.js/Node, estrategia de renderizado, rutas, variables ficticias y resultado de build en entorno de laboratorio. No marques despliegue como ejecutado sin evidencia real.
 
 #### 12.7.09 — Metadata
 
@@ -2186,6 +2266,16 @@ Metadata API permite definir title, description, Open Graph y metadatos dinámic
 
 **Comprobación:** ¿Qué problema puede causar reutilizar metadata genérica en todas las rutas?
 
+**Laboratorio de profundización — Metadatos por ruta.**
+
+1. Define metadata estática y dinámica. 2. Añade title y description específicos. 3. Define canonical y Open Graph cuando corresponda. 4. Comprueba ausencia de duplicados.
+
+**Evidencia esperada.** Los metadatos corresponden al contenido y a la URL canónica real.
+
+**Seguridad y límites.** No publicar metadata con datos privados ni inventar información estructurada.
+
+**Registro sugerido.** Registra versión de Next.js/Node, estrategia de renderizado, rutas, variables ficticias y resultado de build en entorno de laboratorio. No marques despliegue como ejecutado sin evidencia real.
+
 #### 12.7.10 — Deployment
 
 El despliegue Next.js depende de runtime Node, plataforma serverless/edge o export estático, variables de entorno, build y configuración de caché. Secretos deben residir en entorno servidor, y los builds deben ser reproducibles y verificables.
@@ -2202,6 +2292,16 @@ El despliegue Next.js depende de runtime Node, plataforma serverless/edge o expo
 
 **Comprobación:** ¿Qué implica el prefijo NEXT_PUBLIC para una variable?
 
+
+**Laboratorio de profundización — Preparación de despliegue reproducible.**
+
+1. Define versión de Node y package manager. 2. Configura variables de entorno por entorno. 3. Ejecuta build y verifica salida en laboratorio. 4. Define health checks, logs, rollback y migraciones.
+
+**Evidencia esperada.** El despliegue documenta dependencias, configuración, comprobaciones y reversión.
+
+**Seguridad y límites.** No incluir secretos en imágenes, logs o repositorio; revisar permisos y exposición de endpoints.
+
+**Registro sugerido.** Registra versión de Next.js/Node, estrategia de renderizado, rutas, variables ficticias y resultado de build en entorno de laboratorio. No marques despliegue como ejecutado sin evidencia real.
 #### 12.8.01 — npm
 
 npm es el gestor de paquetes incluido habitualmente con Node.js. package.json declara scripts, dependencias y metadatos; package-lock.json fija árbol resuelto para instalaciones reproducibles. Scripts pueden ejecutar código, por lo que se revisa origen de dependencias.
