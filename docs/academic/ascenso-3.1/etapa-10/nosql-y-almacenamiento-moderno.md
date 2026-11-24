@@ -1,6 +1,6 @@
 # Etapa 10 — Bases de datos NoSQL y almacenamiento moderno
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 10.  
 **Prioridad oficial:** P1 · Obligatoria; profundización P2 según el propio roadmap.  
 **Objetivo oficial:** aprender cuándo utilizar bases relacionales y cuándo utilizar modelos no relacionales.
@@ -346,4 +346,4 @@ No se incluyen videos en esta versión. MongoDB y Redis requieren recursos separ
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** diseños, comandos y pruebas propuestos; no ejecutados contra instancias MongoDB/Redis en esta sesión.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado..
