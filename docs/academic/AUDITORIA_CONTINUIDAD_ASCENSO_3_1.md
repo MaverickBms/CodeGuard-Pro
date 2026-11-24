@@ -404,3 +404,26 @@ Se desarrollaron individualmente las 275 entradas oficiales de las etapas 29–3
 Se sustituyeron orientaciones genéricas por explicaciones específicas. Se reforzaron IAM, responsabilidad compartida, SBOM/procedencia, seguridad de agentes y LLM, gestión de claves y transición poscuántica, seguridad de memoria, análisis aislado de malware y evidencia profesional verificable. Se añadieron fuentes NIST para ML-KEM (FIPS 203), ML-DSA (FIPS 204) y SLH-DSA (FIPS 205).
 
 **Validación interna:** conteos cotejados con el JSON y ausencia de placeholders genéricos comprobada. Pendiente: validar versiones de proveedores/herramientas, ejecutar laboratorios cloud/IA/criptografía/malware solo en entornos autorizados, completar proyectos y recibir segunda revisión técnica/editorial. No se desplegó infraestructura, no se ejecutó malware ni se declara aprobación externa.
+
+
+## Estado consolidado de desarrollo individual — 2026-11-24
+
+Se completó la primera pasada de desarrollo individual de las **1.916 entradas nominales** correspondientes a las etapas 1–32. El trabajo se distribuye así:
+
+- Etapas 1–10: 549 entradas con desarrollo técnico previo en guías de módulo, revisión documental y correcciones editoriales.
+- Etapas 11–32: 1.367 entradas con explicación técnica individualizada, sustituyendo las orientaciones genéricas de la granularización.
+- Total: 1.916 entradas de las etapas 1–32, alineadas con el roadmap de 33 etapas/212 módulos/1.946 lecciones.
+
+Se añadieron registros de revisión editorial interna por bloque y se corrigieron duplicaciones, orden de temas, referencias impropias, compatibilidad de entornos, advertencias de seguridad y referencias oficiales seleccionadas. Se comprobó por bloques que los conteos de encabezados de lección coinciden con el currículo y que los textos genéricos de relleno fueron sustituidos.
+
+### Estado real y criterios pendientes
+
+Esta pasada completa la **redacción individual inicial y la revisión editorial documental**, pero no debe confundirse con aprobación académica final. Las lecciones de etapas 11–32 se integran con guías principales, ejemplos/proyectos y explicaciones específicas; aún pueden requerir ampliación adicional de casos resueltos, ejercicios graduados, soluciones comentadas y referencias específicas por lección. La aprobación final exige, como mínimo:
+
+1. cotejo bibliográfico actualizado de todas las fuentes y versiones;
+2. ejecución reproducible de ejemplos, proyectos, pruebas y laboratorios;
+3. verificación de accesibilidad, seguridad y compatibilidad donde aplique;
+4. revisión independiente técnica y pedagógica con criterios de aceptación;
+5. evidencias trazables y resolución de hallazgos antes de cualquier importación.
+
+No se ejecutaron pruebas ni laboratorios en esta pasada; no se aprobaron, importaron ni publicaron lecciones. El objetivo oficial de la etapa 25 continúa vacío. El JSON curricular permanece intacto.
