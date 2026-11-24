@@ -66,7 +66,14 @@ Las etapas 0–32 cuentan con documentos de desarrollo en esta rama. **Etapa 0: 
 - [Etapa 5.3 — Terminal](ascenso-3.1/etapa-05/modulo-5.3-terminal.md)
 - [Etapa 5.4 — Modularidad](ascenso-3.1/etapa-05/modulo-5.4-modularidad.md)
 - [Índice Etapa 5](ascenso-3.1/etapa-05/git-github-terminal-modularidad.md)
-- [Etapa 6 — Estructuras de datos y algoritmos](ascenso-3.1/etapa-06/estructuras-de-datos-y-algoritmos.md)
+- [Etapa 6.1 — Estructuras lineales](ascenso-3.1/etapa-06/modulo-6.1-estructuras-lineales.md)
+- [Etapa 6.2 — Estructuras asociativas](ascenso-3.1/etapa-06/modulo-6.2-estructuras-asociativas.md)
+- [Etapa 6.3 — Árboles](ascenso-3.1/etapa-06/modulo-6.3-arboles.md)
+- [Etapa 6.4 — Grafos](ascenso-3.1/etapa-06/modulo-6.4-grafos.md)
+- [Etapa 6.5 — Algoritmos](ascenso-3.1/etapa-06/modulo-6.5-algoritmos.md)
+- [Etapa 6.6 — Técnicas](ascenso-3.1/etapa-06/modulo-6.6-tecnicas.md)
+- [Etapa 6.7 — Complejidad](ascenso-3.1/etapa-06/modulo-6.7-complejidad.md)
+- [Índice Etapa 6](ascenso-3.1/etapa-06/estructuras-de-datos-y-algoritmos.md)
 
 ## Etapas 7–12 · Sistemas y frontend
 - [Etapa 7 — Sistemas operativos](ascenso-3.1/etapa-07/sistemas-operativos-linux-windows-administracion.md)
