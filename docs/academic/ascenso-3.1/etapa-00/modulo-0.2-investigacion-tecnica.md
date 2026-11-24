@@ -361,6 +361,92 @@ Esta frase no es verificable mientras no se especifiquen carga, versiones, hardw
 
 **Criterio de éxito:** una persona con el mismo entorno puede reproducir el problema o identificar con claridad qué requisito ambiental falta.
 
+## Claves de práctica — casos modelo y comprobación
+
+Los casos de esta sección son **simulados**. Los nombres entre corchetes son datos que el estudiante debe sustituir por evidencia real de su entorno; no describen una incidencia real de CodeGuard Pro ni una prueba ya ejecutada.
+
+### Clave 0.2.1 — Documentación y versiones
+
+**Caso:** un tutorial muestra `bibliotecaX.metodo_nuevo()`, pero la referencia API de la versión instalada no contiene ese método.
+
+**Razonamiento esperado:**
+1. No concluir que el tutorial o la biblioteca están necesariamente equivocados.
+2. Registrar versión instalada y versión del tutorial.
+3. Consultar changelog/notas de versión y referencia API de ambas versiones.
+4. Comprobar si el método se añadió después, cambió de nombre o pertenece a otro paquete.
+5. Si la evidencia confirma que se añadió en una versión posterior, informar que el ejemplo no es compatible con la versión instalada; proponer actualizar solo después de revisar requisitos y cambios incompatibles.
+
+**Respuesta insuficiente:** «Actualiza todo». No identifica compatibilidad ni evalúa efectos de una actualización.
+
+### Clave 0.2.2 — Error de importación
+
+**Caso simulado:** aparece `ModuleNotFoundError` al importar un paquete en Python.
+
+**Pruebas iniciales de bajo riesgo:**
+- `python --version`: identifica la versión invocada por ese comando.
+- `python -c "import sys; print(sys.executable)"`: identifica el intérprete que ejecuta esa invocación.
+- `python -m pip show nombre-paquete`: consulta si el paquete aparece instalado para ese intérprete/gestor.
+
+Estas consultas informativas no prueban por sí solas que la aplicación use el mismo entorno: el comando de ejecución, IDE, notebook o servicio puede seleccionar otro intérprete. No se debe instalar o actualizar paquetes a ciegas. Primero compara rutas y entorno; después sigue las instrucciones oficiales del proyecto.
+
+**Conclusión modelo:** «La hipótesis de entornos distintos sigue siendo plausible; necesito comprobar el intérprete configurado en el IDE y compararlo con la ruta de `sys.executable`». No se declara resuelto hasta reproducir la importación desde el mismo proceso/entorno.
+
+### Clave 0.2.3 — Respuesta comunitaria
+
+**Veredicto modelo:** una respuesta antigua que recomienda una API obsoleta se clasifica como «parcialmente vigente» u «obsoleta» según la documentación de la versión actual. Se conserva como pista histórica, no como instrucción vigente. La conclusión debe incluir URL de la pregunta, fecha, versión, documentación primaria consultada y alternativa confirmada. Si no se puede comprobar la versión, usar «no verificable».
+
+### Clave 0.2.4 — Issue, pull request y release
+
+**Cadena de evidencia esperada:** issue con síntoma y versión afectada → pull request que referencia la issue → revisión/merge del cambio → commit integrado → release o paquete que incluye el cambio → prueba de la versión distribuida.
+
+Si falta el vínculo entre merge y release, la conclusión debe limitarse: «el cambio se integró en la rama principal», no «la versión publicada ya lo corrige». Una issue cerrada sin PR puede haberse cerrado por duplicado o falta de actividad.
+
+### Clave 0.2.5 — Licencia y adopción
+
+**Caso modelo:** el repositorio tiene README, actividad reciente y pruebas, pero no contiene una licencia identificable.
+
+**Decisión:** no asumir permiso de reutilización, modificación o redistribución. Registrar «licencia no identificada» como bloqueo, solicitar aclaración al titular o elegir una alternativa con licencia compatible. Las estrellas, forks y disponibilidad pública no sustituyen una licencia.
+
+**Riesgo adicional:** una licencia identificada tampoco equivale a una auditoría de seguridad. La evaluación técnica, legal y de seguridad son controles distintos.
+
+### Clave 0.2.6 — Calibrar una comparación
+
+**Afirmación inicial:** «La herramienta A es el doble de rápida que B».
+
+**Reformulación comprobable:** «En el equipo [modelo], con versiones [A/B], configuración [parámetros] y carga [caso], la métrica [unidad] fue [valor] para A y [valor] para B en [n] ejecuciones; se reporta [mediana/rango].»
+
+**Límite:** ese resultado describe el entorno y carga probados. No demuestra que A sea siempre más rápida, ni que sea mejor en consumo, fiabilidad, seguridad o coste.
+
+### Clave 0.2.7 — Reporte reproducible
+
+**Ejemplo de formato completo, con datos ficticios:**
+
+- **Título:** «La importación de `paquete_demo` falla al ejecutar con el intérprete configurado en el IDE».
+- **Objetivo:** ejecutar un script de demostración que importa el paquete.
+- **Entorno:** sistema [versión], Python [versión], IDE [versión], entorno virtual [ruta anonimizada].
+- **Pasos:** activar el entorno; ejecutar [comando]; observar el mensaje.
+- **Esperado:** el módulo se importa y el script continúa.
+- **Obtenido:** `ModuleNotFoundError`.
+- **Pruebas:** consultar intérprete desde terminal e IDE; revisar instalación en ambos entornos.
+- **Fuentes:** documentación del IDE y del gestor de paquetes, URL y fecha.
+- **Conclusión:** [hipótesis apoyada / descartada / pendiente], con evidencia.
+- **Seguridad:** no adjuntar rutas privadas, nombres de usuario, tokens ni archivos de configuración.
+
+El ejemplo solo ilustra la estructura. El estudiante debe completar campos con datos observados y no copiarlo como si fuera una incidencia real.
+
+### Control de calidad de una fuente
+
+Antes de citar, comprueba cinco cosas:
+1. **Identidad:** ¿es el sitio del mantenedor, una organización reconocida o una persona identificable?
+2. **Alcance:** ¿la página trata exactamente el producto, API o fenómeno de la afirmación?
+3. **Versión/fecha:** ¿corresponde al contexto investigado?
+4. **Evidencia:** ¿la página contiene la explicación, dato o prueba que se atribuye?
+5. **Independencia:** ¿la fuente aporta evidencia propia o repite otra publicación?
+
+Una ficha que no permita a otra persona abrir la fuente y localizar el respaldo no es trazable.
+
+---
+
 ## Evaluación de transferencia — expediente completo
 
 Investiga un problema técnico real de un proyecto propio o un repositorio de demostración. Debes:
