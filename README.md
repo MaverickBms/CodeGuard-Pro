@@ -247,3 +247,8 @@ La documentación técnica extendida (índice, arquitectura, estructura del repo
 ---
 
 *CodeGuard Pro — con cimientos técnicos sólidos, funcionales, seguros, comprobables y preparados para evolucionar.*
+
+
+### Continuidad ASCENSO 3.1 — etapa 9
+
+La documentación de la etapa 9 (Bases de datos relacionales y SQL) quedó desglosada en 81 encabezados de lección, distribuidos en sus siete módulos según el roadmap oficial. Incluye fundamentos, modelado, MySQL, SQL, normalización, temas avanzados y PostgreSQL. Es una base de trabajo activa: los ejemplos y laboratorios no se consideran ejecutados ni aprobados por este cambio.
