@@ -167,3 +167,10 @@ Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11�
 Se añadieron prácticas y evidencias a las **100 lecciones de arquitectura/diseño/planeación** y las **67 lecciones de DevOps/Docker/Cloud/Kubernetes**. La comprobación estructural posterior confirmó 167/167 apartados y ningún encabezado vacío. No se ejecutaron despliegues, pipelines ni recursos cloud.
 
 Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11–12, 149; etapa 13, 63; etapa 14, 58; etapas 15–16, 99; etapa 17, 61; etapas 18–19, 167; total etapas 1–19: **1.146 lecciones**. Restan 770 lecciones de etapas 20–32 para profundización equivalente. No se declara validación técnica por ejecución ni aprobación externa.
+
+
+### Ampliación de prácticas y evidencias — etapas 20–22 — 2026-11-24
+
+Se añadieron prácticas y evidencias a las **57 lecciones de AppSec**, **82 de fundamentos de ciberseguridad/riesgos/ética** y **58 de laboratorio/hardening**. La comprobación estructural posterior confirmó 197/197 apartados y ningún encabezado vacío. No se ejecutaron laboratorios ni pruebas ofensivas; las actividades están delimitadas a entornos propios, aislados o autorizados.
+
+Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11–12, 149; etapa 13, 63; etapa 14, 58; etapas 15–16, 99; etapa 17, 61; etapas 18–19, 167; etapas 20–22, 197; total etapas 1–22: **1.343 lecciones**. Restan 573 lecciones de etapas 23–32 para profundización equivalente. No se declara validación técnica por ejecución ni aprobación externa.
