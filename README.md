@@ -356,3 +356,10 @@ Este resultado es una revisión y profundización documental interna. No signifi
 Se desarrollaron las 81 lecciones oficiales de Redes informáticas y protocolos: fundamentos (13), modelos de comunicación (9), direccionamiento (13), protocolos (16), routing/switching (10), seguridad de redes (9) y herramientas (11). Las lecciones incluyen explicación técnica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación. Las actividades de captura, escaneo y administración de red se limitan a sistemas propios o expresamente autorizados.
 
 La cobertura es documental y estructural; no se ejecutaron laboratorios ni escaneos, no se verificó exhaustivamente la bibliografía y no existe aprobación técnica independiente. La auditoría de continuidad registra alcance y límites. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
+
+
+### Desarrollo documental individual — etapa 9 (24-11-2026)
+
+Se desarrollaron las 81 lecciones oficiales de Bases de datos relacionales y SQL: fundamentos (10), modelado (11), MySQL (9), SQL (19), diseño y normalización (9), bases de datos avanzadas (15) y PostgreSQL (8). Cada lección incluye explicación específica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
+
+La cobertura es documental y estructural; no se ejecutaron motores, consultas, migraciones ni laboratorios. La validación técnica independiente y el cotejo bibliográfico exhaustivo permanecen pendientes. La auditoría de continuidad contiene el alcance y las limitaciones. El roadmap JSON no fue modificado; no se importó ni publicó contenido.
