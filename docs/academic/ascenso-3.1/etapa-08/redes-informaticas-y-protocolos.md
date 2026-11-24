@@ -1398,6 +1398,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué puede ocurrir en una red Ethernet conmutada si se forma un bucle de capa 2?
 
+**Laboratorio de profundización — Reenvío de tramas y tabla CAM.**
+
+1. Simula aprendizaje de MAC origen en cuatro puertos. 2. Determina reenvío unicast conocido, flooding de unicast desconocido y broadcast. 3. Explica aging de la tabla CAM. 4. Relaciona VLAN con dominios de broadcast.
+
+**Evidencia esperada.** La tabla aprende MAC origen por puerto y predice correctamente el reenvío según destino y VLAN.
+
+**Seguridad y límites.** No generar flooding o tormentas de broadcast en equipos productivos.
+
+**Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.5.2 — Routing
 
 **Propósito y modelo.** Routing selecciona el siguiente salto para un paquete IP a partir de una tabla de rutas. Las rutas pueden ser conectadas, estáticas o aprendidas dinámicamente. La selección suele considerar el prefijo más largo y después métricas/administrative distance según plataforma.
@@ -1413,6 +1423,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Suponer que una ruta de ida garantiza ruta de retorno o elegir por menor número de saltos sin considerar métricas.
 
 **Comprobación.** ¿Por qué una ruta de retorno ausente puede romper una conexión aunque la ida funcione?
+
+**Laboratorio de profundización — Selección de ruta y siguiente salto.**
+
+1. Crea una topología de tres routers con redes ficticias. 2. Determina siguiente salto para destinos locales y remotos. 3. Aplica el criterio de prefijo más específico. 4. Explica qué ocurre si no existe ruta coincidente.
+
+**Evidencia esperada.** La selección respeta longest-prefix match y distingue red conectada, ruta específica y ruta por defecto.
+
+**Seguridad y límites.** No modificar tablas de rutas de redes reales.
+
+**Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.5.3 — Tablas de rutas
 
@@ -1430,6 +1450,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué campos mínimos necesitas para comprender por dónde se enviará un paquete?
 
+**Laboratorio de profundización — Interpretación de tabla de rutas.**
+
+1. Consulta `ip route` en una VM propia o `route print` en Windows. 2. Identifica destino, prefijo, gateway, interfaz y métrica. 3. Resuelve el camino a tres destinos ficticios. 4. Explica rutas duplicadas o métricas diferentes.
+
+**Evidencia esperada.** Cada campo se interpreta y la ruta elegida se justifica por prefijo y métrica.
+
+**Seguridad y límites.** No copiar ni publicar tablas de rutas que revelen infraestructura privada.
+
+**Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.5.4 — Rutas estáticas
 
 **Propósito y modelo.** Una ruta estática es configurada manualmente por un administrador y define destino, prefijo y siguiente salto o interfaz. Es predecible y útil en topologías pequeñas o rutas específicas, pero requiere mantenimiento y puede fallar si cambia la topología.
@@ -1445,6 +1475,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Configurar un gateway no alcanzable o olvidar la ruta de retorno; cambiar rutas remotas sin acceso alternativo.
 
 **Comprobación.** ¿Qué procedimiento de reversión debe prepararse antes de modificar la tabla de rutas de un equipo remoto?
+
+**Laboratorio de profundización — Configuración conceptual y reversión.**
+
+1. Diseña una ruta estática entre dos subredes a través de un siguiente salto. 2. Verifica que el next-hop sea alcanzable. 3. Define métrica, persistencia y ruta de retorno. 4. Documenta cómo retirar la ruta si falla.
+
+**Evidencia esperada.** La ruta tiene destino, prefijo y next-hop coherentes y existe camino de retorno.
+
+**Seguridad y límites.** No aplicar rutas persistentes en equipos productivos sin ventana de cambio y rollback.
+
+**Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.5.5 — Rutas dinámicas
 
@@ -1462,6 +1502,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué la selección BGP depende de políticas además de la alcanzabilidad?
 
+**Laboratorio de profundización — Comparación de protocolos de routing.**
+
+1. Compara RIP, OSPF y BGP por ámbito, métrica/atributos y convergencia. 2. Dibuja dos áreas OSPF o dos sistemas autónomos BGP. 3. Explica vecinos y anuncios. 4. Identifica riesgos de anuncios incorrectos.
+
+**Evidencia esperada.** La comparación distingue IGP y EGP y no presenta BGP como protocolo de routing interno genérico.
+
+**Seguridad y límites.** No anunciar prefijos reales ni establecer peering con sistemas externos sin autorización.
+
+**Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.5.6 — NAT
 
 **Propósito y modelo.** NAT modifica información de direcciones IP y, en variantes como PAT/NAPT, puertos de transporte para permitir que varias direcciones privadas compartan una dirección externa. No es un control de autenticación ni reemplaza firewall; puede complicar trazabilidad y conectividad extremo a extremo.
@@ -1477,6 +1527,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Afirmar que NAT es equivalente a firewall o exponer servicios sin limitar puertos y orígenes.
 
 **Comprobación.** ¿Qué información mantiene PAT para asociar una respuesta al host interno correcto?
+
+**Laboratorio de profundización — Análisis de traducción y tabla de estados.**
+
+1. Dibuja una conexión desde IP privada a servidor público. 2. Compara NAT estático, dinámico y PAT. 3. Identifica tupla antes/después y puerto traducido. 4. Explica límites de trazabilidad y conectividad entrante.
+
+**Evidencia esperada.** El estudiante distingue traducción de dirección y puerto y explica cómo se mantiene el estado.
+
+**Seguridad y límites.** No abrir redirecciones de puertos en routers productivos.
+
+**Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.5.7 — VLAN
 
@@ -1494,6 +1554,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué una VLAN no impide por sí sola que dos segmentos se comuniquen mediante un router?
 
+**Laboratorio de profundización — Segmentación lógica por VLAN.**
+
+1. Diseña VLAN separadas para usuarios, servidores e invitados. 2. Asigna IDs y subredes no solapadas. 3. Explica qué tráfico queda dentro de cada dominio de broadcast. 4. Define dónde se requiere routing inter-VLAN.
+
+**Evidencia esperada.** El diseño segmenta dominios de broadcast y contempla controles entre VLAN.
+
+**Seguridad y límites.** No modificar VLANs de switches productivos ni utilizar VLAN 1 como red universal de usuarios.
+
+**Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.5.8 — Trunking
 
 **Propósito y modelo.** Un enlace trunk transporta tráfico de varias VLAN entre switches, routers o hipervisores, normalmente mediante etiquetas 802.1Q. La VLAN nativa y la lista de VLAN permitidas deben configurarse de forma coherente en ambos extremos. Un trunk mal configurado puede filtrar o exponer tráfico.
@@ -1510,6 +1580,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué riesgo reduce limitar explícitamente las VLAN permitidas en un trunk?
 
+**Laboratorio de profundización — Etiquetado 802.1Q.**
+
+1. Dibuja dos switches conectados por un enlace trunk. 2. Define VLANs permitidas y native VLAN. 3. Explica cómo viaja la etiqueta 802.1Q. 4. Identifica riesgos de VLAN hopping y mitigaciones de configuración.
+
+**Evidencia esperada.** El diagrama distingue puerto access y trunk y especifica VLANs permitidas y nativa.
+
+**Seguridad y límites.** No habilitar trunks dinámicos ni permitir VLANs innecesarias en enlaces compartidos.
+
+**Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.5.9 — Segmentación
 
 **Propósito y modelo.** La segmentación divide una red en zonas con diferentes niveles de confianza o función. Puede implementarse con VLAN, subredes, firewalls, ACL, VRF y controles de identidad. La segmentación efectiva requiere definir flujos necesarios y bloquear el resto; separar direcciones sin aplicar políticas no basta.
@@ -1525,6 +1605,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Crear VLAN sin ACL intersegmento o permitir administración desde la red de invitados.
 
 **Comprobación.** ¿Cómo se demuestra que una segmentación funciona y no es solo una separación lógica de direcciones?
+
+**Laboratorio de profundización — Matriz de flujos entre zonas.**
+
+1. Define zonas de usuarios, servidores, administración y terceros. 2. Construye matriz origen-destino-servicio. 3. Aplica denegación por defecto y excepciones justificadas. 4. Describe monitoreo y revisión periódica.
+
+**Evidencia esperada.** La matriz minimiza flujos laterales y cada excepción tiene propietario y justificación.
+
+**Seguridad y límites.** No considerar que separar subredes sin ACL o firewall equivale a segmentación segura.
+
+**Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.5.10 — Subredes
 
@@ -1544,6 +1634,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 ## 8.6 — Seguridad de redes
 
+
+**Laboratorio de profundización — Plan integral de direccionamiento y routing.**
+
+1. Divide un bloque privado para cuatro áreas con VLSM. 2. Asigna gateway, broadcast y reservas. 3. Resume rutas que deberían anunciarse. 4. Comprueba ausencia de solapamiento y capacidad de crecimiento.
+
+**Evidencia esperada.** El plan es consistente, agregable cuando corresponde y evita conflictos entre segmentos.
+
+**Seguridad y límites.** Documentar reservas y validar que el espacio no choque con VPNs o redes conectadas.
+
+**Registro sugerido.** Conserva diagrama, tabla de direccionamiento/rutas, supuestos y resultados de simulación. No marques la práctica como ejecutada sin evidencia real.
 ### 8.6.1 — Firewalls
 
 **Propósito y modelo.** Un firewall controla tráfico que cruza un límite de seguridad mediante reglas de origen, destino, protocolo, puerto, estado y, en algunos productos, aplicación o identidad. Puede ser de red, host, nube o aplicación. Su efectividad depende de política, orden, inspección, logging y mantenimiento.
