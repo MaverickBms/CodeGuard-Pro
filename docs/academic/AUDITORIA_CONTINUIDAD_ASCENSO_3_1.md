@@ -287,3 +287,26 @@ Esta finalización se refiere a la cobertura documental y a la correspondencia d
 - Laboratorios de programación, bases de datos, redes, seguridad, cloud y forense: no ejecutados en esta pasada.
 
 La siguiente fase académica es desarrollar las lecciones individuales a profundidad y reunir evidencias verificables, conservando el flujo editorial y el manifiesto real de UUID como condiciones previas a cualquier importación.
+
+
+## Desarrollo profundo y revisión editorial interna — etapas 1 a 10 — 2026-11-24
+
+Se realizó una pasada de revisión editorial documental sobre las etapas 1–10 y se registraron hallazgos en los documentos de cada módulo. La correspondencia de encabezados individuales con el roadmap se cotejó por módulo: **549/549 entradas** de lección coinciden con los conteos oficiales de estas diez etapas.
+
+### Ajustes editoriales aplicados
+
+- **Etapa 1:** revisión de los cinco módulos; se consolidó el segundo bloque de autoevaluación de representación de información como cierre reflexivo para evitar un encabezado duplicado.
+- **Etapa 2:** revisión de las 39 entradas; se retiró una referencia que era una nota editorial y no un recurso bibliográfico para estudiantes.
+- **Etapa 3:** revisión de las 48 entradas; se declaró JDK 21 como línea base para reproducibilidad y se documentaron las APIs que requieren Java 11 o posterior.
+- **Etapa 4:** revisión de POO, relaciones, diseño, paradigmas y UML; se alineó la compatibilidad de ejemplos con JDK 21.
+- **Etapa 5:** se ordenó la secuencia de Git según el roadmap, se corrigió puntuación y se reforzaron las precauciones para comandos destructivos, ramas y secretos.
+- **Etapa 6:** se eliminó la repetición no numerada de Tries y se revisaron algoritmos y estructuras.
+- **Etapa 7:** se ordenaron los temas de fundamentos/Linux y se precisó la definición de root, separándola de permisos y sudo.
+- **Etapa 8:** se ordenó el módulo de seguridad de redes según la secuencia oficial.
+- **Etapas 9 y 10:** revisión de cobertura de SQL relacional y NoSQL; se documentaron las pruebas prácticas pendientes y el solapamiento de síntesis en etapa 10.
+
+### Estado de validación
+
+La revisión realizada es **interna y documental**: confirma correspondencia curricular, consistencia de estructura y aplicación de correcciones editoriales concretas. No constituye aprobación académica externa ni validación funcional. No se ejecutaron compilaciones Java, ejercicios algorítmicos, comandos Git/terminal, máquinas virtuales, capturas de red, ni instancias MySQL, PostgreSQL, MongoDB o Redis. Las referencias deben recibir cotejo bibliográfico final y los ejemplos/laboratorios requieren ejecución reproducible antes de aprobar módulos.
+
+Los módulos de etapas 1–10 siguen en **BASE DE TRABAJO ACTIVA**. No se modificó el roadmap ni se declara aprobación o publicación.
