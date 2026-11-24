@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-11-24  
 **Tipo:** revisión documental, lógica del laboratorio y correspondencia curricular; no equivale a ejecución ni certificación técnica.  
-**Estado:** BORRADOR.
+**Estado del registro:** vigente como revisión de escritorio; no constituye aprobación independiente ni validación experimental.
 
 ## Alcance
 
@@ -68,6 +68,6 @@ La condición inicial `subtotal > 100` no aplica descuento en el límite exacto.
 
 ## Límites y estado
 
-No se ejecutó el código ni se observó una sesión de depuración. La comprobación aritmética es estática; no demuestra que el archivo corra sin errores ni que el entorno esté correctamente configurado. No se declara el laboratorio probado, el módulo aprobado ni contenido publicado.
+No se ejecutó el código ni se observó una sesión de depuración. La comprobación aritmética es estática; no demuestra que el archivo corra sin errores ni que el entorno esté correctamente configurado. El módulo es la base de trabajo activa. No se declara el laboratorio probado, el módulo aprobado ni contenido publicado.
 
-**Estado final:** 0/7 temas con validación práctica independiente; 0 pruebas ejecutadas; 0 videos verificados; 0 aprobaciones y 0 publicaciones.
+**Estado final:** módulo en base de trabajo activa; 0/7 temas con validación práctica independiente; 0 pruebas ejecutadas; 0 videos verificados; 0 aprobaciones y 0 publicaciones.
