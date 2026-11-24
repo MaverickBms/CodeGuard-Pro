@@ -223,3 +223,12 @@ No se incorpora un video en esta versión: no se ha verificado una pieza concret
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** laboratorio propuesto; no ejecutado ni validado en hardware físico en esta entrega.  
 **Nota editorial:** mantener el estado de borrador hasta revisión técnica y pedagógica.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** revisión documental de alineación con el módulo 1.1 del roadmap, cobertura de los títulos oficiales, secuencia didáctica, consistencia terminológica, ejemplos, actividad práctica, evaluación, seguridad y referencias.
+
+**Resultado:** revisión interna realizada; no equivale a aprobación académica externa ni a validación práctica. Se identificaron los ajustes anotados en este registro y se mantienen explícitas las actividades pendientes. Los laboratorios y ejemplos no se declaran ejecutados. Antes de cambiar el estado editorial se requiere cotejo bibliográfico final, ejecución reproducible de actividades y revisión por un segundo evaluador.
+
+**Hallazgos y pendientes específicos:** Se revisó la correspondencia temática, secuencia conceptual, terminología, ejemplos, laboratorio, evaluación y referencias. El inventario sin desmontaje y las advertencias eléctricas son adecuados para nivel inicial. Pendiente: cotejar cada referencia externa en la ronda bibliográfica y ejecutar el laboratorio con hardware real.
