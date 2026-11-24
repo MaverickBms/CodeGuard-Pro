@@ -378,39 +378,147 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 #### 9.3.1 — Instalación de MySQL Server
 
-Instalar MySQL Server implica elegir una distribución compatible, configurar el servicio, proteger credenciales iniciales y verificar el proceso. La guía exacta depende del sistema operativo y versión. **Práctica:** instala una instancia aislada siguiendo la documentación oficial de la versión elegida. **Evidencia:** registra versión, servicio, puerto y resultado de una conexión local.
+**Propósito y modelo.** MySQL Server es el proceso DBMS que administra instancias y acepta conexiones. La instalación depende del sistema operativo, versión, repositorio y método de distribución. En entornos productivos se debe usar una versión soportada, verificar origen e integridad de paquetes, definir cuentas y restringir exposición de red.
+
+**Ejemplo desarrollado.** Instalar un paquete no significa que el servidor esté configurado de forma segura. Deben revisarse servicio, puerto, interfaz de escucha, autenticación, cuentas por defecto, actualizaciones y respaldo inicial.
+
+**Práctica guiada.** En una VM desechable, consulta la documentación oficial de instalación para el sistema elegido. Registra versión, origen del paquete, dependencias y método de verificación. No instales ni modifiques el DBMS del host compartido.
+
+**Actividad independiente.** Elabora un procedimiento reproducible para instalar MySQL en una VM, incluyendo requisitos, verificación de paquetes, configuración inicial, rollback y evidencia.
+
+**Criterios de aceptación.** Identifica producto y versión, documenta fuente y distingue instalación de hardening posterior.
+
+**Errores frecuentes.** Descargar binarios de sitios no oficiales, exponer 3306 indiscriminadamente o asumir que el asistente de instalación elimina todas las cuentas inseguras.
+
+**Comprobación.** ¿Qué controles deben verificarse después de instalar MySQL y antes de permitir conexiones de aplicación?
 
 #### 9.3.2 — Configuración
 
-La configuración de MySQL controla red, directorios, memoria, registros, autenticación y límites. Cambios deben justificarse y probarse antes de aplicarse a producción. **Práctica:** inspecciona variables de solo lectura como `port`, `datadir` y `version`. **Evidencia:** registra valores efectivos y explica qué componente los define.
+**Propósito y modelo.** MySQL se configura mediante archivos de opciones y parámetros del servidor. Los valores afectan memoria, conexiones, logs, charset, autenticación, rutas y red. Las opciones disponibles y valores por defecto dependen de versión y distribución; deben verificarse con documentación correspondiente.
+
+**Ejemplo desarrollado.** `bind-address` limita interfaces de escucha; `max_connections` limita conexiones concurrentes; `character_set_server` y collation afectan representación y comparación de texto. Cambiar parámetros sin medir puede degradar servicio.
+
+**Práctica guiada.** Consulta variables con `SHOW VARIABLES` en una instancia de laboratorio y documenta puerto, bind address, charset y límites de conexión. No cambies valores de producción.
+
+**Actividad independiente.** Propón configuración mínima para un servidor de laboratorio que solo acepte conexiones locales y registre errores, justificando cada parámetro.
+
+**Criterios de aceptación.** Distingue configuración global, sesión y persistencia de variables según versión; vincula cambios a un objetivo medible.
+
+**Errores frecuentes.** Copiar my.cnf de otra versión, asignar memoria excesiva o abrir bind-address a todas las interfaces sin firewall.
+
+**Comprobación.** ¿Por qué un parámetro que mejora una carga puede perjudicar otra?
 
 #### 9.3.3 — MySQL Workbench
 
-MySQL Workbench es una herramienta gráfica para modelar, consultar y administrar conexiones; no es el servidor que almacena datos. **Práctica:** crea una conexión a una instancia local y ejecuta una consulta de solo lectura. **Evidencia:** identifica host, puerto, usuario y resultado, sin guardar secretos en el repositorio.
+**Propósito y modelo.** MySQL Workbench es una herramienta gráfica para modelado, administración y consulta de MySQL. Es un cliente; no reemplaza al servidor. Las acciones disponibles dependen de versión, permisos de conexión y capacidades del motor.
+
+**Ejemplo desarrollado.** Una conexión guardada contiene host, puerto y usuario; almacenar la contraseña requiere evaluar el mecanismo de credenciales del sistema. Un diagrama EER puede ayudar a visualizar tablas, pero su exportación debe revisarse antes de aplicar cambios.
+
+**Práctica guiada.** Abre Workbench en un entorno de laboratorio y crea una conexión de prueba sin guardar credenciales reales. Inspecciona editor SQL, navegador de esquemas y modelado EER.
+
+**Actividad independiente.** Crea un diagrama para un esquema de biblioteca y documenta cómo generar DDL revisable sin ejecutarlo en una base productiva.
+
+**Criterios de aceptación.** Diferencia cliente y servidor; identifica conexión, editor, esquema y modelo.
+
+**Errores frecuentes.** Creer que Workbench almacena los datos o ejecutar sincronización de modelo directamente contra producción sin revisión.
+
+**Comprobación.** ¿Qué componente debe estar disponible para que Workbench ejecute una consulta SQL?
 
 #### 9.3.4 — Creación de bases de datos
 
-`CREATE DATABASE` crea un contenedor lógico de objetos; charset y collation determinan aspectos de codificación y comparación. **Práctica:** crea una base de datos de laboratorio con codificación Unicode apropiada. **Evidencia:** consulta metadatos y explica por qué charset/collation afectan búsquedas y ordenamiento.
+**Propósito y modelo.** CREATE DATABASE crea un contenedor lógico dentro de la instancia MySQL. Charset y collation definen comportamiento de almacenamiento y comparación de texto; deben elegirse según idioma, compatibilidad y requisitos. El nombre debe seguir convenciones y evitar colisiones.
+
+**Ejemplo desarrollado.** `CREATE DATABASE biblioteca CHARACTER SET utf8mb4 COLLATE ...` ilustra selección explícita, pero la collation exacta debe elegirse según versión instalada y necesidades de comparación.
+
+**Práctica guiada.** En una instancia desechable crea una base de datos de prueba con charset/collation documentados, consulta `SHOW CREATE DATABASE` y elimina solo el objeto de laboratorio al finalizar.
+
+**Actividad independiente.** Define convención de nombres, charset y collation para una aplicación multilingüe y explica cómo probar ordenamiento y comparaciones.
+
+**Criterios de aceptación.** Explica base lógica, charset y collation y verifica la definición creada.
+
+**Errores frecuentes.** Usar charset heredado sin revisar compatibilidad o ejecutar DROP DATABASE sin confirmar nombre y respaldo.
+
+**Comprobación.** ¿Qué diferencia existe entre charset y collation?
 
 #### 9.3.5 — Creación de tablas
 
-`CREATE TABLE` define columnas, tipos, claves, restricciones y valores por defecto. **Práctica:** implementa tablas `cliente` y `pedido` con PK y FK. **Evidencia:** presenta el DDL y demuestra que el motor rechaza una referencia inexistente.
+**Propósito y modelo.** CREATE TABLE define columnas, tipos, claves y restricciones. El DDL debe reflejar el modelo lógico, integridad y necesidades de consulta. Tipos, índices y acciones referenciales deben ser compatibles con la versión y motor de almacenamiento seleccionados.
+
+**Ejemplo desarrollado.** Una tabla Pedido puede declarar id como clave primaria, cliente_id como clave foránea, fecha como DATETIME y total como DECIMAL con precisión definida. La restricción debe impedir valores fuera de las reglas de negocio.
+
+**Práctica guiada.** En una base desechable crea tablas Cliente y Pedido con PK, FK y NOT NULL. Inserta una fila válida y prueba que una referencia inexistente sea rechazada.
+
+**Actividad independiente.** Implementa DDL para biblioteca con Usuario, Ejemplar y Préstamo; incluye índices justificados y restricciones.
+
+**Criterios de aceptación.** El DDL corresponde al modelo, aplica integridad y se valida con casos válidos e inválidos.
+
+**Errores frecuentes.** Omitir claves foráneas, usar FLOAT para dinero o crear índices duplicados sin revisar restricciones.
+
+**Comprobación.** ¿Por qué una clave foránea debe definirse además de documentar la relación en un diagrama?
 
 #### 9.3.6 — Usuarios
 
-Los usuarios de MySQL son identidades de autenticación asociadas a un origen/host y métodos de autenticación. Distingue cuenta de sistema operativo y cuenta del DBMS. **Práctica:** consulta cuentas de laboratorio con privilegios de lectura, sin exponer hashes ni contraseñas. **Evidencia:** explica cómo se determina la identidad efectiva.
+**Propósito y modelo.** MySQL distingue cuentas por nombre de usuario y host de origen, representadas como 'usuario'@'host'. Una misma etiqueta de usuario con hosts distintos puede representar cuentas diferentes. La autenticación y los plugins disponibles dependen de versión; las aplicaciones deben usar cuentas nominativas y no root.
+
+**Ejemplo desarrollado.** 'app'@'localhost' no es necesariamente la misma cuenta que 'app'@'%'. La segunda puede aceptar conexiones desde más orígenes si la red y el firewall lo permiten.
+
+**Práctica guiada.** Consulta cuentas de una instancia de laboratorio mediante vistas administrativas autorizadas, ocultando hashes y datos sensibles. No crees cuentas con host comodín sin justificación.
+
+**Actividad independiente.** Diseña cuentas separadas para aplicación, migraciones y administración, con orígenes y responsabilidades limitados.
+
+**Criterios de aceptación.** Explica componente usuario/host y diferencia cuenta de aplicación y cuenta administrativa.
+
+**Errores frecuentes.** Compartir root con la aplicación o usar 'usuario'@'%' por comodidad sin restricciones de red.
+
+**Comprobación.** ¿Por qué el componente host forma parte de la identidad de una cuenta MySQL?
 
 #### 9.3.7 — Permisos
 
-Los permisos conceden acciones sobre objetos y alcance definidos; aplica mínimo privilegio en lugar de usar root para aplicaciones. **Práctica:** crea o diseña un rol de solo lectura para el esquema de ventas y verifica qué operaciones permite. **Evidencia:** muestra permisos otorgados y una operación denegada.
+**Propósito y modelo.** MySQL utiliza privilegios globales, de base, tabla, columna y otros ámbitos. GRANT concede capacidades; REVOKE las retira. El principio de mínimo privilegio requiere conceder solo operaciones necesarias, evitando privilegios administrativos a cuentas de aplicación.
+
+**Ejemplo desarrollado.** Una aplicación que consulta y registra operaciones puede necesitar SELECT, INSERT y UPDATE en tablas concretas, pero no CREATE USER, FILE, SUPER ni privilegios globales. El conjunto exacto depende del diseño.
+
+**Práctica guiada.** En un entorno desechable inspecciona grants de una cuenta de prueba con `SHOW GRANTS`. Compara permisos de lectura con permisos de modificación sin concederlos en un servidor compartido.
+
+**Actividad independiente.** Diseña privilegios por rol para aplicación, analista de solo lectura y DBA; especifica alcance y proceso de revisión.
+
+**Criterios de aceptación.** Identifica alcance del privilegio y justifica concesiones y revocaciones.
+
+**Errores frecuentes.** Conceder ALL PRIVILEGES globalmente, usar GRANT OPTION innecesariamente o dejar cuentas de prueba activas.
+
+**Comprobación.** ¿Qué daño puede causar una cuenta de aplicación que posee privilegios administrativos globales?
 
 #### 9.3.8 — Conexiones
 
-Una conexión combina host, puerto, protocolo, base de datos y credenciales; puede fallar por red, servicio, autenticación, TLS o permisos. **Práctica:** conecta una CLI a la instancia local y diagnostica por separado servicio, puerto y credenciales. **Evidencia:** registra un árbol de diagnóstico sin incluir secretos.
+**Propósito y modelo.** Una conexión MySQL utiliza protocolo cliente-servidor sobre transporte configurado, habitualmente TCP. Host, puerto, usuario, autenticación, TLS y reglas de red determinan si la sesión puede establecerse. El puerto por defecto habitual es 3306, pero puede cambiarse.
+
+**Ejemplo desarrollado.** Una conexión rechazada puede deberse a servicio detenido, puerto incorrecto, bind-address, firewall, cuenta host no coincidente o credenciales inválidas. Diagnosticar requiere separar conectividad TCP de autenticación y autorización SQL.
+
+**Práctica guiada.** Desde una VM de laboratorio consulta estado del servicio y puerto en escucha y realiza conexión local con un usuario de prueba. No expongas el puerto a Internet ni guardes contraseñas en historial.
+
+**Actividad independiente.** Crea un árbol de diagnóstico para timeout, connection refused, access denied y TLS error.
+
+**Criterios de aceptación.** Diferencia conectividad, autenticación y autorización y documenta cada causa posible.
+
+**Errores frecuentes.** Resolver cualquier error abriendo el firewall a todos los orígenes o utilizar credenciales administrativas desde aplicaciones.
+
+**Comprobación.** ¿Qué diferencia existe entre «connection refused» y «access denied»?
 
 #### 9.3.9 — Una distinción importante
 
-MySQL Server es el gestor que almacena y administra los datos; MySQL Workbench es un cliente gráfico para diseñar, consultar y administrar conexiones. Workbench no sustituye al servidor ni mantiene por sí solo la base de datos. **Práctica:** detén la conexión del cliente y comprueba que el servicio del servidor sigue siendo un componente separado. **Evidencia:** explica qué ocurre si se cierra Workbench mientras el servidor continúa activo.
+**Propósito y modelo.** Deben distinguirse producto MySQL, servidor MySQL, instancia en ejecución, base de datos/esquema, tabla, cliente y protocolo. En MySQL, «schema» y «database» suelen utilizarse como sinónimos en SQL, pero otros motores, como PostgreSQL, tienen una jerarquía distinta. La terminología debe mantenerse precisa al comparar motores.
+
+**Ejemplo desarrollado.** Workbench es un cliente; mysqld es el servidor; una instancia es un proceso/configuración en ejecución; dentro de ella pueden existir varias bases, tablas y cuentas. Instalar Workbench no instala automáticamente el servicio servidor.
+
+**Práctica guiada.** Clasifica los componentes de una instalación local y dibuja cómo el cliente envía una consulta al servidor y recibe filas.
+
+**Actividad independiente.** Redacta un glosario comparativo MySQL/PostgreSQL para database, schema, instance, role/user, client y server.
+
+**Criterios de aceptación.** Usa correctamente la terminología y explica al menos una diferencia semántica entre motores.
+
+**Errores frecuentes.** Tratar cliente, motor e instancia como sinónimos o trasladar convenciones de PostgreSQL a MySQL sin revisar.
+
+**Comprobación.** ¿Por qué es importante aclarar qué significa «schema» cuando se documenta una solución que puede usar distintos DBMS?
 
 ### 9.4 — SQL
 
