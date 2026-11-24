@@ -1,6 +1,6 @@
 # Etapa 1 · Módulo 1.4 — Arranque
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 1, apartado 1.4.  
 **Temas oficiales:** BIOS, UEFI, POST, bootloader, kernel, secuencia de arranque y Secure Boot.
 
@@ -131,4 +131,4 @@ No se incorpora video en esta versión porque no se ha verificado una pieza con 
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** laboratorio de observación propuesto; no ejecutado en un equipo físico.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
