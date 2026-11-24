@@ -1,7 +1,7 @@
 # Etapa 22 — Laboratorio de ciberseguridad, hardening y administración segura
 
 **Prioridad:** P1 · Obligatoria  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** construir un laboratorio donde puedas practicar seguridad de sistemas y redes sin poner en riesgo equipos ajenos.  
 **Proyecto oficial:** montar un laboratorio con una máquina de pruebas, una máquina objetivo vulnerable y una máquina de administración; documentar topología, aislamiento y medidas de seguridad.
 
@@ -112,4 +112,4 @@ No se incluyen videos aprobados. Solo se incorporarán videos en español direct
 - OWASP Juice Shop: https://owasp.org/www-project-juice-shop/
 - DVWA: https://github.com/digininja/DVWA
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se crearon VMs ni se probaron reglas de firewall en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se crearon VMs ni se probaron reglas de firewall en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
