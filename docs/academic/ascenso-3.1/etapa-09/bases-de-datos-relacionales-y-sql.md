@@ -200,47 +200,179 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 #### 9.2.1 — Entidades
 
-Una entidad representa un objeto o concepto del dominio sobre el que se almacenan datos, como Cliente, Producto o Pedido. **Práctica:** extrae entidades del enunciado del sistema de ventas y descarta sustantivos que no requieran persistencia propia. **Evidencia:** lista entidades con una breve justificación de existencia.
+**Propósito y modelo.** Una entidad representa un objeto o concepto del dominio sobre el que se necesita almacenar información. Puede ser tangible, como Producto, o conceptual, como Pedido o Suscripción. Una entidad debe tener identidad y atributos definidos; no todo sustantivo del requisito se convierte automáticamente en tabla.
+
+**Ejemplo desarrollado.** En una biblioteca, Libro, Ejemplar, Usuario y Préstamo son entidades distintas: Libro describe una obra, Ejemplar una copia física y Préstamo una relación temporal de circulación.
+
+**Práctica guiada.** Lee un caso de biblioteca e identifica entidades candidatas. Para cada una escribe propósito, identidad y dos atributos. Separa entidades de acciones y valores calculados.
+
+**Actividad independiente.** Modela entidades para una tienda en línea y explica por qué Pedido y Producto requieren una entidad intermedia de detalle.
+
+**Criterios de aceptación.** Cada entidad tiene significado claro, identidad y límites no redundantes.
+
+**Errores frecuentes.** Crear una tabla por cada palabra del requisito o mezclar entidad y atributo.
+
+**Comprobación.** ¿Qué diferencia existe entre Libro y Ejemplar en un sistema bibliotecario?
 
 #### 9.2.2 — Atributos
 
-Un atributo describe una propiedad de una entidad y debe tener significado, dominio y reglas de validación. Distingue atributos simples, compuestos, derivados y multivaluados. **Práctica:** analiza dirección, nombre completo y edad para decidir si requieren descomposición o cálculo. **Evidencia:** documenta decisiones y dependencias.
+**Propósito y modelo.** Los atributos describen propiedades de una entidad y deben tener significado, dominio y reglas. Pueden ser simples, compuestos, derivados o multivaluados en el modelo conceptual; al implementarlos en un modelo relacional se decide cómo representarlos sin perder integridad.
+
+**Ejemplo desarrollado.** Nombre completo puede modelarse como atributo compuesto por nombres y apellidos; edad es derivable de fecha de nacimiento y no suele almacenarse como dato permanente por cambiar con el tiempo.
+
+**Práctica guiada.** Clasifica atributos de Cliente y Producto como obligatorios/opcionales, simples/compuestos y almacenados/derivados.
+
+**Actividad independiente.** Define atributos para una entidad Reserva, indicando tipo conceptual, dominio, nulabilidad y restricciones.
+
+**Criterios de aceptación.** Identifica atributos con semántica precisa y evita duplicar datos derivados sin una razón documentada.
+
+**Errores frecuentes.** Almacenar edad como dato estable o usar una columna genérica «datos» para atributos independientes sin esquema definido.
+
+**Comprobación.** ¿Qué problema de consistencia puede aparecer si se almacena un valor derivado y no se actualiza cuando cambia su origen?
 
 #### 9.2.3 — Relaciones
 
-Una relación expresa una asociación entre entidades, por ejemplo cliente realiza pedido o pedido contiene producto. **Práctica:** redacta relaciones en ambos sentidos y asigna nombres verbales claros. **Evidencia:** produce un diagrama con roles y explica el significado de cada asociación.
+**Propósito y modelo.** Una relación expresa asociación entre entidades. En el modelo relacional se implementa normalmente mediante claves foráneas, tablas asociativas o estructuras específicas. Debe describirse con verbo y reglas del negocio: Cliente realiza Pedido, Pedido contiene Producto.
+
+**Ejemplo desarrollado.** Un pedido pertenece a un cliente; la clave foránea cliente_id en Pedido representa la asociación y permite comprobar que el cliente referenciado existe.
+
+**Práctica guiada.** Identifica relaciones en un escenario de cursos: Estudiante se matricula en Curso, Docente imparte Curso y Curso tiene Aula. Añade verbo y regla de negocio.
+
+**Actividad independiente.** Modela relaciones de un sistema de reservas y determina qué entidad conserva la clave foránea.
+
+**Criterios de aceptación.** Describe relación con semántica y define implementación coherente.
+
+**Errores frecuentes.** Crear relaciones solo por similitud de nombres o almacenar el nombre del relacionado en lugar de su clave estable.
+
+**Comprobación.** ¿Qué ventaja aporta una clave foránea frente a copiar el nombre del cliente en cada pedido?
 
 #### 9.2.4 — Cardinalidad
 
-La cardinalidad describe cuántas instancias pueden participar en una relación: uno a uno, uno a muchos o muchos a muchos, con mínimos y máximos. **Práctica:** define cardinalidad entre cliente y pedido y entre pedido y producto. **Evidencia:** justifica participación obligatoria u opcional con reglas del negocio.
+**Propósito y modelo.** La cardinalidad describe cuántas instancias de una entidad pueden asociarse con otra: uno a uno, uno a muchos y muchos a muchos. La participación puede ser obligatoria u opcional; estas reglas deben derivarse del negocio y reflejarse en restricciones.
+
+**Ejemplo desarrollado.** Un cliente puede realizar muchos pedidos, pero cada pedido pertenece a un cliente: 1:N. Un estudiante puede cursar muchos cursos y cada curso tener muchos estudiantes: N:M.
+
+**Práctica guiada.** Clasifica cinco asociaciones de un sistema académico y especifica mínimos y máximos en ambos extremos.
+
+**Actividad independiente.** Modela un sistema de citas donde un profesional atiende múltiples citas y cada cita corresponde a un profesional y paciente.
+
+**Criterios de aceptación.** Identifica cardinalidad y opcionalidad desde ambas entidades, no solo desde una dirección.
+
+**Errores frecuentes.** Confundir cardinalidad con cantidad actual de filas o interpretar 1:N como una restricción de una sola fila histórica.
+
+**Comprobación.** ¿Qué diferencia hay entre una relación 1:N y una N:M?
 
 #### 9.2.5 — Claves primarias
 
-Una clave primaria identifica de forma única cada fila y no admite valores nulos. Compara claves naturales y sustitutas, y evita elegir atributos que cambien con frecuencia. **Práctica:** define una PK para cliente y pedido. **Evidencia:** explica unicidad, estabilidad y razón de la elección.
+**Propósito y modelo.** Una clave primaria identifica de forma única cada fila y no admite NULL. Puede ser natural o sustituta; debe ser estable, mínima y no depender de atributos que cambian con frecuencia. En SQL la restricción PRIMARY KEY impone unicidad y no nulidad.
+
+**Ejemplo desarrollado.** Un código interno inmutable puede servir como clave natural; un identificador generado puede ser sustituto. El nombre de una persona no es buena clave porque puede repetirse o cambiar.
+
+**Práctica guiada.** Elige clave primaria para Cliente, Producto y Pedido en un modelo de ejemplo. Comprueba unicidad y estabilidad de las candidatas.
+
+**Actividad independiente.** Evalúa cuándo utilizar clave compuesta frente a identificador sustituto para una tabla de detalle de pedido.
+
+**Criterios de aceptación.** Justifica unicidad, estabilidad y minimalidad; distingue PK de índice no único.
+
+**Errores frecuentes.** Utilizar correo electrónico como clave sin analizar cambios o creer que una PK debe ser siempre un entero autoincremental.
+
+**Comprobación.** ¿Qué características hacen que una clave sea adecuada como identificador primario?
 
 #### 9.2.6 — Claves foráneas
 
-Una clave foránea mantiene una referencia válida a una clave candidata de otra tabla y protege integridad referencial. **Práctica:** relaciona pedido con cliente mediante FK y prueba una inserción con cliente inexistente en un entorno de prueba. **Evidencia:** registra el rechazo y explica las acciones ON DELETE/UPDATE seleccionadas.
+**Propósito y modelo.** Una clave foránea relaciona una o varias columnas con una clave candidata de otra tabla y aplica integridad referencial. Las acciones ON DELETE/UPDATE (RESTRICT, CASCADE, SET NULL u otras según motor) definen comportamiento ante cambios; deben reflejar reglas del dominio.
+
+**Ejemplo desarrollado.** Pedido.cliente_id referencia Cliente.id. Si un cliente tiene pedidos, eliminarlo puede rechazarse o manejarse mediante política explícita; CASCADE indiscriminado podría borrar historial comercial.
+
+**Práctica guiada.** Diseña dos tablas con PK y FK y prueba conceptualmente inserción válida, referencia inexistente y eliminación de padre con hijos.
+
+**Actividad independiente.** Elige acciones referenciales para Usuario, Pedido y DetallePedido; justifica preservación de historial.
+
+**Criterios de aceptación.** Explica integridad referencial y predice resultado de inserción, actualización y borrado.
+
+**Errores frecuentes.** Usar CASCADE sin evaluar consecuencias o asumir que todos los motores aplican restricciones con idéntica configuración por defecto.
+
+**Comprobación.** ¿Qué anomalía evita una clave foránea cuando se inserta una fila hija?
 
 #### 9.2.7 — Restricciones
 
-Las restricciones expresan reglas que el motor debe hacer cumplir: NOT NULL, UNIQUE, CHECK, PRIMARY KEY y FOREIGN KEY. **Práctica:** define restricciones para correo único, cantidad positiva y estado permitido. **Evidencia:** intenta insertar datos inválidos y registra qué restricción impide cada caso.
+**Propósito y modelo.** Las restricciones expresan reglas que el DBMS debe hacer cumplir: NOT NULL, UNIQUE, CHECK, PRIMARY KEY y FOREIGN KEY. Son una defensa de integridad incluso cuando varias aplicaciones escriben datos. Las reglas complejas pueden requerir triggers o lógica transaccional, pero no deben reemplazar restricciones declarativas disponibles.
+
+**Ejemplo desarrollado.** CHECK (precio >= 0) rechaza valores negativos; UNIQUE(correo) impide duplicados según reglas de comparación/collation del motor. NULL tiene semántica particular en comparaciones y restricciones.
+
+**Práctica guiada.** Diseña restricciones para Producto y Usuario y simula casos válidos e inválidos. Distingue NULL, cadena vacía y valor por defecto.
+
+**Actividad independiente.** Construye una matriz de reglas de negocio y asigna cada una a NOT NULL, UNIQUE, CHECK, FK o validación de aplicación.
+
+**Criterios de aceptación.** Selecciona restricción adecuada y explica cómo se prueba su cumplimiento.
+
+**Errores frecuentes.** Confiar solo en validación frontend o asumir que CHECK trata NULL como falso en todos los casos.
+
+**Comprobación.** ¿Por qué una regla de integridad debe imponerse también en la base de datos y no solo en la interfaz?
 
 #### 9.2.8 — Diagramas entidad-relación
 
-Un diagrama entidad-relación representa entidades, atributos, relaciones y cardinalidades antes de implementar tablas. **Práctica:** dibuja el modelo inicial del sistema de ventas con clientes, pedidos, detalle, productos y pagos. **Evidencia:** marca PK/FK y detecta relaciones muchos a muchos.
+**Propósito y modelo.** Un diagrama entidad-relación representa entidades, atributos, relaciones, cardinalidad y opcionalidad. La notación (Chen, pata de gallo u otras) puede variar; lo importante es que el modelo sea inequívoco y trazable a requisitos.
+
+**Ejemplo desarrollado.** Un diagrama de pedidos muestra Cliente 1:N Pedido y Pedido 1:N Detalle; Detalle N:1 Producto. Así se hace explícita la tabla intermedia que resuelve la relación entre pedido y producto.
+
+**Práctica guiada.** Dibuja ER para biblioteca con Usuario, Libro, Ejemplar y Préstamo. Marca claves y cardinalidades.
+
+**Actividad independiente.** Modela una tienda en línea y revisa si el diagrama permite representar pedidos sin productos, productos nunca vendidos y clientes sin pedidos.
+
+**Criterios de aceptación.** El diagrama cubre requisitos, claves, cardinalidades y opcionalidad sin ambigüedad.
+
+**Errores frecuentes.** Omitir opcionalidad, duplicar entidades o usar relaciones N:M sin explicar su transformación relacional.
+
+**Comprobación.** ¿Qué información comunica la cardinalidad que no se deduce solo del nombre de la relación?
 
 #### 9.2.9 — Modelo conceptual
 
-El modelo conceptual expresa reglas y conceptos del negocio sin comprometerse con un motor o tipos SQL. **Práctica:** describe entidades y relaciones del sistema de ventas en lenguaje del dominio. **Evidencia:** entrega un diagrama comprensible para una persona no técnica.
+**Propósito y modelo.** El modelo conceptual describe el dominio desde la perspectiva del negocio sin comprometerse con un DBMS o tipos físicos. Define conceptos, reglas, entidades y asociaciones. Debe poder validarse con usuarios y responsables del proceso.
+
+**Ejemplo desarrollado.** Para una clínica, el modelo conceptual incluye Paciente, Profesional, Cita y Especialidad y reglas como «una cita tiene un paciente y un profesional». No decide aún si el identificador será UUID o BIGINT.
+
+**Práctica guiada.** Extrae entidades y reglas de un enunciado de negocio y represéntalas sin tipos SQL.
+
+**Actividad independiente.** Redacta un glosario de datos y un modelo conceptual para una biblioteca, validando términos con supuestos explícitos.
+
+**Criterios de aceptación.** El modelo utiliza lenguaje del dominio, cubre reglas y evita decisiones físicas prematuras.
+
+**Errores frecuentes.** Mezclar nombres de columnas o detalles de motor en el modelo conceptual o ignorar términos ambiguos del negocio.
+
+**Comprobación.** ¿Por qué el modelo conceptual debe ser comprensible para personas que no conocen SQL?
 
 #### 9.2.10 — Modelo lógico
 
-El modelo lógico transforma el modelo conceptual en estructuras relacionales: relaciones, atributos, claves y restricciones. **Práctica:** convierte la relación Pedido–Producto en una entidad asociativa DetallePedido. **Evidencia:** muestra PK, FKs y atributos propios de la asociación.
+**Propósito y modelo.** El modelo lógico transforma conceptos en estructuras de datos independientes del almacenamiento físico concreto. Define tablas o relaciones, atributos, claves, restricciones y relaciones normalizadas. Debe resolver N:M y precisar dominios antes de elegir índices y parámetros del motor.
+
+**Ejemplo desarrollado.** Cliente, Pedido y DetallePedido constituyen un modelo lógico relacional; DetallePedido contiene claves foráneas a Pedido y Producto y atributos como cantidad y precio_unitario histórico.
+
+**Práctica guiada.** Convierte el modelo conceptual de biblioteca en tablas lógicas con PK, FK, tipos abstractos y restricciones.
+
+**Actividad independiente.** Revisa un modelo lógico para detectar atributos multivaluados, claves ausentes y relaciones N:M no resueltas.
+
+**Criterios de aceptación.** El modelo lógico es consistente, normalizado según necesidades y trazable al modelo conceptual.
+
+**Errores frecuentes.** Saltar directamente a CREATE TABLE sin validar relaciones o copiar datos derivados en múltiples tablas sin estrategia.
+
+**Comprobación.** ¿Qué decisiones pertenecen al modelo lógico y cuáles se reservan para el modelo físico?
 
 #### 9.2.11 — Modelo físico
 
-El modelo físico concreta el diseño para un DBMS, incluyendo tipos, índices, particiones, nombres y decisiones de almacenamiento. **Práctica:** transforma una tabla lógica de pedido en DDL para el motor elegido. **Evidencia:** anota qué decisiones dependen del motor y cuáles son independientes.
+**Propósito y modelo.** El modelo físico concreta el diseño para un DBMS y versión: tipos reales, índices, particiones, tablespaces, collation, almacenamiento, parámetros y estrategias de respaldo. Debe considerar carga, volumen, concurrencia, seguridad y operación. La portabilidad puede reducirse por características específicas del motor.
+
+**Ejemplo desarrollado.** Un campo decimal de importe puede definirse como DECIMAL(12,2) en MySQL o NUMERIC(12,2) en PostgreSQL; la semántica es similar pero los detalles de implementación y sintaxis pueden diferir.
+
+**Práctica guiada.** Traduce un modelo lógico de pedidos a DDL para un motor de laboratorio y documenta decisiones de tipos, índices y restricciones.
+
+**Actividad independiente.** Compara dos modelos físicos para una tabla de eventos de alto volumen y justifica índice, partición y retención según consultas esperadas.
+
+**Criterios de aceptación.** Identifica decisiones dependientes del motor y justifica cada una con requisitos medibles.
+
+**Errores frecuentes.** Diseñar índices sin conocer consultas o asumir que el modelo físico es portable entre motores sin ajustes.
+
+**Comprobación.** ¿Por qué un índice útil para una carga de lectura puede perjudicar una carga con muchas escrituras?
 
 ### 9.3 — MySQL
 
