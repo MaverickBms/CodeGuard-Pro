@@ -181,3 +181,8 @@ La etapa 7 quedó alineada con 84 lecciones oficiales: 14 de fundamentos de sist
 ### Expansión granular — etapa 8
 
 La etapa 8 quedó alineada con 81 lecciones oficiales: 13 de fundamentos de redes, 9 de modelos de comunicación, 13 de direccionamiento, 16 protocolos, 10 de routing/switching, 9 de seguridad y 11 herramientas. Se separaron los tipos de redes y equipos, capas y unidades de datos, elementos de direccionamiento, protocolos individuales, conceptos de rutas/VLAN/subredes, controles de seguridad y herramientas de diagnóstico. Se mantuvieron las restricciones para capturas y escaneos: únicamente laboratorios propios o sistemas con autorización expresa. El proyecto de red virtual continúa como práctica propuesta, no como laboratorio ejecutado.
+
+
+### Expansión granular — etapa 9
+
+La etapa 9 quedó alineada con 81 lecciones oficiales: 10 de fundamentos, 11 de modelado, 9 de MySQL, 19 de SQL, 9 de diseño y normalización, 15 de bases de datos avanzadas y 8 de PostgreSQL. Se separaron entidades, atributos, relaciones, cardinalidades, claves, restricciones y los modelos conceptual/lógico/físico; también se identificaron individualmente los comandos SQL y los temas de índices, transacciones, concurrencia y optimización. Se conservaron el proyecto de base de datos de ventas, los ejemplos y las advertencias sobre credenciales, operaciones destructivas y diferencias entre motores. Los scripts y el proyecto no se ejecutaron contra instancias reales de MySQL o PostgreSQL en esta sesión.
