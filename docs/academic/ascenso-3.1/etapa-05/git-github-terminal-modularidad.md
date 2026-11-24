@@ -20,18 +20,19 @@ Podrás explicar el flujo de cambios de Git, crear ramas y commits comprensibles
 
 ## 5.1 — Git
 
-### Repositorio y estados
+### 5.1.1 — Repositorios
 
 Git es un sistema de control de versiones distribuido. Un repositorio conserva objetos y referencias que permiten reconstruir la historia del proyecto.
 
-Tres áreas de trabajo:
-- **Working directory:** archivos del proyecto en el directorio de trabajo.
-- **Staging area (índice):** selección de cambios que formarán el próximo commit.
-- **Repository:** historial de commits y objetos versionados.
+### 5.1.2 — Working directory
 
-El comando `git status` permite conocer el estado actual. Ejecutarlo con frecuencia evita confundir archivos modificados, preparados o sin seguimiento.
+El working directory es el directorio de trabajo que contiene los archivos del proyecto. Aquí editas y creas archivos antes de preparar cambios.
 
-### Commits
+### 5.1.3 — Staging area
+
+La staging area (índice) es la selección de cambios que formarán el próximo commit. El comando `git status` permite conocer el estado actual. Ejecutarlo con frecuencia evita confundir archivos modificados, preparados o sin seguimiento.
+
+### 5.1.4 — Commits
 
 Un commit registra un conjunto de cambios con autoría, fecha, mensaje y referencia al estado anterior. Un commit debe representar una unidad lógica coherente.
 
@@ -54,7 +55,7 @@ git commit -m "feat: agregar consulta de productos"
 
 Revisa las rutas antes de ejecutar `git add`; evita `git add .` a ciegas en proyectos con archivos sensibles o generados.
 
-### Branches (ramas)
+### 5.1.5 — Branches
 
 Una rama es una referencia móvil a un commit. Permite desarrollar una funcionalidad o corrección sin alterar directamente la línea principal.
 
@@ -68,35 +69,53 @@ git commit -m "feat: implementar consulta de productos"
 
 Las ramas deben tener propósito y alcance definidos. No mantengas ramas abandonadas indefinidamente.
 
-### Clone, fetch, pull y push
+### 5.1.8 — Clone
 
-- `clone`: crea una copia local inicial de un repositorio remoto.
-- `fetch`: descarga referencias y objetos remotos sin integrar automáticamente los cambios en tu rama actual.
-- `pull`: obtiene cambios y los integra según la configuración (frecuentemente fetch + merge o rebase).
-- `push`: publica commits locales en un remoto.
+`clone` crea una copia local inicial de un repositorio remoto.
+
+### 5.1.11 — Fetch
+
+`fetch` descarga referencias y objetos remotos sin integrar automáticamente los cambios en tu rama actual.
+
+### 5.1.9 — Pull
+
+`pull` obtiene cambios y los integra según la configuración (frecuentemente fetch + merge o rebase).
+
+### 5.1.10 — Push
+
+`push` publica commits locales en un remoto.
 
 Antes de hacer push, verifica remoto, rama y contenido. Nunca publiques secretos, credenciales, archivos de entorno o datos privados.
 
-### Merge y rebase
+### 5.1.6 — Merge
 
 **Merge** integra historias y puede crear un commit de merge. Conserva la estructura de ambas líneas de desarrollo.
+
+### 5.1.7 — Rebase
 
 **Rebase** reaplica commits sobre una base diferente y cambia sus identificadores. Puede producir una historia lineal, pero reescribe commits.
 
 Regla de colaboración: evita reescribir historia compartida sin coordinación. No hagas rebase de una rama que otras personas estén usando salvo que exista un acuerdo claro.
 
-### diff y log
+### 5.1.12 — Diff
 
-`git diff` muestra diferencias entre estados; `git log` permite recorrer la historia. Revisa los cambios antes de integrarlos y utiliza opciones para limitar archivos o commits cuando el diff sea grande.
+`git diff` muestra diferencias entre estados. Revisa los cambios antes de integrarlos y utiliza opciones para limitar archivos o commits cuando el diff sea grande.
 
 ```bash
 git diff
 git diff --staged
+```
+
+### 5.1.13 — Log
+
+`git log` permite recorrer la historia del repositorio.
+
+```bash
 git log --oneline --decorate --graph -15
 git show --stat HEAD
 ```
 
-### stash
+### 5.1.14 — Stash
 
 `git stash` guarda temporalmente cambios locales para permitir cambiar de contexto. No es una copia de seguridad ni sustituye commits.
 
@@ -108,25 +127,29 @@ git stash apply
 
 Comprueba el estado después de aplicar el stash: pueden aparecer conflictos. No borres un stash hasta confirmar que los cambios están recuperados.
 
-### reset, revert y cherry-pick
+### 5.1.15 — Reset
 
-Estos comandos tienen consecuencias diferentes y deben estudiarse en un repositorio de práctica.
+`reset` mueve una referencia de rama y puede cambiar el índice/directorio de trabajo según el modo. `--hard` descarta cambios y puede provocar pérdida de trabajo.
 
-- **reset:** mueve una referencia de rama y puede cambiar el índice/directorio de trabajo según el modo. `--hard` descarta cambios y puede provocar pérdida de trabajo.
-- **revert:** crea un nuevo commit que revierte los cambios de otro commit; suele ser más seguro para historia compartida.
-- **cherry-pick:** aplica los cambios introducidos por commits seleccionados sobre la rama actual; puede generar conflictos y nuevos commits.
+### 5.1.16 — Revert
+
+`revert` crea un nuevo commit que revierte los cambios de otro commit; suele ser más seguro para historia compartida.
+
+### 5.1.17 — Cherry-pick
+
+`cherry-pick` aplica los cambios introducidos por commits seleccionados sobre la rama actual; puede generar conflictos y nuevos commits.
 
 **Regla de seguridad:** no ejecutes `git reset --hard`, `git clean -fd`, force-push ni eliminación de ramas sobre trabajo real sin revisar estado, destino y recuperación. Practica primero en un repositorio desechable.
 
 ## 5.2 — GitHub
 
-### Repositorios públicos y privados
+### 5.2.1 — Repositorios públicos y privados
 
 Un repositorio público permite que otras personas consulten su contenido según las condiciones de la plataforma y licencia. Uno privado restringe acceso a colaboradores autorizados, pero no convierte en seguro un secreto que se haya comprometido.
 
 Nunca subas contraseñas, tokens, claves privadas, certificados sensibles, datos personales ni archivos de configuración local. Si un secreto se publica por error, eliminar el archivo no basta: debe revocarse/rotarse y evaluarse la exposición del historial.
 
-### README
+### 5.2.2 — README
 
 El README debe explicar:
 - propósito y alcance;
@@ -141,11 +164,11 @@ El README debe explicar:
 
 Debe reflejar el estado real. No anuncies características que no estén implementadas y verificadas.
 
-### Issues
+### 5.2.3 — Issues
 
 Los Issues permiten registrar errores, tareas, propuestas y preguntas. Un buen issue incluye contexto, pasos reproducibles, resultado esperado/real, entorno, criterios de aceptación y evidencias sin datos sensibles.
 
-### Pull Requests
+### 5.2.4 — Pull Requests
 
 Un Pull Request propone integrar cambios entre ramas. Debe explicar:
 - problema que resuelve;
@@ -157,19 +180,19 @@ Un Pull Request propone integrar cambios entre ramas. Debe explicar:
 
 Un PR no demuestra por sí solo que el cambio sea correcto. Requiere revisión, pruebas y controles del repositorio.
 
-### Forks
+### 5.2.5 — Forks
 
 Un fork es una copia de un repositorio bajo otro espacio de usuario u organización. Facilita contribuir cuando no se tiene permiso de escritura en el original. Debes respetar licencias, atribución y políticas de seguridad.
 
-### Releases
+### 5.2.6 — Releases
 
 Un release identifica una entrega concreta, normalmente asociada a un tag, notas y artefactos. No publiques releases por cada commit. Verifica versión, cambios, artefactos, integridad, documentación y limitaciones antes de distribuir.
 
-### GitHub Projects
+### 5.2.7 — GitHub Projects
 
 Permite organizar trabajo en vistas y campos. Las tareas deben tener responsable, prioridad, estado y criterios de finalización claros. Un tablero ordenado no sustituye la verificación técnica.
 
-### Code Review
+### 5.2.8 — Code Review
 
 La revisión de código busca defectos, riesgos, falta de claridad, deuda técnica y oportunidades de mejora. Los comentarios deben ser específicos, respetuosos y accionables.
 
@@ -182,7 +205,7 @@ Revisa especialmente:
 - legibilidad y consistencia;
 - compatibilidad y migraciones.
 
-### Branch protection
+### 5.2.9 — Branch protection
 
 Las reglas de protección pueden exigir revisiones, checks, firmas, historial lineal u otras condiciones antes de integrar cambios. La configuración disponible depende del plan y del repositorio.
 
@@ -190,11 +213,14 @@ No desactives controles para hacer que un PR pase. Si una regla bloquea una inte
 
 ## 5.3 — Terminal
 
-### Shell y comandos
+### 5.3.1 — Shell
 
 La terminal es una interfaz de texto para ejecutar comandos. La shell interpreta órdenes y permite combinarlas. Bash, Zsh y PowerShell comparten conceptos, pero no siempre sintaxis ni comandos.
 
+### 5.3.2 — Comandos
+
 Comandos básicos en Bash:
+
 ```bash
 pwd
 ls -la
@@ -207,7 +233,7 @@ cat README.md
 
 Equivalentes de PowerShell pueden tener nombres y parámetros diferentes. Consulta la ayuda de la shell activa en lugar de asumir compatibilidad exacta.
 
-### Rutas absolutas y relativas
+### 5.3.3 — Rutas absolutas y relativas
 
 Una ruta absoluta identifica una ubicación desde la raíz o unidad. Una ruta relativa se interpreta desde el directorio actual o desde una base definida.
 
@@ -217,13 +243,13 @@ Una ruta absoluta identifica una ubicación desde la raíz o unidad. Una ruta re
 
 Antes de borrar, copiar o sobrescribir, muestra el directorio actual y verifica la ruta completa. Una ruta relativa puede apuntar a un lugar distinto si cambia el directorio de trabajo.
 
-### PATH
+### 5.3.4 — PATH
 
 `PATH` es una variable de entorno que contiene directorios donde la shell busca ejecutables. Si un comando no se reconoce, puede faltar la instalación o la ruta.
 
 No agregues directorios desconocidos al PATH ni ejecutes binarios descargados sin verificar origen e integridad.
 
-### Variables de entorno
+### 5.3.5 — Variables de entorno
 
 Permiten configurar procesos sin incrustar valores en el código. Pueden contener rutas, opciones y credenciales; por eso nunca deben imprimirse indiscriminadamente ni registrarse en logs.
 
@@ -241,39 +267,55 @@ $env:APP_MODE
 
 Los cambios de entorno normalmente afectan al proceso actual y a los procesos hijos, no modifican mágicamente toda la configuración del sistema.
 
-### Redirecciones y pipes
+### 5.3.6 — Redirecciones
 
 - `>` redirige salida y normalmente sobrescribe el archivo.
 - `>>` añade salida al final.
 - `2>` redirige errores estándar.
-- `|` conecta la salida de un comando con la entrada del siguiente.
 
 Ejemplo:
 ```bash
-printf '%s\n' "uno" "dos" "tres" > lista.txt
+printf '%s\\n' "uno" "dos" "tres" > lista.txt
+```
+
+No redirijas salidas sobre archivos importantes sin verificar el destino.
+
+### 5.3.7 — Pipes
+
+El operador `|` conecta la salida de un comando con la entrada del siguiente.
+
+```bash
 grep "dos" lista.txt
 cat lista.txt | grep "tres"
 ```
 
-No redirijas salidas sobre archivos importantes sin verificar el destino. En shell, las comillas y la expansión de comodines pueden cambiar qué archivos recibe un comando.
+En shell, las comillas y la expansión de comodines pueden cambiar qué archivos recibe un comando.
 
 ## 5.4 — Modularidad
 
-### Módulos, imports y exports
+### 5.4.1 — Módulos
 
-Un módulo agrupa código con una responsabilidad o API definida. Los imports permiten utilizar elementos de otros módulos; exports exponen lo que un módulo permite consumir.
+Un módulo agrupa código con una responsabilidad o API definida. En Java, el sistema de módulos (JPMS) puede declarar qué paquetes se exportan; en JavaScript, los módulos ECMAScript agrupan funcionalidad.
 
-En Java, los paquetes organizan clases y el sistema de módulos (JPMS) puede declarar qué paquetes se exportan. En JavaScript, `import` y `export` forman parte del sistema de módulos ECMAScript.
+### 5.4.2 — Imports
 
-No mezcles sintaxis de un lenguaje con otro. Identifica primero el ecosistema.
+Los imports permiten utilizar elementos expuestos por otros módulos. La sintaxis y resolución dependen del lenguaje y del sistema de módulos.
 
-### Namespaces y paquetes
+### 5.4.3 — Exports
 
-Los namespaces reducen colisiones de nombres y organizan símbolos. En Java se utilizan paquetes; otros lenguajes ofrecen espacios de nombres o módulos con reglas diferentes.
+Los exports declaran qué elementos de un módulo pueden consumir otros módulos. Expón solo la API necesaria y evita acoplar consumidores a detalles internos.
+
+### 5.4.4 — Namespaces
+
+Los namespaces reducen colisiones de nombres y organizan símbolos. Su sintaxis y alcance dependen del lenguaje.
+
+### 5.4.5 — Paquetes
+
+En Java se utilizan paquetes para organizar clases y controlar nombres. Otros lenguajes ofrecen espacios de nombres o módulos con reglas diferentes.
 
 Una estructura clara refleja el dominio y las responsabilidades, no una jerarquía excesivamente profunda.
 
-### Dependencias
+### 5.4.6 — Dependencias
 
 Una dependencia es un componente externo o interno que un módulo necesita. Antes de incorporarla, evalúa:
 - mantenimiento y actividad;
@@ -286,7 +328,7 @@ Una dependencia es un componente externo o interno que un módulo necesita. Ante
 
 Evita añadir paquetes por una tarea que el lenguaje ya resuelve de forma sencilla.
 
-### Gestores de paquetes
+### 5.4.7 — Gestores de paquetes
 
 Automatizan descarga, resolución y configuración de dependencias. Ejemplos:
 - Java: Maven o Gradle;
@@ -295,7 +337,7 @@ Automatizan descarga, resolución y configuración de dependencias. Ejemplos:
 
 El gestor y su archivo de configuración deben corresponder al proyecto. No mezcles gestores sin una razón documentada.
 
-### Versionado semántico
+### 5.4.8 — Versionado semántico
 
 SemVer utiliza la forma MAJOR.MINOR.PATCH:
 - MAJOR: cambios incompatibles en la API pública;
@@ -304,7 +346,7 @@ SemVer utiliza la forma MAJOR.MINOR.PATCH:
 
 El significado depende de que el proyecto declare una API pública y siga la convención. Un número de versión por sí solo no demuestra compatibilidad.
 
-### Archivos de bloqueo de dependencias
+### 5.4.9 — Archivos de bloqueo de dependencias
 
 Los lockfiles registran versiones resueltas y, según el gestor, integridad y dependencias transitivas. Permiten instalaciones reproducibles dentro de las condiciones declaradas.
 
