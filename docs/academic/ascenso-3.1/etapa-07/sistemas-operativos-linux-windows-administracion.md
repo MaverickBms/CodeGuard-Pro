@@ -1,6 +1,6 @@
 # Etapa 7 — Sistemas operativos: Linux, Windows y administración
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 7.  
 **Prioridad oficial:** P1 · Obligatoria.  
 **Objetivo oficial:** aprender a administrar computadores y servidores, comprender sus procesos internos y utilizar la terminal.
@@ -388,4 +388,4 @@ No se añaden videos en esta versión. La etapa abarca sistemas operativos, admi
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** comandos, scripts y laboratorio propuestos; no ejecutados en VMs reales durante esta sesión.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado..
