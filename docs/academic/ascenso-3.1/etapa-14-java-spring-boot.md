@@ -509,11 +509,19 @@ PostgreSQL ofrece un motor relacional con tipos y capacidades avanzadas, extensi
 Spring Security integra filtros y mecanismos de seguridad para solicitudes y recursos de la aplicación. Configura explícitamente qué rutas son públicas, autenticadas o restringidas y mantén una política de denegación por defecto.
 
 
+**Escenario aplicado.** La configuración de seguridad debe proteger endpoints por defecto y permitir explícitamente rutas públicas necesarias. Los filtros se ordenan y prueban para evitar rutas que omiten autenticación.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué riesgo introduce una regla de autorización permisiva por defecto?
+
 **Práctica y evidencia:** Configura una cadena de filtros de Spring Security y protege una ruta de laboratorio. **Evidencia:** compara acceso anónimo y autenticado y documenta la política.
 
 #### 14.5.02 — Authentication
 Authentication verifica la identidad de quien accede, por ejemplo mediante credenciales, sesión o token. Define el mecanismo, protege el proceso de recuperación y evita confundir autenticación correcta con permiso para ejecutar cualquier operación.
 
+
+**Escenario aplicado.** La autenticación verifica credenciales y establece una identidad; el servidor limita intentos y evita mensajes que permitan enumerar usuarios. El flujo de sesión se prueba también ante expiración y cierre.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué diferencia existe entre validar credenciales y autorizar una acción?
 
 **Práctica y evidencia:** Implementa autenticación de usuario con proveedor seguro y verificación de credenciales. **Evidencia:** demuestra rechazo de credenciales inválidas y respuesta que no revela si la cuenta existe.
 
@@ -521,11 +529,19 @@ Authentication verifica la identidad de quien accede, por ejemplo mediante crede
 Authorization decide si una identidad autenticada puede realizar una acción sobre un recurso. Aplica controles por recurso y operación, valida propiedad cuando corresponda y no confíes en roles globales si el acceso depende del contexto del dato.
 
 
+**Escenario aplicado.** Un usuario autenticado intenta leer un recurso de otro propietario. La autorización comprueba permisos sobre ese objeto, no solo la presencia de una sesión válida.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Por qué un rol general no siempre basta para autorizar acceso a un recurso concreto?
+
 **Práctica y evidencia:** Protege una operación según identidad y permiso requerido, no solo por estar autenticado. **Evidencia:** prueba usuario autenticado sin permiso y usuario autorizado.
 
 #### 14.5.04 — Password Hashing
 Password Hashing almacena verificadores derivados de contraseñas con algoritmos adaptativos como Argon2id, bcrypt o PBKDF2 según política vigente. Usa salt único y parámetros adecuados; nunca cifres reversiblemente ni guardes contraseñas en texto claro.
 
+
+**Escenario aplicado.** Las contraseñas se almacenan mediante funciones adaptativas de hashing con salt y parámetros adecuados. Nunca se guardan en texto claro ni se cifran de forma reversible para comparar inicios de sesión.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Por qué una función hash rápida general no es la opción adecuada para contraseñas?
 
 **Práctica y evidencia:** Configura un algoritmo de hash de contraseñas adaptativo y verifica contraseñas mediante el encoder. **Evidencia:** comprueba que no se almacena texto claro ni hash reversible.
 
@@ -533,11 +549,19 @@ Password Hashing almacena verificadores derivados de contraseñas con algoritmos
 JWT puede transportar claims firmados para verificar integridad y atributos del sujeto. Valida firma, algoritmo permitido, emisor, audiencia, expiración y revocación según diseño; el payload firmado no es secreto por defecto.
 
 
+**Escenario aplicado.** El servidor valida firma, algoritmo permitido, emisor, audiencia y expiración del JWT. El cliente no confía en claims decodificados localmente para conceder permisos.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué controles deben verificarse antes de aceptar un JWT?
+
 **Práctica y evidencia:** Valida JWT comprobando firma, emisor, audiencia, expiración y algoritmo permitido. **Evidencia:** demuestra rechazo de token manipulado y explica que el payload no está cifrado por defecto.
 
 #### 14.5.06 — Roles
 Roles agrupan permisos y simplifican asignación de capacidades. Define roles por responsabilidad y evita roles omnipotentes; revisa altas, bajas y cambios para que los privilegios no permanezcan después de cambiar la función del usuario.
 
+
+**Escenario aplicado.** Los roles agrupan permisos de alto nivel y se asignan según función. Un usuario puede pertenecer a varios roles, por lo que las reglas de combinación y precedencia deben ser explícitas.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué problema aparece si los roles se asignan por conveniencia y no por responsabilidad?
 
 **Práctica y evidencia:** Asigna roles con alcance claro y evita usar un rol genérico de administrador para todas las acciones. **Evidencia:** prueba matriz de acceso por rol.
 
@@ -545,17 +569,29 @@ Roles agrupan permisos y simplifican asignación de capacidades. Define roles po
 Permissions representan acciones concretas autorizadas sobre recursos. Aplica mínimo privilegio y verifica permisos en cada operación sensible, incluyendo endpoints secundarios y descargas; la interfaz cliente solo mejora experiencia, no impone seguridad.
 
 
+**Escenario aplicado.** Un permiso como order:read se verifica en el servidor para cada operación. La interfaz puede ocultar botones, pero la API debe impedir la acción no autorizada independientemente del cliente.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Por qué ocultar un botón no constituye control de autorización?
+
 **Práctica y evidencia:** Modela permisos específicos y separa rol de permiso cuando el dominio lo requiera. **Evidencia:** demuestra autorización de una acción concreta y auditoría de denegación.
 
 #### 14.5.08 — OAuth2
 OAuth 2.0 es un marco de autorización delegada para que un cliente obtenga acceso limitado a recursos. Selecciona el flujo apropiado, utiliza PKCE cuando corresponde y no trates OAuth por sí solo como un protocolo de autenticación.
 
 
+**Escenario aplicado.** OAuth2 delega autorización mediante scopes y flujos apropiados al tipo de cliente. Un backend confidencial y una SPA pública no deben utilizar el mismo supuesto de almacenamiento de secretos.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Por qué un cliente público no puede proteger un client secret?
+
 **Práctica y evidencia:** Configura OAuth 2.0 como flujo de autorización para un cliente de prueba y protege redirect URIs. **Evidencia:** distingue access token, refresh token, scopes y rol del authorization server.
 
 #### 14.5.09 — OpenID Connect
 OpenID Connect añade una capa de identidad sobre OAuth 2.0 y define ID Tokens y descubrimiento. Valida issuer, audience, nonce y firma; diferencia ID Token de access token y no utilices uno como sustituto del otro.
 
+
+**Escenario aplicado.** OpenID Connect añade una capa de identidad sobre OAuth2 y utiliza ID tokens con propósito distinto al access token. El backend valida issuer, audience, nonce y firma según el flujo.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué diferencia funcional existe entre ID token y access token?
 
 **Práctica y evidencia:** Integra OpenID Connect para autenticación y valida issuer, audience, nonce y claims requeridos. **Evidencia:** explica diferencia entre identidad (ID token) y autorización a API (access token).
 
@@ -565,11 +601,19 @@ OpenID Connect añade una capa de identidad sobre OAuth 2.0 y define ID Tokens y
 Transactions agrupa operaciones para que se apliquen según propiedades transaccionales y límites definidos. Identifica el caso de uso que requiere atomicidad y evita transacciones largas que mantengan locks mientras se espera red o intervención humana.
 
 
+**Escenario aplicado.** La actualización de inventario y la creación de pedido deben confirmar juntas o revertirse según el límite transaccional. Las llamadas externas no se incluyen ingenuamente dentro de una transacción larga.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué anomalía puede ocurrir si parte de una operación de negocio confirma y otra falla?
+
 **Práctica y evidencia:** Delimita una transacción en el servicio que actualiza pedido e inventario y prueba rollback ante fallo. **Evidencia:** demuestra atomicidad y explica propagación de excepciones.
 
 #### 14.6.02 — Caching
 Caching conserva resultados para reducir latencia o carga, pero introduce invalidación y riesgo de datos obsoletos. Define clave, TTL, alcance y estrategia de invalidación; no caches respuestas sensibles compartidas entre usuarios.
 
+
+**Escenario aplicado.** Una caché acelera lecturas, pero puede devolver datos obsoletos o cruzar usuarios si la clave no incluye el contexto correcto. Define TTL e invalidación como parte del contrato.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué riesgo existe al cachear respuestas personalizadas con una clave insuficiente?
 
 **Práctica y evidencia:** Añade caché a una lectura de referencia y define expiración e invalidación al actualizar. **Evidencia:** mide hit/miss y demuestra que no se sirve dato obsoleto indefinidamente.
 
@@ -577,11 +621,19 @@ Caching conserva resultados para reducir latencia o carga, pero introduce invali
 Pagination divide resultados en bloques para limitar memoria, transferencia y tiempo de respuesta. Ofrece tamaño máximo, orden estable y metadatos de continuación; cursor pagination puede ser más robusta que offsets para conjuntos cambiantes.
 
 
+**Escenario aplicado.** La API limita tamaño de página y define orden estable. Para colecciones grandes evalúa cursores y evita exponer consultas sin límites.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Por qué el tamaño máximo de página protege rendimiento y disponibilidad?
+
 **Práctica y evidencia:** Expone paginación con límites máximos y orden estable. **Evidencia:** prueba primera/última página y evita consultas sin límite.
 
 #### 14.6.04 — Filtering
 Filtering permite restringir resultados mediante campos y operadores permitidos. Valida y parametriza filtros, controla consultas costosas y no traduzcas directamente expresiones arbitrarias del cliente a SQL o JPQL.
 
+
+**Escenario aplicado.** Los filtros aceptan una lista permitida de campos y operadores. Se parametrizan valores y se limitan combinaciones que provoquen consultas costosas.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué diferencia hay entre validar un valor y permitir que el cliente defina libremente la consulta?
 
 **Práctica y evidencia:** Valida filtros permitidos y tradúcelos a criterios de repositorio. **Evidencia:** demuestra rechazo de campos desconocidos y consulta parametrizada.
 
@@ -589,11 +641,19 @@ Filtering permite restringir resultados mediante campos y operadores permitidos.
 Async permite ejecutar tareas fuera del hilo que atiende la solicitud o devolver resultados diferidos. Define executor, límites de cola, manejo de excepciones y propagación de contexto; asincronía sin límites puede agotar recursos.
 
 
+**Escenario aplicado.** Una tarea asíncrona se ejecuta fuera del hilo de solicitud y necesita control de errores, propagación de contexto y límites de concurrencia. No se debe asumir que comparte automáticamente la transacción del llamador.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué ocurre con el contexto transaccional cuando una tarea se ejecuta en otro hilo?
+
 **Práctica y evidencia:** Ejecuta una tarea asíncrona con executor configurado y maneja fallos. **Evidencia:** explica contexto de seguridad/transacción y evita asumir que se propaga automáticamente.
 
 #### 14.6.06 — Events
 Events desacopla productores y consumidores mediante publicación de hechos o mensajes. Distingue eventos de dominio y de integración, define esquema/versionado y considera duplicados, orden y entrega al menos una vez.
 
+
+**Escenario aplicado.** Un evento de dominio comunica que ocurrió un hecho relevante. Los consumidores pueden recibirlo más de una vez, por lo que los efectos deben diseñarse con idempotencia y trazabilidad.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Por qué un consumidor de eventos debe tolerar duplicados?
 
 **Práctica y evidencia:** Publica un evento de dominio tras una operación y define cuándo se procesa. **Evidencia:** distingue evento interno de integración y considera consistencia con la transacción.
 
@@ -601,11 +661,19 @@ Events desacopla productores y consumidores mediante publicación de hechos o me
 WebSockets mantiene una conexión bidireccional para intercambios en tiempo real. Autentica durante el establecimiento, autoriza cada canal/mensaje y define límites, reconexión y heartbeat; no asumas que el canal es confiable por ser persistente.
 
 
+**Escenario aplicado.** Un WebSocket autenticado sigue necesitando autorización por mensaje, límites de tamaño y cierre controlado. La conexión persistente no debe convertirse en un canal ilimitado de operaciones.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué controles deben repetirse después de establecer la conexión?
+
 **Práctica y evidencia:** Implementa un canal WebSocket de laboratorio con autenticación y autorización por destino. **Evidencia:** prueba conexión no autorizada y cierre controlado.
 
 #### 14.6.08 — File Upload
 File Upload recibe archivos y debe controlar tamaño, extensión, tipo real, nombre y almacenamiento. Renombra de forma segura, analiza contenido cuando corresponda, almacena fuera de rutas ejecutables y aplica autorización al descargar.
 
+
+**Escenario aplicado.** La carga de archivos valida tamaño, extensión, tipo real, nombre y autorización; almacena fuera del webroot o en almacenamiento aislado y analiza contenido según riesgo.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Por qué confiar solo en la extensión del archivo es insuficiente?
 
 **Práctica y evidencia:** Recibe un archivo con límite de tamaño, tipo permitido y nombre seguro; almacénalo fuera del directorio ejecutable. **Evidencia:** prueba archivo excesivo y nombre malicioso.
 
@@ -613,11 +681,19 @@ File Upload recibe archivos y debe controlar tamaño, extensión, tipo real, nom
 Email integra notificaciones transaccionales y mensajes de sistema. Usa plantillas seguras, controla rebotes y reintentos, no envíes secretos en enlaces sin protección y evita bloquear una solicitud de usuario esperando un proveedor externo.
 
 
+**Escenario aplicado.** El envío de correo se delega a un componente y gestiona fallos/reintentos sin bloquear solicitudes críticas. Los logs registran identificadores, no contenido sensible del mensaje.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué datos no deberían aparecer en logs de envío de correo?
+
 **Práctica y evidencia:** Configura envío de correo mediante proveedor de prueba y gestiona reintentos sin duplicar notificaciones. **Evidencia:** registra estado y evita almacenar credenciales SMTP en código.
 
 #### 14.6.10 — Queues
 Queues desacopla productores y trabajadores para procesar tareas de forma asíncrona. Diseña consumidores idempotentes, reintentos con backoff, dead-letter queues y observabilidad; una cola no garantiza orden global ni entrega exactamente una vez.
 
+
+**Escenario aplicado.** Una cola desacopla productores y consumidores, pero exige política de reintento, dead-letter, idempotencia y observabilidad. El orden y la entrega dependen de la tecnología elegida.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Por qué una cola no garantiza por sí sola que cada mensaje se procese exactamente una vez?
 
 **Práctica y evidencia:** Publica y consume un mensaje mediante una cola de laboratorio, con manejo de reintentos y mensajes fallidos. **Evidencia:** explica entrega al menos una vez y necesidad de consumidor idempotente.
 
@@ -627,11 +703,19 @@ Queues desacopla productores y trabajadores para procesar tareas de forma asínc
 Maven describe el proyecto y sus dependencias en `pom.xml`, y ejecuta fases del ciclo de build mediante plugins. Fija versiones, comprende scopes y evita depender de artefactos no reproducibles o repositorios no confiables.
 
 
+**Escenario aplicado.** Maven administra dependencias y ciclo de build mediante POM y plugins. El wrapper fija la versión del build tool y los repositorios se revisan para evitar dependencias de procedencia dudosa.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué ventaja aporta el Maven Wrapper en un equipo?
+
 **Práctica y evidencia:** Define dependencias y plugins en Maven y ejecuta el ciclo de build en el proyecto. **Evidencia:** explica fases relevantes y conserva `pom.xml` y wrapper.
 
 #### 14.7.02 — Gradle
 Gradle configura builds mediante scripts y tareas, con soporte para dependencias y plugins. Distingue Groovy DSL y Kotlin DSL, fija versiones del wrapper y revisa plugins porque ejecutan código durante el proceso de construcción.
 
+
+**Escenario aplicado.** Gradle usa scripts de build y puede aprovechar configuración incremental. Las versiones del wrapper y plugins deben fijarse para que el resultado no cambie por actualizaciones globales.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué debe versionarse para reproducir el build Gradle?
 
 **Práctica y evidencia:** Configura Gradle con tareas y dependencias reproducibles. **Evidencia:** ejecuta build mediante wrapper y explica diferencia entre configuración y ejecución.
 
@@ -639,11 +723,19 @@ Gradle configura builds mediante scripts y tareas, con soporte para dependencias
 Dependencies son bibliotecas externas necesarias para compilar o ejecutar la aplicación. Declara solo lo requerido, revisa licencias y vulnerabilidades, fija versiones y utiliza análisis de composición para detectar dependencias transitivas de riesgo.
 
 
+**Escenario aplicado.** Una dependencia transitiva puede introducir vulnerabilidades o licencias incompatibles. El equipo inspecciona árbol, versiones, procedencia y política de actualización antes de incorporarla.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Por qué revisar solo dependencias declaradas directamente es insuficiente?
+
 **Práctica y evidencia:** Añade una dependencia y revisa versión, alcance, transitivas y vulnerabilidades conocidas. **Evidencia:** documenta motivo y evita versiones flotantes sin control.
 
 #### 14.7.04 — Build Lifecycle
 Build Lifecycle organiza fases como validación, compilación, pruebas, empaquetado y verificación. Define qué tareas son obligatorias en CI y evita marcar como exitoso un build que omite pruebas o controles de calidad.
 
+
+**Escenario aplicado.** El ciclo de build compila, prueba, empaqueta y verifica artefactos. Una compilación exitosa no sustituye pruebas ni análisis de seguridad y debe conservarse evidencia del resultado.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué evidencia adicional se requiere además de que el build termine sin errores?
 
 **Práctica y evidencia:** Relaciona compilación, pruebas, empaquetado y verificación con el ciclo de build. **Evidencia:** muestra qué fase falla ante un test fallido y qué artefacto se genera.
 
@@ -651,6 +743,10 @@ Build Lifecycle organiza fases como validación, compilación, pruebas, empaquet
 Profiles permiten variar configuración o tareas para entornos y necesidades específicas. Evita que perfiles de producción desactiven seguridad o pruebas; externaliza secretos y comprueba explícitamente qué perfil está activo al construir y desplegar.
 
 
+
+**Escenario aplicado.** Los perfiles separan parámetros de entorno, pero no deben almacenar secretos. La configuración efectiva se inspecciona y valida para evitar activar por error el perfil de producción en desarrollo.
+
+**Criterio de análisis.** La respuesta debe especificar amenaza o fallo, control propuesto y evidencia verificable. **Pregunta de comprensión:** ¿Qué controles evitan que un perfil incorrecto cambie el comportamiento del despliegue?
 
 **Práctica y evidencia:** Crea perfiles de configuración para local, prueba y producción sin duplicar secretos. **Evidencia:** demuestra qué propiedades cambian por perfil y valida que producción falla de forma segura si falta una variable.
 
