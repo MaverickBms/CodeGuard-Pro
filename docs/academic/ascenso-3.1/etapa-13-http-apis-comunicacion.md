@@ -179,11 +179,19 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 El modelo cliente-servidor separa al consumidor de una capacidad y al sistema que la ofrece mediante un protocolo. Identifica quién inicia la solicitud, quién procesa y dónde se aplica autenticación; no presupongas que cliente siempre significa navegador.
 
 
+**Caso de aplicación.** Una aplicación móvil consulta un servicio de inventario y recibe datos estructurados. El móvil actúa como cliente aunque no sea navegador; el servicio que procesa la solicitud es el servidor lógico, aunque se ejecute en infraestructura compartida.
+
+**Criterio y comprobación.** El diagrama identifica iniciador, proveedor, protocolo y límites de confianza. ¿Puede un servidor actuar como cliente de otro servicio en la misma operación?
+
 **Práctica y evidencia:** Dibuja una solicitud desde un navegador hasta un servicio web y la respuesta de retorno. **Evidencia:** identifica cliente, servidor, protocolo y límites de confianza.
 
 #### 13.1.02 — Navegador
 El navegador obtiene recursos, interpreta HTML/CSS, ejecuta JavaScript y aplica políticas de seguridad de origen. Usa sus herramientas de desarrollo para inspeccionar solicitudes, consola, almacenamiento y errores sin asumir que el comportamiento local representa todos los navegadores.
 
+
+**Caso de aplicación.** Una página carga correctamente el HTML pero falla al recuperar un recurso de API. Network permite separar error de transporte, respuesta HTTP y error posterior de JavaScript.
+
+**Criterio y comprobación.** El registro diferencia solicitud, respuesta y error de consola sin exponer cookies ni tokens. ¿Por qué una respuesta 200 no garantiza que la interfaz haya procesado correctamente los datos?
 
 **Práctica y evidencia:** Inspecciona una solicitud generada por el navegador en DevTools, pestaña Network. **Evidencia:** registra URL, método, estado y recursos cargados.
 
@@ -191,11 +199,19 @@ El navegador obtiene recursos, interpreta HTML/CSS, ejecuta JavaScript y aplica 
 Un servidor recibe solicitudes y ofrece recursos o servicios mediante procesos y puertos. Distingue servidor físico, sistema operativo, proceso de aplicación y servidor HTTP; limita interfaces de administración y expón solo los servicios necesarios.
 
 
+**Caso de aplicación.** Una aplicación escucha solo en loopback durante desarrollo y no es accesible desde la red. La dirección de escucha, firewall y publicación determinan la exposición; abrir el puerto no debe ser el primer paso de diagnóstico.
+
+**Criterio y comprobación.** Se identifica proceso, socket y dirección de escucha. ¿Qué diferencia hay entre un servicio escuchando en localhost y uno expuesto en todas las interfaces?
+
 **Práctica y evidencia:** Levanta un servidor local de prueba y realiza una solicitud desde otro proceso cliente. **Evidencia:** identifica puerto de escucha, proceso y respuesta.
 
 #### 13.1.04 — DNS
 DNS traduce nombres de dominio a registros como A, AAAA, CNAME y MX mediante una jerarquía distribuida y cachés. Comprende TTL, resolución recursiva/autoritativa y propagación; DNS no cifra por sí solo el contenido de las conexiones.
 
+
+**Caso de aplicación.** Un cambio de dirección IP no se refleja inmediatamente en todos los clientes debido a TTL y cachés. La investigación compara respuesta autoritativa, resolvedor recursivo y caché local antes de atribuirlo a propagación.
+
+**Criterio y comprobación.** La práctica identifica tipo de registro y TTL. ¿Por qué dos clientes pueden resolver temporalmente un mismo nombre a direcciones diferentes?
 
 **Práctica y evidencia:** Consulta registros A, AAAA y CNAME de un dominio de laboratorio con una herramienta DNS. **Evidencia:** explica resolución y TTL sin confundir DNS con HTTP.
 
@@ -203,11 +219,19 @@ DNS traduce nombres de dominio a registros como A, AAAA, CNAME y MX mediante una
 IP identifica interfaces y permite enrutar paquetes entre redes. IPv4 e IPv6 tienen tamaños y mecanismos distintos; una dirección puede ser privada, pública, dinámica o asignada a una interfaz, y no identifica necesariamente a una persona.
 
 
+**Caso de aplicación.** Un servidor tiene una dirección privada en su interfaz y una dirección pública de salida proporcionada por NAT. No son necesariamente iguales ni permiten identificar de forma individual a una persona.
+
+**Criterio y comprobación.** El diagrama diferencia interfaz, destino y traducción. ¿Qué información adicional se necesita para interpretar una dirección IP observada en un log?
+
 **Práctica y evidencia:** Inspecciona direcciones locales y rutas de la máquina que ejecuta el servidor. **Evidencia:** diferencia IP de interfaz, IP de destino y dirección pública observada.
 
 #### 13.1.06 — Puertos
 Un puerto identifica un punto lógico de comunicación de transporte en TCP o UDP. El número de puerto por sí solo no confirma qué servicio está activo; comprueba protocolo, proceso, reglas de red y exposición real.
 
+
+**Caso de aplicación.** Un escaneo autorizado muestra un puerto abierto, pero eso no basta para identificar de forma fiable el producto o su versión. Se correlaciona socket, PID, servicio y configuración del host.
+
+**Criterio y comprobación.** El inventario asocia protocolo, puerto, proceso y regla de red. ¿Por qué un mismo número de puerto puede existir en TCP y UDP?
 
 **Práctica y evidencia:** Consulta sockets en escucha y relaciona puertos con procesos en un entorno propio. **Evidencia:** explica por qué un puerto identifica un punto de comunicación y no una aplicación por sí solo.
 
@@ -215,11 +239,19 @@ Un puerto identifica un punto lógico de comunicación de transporte en TCP o UD
 Hosting proporciona infraestructura y servicios para publicar aplicaciones o sitios. Compara recursos, disponibilidad, copias, TLS, soporte, residencia de datos y responsabilidad operativa; la contratación no sustituye la configuración segura del servicio.
 
 
+**Caso de aplicación.** Un equipo compara hosting compartido con VPS para una aplicación que maneja datos personales. La decisión contempla aislamiento, copias verificadas, soporte, residencia de datos y responsabilidad por parches.
+
+**Criterio y comprobación.** La matriz pondera control, coste y operación. ¿Qué responsabilidades siguen siendo del equipo aunque el proveedor administre la plataforma?
+
 **Práctica y evidencia:** Compara hosting compartido, VPS, dedicado y plataforma administrada para una aplicación de prueba. **Evidencia:** justifica la opción por control, aislamiento, coste y responsabilidad operativa.
 
 #### 13.1.08 — HTTP
 HTTP define un protocolo de aplicación basado en mensajes de solicitud y respuesta. Estudia métodos, recursos, headers, códigos de estado y semántica de caché; HTTP no implica cifrado si no se protege mediante TLS.
 
+
+**Caso de aplicación.** Un cliente solicita un recurso sin cifrado y un observador de red puede leer contenido de la comunicación. La práctica distingue semántica HTTP de la protección que aporta TLS.
+
+**Criterio y comprobación.** El análisis separa método, destino, headers, estado y body. ¿Qué parte del intercambio define HTTP y qué protección no ofrece por sí solo?
 
 **Práctica y evidencia:** Captura una petición HTTP de prueba y analiza línea inicial, cabeceras y respuesta. **Evidencia:** explica el intercambio sin confundir HTTP con el transporte subyacente.
 
@@ -227,11 +259,19 @@ HTTP define un protocolo de aplicación basado en mensajes de solicitud y respue
 HTTPS es HTTP transportado sobre una conexión protegida con TLS y validación de identidad del servidor. Comprueba certificado, nombre de host y cadena de confianza; el candado no garantiza que el sitio sea legítimo o que su aplicación sea segura.
 
 
+**Caso de aplicación.** El certificado de un sitio es válido para otro nombre de dominio. Aunque la conexión esté cifrada, la validación de identidad debe fallar por desajuste del nombre.
+
+**Criterio y comprobación.** La revisión verifica SAN, cadena y vigencia. ¿Por qué el cifrado de una conexión no demuestra que el servidor sea el destinatario esperado?
+
 **Práctica y evidencia:** Compara una URL HTTP con HTTPS y verifica el certificado del servidor de prueba. **Evidencia:** explica qué protege TLS y qué información sigue visible en metadatos de conexión.
 
 #### 13.1.10 — TLS
 TLS proporciona confidencialidad, integridad y autenticación del canal mediante negociación criptográfica y certificados. Utiliza versiones y suites modernas soportadas por plataformas mantenidas; evita describir TLS como cifrado de extremo a extremo de toda la aplicación.
 
+
+**Caso de aplicación.** Un cliente negocia una versión de TLS soportada por ambas partes y valida el certificado. Los metadatos de red, como IP y ciertos parámetros de conexión, no quedan ocultos necesariamente.
+
+**Criterio y comprobación.** El informe identifica versión y certificado sin inferir seguridad absoluta. ¿Qué protege TLS y qué límites permanecen fuera del canal cifrado?
 
 **Práctica y evidencia:** Inspecciona una negociación TLS en una herramienta de diagnóstico autorizada. **Evidencia:** identifica versión, certificado y parámetros negociados sin recomendar versiones obsoletas.
 
@@ -239,17 +279,29 @@ TLS proporciona confidencialidad, integridad y autenticación del canal mediante
 Los certificados digitales vinculan una identidad con una clave pública y son validados mediante una cadena de confianza. Revisa sujeto/SAN, emisor, vigencia y revocación; nunca aceptes advertencias de certificado como una solución permanente.
 
 
+**Caso de aplicación.** Un certificado está dentro de su periodo de validez, pero su SAN no incluye el hostname solicitado. La aplicación debe rechazar la conexión en vez de ignorar la advertencia.
+
+**Criterio y comprobación.** Se documentan sujeto, SAN, emisor, vigencia y resultado de validación. ¿Por qué la fecha válida no basta para aceptar un certificado?
+
 **Práctica y evidencia:** Examina la cadena de certificados de un dominio propio o de documentación. **Evidencia:** identifica sujeto, emisor, SAN, vigencia y validación de nombre.
 
 #### 13.1.12 — Cookies
 Las cookies permiten que el navegador almacene y envíe pequeños datos según dominio, ruta y políticas. Comprende `Secure`, `HttpOnly`, `SameSite`, `Path`, `Domain` y expiración; evita guardar secretos innecesarios y protege contra CSRF según el flujo.
 
 
+**Caso de aplicación.** Una cookie de sesión se envía en una conexión HTTPS y no debe ser accesible a JavaScript. Secure y HttpOnly limitan canales distintos; SameSite contribuye a mitigar ciertos escenarios CSRF, pero no sustituye todas las defensas.
+
+**Criterio y comprobación.** La configuración justifica Secure, HttpOnly, SameSite y Path. ¿Qué riesgo reduce HttpOnly y cuál no elimina?
+
 **Práctica y evidencia:** Configura una cookie de prueba con Secure, HttpOnly, SameSite y Path adecuados. **Evidencia:** demuestra el alcance y explica por qué una cookie no debe contener credenciales en claro.
 
 #### 13.1.13 — Sesiones
 Una sesión mantiene contexto entre solicitudes HTTP que, por diseño, no dependen de una conexión persistente. El servidor suele asociar un identificador aleatorio con estado de sesión; rota el identificador tras autenticación y revoca sesiones al cerrar o detectar riesgo.
 
+
+**Caso de aplicación.** Tras autenticar, el servidor rota el identificador de sesión para evitar reutilizar el identificador previo. Al cerrar sesión, revoca el estado del lado servidor y expira la cookie del cliente.
+
+**Criterio y comprobación.** Se demuestra rotación, expiración y revocación. ¿Por qué eliminar la cookie del navegador no siempre invalida una sesión en el servidor?
 
 **Práctica y evidencia:** Implementa una sesión de laboratorio con identificador aleatorio y expiración. **Evidencia:** prueba rotación al autenticar, cierre de sesión e invalidación del identificador.
 
@@ -259,11 +311,19 @@ Una sesión mantiene contexto entre solicitudes HTTP que, por diseño, no depend
 Una request HTTP incluye método, destino, versión/protocolo, headers y opcionalmente body. Inspecciona una solicitud real y diferencia URL, query parameters, headers y contenido; nunca registres credenciales o datos personales sin necesidad y controles.
 
 
+**Caso de aplicación.** Una solicitud de búsqueda contiene parámetros en query string y un token en Authorization. El equipo evita registrar el token y valida que los parámetros no sustituyan la autenticación.
+
+**Criterio y comprobación.** El análisis ubica método, URI, query, headers y body. ¿Qué diferencias de exposición existen entre query parameters y headers?
+
 **Práctica y evidencia:** Construye una solicitud con método, URI, cabeceras y cuerpo, y envíala a un endpoint de prueba. **Evidencia:** identifica cada parte y su función.
 
 #### 13.2.02 — Responses
 Una response HTTP contiene estado, headers y, según el caso, un body. El cliente debe interpretar código y tipo de contenido antes de procesar el cuerpo; maneja respuestas vacías, redirecciones y errores de forma explícita.
 
+
+**Caso de aplicación.** El servidor devuelve 204 sin cuerpo y el cliente intenta parsear JSON, provocando un error local. El consumidor debe interpretar el estado y Content-Type antes de procesar el body.
+
+**Criterio y comprobación.** La prueba cubre respuesta con cuerpo, vacía y de error. ¿Por qué un cliente no debe asumir que todas las respuestas contienen JSON?
 
 **Práctica y evidencia:** Analiza una respuesta HTTP real y separa línea de estado, cabeceras y cuerpo. **Evidencia:** explica cómo el cliente interpreta el resultado.
 
@@ -271,11 +331,19 @@ Una response HTTP contiene estado, headers y, según el caso, un body. El client
 Los métodos expresan la intención de una solicitud: GET, HEAD, POST, PUT, PATCH, DELETE y otros. Distingue seguridad e idempotencia; no uses GET para modificar estado ni asumas que todos los servidores implementan métodos de la misma manera.
 
 
+**Caso de aplicación.** Un cliente reintenta una solicitud tras perder la conexión. GET y PUT tienen semántica idempotente en condiciones definidas; POST puede crear recursos duplicados si no existe una estrategia de idempotencia.
+
+**Criterio y comprobación.** La tabla distingue seguridad e idempotencia de los métodos. ¿Qué diferencia existe entre método seguro e idempotente?
+
 **Práctica y evidencia:** Compara GET, POST, PUT, PATCH, DELETE, HEAD y OPTIONS por semántica, seguridad e idempotencia. **Evidencia:** selecciona el método adecuado para cinco operaciones.
 
 #### 13.2.04 — Headers
 Los headers transportan metadatos de negociación, autenticación, caché, representación y control. Separa headers de solicitud, respuesta y contenido; evita duplicados contradictorios y no expongas tokens en URLs o logs.
 
+
+**Caso de aplicación.** Una API utiliza Content-Type para declarar formato y Authorization para credenciales. Los headers sensibles se excluyen de trazas y no se confunden con parámetros de negocio.
+
+**Criterio y comprobación.** Se clasifican headers por función y sensibilidad. ¿Por qué un header no es automáticamente confidencial por no aparecer en la URL?
 
 **Práctica y evidencia:** Inspecciona cabeceras como Host, Accept, Content-Type, Cache-Control y Authorization. **Evidencia:** clasifica cuáles describen contenido, negociación, caché o identidad.
 
@@ -283,11 +351,19 @@ Los headers transportan metadatos de negociación, autenticación, caché, repre
 El body contiene la representación enviada o recibida, por ejemplo JSON, texto o datos binarios. Define límites de tamaño y `Content-Type`, valida estructura y codificación y no confíes en el body por el mero hecho de que el cliente lo haya enviado.
 
 
+**Caso de aplicación.** Una API recibe un body JSON de gran tamaño. Debe validar tamaño, estructura, tipos y autorización antes de procesar datos, y no confiar en el cliente para las reglas de negocio.
+
+**Criterio y comprobación.** El contrato define formato, límites y validaciones. ¿Qué diferencia hay entre validar sintaxis JSON y validar reglas de negocio?
+
 **Práctica y evidencia:** Envía un cuerpo JSON en POST y verifica su interpretación en servidor. **Evidencia:** distingue cuerpo de solicitud, parámetros de ruta y query string.
 
 #### 13.2.06 — Status codes
 Los status codes comunican el resultado general: 2xx éxito, 3xx redirección, 4xx problema asociado a la solicitud/cliente y 5xx fallo del servidor. Selecciona códigos semánticamente correctos y no uses 200 para ocultar errores de negocio.
 
+
+**Caso de aplicación.** Un servicio devuelve 401 cuando falta autenticación, 403 cuando la identidad no tiene permiso y 404 cuando el recurso no existe o se decide ocultarlo. La semántica elegida debe ser coherente y no filtrar información sensible.
+
+**Criterio y comprobación.** La matriz relaciona escenarios con estados y cuerpo de error. ¿En qué se diferencian 401 y 403?
 
 **Práctica y evidencia:** Clasifica códigos 2xx, 3xx, 4xx y 5xx y selecciona códigos apropiados para un endpoint. **Evidencia:** justifica diferencia entre 400, 401, 403, 404, 409 y 500.
 
@@ -295,11 +371,19 @@ Los status codes comunican el resultado general: 2xx éxito, 3xx redirección, 4
 `Content-Type` declara el tipo de medio del contenido y guía su interpretación. Comprueba que coincida con el body y utiliza tipos específicos como `application/json`; no confundas `Content-Type` con `Accept`, que expresa formatos que el cliente puede recibir.
 
 
+**Caso de aplicación.** El servidor responde application/json con charset apropiado. El cliente verifica Content-Type antes de parsear y trata de forma segura tipos inesperados.
+
+**Criterio y comprobación.** La prueba valida media type y manejo de tipos no soportados. ¿Qué problema aparece al interpretar como JSON una respuesta HTML de error?
+
 **Práctica y evidencia:** Envía JSON y texto con Content-Type correcto y observa la negociación Accept. **Evidencia:** explica diferencia entre formato enviado y formato solicitado.
 
 #### 13.2.08 — Authorization
 Authorization transporta credenciales o pruebas de autorización según un esquema como Bearer. Envía credenciales por canal TLS, aplica scopes mínimos y valida identidad/permisos en el servidor; un token presente no significa que autorice todas las operaciones.
 
+
+**Caso de aplicación.** Un endpoint exige token bearer y verifica identidad, expiración y permisos. El sistema no acepta tokens enviados por query string ni los registra en logs.
+
+**Criterio y comprobación.** El flujo valida credencial, alcance y fallo de autorización. ¿Por qué autenticación correcta no implica autorización para cualquier recurso?
 
 **Práctica y evidencia:** Compara autenticación básica, bearer token y cookie de sesión en un entorno de prueba. **Evidencia:** identifica cómo se transporta la credencial y qué protección requiere.
 
@@ -307,17 +391,29 @@ Authorization transporta credenciales o pruebas de autorización según un esque
 La caché HTTP reutiliza respuestas según directivas como `Cache-Control`, `ETag`, `Last-Modified` y `Vary`. Configura políticas distintas para contenido público y privado; evita que respuestas personalizadas queden almacenadas en cachés compartidas.
 
 
+**Caso de aplicación.** Una respuesta pública puede almacenarse en caché, pero un perfil personalizado no debe compartirse entre usuarios. Cache-Control y Vary deben reflejar la sensibilidad y variación de la respuesta.
+
+**Criterio y comprobación.** La política distingue contenido público y personalizado. ¿Qué riesgo introduce almacenar una respuesta privada en una caché compartida?
+
 **Práctica y evidencia:** Configura Cache-Control para un recurso estático y otro personalizado. **Evidencia:** explica max-age, no-store, private y riesgos de cachear datos de usuario.
 
 #### 13.2.10 — Idempotencia
 Idempotencia significa que repetir una operación produce el mismo efecto previsto en el estado del servidor. PUT y DELETE se definen como idempotentes por semántica HTTP, mientras POST no lo es necesariamente; claves de idempotencia pueden ayudar en operaciones de creación.
 
 
+**Caso de aplicación.** Un cliente pierde la respuesta después de enviar una solicitud de pago. Reintentar POST sin clave de idempotencia puede duplicar la operación; el servidor debe definir una estrategia de deduplicación y estado.
+
+**Criterio y comprobación.** El diseño identifica clave, ventana de retención y respuesta repetida. ¿Por qué una operación de negocio puede necesitar idempotencia aunque HTTP no la garantice?
+
 **Práctica y evidencia:** Diseña un endpoint de creación con clave de idempotencia o PUT sobre recurso conocido. **Evidencia:** demuestra que repetir una solicitud no duplica efectos no deseados.
 
 #### 13.2.11 — Statelessness
 Statelessness significa que cada solicitud contiene la información necesaria para interpretarse sin depender del estado conversacional de la conexión anterior. No prohíbe sesiones ni almacenamiento en servidor; exige que el contexto se transporte o se recupere mediante un mecanismo definido.
 
+
+**Caso de aplicación.** Una API no guarda estado de sesión en la memoria del proceso para cada cliente; utiliza credenciales o un almacén compartido según el diseño. Stateless no significa que la aplicación carezca de datos persistentes.
+
+**Criterio y comprobación.** El diagrama identifica qué contexto viaja en cada solicitud y qué estado persiste en servicios externos. ¿Qué ventaja operativa puede aportar statelessness en un despliegue escalado?
 
 **Práctica y evidencia:** Explica por qué una API REST se diseña sin depender de estado de sesión implícito entre solicitudes. **Evidencia:** identifica qué contexto debe acompañar cada solicitud y dónde se mantiene el estado del recurso.
 
