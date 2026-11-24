@@ -144,7 +144,7 @@ Comandos de gestión disponibles:
 | `revisar_licencia_fuente` | Registra una decisión editorial auditada sobre la licencia de una fuente |
 | `validar_paquete_contenido` | Valida un lote JSON académico sin escribir en la base de datos |
 
-Para obtener el inventario real de una instalación de desarrollo (incluidos UUID), ejecuta `python manage.py exportar_manifiesto_academico --nombre "ASCENSO 3.1" --edicion "3.1" --salida RUTA_PRIVADA.json --incluir-fuentes`. Sustituye nombre y edición por los valores exactos de tu registro `Roadmap`. El archivo contiene identificadores propios de esa instalación: mantenlo fuera del repositorio público. La exportación es de solo lectura y no incluye progreso ni datos de usuarios.
+Para obtener el inventario real de una instalación de desarrollo (incluidos UUID), ejecuta `python manage.py exportar_manifiesto_academico --nombre "PROYECTO ASCENSO — Roadmap Maestro Consolidado" --edicion "3.1" --salida RUTA_PRIVADA.json --incluir-fuentes`. El nombre del ejemplo corresponde al registro creado desde el JSON maestro actual; si tu instalación usa otro, consulta el nombre y la edición exactos en el registro `Roadmap`. El archivo contiene identificadores propios de esa instalación: mantenlo fuera del repositorio público. La exportación es de solo lectura y no incluye progreso ni datos de usuarios.
 | `publicar_paquete_conocimiento` | Genera localmente un paquete reproducible, manifiesto y firma Ed25519 desde contenido editorial publicado |
 | `sincronizar_conocimiento` | Comprueba y descarga actualizaciones firmadas desde un endpoint HTTPS configurado |
 | `crear_backup --output RUTA.zip` | Crea una copia ZIP verificada de la base local y `media/` |
