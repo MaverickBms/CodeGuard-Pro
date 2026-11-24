@@ -383,3 +383,17 @@ No se incluye video en esta versión. Para aprobar un recurso de POO/UML debe co
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** ejemplos de código y proyecto propuestos; no ejecutados ni compilados en esta sesión.  
 **Estado editorial:** en desarrollo; no aprobado ni publicado.
+
+
+## Compatibilidad de ejemplos
+
+Los ejemplos Java de esta etapa siguen la línea base JDK 21 establecida en la etapa 3. Las construcciones del lenguaje y las APIs utilizadas deben compilarse con esa versión; si se adopta otra versión, documentar los cambios y comprobar compatibilidad antes de evaluar el proyecto.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** cotejo del temario con el roadmap, cobertura de cada lección, progresión, ejemplos, proyecto, evaluación, terminología y advertencias de uso.
+
+**Resultado:** revisión documental interna realizada. La etapa cubre 4.1–4.5 y conserva proyecto/actividades y rúbrica. No equivale a aprobación académica externa ni a validación de ejecución. Los ejemplos y laboratorios no se declaran ejecutados; la aprobación requiere segunda revisión, comprobación de fuentes y ejecución reproducible de las actividades.
+
+**Pendientes:** comprobar ejemplos con JDK 21 y UML para etapa 4; para etapa 5, ejecutar el laboratorio en repositorio aislado con Bash y PowerShell, validar cada comando destructivo/recuperación y revisar la evolución de la documentación oficial de Git/GitHub.
