@@ -277,3 +277,8 @@ Se incorporaron encabezados individuales para las 228 lecciones oficiales de las
 ### Continuidad ASCENSO 3.1 — etapas 20 a 22
 
 Se incorporaron encabezados individuales para las 197 entradas oficiales de las etapas 20–22: etapa 20 (57), etapa 21 (82) y etapa 22 (58). Se mantuvieron las restricciones de laboratorio propio, aislado y autorizado. Es base de trabajo activa; no se declara ejecución de máquinas virtuales, pruebas ofensivas ni laboratorios.
+
+
+### Continuidad ASCENSO 3.1 — etapas 23 a 25
+
+Se incorporaron encabezados individuales para las 155 entradas curriculares de las etapas 23–25: etapa 23 (58), etapa 24 (47) y etapa 25 (50). Se mantienen las condiciones de autorización y alcance para laboratorios; el objetivo oficial vacío de la etapa 25 no fue alterado ni completado. Es base de trabajo activa, sin ejecución de herramientas ni aprobación editorial.
