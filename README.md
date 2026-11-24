@@ -322,3 +322,8 @@ Se desarrollaron individualmente las 228 lecciones oficiales de testing/calidad,
 ### Desarrollo profundo individual — etapas 20 a 22
 
 Se desarrollaron individualmente las 197 lecciones oficiales de AppSec, fundamentos de ciberseguridad/riesgos/ética y laboratorio/hardening (57, 82 y 58). Se verificó OWASP Top 10:2025 en su fuente oficial y se añadieron fuentes normativas colombianas con advertencia de vigencia. Las pruebas AppSec y laboratorios siguen pendientes; revisión documental interna, no aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 23 a 25
+
+Se desarrollaron individualmente las 155 lecciones oficiales de OSINT/reconocimiento, pentesting y seguridad web/APIs (58, 47 y 50). Se cotejaron conteos con el roadmap y se eliminaron textos genéricos. Las prácticas se limitan a entornos propios/autorizados; el objetivo oficial vacío de etapa 25 permanece intacto. No se ejecutaron escaneos ni se declara aprobación externa.
