@@ -1,7 +1,7 @@
 # Etapa 18 — Arquitectura, diseño y planeación de software
 
 **Prioridad:** P1 · Obligatoria  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** aprender a planear y diseñar sistemas antes de comenzar a programar.  
 **Proyecto oficial:** recibir un problema empresarial, analizarlo, documentarlo, modelarlo, diseñar su arquitectura y elaborar un plan de trabajo antes de escribir código.
 
@@ -142,4 +142,4 @@ No se incluyen videos aprobados. Se incorporarán únicamente con audio hablado 
 - Domain-Driven Design Community: https://www.domainlanguage.com/
 - ADR GitHub: https://adr.github.io/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** proyecto de diseño no implementado ni validado en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** proyecto de diseño no implementado ni validado en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
