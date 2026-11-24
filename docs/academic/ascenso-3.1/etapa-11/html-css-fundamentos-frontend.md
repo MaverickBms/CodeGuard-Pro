@@ -1132,6 +1132,16 @@ Los selectores CSS identifican elementos por tipo, clase, ID, atributo, estado o
 
 **Comprobación:** ¿Qué diferencia existe entre selector hijo y selector descendiente?
 
+**Laboratorio de profundización — Selección y alcance de reglas CSS.**
+
+1. Crea HTML con clases, ids, elementos y atributos. 2. Escribe selectores de tipo, clase, id, atributo y combinadores. 3. Usa DevTools para identificar reglas coincidentes. 4. Evalúa impacto de selectores demasiado amplios.
+
+**Evidencia esperada.** Cada selector afecta exactamente los elementos previstos y su alcance está justificado.
+
+**Seguridad y límites.** No depender de selectores frágiles basados en estructura accidental del DOM.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.3.02 — Cascade
 
 La cascada decide qué declaración prevalece según origen, importancia, capa, especificidad y orden. Herencia y valores iniciales también influyen. Comprenderla evita resolver conflictos con `!important` indiscriminadamente.
@@ -1147,6 +1157,16 @@ La cascada decide qué declaración prevalece según origen, importancia, capa, 
 **Errores frecuentes:** Agregar `!important` sin investigar origen y especificidad.
 
 **Comprobación:** ¿Qué factores principales intervienen en la cascada?
+
+**Laboratorio de profundización — Resolución de cascada y origen.**
+
+1. Define reglas en hoja externa, bloque style y atributo style en laboratorio. 2. Compara origen, importancia, capas y orden. 3. Inspecciona estilos computados. 4. Elimina !important innecesarios.
+
+**Evidencia esperada.** Se explica por qué gana una declaración concreta considerando cascada y origen.
+
+**Seguridad y límites.** No resolver todos los conflictos con !important ni estilos inline indiscriminados.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.3.03 — Specificity
 
@@ -1164,6 +1184,16 @@ La especificidad compara selectores mediante componentes de ID, clase/atributo/p
 
 **Comprobación:** ¿Por qué una regla con mayor especificidad puede no ganar?
 
+**Laboratorio de profundización — Cálculo de especificidad.**
+
+1. Calcula especificidad de selectores de elemento, clase, id y :where(). 2. Compara dos reglas en conflicto. 3. Reestructura selectores para reducir acoplamiento. 4. Verifica resultado en DevTools.
+
+**Evidencia esperada.** El cálculo es correcto y la solución evita aumentar especificidad sin necesidad.
+
+**Seguridad y límites.** No usar IDs para todos los estilos ni encadenar selectores largos como mecanismo de prioridad.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.3.04 — Inheritance
 
 Algunas propiedades CSS se heredan desde el elemento padre; otras no. color y font-family suelen heredarse, mientras margin, border y padding no. `inherit`, `initial`, `unset` y `revert` controlan valores según reglas distintas.
@@ -1179,6 +1209,16 @@ Algunas propiedades CSS se heredan desde el elemento padre; otras no. color y fo
 **Errores frecuentes:** Suponer que todas las propiedades se heredan o usar inherit para arreglar cualquier conflicto.
 
 **Comprobación:** ¿Por qué margin no suele heredarse?
+
+**Laboratorio de profundización — Herencia y valores iniciales.**
+
+1. Define color y font-family en contenedor. 2. Observa qué propiedades heredan. 3. Compara inherit, initial, unset y revert. 4. Identifica propiedades que no se heredan por defecto.
+
+**Evidencia esperada.** Se distingue herencia de cascada y se predice el valor computado.
+
+**Seguridad y límites.** No asumir que todas las propiedades CSS se heredan.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.3.05 — Box Model
 
@@ -1196,6 +1236,16 @@ El box model define content, padding, border y margin. Con content-box el width 
 
 **Comprobación:** ¿Qué cambia al aplicar border-box?
 
+**Laboratorio de profundización — Cálculo de dimensiones.**
+
+1. Crea un elemento con width, padding, border y margin. 2. Calcula tamaño exterior con content-box. 3. Aplica border-box y compara. 4. Verifica medidas en DevTools.
+
+**Evidencia esperada.** Los cálculos coinciden con el modelo de caja y se explica box-sizing.
+
+**Seguridad y límites.** No fijar anchuras que provoquen overflow en viewport pequeños.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.3.06 — Display
 
 display determina cómo participa un elemento en layout: block, inline, inline-block, flex, grid, none y otros valores. `display:none` retira del árbol de layout y accesibilidad; visibility y opacity tienen efectos distintos.
@@ -1211,6 +1261,16 @@ display determina cómo participa un elemento en layout: block, inline, inline-b
 **Errores frecuentes:** Usar display:none para contenido que debe estar disponible o forzar elementos inline a layout complejo.
 
 **Comprobación:** ¿Qué diferencia práctica existe entre display:none y visibility:hidden?
+
+**Laboratorio de profundización — Flujo y formato de cajas.**
+
+1. Compara block, inline, inline-block, flex, grid y none. 2. Observa dimensiones y saltos de línea. 3. Evalúa visibility:hidden frente a display:none. 4. Relaciona presentación con orden del DOM.
+
+**Evidencia esperada.** Se explica cómo cada valor afecta flujo y presencia visual/accesible.
+
+**Seguridad y límites.** No alterar orden visual respecto del orden lógico de lectura y foco.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.3.07 — Position
 
@@ -1228,6 +1288,16 @@ position controla ubicación: static, relative, absolute, fixed y sticky. Los el
 
 **Comprobación:** ¿Qué elemento sirve de referencia para un absolute?
 
+**Laboratorio de profundización — Contexto de posicionamiento.**
+
+1. Compara static, relative, absolute, fixed y sticky. 2. Identifica containing block y stacking context. 3. Prueba un menú superpuesto. 4. Evalúa comportamiento al hacer scroll y zoom.
+
+**Evidencia esperada.** La posición se justifica por relación con contenedor y contexto de apilamiento.
+
+**Seguridad y límites.** No ocultar contenido detrás de elementos fijos ni depender de z-index arbitrario.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.3.08 — Flexbox
 
 Flexbox organiza elementos en una dimensión principal y una transversal. flex-direction, justify-content, align-items, gap y flex-wrap permiten distribuir espacio; tamaño base, shrink y grow determinan ajuste.
@@ -1243,6 +1313,16 @@ Flexbox organiza elementos en una dimensión principal y una transversal. flex-d
 **Errores frecuentes:** Usar flexbox para estructuras bidimensionales complejas que requieren grid.
 
 **Comprobación:** ¿Qué diferencia principal existe entre eje principal y transversal?
+
+**Laboratorio de profundización — Distribución unidimensional.**
+
+1. Crea una fila y columna con flex container. 2. Prueba justify-content, align-items, gap y flex-wrap. 3. Evalúa crecimiento y contracción de elementos. 4. Comprueba orden en viewport estrecho.
+
+**Evidencia esperada.** La distribución funciona en ambos ejes y conserva orden de lectura.
+
+**Seguridad y límites.** No usar order para crear un orden visual que contradiga secuencia semántica.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.3.09 — Grid
 
@@ -1260,6 +1340,16 @@ CSS Grid organiza layout en dos dimensiones mediante filas, columnas, tracks, á
 
 **Comprobación:** ¿Cuándo es preferible Grid frente a Flexbox?
 
+**Laboratorio de profundización — Diseño bidimensional con CSS Grid.**
+
+1. Construye layout con columnas y filas. 2. Utiliza fr, minmax y repeat. 3. Define áreas nombradas. 4. Prueba auto-fit/auto-fill con distintos anchos.
+
+**Evidencia esperada.** El layout responde al tamaño disponible sin desbordamiento y la estructura se mantiene comprensible.
+
+**Seguridad y límites.** No fijar dimensiones rígidas que impidan zoom o reflujo.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.3.10 — Pseudoclases
 
 Las pseudoclases seleccionan estados o relaciones, como :hover, :focus-visible, :checked, :disabled, :first-child y :not(). Deben incluir estados de interacción accesibles; no depender solo de hover porque pantallas táctiles y teclado difieren.
@@ -1275,6 +1365,16 @@ Las pseudoclases seleccionan estados o relaciones, como :hover, :focus-visible, 
 **Errores frecuentes:** Eliminar outline o usar solo hover como indicador de interacción.
 
 **Comprobación:** ¿Por qué focus-visible es esencial en una interfaz accesible?
+
+**Laboratorio de profundización — Estados de interacción.**
+
+1. Implementa :hover, :focus-visible, :active, :checked y :disabled. 2. Comprueba teclado y puntero. 3. Define estados de formulario. 4. Verifica que focus no dependa de hover.
+
+**Evidencia esperada.** Los estados son distinguibles y funcionan con diferentes modalidades de entrada.
+
+**Seguridad y límites.** No ocultar foco ni comunicar estado solo mediante color.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.3.11 — Pseudoelementos
 
@@ -1292,6 +1392,16 @@ Los pseudoelementos como ::before, ::after, ::first-line y ::marker permiten est
 
 **Comprobación:** ¿Por qué no debe dependerse de ::before para comunicar un error?
 
+**Laboratorio de profundización — Contenido generado y decoración.**
+
+1. Usa ::before y ::after para decoración. 2. Compara ::first-line y ::selection. 3. Comprueba lectura accesible del contenido generado. 4. Decide qué información debe permanecer en HTML.
+
+**Evidencia esperada.** Los pseudoelementos se usan para presentación y el contenido esencial está en el DOM.
+
+**Seguridad y límites.** No insertar instrucciones, etiquetas o datos críticos solo mediante content.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.3.12 — Variables
 
 Custom properties CSS almacenan valores reutilizables y participan en cascada/herencia. Se declaran con `--nombre` y se consumen con var(), que admite fallback. Pueden definir tokens de color, espaciado, tipografía y temas.
@@ -1307,6 +1417,16 @@ Custom properties CSS almacenan valores reutilizables y participan en cascada/he
 **Errores frecuentes:** Nombrar variables por color literal y duplicar valores arbitrariamente.
 
 **Comprobación:** ¿Qué ventaja ofrece un token semántico frente a repetir un valor hexadecimal?
+
+**Laboratorio de profundización — Custom properties y temas.**
+
+1. Define variables en :root. 2. Crea tema alternativo con atributo data-theme. 3. Usa fallback y alcance local. 4. Comprueba contraste y preferencia de color del sistema.
+
+**Evidencia esperada.** Las variables permiten consistencia y los temas conservan contraste y legibilidad.
+
+**Seguridad y límites.** No utilizar variables CSS para almacenar secretos ni asumir que sustituyen tokens de diseño documentados.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.3.13 — Media Queries
 
@@ -1324,6 +1444,16 @@ Media queries aplican estilos según viewport, preferencias y capacidades como p
 
 **Comprobación:** ¿Qué diferencia existe entre media query de viewport y prefers-reduced-motion?
 
+**Laboratorio de profundización — Adaptación a condiciones del dispositivo.**
+
+1. Crea breakpoints basados en contenido. 2. Usa media queries para ancho, orientación y prefers-reduced-motion. 3. Prueba zoom y viewport intermedio. 4. Registra comportamiento de cada breakpoint.
+
+**Evidencia esperada.** Las reglas responden a necesidades reales del contenido y respetan preferencias de usuario.
+
+**Seguridad y límites.** No diseñar solo para tamaños de dispositivos específicos ni desactivar zoom.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.3.14 — Responsive Design
 
 Diseño responsive adapta estructura y contenido a tamaños y capacidades diversos mediante layouts fluidos, imágenes adaptables, tipografía flexible y media queries. Debe soportar zoom y orientación sin perder información.
@@ -1339,6 +1469,16 @@ Diseño responsive adapta estructura y contenido a tamaños y capacidades divers
 **Errores frecuentes:** Ocultar información en móvil o usar tamaños rígidos que desbordan.
 
 **Comprobación:** ¿Por qué responsive no significa simplemente reducir todo el tamaño?
+
+**Laboratorio de profundización — Reflujo y adaptación progresiva.**
+
+1. Construye layout móvil, tablet y escritorio. 2. Usa unidades flexibles, imágenes fluidas y max-width. 3. Comprueba a 320 CSS px y zoom. 4. Identifica scroll horizontal innecesario.
+
+**Evidencia esperada.** El contenido refluye sin pérdida de información ni interacción a distintos anchos.
+
+**Seguridad y límites.** No ocultar funciones esenciales en móvil ni usar escalas de texto ilegibles.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.3.15 — Animations
 
@@ -1356,6 +1496,16 @@ CSS animations define secuencias con @keyframes, duración, iteración y timing.
 
 **Comprobación:** ¿Cómo debe responder la interfaz a prefers-reduced-motion?
 
+**Laboratorio de profundización — Animaciones CSS accesibles.**
+
+1. Anima un elemento decorativo con keyframes. 2. Limita duración y repeticiones. 3. Añade alternativa con prefers-reduced-motion. 4. Comprueba que la animación no distraiga ni bloquee interacción.
+
+**Evidencia esperada.** La animación tiene propósito, duración moderada y respeta reducción de movimiento.
+
+**Seguridad y límites.** No usar destellos rápidos ni animaciones persistentes sin control del usuario.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.3.16 — Transitions
 
 Transitions interpolan cambios de propiedades entre estados. Deben especificar propiedades concretas, duración y curva; `transition: all` puede producir efectos inesperados y costos de mantenimiento.
@@ -1371,6 +1521,16 @@ Transitions interpolan cambios de propiedades entre estados. Deben especificar p
 **Errores frecuentes:** Usar duración excesiva o `transition: all`.
 
 **Comprobación:** ¿Por qué es preferible indicar propiedades específicas en transition?
+
+**Laboratorio de profundización — Transiciones de estado.**
+
+1. Aplica transition a color, transform y opacity. 2. Define duración y easing. 3. Comprueba estado focus/hover/active. 4. Desactiva transición para reduced-motion.
+
+**Evidencia esperada.** La transición refuerza feedback sin retrasar acciones ni ocultar estados.
+
+**Seguridad y límites.** No animar propiedades costosas en grandes cantidades sin medir rendimiento.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.3.17 — Transformations
 
@@ -1388,6 +1548,16 @@ transform modifica representación visual mediante translate, scale, rotate o sk
 
 **Comprobación:** ¿Por qué transform no modifica el espacio que el elemento ocupa en el flujo normal?
 
+
+**Laboratorio de profundización — Transformaciones y contexto visual.**
+
+1. Aplica translate, scale y rotate a elementos de prueba. 2. Compara transform-origin. 3. Observa stacking context y espacio ocupado. 4. Verifica que el contenido transformado no interfiera con controles.
+
+**Evidencia esperada.** La transformación es visual y se comprenden sus efectos sobre composición y apilamiento.
+
+**Seguridad y límites.** No depender de transform para ocultar controles fuera de pantalla ni crear solapamientos inaccesibles.
+
+**Registro sugerido.** Conserva HTML/CSS mínimo, navegador y viewport, capturas de estilos computados, pruebas de teclado/zoom y observaciones de reflujo. No marques la práctica como ejecutada sin evidencia real.
 #### 11.4.01 — Jerarquía visual
 
 La jerarquía visual guía la atención mediante tamaño, peso, contraste, agrupación y posición; debe reflejar prioridades reales.
