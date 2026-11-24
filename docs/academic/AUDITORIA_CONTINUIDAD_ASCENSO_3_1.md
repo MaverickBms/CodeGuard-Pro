@@ -1181,3 +1181,32 @@ El documento de etapa 7 contiene las 84 lecciones de sus seis módulos oficiales
 ### Validación pendiente
 
 No se ejecutaron los laboratorios Bash en una máquina virtual durante este lote. No se validaron scripts con shellcheck ni se probaron cron, permisos o automatizaciones en un entorno aislado. La cobertura documental completa de la etapa no equivale a validación técnica, editorial externa ni aprobación. Las etapas 8–32 requieren continuar con verificación de contenido y evidencia por lección.
+
+
+## Profundización documental integral — etapa 10 (2026-11-24)
+
+### Alcance
+
+Se amplió el desarrollo de las **38 lecciones** oficiales de NoSQL y almacenamiento moderno:
+
+| Módulo | Lecciones | Cobertura documental |
+|---|---:|---:|
+| 10.1 Fundamentos NoSQL | 8 | 8/8 |
+| 10.2 MongoDB | 14 | 14/14 |
+| 10.3 Redis | 11 | 11/11 |
+| 10.4 Otras arquitecturas de almacenamiento | 5 | 5/5 |
+| **Total** | **38** | **38/38** |
+
+Se añadieron prácticas específicas de selección de modelos, consistencia, disponibilidad, CAP, modelado documental, consultas y agregaciones MongoDB, replicación y sharding, estructuras Redis, TTL, caché, sesiones, Pub/Sub, rate limiting y arquitecturas documentales, key-value, column-family, grafos y series temporales.
+
+### Control editorial y técnico
+
+- Se cotejaron los cuatro módulos y sus cantidades contra el roadmap oficial.
+- Se verificaron estructuralmente 38 encabezados de lección, coincidentes con el JSON.
+- Se incluyeron advertencias para operaciones CRUD destructivas, exposición de Redis, secretos de sesión, consultas costosas y consistencia de datos.
+- No se ejecutaron instancias MongoDB/Redis, consultas, benchmarks, pruebas de failover ni laboratorios de sharding durante esta intervención.
+- No se verificaron individualmente todas las referencias ni se obtuvo revisión técnica externa.
+
+**Estado:** desarrollo documental de la etapa 10 completado en esta pasada; ejecución reproducible, verificación de referencias y aprobación independiente pendientes. La cobertura 38/38 no equivale a pruebas ejecutadas ni a aprobación.
+
+El roadmap JSON permanece sin cambios. No se importó ni publicó contenido.
