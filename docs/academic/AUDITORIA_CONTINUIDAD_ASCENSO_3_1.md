@@ -166,3 +166,8 @@ El documento de POO y paradigmas quedó alineado con sus 33 lecciones nominales:
 ### Expansión granular — etapa 5
 
 El documento de Git, GitHub, terminal y modularidad quedó alineado con sus 42 lecciones nominales: 17 de Git, 9 de GitHub, 7 de terminal y 9 de modularidad. Se separaron las áreas de Git (repositorio, working directory, staging, operaciones de sincronización e historial), comandos de terminal, redirecciones/pipes y módulos/imports/exports/namespaces/paquetes. El orden de las operaciones Git se ajustó al roadmap. Se mantuvieron las advertencias para operaciones destructivas, secretos y publicación de repositorios.
+
+
+### Expansión granular — etapa 6
+
+La etapa 6 quedó alineada con las 57 lecciones del roadmap: 9 de estructuras lineales, 7 asociativas, 7 de árboles, 7 de grafos, 12 de algoritmos, 7 técnicas y 8 de complejidad. Se separaron estructuras antes agrupadas (listas simples/dobles/circulares, colas/deques, mapas/conjuntos), tipos de grafos, algoritmos de búsqueda/ordenamiento/caminos mínimos/árboles de expansión, técnicas y notaciones de complejidad. Se mantuvo el proyecto de biblioteca de estructuras en Java y se precisaron supuestos de complejidad y aplicabilidad de algoritmos. No se afirma compilación ni ejecución de implementaciones.
