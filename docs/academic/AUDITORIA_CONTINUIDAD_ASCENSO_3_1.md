@@ -615,3 +615,17 @@ Se añadieron prácticas y evidencias a las **58 lecciones** de Java y Spring Bo
 **Límites:** no se ejecutaron compilaciones Java, pruebas Spring, conexiones a MySQL/PostgreSQL, flujos OAuth/OIDC, JWT, colas, WebSockets ni despliegues. No se verificaron versiones ni bibliografía de forma individual. La ampliación no constituye validación técnica por ejecución ni aprobación externa.
 
 **Acumulado:** etapas 1–6: 265 lecciones según el informe de OpenCode; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63; etapa 14: 58. Total de etapas 1–14 con desarrollo documental ampliado: **819 lecciones**. Etapas 15–32: 1.097 lecciones requieren profundización equivalente. Permanecen pendientes la ejecución reproducible, verificación bibliográfica individual y revisión técnica/pedagógica independiente. No se importó ni publicó contenido.
+
+
+## Addendum de profundización didáctica — etapas 15–16 — 2026-11-24
+
+Se añadieron prácticas y evidencias a **99 lecciones**:
+
+- **Etapa 15 — Node.js y NestJS: 53 lecciones.** Prácticas sobre runtime, módulos, Event Loop, streams, APIs, middleware, inyección de dependencias, persistencia, autenticación, colas y pruebas.
+- **Etapa 16 — PHP, Laravel y .NET: 46 lecciones.** Prácticas sobre lenguaje, Composer, MVC, Eloquent, migraciones, validación, autorización, colas, C#, LINQ y ASP.NET Core.
+
+**Comprobación documental:** ambos archivos fueron releídos desde la rama después de los cambios; se contaron 53 y 46 unidades, cada una con apartado de práctica/evidencia y sin encabezados vacíos.
+
+**Límites:** no se ejecutaron scripts Node/PHP, builds .NET, pruebas de frameworks, migraciones de bases de datos, colas, autenticación ni despliegues. No se verificaron referencias/versiones una por una. El estado es ampliación documental y estructural, no validación técnica por ejecución ni aprobación externa.
+
+**Acumulado:** etapas 1–6: 265; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63; etapa 14: 58; etapas 15–16: 99. Total de etapas 1–16 con desarrollo documental ampliado: **918 lecciones**. Etapas 17–32: 998 lecciones requieren profundización equivalente. No se importó ni publicó contenido.
