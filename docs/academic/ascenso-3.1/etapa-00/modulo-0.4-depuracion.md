@@ -12,7 +12,7 @@ Aprender un proceso sistemático para localizar, comprender y corregir defectos 
 
 Podrás reproducir un defecto, leer un stack trace, utilizar breakpoints, diseñar logs seguros, formular hipótesis y verificar que una corrección no introduce regresiones.
 
-## 0.4.1 — Debugging
+## Apéndice didáctico — Debugging
 
 Depurar es investigar un comportamiento que no cumple lo esperado; no consiste en editar líneas hasta que el error desaparezca.
 
@@ -27,7 +27,7 @@ Depurar es investigar un comportamiento que no cumple lo esperado; no consiste e
 8. Ejecuta pruebas de regresión.
 9. Documenta causa y cambio.
 
-## 0.4.2 — Reproducción de errores
+## Apéndice didáctico — Reproducción de errores
 
 Registra versiones, sistema operativo, entorno, datos de entrada no sensibles, pasos exactos, frecuencia, resultado esperado y real, condiciones previas y cambios recientes.
 
@@ -35,7 +35,7 @@ No alteres muchas variables simultáneamente. Si el error desaparece al cambiar 
 
 **Ejercicio:** prepara un programa de práctica con un defecto lógico. Escribe pasos que permitan a otra persona reproducir el resultado incorrecto.
 
-## 0.4.3 — Stack traces
+## Apéndice didáctico — Stack traces
 
 Un stack trace muestra la secuencia de llamadas que condujo a una excepción. Ayuda a localizar dónde se manifestó el fallo, pero la primera línea visible no siempre es la causa raíz.
 
@@ -48,7 +48,7 @@ Un stack trace muestra la secuencia de llamadas que condujo a una excepción. Ay
 
 **Ejercicio:** analiza un stack trace ficticio o de un proyecto propio sin datos sensibles. Señala excepción, archivo, función, línea y qué falta para confirmar la causa.
 
-## 0.4.4 — Breakpoints
+## Apéndice didáctico — Breakpoints
 
 Un breakpoint pausa la ejecución para inspeccionar el estado.
 
@@ -63,7 +63,7 @@ No compartas capturas si muestran tokens, datos personales o secretos.
 
 **Ejercicio:** coloca un breakpoint en una función que calcula un total e inspecciona argumentos y variables intermedias.
 
-## 0.4.5 — Logs
+## Apéndice didáctico — Logs
 
 Los logs registran eventos durante la ejecución. Deben ayudar a reconstruir qué ocurrió sin inundar la salida ni exponer información privada.
 
@@ -76,7 +76,7 @@ Los logs registran eventos durante la ejecución. Deben ayudar a reconstruir qu�
 
 **Ejercicio:** diseña cinco mensajes de log para un flujo de autenticación ficticio sin registrar credenciales ni tokens.
 
-## 0.4.6 — Hipótesis
+## Apéndice didáctico — Hipótesis
 
 Una hipótesis debe ser concreta y comprobable.
 
@@ -89,7 +89,7 @@ Una hipótesis debe ser concreta y comprobable.
 
 Que un error aparezca después de una actualización no demuestra por sí solo que la actualización sea la causa.
 
-## 0.4.7 — Causa raíz y regresión
+## Apéndice didáctico — Causa raíz y regresión
 
 - Reproduce el defecto antes del cambio.
 - Añade una prueba que falle antes y pase después, cuando sea viable.
@@ -152,6 +152,9 @@ No se agregan videos genéricos de programación ni recursos en inglés. Si no s
 
 ---
 
+
+> **Nota de alineación curricular:** los apartados heredados se conservan como apéndice de consulta. La secuencia numerada de la profundización sigue el orden oficial del maestro: debugging, breakpoints, stack traces, logs, hipótesis, reproducción de errores y análisis de causas.
+
 ## Profundización didáctica — versión 0.2.0 (24-11-2026)
 
 Esta ampliación conserva los siete temas nominales del módulo. Los fragmentos son material didáctico propuesto; no se declara que hayan sido ejecutados en esta entrega. Las pruebas indicadas permiten que el estudiante los ejecute en su propio entorno local.
@@ -166,7 +169,7 @@ Esta ampliación conserva los siete temas nominales del módulo. Los fragmentos 
 
 No siempre existe una única causa raíz. En sistemas distribuidos pueden interactuar varias condiciones; documenta el alcance de la conclusión.
 
-### 0.4.1 — Debugging: seguir un procedimiento repetible
+### 0.4.undefined — Debugging: seguir un procedimiento repetible
 
 **Caso:** una función calcula un descuento incorrecto para un importe límite.
 
@@ -183,7 +186,7 @@ Proceso:
 
 **Ejercicio:** describe el resultado esperado para importes inferiores, iguales y superiores al umbral. Explica por qué probar únicamente un importe alto no detectaría todos los defectos de comparación.
 
-### 0.4.2 — Reproducción de errores: fijar las condiciones
+### 0.4.undefined — Reproducción de errores: fijar las condiciones
 
 Un reporte reproducible identifica el estado inicial. Incluye:
 - versión de lenguaje/runtime y dependencias;
@@ -197,7 +200,7 @@ Un reporte reproducible identifica el estado inicial. Incluye:
 
 **Ejercicio:** entrega un caso que otra persona pueda ejecutar sin tener que adivinar variables de entorno o archivos de entrada. Si no puede reproducirlo, registra qué dato falta; no declares el defecto corregido.
 
-### 0.4.3 — Stack traces: leer desde el error hacia el contexto
+### 0.4.undefined — Stack traces: leer desde el error hacia el contexto
 
 Un stack trace de Python puede tener esta forma ilustrativa:
 
@@ -219,7 +222,7 @@ TypeError: can only concatenate str (not "int") to str
 
 **Ejercicio:** explica por qué convertir cualquier valor a número sin validar podría ocultar datos mal formados. Propón una validación explícita y un mensaje de error útil.
 
-### 0.4.4 — Breakpoints: observar el estado sin adivinar
+### 0.4.undefined — Breakpoints: observar el estado sin adivinar
 
 En Visual Studio Code:
 1. Abre la carpeta del proyecto.
@@ -235,7 +238,7 @@ En Python también se puede utilizar `breakpoint()` o `python -m pdb archivo.py`
 
 **Ejercicio:** registra tres valores antes y después de una operación. No entregues solo una captura: explica qué hipótesis confirma o descarta cada observación.
 
-### 0.4.5 — Logs: observabilidad útil y segura
+### 0.4.undefined — Logs: observabilidad útil y segura
 
 Un evento de log debería responder, según el caso: qué ocurrió, cuándo, en qué componente, con qué resultado y bajo qué contexto no sensible.
 
@@ -254,7 +257,7 @@ No registres contraseñas, tokens, cookies, claves, datos bancarios ni cuerpos c
 
 **Ejercicio:** redacta seis eventos para un flujo de compra ficticio: inicio, validación, cálculo, rechazo, finalización y error inesperado. Cada evento debe aportar contexto sin revelar información sensible.
 
-### 0.4.6 — Hipótesis: diseñar pruebas que distingan explicaciones
+### 0.4.undefined — Hipótesis: diseñar pruebas que distingan explicaciones
 
 Una hipótesis útil tiene:
 - observación verificable;
