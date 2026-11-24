@@ -210,3 +210,12 @@ Se amplió el desarrollo de las **81 lecciones** de bases de datos: fundamentos 
 Comprobación estructural: 81/81 encabezados cotejados con el roadmap oficial. No se ejecutaron sentencias SQL, instalaciones, migraciones, benchmarks ni pruebas concurrentes. Las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. La cobertura documental no equivale a validación técnica ni aprobación.
 
 Acumulado documental ampliado: etapas 1–6, 265; etapa 7, 84; etapa 8, 81; etapa 9, 81; total etapas 1–9: **511 lecciones**. Restan 1.435 lecciones nominales de las etapas 10–32. El roadmap JSON permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó ni publicó contenido.
+
+
+### Profundización documental integral — etapa 10 — 2026-11-24
+
+Se amplió el desarrollo de las **38 lecciones** de NoSQL: fundamentos (8), MongoDB (14), Redis (11) y otras arquitecturas de almacenamiento (5). Se incorporaron prácticas específicas, evidencias esperadas, criterios de aceptación y límites de seguridad.
+
+Comprobación estructural: 38/38 encabezados cotejados con el roadmap oficial. No se ejecutaron instancias MongoDB/Redis, consultas, benchmarks, failover ni sharding. Las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. La cobertura documental no equivale a validación técnica ni aprobación.
+
+Acumulado documental ampliado: etapas 1–6, 265; etapa 7, 84; etapa 8, 81; etapa 9, 81; etapa 10, 38; total etapas 1–10: **549 lecciones**. Restan 1.397 lecciones nominales de las etapas 11–32. El roadmap JSON permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó ni publicó contenido.
