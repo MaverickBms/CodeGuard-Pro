@@ -171,120 +171,308 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 ### Módulo 12.1 — JavaScript
 
 #### 12.1.01 — Variables
-`let`, `const` y `var` declaran enlaces con reglas distintas de ámbito y reasignación. Prefiere `const` cuando no reasignas, `let` cuando sí y evita `var` en código moderno; recuerda que `const` no vuelve inmutable un objeto.
 
+Las variables enlazan identificadores con valores. `let` permite reasignación, `const` impide reasignar el enlace y `var` tiene alcance de función y hoisting histórico. Prefiere const por defecto y let cuando el flujo requiere reasignación.
 
-**Práctica y evidencia:** Declara variables de prueba con `const` y `let` y observa qué ocurre al intentar reasignarlas. **Evidencia:** explica por qué `const` impide reasignar el binding, pero no vuelve inmutable un objeto.
+**Ejemplo técnico:** `const limite = 10; let intentos = 0;`
+
+**Práctica guiada:** Declara valores, intenta reasignar const y observa el error en modo estricto.
+
+**Actividad independiente:** Refactoriza variables para minimizar mutabilidad.
+
+**Criterios de aceptación:** Cada variable tiene alcance y mutabilidad justificados.
+
+**Errores frecuentes:** Usar var sin razón o pensar que const vuelve inmutable un objeto.
+
+**Comprobación:** ¿Qué impide const y qué no impide?
 
 #### 12.1.02 — Tipos
-JavaScript es dinámicamente tipado: un valor tiene tipo en tiempo de ejecución y una variable puede referirse a valores de tipos distintos. Distingue `undefined`, `null`, boolean, number, bigint, string, symbol y object; usa comprobaciones explícitas al validar entradas externas.
 
+JavaScript es dinámico y los valores tienen tipos como string, number, bigint, boolean, undefined, symbol y object; null es un valor primitivo especial pese a typeof histórico.
 
-**Práctica y evidencia:** Compara `typeof` para valores primitivos y utiliza `Array.isArray` para arrays. **Evidencia:** clasifica ejemplos y explica la particularidad de `typeof null`.
+**Ejemplo técnico:** typeof null devuelve 'object' por una peculiaridad histórica.
+
+**Práctica guiada:** Prueba typeof en valores primitivos y objetos.
+
+**Actividad independiente:** Clasifica entradas y define validación antes de operar.
+
+**Criterios de aceptación:** No se confunden tipos ni coerciones implícitas.
+
+**Errores frecuentes:** Asumir que typeof null devuelve null.
+
+**Comprobación:** ¿Qué diferencia hay entre tipo de variable y tipo del valor actual?
 
 #### 12.1.03 — Operadores
-Los operadores realizan operaciones aritméticas, comparación, asignación, lógica y acceso. Comprende precedencia, coerción y diferencia entre `===` y `==`; usa comparación estricta por defecto y agrupa expresiones complejas para hacer visible la intención.
 
+Los operadores realizan operaciones aritméticas, comparación, lógica, asignación y coalescencia. `===` evita coerción en comparación de igualdad; `??` usa fallback solo ante null/undefined, a diferencia de `||`.
 
-**Práctica y evidencia:** Prueba operadores aritméticos, de igualdad estricta, comparación y cortocircuito con entradas conocidas. **Evidencia:** predice resultados antes de ejecutar y explica coerción cuando aparezca.
+**Ejemplo técnico:** `valor ?? 'sin dato'` conserva 0 y cadena vacía.
+
+**Práctica guiada:** Prueba ==/===, ||/?? y precedencia con valores límite.
+
+**Actividad independiente:** Construye expresiones de validación sin coerciones ambiguas.
+
+**Criterios de aceptación:** Resultados previstos para null, 0, false y ''.
+
+**Errores frecuentes:** Usar == sin comprender coerción o confundir || con ??.
+
+**Comprobación:** ¿Qué valor de entrada distingue ?? de ||?
 
 #### 12.1.04 — Condicionales
-Las condicionales ejecutan rutas según una expresión booleana mediante `if`, `else` o `switch`. Convierte las reglas del negocio en condiciones mutuamente comprensibles y prueba valores ausentes, límites y tipos inesperados.
 
+if/else, switch y operador ternario controlan ramificación. La comparación debe ser explícita y las ramas exhaustivas cuando el dominio lo exige.
 
-**Práctica y evidencia:** Implementa una selección de tarifa según rangos, incluyendo valores límite. **Evidencia:** demuestra cobertura de límites y ausencia de ramas ambiguas.
+**Ejemplo técnico:** switch sobre estado con default que maneja valor desconocido.
+
+**Práctica guiada:** Prueba ramas verdadera/falsa y estados no contemplados.
+
+**Actividad independiente:** Implementa validación de estados de pedido.
+
+**Criterios de aceptación:** Cada estado posible tiene comportamiento definido.
+
+**Errores frecuentes:** Olvidar default o anidar ternarios ilegibles.
+
+**Comprobación:** ¿Por qué conviene manejar el caso desconocido?
 
 #### 12.1.05 — Bucles
-Los bucles `for`, `while`, `do...while` y `for...of` repiten operaciones bajo distintos criterios. Selecciona el bucle según si recorres una colección o esperas una condición, y evita mutar la colección mientras la iteras sin comprender el efecto.
 
+for, while, do...while, for...of y for...in recorren estructuras con semánticas diferentes. for...of itera valores iterables; for...in enumera claves enumerables, por lo que no es sustituto general para arrays.
 
-**Práctica y evidencia:** Recorre una colección con `for...of` y compara con `forEach` cuando no necesitas controlar el flujo. **Evidencia:** explica cuándo `break` y `continue` son válidos.
+**Ejemplo técnico:** for...of sobre array devuelve elementos; for...in devuelve índices como cadenas.
+
+**Práctica guiada:** Compara iteraciones sobre array y objeto.
+
+**Actividad independiente:** Procesa colección con salida temprana y condición de terminación.
+
+**Criterios de aceptación:** No se omiten ni duplican elementos.
+
+**Errores frecuentes:** Usar for...in para arrays sin controlar propiedades heredadas.
+
+**Comprobación:** ¿Qué diferencia hay entre for...of y for...in?
 
 #### 12.1.06 — Funciones
-Una función encapsula comportamiento y puede recibir parámetros y devolver un valor. JavaScript admite declaraciones, expresiones y funciones flecha; elige nombres descriptivos, define contratos de entrada/salida y evita mezclar cálculo, acceso a red y manipulación visual en una sola función.
 
+Las funciones encapsulan comportamiento y pueden declararse, asignarse o expresarse como arrow functions. Parámetros, retorno, efectos secundarios y contrato deben ser claros.
 
-**Práctica y evidencia:** Escribe una función que calcule subtotal con parámetros validados y un valor de retorno explícito. **Evidencia:** prueba entradas válidas, inválidas y casos límite.
+**Ejemplo técnico:** Una función pura recibe número y devuelve doble sin modificar estado externo.
+
+**Práctica guiada:** Implementa funciones con parámetros, retorno y casos límite.
+
+**Actividad independiente:** Divide un cálculo en funciones pequeñas y comprobables.
+
+**Criterios de aceptación:** Entradas/salidas definidas y sin efectos inesperados.
+
+**Errores frecuentes:** Funciones largas que mezclan entrada, cálculo y DOM.
+
+**Comprobación:** ¿Qué característica hace que una función sea pura?
 
 #### 12.1.07 — Objetos
-Los objetos agrupan propiedades y métodos y pueden crearse con literales, constructores o clases. Accede de forma segura a propiedades opcionales, evita asumir que datos JSON externos tienen la forma esperada y valida el contrato antes de utilizarlos.
 
+Los objetos agrupan propiedades y métodos. Las propiedades pueden ser propias o heredadas; la mutación afecta referencias compartidas. Object.keys/entries y destructuring facilitan inspección.
 
-**Práctica y evidencia:** Crea un objeto producto y accede a propiedades por notación punto y corchetes. **Evidencia:** explica propiedad ausente, `undefined` y mutación del objeto.
+**Ejemplo técnico:** Dos variables que apuntan al mismo objeto observan la misma mutación.
+
+**Práctica guiada:** Crea objeto y compara copia por referencia con copia superficial.
+
+**Actividad independiente:** Modela objeto de pedido con propiedades validadas.
+
+**Criterios de aceptación:** Se explica identidad y mutabilidad de referencias.
+
+**Errores frecuentes:** Creer que asignar objeto a otra variable lo clona.
+
+**Comprobación:** ¿Qué sucede al modificar un objeto desde una segunda referencia?
 
 #### 12.1.08 — Arrays
-Los arrays son colecciones ordenadas con métodos de iteración, transformación y búsqueda. Practica `map`, `filter`, `reduce`, `find` y `some`; distingue métodos que mutan el array de los que producen uno nuevo y no uses índices como identificadores persistentes.
 
+Los arrays son objetos indexados y ordenados; métodos como map, filter, reduce, find y some expresan transformaciones. Algunos mutan (sort, splice, push) y otros devuelven nuevos arrays.
 
-**Práctica y evidencia:** Transforma un array de productos con `map`, `filter` y `reduce`. **Evidencia:** compara la colección original con el resultado y explica el acumulador.
+**Ejemplo técnico:** filter selecciona; map transforma; reduce acumula.
+
+**Práctica guiada:** Aplica map/filter/reduce a datos sintéticos y compara original.
+
+**Actividad independiente:** Construye pipeline de transformación sin mutar entrada.
+
+**Criterios de aceptación:** Resultado y mutación están documentados.
+
+**Errores frecuentes:** Confundir métodos mutables e inmutables o mutar estado React directamente.
+
+**Comprobación:** ¿Qué diferencia hay entre map y forEach?
 
 #### 12.1.09 — Strings
-Las cadenas son secuencias UTF-16 y ofrecen métodos de búsqueda, extracción y transformación. Ten presente que longitud e índices no siempre equivalen a caracteres visuales Unicode; valida y normaliza texto según el requisito de la aplicación.
 
+Las cadenas son inmutables y ofrecen métodos de búsqueda, extracción, normalización y reemplazo. Template literals interpolan expresiones; Unicode puede requerir cuidado con unidades UTF-16 y grafemas.
 
-**Práctica y evidencia:** Normaliza entradas de texto con `trim`, `toLowerCase` y métodos de búsqueda. **Evidencia:** prueba cadenas vacías, espacios y caracteres Unicode.
+**Ejemplo técnico:** `texto.trim().toLowerCase()` normaliza espacios y mayúsculas simples.
+
+**Práctica guiada:** Prueba slice, includes, replace y trim con entradas acentuadas.
+
+**Actividad independiente:** Normaliza y valida una etiqueta sin perder caracteres Unicode.
+
+**Criterios de aceptación:** Se documenta tratamiento de espacios y caracteres.
+
+**Errores frecuentes:** Asumir que length equivale siempre a cantidad de caracteres percibidos.
+
+**Comprobación:** ¿Por qué una cadena Unicode puede tener length distinto al número de símbolos visibles?
 
 #### 12.1.10 — Destructuring
-Destructuring extrae valores de arrays u objetos en variables mediante patrones. Permite asignar valores predeterminados y renombrar propiedades; úsalo para hacer explícita la forma de los datos, sin ocultar estructuras complejas en una sola línea.
 
+Destructuring extrae valores de arrays y propiedades de objetos en variables, con valores por defecto y renombrado. En objetos, el nombre de propiedad y variable puede diferir.
 
-**Práctica y evidencia:** Extrae propiedades de objetos y elementos de arrays mediante destructuring con valores por defecto. **Evidencia:** demuestra el comportamiento ante propiedades ausentes.
+**Ejemplo técnico:** `const {nombre: etiqueta = 'Invitado'} = usuario;`
+
+**Práctica guiada:** Extrae campos presentes, ausentes y anidados.
+
+**Actividad independiente:** Refactoriza acceso repetido a propiedades con destructuring legible.
+
+**Criterios de aceptación:** Defaults solo aplican a undefined y el origen está claro.
+
+**Errores frecuentes:** Confundir default de destructuring con fallback ante null.
+
+**Comprobación:** ¿Qué ocurre si la propiedad existe con valor null?
 
 #### 12.1.11 — Spread
-Spread (`...`) expande elementos iterables o propiedades enumerables en un nuevo array u objeto. Es una copia superficial: los objetos anidados siguen compartiendo referencias, por lo que no garantiza inmutabilidad profunda.
 
+Spread expande elementos iterables o propiedades enumerables en nuevos contextos. La copia de arrays/objetos suele ser superficial; objetos anidados conservan referencias.
 
-**Práctica y evidencia:** Combina arrays y copia objetos mediante spread, distinguiendo copia superficial de profunda. **Evidencia:** modifica una estructura anidada y demuestra qué referencia continúa compartida.
+**Ejemplo técnico:** `const copia = {...original}` crea objeto distinto, pero conserva referencia a subobjetos.
+
+**Práctica guiada:** Compara identidad y mutación en copia superficial.
+
+**Actividad independiente:** Actualiza una propiedad anidada sin mutar el estado original.
+
+**Criterios de aceptación:** Se identifica qué niveles fueron copiados.
+
+**Errores frecuentes:** Creer que spread realiza clonación profunda.
+
+**Comprobación:** ¿Qué limitación tiene la copia superficial?
 
 #### 12.1.12 — Rest
-Rest (`...`) agrupa los argumentos restantes o propiedades no extraídas en una nueva colección. En parámetros de función debe ser el último parámetro; úsalo para APIs flexibles sin perder claridad sobre qué argumentos son obligatorios.
 
+Rest recoge elementos restantes en parámetros, destructuring o arrays/objetos. En parámetros debe aparecer al final y permite funciones de aridad variable.
 
-**Práctica y evidencia:** Implementa una función que reciba un número variable de argumentos con rest. **Evidencia:** muestra que el parámetro rest debe ocupar la última posición y que recibe un array.
+**Ejemplo técnico:** `function sumar(...valores)` recibe argumentos en un array.
+
+**Práctica guiada:** Implementa función con cantidad variable de argumentos.
+
+**Actividad independiente:** Combina primer parámetro y resto para un reporte.
+
+**Criterios de aceptación:** El resto captura exactamente argumentos no asignados.
+
+**Errores frecuentes:** Confundir rest con spread pese a sintaxis parecida.
+
+**Comprobación:** ¿En qué contexto `...` recoge valores en vez de expandirlos?
 
 #### 12.1.13 — Scope
-Scope determina dónde puede resolverse un identificador: global, de función o de bloque. `let` y `const` tienen ámbito de bloque y zona temporal muerta; limita variables al menor ámbito útil para reducir efectos colaterales.
 
+El scope determina dónde es accesible un identificador: global, función y bloque. let/const tienen alcance de bloque; var de función. Shadowing puede ocultar variables externas y dificultar lectura.
 
-**Práctica y evidencia:** Compara variables globales, de función y de bloque usando `var`, `let` y `const`. **Evidencia:** predice qué identificadores son accesibles en cada bloque.
+**Ejemplo técnico:** Una let declarada dentro de if no existe fuera del bloque.
+
+**Práctica guiada:** Prueba acceso antes/después de bloque y función.
+
+**Actividad independiente:** Refactoriza variables globales a alcance mínimo.
+
+**Criterios de aceptación:** Cada identificador tiene alcance intencional.
+
+**Errores frecuentes:** Crear globals accidentales o reutilizar nombres que ocultan valores externos.
+
+**Comprobación:** ¿Qué diferencia el scope de bloque del scope de función?
 
 #### 12.1.14 — Closures
-Una closure conserva acceso al entorno léxico donde se creó una función, incluso después de terminar la función externa. Es útil para encapsular estado y crear funciones especializadas; controla referencias retenidas para no mantener memoria innecesaria.
 
+Una closure conserva acceso al entorno léxico donde se creó la función, incluso después de que la función externa termina. Se utiliza para encapsular estado, callbacks y factories; también puede retener memoria si mantiene referencias innecesarias.
 
-**Práctica y evidencia:** Crea una función externa que devuelva una función interna que recuerde un contador privado. **Evidencia:** explica el cierre léxico y demuestra que llamadas independientes conservan estados distintos.
+**Ejemplo técnico:** Una función contador puede cerrar sobre una variable privada y exponer incremento/lectura.
+
+**Práctica guiada:** Crea contador y dos instancias independientes.
+
+**Actividad independiente:** Diseña factory que encapsule configuración sin exponer mutación directa.
+
+**Criterios de aceptación:** Instancias mantienen estados separados.
+
+**Errores frecuentes:** Asumir que closure copia valores en vez de conservar entorno léxico.
+
+**Comprobación:** ¿Por qué dos closures creadas por llamadas distintas pueden mantener estados independientes?
 
 #### 12.1.15 — Hoisting
-Hoisting describe cómo el motor procesa declaraciones antes de ejecutar el código, pero no significa que todas las variables puedan usarse antes de declararse. Las declaraciones `var`, `let`, `const` y `function` tienen reglas distintas; escribe declaraciones antes de su uso.
 
+Hoisting describe cómo declaraciones se procesan antes de ejecutar código. function declarations pueden invocarse antes de su ubicación; var se inicializa como undefined; let/const permanecen en temporal dead zone hasta inicialización.
 
-**Práctica y evidencia:** Compara declaración de función, expresión y variable antes de su inicialización. **Evidencia:** explica diferencias de hoisting y temporal dead zone sin depender de reglas memorizadas.
+**Ejemplo técnico:** Acceder a let antes de declararla produce ReferenceError.
+
+**Práctica guiada:** Compara function, var, let y const en ejemplos aislados.
+
+**Actividad independiente:** Refactoriza código para declarar dependencias antes de uso.
+
+**Criterios de aceptación:** No se depende de comportamiento confuso de hoisting.
+
+**Errores frecuentes:** Decir que let/const no se elevan; se elevan pero quedan en TDZ.
+
+**Comprobación:** ¿Qué es la temporal dead zone?
 
 #### 12.1.16 — Prototypes
-Los prototypes permiten delegar la búsqueda de propiedades a otros objetos y forman la base de la herencia basada en prototipos. Comprende `Object.getPrototypeOf` y la cadena de prototipos; evita modificar prototipos globales de objetos nativos.
 
+La herencia de JavaScript se basa en cadena de prototipos. Los objetos pueden delegar búsqueda de propiedades a su prototype; class es sintaxis sobre este mecanismo. Object.create y Object.getPrototypeOf permiten inspección.
 
-**Práctica y evidencia:** Define un objeto con prototipo y consulta la cadena con `Object.getPrototypeOf`. **Evidencia:** distingue propiedad propia de heredada y evita modificar prototipos globales.
+**Ejemplo técnico:** Una instancia puede heredar método desde prototype sin copiarlo como propiedad propia.
+
+**Práctica guiada:** Compara Object.hasOwn y búsqueda heredada.
+
+**Actividad independiente:** Modela comportamiento compartido y explica cuándo preferir composición.
+
+**Criterios de aceptación:** Se distingue propiedad propia de heredada.
+
+**Errores frecuentes:** Confundir prototype de función con [[Prototype]] de instancia.
+
+**Comprobación:** ¿Qué sucede cuando una propiedad no existe como propia?
 
 #### 12.1.17 — This
-`this` se determina principalmente por cómo se invoca una función, no por dónde se declara; las funciones flecha capturan `this` léxico. Analiza llamadas como método, función independiente, constructor y `bind` para evitar referencias inesperadas.
 
+El valor de this depende del modo de invocación, no solo del lugar donde se define la función. Arrow functions capturan this léxico; métodos tradicionales reciben this según receptor y bind/call/apply pueden fijarlo.
 
-**Práctica y evidencia:** Invoca un método desde distintos contextos y observa el valor de `this`; compara método, función separada y arrow function. **Evidencia:** explica cómo se determina el contexto en cada caso.
+**Ejemplo técnico:** obj.metodo() vincula this a obj; extraer método puede perder ese receptor.
+
+**Práctica guiada:** Prueba método, función extraída, bind y arrow function.
+
+**Actividad independiente:** Corrige callback que pierde contexto de this.
+
+**Criterios de aceptación:** Contexto de this explicado por invocación.
+
+**Errores frecuentes:** Asumir que this siempre apunta al objeto que contiene la definición.
+
+**Comprobación:** ¿Por qué una arrow function no crea su propio this?
 
 #### 12.1.18 — ES6+
-ES6+ agrupa mejoras del lenguaje como `let`/`const`, funciones flecha, clases, módulos, destructuring, iteradores y promesas. No trates la etiqueta como una versión única: verifica compatibilidad del runtime y del navegador objetivo antes de utilizar una API.
 
+ECMAScript moderno incorpora módulos, let/const, arrow functions, clases, promesas, destructuring, spread, iteradores y otras mejoras. La compatibilidad depende del runtime y objetivo de compilación.
 
-**Práctica y evidencia:** Utiliza características modernas del lenguaje como optional chaining, nullish coalescing y template literals. **Evidencia:** compara `??` con `||` usando cero y cadena vacía.
+**Ejemplo técnico:** Una aplicación puede usar async/await en runtime moderno o transpilar para navegadores antiguos.
+
+**Práctica guiada:** Identifica características modernas en código y comprueba soporte del target.
+
+**Actividad independiente:** Actualiza un fragmento legacy conservando comportamiento y compatibilidad.
+
+**Criterios de aceptación:** La característica se usa según soporte y necesidad.
+
+**Errores frecuentes:** Confundir versión del lenguaje con versión de Node/navegador.
+
+**Comprobación:** ¿Qué papel cumple un target de compilación?
 
 #### 12.1.19 — Modules
-Los módulos separan código mediante `export` e `import`, con ámbitos propios y dependencias explícitas. Define una interfaz pública pequeña, evita ciclos innecesarios y distingue módulos ECMAScript de formatos históricos como CommonJS.
 
+Los módulos ES utilizan export e import, tienen scope propio y se evalúan una vez por módulo en un grafo de dependencias. Los imports estáticos deben estar en nivel superior; la resolución depende del entorno y configuración.
 
-**Práctica y evidencia:** Divide una aplicación pequeña en módulos ES con exportaciones nombradas y default. **Evidencia:** explica dependencias, ruta de importación y diferencia entre módulos y scripts clásicos.
+**Ejemplo técnico:** Export nombrado y default tienen sintaxis y consumo distintos.
 
-### Módulo 12.2 — DOM
+**Práctica guiada:** Separa función y constantes en dos módulos y prueba importaciones.
+
+**Actividad independiente:** Organiza utilidades con API pública mínima.
+
+**Criterios de aceptación:** Dependencias explícitas y sin ciclos innecesarios.
+
+**Errores frecuentes:** Confundir CommonJS require con import ESM o exportar internals innecesarios.
+
+**Comprobación:** ¿Qué diferencia existe entre export nombrado y default?
 
 #### 12.2.01 — Document Object Model
 El DOM representa el documento como un árbol de nodos que scripts pueden consultar y modificar. Comprende la diferencia entre HTML fuente y DOM vivo, y evita asumir que la estructura permanece igual después de scripts, componentes o interacciones.
