@@ -125,240 +125,257 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Las orientac
 ### Módulo 30.1 — Inteligencia artificial para seguridad
 
 #### 30.1.01 — Machine Learning
-Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Machine Learning aprende patrones a partir de datos para producir predicciones o clasificaciones. En seguridad define objetivo, población, calidad de etiquetas y coste de error; un modelo no reemplaza el criterio del analista.
 
 #### 30.1.02 — Anomaly Detection
-Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Anomaly Detection identifica observaciones que difieren de una línea base o distribución esperada. Ajusta umbrales al contexto, considera estacionalidad y revisa falsos positivos antes de escalar alertas.
 
 #### 30.1.03 — Pattern Recognition
-Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Pattern Recognition detecta regularidades en datos como secuencias, eventos o características de archivos. Documenta qué patrón se aprende y qué cambios legítimos pueden producir coincidencias.
 
 #### 30.1.04 — Classification
-Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Classification asigna observaciones a categorías mediante un modelo entrenado o reglas. Evalúa precisión, recall, F1 y matriz de confusión según el coste de falsos positivos y negativos.
 
 #### 30.1.05 — Security Analytics
-Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Security Analytics combina eventos, métricas y contexto para identificar riesgos y apoyar decisiones. Mantén calidad, procedencia y minimización de datos y explica límites de los modelos.
 
 #### 30.1.06 — AI-assisted Investigation
-Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+AI-assisted Investigation puede resumir eventos, enriquecer indicadores y sugerir hipótesis para el analista. Verifica cada afirmación contra fuentes primarias y evita que el modelo cierre incidentes o ejecute acciones sin supervisión.
 
 #### 30.1.07 — Limitations of AI in Security
-Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Limitations of AI in Security incluyen falsos positivos, sesgo, datos incompletos, deriva, opacidad y manipulación adversarial. Define límites de uso, validación humana y procedimientos alternativos cuando el modelo falla.
 
 ### Módulo 30.2 — LLM Security
 
 #### 30.2.01 — Large Language Models
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Large Language Models generan texto y otras salidas a partir de patrones aprendidos y contexto de entrada. Pueden producir errores convincentes; verifica hechos, controla datos enviados y no trates la salida como autoridad.
 
 #### 30.2.02 — Prompt Injection
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Prompt Injection ocurre cuando instrucciones maliciosas o no confiables influyen en el comportamiento de un modelo. Separa instrucciones de datos, limita herramientas y valida resultados en una capa externa al modelo.
 
 #### 30.2.03 — Indirect Prompt Injection
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Indirect Prompt Injection llega mediante contenido externo que el modelo consulta, como páginas, documentos o resultados de búsqueda. Trata contenido recuperado como datos no confiables y evita que pueda modificar permisos o instrucciones de sistema.
 
 #### 30.2.04 — Jailbreaking
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Jailbreaking intenta inducir al modelo a ignorar restricciones o políticas. Evalúa resistencia en entornos controlados, registra categorías de fallo y aplica defensa en profundidad en lugar de depender de una frase de sistema.
 
 #### 30.2.05 — Data Leakage
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Data Leakage ocurre cuando el sistema revela datos privados, secretos, prompts internos o información de otros usuarios. Minimiza contexto, aplica autorización antes de recuperar datos y filtra salidas en límites de confianza.
 
 #### 30.2.06 — Context Manipulation
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Context Manipulation altera la información que el modelo recibe para cambiar sus conclusiones o prioridades. Registra fuentes y procedencia, limita contexto recuperado y detecta instrucciones embebidas en documentos.
 
 #### 30.2.07 — Tool Abuse
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Tool Abuse ocurre cuando un modelo invoca herramientas con parámetros o finalidades no autorizadas. Valida argumentos, aplica allowlists y permisos por acción y exige confirmación humana para operaciones de alto impacto.
 
 #### 30.2.08 — Agent Security
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Agent Security protege agentes que planifican y ejecutan acciones mediante herramientas o servicios. Separa planificación de ejecución, controla identidad y alcance y registra cada llamada con límites de presupuesto y tiempo.
 
 #### 30.2.09 — RAG Security
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+RAG Security protege pipelines de recuperación y generación frente a documentos maliciosos, filtración y acceso cruzado. Aplica autorización a nivel de documento, filtros por usuario y validación de fuentes antes de construir contexto.
 
 #### 30.2.10 — Guardrails
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Guardrails son controles de entrada, salida y ejecución que reducen usos no permitidos o resultados inseguros. No son infalibles; combínalos con autorización externa, validación determinista y monitoreo.
 
 #### 30.2.11 — Sandboxing
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Sandboxing ejecuta código o herramientas en entornos aislados con recursos, red y filesystem restringidos. Define límites de CPU/memoria/tiempo, elimina credenciales del host y destruye el entorno tras la ejecución.
 
 #### 30.2.12 — Least Privilege for Agents
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Least Privilege for Agents limita cada herramienta y agente a acciones, datos y recursos mínimos. Usa permisos temporales, separación por tarea y aprobación para operaciones irreversibles.
 
 ### Módulo 30.3 — AI Red Teaming
 
 #### 30.3.01 — Attack Surface
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Attack Surface de un sistema de IA incluye modelo, prompts, datos, RAG, herramientas, plugins, APIs, identidad y despliegue. Inventaría cada límite de confianza y propietario y prioriza controles por impacto.
 
 #### 30.3.02 — Adversarial Inputs
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Adversarial Inputs son entradas diseñadas para inducir errores o comportamientos no deseados en modelos. Define categorías de prueba y datos sintéticos, evita probar sobre usuarios o datos reales sin autorización.
 
 #### 30.3.03 — Prompt Injection Testing
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Prompt Injection Testing evalúa si instrucciones no confiables pueden alterar tareas o políticas. Usa corpus de prueba controlado, mide impacto observable y valida mitigaciones fuera del prompt.
 
 #### 30.3.04 — Tool-use Abuse
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Tool-use Abuse Testing verifica si el modelo puede invocar herramientas fuera de permisos o con parámetros peligrosos. Usa herramientas simuladas, permisos mínimos y límites de ejecución para evitar efectos reales.
 
 #### 30.3.05 — Data Exfiltration Scenarios
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Data Exfiltration Scenarios evalúa si información sensible puede salir por respuestas, herramientas, logs o contexto compartido. Utiliza canarios sintéticos y valida aislamiento entre usuarios y controles de salida.
 
 #### 30.3.06 — Model Evaluation
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Model Evaluation mide calidad, robustez, seguridad y comportamiento del modelo con conjuntos de datos y métricas definidos. Registra versión, prompt, parámetros y entorno para reproducir resultados.
 
 #### 30.3.07 — Security Testing of AI Systems
-Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+Security Testing of AI Systems combina pruebas de modelo, aplicación, datos, identidad y herramientas. Define alcance y riesgos, prueba fallos y abuso de permisos y documenta limitaciones.
 
 ### Módulo 30.4 — Automatización con Python
 
 #### 30.4.01 — Python avanzado
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Python avanzado incluye iteradores, generadores, context managers, tipado, excepciones y concurrencia. Selecciona características que simplifiquen el mantenimiento y documenta versiones y dependencias.
 
 #### 30.4.02 — OOP
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+OOP en Python organiza datos y comportamiento mediante clases, composición y protocolos. Mantén responsabilidades pequeñas y evita jerarquías profundas o estado global compartido.
 
 #### 30.4.03 — Modules
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Modules separan funciones, clases y constantes en unidades importables. Evita efectos secundarios durante importación y define interfaz pública clara.
 
 #### 30.4.04 — Packages
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Packages agrupan módulos bajo una estructura y espacio de nombres. Fija dependencias y versiones, controla origen y utiliza entornos virtuales para reproducibilidad.
 
 #### 30.4.05 — Requests
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Requests facilita solicitudes HTTP desde Python y manejo de respuestas. Configura timeout, TLS, retries acotados y validación de status/content; nunca desactives verificación de certificados para resolver errores.
 
 #### 30.4.06 — JSON
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+JSON serializa estructuras de datos mediante objetos, arrays y valores básicos. Valida esquema y tamaño, maneja errores de parseo y no confíes en tipos o campos enviados por terceros.
 
 #### 30.4.07 — YAML
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+YAML es un formato de configuración legible que admite estructuras anidadas. Usa loaders seguros, valida esquema y evita cargar documentos no confiables con constructores que permitan objetos arbitrarios.
 
 #### 30.4.08 — Regex
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Regex define patrones para buscar o validar texto. Controla complejidad para evitar ReDoS, utiliza patrones anclados cuando corresponda y prueba entradas largas y límites.
 
 #### 30.4.09 — subprocess
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+subprocess permite ejecutar procesos externos y capturar entradas/salidas desde Python. Evita `shell=True` con datos no confiables, pasa argumentos separados, limita tiempo y permisos y registra errores sin secretos.
 
 #### 30.4.10 — Sockets
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Sockets permiten comunicación de bajo nivel sobre protocolos de red. Define timeouts, framing, validación de mensajes y cierre; practica únicamente con servicios propios o autorizados.
 
 #### 30.4.11 — Asyncio
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+asyncio ofrece concurrencia cooperativa para operaciones asíncronas. Usa tareas y semáforos para limitar concurrencia, propaga cancelación y evita bloquear el event loop con operaciones síncronas.
 
 #### 30.4.12 — Logging
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Logging registra eventos de ejecución con niveles, contexto y destinos configurables. Usa datos estructurados, correlación y rotación; redacta credenciales, tokens y datos personales.
 
 #### 30.4.13 — APIs
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+APIs permiten integrar servicios mediante contratos HTTP u otros protocolos. Gestiona autenticación, cuotas, paginación, errores y cambios de versión y no expongas claves en código.
 
 #### 30.4.14 — File Processing
-Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+File Processing lee y transforma archivos de texto, datos estructurados y binarios. Valida rutas, tamaño, codificación y tipo real; evita path traversal y sobrescritura accidental.
 
 ### Módulo 30.5 — Automatización de seguridad
 
 #### 30.5.01 — Log Processing
-Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Log Processing normaliza y filtra eventos para extraer información útil. Conserva timestamp, origen y campos de correlación y protege registros contra alteración y filtración.
 
 #### 30.5.02 — IOC Extraction
-Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+IOC Extraction identifica indicadores potenciales en logs, documentos o alertas. Valida formato, contexto, confianza y vigencia antes de distribuir o bloquear indicadores.
 
 #### 30.5.03 — Threat Intelligence Collection
-Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Threat Intelligence Collection reúne información de fuentes abiertas, feeds y reportes autorizados. Registra procedencia, licencia, frescura y confianza y evita recopilar datos personales innecesarios.
 
 #### 30.5.04 — Report Generation
-Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Report Generation automatiza informes con plantillas y datos estructurados. Verifica exactitud, contexto y destinatarios y elimina secretos y datos sensibles de los documentos generados.
 
 #### 30.5.05 — API Integrations
-Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+API Integrations conectan automatizaciones con SIEM, ticketing, inventarios y fuentes de inteligencia. Usa tokens de mínimo privilegio, paginación, retries limitados y manejo de rate limits.
 
 #### 30.5.06 — Vulnerability Reporting
-Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Vulnerability Reporting convierte hallazgos en reportes con activo, versión, evidencia, impacto y remediación. Valida falsos positivos y no adjunta datos sensibles innecesarios.
 
 #### 30.5.07 — Alert Classification
-Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Alert Classification prioriza alertas por severidad, confianza, activo y contexto. Documenta criterios y permite revisión humana para casos ambiguos.
 
 #### 30.5.08 — Security Automation Pipelines
-Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Security Automation Pipelines encadenan recolección, análisis, enriquecimiento y notificación. Diseña etapas idempotentes, permisos mínimos, observabilidad y aprobación para acciones de alto impacto.
 
 ### Módulo 30.6 — Threat Intelligence avanzado
 
 #### 30.6.01 — Threat Intelligence Lifecycle
-Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Threat Intelligence Lifecycle organiza dirección, recolección, procesamiento, análisis, difusión y retroalimentación. Define requisitos del consumidor y mide si la inteligencia cambia una decisión.
 
 #### 30.6.02 — OSINT Automation
-Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+OSINT Automation automatiza consultas a fuentes públicas dentro de términos y límites permitidos. Controla frecuencia, registra fuentes y minimiza datos personales.
 
 #### 30.6.03 — MITRE ATT&CK
-Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+MITRE ATT&CK estructura conocimiento sobre tácticas y técnicas adversarias. Usa versión y plataforma, vincula detecciones y no atribuyas actor a partir de un único mapeo.
 
 #### 30.6.04 — TTP Correlation
-Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+TTP Correlation relaciona comportamientos observados con técnicas y secuencias conocidas. Evalúa evidencia, temporalidad y alternativas benignas y evita sobreajustar una conclusión.
 
 #### 30.6.05 — Threat Feeds
-Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Threat Feeds distribuyen indicadores y contexto de amenazas. Evalúa calidad, licencia, frescura y falsos positivos y automatiza expiración y revisión.
 
 #### 30.6.06 — Intelligence Analysis
-Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Intelligence Analysis evalúa fuentes, corroboración, hipótesis y confianza para producir conclusiones accionables. Distingue hechos de inferencias y declara vacíos de información.
 
 ### Módulo 30.7 — Criptografía avanzada
 
 #### 30.7.01 — Symmetric Cryptography
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Symmetric Cryptography utiliza una clave compartida para cifrar y descifrar o autenticar datos. Protege distribución y almacenamiento de claves y utiliza modos autenticados modernos.
 
 #### 30.7.02 — Asymmetric Cryptography
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Asymmetric Cryptography utiliza pares de claves pública/privada para operaciones como establecimiento de claves y firmas. Comprende usos distintos y protege claves privadas y validación de identidad.
 
 #### 30.7.03 — AES
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+AES es un cifrador de bloque estandarizado con clave de 128, 192 o 256 bits. Utiliza modos seguros y autenticados como AES-GCM con nonces únicos; no diseñes modos propios.
 
 #### 30.7.04 — RSA
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+RSA es un sistema de clave pública usado para cifrado y firmas bajo esquemas adecuados. Selecciona padding moderno y tamaños conforme a estándares; no utilices RSA textbook ni implementes primitivas propias.
 
 #### 30.7.05 — ECC
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+ECC agrupa criptografía de curvas elípticas para firmas y acuerdo de claves. Utiliza curvas y bibliotecas aprobadas, valida puntos y parámetros y protege generación de aleatoriedad.
 
 #### 30.7.06 — Hashing
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Hashing transforma datos en un resumen de longitud fija y se usa para integridad y otras funciones. Un hash general no es adecuado para almacenar contraseñas; selecciona algoritmo según propósito.
 
 #### 30.7.07 — SHA-2
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+SHA-2 es una familia de funciones hash que incluye SHA-256 y SHA-512. Se utiliza para integridad y construcción criptográfica, pero no cifra ni autentica por sí sola.
 
 #### 30.7.08 — SHA-3
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+SHA-3 se basa en la construcción Keccak y ofrece funciones hash y extendibles. Distingue SHA3-256 de SHAKE y selecciona variante según protocolo y estándar.
 
 #### 30.7.09 — Digital Signatures
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Digital Signatures permiten verificar integridad y autenticidad del firmante mediante clave pública. Gestiona certificados y claves, valida contexto y revocación y no confundas firma con cifrado.
 
 #### 30.7.10 — PKI
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+PKI administra certificados, autoridades de certificación, claves y políticas de confianza. Define emisión, renovación, revocación y protección de claves raíz y operativas.
 
 #### 30.7.11 — TLS
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+TLS protege canales de comunicación y autentica extremos según configuración. Mantén versiones y suites soportadas, valida certificados y comprende que la seguridad depende también de identidad y aplicación.
 
 #### 30.7.12 — Key Management
-Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Key Management cubre generación, almacenamiento, distribución, rotación, respaldo y destrucción de claves. Separa funciones, limita acceso, registra operaciones y planifica recuperación y compromiso.
 
 ### Módulo 30.8 — Criptografía poscuántica
 
 #### 30.8.01 — Quantum Computing Concepts
-Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Quantum Computing Concepts estudia qubits, superposición, entrelazamiento y algoritmos cuánticos relevantes para criptografía. Distingue capacidades teóricas y hardware actual y evita afirmar que cualquier computador cuántico rompe hoy toda criptografía.
 
 #### 30.8.02 — Harvest Now, Decrypt Later
-Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Harvest Now, Decrypt Later describe la captura actual de datos cifrados con intención de descifrarlos en el futuro si la capacidad criptanalítica mejora. Prioriza información con vida útil larga y evalúa migración según sensibilidad y horizonte.
 
 #### 30.8.03 — Post-Quantum Cryptography
-Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Post-Quantum Cryptography desarrolla algoritmos clásicos diseñados para resistir ataques de computadores cuánticos a gran escala. Distingue criptografía poscuántica de criptografía cuántica y utiliza estándares y bibliotecas mantenidas.
 
 #### 30.8.04 — ML-KEM
-Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+ML-KEM es un mecanismo de encapsulación de claves basado en retículos, estandarizado por NIST en FIPS 203. Permite establecer un secreto compartido; no es un algoritmo de cifrado de archivos por sí solo y requiere implementación validada.
 
 #### 30.8.05 — ML-DSA
-Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+ML-DSA es un esquema de firma digital basado en retículos estandarizado por NIST en FIPS 204. Se usa para firmar y verificar, no para cifrar; verifica parámetros, claves y actualizaciones/erratas del estándar.
 
 #### 30.8.06 — SLH-DSA
-Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+SLH-DSA es un esquema de firma digital poscuántica basado en hashes, estandarizado por NIST en FIPS 205. Comprende compensaciones de tamaño y rendimiento y utiliza implementaciones conformes.
 
 #### 30.8.07 — Cryptographic Migration
-Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Cryptographic Migration inventaría algoritmos, protocolos, claves y dependencias para sustituir mecanismos vulnerables o obsoletos. Prioriza activos y datos de larga vida, prueba interoperabilidad y planifica transición reversible.
 
 #### 30.8.08 — Crypto Agility
-Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+Crypto Agility permite cambiar algoritmos y parámetros sin rediseñar por completo sistemas y protocolos. Abstrae suites criptográficas, inventaría dependencias y prueba actualización, revocación y compatibilidad.
 
 #### 30.8.09 — CSRC
-Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+CSRC es el Computer Security Resource Center de NIST, repositorio de publicaciones y recursos técnicos, no un estándar individual. Identifica cada documento por número, revisión y fecha antes de adoptarlo.
+
+
+### Referencias oficiales de criptografía poscuántica
+
+- NIST FIPS 203 — ML-KEM: https://csrc.nist.gov/pubs/fips/203/final
+- NIST FIPS 204 — ML-DSA: https://csrc.nist.gov/pubs/fips/204/final
+- NIST FIPS 205 — SLH-DSA: https://csrc.nist.gov/pubs/fips/205/final
+- NIST Post-Quantum Cryptography: https://csrc.nist.gov/projects/post-quantum-cryptography
+
+Verifica erratas y revisiones de cada publicación antes de implementar. No implementes algoritmos criptográficos propios ni interpretes el carácter poscuántico como garantía absoluta de seguridad.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 75 orientaciones genéricas por explicaciones específicas de IA aplicada a seguridad, LLM/agent security, AI red teaming, Python, automatización, threat intelligence, criptografía y migración poscuántica.
+
+**Revisión interna:** 75/75 entradas desarrolladas y cotejadas con el roadmap. Se reforzaron límites de modelos, prompt injection, RAG, abuso de herramientas, sandboxing, permisos de agentes, manejo seguro de subprocess/archivos y gestión de claves. Se añadieron referencias NIST para FIPS 203/204/205 y se diferenció ML-KEM (encapsulación de claves) de ML-DSA/SLH-DSA (firmas). Pendiente: validar implementaciones y erratas vigentes, ejecutar pruebas en entornos aislados y realizar segunda revisión especializada. No se ejecutaron pruebas de IA ni se implementó criptografía; no se declara aprobación externa.
