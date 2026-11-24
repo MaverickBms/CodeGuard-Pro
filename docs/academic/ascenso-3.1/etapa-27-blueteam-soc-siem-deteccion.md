@@ -102,3 +102,198 @@ No se incluyen videos aprobados. Se añadirán solo tras confirmar audio hablado
 - Sigma: https://sigmahq.io/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se desplegó SIEM ni se generaron alertas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 27
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Las guías de estudio se orientan a administración defensiva, monitoreo y análisis autorizado; no constituyen evidencia de operación en un entorno empresarial.
+
+### Módulo 27.1 — Blue Team
+
+#### 27.1.01 — Defensive Security
+Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.1.02 — Defense in Depth
+Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.1.03 — Preventive Controls
+Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.1.04 — Detective Controls
+Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.1.05 — Corrective Controls
+Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.1.06 — Zero Trust
+Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.1.07 — Security Monitoring
+Comprender el concepto, los datos o controles involucrados y su papel dentro de blue team; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 27.2 — SOC
+
+#### 27.2.01 — Security Operations Center
+Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.2.02 — SOC Analyst
+Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.2.03 — Alert Triage
+Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.2.04 — Event Classification
+Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.2.05 — Incident Escalation
+Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.2.06 — Security Monitoring
+Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.2.07 — Threat Detection
+Comprender el concepto, los datos o controles involucrados y su papel dentro de soc; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 27.3 — Logs
+
+#### 27.3.01 — Application Logs
+Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.3.02 — System Logs
+Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.3.03 — Authentication Logs
+Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.3.04 — Network Logs
+Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.3.05 — Security Events
+Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.3.06 — Event Correlation
+Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.3.07 — Timelines
+Comprender el concepto, los datos o controles involucrados y su papel dentro de logs; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 27.4 — Indicadores
+
+#### 27.4.01 — IOC (Indicators of Compromise)
+Comprender el concepto, los datos o controles involucrados y su papel dentro de indicadores; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.4.02 — IOA (Indicators of Attack)
+Comprender el concepto, los datos o controles involucrados y su papel dentro de indicadores; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.4.03 — TTP (Tactics, Techniques and Procedures)
+Comprender el concepto, los datos o controles involucrados y su papel dentro de indicadores; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.4.04 — Anomalies
+Comprender el concepto, los datos o controles involucrados y su papel dentro de indicadores; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.4.05 — Behavioral Analysis
+Comprender el concepto, los datos o controles involucrados y su papel dentro de indicadores; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 27.5 — IDS/IPS
+
+#### 27.5.01 — Intrusion Detection System
+Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.5.02 — Intrusion Prevention System
+Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.5.03 — Signature-based Detection
+Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.5.04 — Anomaly-based Detection
+Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.5.05 — Network Monitoring
+Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.5.06 — Traffic Analysis
+Comprender el concepto, los datos o controles involucrados y su papel dentro de ids/ips; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 27.6 — Herramientas
+
+#### 27.6.01 — Wireshark
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.6.02 — tcpdump
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.6.03 — Suricata
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.6.04 — Zeek
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.6.05 — Sysmon
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 27.7 — SIEM
+
+#### 27.7.01 — Security Information and Event Management
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.02 — Log Collection
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.03 — Log Normalization
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.04 — Correlation Rules
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.05 — Dashboards
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.06 — Alerts
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.07 — Detection
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.08 — Incident Investigation
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.09 — Herramientas
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.10 — Splunk
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.11 — Elastic Stack (ELK)
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.7.12 — Wazuh
+Comprender el concepto, los datos o controles involucrados y su papel dentro de siem; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 27.8 — Detection Engineering
+
+#### 27.8.01 — Sigma
+Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.8.02 — Detection Rules
+Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.8.03 — Detection-as-Code
+Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.8.04 — Alert Tuning
+Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.8.05 — False Positives
+Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.8.06 — Alert Fatigue
+Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.8.07 — Log Sources
+Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.8.08 — Rule Validation
+Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 27.8.09 — Correlation
+Comprender el concepto, los datos o controles involucrados y su papel dentro de detection engineering; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
