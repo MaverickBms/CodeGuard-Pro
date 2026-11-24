@@ -541,95 +541,283 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 ### 7.3.1 — pwd
 
-`pwd` muestra el directorio de trabajo actual y ayuda a evitar operaciones sobre rutas equivocadas. Distingue rutas absolutas, relativas y rutas que atraviesan enlaces simbólicos. **Práctica:** ejecuta `pwd` desde tu directorio personal y desde `/tmp`. **Evidencia:** registra ambas rutas y explica cómo afecta el directorio actual a los comandos relativos.
+**Propósito.** Confirmar el directorio de trabajo antes de ejecutar órdenes relativas. La ruta actual influye en el significado de nombres como `archivo.txt` y en el alcance de operaciones posteriores.
+
+**Ejemplo.** `pwd -P` muestra la ruta física resolviendo enlaces simbólicos; `pwd -L` conserva, cuando es posible, la ruta lógica de la shell.
+
+**Práctica guiada.** Ejecuta `pwd` en tu directorio personal y después de entrar en `/tmp`. Registra ambas salidas y compara con `pwd -P` si hay enlaces simbólicos.
+
+**Actividad independiente.** Explica qué archivo afectaría una orden relativa si se ejecuta desde dos directorios distintos.
+
+**Criterios de aceptación.** Distingue ruta absoluta y relativa y verifica el directorio antes de una operación de escritura.
+
+**Error frecuente.** Ejecutar `rm` o `cp` suponiendo un directorio actual distinto del real.
 
 ### 7.3.2 — ls
 
-`ls` enumera el contenido de directorios; `-l`, `-a` y `-h` muestran metadatos, archivos ocultos y tamaños legibles. **Práctica:** compara `ls`, `ls -la` y `ls -lh` en una carpeta de laboratorio. **Evidencia:** identifica permisos, propietario, tamaño y nombre, y explica por qué los archivos que comienzan por punto pueden no aparecer en la salida simple.
+**Propósito.** Inspeccionar nombres y metadatos sin modificar el contenido del directorio.
+
+**Ejemplo.** `ls -lah` muestra entradas ocultas, permisos y tamaños legibles; `ls -ln` presenta UID/GID numéricos, útil cuando no hay resolución de nombres.
+
+**Práctica guiada.** En una carpeta de laboratorio compara `ls`, `ls -la` y `ls -lh`. Identifica permisos, enlaces, propietario, tamaño y fecha. No interpretes el tamaño de un directorio como suma recursiva de su contenido.
+
+**Actividad independiente.** Documenta qué diferencias observas entre un archivo regular, un directorio y un enlace simbólico usando `ls -l`.
+
+**Criterios de aceptación.** Interpreta los campos principales y explica por qué una entrada oculta no aparece en el listado simple.
+
+**Error frecuente.** Tratar el tamaño mostrado para un directorio como el espacio total que consumen todos sus archivos.
 
 ### 7.3.3 — cd
 
-`cd` cambia el directorio de trabajo de la shell. Practica rutas absolutas, relativas, `..`, `~` y el retorno al directorio anterior con `cd -`. **Práctica:** navega entre `/tmp`, tu directorio personal y una carpeta de laboratorio. **Evidencia:** confirma cada cambio con `pwd` y explica la diferencia entre `.` y `..`.
+**Propósito.** Cambiar el directorio de trabajo de la shell y comprender cómo se resuelven las rutas.
+
+**Ejemplo.** `cd ..` sube al directorio padre; `cd ~` entra al directorio personal; `cd -` vuelve al directorio anterior cuando la shell mantiene esa referencia.
+
+**Práctica guiada.** Navega entre `/tmp`, `~` y una carpeta de laboratorio usando rutas absolutas y relativas. Confirma cada cambio con `pwd`.
+
+**Actividad independiente.** Escribe una secuencia de comandos que llegue desde tu directorio personal a una carpeta hermana sin utilizar rutas absolutas.
+
+**Criterios de aceptación.** Explica `.`, `..`, `~` y diferencia entre rutas absolutas y relativas.
+
+**Error frecuente.** Suponer que `cd` puede cambiar el directorio de trabajo del proceso padre; se ejecuta como builtin porque la shell debe cambiar su propio estado.
 
 ### 7.3.4 — mkdir
 
-`mkdir` crea directorios y `-p` permite crear jerarquías intermedias. Explica la interacción con permisos del directorio padre y la umask. **Práctica:** crea `~/lab/etapa7/entrada` con `mkdir -p`. **Evidencia:** verifica la estructura con `find` y elimina únicamente el árbol de práctica.
+**Propósito.** Crear directorios con una estructura predecible y permisos adecuados.
+
+**Ejemplo.** `mkdir -p ~/lab/etapa7/entrada` crea los componentes ausentes y no falla simplemente porque los directorios intermedios ya existan.
+
+**Práctica guiada.** Crea una jerarquía temporal con `mkdir -p` y verifica con `find` o `ls -R`. Inspecciona permisos iniciales y considera la umask.
+
+**Actividad independiente.** Diseña una estructura para separar entradas, resultados y logs de un ejercicio; define quién debe poder escribir en cada carpeta.
+
+**Criterios de aceptación.** Crea la estructura solicitada, verifica cada nivel y explica el efecto de `-p`.
+
+**Error frecuente.** Crear directorios con permisos demasiado abiertos o utilizar rutas fuera del espacio de laboratorio.
 
 ### 7.3.5 — touch
 
-`touch` actualiza marcas temporales o crea un archivo vacío si no existe; no es una herramienta para escribir contenido. **Práctica:** crea `nota.txt`, inspecciona sus marcas con `stat` y vuelve a ejecutar `touch`. **Evidencia:** identifica qué marca temporal cambió.
+**Propósito.** Crear archivos vacíos y modificar marcas temporales, comprendiendo que touch no escribe contenido.
+
+**Ejemplo.** `touch nota.txt` crea el archivo si no existe; si existe, actualiza marcas temporales según opciones y permisos.
+
+**Práctica guiada.** Crea un archivo temporal, consulta `stat nota.txt`, espera unos segundos y vuelve a ejecutar touch. Compara modificación y acceso, teniendo en cuenta las políticas de montaje.
+
+**Actividad independiente.** Explica cómo diferenciar un archivo vacío recién creado de uno que contiene datos usando `stat` y `wc -c`.
+
+**Criterios de aceptación.** Describe el efecto de touch sobre existencia y marcas temporales; demuestra que no añade contenido.
+
+**Error frecuente.** Usar touch como si fuera un editor o asumir que todas las marcas temporales se actualizan idénticamente en cualquier sistema de archivos.
 
 ### 7.3.6 — cp
 
-`cp` copia archivos y directorios; para árboles se requiere una opción recursiva. Explica cómo evitar sobrescrituras y cuándo preservar atributos con `-a`. **Práctica:** copia un archivo de prueba y compara su hash con `sha256sum`. **Evidencia:** demuestra que el contenido coincide y que el original permanece intacto.
+**Propósito.** Copiar archivos o directorios sin confundir copia de contenido con preservación completa de metadatos.
+
+**Ejemplo.** `cp origen destino` copia un archivo; `cp -a arbol/ copia/` intenta preservar atributos y estructura de forma recursiva.
+
+**Práctica guiada.** Copia un archivo creado en el laboratorio y compara SHA-256 con `sha256sum`. Después copia un subdirectorio con `cp -a` y revisa permisos y marcas temporales.
+
+**Actividad independiente.** Decide qué opción utilizarías para duplicar una carpeta de configuración y qué metadatos necesitas preservar.
+
+**Criterios de aceptación.** Comprueba igualdad del contenido y explica cuándo se necesita copia recursiva o preservación de atributos.
+
+**Error frecuente.** Sobrescribir el destino sin verificarlo o asumir que una copia simple conserva propietarios y permisos originales.
 
 ### 7.3.7 — mv
 
-`mv` mueve o renombra archivos y directorios. En un mismo sistema de archivos puede cambiar metadatos; entre sistemas de archivos puede implicar copia y eliminación. **Práctica:** renombra un archivo y muévelo dentro del laboratorio. **Evidencia:** verifica ubicación final y contenido.
+**Propósito.** Mover o renombrar entradas y comprender las diferencias entre operaciones dentro y entre sistemas de archivos.
+
+**Ejemplo.** En el mismo sistema de archivos, mv suele cambiar la entrada de directorio; entre sistemas de archivos puede requerir copiar y eliminar, con implicaciones de metadatos y atomicidad.
+
+**Práctica guiada.** Renombra un archivo del laboratorio y muévelo a otra carpeta del mismo volumen. Verifica ruta, contenido y permisos antes y después.
+
+**Actividad independiente.** Describe riesgos al mover un archivo grande entre volúmenes y plantea cómo verificar integridad tras la operación.
+
+**Criterios de aceptación.** Distingue renombrar y mover, y verifica que el origen y destino son los esperados.
+
+**Error frecuente.** Usar comodines sin revisar la expansión o asumir que el movimiento entre volúmenes es siempre una operación atómica.
 
 ### 7.3.8 — rm
 
-`rm` elimina entradas y normalmente no ofrece una papelera ni reversión sencilla. Explica por qué `rm -r` y especialmente `rm -rf` requieren revisar las rutas con cuidado. **Práctica:** elimina un único archivo creado para esta actividad. **Evidencia:** registra la ruta comprobada antes de ejecutar y verifica que no afectaste otros archivos.
+**Propósito.** Eliminar entradas de forma controlada, comprendiendo que rm no proporciona una papelera ni una reversión sencilla.
+
+**Ejemplo.** `rm archivo-temporal` elimina una entrada; `rm -r directorio-lab` recorre el árbol. `-f` suprime ciertas confirmaciones y errores, por lo que aumenta el riesgo de una equivocación.
+
+**Práctica guiada.** Crea un único archivo temporal, confirma la ruta con `pwd` y `ls -l` y elimina solo ese archivo. No utilices `sudo rm` ni `rm -rf` sobre rutas del sistema.
+
+**Actividad independiente.** Diseña una rutina previa a la eliminación de un árbol: validar variable de ruta, mostrar objetivo, confirmar alcance y disponer de copia si corresponde.
+
+**Criterios de aceptación.** Demuestra eliminación de un objeto creado para la práctica y explica por qué la verificación previa es esencial.
+
+**Error frecuente.** Ejecutar una expansión de comodines o una variable vacía sin inspeccionar qué ruta terminará usando rm.
 
 ### 7.3.9 — find
 
-`find` recorre árboles y filtra por nombre, tipo, tamaño, propietario o tiempo. Distingue una búsqueda de una acción destructiva como `-delete` o `-exec`. **Práctica:** localiza archivos `.log` dentro de una carpeta de laboratorio. **Evidencia:** explica cada criterio y conserva la salida.
+**Propósito.** Buscar archivos y directorios mediante criterios de nombre, tipo, tamaño, tiempo y permisos.
+
+**Ejemplo.** `find ~/lab -type f -name '*.log'` busca archivos regulares con esa extensión bajo el árbol de laboratorio. Las comillas evitan que la shell expanda el patrón antes de que find lo procese.
+
+**Práctica guiada.** Crea tres archivos de prueba y localízalos por nombre y tipo. Añade `-print` explícitamente y observa cómo cambia la búsqueda al limitar la ruta inicial.
+
+**Actividad independiente.** Construye una búsqueda que identifique archivos vacíos dentro de tu carpeta de práctica sin recorrer el resto del sistema.
+
+**Criterios de aceptación.** Explica ruta inicial, expresión de búsqueda y tipo; evita búsquedas innecesariamente amplias.
+
+**Error frecuente.** Ejecutar búsquedas desde `/` con privilegios elevados sin necesidad o olvidar citar patrones con comodines.
 
 ### 7.3.10 — grep
 
-`grep` busca patrones y admite expresiones regulares; `-n`, `-i` y `-r` controlan líneas, mayúsculas y recursividad. **Práctica:** crea un texto sintético y busca una palabra con `grep -n`. **Evidencia:** explica el patrón y la línea encontrada.
+**Propósito.** Filtrar líneas de texto que coinciden con patrones y comprender el alcance de las expresiones regulares.
+
+**Ejemplo.** `grep -n 'ERROR' aplicación.log` muestra líneas coincidentes con número de línea. `-i` ignora mayúsculas/minúsculas y `-r` recorre directorios, con cuidado de no incluir datos sensibles.
+
+**Práctica guiada.** Crea un archivo de texto con líneas INFO, WARN y ERROR; filtra ERROR con `grep -n` y luego cuenta coincidencias con `grep -c`.
+
+**Actividad independiente.** Diseña un patrón para localizar direcciones IPv4 en datos sintéticos y explica por qué una expresión regular simple no valida por completo todos los rangos posibles.
+
+**Criterios de aceptación.** Explica patrón, coincidencia y código de salida; utiliza datos sintéticos y rutas delimitadas.
+
+**Error frecuente.** Tratar grep como parser completo de formatos estructurados o asumir que ausencia de coincidencias equivale a error del comando.
 
 ### 7.3.11 — chmod
 
-`chmod` modifica permisos mediante modos simbólicos u octales. Explica que en directorios los bits de lectura, escritura y ejecución controlan listar, modificar entradas y atravesar la ruta. **Práctica:** aplica `chmod 640` a un archivo de prueba y verifica con `stat`. **Evidencia:** traduce el modo a permisos efectivos.
+**Propósito.** Cambiar permisos de archivos y directorios de forma deliberada.
+
+**Ejemplo.** `chmod 640 archivo` concede lectura/escritura al propietario, lectura al grupo y ningún permiso a otros. La forma simbólica `chmod u=rw,g=r,o= archivo` expresa la misma intención.
+
+**Práctica guiada.** Crea un archivo de prueba, aplica ambos modos en pasos separados y verifica con `stat`. En un directorio, compara el efecto de r y x sobre listar y atravesar.
+
+**Actividad independiente.** Define permisos mínimos para una clave privada de laboratorio y para un directorio de trabajo compartido por un grupo.
+
+**Criterios de aceptación.** Traduce octal/simbólico y justifica permisos de archivo frente a directorio.
+
+**Error frecuente.** Aplicar 777 para resolver cualquier problema de acceso o cambiar permisos recursivamente sin revisar el árbol.
 
 ### 7.3.12 — chown
 
-`chown` cambia propietario y, opcionalmente, grupo; suele requerir privilegios administrativos. Evita cambios recursivos amplios sin inspección previa. **Práctica:** consulta propiedad con `stat`; si la VM lo permite, cambia el grupo de un archivo temporal. **Evidencia:** verifica el cambio y explica el riesgo de `-R` sobre rutas del sistema.
+**Propósito.** Cambiar propietario y/o grupo cuando exista una necesidad administrativa legítima.
+
+**Ejemplo.** `chown usuario:grupo archivo` asigna ambos atributos. La operación suele requerir privilegios; las reglas exactas para transferir propiedad dependen del sistema.
+
+**Práctica guiada.** Inspecciona propietario y grupo con `stat` y `ls -ln`. En un laboratorio desechable, si dispones de autorización, cambia la propiedad de un archivo creado para la práctica y vuelve a verificar. Si no tienes permisos, documenta el error sin elevar privilegios.
+
+**Actividad independiente.** Diseña un plan de corrección de propiedad para un directorio de aplicación, incluyendo alcance, respaldo, identidad de servicio y validación.
+
+**Criterios de aceptación.** Distingue usuario y grupo propietarios y demuestra que comprende el impacto de un cambio recursivo.
+
+**Error frecuente.** Aplicar `chown -R` sobre rutas amplias o usarlo como sustituto de comprender los permisos.
 
 ### 7.3.13 — ps
 
-`ps` muestra una instantánea de procesos. Compara `ps -ef` y `ps aux`, e interpreta PID, PPID, usuario, estado y comando sin asumir que las columnas son idénticas. **Práctica:** localiza un proceso `sleep` creado en el laboratorio. **Evidencia:** identifica padre e hijo y explica el estado.
+**Propósito.** Obtener una instantánea de procesos y sus atributos principales.
+
+**Ejemplo.** `ps -ef` presenta procesos en formato amplio; `ps -p PID -o pid,ppid,stat,etime,cmd` permite inspeccionar una instancia concreta. La salida refleja un instante, no un historial continuo.
+
+**Práctica guiada.** Inicia `sleep 60 & pid=$!` y consulta únicamente ese PID con ps. Registra PID, PPID, estado y tiempo transcurrido; termina el proceso propio al finalizar.
+
+**Actividad independiente.** Compara dos formatos de ps y explica qué campos ayudan a identificar relación padre-hijo y estado.
+
+**Criterios de aceptación.** Interpreta PID/PPID/STAT y reconoce que la salida es una instantánea.
+
+**Error frecuente.** Elegir un proceso por nombre sin comprobar PID, propietario y comando completo.
 
 ### 7.3.14 — top
 
-`top` presenta una vista dinámica de procesos, carga y memoria; los porcentajes dependen del número de CPU y del intervalo de muestreo. **Práctica:** observa el sistema durante un minuto sin terminar procesos. **Evidencia:** explica la diferencia entre porcentaje de CPU y memoria residente.
+**Propósito.** Observar dinámicamente carga de CPU, memoria y procesos para formular hipótesis de rendimiento.
+
+**Ejemplo.** top actualiza periódicamente estadísticas; el porcentaje de CPU depende del número de núcleos y de la forma de cálculo. La vista es una observación, no un diagnóstico completo de causa.
+
+**Práctica guiada.** Ejecuta `top` durante un periodo corto. Identifica carga, procesos con mayor consumo y memoria disponible. Sal con q y no cambies prioridades ni finalices procesos desde la herramienta.
+
+**Actividad independiente.** Describe qué mediciones adicionales recopilarías para distinguir saturación de CPU, espera de I/O y presión de memoria.
+
+**Criterios de aceptación.** Interpreta al menos tres indicadores y separa observación de hipótesis causal.
+
+**Error frecuente.** Considerar load average como porcentaje de CPU o asumir que el proceso que aparece arriba es necesariamente la causa raíz.
 
 ### 7.3.15 — kill
 
-`kill` envía una señal a un proceso; no significa necesariamente terminarlo de inmediato. Distingue SIGTERM como solicitud ordenada y SIGKILL como terminación no capturable, reservada para casos justificados. **Práctica:** termina únicamente el proceso `sleep` que creaste. **Evidencia:** explica por qué se prefiere una terminación ordenada.
+**Propósito.** Enviar señales a procesos identificados y distinguir solicitud de terminación de terminación forzada.
+
+**Ejemplo.** `kill -TERM PID` solicita terminación ordenada; `kill -KILL PID` fuerza al kernel a terminar el proceso y no permite que este gestione la señal. No debe actuarse sobre PID desconocidos.
+
+**Práctica guiada.** En Bash crea `sleep 90 & pid=$!`, verifica el PID y envía SIGTERM a esa instancia. Comprueba su salida. No utilices killall ni pkill sobre procesos generales.
+
+**Actividad independiente.** Explica cuándo una aplicación necesita liberar archivos o guardar estado antes de salir y qué implica recibir SIGKILL.
+
+**Criterios de aceptación.** Identifica el proceso propio, utiliza SIGTERM y explica las limitaciones de SIGKILL.
+
+**Error frecuente.** Enviar señales a PID reutilizados u obtenerlos de una lista antigua sin volver a verificarlos.
 
 ### 7.3.16 — systemctl
 
-`systemctl` consulta y administra unidades de systemd. Distingue estado actual (`status`), arranque automático (`is-enabled`) y acciones que cambian el estado. **Práctica:** consulta el estado de un servicio conocido sin modificarlo. **Evidencia:** interpreta `active`, `enabled` y el proceso asociado.
+**Propósito.** Consultar y administrar unidades gestionadas por systemd, diferenciando observación de modificación.
+
+**Ejemplo.** `systemctl status servicio` muestra estado y detalles; `is-active` consulta ejecución y `is-enabled` consulta habilitación para arranque/activación. `start`, `stop` y `enable` modifican el sistema.
+
+**Práctica guiada.** Consulta el estado de un servicio no crítico con `systemctl status`, `systemctl is-active` y `systemctl is-enabled`. No cambies su estado en el host.
+
+**Actividad independiente.** Redacta una secuencia segura para reiniciar un servicio de laboratorio, incluyendo autorización, dependencias, ventana y comprobación posterior.
+
+**Criterios de aceptación.** Distingue consulta de cambio y activo de habilitado; identifica nombre de unidad.
+
+**Error frecuente.** Ejecutar `systemctl restart` sobre un servicio desconocido sin evaluar impacto.
 
 ### 7.3.17 — journalctl
 
-`journalctl` consulta el journal y permite filtrar por arranque, unidad, prioridad y tiempo. No todos los logs de aplicaciones necesariamente se almacenan allí. **Práctica:** ejecuta `journalctl -b -n 30` y filtra por una unidad existente. **Evidencia:** identifica hora, unidad y prioridad sin exponer datos sensibles.
+**Propósito.** Consultar el journal de systemd para investigar eventos por arranque, unidad, prioridad y tiempo.
+
+**Ejemplo.** `journalctl -b` muestra registros del arranque actual; `journalctl -u servicio` filtra por unidad; `-p warning` limita por prioridad. La disponibilidad y persistencia del journal dependen de la configuración.
+
+**Práctica guiada.** Consulta `journalctl -b -p warning` y luego filtra por un servicio de laboratorio. Registra timestamp, unidad, prioridad y mensaje, ocultando datos sensibles.
+
+**Actividad independiente.** Construye una línea temporal a partir de eventos sintéticos y explica qué evidencia adicional necesitas para confirmar una causa.
+
+**Criterios de aceptación.** Aplica al menos dos filtros, interpreta los campos y distingue evento observado de conclusión.
+
+**Error frecuente.** Suponer que journalctl contiene todos los eventos históricos o que un warning equivale a un incidente.
 
 ### 7.3.18 — df
 
-`df` informa espacio disponible por sistema de archivos montado; `-h` facilita la lectura y `-T` muestra el tipo. Distingue capacidad del volumen del espacio atribuido a un directorio. **Práctica:** ejecuta `df -hT` y localiza el montaje que contiene tu carpeta personal. **Evidencia:** registra tipo, tamaño, uso y disponibilidad.
+**Propósito.** Medir capacidad y espacio disponible de sistemas de archivos montados.
+
+**Ejemplo.** `df -h` presenta tamaños legibles; `df -i` muestra uso de inodos. Un volumen puede quedarse sin inodos aunque todavía informe espacio en bytes.
+
+**Práctica guiada.** Ejecuta `df -hT` y `df -i`. Identifica punto de montaje, tipo de sistema de archivos, capacidad, usado y disponible. No llenes volúmenes para probar límites.
+
+**Actividad independiente.** Explica dos causas por las que una aplicación puede fallar al crear archivos aunque `df -h` muestre espacio disponible.
+
+**Criterios de aceptación.** Interpreta capacidad y punto de montaje; diferencia espacio en bytes de inodos.
+
+**Error frecuente.** Confundir uso de un directorio con uso de todo el sistema de archivos o interpretar tamaños redondeados como valores exactos.
 
 ### 7.3.19 — du
 
-`du` estima el espacio atribuido a archivos y directorios; sus resultados pueden diferir de `df` por archivos borrados aún abiertos, puntos de montaje y bloques asignados. **Práctica:** compara `du -sh` sobre tu carpeta de laboratorio con el volumen mostrado por `df`. **Evidencia:** explica por qué los valores no tienen que coincidir.
+**Propósito.** Estimar cuánto espacio ocupa un árbol de archivos desde la perspectiva de sus entradas.
+
+**Ejemplo.** `du -sh ~/lab` resume el uso del directorio; `du -h --max-depth=1 ruta` compara subdirectorios. El resultado depende de enlaces, archivos dispersos y unidades de asignación.
+
+**Práctica guiada.** Crea archivos de distintos tamaños en una carpeta de prueba y compara `du -sh` con `ls -lh`. No uses directorios del sistema como objetivo de limpieza.
+
+**Actividad independiente.** Investiga por qué la suma de tamaños aparentes de archivos puede diferir del espacio asignado que muestra du o del espacio disponible que muestra df.
+
+**Criterios de aceptación.** Distingue tamaño aparente, bloques asignados y espacio del volumen; limita el análisis a una ruta autorizada.
+
+**Error frecuente.** Borrar archivos grandes basándose solo en du sin identificar qué proceso o servicio los necesita.
 
 ### 7.3.20 — mount
 
-`mount` conecta un sistema de archivos a un punto de montaje y `umount` lo desconecta cuando no está en uso. Explica dispositivos, UUID, opciones y riesgos de montar volúmenes desconocidos. **Práctica:** inspecciona montajes con `findmnt` o `mount` sin montar dispositivos nuevos. **Evidencia:** identifica origen, destino y tipo.
+**Propósito.** Comprender cómo un sistema de archivos se incorpora al árbol de directorios y qué controles rodean el montaje.
 
-### Permisos y propietarios
+**Ejemplo.** `findmnt` consulta montajes existentes; `mount` sin argumentos suele listar montajes. Montar un dispositivo requiere identificar correctamente origen, tipo y punto de montaje, y puede alterar qué contenido queda visible en esa ruta.
 
-En un directorio de laboratorio crea un archivo, consulta permisos con ls -l y aplica chmod 640. Interpreta el resultado. En un entorno multiusuario controlado, cambia el propietario con chown solo si tienes autorización y privilegios.
+**Práctica guiada.** Ejecuta `findmnt` y `mount` en modo de consulta. Identifica un punto de montaje, su origen y opciones. No montes ni desmontes dispositivos del host durante esta práctica.
 
-### Procesos y servicios
+**Actividad independiente.** Diseña un procedimiento para montar un volumen de laboratorio: identificar dispositivo, revisar sistema de archivos, crear punto de montaje, aplicar opciones seguras, verificar y desmontar de forma controlada.
 
-Antes de detener un proceso o servicio, identifica el PID o unidad, comprueba su función y dependencias, determina el impacto y elige la acción menos disruptiva. Kill envía una señal; no significa necesariamente que el proceso termine inmediatamente.
+**Criterios de aceptación.** Explica origen, tipo y punto de montaje; interpreta una entrada de findmnt y reconoce riesgos de montaje/desmontaje.
 
-### Logs y almacenamiento
-
-Journalctl consulta el journal de systemd; df informa espacio de sistemas de archivos; du estima uso de archivos y directorios; mount muestra o administra montajes. Los registros pueden contener rutas, nombres de usuario, direcciones y datos de solicitudes. Comparte extractos redactados, no logs completos indiscriminadamente.
+**Error frecuente.** Desmontar un volumen ocupado o montar un dispositivo no verificado sobre una ruta que contiene datos importantes.
 
 ## 7.4 — Bash
 
