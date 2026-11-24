@@ -257,3 +257,15 @@ Se incorporó el desglose individual de las entradas oficiales de las etapas 26�
 - **Etapa 28 — Threat Hunting, respuesta a incidentes y forense digital:** 46 entradas en hunting, inteligencia de amenazas, respuesta, DFIR, herramientas y estándares.
 
 Se mantuvo el enfoque defensivo y la necesidad de preservar evidencia, controlar accesos y trabajar con autorización. No se conectó a dominios Active Directory, no se instalaron SIEM/IDS, no se procesaron imágenes forenses ni se ejecutaron investigaciones reales. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
+
+
+### Expansión granular — etapas 29 a 32
+
+Se incorporó el desglose individual de las entradas oficiales de las etapas 29–32:
+
+- **Etapa 29 — Cloud Security, DevSecOps y Supply Chain Security:** 71 entradas en seguridad cloud, AWS, Azure, Google Cloud, Docker, Kubernetes, supply chain y DevSecOps.
+- **Etapa 30 — Inteligencia artificial, automatización y seguridad avanzada:** 75 entradas en IA para seguridad, LLM Security, AI Red Teaming, automatización Python, automatización de seguridad, threat intelligence, criptografía y criptografía poscuántica.
+- **Etapa 31 — Ciberseguridad de bajo nivel, análisis de malware e ingeniería inversa:** 75 entradas en C, C++, arquitectura de bajo nivel, seguridad de memoria, Assembly, ingeniería inversa, malware y herramientas.
+- **Etapa 32 — Proyecto profesional, portafolio y preparación laboral:** 54 entradas en portafolio, proyectos full stack, infraestructura, seguridad, colaboración y preparación laboral.
+
+Las prácticas de cloud y DevSecOps se limitan a cuentas y entornos autorizados; las pruebas de IA se limitan a sistemas propios/autorizados y sin exponer secretos; el análisis de malware se limita a muestras controladas y entornos aislados. Los proyectos profesionales deben reflejar contribuciones y resultados reales. No se desplegó infraestructura cloud, no se ejecutaron pruebas de IA, no se analizaron muestras de malware y no se realizaron evaluaciones laborales. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
