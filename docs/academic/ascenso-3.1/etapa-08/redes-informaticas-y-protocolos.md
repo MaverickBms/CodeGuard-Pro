@@ -318,39 +318,21 @@ Una subred es una porción lógica de un bloque IP; diseña prefijos sin solapam
 
 ### 8.6.1 — Firewalls
 
-Aplican políticas según origen, destino, protocolo, puerto, estado e interfaz. Diseña reglas con mínimo privilegio.
-
-### 8.6.4 — ACL
-
-Una ACL es una lista de reglas de control de acceso; importan orden y política predeterminada.
-
 ### 8.6.2 — VPN
-
-Crea un canal protegido, pero no convierte automáticamente en confiables todos los dispositivos conectados.
 
 ### 8.6.3 — DMZ
 
-Aloja servicios expuestos separados de redes internas sensibles; limita y monitorea el tráfico.
+### 8.6.4 — ACL
 
 ### 8.6.5 — Puertos abiertos
 
-Indican un servicio escuchando o respuesta compatible, pero no prueban vulnerabilidad.
-
 ### 8.6.6 — Servicios expuestos
-
-Cada servicio expuesto añade una posible vía de entrada; justifica, actualiza y monitorea.
 
 ### 8.6.7 — Superficie de ataque
 
-Incluye servicios, interfaces, credenciales, configuraciones y rutas de acceso.
-
 ### 8.6.8 — Filtrado de tráfico
 
-Puede aplicarse en host, router, firewall, nube o aplicación. Evita reglas más amplias de lo necesario.
-
 ### 8.6.9 — Políticas de filtrado
-
-Documenta propietario, propósito, origen, destino, servicio y vigencia de cada regla. Escanea solo sistemas propios o autorizados.
 
 ## 8.7 — Herramientas
 
@@ -508,4 +490,13 @@ No se incluyen videos en esta versión. La etapa contiene direccionamiento, prot
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** topología, comandos y laboratorio propuestos; no ejecutados ni capturados en VMs durante esta sesión.  
-**Estado editorial:** en desarrollo; no aprobado ni publicado..
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** cotejo de las entradas oficiales del roadmap, precisión conceptual, secuencia, ejemplos, prácticas, evaluación, seguridad y referencias.
+
+**Resultado:** revisión documental interna realizada con los ajustes y hallazgos siguientes: Se ordenaron los encabezados de seguridad de redes según el roadmap. Se revisaron modelos, direccionamiento, protocolos, segmentación y herramientas; se mantienen restricciones de escaneo autorizado y protección de capturas. Pendiente: resolver ejercicios de subnetting de forma independiente, validar topología en laboratorio aislado y comprobar comandos por sistema operativo/versión.
+
+**Límite de validación:** no se ejecutaron laboratorios, scripts, servicios, bases de datos, máquinas virtuales ni capturas de red en esta revisión. No se declara aprobación académica externa. La etapa continúa en desarrollo hasta completar las pruebas reproducibles y la segunda revisión.
