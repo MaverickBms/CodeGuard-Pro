@@ -129,218 +129,225 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 ### Módulo 19.1 — Fundamentos DevOps
 
 #### 19.1.01 — Development
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Development construye y mantiene el producto mediante diseño, implementación, pruebas y evolución. La colaboración con operaciones debe incorporar restricciones de ejecución, observabilidad y seguridad desde el diseño, no después de terminar el código.
 
 #### 19.1.02 — Operations
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Operations mantiene sistemas en ejecución, gestionando disponibilidad, capacidad, incidentes, cambios y continuidad. Diseña servicios que puedan desplegarse, monitorizarse y recuperarse con procedimientos documentados.
 
 #### 19.1.03 — Continuous Integration
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Continuous Integration integra cambios frecuentemente en una rama compartida y ejecuta controles automatizados. Mantén builds reproducibles, pruebas rápidas y feedback oportuno; CI no es solo configurar un workflow que termine en verde.
 
 #### 19.1.04 — Continuous Delivery
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Continuous Delivery mantiene el software en estado potencialmente desplegable, con validaciones y artefactos listos. La decisión de publicar puede ser manual; documenta criterios de promoción y evidencia entre entornos.
 
 #### 19.1.05 — Continuous Deployment
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Continuous Deployment automatiza el paso a producción cuando los cambios superan todos los controles definidos. Requiere pruebas confiables, monitoreo, rollback y gestión de riesgo; no debe habilitarse por defecto sin madurez operativa.
 
 #### 19.1.06 — Infrastructure as Code
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Infrastructure as Code describe infraestructura mediante archivos versionados y revisables. Permite repetir entornos y detectar cambios; protege state y secretos, revisa planes y aplica controles antes de modificar recursos reales.
 
 #### 19.1.07 — Automation
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Automation reduce tareas manuales repetibles mediante scripts y pipelines. Automatiza procesos con validación, idempotencia, logs y manejo de errores; una automatización sin controles puede propagar un error a muchos sistemas.
 
 ### Módulo 19.2 — Docker
 
 #### 19.2.01 — Containers
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Containers aíslan procesos mediante mecanismos del kernel y empaquetan dependencias de ejecución, sin equivaler a máquinas virtuales completas. Comprende namespaces, cgroups y límites de aislamiento; un contenedor no es una frontera de seguridad absoluta.
 
 #### 19.2.02 — Images
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Images son plantillas inmutables por capas desde las que se crean contenedores. Usa imágenes base mantenidas, versiones/digests verificables y escaneo de vulnerabilidades; minimiza paquetes y evita incorporar secretos en capas.
 
 #### 19.2.03 — Dockerfile
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Dockerfile declara instrucciones para construir una imagen, como base, copia de archivos, dependencias y comando de inicio. Ordena capas para aprovechar caché, fija versiones y ejecuta procesos con usuario no privilegiado.
 
 #### 19.2.04 — Volumes
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Volumes persisten datos fuera del ciclo de vida del contenedor y permiten compartir almacenamiento. Define permisos, copias y ciclo de vida; no confundas volúmenes persistentes con backups ni almacenes secretos en volúmenes de aplicación.
 
 #### 19.2.05 — Networks
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Networks conecta contenedores mediante redes virtuales y reglas de resolución/aislamiento. Expón solo puertos necesarios y separa redes internas de públicas; la conectividad entre contenedores debe responder a una necesidad explícita.
 
 #### 19.2.06 — Registries
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Registries almacenan y distribuyen imágenes de contenedor. Usa registros confiables, autenticación, control de acceso, escaneo y firmas cuando estén disponibles; no publiques imágenes con credenciales, llaves o artefactos sensibles.
 
 #### 19.2.07 — Docker Compose
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Docker Compose define aplicaciones multi-contenedor, redes y volúmenes mediante un archivo declarativo. Es útil para desarrollo y entornos pequeños; gestiona variables y secretos fuera del YAML versionado y no asumas equivalencia con orquestación de producción.
 
 #### 19.2.08 — Multi-stage builds
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Multi-stage builds separa etapas de compilación y runtime para producir imágenes finales más pequeñas. Copia solo artefactos necesarios y evita que herramientas de build o secretos queden en capas de producción.
 
 #### 19.2.09 — Container lifecycle
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Container lifecycle comprende creación, ejecución, pausa, detención, eliminación y recreación. Diseña aplicaciones que manejen señales de terminación, logging a stdout/stderr y almacenamiento externo para datos que deban sobrevivir.
 
 ### Módulo 19.3 — Servidores
 
 #### 19.3.01 — Linux Server
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Linux Server ejecuta servicios y administra usuarios, procesos, red, almacenamiento y actualizaciones sin requerir escritorio. Mantén paquetes soportados, acceso mínimo, monitoreo y copias verificadas.
 
 #### 19.3.02 — SSH
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+SSH proporciona acceso remoto cifrado y autenticación a sistemas. Usa claves protegidas, verifica host keys, limita usuarios y métodos de acceso y evita compartir claves privadas o habilitar root directo sin controles.
 
 #### 19.3.03 — Usuarios
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Los usuarios y grupos del servidor permiten asignar identidades y permisos a procesos y personas. Crea cuentas nominales, elimina accesos obsoletos y aplica separación de funciones.
 
 #### 19.3.04 — Permisos
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Permisos controlan lectura, escritura y ejecución sobre archivos y directorios, junto con ACL y atributos adicionales. Aplica mínimo privilegio y verifica propietario/grupo antes de modificar permisos recursivamente.
 
 #### 19.3.05 — Firewall
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Firewall filtra tráfico según origen, destino, protocolo, puerto y estado. Define reglas de entrada/salida necesarias, prueba que no bloqueen administración legítima y registra cambios con posibilidad de recuperación.
 
 #### 19.3.06 — Services
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Services son procesos administrados por el sistema de inicio, normalmente con políticas de arranque, reinicio y dependencias. Limita capacidades, usuario y recursos del servicio y revisa su estado después de cambios.
 
 #### 19.3.07 — Logs
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Logs registran eventos del sistema y aplicaciones para diagnóstico y auditoría. Centraliza con controles de acceso, sincroniza tiempo, define retención y elimina secretos o datos personales innecesarios.
 
 #### 19.3.08 — Storage
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Storage incluye discos, particiones, sistemas de archivos, montajes y volúmenes. Monitoriza espacio, inodos y salud; planifica expansión y backup y no asumas que una copia en el mismo disco protege ante fallo físico.
 
 #### 19.3.09 — Process management
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Process management permite inspeccionar, priorizar, limitar y terminar procesos. Identifica propietario, PID y dependencias antes de intervenir; termina de forma gradual y evita usar kill indiscriminadamente en servicios críticos.
 
 ### Módulo 19.4 — Nginx
 
 #### 19.4.01 — Web Server
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Nginx puede actuar como servidor web, proxy inverso y balanceador. Configura bloques server, ubicaciones y upstreams con alcance claro y valida sintaxis antes de recargar el servicio.
 
 #### 19.4.02 — Reverse Proxy
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Reverse Proxy recibe solicitudes y las reenvía a servicios internos, ocultando topología y centralizando TLS o políticas. Configura headers de proxy confiables, timeouts y límites; no confíes en headers de IP reenviada si el origen no es confiable.
 
 #### 19.4.03 — Virtual Hosts
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Virtual Hosts permiten alojar varios nombres de sitio en una misma instancia mediante bloques de servidor. Define nombres explícitos, certificados y comportamiento por defecto para hosts desconocidos.
 
 #### 19.4.04 — Static Files
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Static Files sirve archivos como HTML, CSS, JavaScript e imágenes directamente desde el servidor web. Configura rutas y tipos MIME, controla permisos y evita exponer archivos de configuración o directorios internos.
 
 #### 19.4.05 — TLS
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+TLS en Nginx protege el canal entre clientes y servidor mediante certificados y parámetros criptográficos. Automatiza renovación, redirige HTTP cuando corresponda y verifica cadena, nombre y vigencia sin desactivar validación.
 
 #### 19.4.06 — Load Balancing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Load Balancing distribuye solicitudes entre servidores upstream mediante algoritmos y comprobaciones disponibles. Configura health checks, persistencia si se requiere y manejo de fallos; balancear no garantiza consistencia de sesión o datos.
 
 ### Módulo 19.5 — CI/CD
 
 #### 19.5.01 — Pipelines
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Pipelines describen etapas automatizadas de build, pruebas, análisis y entrega. Divide jobs por responsabilidad, controla permisos de runners y conserva artefactos trazables para poder reconstruir qué versión fue publicada.
 
 #### 19.5.02 — Automated Builds
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Automated Builds compilan o empaquetan software desde fuentes y dependencias declaradas. Usa entornos limpios y versiones fijadas, y genera artefactos reproducibles o al menos trazables.
 
 #### 19.5.03 — Automated Tests
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Automated Tests ejecuta suites como parte del pipeline y bloquea promoción ante fallos relevantes. Clasifica pruebas por duración y riesgo, publica resultados y evita deshabilitar controles para forzar un despliegue.
 
 #### 19.5.04 — Deployment
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Deployment publica un artefacto en un entorno mediante una estrategia definida. Separa build de deploy, controla permisos, verifica salud posterior y registra versión, parámetros y responsable del cambio.
 
 #### 19.5.05 — GitHub Actions
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+GitHub Actions automatiza workflows mediante eventos, jobs y actions en runners. Fija versiones de actions, limita `GITHUB_TOKEN`, revisa permisos y protege secretos contra exposición en logs o ejecuciones de forks.
 
 #### 19.5.06 — Secrets
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Secrets son credenciales y valores confidenciales utilizados por workflows y aplicaciones. Guárdalos en un gestor apropiado, limita alcance y duración, rótalos y nunca los imprimas ni los escribas en artefactos.
 
 #### 19.5.07 — Environments
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Environments representan destinos como staging y production con variables, secretos y reglas de aprobación. Restringe quién puede desplegar y exige evidencia previa para promover artefactos entre entornos.
 
 #### 19.5.08 — Rollbacks
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Rollbacks restauran una versión o estado conocido cuando una publicación falla. Define qué puede revertirse, cómo se manejan migraciones de datos y cómo se valida recuperación; rollback de código no revierte automáticamente cambios de esquema.
 
 ### Módulo 19.6 — Cloud
 
 #### 19.6.01 — Cloud Computing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Cloud Computing ofrece recursos informáticos bajo demanda mediante redes y servicios gestionados. Evalúa responsabilidad compartida, coste, disponibilidad, residencia de datos y dependencia del proveedor antes de migrar cargas.
 
 #### 19.6.02 — IaaS
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+IaaS ofrece recursos fundamentales como cómputo, red y almacenamiento virtualizados que el cliente administra en gran parte. Mantén parches, hardening, backups y control de identidades en el sistema operativo.
 
 #### 19.6.03 — PaaS
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+PaaS abstrae parte de la administración de infraestructura y runtime para desplegar aplicaciones. Comprende límites de plataforma, escalado, configuración y portabilidad; el proveedor gestiona componentes, pero la aplicación sigue siendo responsabilidad del cliente.
 
 #### 19.6.04 — SaaS
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+SaaS ofrece una aplicación completa administrada por el proveedor. Evalúa identidad, roles, integración, exportación de datos, retención y continuidad; contratar SaaS no elimina responsabilidades sobre usuarios y datos.
 
 #### 19.6.05 — Virtual Machines
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Virtual Machines ejecuta sistemas operativos invitados sobre un hipervisor. Dimensiona CPU, memoria y disco, aplica parches al host y guest y evita exponer servicios de administración a redes no confiables.
 
 #### 19.6.06 — Storage
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Cloud Storage ofrece almacenamiento de objetos, bloques o archivos según el servicio. Define cifrado, versionado, políticas de acceso, retención y recuperación; evita buckets públicos por defecto.
 
 #### 19.6.07 — Networking
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Cloud Networking conecta recursos mediante redes virtuales, subredes, rutas, gateways y reglas de seguridad. Diseña segmentación, flujos mínimos y conectividad privada antes de desplegar servicios.
 
 #### 19.6.08 — IAM
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+IAM controla identidades, roles, políticas y permisos sobre recursos cloud. Aplica mínimo privilegio, credenciales temporales, MFA y revisión periódica; no uses claves de larga duración compartidas entre desarrolladores.
 
 #### 19.6.09 — Monitoring
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Monitoring recoge métricas, logs, trazas y eventos para observar salud y rendimiento. Define alertas accionables y SLOs, controla datos sensibles y prueba que las alertas lleguen a responsables.
 
 ### Módulo 19.7 — Proveedores
 
 #### 19.7.01 — AWS
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en proveedores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+AWS ofrece servicios cloud de cómputo, almacenamiento, red, identidad y observabilidad. Aprende el modelo de cuenta, regiones, IAM y responsabilidad compartida antes de desplegar; limita permisos y presupuestos en laboratorios.
 
 #### 19.7.02 — Azure
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en proveedores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Azure integra servicios cloud y herramientas del ecosistema Microsoft con gestión de identidades y recursos. Comprende tenants, subscriptions, resource groups y RBAC; separa entornos y evita credenciales administrativas permanentes.
 
 #### 19.7.03 — Google Cloud
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en proveedores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Google Cloud ofrece servicios de infraestructura, datos, red e identidad organizados por proyectos y recursos. Configura IAM, billing, regiones y logging desde el inicio y evita claves de cuentas de servicio descargables cuando haya alternativas federadas.
 
 ### Módulo 19.8 — Kubernetes
 
 #### 19.8.01 — Pods
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Pods son la unidad desplegable mínima de Kubernetes y agrupan uno o más contenedores que comparten red y volúmenes. Define requests/limits y probes, y no uses un Pod aislado como estrategia de alta disponibilidad.
 
 #### 19.8.02 — Nodes
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Nodes son máquinas que ejecutan Pods y componentes del agente del clúster. Mantén versiones soportadas, capacidad y parches; separa nodos por necesidades de carga y confianza cuando corresponda.
 
 #### 19.8.03 — Deployments
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Deployments gestionan réplicas y actualizaciones declarativas de Pods. Configura estrategia de rollout, probes y réplicas; verifica disponibilidad antes de considerar exitosa una actualización.
 
 #### 19.8.04 — Services
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Services ofrecen una dirección estable y balanceo hacia un conjunto de Pods. Selecciona labels correctamente y limita tipos de exposición; un Service interno no debe convertirse accidentalmente en endpoint público.
 
 #### 19.8.05 — ConfigMaps
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+ConfigMaps almacenan configuración no confidencial para consumirla en Pods. Versiona cambios y reinicia o recarga procesos cuando corresponda; no guardes tokens o contraseñas en ConfigMaps.
 
 #### 19.8.06 — Secrets
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Secrets almacenan datos sensibles en Kubernetes, pero su nombre no garantiza cifrado o protección suficiente por defecto. Configura cifrado en reposo, RBAC mínimo, rotación y external secret management cuando sea adecuado.
 
 #### 19.8.07 — Volumes
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Volumes conectan almacenamiento a contenedores y pueden persistir más allá del ciclo de vida de un Pod. Comprende StorageClasses y PersistentVolumeClaims y diseña backup/restauración independiente del montaje.
 
 #### 19.8.08 — Ingress
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Ingress define reglas de acceso HTTP/HTTPS hacia servicios del clúster mediante un controlador compatible. Configura TLS, hosts y rutas, limita exposición y verifica políticas del controlador instalado.
 
 #### 19.8.09 — Scaling
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Scaling ajusta réplicas o recursos según demanda mediante escalado manual o automático. Define métricas y límites, considera capacidad de nodos y dependencias y evita escalar sin observar latencia y coste.
 
 #### 19.8.10 — Networking
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Kubernetes Networking conecta Pods, Services y redes externas según el modelo de red del clúster. Comprende DNS, políticas de red y rutas; aplica NetworkPolicies cuando el plugin las soporte y valida aislamiento real.
 
 ### Módulo 19.9 — Terraform
 
 #### 19.9.01 — Infrastructure as Code
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Infrastructure as Code con Terraform define recursos mediante configuración declarativa y permite revisar cambios antes de aplicarlos. Mantén código versionado y módulos reutilizables y nunca ejecutes apply sin revisar el plan.
 
 #### 19.9.02 — Providers
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Providers permiten que Terraform interactúe con APIs de plataformas cloud y otros servicios. Fija versiones y fuentes confiables, configura autenticación temporal y revisa cambios de proveedor antes de actualizar.
 
 #### 19.9.03 — Resources
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Resources describen objetos administrados por Terraform y sus argumentos/atributos. Define dependencias explícitas cuando sea necesario, evita recursos duplicados y protege operaciones destructivas mediante revisión.
 
 #### 19.9.04 — Variables
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Variables parametrizan módulos y configuraciones para distintos entornos. Declara tipos, validaciones y valores sensibles; marcar una variable como sensitive oculta parte de la salida, pero no sustituye proteger state y backend.
 
 #### 19.9.05 — State
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+State registra el mapeo entre configuración y recursos reales. Usa backend remoto con bloqueo y control de acceso, cifra y respalda state y nunca lo publiques porque puede contener valores sensibles.
 
 #### 19.9.06 — Modules
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Modules agrupan recursos y entradas/salidas para reutilizar infraestructura. Diseña interfaces pequeñas, versiona módulos y documenta supuestos; evita módulos excesivamente genéricos que dificulten entender qué infraestructura crean.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 67 orientaciones genéricas por explicaciones específicas de cada entrada oficial. Se desarrollaron fundamentos DevOps, contenedores e imágenes, servidores Linux, Nginx, CI/CD, proveedores cloud, IAM, observabilidad, Kubernetes y Terraform.
+
+**Revisión interna:** 67/67 entradas desarrolladas y cotejadas con el roadmap. Se reforzaron riesgos de secretos en imágenes y pipelines, privilegios, state de Terraform, exposición de servicios, lifecycle de contenedores, límites de recursos, NetworkPolicies y responsabilidad compartida cloud. Pendiente: construir imágenes, ejecutar pipelines, desplegar infraestructura efímera y validar recuperación en cuentas/clústeres de laboratorio autorizados. No se declara despliegue ni aprobación externa.
