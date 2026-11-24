@@ -116,3 +116,12 @@ Los UUID curriculares deben resolverse contra la base de datos del roadmap; no s
 
 ## Revisión y verificación
 Las referencias y fechas de consulta se consignan dentro de cada etapa. Deben revisarse antes de publicación, especialmente cuando describen versiones, APIs, estándares o requisitos cambiantes. Los ejemplos y proyectos no se etiquetarán como ejecutados o verificados hasta probarlos realmente. Los videos solo se aprobarán tras comprobar audio hablado en español y relación directa con el objetivo concreto.
+
+
+## Continuación de desarrollo didáctico — 2026-11-24
+
+Se amplió el contenido individual de las etapas 7–10: **284 lecciones** (etapa 7: 84; etapa 8: 81; etapa 9: 81; etapa 10: 38). Cada unidad incorpora explicación específica, aplicación o práctica pertinente y evidencia de comprensión. En redes y sistemas, las prácticas se limitan a entornos propios o autorizados; en bases de datos se utilizan conjuntos de prueba y operaciones controladas.
+
+Los archivos fueron releídos desde la rama después de los cambios y se cotejaron los conteos de encabezados. No se detectaron lecciones vacías ni el texto genérico de relleno previamente identificado en las etapas 9–10. **Esto es una comprobación documental y estructural, no una validación mediante ejecución.** Los ejemplos, comandos, consultas, configuraciones y laboratorios aún deben probarse en entornos definidos; las referencias deben verificarse individualmente y el contenido requiere revisión técnica y pedagógica independiente.
+
+Acumulado de desarrollo documental ampliado según los registros disponibles: etapas 1–6, 265 lecciones (OpenCode); etapas 7–10, 284 lecciones (esta continuación); total etapas 1–10, 549 lecciones. Las etapas 11–32 conservan su primera pasada de contenido individualizado y quedan pendientes de profundización equivalente. Consultar `AUDITORIA_CONTINUIDAD_ASCENSO_3_1.md` para el alcance y las limitaciones detalladas.
