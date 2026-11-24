@@ -132,182 +132,189 @@ Este desglose conserva las entradas del roadmap maestro, incluidas las notas exp
 ### Módulo 20.1 — Fundamentos
 
 #### 20.1.01 — Secure Coding
-Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Secure Coding aplica prácticas de implementación que reducen vulnerabilidades: validación, codificación de salida, consultas parametrizadas, manejo de errores y dependencias mantenidas. Integra controles en revisiones y pruebas, no como una lista que se consulta solo antes de publicar.
 
 #### 20.1.02 — Security by Design
-Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Security by Design incorpora amenazas, límites de confianza y requisitos de seguridad desde la arquitectura. Identifica activos, actores y flujos de datos y decide controles antes de que una elección insegura quede integrada en el diseño.
 
 #### 20.1.03 — Security by Default
-Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Security by Default configura el sistema inicialmente con opciones conservadoras, servicios mínimos y permisos restrictivos. El usuario puede habilitar capacidades justificadas, pero la configuración inicial no debe exponer funciones o datos innecesarios.
 
 #### 20.1.04 — Least Privilege
-Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Least Privilege concede a cada identidad solo permisos necesarios durante el tiempo requerido. Separa cuentas humanas y de servicio, revisa permisos periódicamente y evita privilegios administrativos permanentes.
 
 #### 20.1.05 — Defense in Depth
-Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Defense in Depth combina controles independientes en capas para reducir dependencia de una sola barrera. Diseña prevención, detección y recuperación; capas redundantes deben tener fallos y responsables comprendidos.
 
 #### 20.1.06 — Threat Modeling
-Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Threat Modeling identifica activos, amenazas, límites de confianza y posibles mitigaciones antes o durante el desarrollo. Utiliza un método explícito como STRIDE si encaja, registra supuestos y actualiza el modelo cuando cambia arquitectura.
 
 #### 20.1.07 — Attack Surface
-Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Attack Surface comprende interfaces, servicios, entradas, identidades, dependencias y rutas de acceso que pueden ser abusadas. Inventaría puntos expuestos y reduce los innecesarios; no confundas superficie con una lista exclusiva de puertos.
 
 ### Módulo 20.2 — Seguridad web
 
 #### 20.2.01 — SQL Injection
-Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+SQL Injection ocurre cuando datos no confiables alteran la estructura de una consulta SQL. Usa consultas parametrizadas y APIs seguras del ORM, limita privilegios de la cuenta y prueba entradas hostiles sin concatenar valores en sentencias.
 
 #### 20.2.02 — XSS
-Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+XSS permite que contenido no confiable se ejecute como script en el contexto de un sitio. Aplica codificación contextual de salida, sanitización cuando aceptes HTML, políticas CSP y evita insertar datos con APIs que interpretan markup.
 
 #### 20.2.03 — CSRF
-Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+CSRF induce al navegador autenticado a enviar una acción no deseada a una aplicación. Usa tokens anti-CSRF o mecanismos equivalentes, cookies SameSite y validación de origen según arquitectura; no asumas que CORS resuelve CSRF.
 
 #### 20.2.04 — SSRF
-Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+SSRF ocurre cuando el servidor realiza solicitudes a destinos controlados indirectamente por una entrada externa. Restringe destinos y protocolos, bloquea redes internas/metadatos cloud, valida DNS/IP después de resolución y aplica controles de salida.
 
 #### 20.2.05 — IDOR
-Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+IDOR aparece cuando una aplicación permite acceder a un objeto cambiando su identificador sin verificar autorización. Comprueba permisos sobre cada recurso en servidor y prueba acceso cruzado entre usuarios y tenants.
 
 #### 20.2.06 — Broken Access Control
-Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Broken Access Control es una categoría amplia de fallos donde restricciones de acceso no se aplican correctamente. Centraliza políticas, valida autorización en cada operación y evita confiar en controles visuales o identificadores difíciles de adivinar.
 
 #### 20.2.07 — Path Traversal
-Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Path Traversal manipula rutas para acceder a archivos fuera del directorio permitido. Normaliza rutas, utiliza identificadores internos, aplica allowlists y verifica que la ruta final permanezca dentro del directorio autorizado.
 
 #### 20.2.08 — Command Injection
-Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Command Injection ocurre cuando entradas no confiables alteran comandos del sistema operativo. Evita invocar shell con cadenas construidas; utiliza APIs específicas y argumentos separados, permisos mínimos y allowlists estrictas.
 
 #### 20.2.09 — File Upload Vulnerabilities
-Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+File Upload Vulnerabilities surgen por controles insuficientes sobre archivos recibidos. Limita tamaño, valida contenido real, renombra, almacena fuera del webroot, deshabilita ejecución y aplica análisis y autorización al descargar.
 
 #### 20.2.10 — Authentication Flaws
-Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Authentication Flaws incluyen contraseñas débiles, recuperación insegura, sesiones mal gestionadas y ausencia de protección contra abuso. Revisa ciclo completo de identidad, MFA, rate limits, rotación y revocación, no solo la pantalla de login.
 
 ### Módulo 20.3 — OWASP Top 10
 
 #### 20.3.01 — A01: Broken Access Control
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+A01: Broken Access Control agrupa fallos de autorización sobre funciones y objetos. Verifica permisos en servidor para cada acción y objeto, aplica denegación por defecto y registra intentos relevantes sin almacenar datos sensibles.
 
 #### 20.3.02 — A02: Security Misconfiguration
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+A02: Security Misconfiguration incluye configuraciones inseguras, servicios innecesarios, permisos excesivos y errores de despliegue. Mantén configuraciones reproducibles, elimina valores por defecto y valida endurecimiento en cada entorno.
 
 #### 20.3.03 — A03: Software Supply Chain Failures
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+A03: Software Supply Chain Failures aborda riesgos en dependencias, herramientas, pipelines y artefactos de terceros. Inventaría componentes, verifica procedencia e integridad, limita permisos CI y revisa actualizaciones y alertas de vulnerabilidad.
 
 #### 20.3.04 — A04: Cryptographic Failures
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+A04: Cryptographic Failures se relaciona con protección insuficiente de datos por algoritmos, claves o configuraciones inadecuadas. Usa bibliotecas mantenidas, TLS vigente, gestión de claves y minimización de datos; no diseñes criptografía propia.
 
 #### 20.3.05 — A05: Injection
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+A05: Injection comprende entradas que alteran la interpretación de consultas o comandos. Prefiere APIs parametrizadas, separación de datos e instrucciones y validación contextual; prueba múltiples contextos de interpretación.
 
 #### 20.3.06 — A06: Insecure Design
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+A06: Insecure Design señala ausencia de controles de seguridad desde requisitos y arquitectura. Modela amenazas, define límites y casos de abuso y establece controles verificables antes de implementar.
 
 #### 20.3.07 — A07: Authentication Failures
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+A07: Authentication Failures abarca errores de identificación, gestión de credenciales y sesiones. Protege recuperación, MFA, almacenamiento de contraseñas, expiración y revocación y prueba abuso automatizado.
 
 #### 20.3.08 — A08: Software or Data Integrity Failures
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+A08: Software or Data Integrity Failures aborda confianza indebida en actualizaciones, código, datos o procesos sin verificar integridad. Firma y verifica artefactos, protege pipelines y valida fuentes de datos críticas.
 
 #### 20.3.09 — A09: Security Logging and Alerting Failures
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+A09: Security Logging and Alerting Failures incluye registros insuficientes, alertas ausentes o detección no operativa. Define eventos de seguridad útiles, integridad y retención de logs, alertas accionables y protección contra filtración de secretos.
 
 #### 20.3.10 — A10: Mishandling of Exceptional Conditions
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+A10: Mishandling of Exceptional Conditions cubre fallos en condiciones excepcionales que pueden provocar estados inseguros o exposición. Define manejo de errores, límites, fallbacks seguros y recuperación; prueba timeouts, interrupciones y entradas inesperadas.
 
 #### 20.3.11 — Esta es la edición publicada más reciente que hemos verificado
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+La nota de edición del roadmap sobre la versión más reciente de OWASP debe tratarse como metadato editorial sujeto a comprobación, no como una lección técnica ni como afirmación permanente. Antes de aprobar, registrar URL oficial, fecha de publicación y edición utilizada.
 
 #### 20.3.12 — OWASP Top 10:2025
-Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+OWASP Top 10:2025 es una edición versionada de una lista de riesgos de aplicaciones web. Estudia sus categorías en el contexto de la edición oficial y conserva el número de versión en materiales y evaluaciones; no mezcles categorías de ediciones distintas.
 
 ### Módulo 20.4 — Autenticación y autorización
 
 #### 20.4.01 — Authentication
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Authentication verifica la identidad de una persona o servicio mediante credenciales o mecanismos federados. Define recuperación, MFA, rotación y detección de abuso; autenticar no concede automáticamente acceso a todos los recursos.
 
 #### 20.4.02 — Authorization
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Authorization decide qué operaciones y recursos puede utilizar una identidad. Aplica controles en servidor por función y objeto, registra decisiones sensibles y prueba escalamiento horizontal y vertical de privilegios.
 
 #### 20.4.03 — Sessions
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Sessions mantienen contexto de autenticación entre solicitudes. Genera identificadores impredecibles, rota tras cambios de privilegio, limita duración y revoca al cerrar sesión o ante incidentes.
 
 #### 20.4.04 — Cookies
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Cookies transportan datos del navegador al servidor bajo reglas de dominio, ruta y atributos. Para sesiones utiliza Secure, HttpOnly y SameSite apropiados, y protege contra CSRF y fijación de sesión.
 
 #### 20.4.05 — JWT
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+JWT es un formato de claims que puede firmarse o cifrarse según perfil. Valida algoritmo, emisor, audiencia, expiración y firma; no almacenes secretos en payloads firmados que suelen ser legibles.
 
 #### 20.4.06 — OAuth2
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+OAuth2 permite delegar autorización a clientes mediante scopes y tokens. Elige flujos seguros para el tipo de cliente, usa PKCE cuando corresponda y limita permisos y vigencia.
 
 #### 20.4.07 — OpenID Connect
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+OpenID Connect agrega autenticación e identidad a OAuth2 mediante ID Tokens y endpoints estandarizados. Valida issuer, audience, nonce y firma y diferencia el ID Token del access token.
 
 #### 20.4.08 — MFA
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+MFA combina factores de categorías distintas para reducir dependencia de una sola credencial. Prefiere métodos resistentes al phishing cuando sea viable y define recuperación segura para evitar que el proceso alternativo anule el control.
 
 #### 20.4.09 — RBAC
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+RBAC asigna permisos a roles y roles a identidades según responsabilidades. Mantén roles revisables, evita privilegios acumulativos y valida permisos sobre recursos concretos.
 
 #### 20.4.10 — ABAC
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+ABAC toma decisiones según atributos del sujeto, recurso, acción y contexto. Define políticas legibles y auditables, controla calidad de atributos y evita reglas contradictorias o demasiado amplias.
 
 #### 20.4.11 — Password Hashing
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Password Hashing transforma contraseñas en verificadores no reversibles mediante funciones adaptativas diseñadas para ese propósito. Usa algoritmo y parámetros vigentes, salt único y actualización gradual de hashes al autenticar.
 
 #### 20.4.12 — Secure Password Storage
-Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Secure Password Storage exige no almacenar contraseñas en texto claro ni cifrado reversible. Protege hashes, limita acceso, evita registros de credenciales y diseña recuperación mediante tokens de un solo uso y expiración.
 
 ### Módulo 20.5 — Seguridad de APIs
 
 #### 20.5.01 — OWASP API Security Top 10
-Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+OWASP API Security Top 10 reúne riesgos específicos de APIs, incluidos fallos de autorización, autenticación, consumo de recursos y configuración. Utiliza la edición identificada y traduce cada riesgo a controles y pruebas por endpoint.
 
 #### 20.5.02 — Broken Object Level Authorization
-Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Broken Object Level Authorization ocurre cuando el servidor no verifica si el sujeto puede operar sobre el objeto solicitado. Comprueba ownership, tenant y política contextual en cada endpoint que recibe un identificador.
 
 #### 20.5.03 — Broken Authentication
-Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Broken Authentication en APIs incluye validación incorrecta de tokens, credenciales expuestas y sesiones mal gestionadas. Usa bibliotecas y protocolos mantenidos, valida claims y protege emisión, almacenamiento, renovación y revocación.
 
 #### 20.5.04 — Unrestricted Resource Consumption
-Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Unrestricted Resource Consumption permite que solicitudes agoten CPU, memoria, conexiones o servicios de terceros. Limita tamaño, paginación, complejidad, concurrencia y frecuencia; define cuotas y presupuestos por consumidor.
 
 #### 20.5.05 — API Misconfiguration
-Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+API Misconfiguration incluye endpoints, headers, CORS, documentación o servicios desplegados con opciones inseguras. Mantén configuración versionada, deshabilita debugging y endpoints innecesarios y valida diferencias entre desarrollo y producción.
 
 #### 20.5.06 — Unsafe API Consumption
-Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Unsafe API Consumption ocurre cuando una aplicación confía excesivamente en datos o respuestas de APIs externas. Valida esquema, TLS, timeouts y origen, limita redirecciones y no reenvíes credenciales a destinos no confiables.
 
 ### Módulo 20.6 — Seguridad de infraestructura
 
 #### 20.6.01 — HTTPS
-Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+HTTPS protege el transporte HTTP mediante TLS y validación del servidor. Fuerza uso seguro cuando corresponde, renueva certificados y evita contenido mixto; HTTPS no sustituye autenticación, autorización ni seguridad de la lógica.
 
 #### 20.6.02 — TLS
-Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+TLS establece un canal criptográfico con negociación de parámetros y validación de certificados. Mantén versiones y suites soportadas, automatiza renovación y verifica configuración con herramientas confiables.
 
 #### 20.6.03 — Secure Headers
-Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Secure Headers comunican políticas del navegador, como CSP, HSTS, X-Content-Type-Options y políticas de framing/referrer. Configúralos según el sitio y prueba compatibilidad; un header mal definido puede romper funciones o dar falsa sensación de protección.
 
 #### 20.6.04 — CORS
-Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+CORS regula qué orígenes de navegador pueden leer respuestas cross-origin. Permite orígenes y credenciales de forma específica; no lo utilices como sustituto de autenticación ni como firewall de API.
 
 #### 20.6.05 — Secrets Management
-Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Secrets Management controla creación, almacenamiento, acceso, rotación y revocación de claves y credenciales. Usa gestores dedicados o mecanismos del entorno, limita acceso por servicio y evita secretos en código, imágenes, logs o variables visibles al cliente.
 
 #### 20.6.06 — Environment Variables
-Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Environment Variables permiten configurar aplicaciones fuera del código fuente, pero no son automáticamente un gestor seguro de secretos. Controla quién puede leer procesos y logs, valida valores y utiliza almacenes secretos cuando el entorno lo permita.
 
 #### 20.6.07 — Rate Limiting
-Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Rate Limiting controla frecuencia de solicitudes para reducir abuso y proteger recursos. Define claves, ventanas y límites por operación; responde de forma consistente y considera NAT/proxies para no penalizar usuarios legítimos.
 
 #### 20.6.08 — Input Validation
-Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Input Validation comprueba tipo, formato, rango, tamaño y reglas de negocio de los datos recibidos. Valida en servidor y en límites de confianza, utiliza allowlists y parametrización y no confundas validación con codificación de salida.
 
 #### 20.6.09 — Output Encoding
-Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Output Encoding representa datos según el contexto donde se insertan, como HTML, atributo, URL o JavaScript. Aplica codificación contextual y evita construir scripts/markup mediante concatenación de entradas no confiables.
 
 #### 20.6.10 — Secure Error Handling
-Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+Secure Error Handling devuelve respuestas controladas sin revelar rutas, stack traces, consultas o secretos. Registra detalles internos con acceso restringido, usa identificadores de correlación y define fallbacks que no dejen operaciones a medias.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 57 orientaciones genéricas por explicaciones específicas de AppSec, vulnerabilidades web, categorías OWASP, identidad, seguridad de APIs y controles de infraestructura. Se preservó la nota editorial del roadmap sobre edición OWASP como elemento de metadatos sujeto a verificación, sin tratarla como afirmación permanente.
+
+**Revisión interna:** 57/57 entradas desarrolladas y cotejadas con el roadmap. Se reforzaron controles de autorización por objeto, validación/encoding contextual, gestión de secretos, SSRF, subida de archivos, autenticación, CORS y errores. Pendiente: verificar edición OWASP citada y sus categorías con fuente oficial vigente, ejecutar análisis estático/DAST en laboratorio autorizado y probar controles en aplicaciones de referencia. No se realizaron pruebas ofensivas ni se declara aprobación externa.
