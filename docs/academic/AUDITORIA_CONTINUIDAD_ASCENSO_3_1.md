@@ -171,3 +171,8 @@ El documento de Git, GitHub, terminal y modularidad quedó alineado con sus 42 l
 ### Expansión granular — etapa 6
 
 La etapa 6 quedó alineada con las 57 lecciones del roadmap: 9 de estructuras lineales, 7 asociativas, 7 de árboles, 7 de grafos, 12 de algoritmos, 7 técnicas y 8 de complejidad. Se separaron estructuras antes agrupadas (listas simples/dobles/circulares, colas/deques, mapas/conjuntos), tipos de grafos, algoritmos de búsqueda/ordenamiento/caminos mínimos/árboles de expansión, técnicas y notaciones de complejidad. Se mantuvo el proyecto de biblioteca de estructuras en Java y se precisaron supuestos de complejidad y aplicabilidad de algoritmos. No se afirma compilación ni ejecución de implementaciones.
+
+
+### Expansión granular — etapa 7
+
+La etapa 7 quedó alineada con 84 lecciones oficiales: 14 de fundamentos de sistemas operativos, 17 de Linux, 20 comandos de administración Linux, 12 de Bash, 12 de Windows y 9 de virtualización. Se separaron conceptos de kernel/espacios de ejecución, procesos/hilos/planificador, llamadas al sistema/drivers, elementos de administración Linux, comandos individuales, componentes de Bash, administración de Windows y modos de virtualización/red. Se conservaron el proyecto de servidores virtuales Ubuntu y Windows Server y las advertencias de seguridad para comandos destructivos, privilegios y redes expuestas. Las prácticas siguen siendo propuestas; no se declara ejecución en VMs reales.
