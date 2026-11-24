@@ -186,3 +186,8 @@ La etapa 8 quedó alineada con 81 lecciones oficiales: 13 de fundamentos de rede
 ### Expansión granular — etapa 9
 
 La etapa 9 quedó alineada con 81 lecciones oficiales: 10 de fundamentos, 11 de modelado, 9 de MySQL, 19 de SQL, 9 de diseño y normalización, 15 de bases de datos avanzadas y 8 de PostgreSQL. Se separaron entidades, atributos, relaciones, cardinalidades, claves, restricciones y los modelos conceptual/lógico/físico; también se identificaron individualmente los comandos SQL y los temas de índices, transacciones, concurrencia y optimización. Se conservaron el proyecto de base de datos de ventas, los ejemplos y las advertencias sobre credenciales, operaciones destructivas y diferencias entre motores. Los scripts y el proyecto no se ejecutaron contra instancias reales de MySQL o PostgreSQL en esta sesión.
+
+
+### Expansión granular — etapa 10
+
+La etapa 10 quedó alineada con 38 lecciones oficiales: 8 de fundamentos NoSQL, 14 de MongoDB, 11 de Redis y 5 de otras arquitecturas de almacenamiento. Se individualizaron CAP, consistencia, disponibilidad, escalabilidad, CRUD, filtros, índices, aggregation pipeline, embedding/referencing, replicación, sharding, estructuras Redis, TTL, caché, sesiones, Pub/Sub y rate limiting. Se conservó el proyecto híbrido MySQL/MongoDB/Redis y se reforzó la distinción entre fuente de verdad, caché y replicación. Los comandos y laboratorios no se ejecutaron contra instancias reales en esta sesión.
