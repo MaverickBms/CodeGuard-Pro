@@ -73,10 +73,6 @@ Las ramas deben tener propósito y alcance definidos. No mantengas ramas abandon
 
 `clone` crea una copia local inicial de un repositorio remoto.
 
-### 5.1.11 — Fetch
-
-`fetch` descarga referencias y objetos remotos sin integrar automáticamente los cambios en tu rama actual.
-
 ### 5.1.9 — Pull
 
 `pull` obtiene cambios y los integra según la configuración (frecuentemente fetch + merge o rebase).
@@ -96,6 +92,10 @@ Antes de hacer push, verifica remoto, rama y contenido. Nunca publiques secretos
 **Rebase** reaplica commits sobre una base diferente y cambia sus identificadores. Puede producir una historia lineal, pero reescribe commits.
 
 Regla de colaboración: evita reescribir historia compartida sin coordinación. No hagas rebase de una rama que otras personas estén usando salvo que exista un acuerdo claro.
+
+### 5.1.11 — Fetch
+
+`fetch` descarga referencias y objetos remotos sin integrar automáticamente los cambios en tu rama actual.
 
 ### 5.1.12 — Diff
 
