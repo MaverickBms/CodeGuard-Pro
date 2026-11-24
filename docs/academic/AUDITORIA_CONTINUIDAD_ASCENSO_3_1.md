@@ -323,3 +323,16 @@ Se reemplazaron las 212 descripciones genéricas agregadas durante la pasada de 
 Cada apartado incluye explicación técnica y límites/decisiones de uso; los contenidos se articulan con las guías principales, ejemplos, proyectos y ejercicios ya presentes. Se reforzaron riesgos de XSS y almacenamiento del navegador, reglas de Hooks, exposición de variables de cliente, seguridad de tokens, CORS, XML/XXE, serialización, autorización y protección de secretos.
 
 **Validación interna:** se cotejaron los encabezados contra el roadmap y se comprobó que no permanecieran los textos genéricos de relleno en las 212 entradas. Pendiente: fijar versiones concretas de runtime/frameworks, ejecutar pruebas de frontend, accesibilidad y APIs en entornos controlados y obtener segunda revisión académica. No se declara despliegue, certificación WCAG ni aprobación externa.
+
+
+## Desarrollo profundo individual — etapas 14 a 16 — 2026-11-24
+
+Se desarrollaron individualmente las 157 entradas oficiales de las etapas 14–16:
+
+- **Etapa 14 — Java y Spring Boot:** 58/58 lecciones.
+- **Etapa 15 — Node.js y NestJS:** 53/53 lecciones.
+- **Etapa 16 — PHP, Laravel y .NET:** 46/46 lecciones.
+
+Se sustituyeron las orientaciones genéricas por explicaciones específicas con función, decisiones de arquitectura, límites, riesgos y aplicación técnica. Se reforzaron inyección de dependencias, DTOs, validación, persistencia, migraciones, autorización por recurso, secretos, OAuth/OIDC/JWT, procesamiento asíncrono, idempotencia, dependencias y pruebas.
+
+**Validación interna:** se cotejaron encabezados y cantidad de entradas con el JSON curricular y se comprobó que no quedaran placeholders genéricos en los documentos de las tres etapas. Pendiente: fijar versiones exactas de runtimes/frameworks/ORMs, compilar, ejecutar pruebas, migraciones e integración de seguridad en laboratorios aislados. La revisión es documental y no equivale a aprobación externa.
