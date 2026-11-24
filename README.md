@@ -262,3 +262,8 @@ La documentación de la etapa 10 (Bases de datos NoSQL y almacenamiento moderno)
 ### Continuidad ASCENSO 3.1 — etapas 11 a 13
 
 Se añadieron encabezados individuales para las 212 lecciones oficiales de las etapas 11–13: etapa 11 (60), etapa 12 (89) y etapa 13 (63). El desglose conserva la secuencia y los títulos del roadmap, y se apoya en las explicaciones, proyectos, autoevaluaciones y referencias presentes en cada documento. Es base de trabajo activa; no equivale a evaluación formal, ejecución de laboratorios, aprobación editorial ni publicación.
+
+
+### Continuidad ASCENSO 3.1 — etapas 14 a 16
+
+Se incorporaron encabezados individuales para las 157 lecciones oficiales de las etapas 14–16: etapa 14 (58), etapa 15 (53) y etapa 16 (46). El desglose organiza los contenidos de Java/Spring Boot, Node.js/NestJS, PHP/Laravel y .NET según el roadmap. Es base de trabajo activa; no equivale a ejecución de laboratorios, aprobación editorial ni publicación.
