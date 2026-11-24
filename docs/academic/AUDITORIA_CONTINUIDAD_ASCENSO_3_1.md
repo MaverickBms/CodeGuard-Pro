@@ -957,3 +957,36 @@ Cada lección contiene explicación conceptual específica, ejemplo, práctica g
 - No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para este lote.
 
 No se modificó el roadmap JSON, no se inventaron UUID y no se importó, aprobó ni publicó contenido. Las etapas siguientes permanecen pendientes de desarrollo documental equivalente; la etapa 25 mantiene su objetivo oficial vacío.
+
+
+## Desarrollo documental individual — etapa 10 (2026-11-24)
+
+### Resultado
+
+Se desarrollaron individualmente las 38 lecciones oficiales de la etapa 10 «NoSQL y almacenamiento moderno», manteniendo títulos, módulos y numeración:
+
+| Módulo | Lecciones oficiales | Desarrolladas |
+|---|---:|---:|
+| 10.1 — Fundamentos NoSQL | 8 | 8 |
+| 10.2 — MongoDB | 14 | 14 |
+| 10.3 — Redis | 11 | 11 |
+| 10.4 — Otras arquitecturas de almacenamiento | 5 | 5 |
+| **Total** | **38** | **38** |
+
+Cada lección contiene explicación específica, ejemplo o escenario, práctica guiada, actividad independiente, criterios de aceptación, errores frecuentes y pregunta de comprobación. Se añadieron precauciones para no utilizar datos reales, proteger sesiones y secretos, limitar comandos destructivos y considerar consistencia, replicación, persistencia y retención.
+
+### Revisión estructural
+
+- Se verificaron 38 encabezados únicos.
+- Se cotejaron los cuatro módulos y sus conteos con el roadmap JSON oficial.
+- Se comprobó la presencia de práctica guiada, actividad independiente y criterios de aceptación en todas las lecciones.
+- Se conservaron resultados de aprendizaje, proyecto, evaluación y referencias preexistentes.
+
+### Límites de validación
+
+- Es desarrollo documental y revisión estructural interna, no validación técnica independiente ni aprobación académica.
+- No se desplegaron instancias MongoDB, Redis ni otros motores; no se ejecutaron operaciones CRUD, pipelines, replicación, sharding, TTL ni pruebas de rendimiento.
+- No se verificaron exhaustivamente referencias ni compatibilidad por versiones de los productos.
+- No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para este lote.
+
+No se modificó el roadmap JSON, no se inventaron UUID y no se importó, aprobó ni publicó contenido. Las etapas posteriores permanecen pendientes de desarrollo equivalente; el objetivo oficial vacío de etapa 25 sigue intacto.
