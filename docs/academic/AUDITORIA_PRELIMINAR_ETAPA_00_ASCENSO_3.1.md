@@ -185,3 +185,10 @@ La etapa 25 mantiene el campo `objetivo` vacío en el JSON. No se propone ni se 
 6. Solo entonces diseñar y validar en seco un primer paquete JSON v1 con UUID y fuentes existentes.
 
 **Estado general de la etapa 0:** EN_DESARROLLO documental; los cuatro módulos continúan en BORRADOR. Ninguna lección se declara REVISADA, APROBADA o PUBLICADA.
+
+
+### 7. Proyecto integrador ASCENSO-Knowledge-Base
+
+Se añadió `docs/academic/ascenso-3.1/etapa-00/proyecto-integrador-ascenso-knowledge-base.md`, alineado con el proyecto indicado por el JSON maestro. La especificación incluye contexto, resultados observables, requisitos funcionales/no funcionales, estructura de referencia, plantillas, fases conectadas con los cuatro módulos, entregables, criterios de validación, rúbrica analítica, errores frecuentes y registro de ejecución.
+
+**Estado:** BORRADOR. Se ha redactado la especificación; el repositorio del estudiante no se ha creado, no se han producido entregables, no se ha ejecutado una revisión por pares y no se ha aprobado ni publicado el proyecto.
