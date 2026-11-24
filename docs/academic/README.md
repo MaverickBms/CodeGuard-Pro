@@ -228,3 +228,12 @@ Se amplió el desarrollo de las **60 lecciones** de HTML/CSS/frontend: HTML (21)
 Comprobación estructural: 60/60 encabezados cotejados con el roadmap oficial. No se ejecutaron validadores HTML/CSS, pruebas cross-browser, lectores de pantalla, mediciones de contraste ni pruebas de indexación. Las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. La cobertura documental no equivale a conformidad WCAG, validación técnica ni aprobación.
 
 Acumulado documental ampliado: etapas 1–6, 265; etapa 7, 84; etapa 8, 81; etapa 9, 81; etapa 10, 38; etapa 11, 60; total etapas 1–11: **609 lecciones**. Restan 1.337 lecciones nominales de las etapas 12–32. El roadmap JSON permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó ni publicó contenido.
+
+
+### Profundización documental integral — etapa 12 — 2026-11-24
+
+Se amplió el desarrollo de las **89 lecciones** de JavaScript/TypeScript/React/Next.js: JavaScript (19), DOM (9), asincronía (10), Web APIs (7), TypeScript (11), React (16), Next.js (10) y herramientas (7). Se incorporaron prácticas específicas, evidencias esperadas, criterios de aceptación y límites de seguridad.
+
+Comprobación estructural: 89/89 encabezados cotejados con el roadmap oficial. No se ejecutaron builds, tests, lint, navegadores, DevTools ni despliegues. Las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. La cobertura documental no equivale a validación técnica ni aprobación.
+
+Acumulado documental ampliado: etapas 1–6, 265; etapa 7, 84; etapa 8, 81; etapa 9, 81; etapa 10, 38; etapa 11, 60; etapa 12, 89; total etapas 1–12: **698 lecciones**. Restan 1.248 lecciones nominales de las etapas 13–32. El roadmap JSON permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó ni publicó contenido.
