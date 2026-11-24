@@ -394,6 +394,19 @@ Antes de dibujar, define qué pregunta debe responder el diagrama:
 
 **Dominio:** mínimo sugerido 80/100, sin exposición de secretos ni uso de comandos destructivos sin control. La rúbrica no sustituye una revisión docente.
 
+## Matriz de evidencias por tema
+
+| Tema | Evidencia mínima | Señal de dominio |
+|---|---|---|
+| 0.3.1 VS Code | Inventario de versión, carpeta raíz, extensiones y justificación | Distingue editor, runtime/SDK y extensiones |
+| 0.3.2 Terminal | Transcripción saneada con shell, ruta inicial y comandos utilizados | Comprueba destino y privilegios antes de modificar archivos |
+| 0.3.3 Git | Secuencia de estado, diff, staging, commit e historial | Explica qué contenido entra en cada commit |
+| 0.3.4 GitHub | Rama y pull request de práctica con diff revisado | Distingue estado local, remoto y propuesta de integración |
+| 0.3.5 DevTools | Registro de una solicitud autorizada y observaciones de Elements/Network | Separa observación puntual de una conclusión general y no expone datos de sesión |
+| 0.3.6 Markdown | README probado por una persona distinta al autor | La persona puede empezar sin instrucciones verbales |
+| 0.3.7 Draw.io | Dos diagramas del mismo caso con preguntas distintas | El tipo de diagrama responde al propósito declarado |
+| 0.3.8 Herramientas de diagramación | Archivo fuente editable, exportación y comparación de criterios de selección | Conserva fuente, accesibilidad, portabilidad y límites |
+
 ## Evaluación de transferencia
 
 Responde con evidencia:
