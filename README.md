@@ -297,3 +297,8 @@ Se incorporaron encabezados individuales para las 275 entradas oficiales de las 
 ## Cierre de continuidad ASCENSO 3.1 — 24-11-2026
 
 Se completó la pasada de continuidad documental de las 32 etapas posteriores a la etapa 0. Las etapas 11–32 cuentan con encabezados granulares por cada entrada oficial del roadmap y sus conteos se cotejaron por etapa. Esto completa la organización documental de las etapas, no la redacción profunda de las 1.916 lecciones nominales de las etapas 1–32: aún deben ampliarse teoría, ejemplos, ejercicios, referencias y evidencias prácticas. El JSON curricular permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó, aprobó ni publicó contenido.
+
+
+### Desarrollo profundo y revisión editorial — etapas 1 a 10
+
+Se revisaron editorialmente los documentos de las etapas 1–10 y se cotejaron sus encabezados con el roadmap: 549/549 entradas curriculares coinciden por módulo. Se corrigieron duplicaciones, referencias impropias, orden de lecciones, compatibilidad JDK 21 y advertencias operativas. La revisión es documental interna; los ejemplos y laboratorios siguen pendientes de ejecución reproducible y segunda revisión académica. Los contenidos permanecen como base de trabajo activa, sin aprobación ni publicación.
