@@ -315,11 +315,19 @@ Component Scanning detecta clases anotadas en paquetes configurados y las regist
 Spring Initializr genera una estructura de proyecto y selecciona dependencias iniciales compatibles. Elige versión de Spring Boot, Java y build tool de acuerdo con la matriz oficial; registra esas versiones para que el proyecto sea reproducible.
 
 
+**Escenario aplicado.** El proyecto se genera con una versión de Spring Boot compatible con la versión de Java elegida. Se registra el wrapper y las dependencias exactas para que el build no dependa de herramientas globales del equipo.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué información hace reproducible la generación y compilación del proyecto?
+
 **Práctica y evidencia:** Genera un proyecto con Spring Initializr seleccionando versión compatible, Java y dependencias mínimas. **Evidencia:** registra coordenadas, versión y motivo de cada dependencia.
 
 #### 14.3.02 — Estructura del proyecto
 La estructura del proyecto separa código de aplicación, configuración, recursos y pruebas. Organiza paquetes por funcionalidad o capas de forma consistente y conserva convenciones que permitan localizar controladores, servicios, repositorios y DTOs.
 
+
+**Escenario aplicado.** La estructura separa controladores, casos de uso, persistencia y configuración. Los paquetes se organizan por dominio cuando esto reduce dependencias cruzadas y facilita cambios.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué señal indica que una estructura por capas está generando acoplamiento circular?
 
 **Práctica y evidencia:** Organiza paquetes por capas o funcionalidad y documenta la convención elegida. **Evidencia:** demuestra que controladores, servicios y persistencia no se acoplan circularmente.
 
@@ -327,11 +335,19 @@ La estructura del proyecto separa código de aplicación, configuración, recurs
 Los controllers de Spring Boot se exponen mediante anotaciones de mapeo como `@RestController` y `@RequestMapping`. Define rutas y métodos explícitos, usa DTOs y delega el procesamiento a servicios en lugar de incluir reglas de negocio en handlers.
 
 
+**Escenario aplicado.** Un controlador REST recibe un DTO y devuelve 201 con Location al crear un recurso. No devuelve entidades JPA ni acepta propiedades internas no autorizadas.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué debe validar el controlador antes de delegar y qué debe delegar al servicio?
+
 **Práctica y evidencia:** Implementa un controlador con endpoints de lectura y escritura y respuestas HTTP coherentes. **Evidencia:** prueba rutas, parámetros y códigos.
 
 #### 14.3.04 — Services
 Los services concentran casos de uso y reglas de aplicación. Mantén operaciones transaccionales en el límite adecuado y evita que el servicio dependa innecesariamente de detalles HTTP o de serialización.
 
+
+**Escenario aplicado.** El servicio coordina creación de pedido y reserva de inventario dentro de una unidad de trabajo adecuada. La regla puede probarse sin arrancar el contexto web completo.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Dónde debe residir la regla de negocio y cómo se prueba de forma aislada?
 
 **Práctica y evidencia:** Implementa reglas de negocio en un servicio y define límites transaccionales. **Evidencia:** prueba una regla sin levantar el servidor web.
 
@@ -339,11 +355,19 @@ Los services concentran casos de uso y reglas de aplicación. Mantén operacione
 Los repositories de Spring Data proporcionan abstracciones para consultas y persistencia. Selecciona interfaces y métodos derivados con cuidado, inspecciona consultas generadas cuando sean complejas y evita cargar grandes conjuntos sin paginación.
 
 
+**Escenario aplicado.** Un endpoint de búsqueda devuelve resultados paginados y ordenados. El repositorio evita recuperar toda la tabla y se prueba el caso sin coincidencias.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué problema de rendimiento aparece al devolver todas las filas de una tabla creciente?
+
 **Práctica y evidencia:** Crea un repositorio de Spring Data y utiliza consultas derivadas o declaradas con criterios explícitos. **Evidencia:** prueba paginación y comportamiento con registros inexistentes.
 
 #### 14.3.06 — REST
 Una API REST en Spring Boot expone recursos mediante rutas, métodos HTTP y representaciones. Usa status codes correctos, valida entradas, documenta errores y considera idempotencia, paginación y compatibilidad del contrato.
 
+
+**Escenario aplicado.** GET consulta, POST crea, PUT reemplaza y PATCH modifica parcialmente según el contrato. El cliente recibe códigos coherentes y no se confunde idempotencia con autorización.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Por qué el método HTTP debe reflejar la semántica de la operación?
 
 **Práctica y evidencia:** Diseña recursos REST y métodos HTTP idempotentes según la operación. **Evidencia:** prueba GET, POST, PUT/PATCH y DELETE y justifica códigos de respuesta.
 
@@ -351,11 +375,19 @@ Una API REST en Spring Boot expone recursos mediante rutas, métodos HTTP y repr
 Los DTOs separan la representación externa del modelo interno. Diseña solicitudes y respuestas distintas cuando sus reglas difieran, evita exponer campos de auditoría o credenciales y controla la conversión entre DTO y dominio.
 
 
+**Escenario aplicado.** El DTO de respuesta omite campos internos y mantiene un contrato estable aunque cambie la entidad. Las conversiones se prueban para evitar exponer información accidentalmente.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué riesgo existe al serializar directamente entidades de persistencia?
+
 **Práctica y evidencia:** Mapea request/response a DTOs y evita devolver entidades JPA directamente. **Evidencia:** demuestra que cambios internos del modelo no alteran accidentalmente el contrato API.
 
 #### 14.3.08 — Validation
 Validation aplica restricciones declarativas a datos de entrada, por ejemplo obligatoriedad, longitud, formato y rangos. Valida en el límite de entrada y devuelve errores estructurados; la validación de DTO no sustituye reglas de negocio ni controles de base de datos.
 
+
+**Escenario aplicado.** Una entrada con correo mal formado o cantidad negativa se rechaza antes de ejecutar el caso de uso. La validación de negocio vuelve a comprobar invariantes que dependen del estado actual.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué diferencia existe entre validación sintáctica de DTO e invariantes del dominio?
 
 **Práctica y evidencia:** Aplica validación declarativa a un DTO y traduce errores en respuestas comprensibles. **Evidencia:** prueba límites, campos obligatorios y tipos inválidos.
 
@@ -363,11 +395,19 @@ Validation aplica restricciones declarativas a datos de entrada, por ejemplo obl
 Exception Handling centraliza la traducción de excepciones a respuestas HTTP mediante mecanismos como `@ControllerAdvice`. Devuelve mensajes seguros y códigos estables, registra detalles internos en logs protegidos y no expongas stack traces al cliente.
 
 
+**Escenario aplicado.** El manejador global devuelve un código y un identificador de correlación, mientras el detalle técnico permanece en logs protegidos. No se revela stack trace ni SQL al consumidor.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Cómo se puede facilitar soporte sin exponer detalles internos al cliente?
+
 **Práctica y evidencia:** Centraliza excepciones con un manejador y define un esquema estable de error. **Evidencia:** comprueba que los errores no filtran stack traces ni información interna.
 
 #### 14.3.10 — Configuration Properties
 Configuration Properties vincula configuración externa tipada con clases de la aplicación. Valida rangos y valores requeridos, separa perfiles y secretos, y evita dispersar lecturas de variables de entorno por toda la lógica de negocio.
 
+
+**Escenario aplicado.** Un perfil define URL y parámetros no secretos; el secreto se obtiene desde un almacén externo. La aplicación falla al iniciar si una propiedad obligatoria está ausente o mal formada.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Por qué conviene validar configuración al iniciar y no cuando llega la primera solicitud?
 
 **Práctica y evidencia:** Vincula propiedades tipadas desde configuración y valida valores obligatorios al iniciar. **Evidencia:** prueba arranque correcto e incorrecto sin revelar secretos.
 
@@ -377,11 +417,19 @@ Configuration Properties vincula configuración externa tipada con clases de la 
 Spring Data JPA facilita el acceso a persistencia relacional mediante repositorios y entidades JPA. Comprende el ciclo de vida del contexto de persistencia, transacciones y carga diferida; no asumas que una llamada al repositorio siempre equivale a una consulta simple.
 
 
+**Escenario aplicado.** Un repositorio guarda una entidad y la transacción delimita la operación. La prueba usa una base de datos aislada y verifica commit o rollback según el resultado.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué parte de la operación debe quedar dentro de una transacción y por qué?
+
 **Práctica y evidencia:** Mapea una entidad y ejecuta operaciones CRUD mediante Spring Data JPA. **Evidencia:** muestra persistencia y consulta en una base de prueba.
 
 #### 14.4.02 — Hibernate
 Hibernate es una implementación ORM que mapea objetos Java a estructuras relacionales y administra persistencia. Revisa SQL generado, estrategias de fetching y cachés; abstraer SQL no elimina la necesidad de comprender índices, joins y transacciones.
 
+
+**Escenario aplicado.** Una relación lazy se accede después de cerrar el contexto de persistencia y genera error. El diseño debe cargar explícitamente lo necesario para el caso de uso.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué problema puede causar una estrategia de fetching no considerada?
 
 **Práctica y evidencia:** Inspecciona SQL generado por Hibernate para una consulta y una relación. **Evidencia:** explica carga lazy/eager y detecta un posible problema N+1.
 
@@ -389,11 +437,19 @@ Hibernate es una implementación ORM que mapea objetos Java a estructuras relaci
 ORM relaciona clases/objetos con tablas/filas y gestiona conversiones y relaciones. Es útil para productividad, pero puede ocultar consultas costosas o diferencias de modelo; utiliza SQL explícito cuando la consulta o el rendimiento lo justifique.
 
 
+**Escenario aplicado.** Un ORM reduce código repetitivo, pero una consulta con joins y filtros puede requerir SQL específico. La decisión se basa en medición, claridad y mantenimiento.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Cuándo puede ser razonable abandonar una abstracción ORM para una consulta concreta?
+
 **Práctica y evidencia:** Compara ORM con JDBC directo mediante una operación sencilla. **Evidencia:** identifica productividad, control SQL y costes de abstracción.
 
 #### 14.4.04 — Entities
 Una Entity representa una entidad persistente con identidad y ciclo de vida administrado por JPA. Define clave primaria, campos y reglas de igualdad cuidadosamente; evita exponer entidades directamente como respuesta pública de una API.
 
+
+**Escenario aplicado.** Una entidad usa identificador estable y restricciones coherentes con la base. La igualdad no se basa ingenuamente en campos mutables que cambian durante el ciclo de vida.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué problema produce definir igualdad de entidades usando atributos mutables?
 
 **Práctica y evidencia:** Define una entidad con identificador, columnas y restricciones coherentes con el esquema. **Evidencia:** verifica mapping y comportamiento de persistencia.
 
@@ -401,11 +457,19 @@ Una Entity representa una entidad persistente con identidad y ciclo de vida admi
 Las relaciones JPA (`OneToOne`, `OneToMany`, `ManyToOne`, `ManyToMany`) modelan asociaciones y sus lados propietarios. Define cascadas, carga y restricciones según el dominio; una relación bidireccional mal gestionada puede generar ciclos JSON y consultas inesperadas.
 
 
+**Escenario aplicado.** Una relación ManyToMany puede ocultar atributos propios de la asociación. Si la relación requiere fecha, estado o cantidad, conviene modelar una entidad intermedia explícita.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Cuándo debe una relación muchos-a-muchos convertirse en una entidad propia?
+
 **Práctica y evidencia:** Modela relaciones OneToOne, OneToMany y ManyToMany con lado propietario claro. **Evidencia:** prueba persistencia y carga evitando ciclos infinitos al serializar.
 
 #### 14.4.06 — Repositories
 Los repositories encapsulan consultas de entidades y operaciones CRUD. Usa paginación, proyecciones y consultas específicas cuando sea necesario; evita métodos que devuelvan todas las filas si el conjunto puede crecer.
 
+
+**Escenario aplicado.** Un repositorio usa paginación y proyección para devolver solo los campos necesarios. Las consultas derivadas se revisan cuando los nombres del método se vuelven difíciles de mantener.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué ventaja aporta una proyección frente a cargar una entidad completa?
 
 **Práctica y evidencia:** Define métodos de repositorio y limita consultas a necesidades del caso de uso. **Evidencia:** comprueba consulta generada y resultado con datos de prueba.
 
@@ -413,17 +477,29 @@ Los repositories encapsulan consultas de entidades y operaciones CRUD. Usa pagin
 Las migrations versionan cambios de esquema para aplicarlos de forma repetible entre entornos. Usa herramientas como Flyway o Liquibase, revisa scripts antes de producción y diseña cambios compatibles con despliegues graduales y rollback realista.
 
 
+**Escenario aplicado.** Una migración añade una columna nullable antes de que el código nuevo dependa de ella. El despliegue gradual evita exigir simultáneamente una versión de aplicación y un esquema incompatibles.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Por qué una migración debe planearse junto con el ciclo de despliegue?
+
 **Práctica y evidencia:** Crea una migración versionada con Flyway o Liquibase para añadir una columna o índice. **Evidencia:** aplica migración en una base limpia y registra checksum/versión.
 
 #### 14.4.08 — MySQL
 MySQL es un DBMS relacional con tipos, índices, transacciones y dialecto SQL propios. Verifica versión, motor de almacenamiento, aislamiento y configuración; no asumas que todas las características de PostgreSQL o SQL estándar se comportan igual.
 
 
+**Escenario aplicado.** El perfil MySQL utiliza un motor transaccional y configuración de charset/collation explícita. El proyecto prueba índices, restricciones y comportamiento real de consultas en la versión declarada.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Qué aspectos deben verificarse además de que la conexión JDBC funcione?
+
 **Práctica y evidencia:** Configura una base MySQL de prueba con usuario de privilegios mínimos y conexión segura. **Evidencia:** verifica conexión, esquema y migraciones sin usar root para la aplicación.
 
 #### 14.4.09 — PostgreSQL
 PostgreSQL ofrece un motor relacional con tipos y capacidades avanzadas, extensibilidad e integridad transaccional. Diseña migraciones y consultas para la versión elegida y utiliza planes de ejecución para comprender costes reales.
 
+
+**Escenario aplicado.** El perfil PostgreSQL usa tipos y restricciones propios del motor. Las pruebas no asumen que una consulta o tipo específico de MySQL se comporta igual en PostgreSQL.
+
+**Criterio de análisis.** La respuesta debe identificar la decisión técnica, el comportamiento esperado y una prueba que permita comprobarlo. **Pregunta de comprensión:** ¿Por qué cambiar el motor puede exigir revisar SQL, tipos y migraciones?
 
 **Práctica y evidencia:** Configura PostgreSQL para el perfil de integración y compara tipos o funciones utilizadas. **Evidencia:** ejecuta pruebas contra el motor real en vez de asumir compatibilidad SQL total.
 
