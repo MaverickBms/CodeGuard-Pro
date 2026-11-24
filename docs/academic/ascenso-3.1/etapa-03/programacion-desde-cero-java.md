@@ -573,3 +573,17 @@ No se incluye video en esta versión: no se ha verificado una serie o pieza en e
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** los ejemplos son material didáctico no ejecutado en un JDK dentro de esta sesión; deben compilarse y probarse antes de aprobar el módulo.  
 **Estado editorial:** en desarrollo; no aprobado ni publicado.
+
+
+## Línea base de entorno y compatibilidad
+
+Para que los ejemplos sean reproducibles, esta guía toma **JDK 21** como línea base de referencia (versión LTS). Los ejemplos que usan `Path.of`, `Files.readString` y `Files.writeString` requieren Java 11 o posterior; por tanto, son compatibles con JDK 21. Las formas modernas de `switch` no se presentan como requisito en esta etapa: cuando se use sintaxis tradicional, se indicará explícitamente. Antes de ejecutar el proyecto, registra la salida de `java -version` y `javac -version`; si el entorno difiere, documenta la diferencia en lugar de asumir compatibilidad.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** revisión documental de alineación con el módulo 3.1 del roadmap, cobertura de los títulos oficiales, secuencia didáctica, consistencia terminológica, ejemplos, actividad práctica, evaluación, seguridad y referencias.
+
+**Resultado:** revisión interna realizada; no equivale a aprobación académica externa ni a validación práctica. Se identificaron los ajustes anotados en este registro y se mantienen explícitas las actividades pendientes. Los laboratorios y ejemplos no se declaran ejecutados. Antes de cambiar el estado editorial se requiere cotejo bibliográfico final, ejecución reproducible de actividades y revisión por un segundo evaluador.
+
+**Hallazgos y pendientes específicos:** Se revisaron los 48 temas oficiales, ejemplos Java, proyecto CRUD, casos de prueba, manejo de errores y archivos. Se explicitará una línea base JDK para que APIs y sintaxis sean reproducibles. Pendiente: compilar y ejecutar ejemplos y proyecto con la versión declarada, ejecutar pruebas y revisar dependencias.
