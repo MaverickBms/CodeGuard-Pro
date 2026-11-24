@@ -174,3 +174,12 @@ Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11�
 Se añadieron prácticas y evidencias a las **57 lecciones de AppSec**, **82 de fundamentos de ciberseguridad/riesgos/ética** y **58 de laboratorio/hardening**. La comprobación estructural posterior confirmó 197/197 apartados y ningún encabezado vacío. No se ejecutaron laboratorios ni pruebas ofensivas; las actividades están delimitadas a entornos propios, aislados o autorizados.
 
 Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11–12, 149; etapa 13, 63; etapa 14, 58; etapas 15–16, 99; etapa 17, 61; etapas 18–19, 167; etapas 20–22, 197; total etapas 1–22: **1.343 lecciones**. Restan 573 lecciones de etapas 23–32 para profundización equivalente. No se declara validación técnica por ejecución ni aprobación externa.
+
+
+### Desarrollo documental ampliado — etapas 23–32 — 2026-11-24
+
+Se añadieron prácticas y evidencias a las 573 lecciones de las etapas 23–32: OSINT, pentesting autorizado, seguridad web/API, Active Directory, SOC/SIEM, DFIR, Cloud Security, DevSecOps, IA, criptografía, bajo nivel, análisis defensivo de malware y proyecto profesional.
+
+La comprobación documental cotejó los conteos de encabezados por etapa contra el roadmap oficial para las etapas 7–32. No se detectaron encabezados vacíos; las etapas 11–32 tienen un apartado de práctica/evidencia por lección, y las etapas 7–10 contienen desarrollo y actividades específicas. El objetivo oficial de la etapa 25 permanece vacío y el JSON del roadmap no se modificó.
+
+**Cobertura documental acumulada de etapas 1–32: 1.916/1.916 lecciones** (265 etapas 1–6 según informe OpenCode; 1.651 etapas 7–32 ampliadas en esta continuación). Esta cifra describe desarrollo documental, no ejecución ni aprobación. Siguen pendientes pruebas reproducibles, verificación individual de referencias/licencias/versiones y revisión técnica/pedagógica independiente. No se importó ni publicó contenido.
