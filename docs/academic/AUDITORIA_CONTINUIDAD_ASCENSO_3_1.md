@@ -920,3 +920,40 @@ Cada lección incorpora desarrollo conceptual específico, ejemplo o escenario, 
 - No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para este lote.
 
 No se modificó el roadmap JSON, no se inventaron UUID y no se importó, aprobó ni publicó contenido. El objetivo de etapa 25 continúa vacío. Las etapas posteriores aún requieren desarrollo y revisión equivalentes.
+
+
+## Desarrollo documental individual — etapa 9 (2026-11-24)
+
+### Resultado
+
+Se desarrollaron individualmente las 81 lecciones oficiales de la etapa 9 «Bases de datos relacionales y SQL», conservando módulos, títulos y numeración:
+
+| Módulo | Lecciones oficiales | Desarrolladas |
+|---|---:|---:|
+| 9.1 — Fundamentos | 10 | 10 |
+| 9.2 — Modelado | 11 | 11 |
+| 9.3 — MySQL | 9 | 9 |
+| 9.4 — SQL | 19 | 19 |
+| 9.5 — Diseño y normalización | 9 | 9 |
+| 9.6 — Bases de datos avanzadas | 15 | 15 |
+| 9.7 — PostgreSQL | 8 | 8 |
+| **Total** | **81** | **81** |
+
+Cada lección contiene explicación conceptual específica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación, errores frecuentes y pregunta de comprobación. Se incluyeron prácticas en esquemas desechables, protección de credenciales, prevención de sentencias destructivas y distinción entre sintaxis/semántica de MySQL y PostgreSQL.
+
+### Revisión estructural
+
+- Se verificaron 81 encabezados únicos de lección.
+- Se cotejaron los siete módulos y sus conteos con el roadmap JSON oficial.
+- Se comprobó en todas las lecciones la presencia de práctica guiada, actividad independiente y criterios de aceptación.
+- Se conservaron resultados de aprendizaje, proyecto, evaluación y referencias preexistentes.
+
+### Límites de validación
+
+- Es desarrollo documental y revisión estructural interna, no validación técnica independiente ni aprobación académica.
+- No se ejecutaron sentencias SQL, migraciones, transacciones ni pruebas de concurrencia en motores reales.
+- No se ejecutaron instalaciones de MySQL/PostgreSQL ni se verificó compatibilidad por versiones en laboratorio.
+- No se verificaron exhaustivamente las referencias bibliográficas.
+- No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para este lote.
+
+No se modificó el roadmap JSON, no se inventaron UUID y no se importó, aprobó ni publicó contenido. Las etapas siguientes permanecen pendientes de desarrollo documental equivalente; la etapa 25 mantiene su objetivo oficial vacío.
