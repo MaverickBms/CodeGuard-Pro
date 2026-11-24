@@ -1574,6 +1574,16 @@ La jerarquía visual guía la atención mediante tamaño, peso, contraste, agrup
 
 **Comprobación:** ¿Cómo comprobarías que la jerarquía guía la tarea?
 
+**Laboratorio de profundización — Auditoría de jerarquía visual.**
+
+1. Selecciona una página de laboratorio. 2. Identifica objetivo principal, títulos, acciones y contenido secundario. 3. Ordena por peso visual, contraste, tamaño y posición. 4. Comprueba comprensión en escala de grises y zoom.
+
+**Evidencia esperada.** El usuario identifica objetivo y acción principal sin depender de adornos ni color exclusivamente.
+
+**Seguridad y límites.** No ocultar acciones importantes ni crear jerarquías engañosas.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
+
 #### 11.4.02 — Espaciado
 
 El espaciado crea agrupación y ritmo. Una escala de tokens reduce variaciones y mejora consistencia.
@@ -1589,6 +1599,16 @@ El espaciado crea agrupación y ritmo. Una escala de tokens reduce variaciones y
 **Errores frecuentes:** Márgenes arbitrarios por elemento.
 
 **Comprobación:** ¿Qué comunica un espacio menor entre elementos?
+
+**Laboratorio de profundización — Sistema de espaciado consistente.**
+
+1. Define escala modular de espaciado. 2. Aplica tokens a márgenes, padding y gaps. 3. Compara ritmo vertical y alineación entre componentes. 4. Prueba densidad en móvil y escritorio.
+
+**Evidencia esperada.** Los espacios siguen una escala coherente y facilitan agrupación y lectura.
+
+**Seguridad y límites.** No utilizar espaciado para sustituir agrupación semántica ni reducir áreas táctiles.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
 
 #### 11.4.03 — Tipografía
 
@@ -1606,6 +1626,16 @@ La tipografía afecta legibilidad y jerarquía; define familia, tamaño, peso, i
 
 **Comprobación:** ¿Por qué importa la longitud de línea?
 
+**Laboratorio de profundización — Sistema tipográfico y legibilidad.**
+
+1. Define familias, tamaños, pesos y alturas de línea. 2. Establece escala fluida con unidades relativas. 3. Prueba zoom y ancho reducido. 4. Evalúa contraste y longitud de línea.
+
+**Evidencia esperada.** El sistema mantiene legibilidad, jerarquía y adaptación a preferencias del usuario.
+
+**Seguridad y límites.** No fijar tamaños en píxeles sin considerar zoom ni usar fuentes externas sin revisar licencia y rendimiento.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
+
 #### 11.4.04 — Layouts
 
 Un layout distribuye regiones según tareas, contenido y viewport. Grid y Flexbox resuelven estructuras distintas.
@@ -1621,6 +1651,16 @@ Un layout distribuye regiones según tareas, contenido y viewport. Grid y Flexbo
 **Errores frecuentes:** Posicionar toda la página con absolute.
 
 **Comprobación:** ¿Qué diferencia wireframe y layout implementado?
+
+**Laboratorio de profundización — Composición de página por regiones.**
+
+1. Diseña layout con header, nav, main, aside y footer. 2. Implementa con Grid o Flexbox. 3. Define comportamiento de aside en móvil. 4. Comprueba orden DOM y lectura.
+
+**Evidencia esperada.** La composición es adaptable y el orden semántico coincide con el recorrido lógico.
+
+**Seguridad y límites.** No cambiar orden visual para contradecir el orden de foco o lectura.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
 
 #### 11.4.05 — Componentes
 
@@ -1638,6 +1678,16 @@ Un componente encapsula estructura, estilo y comportamiento reutilizable; define
 
 **Comprobación:** ¿Qué estados debe documentar un componente?
 
+**Laboratorio de profundización — Especificación de componente UI.**
+
+1. Define un botón con variantes, estados y tamaños. 2. Documenta propiedades, eventos y comportamiento accesible. 3. Implementa estilos reutilizables. 4. Prueba hover, focus, disabled y loading.
+
+**Evidencia esperada.** El componente tiene API consistente y estados visibles y accesibles.
+
+**Seguridad y límites.** No crear componentes interactivos sin semántica nativa ni estado de foco.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
+
 #### 11.4.06 — Design Systems
 
 Un design system reúne principios, tokens, componentes, patrones, documentación y gobierno; no es solo una librería visual.
@@ -1653,6 +1703,16 @@ Un design system reúne principios, tokens, componentes, patrones, documentació
 **Errores frecuentes:** Cambiar tokens sin evaluar impacto.
 
 **Comprobación:** ¿Qué diferencia design system de librería de componentes?
+
+**Laboratorio de profundización — Tokens y reglas de diseño.**
+
+1. Define tokens de color, tipografía, espaciado, radios y sombras. 2. Crea componentes que consuman tokens. 3. Documenta criterios de uso. 4. Evalúa consistencia y cambio de tema.
+
+**Evidencia esperada.** Los tokens reducen duplicación y permiten modificar el sistema de forma coherente.
+
+**Seguridad y límites.** No copiar design systems protegidos sin licencia ni documentar tokens sin contraste validado.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
 
 #### 11.4.07 — Consistencia visual
 
@@ -1670,6 +1730,16 @@ La consistencia reduce carga cognitiva al mantener reglas previsibles. Excepcion
 
 **Comprobación:** ¿Cuándo se justifica una excepción?
 
+**Laboratorio de profundización — Revisión de patrones entre pantallas.**
+
+1. Compara tres pantallas del mismo producto. 2. Identifica variaciones de botones, formularios, encabezados y espaciado. 3. Clasifica inconsistencia justificada y accidental. 4. Define correcciones priorizadas.
+
+**Evidencia esperada.** Los patrones repetidos comparten comportamiento y apariencia, y las excepciones tienen motivo.
+
+**Seguridad y límites.** No uniformar componentes que tienen propósitos o riesgos de interacción diferentes.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
+
 #### 11.4.08 — Mobile-first
 
 Mobile-first inicia con restricciones de pantalla pequeña y amplía capacidades según espacio; prioriza contenido, navegación y rendimiento.
@@ -1685,6 +1755,16 @@ Mobile-first inicia con restricciones de pantalla pequeña y amplía capacidades
 **Errores frecuentes:** Ocultar funciones clave en móvil.
 
 **Comprobación:** ¿Por qué mobile-first no es solo reducir tamaños?
+
+**Laboratorio de profundización — Diseño progresivo desde viewport pequeño.**
+
+1. Diseña primero una pantalla estrecha. 2. Prioriza contenido y acciones. 3. Amplía con media queries para anchos mayores. 4. Comprueba teclado, zoom, orientación y áreas táctiles.
+
+**Evidencia esperada.** La experiencia móvil conserva funciones esenciales y escala sin duplicar contenido innecesariamente.
+
+**Seguridad y límites.** No eliminar contenido o controles en móvil solo para simplificar el layout.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
 
 #### 11.5.01 — Metadatos
 
@@ -1702,6 +1782,16 @@ Los metadatos describen documento, codificación, viewport, idioma y recursos. N
 
 **Comprobación:** ¿Qué metadatos configuran codificación y viewport?
 
+**Laboratorio de profundización — Inventario de metadatos por página.**
+
+1. Define charset, viewport, title, description, canonical y robots cuando aplique. 2. Identifica metadatos globales y específicos. 3. Comprueba consistencia entre URL y canonical. 4. Revisa vista previa social como metadato separado.
+
+**Evidencia esperada.** Cada página tiene metadatos coherentes con su contenido y no existen instrucciones contradictorias de indexación.
+
+**Seguridad y límites.** No utilizar canonical o noindex para ocultar contenido sensible; la seguridad se implementa en servidor.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
+
 #### 11.5.02 — Títulos
 
 title identifica el documento en pestañas, marcadores y resultados; debe ser único, descriptivo y fiel.
@@ -1717,6 +1807,16 @@ title identifica el documento en pestañas, marcadores y resultados; debe ser ú
 **Errores frecuentes:** Repetir title o rellenar keywords.
 
 **Comprobación:** ¿Qué problema genera reutilizar title en todo el sitio?
+
+**Laboratorio de profundización — Títulos únicos y descriptivos.**
+
+1. Redacta title para página principal, categoría y detalle. 2. Mantén precisión y diferenciación. 3. Compara title con h1 visible. 4. Verifica duplicados en el conjunto de páginas.
+
+**Evidencia esperada.** Cada título describe la página y ayuda a distinguirla de otras del sitio.
+
+**Seguridad y límites.** No rellenar títulos con palabras clave repetidas ni prometer contenido que la página no contiene.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
 
 #### 11.5.03 — Descripciones
 
@@ -1734,6 +1834,16 @@ meta description resume contenido y puede influir en el fragmento mostrado, pero
 
 **Comprobación:** ¿Por qué no se garantiza que el buscador muestre la description literal?
 
+**Laboratorio de profundización — Meta description informativa.**
+
+1. Redacta descripción específica para tres páginas. 2. Resume propósito y contenido sin afirmaciones engañosas. 3. Evita duplicados. 4. Comprueba que coincide con el contenido visible.
+
+**Evidencia esperada.** La descripción es precisa y diferenciada y puede resumirse sin omitir la propuesta central.
+
+**Seguridad y límites.** No tratar meta description como factor garantizado de ranking ni incluir información privada.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
+
 #### 11.5.04 — Estructura semántica
 
 La semántica ayuda a tecnologías de asistencia y sistemas de indexación a interpretar contenido.
@@ -1749,6 +1859,16 @@ La semántica ayuda a tecnologías de asistencia y sistemas de indexación a int
 **Errores frecuentes:** Enlaces «clic aquí» o headings solo para keywords.
 
 **Comprobación:** ¿Qué aporta un texto de enlace descriptivo?
+
+**Laboratorio de profundización — Auditoría semántica de una página.**
+
+1. Inspecciona landmarks, headings, enlaces, listas y tablas. 2. Comprueba main y jerarquía. 3. Revisa nombres accesibles. 4. Corrige divs usados como controles o encabezados.
+
+**Evidencia esperada.** La estructura expresa contenido y navegación a usuarios y agentes automatizados.
+
+**Seguridad y límites.** No insertar datos estructurados que contradigan el contenido visible.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
 
 #### 11.5.05 — Indexación
 
@@ -1766,6 +1886,16 @@ Indexación implica descubrir, rastrear, procesar y almacenar contenido. robots.
 
 **Comprobación:** ¿Por qué robots.txt no protege información privada?
 
+**Laboratorio de profundización — Diagnóstico de indexabilidad.**
+
+1. Revisa status HTTP, robots.txt, meta robots y canonical de una página propia. 2. Comprueba enlaces internos y sitemap. 3. Distingue rastreo de indexación. 4. Diseña prueba de URL en herramienta oficial si el sitio está autorizado.
+
+**Evidencia esperada.** El diagnóstico identifica directivas y posibles bloqueos sin afirmar indexación por el mero hecho de que la URL exista.
+
+**Seguridad y límites.** No utilizar robots.txt como mecanismo de confidencialidad ni solicitar indexación de contenido privado.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
+
 #### 11.5.06 — Datos estructurados (introducción)
 
 Datos estructurados describen entidades mediante vocabularios como Schema.org y formatos como JSON-LD. Deben reflejar contenido real; no garantizan resultados enriquecidos.
@@ -1782,6 +1912,16 @@ Datos estructurados describen entidades mediante vocabularios como Schema.org y 
 
 **Comprobación:** ¿Por qué el marcado debe coincidir con contenido visible?
 
+
+**Laboratorio de profundización — Validación de JSON-LD básico.**
+
+1. Selecciona un tipo de entidad aplicable, como Article o Product, solo si coincide con el contenido. 2. Construye JSON-LD con propiedades verificables. 3. Valida sintaxis y herramienta de resultados enriquecidos. 4. Compara datos marcados con contenido visible.
+
+**Evidencia esperada.** El marcado representa hechos presentes en la página y pasa validación sintáctica y de tipo.
+
+**Seguridad y límites.** No inventar ratings, precios, autoría o disponibilidad ni usar marcado engañoso para manipular resultados.
+
+**Registro sugerido.** Conserva prototipo, criterios, navegador, viewport, validación automatizada y revisión manual. No marques conformidad o indexación como lograda sin evidencia real.
 ## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
 
 Se sustituyeron las 60 orientaciones genéricas del desglose granular por explicaciones específicas de cada entrada oficial. Cada apartado precisa la función del concepto, decisiones de uso, límites y/o una comprobación contextual; el desarrollo se articula con la guía principal, el sitio profesional del proyecto y los ejercicios de accesibilidad/responsive.
