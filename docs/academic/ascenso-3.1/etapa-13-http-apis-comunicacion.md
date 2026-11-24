@@ -423,11 +423,19 @@ Statelessness significa que cada solicitud contiene la información necesaria pa
 Una API define un contrato para que componentes o sistemas intercambien capacidades y datos. Documenta operaciones, entradas, salidas, errores, autenticación y límites; una API es una interfaz contractual, no necesariamente una URL REST.
 
 
+**Escenario aplicado.** Contrato de API para pedidos: documenta operaciones, autenticación, campos, errores y límites antes de implementar.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Qué falla cuando el contrato omite errores y límites?
+
 **Práctica y evidencia:** Define el contrato de una API para consultar productos, crear pedidos y consultar su estado. **Evidencia:** lista operaciones, entradas, salidas y errores.
 
 #### 13.3.02 — API pública
 Una API pública está disponible para consumidores externos bajo condiciones, límites y políticas explícitas. Revisa términos, cuotas, versiones y tratamiento de datos; pública no significa anónima, ilimitada ni libre de requisitos de autorización.
 
+
+**Escenario aplicado.** API pública de meteorología: define cuota, clave opcional, términos de uso y límites de consumo; pública no significa ilimitada.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Qué controles siguen siendo necesarios para una API de lectura pública?
 
 **Práctica y evidencia:** Diseña una API pública con cuotas, autenticación, documentación y política de compatibilidad. **Evidencia:** identifica riesgos de abuso y expectativas del consumidor externo.
 
@@ -435,11 +443,19 @@ Una API pública está disponible para consumidores externos bajo condiciones, l
 Una API privada se limita a sistemas, usuarios o redes autorizadas de una organización. Aplica autenticación, autorización, segmentación y observabilidad; no dependas únicamente de que el endpoint no sea conocido públicamente.
 
 
+**Escenario aplicado.** API privada de facturación: restringe consumidores por identidad de servicio, autorización y segmentación; no confíes solo en que la URL sea desconocida.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Por qué una red privada no sustituye autenticación y autorización?
+
 **Práctica y evidencia:** Diseña una API privada entre servicios internos y delimita quién puede invocarla. **Evidencia:** especifica autenticación de servicio, autorización y segmentación de red.
 
 #### 13.3.04 — API REST
 REST es un estilo arquitectónico que utiliza recursos, representaciones, interfaz uniforme y restricciones como statelessness. No toda API JSON es REST; diseña recursos y semántica HTTP coherentes y documenta desviaciones del estilo.
 
+
+**Escenario aplicado.** Una API usa JSON y HTTP, pero mantiene estado de sesión y acciones RPC. Evalúa sus restricciones REST en vez de etiquetarla REST por el formato.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Por qué REST no significa simplemente JSON sobre HTTP?
 
 **Práctica y evidencia:** Evalúa una API según restricciones REST y distingue estilo arquitectónico de una simple API HTTP con JSON. **Evidencia:** analiza recursos, representaciones, interfaz uniforme y estado de aplicación.
 
@@ -447,11 +463,19 @@ REST es un estilo arquitectónico que utiliza recursos, representaciones, interf
 Un endpoint es una dirección y operación concreta expuesta por una API. Documenta método, ruta, parámetros, autenticación, respuestas y errores; evita incluir datos sensibles en segmentos de URL que pueden registrarse en historial y logs.
 
 
+**Escenario aplicado.** Un endpoint de actualización usa identificador en la ruta y datos editables en el body; evita credenciales y datos sensibles en la URI.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Qué información no conviene colocar en una URL y por qué?
+
 **Práctica y evidencia:** Define endpoints con rutas de recursos y métodos HTTP coherentes. **Evidencia:** evita verbos innecesarios en URI y documenta códigos de respuesta.
 
 #### 13.3.06 — Resources
 Un resource representa una entidad o concepto sobre el que opera la API. Diseña identificadores estables, relaciones explícitas y representaciones adecuadas; no expongas directamente tablas internas si eso acopla el contrato público al modelo de persistencia.
 
+
+**Escenario aplicado.** El modelo interno de base de datos cambia, pero la representación pública del pedido se conserva mediante una capa de API.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Qué ventaja aporta separar el recurso público del esquema de persistencia?
 
 **Práctica y evidencia:** Modela recursos como clientes, pedidos y productos con identificadores estables. **Evidencia:** explica relaciones, subrecursos y límites de agregación.
 
@@ -459,11 +483,19 @@ Un resource representa una entidad o concepto sobre el que opera la API. Diseña
 JSON representa objetos, arrays, cadenas, números, booleanos y null mediante una sintaxis textual. Valida tipos y límites, recuerda que JSON no incluye comentarios ni fechas nativas y evita asumir que números grandes conservan precisión en todos los runtimes.
 
 
+**Escenario aplicado.** Un pedido puede ser JSON válido y contener un identificador de tipo incorrecto. Distingue sintaxis, esquema y reglas de negocio.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Puede un JSON sintácticamente válido ser una solicitud inválida?
+
 **Práctica y evidencia:** Valida un documento JSON y define esquema de campos obligatorios, opcionales y tipos. **Evidencia:** detecta un documento inválido y explica la diferencia entre sintaxis y validez de negocio.
 
 #### 13.3.08 — XML (introducción)
 XML representa datos jerárquicos mediante elementos, atributos y namespaces. Comprende esquemas y codificación; al procesar XML no confiable deshabilita entidades externas y configuraciones peligrosas para prevenir XXE y acceso no autorizado a recursos.
 
+
+**Escenario aplicado.** Una integración XML usa namespaces y procesa datos externos; deshabilita entidades externas para evitar XXE.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Qué riesgo introduce permitir entidades externas en un parser XML?
 
 **Práctica y evidencia:** Compara XML con JSON mediante un ejemplo equivalente y analiza namespaces y atributos. **Evidencia:** identifica contextos donde XML sigue siendo relevante y sus costes.
 
@@ -471,11 +503,19 @@ XML representa datos jerárquicos mediante elementos, atributos y namespaces. Co
 Serialización convierte estructuras de datos a una representación transferible o almacenable, como JSON o XML. Define formatos, codificación, compatibilidad y tratamiento de valores no representables; no confundas serialización con cifrado o validación.
 
 
+**Escenario aplicado.** Al serializar un objeto, define formato de fechas y decimales y excluye secretos internos que no pertenecen al contrato.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Por qué serializar no equivale a cifrar?
+
 **Práctica y evidencia:** Serializa un objeto de dominio a JSON con reglas explícitas para fechas, decimales e identificadores. **Evidencia:** comprueba que la representación no expone campos internos o secretos.
 
 #### 13.3.10 — Deserialización
 Deserialización reconstruye estructuras a partir de datos recibidos. Trata el contenido como no confiable, valida esquema y tamaño y evita mecanismos que instancien clases arbitrarias o ejecuten lógica al reconstruir objetos.
 
+
+**Escenario aplicado.** El servidor rechaza payloads excesivos, campos desconocidos y tipos inválidos antes de persistirlos.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Por qué deserializar objetos arbitrarios desde datos no confiables es peligroso?
 
 **Práctica y evidencia:** Deserializa una entrada externa y valida estructura, tipos, límites y reglas de negocio antes de persistir. **Evidencia:** demuestra rechazo seguro de campos inesperados o inválidos.
 
@@ -483,11 +523,19 @@ Deserialización reconstruye estructuras a partir de datos recibidos. Trata el c
 CRUD resume crear, leer, actualizar y eliminar recursos. Relaciona cada operación con métodos HTTP y reglas de negocio, controla concurrencia y autorización y evita que una operación de lectura revele campos no permitidos.
 
 
+**Escenario aplicado.** Una petición de eliminar pedido puede implementar cancelación lógica y auditoría, no necesariamente borrado físico.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Por qué DELETE no implica necesariamente borrar una fila de inmediato?
+
 **Práctica y evidencia:** Mapea operaciones CRUD a métodos y endpoints de una API. **Evidencia:** explica cómo se reflejan creación, consulta, actualización y eliminación sin confundirlas con sentencias SQL concretas.
 
 #### 13.3.12 — Paginación
 La paginación limita el volumen devuelto por una consulta mediante páginas, cursores o tokens de continuación. Define orden estable, tamaño máximo y comportamiento ante cambios concurrentes; evita offsets enormes cuando la colección crece.
 
+
+**Escenario aplicado.** La paginación por offset puede repetir o saltar resultados cuando se insertan registros; un cursor y orden estable reducen esa anomalía.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Qué problema produce paginar sin orden determinista?
 
 **Práctica y evidencia:** Implementa paginación por límite/desplazamiento y analiza cuándo conviene cursor. **Evidencia:** demuestra orden estable, límites máximos y comportamiento ante cambios concurrentes.
 
@@ -495,11 +543,19 @@ La paginación limita el volumen devuelto por una consulta mediante páginas, cu
 El filtrado restringe resultados mediante criterios declarados por el consumidor. Valida campos y operadores permitidos, parametriza consultas y limita combinaciones costosas para evitar inyección y agotamiento de recursos.
 
 
+**Escenario aplicado.** Los filtros aceptan solo campos y operadores permitidos y se convierten en parámetros de consulta, nunca en fragmentos SQL concatenados.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Por qué no debe concatenarse directamente un filtro recibido?
+
 **Práctica y evidencia:** Añade filtros validados para estado, fecha y categoría mediante parámetros de consulta. **Evidencia:** limita campos y operadores permitidos para evitar consultas arbitrarias.
 
 #### 13.3.14 — Versionado
 El versionado permite evolucionar contratos sin romper consumidores. Define política para cambios incompatibles, periodo de soporte y migración; no incrementes versiones por cambios internos que no afectan al contrato observable.
 
+
+**Escenario aplicado.** Una política de versiones mantiene compatibilidad, comunica deprecación y reserva versión nueva para cambios incompatibles.
+
+**Criterio de análisis.** La respuesta debe justificar controles, datos y consecuencias del escenario. **Pregunta de comprensión:** ¿Por qué versionar cada cambio interno crea complejidad innecesaria?
 
 **Práctica y evidencia:** Define política de versionado de API y documenta cambios incompatibles y compatibles. **Evidencia:** muestra estrategia de transición y retirada de una versión antigua.
 
