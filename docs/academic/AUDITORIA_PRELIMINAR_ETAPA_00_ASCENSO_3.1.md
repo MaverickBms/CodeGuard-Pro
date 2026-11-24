@@ -210,3 +210,10 @@ Se completaron mejoras documentales específicas en las lecciones 0.1.2–0.1.8:
 La revisión se mantuvo dentro de los encabezados de las lecciones oficiales. Se hizo una comprobación estática de los ocho títulos, presencia de objetivos/criterios y balance de bloques de código Markdown. El JSON curricular se volvió a leer y no se modificó.
 
 **Estado actualizado del módulo 0.1:** 8/8 lecciones con ampliación documental de objetivos/actividades; ejemplos y guías adicionales incorporados en 0.1.2–0.1.8; 0/8 revisiones independientes; 0 aprobadas; 0 actividades probadas con estudiantes; 0 videos verificados. Sigue en BORRADOR. Los chequeos estáticos no son una validación pedagógica ni una ejecución de código.
+
+
+### 10. Desarrollo y revisión de escritorio del módulo 0.2
+
+Se añadieron claves modelo para los siete temas de investigación técnica: documentación y versiones; diagnóstico de errores; evaluación de respuestas comunitarias; trazabilidad issue/PR/commit/release; licencia y adopción de repositorios; calibración de afirmaciones; y reporte reproducible. Los ejemplos están marcados como simulados. Se creó `etapa-00/revision-tecnica-pedagogica-modulo-0.2.md` con matriz por tema, riesgos y criterios de salida.
+
+**Estado:** 7/7 temas con talleres; 7/7 con claves o retroalimentación modelo añadidas; 0 revisiones independientes; 0 laboratorios ejecutados; 0 videos verificados; 0 aprobaciones. No se ejecutaron comandos ni código ni se clonaron repositorios.
