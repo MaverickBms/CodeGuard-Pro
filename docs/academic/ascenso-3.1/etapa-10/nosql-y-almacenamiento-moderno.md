@@ -57,6 +57,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Qué patrón de acceso debería guiar la elección de una base NoSQL?
 
+**Laboratorio de profundización — Selección de modelo NoSQL por patrón de acceso.**
+
+1. Define un caso con catálogo de productos y consultas por identificador. 2. Describe volumen, concurrencia, consistencia y patrón de lectura/escritura. 3. Compara documento, clave-valor, columnas y grafo. 4. Justifica si NoSQL resuelve una necesidad real.
+
+**Evidencia esperada.** La elección deriva de requisitos y patrón de acceso, no de la idea de que NoSQL sea siempre más rápido.
+
+**Seguridad y límites.** No almacenar datos reales ni asumir que un modelo NoSQL elimina la necesidad de modelado.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.1.2 — Diferencias SQL vs. NoSQL
 
 **Propósito y modelo.** Los DBMS relacionales priorizan relaciones explícitas, restricciones y SQL estandarizado con variaciones por motor. Las familias NoSQL ofrecen modelos y APIs diversos, a menudo con diseño orientado a consultas y escalado distribuido. No existe una superioridad universal: transacciones, consistencia y consultas complejas dependen del producto.
@@ -72,6 +82,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Afirmar que NoSQL no soporta transacciones o que SQL no puede escalar horizontalmente.
 
 **Comprobación.** ¿Qué requisitos del dominio pueden hacer preferible un modelo relacional aunque el volumen de datos sea alto?
+
+**Laboratorio de profundización — Matriz comparativa por requisitos.**
+
+1. Compara esquema, consultas, transacciones, relaciones, escalado y consistencia. 2. Evalúa un sistema de ventas y un catálogo de contenido. 3. Identifica necesidades de integridad referencial. 4. Justifica motor relacional, NoSQL o combinación.
+
+**Evidencia esperada.** La comparación evita absolutos y reconoce que las capacidades varían por producto y versión.
+
+**Seguridad y límites.** No presentar SQL y NoSQL como categorías mutuamente excluyentes de rendimiento o confiabilidad.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.1.3 — Modelos de almacenamiento
 
@@ -89,6 +109,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Por qué el modelo clave-valor puede ser eficiente para búsquedas por identificador, pero limitado para consultas ad hoc complejas?
 
+**Laboratorio de profundización — Clasificación de estructuras y consultas.**
+
+1. Modela el mismo dominio como documento, key-value, column-family y grafo. 2. Identifica clave de partición o identificador. 3. Define consultas eficientes para cada modelo. 4. Compara complejidad de actualización.
+
+**Evidencia esperada.** Cada modelo se asocia a una estructura y patrón de consulta característicos.
+
+**Seguridad y límites.** No escoger arquitectura por moda ni extrapolar propiedades de un producto a toda la categoría.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.1.4 — Consistencia
 
 **Propósito y modelo.** Consistencia en sistemas distribuidos puede referirse a garantías de lectura/escritura entre réplicas y también a reglas de integridad del dominio; son conceptos relacionados pero no idénticos. Strong consistency, eventual consistency y consistencia causal describen comportamientos distintos. Deben especificarse por operación y producto.
@@ -104,6 +134,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Tratar eventual consistency como pérdida de datos o asumir que una confirmación de escritura garantiza visibilidad inmediata en todas las réplicas.
 
 **Comprobación.** ¿Qué decisión de producto debe tomarse cuando una lectura puede observar datos temporalmente desactualizados?
+
+**Laboratorio de profundización — Lecturas, escrituras y réplicas.**
+
+1. Dibuja una escritura y lectura en sistema replicado. 2. Compara consistencia fuerte y eventual. 3. Describe lectura obsoleta y convergencia. 4. Define qué operaciones de negocio toleran retraso y cuáles requieren confirmación inmediata.
+
+**Evidencia esperada.** Se identifica el momento de confirmación y los riesgos de lecturas obsoletas según el modelo.
+
+**Seguridad y límites.** No asumir que consistencia eventual implica ausencia de integridad o que fuerte es siempre necesaria.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.1.5 — Disponibilidad
 
@@ -121,6 +161,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Por qué una réplica no sustituye a una copia de seguridad independiente?
 
+**Laboratorio de profundización — Diseño ante fallos de nodos.**
+
+1. Dibuja un clúster con tres nodos y pérdida de uno. 2. Identifica réplicas, quorum y rutas de lectura. 3. Explica diferencia entre disponibilidad del servicio y frescura de datos. 4. Diseña objetivos de recuperación.
+
+**Evidencia esperada.** La propuesta distingue continuidad del servicio, redundancia y consistencia de datos.
+
+**Seguridad y límites.** No declarar alta disponibilidad solo por tener varias instancias sin probar failover y recuperación.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.1.6 — Escalabilidad
 
 **Propósito y modelo.** Escalabilidad es la capacidad de mantener niveles de servicio al aumentar carga o datos. Escalado vertical añade recursos a un nodo; horizontal distribuye carga entre nodos. Ambos tienen límites y costos. El diseño debe identificar cuellos de botella, particionamiento, consistencia, replicación y complejidad operativa.
@@ -137,6 +187,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Qué complejidad adicional introduce el escalado horizontal en comparación con aumentar recursos de un único nodo?
 
+**Laboratorio de profundización — Escalado vertical y horizontal.**
+
+1. Compara aumentar recursos de un nodo con distribuir particiones. 2. Identifica cuellos de botella de CPU, memoria, I/O y red. 3. Diseña un patrón de crecimiento para lecturas intensivas. 4. Describe costos operativos de distribución.
+
+**Evidencia esperada.** La decisión se relaciona con cuello de botella y contempla complejidad de coordinación.
+
+**Seguridad y límites.** No asumir que añadir nodos mejora cualquier carga; considerar hotspots y costos de red.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.1.7 — CAP Theorem
 
 **Propósito y modelo.** El teorema CAP describe una elección bajo partición de red en sistemas distribuidos: no se puede garantizar simultáneamente consistencia fuerte y disponibilidad total ante una partición, manteniendo tolerancia a particiones. En operación real, la partición es un evento que debe contemplarse; las categorías CP/AP simplifican decisiones de diseño y no describen por sí solas todos los modos del producto.
@@ -152,6 +212,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Interpretar CAP como una clasificación permanente de producto o confundir consistencia con disponibilidad de servicio HTTP.
 
 **Comprobación.** ¿Por qué CAP se analiza específicamente cuando existe una partición de red?
+
+**Laboratorio de profundización — Análisis de partición de red.**
+
+1. Dibuja dos nodos que pierden comunicación. 2. Define qué respuestas puede ofrecer el sistema durante la partición. 3. Compara decisiones CP y AP en dos casos de negocio. 4. Explica que CAP se refiere a comportamiento durante particiones.
+
+**Evidencia esperada.** El análisis evita la simplificación de elegir dos propiedades de forma permanente y contextualiza la partición.
+
+**Seguridad y límites.** No usar CAP como única herramienta para elegir una base de datos; considerar latencia, transacciones y consistencia real.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.1.8 — Denormalización
 
@@ -171,6 +241,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 ### 10.2 — MongoDB
 
+**Laboratorio de profundización — Compensación entre lectura y escritura.**
+
+1. Parte de un modelo normalizado de pedidos y clientes. 2. Diseña un documento de lectura que incluya datos de cliente. 3. Define cómo propagar cambios de dirección. 4. Compara costo de lectura, escritura y consistencia.
+
+**Evidencia esperada.** La duplicación está justificada por patrón de lectura y existe estrategia de actualización o reconstrucción.
+
+**Seguridad y límites.** No duplicar atributos sin definir fuente de verdad y tratamiento de inconsistencias.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.2.1 — Documentos
 
 **Propósito y modelo.** Una base documental almacena registros como documentos, comúnmente JSON o BSON, con campos anidados y arreglos. El diseño se orienta a agregados y patrones de consulta; no elimina la necesidad de definir validaciones, índices, relaciones y políticas de actualización.
@@ -186,6 +266,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Embutir relaciones ilimitadas o asumir que un documento no necesita esquema ni validación.
 
 **Comprobación.** ¿Qué ventaja y qué costo introduce embutir líneas de pedido dentro del documento Pedido?
+
+**Laboratorio de profundización — Modelado de documentos BSON.**
+
+1. Diseña un documento de pedido con cliente, líneas e importes. 2. Identifica campos obligatorios, opcionales y arrays. 3. Define validación de esquema. 4. Explica límites de tamaño y consultas frecuentes.
+
+**Evidencia esperada.** El documento agrupa datos según patrón de acceso y respeta validación y límites del motor.
+
+**Seguridad y límites.** No anidar indefinidamente ni almacenar información sensible sin control de acceso.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.2.2 — Colecciones
 
@@ -203,6 +293,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Por qué una colección documental también necesita un contrato de estructura?
 
+**Laboratorio de profundización — Diseño de colecciones por entidad y acceso.**
+
+1. Propón colecciones para clientes, productos y pedidos. 2. Define naming y validación. 3. Evalúa qué datos se consultan juntos. 4. Explica por qué colección no equivale necesariamente a tabla relacional.
+
+**Evidencia esperada.** La organización se justifica por acceso y consistencia y no se crean colecciones arbitrarias por cada atributo.
+
+**Seguridad y límites.** No asumir restricciones relacionales automáticas ni olvidar validación de documentos.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.2.3 — BSON
 
 **Propósito y modelo.** BSON es una representación binaria de documentos utilizada por MongoDB. Incluye tipos adicionales y metadatos de longitud que no existen de la misma forma en JSON textual, como ObjectId, fechas y datos binarios. La representación en wire/storage no debe confundirse con el JSON que se intercambia en APIs.
@@ -218,6 +318,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Tratar ObjectId como secreto o convertir fechas a texto local sin zona horaria.
 
 **Comprobación.** ¿Qué ventaja aporta conservar tipos nativos frente a almacenar todos los valores como cadenas?
+
+**Laboratorio de profundización — Tipos y representación BSON.**
+
+1. Compara JSON y BSON. 2. Identifica ObjectId, Date, Decimal128 y tipos binarios. 3. Explica representación y serialización. 4. Selecciona tipos para fecha, importe e identificador.
+
+**Evidencia esperada.** La selección evita pérdida de precisión y distingue formato de intercambio de representación almacenada.
+
+**Seguridad y límites.** No almacenar importes como double sin analizar precisión; validar conversiones entre clientes.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.2.4 — JSON
 
@@ -235,6 +345,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Qué diferencia existe entre que un JSON sea sintácticamente válido y que cumpla el contrato de una aplicación?
 
+**Laboratorio de profundización — Validación y contratos JSON.**
+
+1. Diseña un documento JSON de producto. 2. Valida sintaxis y tipos. 3. Define contrato con campos requeridos y opcionales. 4. Compara JSON plano con BSON para persistencia.
+
+**Evidencia esperada.** El documento es válido y el contrato especifica tipos y semántica.
+
+**Seguridad y límites.** No confundir JSON con esquema; JSON permite estructuras sintácticas, pero validación de negocio requiere reglas.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.2.5 — CRUD
 
 **Propósito y modelo.** CRUD representa Create, Read, Update y Delete, las operaciones básicas sobre documentos. En MongoDB se implementan con métodos de inserción, consulta, actualización y eliminación. Deben considerarse filtros, atomicidad por documento, concurrencia, validación y autorización.
@@ -250,6 +370,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Ejecutar updateMany/deleteMany con filtros vacíos o construir consultas concatenando entrada sin validación.
 
 **Comprobación.** ¿Qué verificación previa reduce el riesgo de borrar documentos no previstos?
+
+**Laboratorio de profundización — Operaciones CRUD con alcance seguro.**
+
+1. Inserta documentos sintéticos. 2. Consulta por clave. 3. Actualiza un campo y verifica el resultado. 4. Elimina solo un documento de laboratorio por identificador y registra el conteo.
+
+**Evidencia esperada.** Cada operación modifica el documento esperado y se comprueba el resultado después de escribir.
+
+**Seguridad y límites.** No ejecutar borrados masivos sin filtro ni incluir datos reales en el dataset.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.2.6 — Queries
 
@@ -267,6 +397,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Por qué una proyección puede reducir costos aunque el filtro encuentre las mismas filas?
 
+**Laboratorio de profundización — Consultas y proyección.**
+
+1. Construye consultas por igualdad, rango y orden. 2. Selecciona solo campos requeridos. 3. Añade paginación estable por identificador. 4. Explica índices necesarios para los filtros.
+
+**Evidencia esperada.** La consulta responde al patrón previsto y limita documentos y campos devueltos.
+
+**Seguridad y límites.** No ejecutar consultas sin límites sobre colecciones grandes ni devolver datos sensibles innecesarios.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.2.7 — Filters
 
 **Propósito y modelo.** Los filtros de MongoDB usan operadores como $eq, $gt, $gte, $in, $exists, $and, $or y expresiones sobre arreglos. Los tipos importan: comparar número con cadena no es equivalente. La semántica de campos ausentes y null debe probarse explícitamente.
@@ -282,6 +422,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** No validar tipos, asumir semántica SQL de NULL o utilizar $where innecesariamente.
 
 **Comprobación.** ¿Por qué conviene diferenciar un campo ausente de un campo presente con valor null?
+
+**Laboratorio de profundización — Filtros compuestos y operadores.**
+
+1. Construye filtros con AND/OR, comparación, existencia y pertenencia. 2. Prueba casos límite con campos ausentes y null. 3. Explica diferencia entre documento sin campo y campo null. 4. Comprueba resultados con dataset sintético.
+
+**Evidencia esperada.** Los filtros expresan correctamente condiciones y distinguen ausencia de valor nulo.
+
+**Seguridad y límites.** No construir filtros dinámicos inseguros desde entrada no validada ni permitir operadores arbitrarios de usuario.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.2.8 — Indexes
 
@@ -299,6 +449,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Qué costo operativo tiene mantener muchos índices en una colección con escrituras frecuentes?
 
+**Laboratorio de profundización — Índices MongoDB según consulta.**
+
+1. Define una consulta frecuente. 2. Compara ejecución con y sin índice en dataset de prueba. 3. Inspecciona `explain()`. 4. Evalúa índice simple y compuesto y costo de escritura.
+
+**Evidencia esperada.** El índice se justifica por consulta y el plan muestra su uso o explica por qué no se utiliza.
+
+**Seguridad y límites.** No indexar todos los campos ni asumir que un índice siempre mejora rendimiento.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.2.9 — Aggregation Pipeline
 
 **Propósito y modelo.** El Aggregation Pipeline procesa documentos mediante etapas como $match, $project, $group, $sort, $unwind y $lookup. El orden de etapas influye en volumen procesado y rendimiento; $match temprano puede reducir documentos que atraviesan el pipeline, cuando la semántica lo permite.
@@ -314,6 +474,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Aplicar $unwind sin comprender duplicación de documentos o agrupar antes de filtrar innecesariamente.
 
 **Comprobación.** ¿Qué cambia en el número de documentos cuando se aplica $unwind a un arreglo con varios elementos?
+
+**Laboratorio de profundización — Transformación y agregación de documentos.**
+
+1. Diseña pipeline con `$match`, `$project`, `$group` y `$sort`. 2. Calcula total de ventas por mes. 3. Compara resultado con cálculo manual. 4. Explica el efecto del orden de etapas.
+
+**Evidencia esperada.** El pipeline produce agregados correctos y las etapas se ordenan según semántica y selectividad.
+
+**Seguridad y límites.** No ejecutar agregaciones costosas en producción sin revisar plan y límites.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.2.10 — Relationships
 
@@ -331,6 +501,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Qué criterio ayuda a decidir si una relación debe embebirse o referenciarse?
 
+**Laboratorio de profundización — Relaciones entre documentos.**
+
+1. Modela cliente y pedido con referencia. 2. Compara lookup con duplicación de datos. 3. Define consistencia al actualizar cliente. 4. Explica ausencia de FK relacional automática.
+
+**Evidencia esperada.** La relación tiene una estrategia de consulta y sincronización explícita.
+
+**Seguridad y límites.** No asumir integridad referencial automática entre colecciones.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.2.11 — Embedding
 
 **Propósito y modelo.** Embedding guarda subdocumentos o arreglos dentro del documento principal. Favorece lecturas agregadas y actualizaciones atómicas dentro de un documento, pero puede duplicar datos y aumentar tamaño. Debe considerarse límite de documento, crecimiento y frecuencia de modificación.
@@ -346,6 +526,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Embutir relaciones N:M de gran tamaño o repetir datos cambiantes sin reconciliación.
 
 **Comprobación.** ¿Por qué un arreglo embebido que crece sin límite puede convertirse en un problema de diseño?
+
+**Laboratorio de profundización — Criterios para embeber subdocumentos.**
+
+1. Evalúa si líneas de pedido deben embeberse en pedido. 2. Considera cardinalidad, crecimiento, actualización y lectura conjunta. 3. Define límite de tamaño. 4. Justifica qué datos permanecen separados.
+
+**Evidencia esperada.** Embedding se elige cuando los datos se consultan y actualizan juntos y el crecimiento es acotado.
+
+**Seguridad y límites.** Evitar arrays ilimitados y documentos que crecen sin control.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.2.12 — Referencing
 
@@ -363,6 +553,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Qué responsabilidad adicional asume la aplicación cuando modela relaciones mediante referencias?
 
+**Laboratorio de profundización — Referencias y consistencia entre colecciones.**
+
+1. Diseña referencia de pedido a cliente. 2. Define cómo resolver la referencia. 3. Analiza borrado y actualización del documento relacionado. 4. Compara referencias con embedding.
+
+**Evidencia esperada.** La referencia identifica documento y la aplicación define consistencia y comportamiento ante ausencia.
+
+**Seguridad y límites.** No dejar referencias huérfanas sin estrategia de validación y limpieza.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.2.13 — Replication
 
 **Propósito y modelo.** La replicación mantiene copias de datos en varios nodos para disponibilidad, redundancia y distribución de lecturas. En MongoDB, replica sets eligen un primario y mantienen secundarios mediante oplog. La consistencia observable depende de read concern, write concern, preferencias de lectura y estado de replicación.
@@ -378,6 +578,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Considerar secundarios como copias de seguridad o asumir que todas las escrituras están inmediatamente disponibles en cada réplica.
 
 **Comprobación.** ¿Por qué una replicación activa no protege frente a una eliminación lógica accidental propagada a todos los nodos?
+
+**Laboratorio de profundización — Réplicas, failover y lectura.**
+
+1. Dibuja replica set con primario y secundarios. 2. Explica elección y heartbeat. 3. Compara read preference y write concern. 4. Diseña prueba de failover solo en clúster desechable.
+
+**Evidencia esperada.** El esquema distingue confirmación de escritura, preferencia de lectura y elección de primario.
+
+**Seguridad y límites.** No forzar failover en clúster productivo ni asumir que réplica sustituye backup.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.2.14 — Sharding
 
@@ -397,6 +607,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 ### 10.3 — Redis
 
+
+**Laboratorio de profundización — Partición horizontal y shard key.**
+
+1. Diseña shard key para colección de eventos. 2. Evalúa cardinalidad, distribución y consultas. 3. Identifica hotspots y scatter-gather. 4. Explica balancer y costo de migración.
+
+**Evidencia esperada.** La shard key distribuye carga y favorece consultas comunes sin concentración excesiva.
+
+**Seguridad y límites.** No habilitar sharding sin medir carga, estrategia de backup y complejidad operativa.
+
+**Registro sugerido.** Registra producto y versión, dataset sintético, consultas, resultados, métricas y decisiones de modelado. No marques la práctica como ejecutada sin evidencia real.
 #### 10.3.1 — Key-value
 
 **Propósito y modelo.** El modelo clave-valor asocia una clave única con un valor opaco o estructurado para el motor. Es eficiente cuando la aplicación conoce la clave exacta, pero ofrece consultas por atributos limitadas en comparación con modelos relacionales o documentales. Diseño de claves, expiración y tamaño de valor son decisiones importantes.
