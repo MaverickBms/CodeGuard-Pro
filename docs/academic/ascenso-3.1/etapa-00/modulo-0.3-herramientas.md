@@ -1,6 +1,6 @@
 # Etapa 0 · Módulo 0.3 — Herramientas
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · referencia operativa vigente de la lección 0.3. No implica publicación ni aprobación editorial.  
 **Alineación:** ASCENSO 3.1, Etapa 0, apartado 0.3.  
 **Temas exactos del roadmap:** Visual Studio Code, Terminal, Git, GitHub, navegador y DevTools, Markdown, Draw.io y herramientas de diagramación.
 
