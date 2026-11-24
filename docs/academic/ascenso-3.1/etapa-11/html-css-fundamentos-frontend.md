@@ -378,6 +378,16 @@ HTML define un árbol DOM que el navegador interpreta. La estructura mínima con
 
 **Comprobación:** ¿Qué representa el DOM?
 
+**Laboratorio de profundización — Documento HTML mínimo y validación.**
+
+1. Crea un documento HTML con declaración de tipo, elemento raíz, head y body. 2. Añade idioma del documento y codificación. 3. Valida anidamiento y jerarquía. 4. Comprueba el resultado en dos navegadores.
+
+**Evidencia esperada.** El documento tiene estructura válida, idioma declarado y contenido separado de metadatos.
+
+**Seguridad y límites.** No usar HTML como sustituto de validación de entradas ni insertar contenido no confiable sin escape.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.1.02 — DOCTYPE
 
 `<!doctype html>` activa el modo estándar; es una declaración, no un elemento.
@@ -393,6 +403,16 @@ HTML define un árbol DOM que el navegador interpreta. La estructura mínima con
 **Errores frecuentes:** Escribirlo como etiqueta.
 
 **Comprobación:** ¿Qué modo activa?
+
+**Laboratorio de profundización — Modo de estándares y declaración HTML.**
+
+1. Crea una página con `<!doctype html>`. 2. Comprueba que la declaración esté al inicio. 3. Observa el modo de documento desde herramientas del navegador. 4. Explica el comportamiento de páginas antiguas sin doctype.
+
+**Evidencia esperada.** Se explica la finalidad de activar modo estándares y la declaración correcta para HTML moderno.
+
+**Seguridad y límites.** No copiar DOCTYPE antiguos salvo que el proyecto requiera compatibilidad documentada.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.1.03 — Head
 
@@ -410,6 +430,16 @@ head contiene metadatos, title y enlaces a recursos; no el contenido principal.
 
 **Comprobación:** ¿Qué diferencia head de body?
 
+**Laboratorio de profundización — Metadatos y recursos del documento.**
+
+1. Añade charset, viewport, title y description. 2. Incluye un stylesheet local. 3. Distingue metadatos de contenido visible. 4. Comprueba carga y orden de recursos en DevTools.
+
+**Evidencia esperada.** El head contiene metadatos pertinentes y no incluye contenido destinado al cuerpo.
+
+**Seguridad y límites.** No duplicar metadatos contradictorios ni cargar scripts externos no confiables.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.1.04 — Body
 
 body contiene contenido, navegación, formularios y regiones semánticas.
@@ -425,6 +455,16 @@ body contiene contenido, navegación, formularios y regiones semánticas.
 **Errores frecuentes:** Duplicar landmarks sin nombre.
 
 **Comprobación:** ¿Qué aporta semántica a lectores de pantalla?
+
+**Laboratorio de profundización — Estructuración del contenido visible.**
+
+1. Construye una página con encabezado, contenido principal y pie. 2. Separa contenido y presentación. 3. Comprueba orden de lectura en DOM. 4. Navega sin CSS para validar comprensión.
+
+**Evidencia esperada.** El contenido mantiene estructura y significado aun sin estilos visuales.
+
+**Seguridad y límites.** No usar body para almacenar información secreta ni depender de CSS para ocultar contenido sensible.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.1.05 — Etiquetas
 
@@ -442,6 +482,16 @@ Los elementos expresan semántica y comportamiento; se eligen por función.
 
 **Comprobación:** ¿Por qué preferir button nativo?
 
+**Laboratorio de profundización — Selección de elementos HTML.**
+
+1. Crea un contenido con párrafos, listas, enlaces, botones y elementos de énfasis. 2. Selecciona cada etiqueta por su semántica. 3. Comprueba anidamiento válido. 4. Revisa el árbol de accesibilidad.
+
+**Evidencia esperada.** Cada etiqueta corresponde al propósito del contenido y los controles son operables.
+
+**Seguridad y límites.** No elegir etiquetas solo por apariencia ni usar elementos interactivos anidados incorrectamente.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.1.06 — Atributos
 
 Los atributos configuran elementos; algunos son globales y otros específicos.
@@ -457,6 +507,16 @@ Los atributos configuran elementos; algunos son globales y otros específicos.
 **Errores frecuentes:** Repetir id u omitir alt.
 
 **Comprobación:** ¿Qué diferencia class de id?
+
+**Laboratorio de profundización — Atributos globales y específicos.**
+
+1. Añade id, class, lang, title y atributos específicos a controles. 2. Distingue atributo booleano y valor textual. 3. Comprueba unicidad de id. 4. Valida que atributos no estándar no sustituyan semántica nativa.
+
+**Evidencia esperada.** Los atributos tienen valores válidos, propósito claro y no duplican identificadores.
+
+**Seguridad y límites.** No insertar datos sensibles en atributos HTML ni confiar en atributos personalizados como control de seguridad.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.1.07 — HTML semántico
 
@@ -474,6 +534,16 @@ HTML semántico refleja función y jerarquía mediante elementos especializados.
 
 **Comprobación:** ¿Cuándo usar article?
 
+**Laboratorio de profundización — Selección semántica de regiones.**
+
+1. Convierte una maqueta genérica en header, nav, main, section y footer. 2. Identifica landmarks. 3. Comprueba el árbol de accesibilidad. 4. Justifica cada elemento según el contenido.
+
+**Evidencia esperada.** La estructura comunica propósito y regiones a navegadores y tecnologías de asistencia.
+
+**Seguridad y límites.** No utilizar elementos semánticos solo para obtener estilos; el significado debe corresponder al contenido.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.1.08 — Headings
 
 h1–h6 expresan jerarquía; CSS controla apariencia.
@@ -489,6 +559,16 @@ h1–h6 expresan jerarquía; CSS controla apariencia.
 **Errores frecuentes:** Elegir nivel por tamaño.
 
 **Comprobación:** ¿Por qué cambiar tamaño con CSS?
+
+**Laboratorio de profundización — Jerarquía de encabezados.**
+
+1. Construye un documento con título principal y secciones. 2. Ordena h1–h3 según jerarquía temática. 3. Comprueba navegación por encabezados con lector de pantalla o herramienta equivalente. 4. Corrige saltos injustificados.
+
+**Evidencia esperada.** Los encabezados representan la estructura del contenido y no se eligen por tamaño visual.
+
+**Seguridad y límites.** No usar headings para agrandar texto ni omitir niveles por conveniencia estética.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.1.09 — Sections
 
@@ -506,6 +586,16 @@ section agrupa contenido temático, normalmente con encabezado; div es genérico
 
 **Comprobación:** ¿Qué distingue section de div?
 
+**Laboratorio de profundización — Agrupación temática con section.**
+
+1. Divide un artículo largo en secciones con encabezado propio. 2. Compara section con div. 3. Comprueba que cada sección tenga propósito temático. 4. Revisa navegación por landmarks.
+
+**Evidencia esperada.** Cada section representa una agrupación temática identificable y contiene encabezado apropiado cuando corresponde.
+
+**Seguridad y límites.** No envolver cada bloque de estilo en section si no existe una unidad temática.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.1.10 — Articles
 
 article representa contenido autónomo y reutilizable.
@@ -521,6 +611,16 @@ article representa contenido autónomo y reutilizable.
 **Errores frecuentes:** Usar article para cualquier bloque.
 
 **Comprobación:** ¿Qué característica justifica article?
+
+**Laboratorio de profundización — Contenido independiente con article.**
+
+1. Modela una tarjeta de noticia que pueda reutilizarse fuera de la página. 2. Incluye título, autor y fecha con elementos apropiados. 3. Compara article con section. 4. Comprueba lectura independiente.
+
+**Evidencia esperada.** El article representa una unidad autónoma y su contexto se entiende al extraerlo.
+
+**Seguridad y límites.** No utilizar article como contenedor genérico de cualquier bloque.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.1.11 — Header
 
@@ -538,6 +638,16 @@ header contiene información introductoria o navegación; no es head.
 
 **Comprobación:** ¿Qué diferencia head de header?
 
+**Laboratorio de profundización — Encabezado de página y sección.**
+
+1. Crea un encabezado global y otro dentro de un article. 2. Añade título y metadatos pertinentes. 3. Comprueba que header no se confunda con head. 4. Revisa landmarks resultantes.
+
+**Evidencia esperada.** Se diferencia metadato del documento y encabezado visible de una región.
+
+**Seguridad y límites.** No anidar header como si fuera un elemento exclusivo del inicio del documento.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.1.12 — Footer
 
 footer contiene información de cierre de página o sección.
@@ -553,6 +663,16 @@ footer contiene información de cierre de página o sección.
 **Errores frecuentes:** Usarlo como contenedor fijo sin semántica.
 
 **Comprobación:** ¿Puede haber varios footer?
+
+**Laboratorio de profundización — Pie de página y contexto.**
+
+1. Diseña un footer global con contacto y enlaces legales ficticios. 2. Añade footer de un article con autor y fecha. 3. Comprueba jerarquía y enlaces. 4. Navega por teclado.
+
+**Evidencia esperada.** El pie proporciona información relacionada con su contexto y enlaces tienen nombres claros.
+
+**Seguridad y límites.** No usar footer para esconder información ni incluir enlaces vacíos.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.1.13 — Nav
 
@@ -570,6 +690,16 @@ nav identifica una región principal de navegación; no todo grupo de enlaces lo
 
 **Comprobación:** ¿Por qué nombrar dos nav?
 
+**Laboratorio de profundización — Navegación y enlaces funcionales.**
+
+1. Construye navegación principal con enlaces a secciones reales. 2. Añade nombre accesible al nav. 3. Comprueba orden de tabulación y estado activo. 4. Verifica destino de cada enlace.
+
+**Evidencia esperada.** Los enlaces tienen destino real, texto comprensible y navegación operable por teclado.
+
+**Seguridad y límites.** No usar href vacío o javascript:void(0) como sustituto de botones.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.1.14 — Forms
 
 form agrupa controles y define envío; requiere etiquetas y validación cliente/servidor.
@@ -585,6 +715,16 @@ form agrupa controles y define envío; requiere etiquetas y validación cliente/
 **Errores frecuentes:** Placeholder como única etiqueta.
 
 **Comprobación:** ¿Por qué validar en servidor?
+
+**Laboratorio de profundización — Formulario con validación nativa.**
+
+1. Crea formulario de contacto ficticio. 2. Define método y destino de prueba. 3. Añade labels y validación requerida. 4. Comprueba mensajes y envío con datos válidos e inválidos.
+
+**Evidencia esperada.** El formulario identifica campos, valida entradas y ofrece una ruta de envío explícita.
+
+**Seguridad y límites.** La validación del navegador no sustituye validación del servidor ni protección CSRF.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.1.15 — Inputs
 
@@ -602,6 +742,16 @@ input ofrece controles variados; el tipo debe reflejar el dato.
 
 **Comprobación:** ¿Por qué un código postal suele ser texto?
 
+**Laboratorio de profundización — Tipos de input y validación.**
+
+1. Utiliza email, number, date, checkbox y radio según semántica. 2. Define min, max, required y autocomplete cuando corresponda. 3. Prueba entradas límite. 4. Comprueba accesibilidad del nombre del campo.
+
+**Evidencia esperada.** Cada control corresponde al tipo de dato y comunica restricciones y estado.
+
+**Seguridad y límites.** No confiar en type=email o required como validación de seguridad del lado servidor.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.1.16 — Selects
 
 select permite elegir opciones; option requiere texto y value estable.
@@ -617,6 +767,16 @@ select permite elegir opciones; option requiere texto y value estable.
 **Errores frecuentes:** Usar placeholder como valor.
 
 **Comprobación:** ¿Qué diferencia texto y value?
+
+**Laboratorio de profundización — Selección de opciones.**
+
+1. Crea un select con label y option. 2. Agrupa opciones relacionadas con optgroup. 3. Define placeholder o opción inicial sin valor cuando corresponda. 4. Prueba teclado y selección en móvil.
+
+**Evidencia esperada.** Las opciones tienen valores inequívocos y el control es operable con teclado y táctil.
+
+**Seguridad y límites.** No utilizar select para navegación sin anunciar el cambio ni ocultar opciones importantes.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.1.17 — Textareas
 
@@ -634,6 +794,16 @@ textarea permite texto multilínea; label, ayuda y límites deben asociarse.
 
 **Comprobación:** ¿Por qué escapar texto al mostrarlo?
 
+**Laboratorio de profundización — Campos de texto multilínea.**
+
+1. Crea textarea con label, rows y maxlength. 2. Añade ayuda contextual y contador accesible. 3. Prueba contenido largo y saltos de línea. 4. Comprueba tratamiento del contenido en servidor.
+
+**Evidencia esperada.** El campo comunica propósito, límites y errores y preserva el texto introducido.
+
+**Seguridad y límites.** Sanitizar y validar contenido en servidor; no renderizar HTML introducido directamente.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.1.18 — Tables
 
 Las tablas representan datos, no layout. caption, thead, tbody, th y scope relacionan encabezados.
@@ -649,6 +819,16 @@ Las tablas representan datos, no layout. caption, thead, tbody, th y scope relac
 **Errores frecuentes:** Usar tablas para maquetación.
 
 **Comprobación:** ¿Qué aporta scope?
+
+**Laboratorio de profundización — Tablas de datos accesibles.**
+
+1. Diseña tabla con caption, thead, tbody y th. 2. Define scope o asociaciones header/cell. 3. Comprueba lectura con lector de pantalla. 4. Añade diseño responsive sin eliminar contexto de celdas.
+
+**Evidencia esperada.** La tabla representa datos tabulares y las relaciones encabezado-celda son comprensibles.
+
+**Seguridad y límites.** No utilizar tablas para maquetar ni eliminar encabezados al adaptar a móvil.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.1.19 — Multimedia
 
@@ -666,6 +846,16 @@ HTML integra imagen, audio y video; se requieren alt, subtítulos o transcripcio
 
 **Comprobación:** ¿Qué alternativa ofrecer si el dato solo está en audio?
 
+**Laboratorio de profundización — Audio y video con controles accesibles.**
+
+1. Inserta video de prueba con controls y poster. 2. Añade subtítulos mediante track cuando corresponda. 3. Proporciona transcripción o alternativa para audio. 4. Comprueba reproducción por teclado y preferencias de movimiento.
+
+**Evidencia esperada.** El contenido multimedia dispone de controles, subtítulos o alternativas pertinentes.
+
+**Seguridad y límites.** No iniciar audio automáticamente ni publicar material sin derechos de uso.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 11.1.20 — SVG
 
 SVG es vectorial basado en XML; gráficos informativos requieren nombre y descripción.
@@ -681,6 +871,16 @@ SVG es vectorial basado en XML; gráficos informativos requieren nombre y descri
 **Errores frecuentes:** Omitir alternativa.
 
 **Comprobación:** ¿Por qué describir un gráfico?
+
+**Laboratorio de profundización — Gráficos vectoriales accesibles.**
+
+1. Crea un SVG simple con formas y texto. 2. Decide si es decorativo o informativo. 3. Añade nombre accesible o lo excluye del árbol cuando sea decorativo. 4. Comprueba escalado y contraste.
+
+**Evidencia esperada.** El SVG tiene alternativa textual cuando transmite información y no duplica anuncios para contenido decorativo.
+
+**Seguridad y límites.** No incluir scripts externos ni referencias remotas no confiables en SVG embebido.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 11.1.21 — Canvas
 
@@ -698,6 +898,16 @@ canvas dibuja mediante JavaScript, pero sus formas no son nodos DOM accesibles a
 
 **Comprobación:** ¿Qué pierde quien no percibe el bitmap sin alternativa?
 
+
+**Laboratorio de profundización — Canvas y alternativa semántica.**
+
+1. Dibuja una gráfica simple en canvas con JavaScript. 2. Proporciona descripción y tabla equivalente en DOM. 3. Comprueba qué contenido queda fuera del árbol de accesibilidad. 4. Evalúa interacción con teclado si existe.
+
+**Evidencia esperada.** La información esencial del canvas está disponible como contenido alternativo accesible.
+
+**Seguridad y límites.** No depender exclusivamente de píxeles para transmitir datos o controles.
+
+**Registro sugerido.** Conserva fragmento HTML, navegador/versión, resultado de validación, prueba de teclado y observaciones de accesibilidad. No marques la práctica como ejecutada sin evidencia real.
 #### 11.2.01 — WCAG
 
 WCAG define principios POUR: perceptible, operable, comprensible y robusto. Los criterios tienen niveles A, AA y AAA; la conformidad requiere evaluar páginas y procesos completos, no solo ejecutar una herramienta automática.
