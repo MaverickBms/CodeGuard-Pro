@@ -680,6 +680,16 @@ El DOM representa el documento como árbol de nodos y permite consultar/modifica
 
 **Comprobación:** ¿Qué ocurre con el DOM después de modificar un nodo?
 
+**Laboratorio de profundización — Inspección del árbol DOM.**
+
+1. Abre una página propia y examina document, html, head y body. 2. Identifica nodos elemento, texto y atributo. 3. Compara DOM con código fuente recibido. 4. Explica cómo JavaScript puede cambiar el árbol en ejecución.
+
+**Evidencia esperada.** El estudiante identifica nodos y diferencia DOM actual de fuente HTML inicial.
+
+**Seguridad y límites.** No asumir que el DOM refleja fielmente el servidor ni insertar HTML no confiable.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.2.02 — Selección de elementos
 
 querySelector/querySelectorAll usan selectores CSS y devuelven elemento o NodeList; getElementById busca por id. La selección debe ser específica y manejar ausencia de resultados.
@@ -695,6 +705,16 @@ querySelector/querySelectorAll usan selectores CSS y devuelven elemento o NodeLi
 **Errores frecuentes:** Asumir que querySelectorAll devuelve array o que siempre encuentra nodo.
 
 **Comprobación:** ¿Qué diferencia hay entre querySelector y querySelectorAll?
+
+**Laboratorio de profundización — Selección precisa y alcance.**
+
+1. Usa getElementById, querySelector y querySelectorAll. 2. Compara NodeList y elemento único. 3. Maneja selector sin coincidencias. 4. Limita búsqueda a un contenedor cuando sea posible.
+
+**Evidencia esperada.** La selección es específica y el código contempla ausencia de elementos.
+
+**Seguridad y límites.** No construir selectores con entrada no validada ni asumir que querySelector devuelve siempre un nodo.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.2.03 — Manipulación del DOM
 
@@ -712,6 +732,16 @@ Se pueden crear, insertar, reemplazar y eliminar nodos. textContent trata conten
 
 **Comprobación:** ¿Por qué textContent es más seguro para mostrar texto no confiable?
 
+**Laboratorio de profundización — Actualización segura de contenido.**
+
+1. Cambia texto con textContent. 2. Crea elementos con createElement y append. 3. Compara textContent con innerHTML. 4. Elimina un nodo de prueba.
+
+**Evidencia esperada.** La actualización conserva estructura y no interpreta texto de usuario como HTML.
+
+**Seguridad y límites.** Evitar innerHTML con datos no confiables; considerar sanitización cuando el caso requiere HTML.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.2.04 — Eventos
 
 Los eventos notifican acciones o cambios; el objeto Event contiene tipo, target, currentTarget y otros datos. La propagación incluye fases de captura, target y burbujeo.
@@ -727,6 +757,16 @@ Los eventos notifican acciones o cambios; el objeto Event contiene tipo, target,
 **Errores frecuentes:** Usar eventos inline en HTML y mezclar responsabilidades.
 
 **Comprobación:** ¿Qué diferencia target de currentTarget?
+
+**Laboratorio de profundización — Modelo de eventos del navegador.**
+
+1. Añade evento click a botón semántico. 2. Inspecciona event.target y currentTarget. 3. Cancela comportamiento por defecto solo cuando sea necesario. 4. Comprueba interacción con teclado.
+
+**Evidencia esperada.** El evento se gestiona en el elemento apropiado y el control funciona con entrada estándar.
+
+**Seguridad y límites.** No reemplazar enlaces y botones nativos por divs con click sin soporte completo.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.2.05 — Event listeners
 
@@ -744,6 +784,16 @@ addEventListener registra manejadores con opciones como capture, once, passive y
 
 **Comprobación:** ¿Por qué guardar referencia al callback facilita removeEventListener?
 
+**Laboratorio de profundización — Registro y limpieza de listeners.**
+
+1. Añade listener con addEventListener. 2. Define función nombrada para poder retirar listener. 3. Usa opciones once/passive/capture en escenarios pertinentes. 4. Comprueba que no se duplique el registro.
+
+**Evidencia esperada.** El listener se registra una vez y se retira cuando el componente deja de necesitarlo.
+
+**Seguridad y límites.** No crear listeners globales sin limpiar ni usar passive cuando se requiere preventDefault.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.2.06 — Event bubbling
 
 En bubbling el evento asciende desde target por ancestros; stopPropagation detiene propagación y preventDefault cancela acción predeterminada cuando es cancelable. No deben usarse indiscriminadamente.
@@ -759,6 +809,16 @@ En bubbling el evento asciende desde target por ancestros; stopPropagation detie
 **Errores frecuentes:** Confundir stopPropagation con preventDefault.
 
 **Comprobación:** ¿Qué cancela preventDefault y qué detiene stopPropagation?
+
+**Laboratorio de profundización — Propagación y control de eventos.**
+
+1. Crea elementos anidados con listeners. 2. Observa bubbling y capture. 3. Compara stopPropagation y stopImmediatePropagation. 4. Explica cuándo no conviene detener propagación.
+
+**Evidencia esperada.** Se identifica fase de captura, target y bubbling y se evita bloquear componentes superiores sin razón.
+
+**Seguridad y límites.** No detener propagación como solución general a conflictos de eventos.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.2.07 — Event delegation
 
@@ -776,6 +836,16 @@ La delegación coloca un listener en un ancestro para manejar eventos de descend
 
 **Comprobación:** ¿Qué ventaja ofrece closest al delegar eventos?
 
+**Laboratorio de profundización — Delegación para listas dinámicas.**
+
+1. Coloca listener en contenedor. 2. Detecta elemento objetivo mediante closest. 3. Añade y elimina filas dinámicamente. 4. Comprueba que nuevos elementos hereden comportamiento.
+
+**Evidencia esperada.** Un listener maneja elementos actuales y futuros y valida que el target pertenezca al contenedor.
+
+**Seguridad y límites.** No confiar en atributos data-* como autorización o validar selectores de forma insegura.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.2.08 — Formularios
 
 Los formularios generan submit y exponen valores mediante FormData. Deben manejar submit, validar entradas, informar errores y prevenir navegación solo cuando la aplicación controla el flujo. Validación servidor sigue siendo obligatoria.
@@ -791,6 +861,16 @@ Los formularios generan submit y exponen valores mediante FormData. Deben maneja
 **Errores frecuentes:** Leer inputs por selector frágil o validar únicamente en navegador.
 
 **Comprobación:** ¿Por qué los controles necesitan name para incluirse en FormData?
+
+**Laboratorio de profundización — Procesamiento de submit.**
+
+1. Captura submit del formulario. 2. Usa FormData para recopilar campos. 3. Evita recarga solo cuando corresponda. 4. Presenta estado de envío y errores.
+
+**Evidencia esperada.** El formulario procesa datos con nombres y valores correctos y mantiene feedback accesible.
+
+**Seguridad y límites.** La validación cliente no sustituye servidor, CSRF ni autorización.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.2.09 — Validaciones
 
@@ -808,6 +888,16 @@ La validación combina restricciones HTML, lógica cliente y reglas autoritativa
 
 **Comprobación:** ¿Qué validaciones deben repetirse en servidor?
 
+**Laboratorio de profundización — Validación cliente y servidor.**
+
+1. Define reglas para email, longitud y campos requeridos. 2. Combina restricciones HTML y JavaScript. 3. Prueba entradas límite y caracteres Unicode. 4. Documenta validaciones equivalentes en backend.
+
+**Evidencia esperada.** La validación produce mensajes útiles y se reconoce que el servidor es la autoridad final.
+
+**Seguridad y límites.** No confiar en JavaScript para impedir datos maliciosos ni filtrar solo por regex simplista.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.3.01 — Synchronous programming
 
 En ejecución síncrona, las instrucciones se procesan en orden y una operación bloqueante impide continuar en ese hilo hasta completarse. JavaScript en navegador ejecuta código de cada contexto principal en un hilo de ejecución, aunque el runtime use otros hilos internamente.
@@ -823,6 +913,16 @@ En ejecución síncrona, las instrucciones se procesan en orden y una operación
 **Errores frecuentes:** Confundir síncrono con «rápido» o asumir que todo JavaScript es monohilo en todos los contextos.
 
 **Comprobación:** ¿Qué experiencia percibe el usuario cuando el hilo principal queda bloqueado?
+
+**Laboratorio de profundización — Orden secuencial y bloqueo.**
+
+1. Ejecuta una secuencia de funciones síncronas. 2. Mide tiempo de una operación intensiva en UI. 3. Identifica bloqueo del hilo principal. 4. Propón dividir trabajo o delegar a Web Worker cuando proceda.
+
+**Evidencia esperada.** El análisis identifica qué tarea bloquea y propone una solución adecuada al entorno.
+
+**Seguridad y límites.** No ejecutar bucles intensivos en el hilo principal de la interfaz.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.3.02 — Asynchronous programming
 
@@ -840,6 +940,16 @@ La programación asíncrona permite iniciar operaciones y continuar mientras se 
 
 **Comprobación:** ¿Qué diferencia existe entre concurrencia asíncrona y paralelismo?
 
+**Laboratorio de profundización — Modelo de operaciones no bloqueantes.**
+
+1. Compara setTimeout, fetch y lectura asíncrona. 2. Dibuja hilo principal y tarea pendiente. 3. Identifica cuándo continúa el programa. 4. Maneja estado de carga y error.
+
+**Evidencia esperada.** El flujo distingue inicio de operación y finalización y la interfaz permanece utilizable.
+
+**Seguridad y límites.** No asumir que asincronía significa paralelismo ni ignorar cancelación y errores.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.3.03 — Callbacks
 
 Un callback es una función pasada para ejecutarse después o durante otra operación. Puede expresar eventos y resultados asíncronos, pero anidamiento excesivo complica flujo y errores; Promises suelen mejorar composición.
@@ -855,6 +965,16 @@ Un callback es una función pasada para ejecutarse después o durante otra opera
 **Errores frecuentes:** No pasar función sino resultado de ejecutarla o perder contexto this.
 
 **Comprobación:** ¿Por qué el callback de setTimeout no se ejecuta en la misma línea?
+
+**Laboratorio de profundización — Callbacks y control de flujo.**
+
+1. Implementa callback de éxito y error. 2. Compara callback síncrono y asíncrono. 3. Refactoriza anidamiento profundo. 4. Documenta contrato y orden de invocación.
+
+**Evidencia esperada.** El callback tiene contrato claro y se evita invocarlo más de una vez accidentalmente.
+
+**Seguridad y límites.** No ejecutar callbacks de terceros sin controlar errores y no confiar en callbacks para garantizar orden no documentado.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.3.04 — Promises
 
@@ -872,6 +992,16 @@ Una Promise representa resultado futuro: pending, fulfilled o rejected. then/cat
 
 **Comprobación:** ¿Qué valor devuelve un then y cómo afecta a la cadena?
 
+**Laboratorio de profundización — Estados y composición de promesas.**
+
+1. Crea Promise resuelta y rechazada. 2. Encadena then/catch/finally. 3. Compara Promise.all, allSettled, race y any. 4. Maneja rechazo no capturado.
+
+**Evidencia esperada.** El flujo maneja fulfillment y rejection y explica el resultado de cada combinador.
+
+**Seguridad y límites.** No dejar promesas rechazadas sin manejo ni asumir que Promise.all cancela tareas restantes.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.3.05 — Async/Await
 
 async declara una función que devuelve Promise; await pausa la continuación de esa función hasta que la Promise se resuelve o rechaza, sin bloquear el hilo principal. try/catch maneja rechazos y la secuencia debe paralelizarse conscientemente.
@@ -887,6 +1017,16 @@ async declara una función que devuelve Promise; await pausa la continuación de
 **Errores frecuentes:** Esperar secuencialmente tareas independientes o olvidar await en operaciones críticas.
 
 **Comprobación:** ¿Cuándo conviene Promise.all en lugar de varios await secuenciales?
+
+**Laboratorio de profundización — Manejo secuencial de tareas asíncronas.**
+
+1. Convierte cadena de promesas a async/await. 2. Añade try/catch/finally. 3. Compara await secuencial con Promise.all. 4. Propaga errores al llamador.
+
+**Evidencia esperada.** El código mantiene semántica y ejecuta en paralelo solo tareas independientes.
+
+**Seguridad y límites.** No usar await secuencialmente cuando las operaciones pueden ejecutarse concurrentemente ni olvidar manejo de cancelación.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.3.06 — Event Loop
 
@@ -904,6 +1044,16 @@ El event loop coordina ejecución de stack, tareas y microtareas. El código sí
 
 **Comprobación:** ¿Por qué una microtarea puede ejecutarse antes que un timer?
 
+**Laboratorio de profundización — Orden de ejecución y colas.**
+
+1. Combina código síncrono, setTimeout y Promise.resolve. 2. Predice orden de logs. 3. Distingue call stack, task queue y microtask queue. 4. Verifica salida en runtime objetivo.
+
+**Evidencia esperada.** La predicción explica vaciado de microtasks y ejecución de tareas.
+
+**Seguridad y límites.** No asumir tiempos exactos de timers ni usar temporizadores como reloj de precisión.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.3.07 — Microtasks
 
 Microtasks incluyen callbacks de Promise y queueMicrotask. Se procesan en puntos definidos del event loop, habitualmente tras vaciar la pila actual y antes de la siguiente tarea; crear microtareas infinitamente puede retrasar renderizado.
@@ -919,6 +1069,16 @@ Microtasks incluyen callbacks de Promise y queueMicrotask. Se procesan en puntos
 **Errores frecuentes:** Crear cadena infinita de microtareas o pensar que toda callback es microtarea.
 
 **Comprobación:** ¿Qué riesgo produce programar microtareas continuamente?
+
+**Laboratorio de profundización — Prioridad de microtasks.**
+
+1. Compara queueMicrotask y callbacks de Promise con setTimeout. 2. Registra orden de ejecución. 3. Explica cuándo se vacía la cola. 4. Identifica riesgo de encadenamiento infinito.
+
+**Evidencia esperada.** El orden se explica por el modelo de event loop y se evita starvation.
+
+**Seguridad y límites.** No generar cadenas infinitas de microtasks que bloqueen renderizado.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.3.08 — Macrotasks
 
@@ -936,6 +1096,16 @@ Macrotask o task describe tareas del event loop como timers, eventos y ciertos c
 
 **Comprobación:** ¿Qué suele ocurrir con microtareas antes de iniciar la siguiente task?
 
+**Laboratorio de profundización — Tareas y renderizado.**
+
+1. Compara setTimeout, eventos y tareas del navegador. 2. Observa renderizado con tareas largas. 3. Divide trabajo usando requestAnimationFrame o scheduler cuando proceda. 4. Explica límites de timers.
+
+**Evidencia esperada.** El estudiante identifica tareas que bloquean frames y selecciona mecanismo apropiado.
+
+**Seguridad y límites.** No depender de delay exacto de setTimeout para sincronización crítica.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.3.09 — Error handling
 
 El manejo de errores asíncronos requiere capturar excepciones, rechazos y fallos de red, distinguir errores recuperables y presentar mensajes útiles. AbortController permite cancelar fetch; los errores no deben revelar tokens ni detalles internos.
@@ -951,6 +1121,16 @@ El manejo de errores asíncronos requiere capturar excepciones, rechazos y fallo
 **Errores frecuentes:** Asumir que fetch rechaza por 404 o reintentar indefinidamente.
 
 **Comprobación:** ¿Por qué fetch no rechaza automáticamente ante una respuesta HTTP 404?
+
+**Laboratorio de profundización — Errores síncronos y asíncronos.**
+
+1. Maneja throw/catch en función síncrona. 2. Maneja rechazo de promesa y excepción en async. 3. Añade contexto sin filtrar secretos. 4. Define errores recuperables y no recuperables.
+
+**Evidencia esperada.** Los errores se capturan en el límite adecuado y se conserva causa/contexto útil.
+
+**Seguridad y límites.** No exponer stack traces o datos sensibles al usuario final.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.3.10 — Race conditions
 
@@ -968,6 +1148,16 @@ Una race condition aparece cuando el resultado depende del orden temporal de ope
 
 **Comprobación:** ¿Cómo evitas que una respuesta antigua sobrescriba resultados recientes?
 
+
+**Laboratorio de profundización — Control de concurrencia lógica.**
+
+1. Simula dos solicitudes que actualizan el mismo estado con distinta latencia. 2. Observa resultado fuera de orden. 3. Aplica AbortController, identificador de solicitud o actualización funcional. 4. Prueba orden rápido/lento.
+
+**Evidencia esperada.** La solución evita que una respuesta obsoleta sobrescriba el estado más reciente.
+
+**Seguridad y límites.** No asumir que el orden de finalización coincide con el de inicio; cancelar o ignorar respuestas obsoletas.
+
+**Registro sugerido.** Conserva ejemplo mínimo, navegador/runtime y versión, orden observado, casos de error y resultado. No marques la práctica como ejecutada sin evidencia real.
 #### 12.4.01 — Fetch API
 
 Fetch API realiza solicitudes HTTP y devuelve Promise de Response. Debe comprobarse response.ok, parsear cuerpo según formato y manejar abortos, errores de red y políticas CORS. Un HTTP 4xx/5xx no rechaza automáticamente la Promise.
