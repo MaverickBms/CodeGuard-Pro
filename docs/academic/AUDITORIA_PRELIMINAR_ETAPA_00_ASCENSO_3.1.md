@@ -224,3 +224,18 @@ Se añadieron claves modelo para los siete temas de investigación técnica: doc
 Se crearon informes de revisión de escritorio para los módulos de herramientas y depuración. El primero inspecciona los ocho temas, con énfasis en portabilidad de comandos por shell, operaciones Git potencialmente destructivas, privacidad en DevTools y conservación de fuentes editables de diagramas. El segundo inspecciona los siete temas y la lógica del laboratorio de factura: el contrato y los tres resultados esperados son aritméticamente coherentes por revisión estática, pero ni el código ni las pruebas se ejecutaron.
 
 **Estado común de módulos 0.1–0.4:** existen revisiones de escritorio documentales para los cuatro módulos; ninguna equivale a revisión independiente ni validación práctica. Se mantienen 0 laboratorios ejecutados, 0 videos verificados, 0 módulos aprobados y 0 módulos publicados. Los informes están enlazados desde el README académico.
+
+### 12. Comprobación de consistencia de encabezados — 2026-11-24
+
+Se volvió a contrastar el JSON curricular oficial con los encabezados de los cuatro documentos de la etapa 0. La comprobación es estática y se limita a identificadores y encabezados Markdown; no evalúa la calidad ni la suficiencia didáctica del contenido.
+
+| Módulo | Lecciones nominales en JSON | Encabezados numerados localizados | Resultado estructural |
+|---|---:|---:|---|
+| 0.1 | 8 | 8 encabezados principales «Lección 0.1.n» | Coincide |
+| 0.2 | 7 | 7 encabezados «Lección 0.2.n» en la sección de profundización | Coincide tras normalizar la etiqueta «Taller» a «Lección» |
+| 0.3 | 8 | 8 encabezados numerados 0.3.1–0.3.8 en la profundización | Coincide; 0.3.7 y 0.3.8 permanecen diferenciados |
+| 0.4 | 7 | 7 encabezados numerados 0.4.1–0.4.7 en la profundización | Coincide |
+
+En 0.2 se normalizó la etiqueta de los siete encabezados canónicos de «Taller» a «Lección», sin cambiar su numeración ni sus títulos, para que la unidad curricular no se confunda con el formato de actividad. Las claves de práctica y los encabezados de apéndices no se cuentan como lecciones adicionales. En 0.3, los seis encabezados introductorios y los apéndices heredados tampoco se suman al conteo: la serie numerada de la profundización es la que cubre las ocho unidades del JSON.
+
+**Límite de esta comprobación:** la coincidencia 8/7/8/7 demuestra trazabilidad estructural de las unidades, no que cada lección haya superado revisión técnica, pedagógica, práctica o de fuentes. Los cuatro módulos continúan en BORRADOR; no se eleva ningún estado editorial.
