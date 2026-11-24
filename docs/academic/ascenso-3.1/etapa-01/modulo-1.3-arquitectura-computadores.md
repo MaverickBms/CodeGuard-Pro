@@ -157,3 +157,12 @@ No se incluye video en esta versión: no se ha comprobado un recurso con audio h
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** simulador propuesto; no ejecutado.  
 **Estado editorial:** en desarrollo; no aprobado ni publicado.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** revisión documental de alineación con el módulo 1.3 del roadmap, cobertura de los títulos oficiales, secuencia didáctica, consistencia terminológica, ejemplos, actividad práctica, evaluación, seguridad y referencias.
+
+**Resultado:** revisión interna realizada; no equivale a aprobación académica externa ni a validación práctica. Se identificaron los ajustes anotados en este registro y se mantienen explícitas las actividades pendientes. Los laboratorios y ejemplos no se declaran ejecutados. Antes de cambiar el estado editorial se requiere cotejo bibliográfico final, ejecución reproducible de actividades y revisión por un segundo evaluador.
+
+**Hallazgos y pendientes específicos:** Se revisaron los modelos de arquitectura, el flujo de instrucción, ISA, entrada/salida e interrupciones. El simulador permanece como práctica conceptual no ejecutada. Pendiente: validar la representación con una ISA y simulador concretos, sin presentar el modelo didáctico como microarquitectura universal.
