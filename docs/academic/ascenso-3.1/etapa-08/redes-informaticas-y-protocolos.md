@@ -1,6 +1,6 @@
 # Etapa 8 — Redes informáticas y protocolos de comunicación
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 8.  
 **Prioridad oficial:** P1 · Obligatoria.  
 **Objetivo oficial:** comprender cómo se comunican los computadores y cómo funciona Internet.
@@ -388,4 +388,4 @@ No se incluyen videos en esta versión. La etapa contiene direccionamiento, prot
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** topología, comandos y laboratorio propuestos; no ejecutados ni capturados en VMs durante esta sesión.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado..
