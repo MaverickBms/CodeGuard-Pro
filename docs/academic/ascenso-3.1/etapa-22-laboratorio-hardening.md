@@ -113,3 +113,194 @@ No se incluyen videos aprobados. Solo se incorporarán videos en español direct
 - DVWA: https://github.com/digininja/DVWA
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se crearon VMs ni se probaron reglas de firewall en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 22
+
+Este desglose conserva las entradas del roadmap maestro, incluidas las notas explicativas que aparecen dentro de algunas listas curriculares. Los apartados son guías de estudio y no acreditan pruebas, autorización de laboratorio ni ejecución de herramientas.
+
+### Módulo 22.1 — Virtualización
+
+#### 22.1.01 — Hipervisores
+Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.1.02 — Máquinas virtuales
+Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.1.03 — Snapshots
+Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.1.04 — Redes aisladas
+Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.1.05 — NAT
+Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.1.06 — Host-only
+Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.1.07 — Segmentación
+Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.1.08 — Laboratorios vulnerables
+Estudiar este elemento desde su función y sus límites en virtualización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 22.2 — Distribuciones Linux
+
+#### 22.2.01 — Ubuntu
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.2.02 — Debian
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.2.03 — Kali Linux
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.2.04 — Kali Tools
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.2.05 — Gestión de paquetes
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.2.06 — Usuarios
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.2.07 — Grupos
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.2.08 — Permisos
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.2.09 — Servicios
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.2.10 — Logs
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.2.11 — Procesos
+Estudiar este elemento desde su función y sus límites en distribuciones linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 22.3 — Seguridad Linux
+
+#### 22.3.01 — SSH Hardening
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.3.02 — Gestión de usuarios
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.3.03 — Sudo
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.3.04 — File Permissions
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.3.05 — Firewall
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.3.06 — UFW
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.3.07 — Fail2ban
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.3.08 — Actualizaciones
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.3.09 — Servicios innecesarios
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.3.10 — Logs de seguridad
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.3.11 — Auditoría básica
+Estudiar este elemento desde su función y sus límites en seguridad linux; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 22.4 — Seguridad Windows
+
+#### 22.4.01 — Windows Defender
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.4.02 — Windows Firewall
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.4.03 — Windows Update
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.4.04 — UAC
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.4.05 — NTFS Permissions
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.4.06 — Users and Groups
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.4.07 — Process Security
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.4.08 — Services
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.4.09 — Registry
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.4.10 — Event Viewer
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.4.11 — PowerShell
+Estudiar este elemento desde su función y sus límites en seguridad windows; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 22.5 — Seguridad de redes
+
+#### 22.5.01 — Firewall Rules
+Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.5.02 — ACL
+Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.5.03 — NAT
+Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.5.04 — VLAN
+Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.5.05 — DMZ
+Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.5.06 — Network Segmentation
+Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.5.07 — Network Access Control
+Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.5.08 — Exposed Ports
+Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.5.09 — Unnecessary Services
+Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.5.10 — Network Hardening
+Estudiar este elemento desde su función y sus límites en seguridad de redes; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 22.6 — Laboratorios
+
+#### 22.6.01 — Kali Linux
+Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.6.02 — Ubuntu Server
+Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.6.03 — Windows
+Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.6.04 — Windows Server
+Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.6.05 — OWASP Juice Shop
+Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.6.06 — DVWA
+Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 22.6.07 — Máquinas de entrenamiento vulnerables
+Estudiar este elemento desde su función y sus límites en laboratorios; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
