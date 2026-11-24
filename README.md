@@ -272,3 +272,8 @@ Se incorporaron encabezados individuales para las 157 lecciones oficiales de las
 ### Continuidad ASCENSO 3.1 — etapas 17 a 19
 
 Se incorporaron encabezados individuales para las 228 lecciones oficiales de las etapas 17–19: etapa 17 (61), etapa 18 (100) y etapa 19 (67). El desglose cubre calidad y testing, arquitectura y diseño, y DevOps/infraestructura según el roadmap. Es base de trabajo activa; no se declara ejecución de pruebas, pipelines ni despliegues.
+
+
+### Continuidad ASCENSO 3.1 — etapas 20 a 22
+
+Se incorporaron encabezados individuales para las 197 entradas oficiales de las etapas 20–22: etapa 20 (57), etapa 21 (82) y etapa 22 (58). Se mantuvieron las restricciones de laboratorio propio, aislado y autorizado. Es base de trabajo activa; no se declara ejecución de máquinas virtuales, pruebas ofensivas ni laboratorios.
