@@ -125,9 +125,6 @@ Una priority queue es una abstracción que permite obtener el elemento de mayor 
 
 Un trie organiza claves, a menudo cadenas, por prefijos. La búsqueda depende de la longitud de la clave y de la representación del alfabeto. Es útil para autocompletado y búsquedas por prefijo, aunque puede consumir bastante memoria.
 
-### Tries
-
-Un trie organiza claves, a menudo cadenas, por prefijos. La búsqueda depende de la longitud de la clave y del alfabeto/representación. Es útil para autocompletado y búsquedas por prefijo, aunque puede consumir mucha memoria.
 
 ## 6.4 — Grafos
 
@@ -360,4 +357,13 @@ No se incorporan videos en esta versión. Cada estructura o algoritmo requiere u
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** implementaciones y proyecto propuestos; no compilados ni ejecutados en esta sesión.  
-**Estado editorial:** en desarrollo; no aprobado ni publicado..
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** cotejo de las entradas oficiales del roadmap, precisión conceptual, secuencia, ejemplos, prácticas, evaluación, seguridad y referencias.
+
+**Resultado:** revisión documental interna realizada con los ajustes y hallazgos siguientes: Se detectó y eliminó una repetición no numerada de la lección Tries. Se revisó la correspondencia de los 57 temas, la distinción entre estructuras y algoritmos, y las condiciones de uso de Dijkstra, árboles balanceados y complejidad asintótica. Pendiente: compilar implementaciones Java, ejecutar pruebas de propiedades/casos límite y medir complejidad empírica sin confundir medición con cota asintótica.
+
+**Límite de validación:** no se ejecutaron laboratorios, scripts, servicios, bases de datos, máquinas virtuales ni capturas de red en esta revisión. No se declara aprobación académica externa. La etapa continúa en desarrollo hasta completar las pruebas reproducibles y la segunda revisión.
