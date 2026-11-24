@@ -202,7 +202,12 @@ class Command(BaseCommand):
                     "titulo": source.titulo,
                     "url_canonica": source.url_canonica,
                     "edicion": source.edicion,
+                    "identificador_licencia": source.identificador_licencia,
+                    "url_licencia": source.url_licencia,
                     "estado_revision_licencia": source.estado_revision_licencia,
+                    "evidencia_licencia": source.evidencia_licencia,
+                    "alcance_licencia": source.alcance_licencia,
+                    "nota_revision_licencia": source.nota_revision_licencia,
                     "activa": source.activa,
                 }
                 for source in FuenteConocimiento.objects.all().order_by(
