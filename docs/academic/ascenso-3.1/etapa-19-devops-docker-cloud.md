@@ -120,3 +120,227 @@ No se incluyen videos aprobados. Se añadirán solo con audio español confirmad
 - OpenTelemetry: https://opentelemetry.io/docs/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se desplegó infraestructura ni se ejecutó pipeline en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 19
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados orientan el estudio de los conceptos dentro de la guía y el proyecto de la etapa; no constituyen resultados de pruebas ni evidencias de implementación.
+
+### Módulo 19.1 — Fundamentos DevOps
+
+#### 19.1.01 — Development
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.1.02 — Operations
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.1.03 — Continuous Integration
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.1.04 — Continuous Delivery
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.1.05 — Continuous Deployment
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.1.06 — Infrastructure as Code
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.1.07 — Automation
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos devops, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 19.2 — Docker
+
+#### 19.2.01 — Containers
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.2.02 — Images
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.2.03 — Dockerfile
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.2.04 — Volumes
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.2.05 — Networks
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.2.06 — Registries
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.2.07 — Docker Compose
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.2.08 — Multi-stage builds
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.2.09 — Container lifecycle
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en docker, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 19.3 — Servidores
+
+#### 19.3.01 — Linux Server
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.3.02 — SSH
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.3.03 — Usuarios
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.3.04 — Permisos
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.3.05 — Firewall
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.3.06 — Services
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.3.07 — Logs
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.3.08 — Storage
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.3.09 — Process management
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en servidores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 19.4 — Nginx
+
+#### 19.4.01 — Web Server
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.4.02 — Reverse Proxy
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.4.03 — Virtual Hosts
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.4.04 — Static Files
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.4.05 — TLS
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.4.06 — Load Balancing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en nginx, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 19.5 — CI/CD
+
+#### 19.5.01 — Pipelines
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.5.02 — Automated Builds
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.5.03 — Automated Tests
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.5.04 — Deployment
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.5.05 — GitHub Actions
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.5.06 — Secrets
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.5.07 — Environments
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.5.08 — Rollbacks
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en ci/cd, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 19.6 — Cloud
+
+#### 19.6.01 — Cloud Computing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.6.02 — IaaS
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.6.03 — PaaS
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.6.04 — SaaS
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.6.05 — Virtual Machines
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.6.06 — Storage
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.6.07 — Networking
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.6.08 — IAM
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.6.09 — Monitoring
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en cloud, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 19.7 — Proveedores
+
+#### 19.7.01 — AWS
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en proveedores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.7.02 — Azure
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en proveedores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.7.03 — Google Cloud
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en proveedores, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 19.8 — Kubernetes
+
+#### 19.8.01 — Pods
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.8.02 — Nodes
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.8.03 — Deployments
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.8.04 — Services
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.8.05 — ConfigMaps
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.8.06 — Secrets
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.8.07 — Volumes
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.8.08 — Ingress
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.8.09 — Scaling
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.8.10 — Networking
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en kubernetes, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 19.9 — Terraform
+
+#### 19.9.01 — Infrastructure as Code
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.9.02 — Providers
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.9.03 — Resources
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.9.04 — Variables
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.9.05 — State
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 19.9.06 — Modules
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en terraform, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
