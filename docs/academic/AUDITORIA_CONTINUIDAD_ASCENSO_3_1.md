@@ -482,3 +482,41 @@ No fue posible completar en esta sesión el desarrollo profundo y validado de la
 ### Recomendación de continuación
 
 Continuar por lotes: 7-10 (sistemas/datos), 11-16 (full stack), 17-20 (ingeniería/infra/AppSec), 21-25 (ciberseguridad), 26-32 (especialización/proyecto), con auditoría por lote, verificación de referencias y ejecución de ejemplos en entorno controlado.
+
+
+## Addendum de profundización didáctica — 2026-11-24 (continuación)
+
+### Lote trabajado: etapas 7–10
+
+Se amplió el desarrollo individual de las lecciones de las etapas 7–10, conservando los títulos, numeración y secuencia del roadmap oficial:
+
+| Etapa | Lecciones | Desarrollo incorporado |
+|---:|---:|---|
+| 7 — Sistemas operativos | 84 | Explicaciones específicas de kernel, Linux, administración de comandos, Bash, Windows y virtualización; prácticas de laboratorio y evidencias de comprensión. |
+| 8 — Redes y protocolos | 81 | Desarrollo específico de redes, modelos, direccionamiento, protocolos, routing/switching, seguridad y herramientas; actividades restringidas a redes propias o autorizadas. |
+| 9 — Bases de datos relacionales y SQL | 81 | Desarrollo de fundamentos, modelado, MySQL, categorías y sentencias SQL, normalización, transacciones, índices y PostgreSQL; prácticas de consulta y diseño. |
+| 10 — NoSQL y almacenamiento moderno | 38 | Desarrollo de modelos NoSQL, MongoDB, Redis y familias de almacenamiento; actividades de selección, modelado y operaciones de laboratorio. |
+| **Total** | **284** | **84 + 81 + 81 + 38** |
+
+### Criterio aplicado
+
+Cada unidad fue ampliada con explicación vinculada al título oficial, una aplicación o práctica pertinente y una evidencia que permite comprobar comprensión. Se corrigieron las secciones vacías o de orientación genérica detectadas en estas etapas. No se modificaron títulos ni la estructura curricular oficial.
+
+### Comprobación documental realizada
+
+- Se volvieron a leer los cuatro archivos desde la rama remota después de los cambios.
+- Se contabilizaron 84, 81, 81 y 38 encabezados de lección, respectivamente.
+- En los cuatro documentos no se detectaron encabezados de lección vacíos.
+- En las etapas 9 y 10 no permaneció la frase de relleno genérica identificada en la revisión inicial.
+- No se ejecutaron los comandos, scripts, configuraciones de red, consultas SQL, operaciones MongoDB ni comandos Redis descritos.
+- No se verificaron una por una las referencias ni las versiones de herramientas.
+- Esta intervención es desarrollo documental y comprobación estructural; no constituye validación técnica por ejecución, revisión independiente ni aprobación editorial final.
+
+### Estado acumulado de profundización
+
+- Etapas 1–6: 265 lecciones desarrolladas documentalmente por OpenCode con estructura didáctica ampliada, según el informe de esa sesión.
+- Etapas 7–10: 284 lecciones ampliadas en esta continuación.
+- Etapas 1–10: 549 lecciones con desarrollo documental ampliado.
+- Etapas 11–32: 1.367 lecciones conservan la primera pasada individual previa; requieren la misma profundización didáctica y revisión de evidencia aplicada a este lote.
+
+Se mantiene pendiente la validación mediante ejecución, la comprobación bibliográfica individual, la revisión técnica experta y la revisión pedagógica independiente. No se importó ni publicó contenido. El objetivo oficial de la etapa 25 permanece vacío y el archivo JSON del roadmap no se modificó.
