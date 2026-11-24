@@ -1139,6 +1139,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Qué aporta la separación entre modo usuario y modo kernel?
 
+**Laboratorio de profundización — Mapa de componentes y límites de privilegio.**
+
+1. Identifica versión, edición y arquitectura con `Get-ComputerInfo`. 2. Dibuja una aplicación, sus procesos, APIs y el kernel como capas conceptuales. 3. Marca qué operaciones requieren privilegios elevados y por qué.
+
+**Evidencia esperada.** El diagrama diferencia modo usuario y modo kernel, proceso y servicio, y relaciona elevación con una operación concreta.
+
+**Seguridad y límites.** No finalizar procesos críticos ni cambiar configuración de seguridad durante la observación.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
+
 ### 7.5.2 — Sistema de archivos NTFS
 
 **Propósito y modelo.** NTFS organiza archivos y directorios mediante metadatos, ACL, journaling, enlaces y otras funciones. La seguridad depende de propietario, permisos explícitos y heredados, grupos y contexto de acceso. Para recursos SMB se evalúan además los permisos de uso compartido; el acceso remoto efectivo puede quedar más restringido que el acceso local.
@@ -1154,6 +1164,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 **Errores frecuentes.** Conceder Control total para resolver un problema de lectura, deshabilitar herencia sin analizar el impacto o aplicar ACL recursivas a una ruta amplia.
 
 **Comprobación.** ¿Por qué una ACL NTFS no basta para describir el acceso a un recurso compartido?
+
+**Laboratorio de profundización — Evaluación de ACL local frente a recurso compartido.**
+
+1. Crea una carpeta temporal. 2. Consulta sus ACL con `icacls`. 3. Inspecciona propietario y herencia desde Propiedades > Seguridad > Opciones avanzadas. 4. Explica cómo cambiaría el análisis si la carpeta se compartiera por SMB.
+
+**Evidencia esperada.** La explicación diferencia ACL NTFS de permisos de recurso compartido e identifica herencia y propietario.
+
+**Seguridad y límites.** No aplicar ACL recursivas ni modificar permisos de carpetas del sistema o de otros usuarios.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
 
 ### 7.5.3 — Usuarios y grupos
 
@@ -1171,6 +1191,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Qué ventaja aporta un SID para identificar una cuenta de forma estable?
 
+**Laboratorio de profundización — Inventario de identidad y pertenencia.**
+
+1. Ejecuta `whoami /user` y `whoami /groups`. 2. Consulta cuentas locales con `Get-LocalUser` si está disponible. 3. Compara nombre visible, SID y grupos del token. 4. Diseña una matriz de funciones para operador, desarrollador y auditor.
+
+**Evidencia esperada.** Se explica que el SID identifica la cuenta y que los permisos pueden llegar por pertenencia a grupos.
+
+**Seguridad y límites.** No agregar cuentas a grupos privilegiados ni compartir credenciales.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
+
 ### 7.5.4 — Permisos
 
 **Propósito y modelo.** Los permisos de Windows se expresan mediante entradas de control de acceso (ACE) dentro de una DACL. Pueden conceder o denegar derechos y heredarse desde directorios superiores. El resultado depende del token de seguridad, grupos, orden y alcance de las ACE; no se debe inferir solo por el nombre de un usuario.
@@ -1186,6 +1216,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 **Errores frecuentes.** Desactivar herencia sin documentar, conceder control total indiscriminadamente o creer que el nombre mostrado prueba la identidad real.
 
 **Comprobación.** ¿Por qué la pertenencia a varios grupos puede cambiar el acceso efectivo?
+
+**Laboratorio de profundización — Matriz de acceso y herencia.**
+
+1. En una carpeta de laboratorio inspecciona las ACE con `icacls`. 2. Registra concesiones, denegaciones y herencia. 3. Diseña permisos para propietario, editores y lectores. 4. Indica cómo comprobarías el acceso con cuentas representativas.
+
+**Evidencia esperada.** La matriz asigna solo los permisos necesarios y explica cómo la pertenencia a grupos afecta el acceso efectivo.
+
+**Seguridad y límites.** No deshabilitar herencia ni conceder Control total para resolver una prueba de lectura.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
 
 ### 7.5.5 — Procesos
 
@@ -1203,6 +1243,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Qué atributos revisarías antes de concluir que un proceso es malicioso?
 
+**Laboratorio de profundización — Triage observacional de un proceso.**
+
+1. En Administrador de tareas agrega PID, usuario y línea de comandos. 2. Consulta procesos con `Get-Process`. 3. Para un caso sintético registra ruta, hash, firma, proceso padre y conexiones que investigarías. 4. Separa hechos de hipótesis.
+
+**Evidencia esperada.** El análisis no declara malicioso un proceso por su nombre o consumo; identifica evidencia adicional necesaria.
+
+**Seguridad y límites.** No finalizar procesos desconocidos ni ejecutar muestras sospechosas.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
+
 ### 7.5.6 — Servicios
 
 **Propósito y modelo.** Los servicios de Windows son componentes de larga duración administrados por Service Control Manager. Pueden ejecutarse con cuentas específicas, iniciar bajo demanda o durante el arranque y depender de otros servicios. Su estado, tipo de inicio, cuenta y ruta ejecutable deben revisarse antes de cualquier cambio.
@@ -1218,6 +1268,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 **Errores frecuentes.** Deshabilitar servicios por listas genéricas de internet o cambiar la cuenta de ejecución sin validar permisos y dependencias.
 
 **Comprobación.** ¿Por qué la cuenta con la que se ejecuta un servicio forma parte de su superficie de seguridad?
+
+**Laboratorio de profundización — Inventario de servicios y cuenta de ejecución.**
+
+1. Inspecciona un servicio conocido en `services.msc`. 2. Consulta su estado y configuración con `Get-Service` y `Get-CimInstance Win32_Service`. 3. Registra cuenta, ruta, tipo de inicio y dependencias. 4. Diseña un cambio con reversión, sin aplicarlo.
+
+**Evidencia esperada.** Se distinguen estado, tipo de inicio, cuenta y dependencia del servicio.
+
+**Seguridad y límites.** No detener servicios del host ni cambiar la cuenta de ejecución durante la práctica.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
 
 ### 7.5.7 — Registro de Windows
 
@@ -1235,6 +1295,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Qué diferencia existe entre una clave del Registro y un valor almacenado en ella?
 
+**Laboratorio de profundización — Inspección de clave sin modificación.**
+
+1. Abre Regedit en modo de consulta. 2. Identifica una clave no crítica documentada y registra ruta, valor y tipo. 3. Consulta el valor con `Get-ItemProperty`. 4. Especifica respaldo y restauración hipotéticos antes de cualquier cambio.
+
+**Evidencia esperada.** Se diferencia hive, clave, valor y tipo, y se reconoce el riesgo de importar archivos `.reg`.
+
+**Seguridad y límites.** No editar ni borrar claves; no importar archivos de registro de origen no verificado.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
+
 ### 7.5.8 — Administrador de tareas
 
 **Propósito y modelo.** El Administrador de tareas ofrece una vista operativa de procesos, rendimiento, aplicaciones de inicio, usuarios y servicios. Sus métricas son instantáneas o agregados y dependen del intervalo de muestreo; no reemplazan registros ni herramientas de diagnóstico profundo.
@@ -1250,6 +1320,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 **Errores frecuentes.** Finalizar procesos del sistema para bajar consumo o atribuir causalidad a la primera fila de una lista ordenada.
 
 **Comprobación.** ¿Qué datos adicionales necesitas antes de atribuir lentitud a un proceso específico?
+
+**Laboratorio de profundización — Observación de rendimiento con dos muestras.**
+
+1. Registra CPU, memoria y disco en dos momentos separados. 2. Identifica un proceso de usuario y registra PID, usuario y consumo. 3. Formula dos hipótesis alternativas para una lentitud simulada. 4. Propón qué telemetría adicional permitiría distinguirlas.
+
+**Evidencia esperada.** El diagnóstico separa mediciones, tendencias e hipótesis y no atribuye causalidad a una sola instantánea.
+
+**Seguridad y límites.** No finalizar procesos ni deshabilitar aplicaciones de inicio para reducir métricas.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
 
 ### 7.5.9 — Visor de eventos
 
@@ -1267,6 +1347,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Por qué la correlación temporal y contextual es necesaria al investigar eventos?
 
+**Laboratorio de profundización — Línea temporal de eventos sintéticos.**
+
+1. Consulta Application y System en `eventvwr.msc`. 2. Filtra un intervalo breve. 3. Extrae proveedor, Event ID, nivel y timestamp de tres eventos no sensibles. 4. Correlaciónalos con un conjunto de eventos sintéticos y marca qué conclusiones no pueden sostenerse.
+
+**Evidencia esperada.** La línea temporal distingue observación, correlación e hipótesis y explica límites de la ausencia de eventos.
+
+**Seguridad y límites.** No borrar logs ni exportar registros con datos personales o secretos.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
+
 ### 7.5.10 — Firewall
 
 **Propósito y modelo.** Microsoft Defender Firewall aplica reglas de filtrado según perfil de red, dirección, protocolo, puerto, programa y alcance. Las reglas de entrada y salida responden a flujos distintos. Desactivar el firewall completo para resolver conectividad elimina una capa de defensa y no es un método de diagnóstico aceptable.
@@ -1282,6 +1372,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 **Errores frecuentes.** Crear reglas Any/Any, habilitar reglas en todos los perfiles o apagar el firewall como primera medida.
 
 **Comprobación.** ¿Por qué restringir el origen de una regla puede reducir el riesgo sin impedir el servicio esperado?
+
+**Laboratorio de profundización — Diseño de regla de mínima exposición.**
+
+1. Inspecciona perfiles con `Get-NetFirewallProfile`. 2. Lista reglas habilitadas. 3. Diseña una regla hipotética de entrada con programa, protocolo, puerto, origen y perfil delimitados. 4. Explica cómo comprobarías conectividad y registro sin desactivar el firewall.
+
+**Evidencia esperada.** La regla limita origen y alcance al servicio necesario y diferencia tráfico entrante de saliente.
+
+**Seguridad y límites.** No deshabilitar perfiles ni abrir puertos en el host; aplicar cambios solo en laboratorio autorizado.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
 
 ### 7.5.11 — PowerShell
 
@@ -1299,6 +1399,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Qué ventaja ofrece transportar objetos frente a transportar solo texto en la canalización?
 
+**Laboratorio de profundización — Pipeline de objetos y reporte.**
+
+1. Ejecuta `Get-Service` y examina el resultado con `Get-Member`. 2. Filtra servicios detenidos con `Where-Object`. 3. Selecciona propiedades con `Select-Object`. 4. Exporta el resultado a CSV dentro de una carpeta de laboratorio.
+
+**Evidencia esperada.** El pipeline conserva objetos hasta la etapa de presentación y el CSV contiene las columnas previstas.
+
+**Seguridad y límites.** No utilizar `Format-Table` antes de una etapa que necesita objetos ni ejecutar scripts externos sin inspección.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
+
 ### 7.5.12 — Administración de servicios
 
 **Propósito y modelo.** La administración segura de servicios requiere identificar el servicio real, su ejecutable, cuenta, dependencias, tipo de inicio, recuperación y efecto sobre usuarios. Los cambios deben seguir control de cambios y contar con rollback. El nombre visible puede diferir del nombre interno utilizado por herramientas.
@@ -1315,6 +1425,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Qué elementos deben verificarse antes de cambiar el tipo de inicio de un servicio?
 
+
+**Laboratorio de profundización — Procedimiento de cambio con rollback.**
+
+1. Selecciona un servicio no crítico de un laboratorio Windows. 2. Registra Name, State, StartMode, StartName y PathName con CIM. 3. Documenta autorización, precondiciones, impacto y método de reversión. 4. Realiza el cambio solo en VM desechable y con snapshot, si la práctica está autorizada.
+
+**Evidencia esperada.** El procedimiento incluye evidencia anterior y posterior, comprobación del servicio y un rollback verificable; si no se ejecuta, queda identificado como diseño.
+
+**Seguridad y límites.** No modificar servicios del equipo anfitrión ni asumir que un nombre visible identifica de forma única el servicio.
+
+**Registro sugerido.** Anota edición y versión de Windows, comando o herramienta, resultado observado, fecha y cualquier diferencia. No declares ejecutada la práctica sin evidencia real.
 ## 7.6 — Virtualización
 
 ### 7.6.1 — VirtualBox
