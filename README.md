@@ -302,3 +302,8 @@ Se completó la pasada de continuidad documental de las 32 etapas posteriores a 
 ### Desarrollo profundo y revisión editorial — etapas 1 a 10
 
 Se revisaron editorialmente los documentos de las etapas 1–10 y se cotejaron sus encabezados con el roadmap: 549/549 entradas curriculares coinciden por módulo. Se corrigieron duplicaciones, referencias impropias, orden de lecciones, compatibilidad JDK 21 y advertencias operativas. La revisión es documental interna; los ejemplos y laboratorios siguen pendientes de ejecución reproducible y segunda revisión académica. Los contenidos permanecen como base de trabajo activa, sin aprobación ni publicación.
+
+
+### Desarrollo profundo individual — etapas 11 a 13
+
+Se desarrollaron individualmente las 212 lecciones oficiales de las etapas 11–13 (60, 89 y 63 respectivamente), sustituyendo textos genéricos por explicaciones técnicas específicas, límites y criterios de aplicación. Se cotejó la cobertura con el roadmap y se comprobó que no quedaran los placeholders de granularización. Las pruebas frontend, accesibilidad, APIs y despliegue siguen pendientes; revisión interna documental, no aprobación externa.
