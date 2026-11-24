@@ -235,3 +235,14 @@ Se incorporó el desglose de las entradas curriculares de las etapas 20–22:
 - **Etapa 22 — Laboratorio de ciberseguridad, hardening y administración segura:** 58 entradas en virtualización, Linux, hardening Linux/Windows, redes y entornos de laboratorio.
 
 Se conservaron las entradas textuales del roadmap, incluidas las notas que figuran dentro de algunas listas de lecciones; no se alteró su fuente curricular. Toda práctica ofensiva o de validación se mantiene limitada a entornos propios, aislados y autorizados. No se desplegaron máquinas virtuales, no se ejecutaron herramientas ni se realizaron pruebas contra sistemas externos. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
+
+
+### Expansión granular — etapas 23 a 25
+
+Se incorporó el desglose de las entradas oficiales de las etapas 23–25:
+
+- **Etapa 23 — Reconocimiento, OSINT y gestión de vulnerabilidades:** 58 entradas en reconocimiento, OSINT, herramientas, identificación de activos, escaneo/enumeración y gestión de vulnerabilidades.
+- **Etapa 24 — Pentesting de redes y sistemas:** 47 entradas en fundamentos, evaluación de sistemas, Metasploit, seguridad de credenciales y post-explotación.
+- **Etapa 25 — Seguridad de aplicaciones web y APIs:** 50 entradas en arquitectura web, vulnerabilidades, OWASP, Burp Suite, seguridad de APIs y herramientas.
+
+Se mantuvieron las restricciones de autorización, alcance, aislamiento y cierre responsable para cualquier práctica de reconocimiento o pentesting. El campo oficial `objetivo` de la etapa 25 sigue vacío: no se completó ni se sustituyó por una formulación inventada. No se escanearon activos, no se ejecutaron herramientas de explotación y no se probaron sistemas externos. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
