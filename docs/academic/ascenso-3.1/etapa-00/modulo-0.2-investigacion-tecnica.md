@@ -447,6 +447,20 @@ Una ficha que no permita a otra persona abrir la fuente y localizar el respaldo 
 
 ---
 
+## Matriz de evidencias por lección
+
+| Lección | Evidencia mínima | Señal de dominio |
+|---|---|---|
+| 0.2.1 | Ficha de una API con versión, firma, parámetros, retorno, errores y enlace a documentación primaria | La referencia corresponde a la versión investigada y permite verificar el contrato |
+| 0.2.2 | Tres consultas sobre un mismo error y registro de las hipótesis que permiten distinguir | La consulta mínima conserva contexto suficiente sin exponer datos privados |
+| 0.2.3 | Evaluación de una respuesta comunitaria con fecha, versión, vigencia y contraste con documentación primaria | No confunde votos o aceptación con verificación técnica |
+| 0.2.4 | Cadena issue → pull request → commit/release con enlaces y estado comprobado | Distingue discusión, propuesta, integración y distribución |
+| 0.2.5 | Matriz comparativa de dos repositorios con licencia, mantenimiento, dependencias y riesgos | Cada juicio se apoya en observaciones enlazadas y no solo en popularidad |
+| 0.2.6 | Cinco afirmaciones clasificadas y reformuladas con evidencia y límites | Distingue hecho, observación, interpretación, opinión e hipótesis |
+| 0.2.7 | Reporte técnico reproducible revisado por otra persona | La otra persona puede reproducir el caso o identificar con precisión qué dato ambiental falta |
+
+La evidencia puede ser un documento Markdown dentro de la bitácora. No se requiere publicar datos privados ni ejecutar código de terceros para completar estas actividades.
+
 ## Evaluación de transferencia — expediente completo
 
 Investiga un problema técnico real de un proyecto propio o un repositorio de demostración. Debes:
