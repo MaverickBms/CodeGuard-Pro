@@ -41,148 +41,67 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 ### 7.1.1 — Kernel
 
-El kernel es el núcleo privilegiado del sistema operativo. Coordina recursos, ofrece abstracciones y media el acceso al hardware.
-
 ### 7.1.2 — Kernel Space
-
-Kernel Space es el espacio privilegiado donde opera el kernel y ciertos componentes autorizados.
 
 ### 7.1.3 — User Space
 
-User Space aloja aplicaciones y servicios con privilegios restringidos. La separación contribuye al aislamiento de fallos.
-
 ### 7.1.4 — System Calls
-
-Una llamada al sistema permite que un programa solicite un servicio controlado al kernel. Una función de biblioteca puede preparar argumentos e invocarla, pero ambos conceptos no son idénticos.
-
-### 7.1.10 — Drivers
-
-Los drivers permiten al sistema operativo interactuar con dispositivos. Obténlos de fuentes confiables y compatibles.
 
 ### 7.1.5 — Procesos
 
-Un proceso es una instancia de programa en ejecución con recursos y contexto propios.
-
 ### 7.1.6 — Hilos
-
-Un hilo es una secuencia de ejecución dentro de un proceso. Los hilos suelen compartir memoria, pero conservan estado y pila propios.
 
 ### 7.1.7 — Scheduler
 
-El scheduler decide qué tarea ejecutable recibe tiempo de CPU según la política del sistema.
-
 ### 7.1.8 — Context Switching
-
-Un context switch cambia la tarea que ejecuta el procesador y preserva/restaura su estado. Tiene coste y no es trabajo útil de la aplicación.
 
 ### 7.1.9 — Memoria virtual
 
-La memoria virtual proporciona a cada proceso una vista lógica de memoria y permite aislar espacios de direcciones. El sistema traduce direcciones virtuales a físicas, administra páginas y puede respaldar parte de la memoria en almacenamiento secundario. Memoria virtual no significa que el disco sea tan rápido como RAM: una paginación intensa puede degradar severamente el rendimiento.
+### 7.1.10 — Drivers
 
 ### 7.1.11 — Sistema de archivos
 
-Organiza nombres, directorios, metadatos y contenido persistente. Un dispositivo, un sistema de archivos y un punto de montaje son conceptos distintos.
-
 ### 7.1.12 — IPC (comunicación entre procesos)
-
-Los procesos se comunican mediante pipes, sockets, memoria compartida, colas de mensajes y señales. La memoria compartida requiere sincronización correcta.
 
 ### 7.1.13 — Concurrencia
 
-La concurrencia organiza tareas que progresan de forma intercalada o solapada. Considera condiciones de carrera, exclusión mutua e interbloqueos.
-
 ### 7.1.14 — Paralelismo
-
-El paralelismo implica ejecución simultánea, por ejemplo en varios núcleos. No es sinónimo de concurrencia.
 
 ## 7.2 — Linux
 
 ### 7.2.1 — Distribuciones
 
-Linux es el kernel; una distribución integra kernel, utilidades, bibliotecas, gestor de paquetes y políticas. Las distribuciones difieren en soporte y versiones.
-
 ### 7.2.2 — Kernel Linux
-
-El kernel Linux administra procesos, memoria, dispositivos, redes y llamadas al sistema.
 
 ### 7.2.3 — Ubuntu
 
-Ubuntu es una distribución basada en Debian con políticas propias de publicación, soporte y empaquetado.
-
 ### 7.2.4 — Debian
-
-Debian es una distribución comunitaria con ramas y políticas propias. Consulta documentación oficial antes de actualizar.
 
 ### 7.2.5 — Estructura del sistema de archivos
 
-El árbol parte de la raíz /.
-
 ### 7.2.6 — Directorios del sistema de archivos
-
-| Directorio | Uso habitual |
-|---|---|
-| /etc | configuración del sistema y servicios |
-| /var | datos variables, colas y registros |
-| /home | directorios personales |
-| /usr | programas, bibliotecas y recursos compartidos |
-| /tmp | archivos temporales |
-| /opt | software adicional |
-
-La distribución concreta puede incorporar enlaces simbólicos o convenciones adicionales. No elimines contenido de estas rutas sin comprender su función.
 
 ### 7.2.7 — Usuarios
 
-Una cuenta identifica una entidad que puede iniciar sesión o ejecutar procesos. Aplica mínimo privilegio.
-
 ### 7.2.8 — Grupos
-
-Los grupos permiten asignar permisos a conjuntos de usuarios.
-
-### 7.2.10 — Propietarios
-
-Los archivos y directorios tienen propietario y grupo asociados.
-
-### 7.2.11 — Root
-
-Root es la cuenta privilegiada tradicional; evita usarla en tareas rutinarias.
-
-Linux identifica usuarios y grupos mediante IDs. Los permisos controlan acciones para propietario, grupo y otros. Root es la cuenta privilegiada tradicional. Sudo permite ejecutar comandos autorizados con privilegios elevados según la política configurada.
-
-Aplica mínimo privilegio: utiliza una cuenta normal para tareas cotidianas, eleva privilegios solo cuando sea necesario y revisa el comando antes de usar sudo. No compartas contraseñas ni habilites root remoto sin una necesidad y controles claros.
 
 ### 7.2.9 — Permisos
 
-Los permisos tradicionales se expresan como lectura (r), escritura (w) y ejecución (x) para propietario, grupo y otros. En directorios, x permite atravesarlo; r permite listar nombres; w permite modificar entradas si se combinan los permisos necesarios.
+### 7.2.10 — Propietarios
 
-Ejemplos:
-- 640: propietario lectura/escritura, grupo lectura, otros sin permisos.
-- 755: propietario lectura/escritura/ejecución, grupo y otros lectura/ejecución.
-
-No utilices permisos 777 como solución general. Conceder escritura a todos aumenta el riesgo.
+### 7.2.11 — Root
 
 ### 7.2.12 — Sudo
 
-Sudo permite ejecutar comandos autorizados con privilegios elevados. Revisa el comando antes de elevar privilegios.
-
 ### 7.2.13 — Procesos
-
-Identifica PID, usuario, consumo y relación padre-hijo antes de intervenir.
 
 ### 7.2.14 — Servicios
 
-Los servicios son unidades administradas por el sistema; systemd suele utilizar systemctl.
-
 ### 7.2.15 — Paquetes
-
-Los paquetes distribuyen software con metadatos y dependencias. Revisa origen y versión.
 
 ### 7.2.16 — Logs
 
-Los logs registran eventos y pueden contener información sensible; controla acceso y redacción.
-
 ### 7.2.17 — Variables de entorno
-
-Transmiten configuración a procesos hijos. No incluyas secretos en comandos visibles ni historiales.
 
 ## 7.3 — Administración Linux
 
@@ -585,4 +504,13 @@ No se añaden videos en esta versión. La etapa abarca sistemas operativos, admi
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** comandos, scripts y laboratorio propuestos; no ejecutados en VMs reales durante esta sesión.  
-**Estado editorial:** en desarrollo; no aprobado ni publicado..
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** cotejo de las entradas oficiales del roadmap, precisión conceptual, secuencia, ejemplos, prácticas, evaluación, seguridad y referencias.
+
+**Resultado:** revisión documental interna realizada con los ajustes y hallazgos siguientes: Se ordenaron los encabezados numerados de fundamentos y Linux según el roadmap, y se separó la explicación de permisos del concepto de cuenta root. Se revisaron comandos administrativos y advertencias de mínimo privilegio. Pendiente: ejecutar comandos en VMs desechables Linux/Windows, verificar diferencias entre distribuciones y versiones, y validar scripts con pruebas seguras.
+
+**Límite de validación:** no se ejecutaron laboratorios, scripts, servicios, bases de datos, máquinas virtuales ni capturas de red en esta revisión. No se declara aprobación académica externa. La etapa continúa en desarrollo hasta completar las pruebas reproducibles y la segunda revisión.
