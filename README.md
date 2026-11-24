@@ -363,3 +363,10 @@ La cobertura es documental y estructural; no se ejecutaron laboratorios ni escan
 Se desarrollaron las 81 lecciones oficiales de Bases de datos relacionales y SQL: fundamentos (10), modelado (11), MySQL (9), SQL (19), diseño y normalización (9), bases de datos avanzadas (15) y PostgreSQL (8). Cada lección incluye explicación específica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
 
 La cobertura es documental y estructural; no se ejecutaron motores, consultas, migraciones ni laboratorios. La validación técnica independiente y el cotejo bibliográfico exhaustivo permanecen pendientes. La auditoría de continuidad contiene el alcance y las limitaciones. El roadmap JSON no fue modificado; no se importó ni publicó contenido.
+
+
+### Desarrollo documental individual — etapa 10 (24-11-2026)
+
+Se desarrollaron las 38 lecciones oficiales de NoSQL y almacenamiento moderno: fundamentos NoSQL (8), MongoDB (14), Redis (11) y otras arquitecturas de almacenamiento (5). Cada lección incluye explicación específica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
+
+La cobertura es documental y estructural; no se ejecutaron instancias ni laboratorios de MongoDB, Redis u otros motores. La validación técnica independiente y la revisión bibliográfica exhaustiva siguen pendientes. La auditoría de continuidad registra el alcance y los límites. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
