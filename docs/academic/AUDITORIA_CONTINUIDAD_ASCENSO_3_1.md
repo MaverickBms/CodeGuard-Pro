@@ -453,3 +453,32 @@ No se ejecutaron pruebas ni laboratorios en esta pasada; no se aprobaron, import
 - Revisar coherencia técnica con revisión humana experta.
 - Continuar desarrollo por lección de etapas 3-32 según prioridad y estado real de sus documentos.
 - Obtener manifiesto UUID real antes de cualquier conversión/importación.
+
+## Addendum final de sesión — 2026-11-24 (continuación)
+
+### Lotes completados en esta sesión
+
+| Etapa | Módulos | Lecciones | Artefactos | Estado |
+|---:|---:|---:|---|---|
+| 1 | 5 | 46 | módulos 1.1-1.5 reescritos por lección | DESARROLLADO (doc) |
+| 2 | 5 | 39 | módulos 2.1-2.5 + índice | DESARROLLADO (doc) |
+| 3 | 6 | 48 | módulos 3.1-3.6 + índice | DESARROLLADO (doc) |
+| 4 | 5 | 33 | módulos 4.1-4.5 + índice | DESARROLLADO (doc) |
+| 5 | 4 | 42 | módulos 5.1-5.4 + índice | DESARROLLADO (doc) |
+| 6 | 7 | 57 | módulos 6.1-6.7 + índice | DESARROLLADO (doc) |
+
+**Total desarrollado documentalmente por lección en esta sesión:** 265 lecciones (etapas 1-6).
+
+### Validación
+
+- Conteos de lecciones cotejados contra `apps/roadmaps/data/ascenso_3_1.json`.
+- Estructura por lección aplicada (identificación, propósito, prerrequisitos, resultados, desarrollo, ejemplo, práctica, actividad independiente, criterios, errores, evaluación, referencias).
+- **No realizado:** ejecución de ejemplos, verificación web exhaustiva de referencias, revisión técnica/ editorial externa, importación JSON v1, aprobación/publicación.
+
+### Limitación de alcance
+
+No fue posible completar en esta sesión el desarrollo profundo y validado de las 1916 lecciones de etapas 1-32. Quedan pendientes 1651 lecciones de etapas 7-32 para desarrollo/revisión por lección con la misma profundidad y evidencia. Los documentos existentes en etapas 7-32 no fueron revalidados uno por uno en esta sesión; el estado consolidado previo del repositorio se conserva, pero no se declara validación final.
+
+### Recomendación de continuación
+
+Continuar por lotes: 7-10 (sistemas/datos), 11-16 (full stack), 17-20 (ingeniería/infra/AppSec), 21-25 (ciberseguridad), 26-32 (especialización/proyecto), con auditoría por lote, verificación de referencias y ejecución de ejemplos en entorno controlado.
