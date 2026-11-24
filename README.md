@@ -332,3 +332,8 @@ Se desarrollaron individualmente las 155 lecciones oficiales de OSINT/reconocimi
 ### Desarrollo profundo individual — etapas 26 a 28
 
 Se desarrollaron individualmente las 143 lecciones oficiales de Active Directory, Blue Team/SOC/SIEM y Threat Hunting/DFIR (39, 58 y 46). Se cotejaron conteos con el roadmap y se eliminaron textos genéricos. Las validaciones prácticas en dominios y laboratorios aislados siguen pendientes; revisión documental interna, no aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 29 a 32
+
+Se desarrollaron individualmente las 275 lecciones oficiales de cloud/DevSecOps, IA/automatización/criptografía, bajo nivel/malware y portafolio profesional (71, 75, 75 y 54). Se cotejaron los conteos con el roadmap y se eliminaron textos genéricos. Laboratorios, despliegues y proyectos verificables siguen pendientes; revisión documental interna, no aprobación externa.
