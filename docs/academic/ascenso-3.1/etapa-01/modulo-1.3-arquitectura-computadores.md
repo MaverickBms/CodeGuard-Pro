@@ -1,6 +1,6 @@
 # Etapa 1 · Módulo 1.3 — Arquitectura de computadores
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 1, apartado 1.3.  
 **Temas oficiales:** arquitectura Von Neumann, arquitectura Harvard, ciclo Fetch-Decode-Execute, conjunto de instrucciones, registros del procesador, memoria, entrada y salida e interrupciones.
 
@@ -156,4 +156,4 @@ No se incluye video en esta versión: no se ha comprobado un recurso con audio h
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** simulador propuesto; no ejecutado.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
