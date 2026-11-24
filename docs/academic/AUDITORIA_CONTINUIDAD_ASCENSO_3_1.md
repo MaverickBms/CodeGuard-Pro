@@ -213,3 +213,14 @@ Se incorporó el desglose individual de las lecciones oficiales de las etapas 14
 - **Etapa 16 — Backend III: PHP, Laravel y .NET:** 46 lecciones distribuidas en PHP, Laravel, C#/.NET y ASP.NET Core.
 
 Los encabezados siguen los títulos y el orden del roadmap oficial y se apoyan en las guías técnicas y proyectos existentes. Las frases de propósito son orientaciones de estudio, no evidencias de dominio. No se ejecutaron servidores, migraciones, pruebas automatizadas ni laboratorios de autenticación en esta sesión. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
+
+
+### Expansión granular — etapas 17 a 19
+
+Se incorporó el desglose individual de las lecciones oficiales de las etapas 17–19:
+
+- **Etapa 17 — Testing, aseguramiento y calidad del software:** 61 lecciones en fundamentos, testing funcional y de usuario, rendimiento, técnicas, metodologías, herramientas, análisis y modelos de calidad.
+- **Etapa 18 — Arquitectura, diseño y planeación de software:** 100 lecciones en requerimientos, metodologías ágiles, documentación, diagramas, principios, patrones GoF, arquitecturas, diseño de sistemas y modelado de dominios.
+- **Etapa 19 — DevOps, Docker, CI/CD y servidores:** 67 lecciones en fundamentos DevOps, Docker, servidores, Nginx, CI/CD, cloud, proveedores, Kubernetes y Terraform.
+
+Los títulos y su secuencia corresponden al roadmap oficial. En la etapa 18 se preservan como entradas curriculares los rótulos de familias de patrones (creacionales, estructurales y de comportamiento) presentes en el JSON. No se ejecutaron suites de pruebas, pipelines, despliegues, clústeres ni infraestructura cloud en esta sesión. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
