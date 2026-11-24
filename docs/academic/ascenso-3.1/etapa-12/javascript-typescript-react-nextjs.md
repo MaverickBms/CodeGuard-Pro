@@ -186,6 +186,16 @@ Las variables enlazan identificadores con valores. `let` permite reasignación, 
 
 **Comprobación:** ¿Qué impide const y qué no impide?
 
+**Laboratorio de profundización — Alcance y mutabilidad de variables.**
+
+1. Compara `let`, `const` y `var` en bloques y funciones. 2. Prueba reasignación y redeclaración. 3. Identifica errores de referencia temporal. 4. Define qué bindings deben ser constantes en un módulo.
+
+**Evidencia esperada.** El ejemplo demuestra alcance léxico y distingue mutabilidad del binding y mutabilidad del objeto.
+
+**Seguridad y límites.** No utilizar `var` en código nuevo sin razón de compatibilidad ni depender de variables globales.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.1.02 — Tipos
 
 JavaScript es dinámico y los valores tienen tipos como string, number, bigint, boolean, undefined, symbol y object; null es un valor primitivo especial pese a typeof histórico.
@@ -201,6 +211,16 @@ JavaScript es dinámico y los valores tienen tipos como string, number, bigint, 
 **Errores frecuentes:** Asumir que typeof null devuelve null.
 
 **Comprobación:** ¿Qué diferencia hay entre tipo de variable y tipo del valor actual?
+
+**Laboratorio de profundización — Conversión y coerción de tipos.**
+
+1. Compara string, number, bigint, boolean, null, undefined y symbol. 2. Prueba `typeof` y `Number.isNaN`. 3. Evalúa coerciones explícitas e implícitas. 4. Diseña validación de entrada de formulario.
+
+**Evidencia esperada.** Se identifica tipo real y conversión y se manejan NaN y valores ausentes correctamente.
+
+**Seguridad y límites.** No confiar en coerción implícita para validar datos externos.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.1.03 — Operadores
 
@@ -218,6 +238,16 @@ Los operadores realizan operaciones aritméticas, comparación, lógica, asignac
 
 **Comprobación:** ¿Qué valor de entrada distingue ?? de ||?
 
+**Laboratorio de profundización — Precedencia y evaluación corta.**
+
+1. Evalúa expresiones con operadores aritméticos, comparación, igualdad estricta y lógica. 2. Compara `==` con `===`. 3. Prueba `&&`, `||` y `??`. 4. Añade paréntesis para expresar intención.
+
+**Evidencia esperada.** El resultado se explica por precedencia y short-circuit y se prefiere igualdad estricta cuando corresponde.
+
+**Seguridad y límites.** No utilizar eval para ejecutar expresiones recibidas de usuarios.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.1.04 — Condicionales
 
 if/else, switch y operador ternario controlan ramificación. La comparación debe ser explícita y las ramas exhaustivas cuando el dominio lo exige.
@@ -233,6 +263,16 @@ if/else, switch y operador ternario controlan ramificación. La comparación deb
 **Errores frecuentes:** Olvidar default o anidar ternarios ilegibles.
 
 **Comprobación:** ¿Por qué conviene manejar el caso desconocido?
+
+**Laboratorio de profundización — Ramas exhaustivas y casos límite.**
+
+1. Implementa una clasificación de estados mediante if/else y switch. 2. Incluye null, undefined y valores inesperados. 3. Compara switch con objeto mapa. 4. Prueba cada rama.
+
+**Evidencia esperada.** Todas las ramas están cubiertas y el caso por defecto es explícito.
+
+**Seguridad y límites.** No asumir que una entrada externa pertenece a un conjunto válido sin comprobarla.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.1.05 — Bucles
 
@@ -250,6 +290,16 @@ for, while, do...while, for...of y for...in recorren estructuras con semánticas
 
 **Comprobación:** ¿Qué diferencia hay entre for...of y for...in?
 
+**Laboratorio de profundización — Iteración segura de colecciones.**
+
+1. Compara for, while, for...of y for...in. 2. Recorre array y objeto. 3. Explica diferencia entre valores e índices/propiedades. 4. Evita mutar colección durante iteración sin diseño.
+
+**Evidencia esperada.** Se elige el iterador adecuado y se evita recorrer propiedades heredadas accidentalmente.
+
+**Seguridad y límites.** No utilizar for...in para arrays cuando se requieren valores en orden.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.1.06 — Funciones
 
 Las funciones encapsulan comportamiento y pueden declararse, asignarse o expresarse como arrow functions. Parámetros, retorno, efectos secundarios y contrato deben ser claros.
@@ -265,6 +315,16 @@ Las funciones encapsulan comportamiento y pueden declararse, asignarse o expresa
 **Errores frecuentes:** Funciones largas que mezclan entrada, cálculo y DOM.
 
 **Comprobación:** ¿Qué característica hace que una función sea pura?
+
+**Laboratorio de profundización — Parámetros, retorno y funciones puras.**
+
+1. Implementa función con parámetros por defecto. 2. Compara declaración, expresión y arrow function. 3. Identifica efectos secundarios. 4. Escribe pruebas para entradas límite.
+
+**Evidencia esperada.** La función tiene contrato claro, retorno predecible y efectos secundarios controlados.
+
+**Seguridad y límites.** No asumir que arrow function tiene this propio.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.1.07 — Objetos
 
@@ -282,6 +342,16 @@ Los objetos agrupan propiedades y métodos. Las propiedades pueden ser propias o
 
 **Comprobación:** ¿Qué sucede al modificar un objeto desde una segunda referencia?
 
+**Laboratorio de profundización — Propiedades, referencias y copia.**
+
+1. Crea objeto con propiedades y métodos. 2. Compara asignación por referencia con copia superficial. 3. Modifica objeto anidado y observa aliasing. 4. Diseña actualización inmutable.
+
+**Evidencia esperada.** Se explica referencia compartida y límites de spread/Object.assign para objetos anidados.
+
+**Seguridad y límites.** No utilizar JSON stringify/parse como clonación universal de objetos.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.1.08 — Arrays
 
 Los arrays son objetos indexados y ordenados; métodos como map, filter, reduce, find y some expresan transformaciones. Algunos mutan (sort, splice, push) y otros devuelven nuevos arrays.
@@ -297,6 +367,16 @@ Los arrays son objetos indexados y ordenados; métodos como map, filter, reduce,
 **Errores frecuentes:** Confundir métodos mutables e inmutables o mutar estado React directamente.
 
 **Comprobación:** ¿Qué diferencia hay entre map y forEach?
+
+**Laboratorio de profundización — Transformación funcional de arrays.**
+
+1. Usa map, filter, reduce, find y some con dataset sintético. 2. Compara métodos mutables e inmutables. 3. Encadena transformaciones. 4. Prueba array vacío y valores faltantes.
+
+**Evidencia esperada.** Cada operación devuelve el resultado esperado y se justifica si modifica o no el array original.
+
+**Seguridad y límites.** No usar reduce para todo cuando map/filter expresan mejor la intención.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.1.09 — Strings
 
@@ -314,6 +394,16 @@ Las cadenas son inmutables y ofrecen métodos de búsqueda, extracción, normali
 
 **Comprobación:** ¿Por qué una cadena Unicode puede tener length distinto al número de símbolos visibles?
 
+**Laboratorio de profundización — Unicode, búsqueda y plantillas.**
+
+1. Construye strings con template literals. 2. Prueba includes, startsWith, slice y replace. 3. Compara longitud UTF-16 con cantidad de grafemas. 4. Normaliza y valida entradas según dominio.
+
+**Evidencia esperada.** La solución distingue unidades de código y caracteres percibidos y maneja espacios y Unicode.
+
+**Seguridad y límites.** No asumir que length representa siempre caracteres visibles ni insertar texto no confiable como HTML.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.1.10 — Destructuring
 
 Destructuring extrae valores de arrays y propiedades de objetos en variables, con valores por defecto y renombrado. En objetos, el nombre de propiedad y variable puede diferir.
@@ -329,6 +419,16 @@ Destructuring extrae valores de arrays y propiedades de objetos en variables, co
 **Errores frecuentes:** Confundir default de destructuring con fallback ante null.
 
 **Comprobación:** ¿Qué ocurre si la propiedad existe con valor null?
+
+**Laboratorio de profundización — Extracción de estructuras.**
+
+1. Extrae propiedades y elementos con destructuring. 2. Define valores por defecto. 3. Renombra propiedades. 4. Maneja propiedades ausentes y valores null con seguridad.
+
+**Evidencia esperada.** La extracción es legible y los valores opcionales se manejan sin errores inesperados.
+
+**Seguridad y límites.** No destructurar profundamente datos externos sin validar forma y nulabilidad.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.1.11 — Spread
 
@@ -346,6 +446,16 @@ Spread expande elementos iterables o propiedades enumerables en nuevos contextos
 
 **Comprobación:** ¿Qué limitación tiene la copia superficial?
 
+**Laboratorio de profundización — Composición y copia superficial.**
+
+1. Combina arrays y objetos con spread. 2. Demuestra que la copia es superficial. 3. Actualiza propiedad anidada sin mutar original. 4. Compara con structuredClone cuando esté disponible y sea apropiado.
+
+**Evidencia esperada.** La operación conserva inmutabilidad del nivel actualizado y explica referencias anidadas.
+
+**Seguridad y límites.** No confundir spread con clonación profunda ni usarlo para copiar objetos con comportamiento especial sin evaluar.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.1.12 — Rest
 
 Rest recoge elementos restantes en parámetros, destructuring o arrays/objetos. En parámetros debe aparecer al final y permite funciones de aridad variable.
@@ -361,6 +471,16 @@ Rest recoge elementos restantes en parámetros, destructuring o arrays/objetos. 
 **Errores frecuentes:** Confundir rest con spread pese a sintaxis parecida.
 
 **Comprobación:** ¿En qué contexto `...` recoge valores en vez de expandirlos?
+
+**Laboratorio de profundización — Parámetros variables y recolección.**
+
+1. Define función que reciba primer argumento y rest de elementos. 2. Combina rest con destructuring. 3. Compara rest parameters con objeto arguments. 4. Valida cantidad de argumentos.
+
+**Evidencia esperada.** La función recoge argumentos restantes como array y mantiene firma comprensible.
+
+**Seguridad y límites.** Rest debe ser el último parámetro; no aceptar listas ilimitadas sin validar tamaño.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.1.13 — Scope
 
@@ -378,6 +498,16 @@ El scope determina dónde es accesible un identificador: global, función y bloq
 
 **Comprobación:** ¿Qué diferencia el scope de bloque del scope de función?
 
+**Laboratorio de profundización — Ámbito léxico y cadena de entornos.**
+
+1. Compara global, función y bloque. 2. Prueba shadowing con nombres repetidos. 3. Identifica dónde resuelve una referencia. 4. Reestructura variables para minimizar alcance.
+
+**Evidencia esperada.** El resultado se explica mediante cadena léxica y se evitan variables globales innecesarias.
+
+**Seguridad y límites.** No depender de variables globales mutables para comunicar estado entre módulos.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.1.14 — Closures
 
 Una closure conserva acceso al entorno léxico donde se creó la función, incluso después de que la función externa termina. Se utiliza para encapsular estado, callbacks y factories; también puede retener memoria si mantiene referencias innecesarias.
@@ -393,6 +523,16 @@ Una closure conserva acceso al entorno léxico donde se creó la función, inclu
 **Errores frecuentes:** Asumir que closure copia valores en vez de conservar entorno léxico.
 
 **Comprobación:** ¿Por qué dos closures creadas por llamadas distintas pueden mantener estados independientes?
+
+**Laboratorio de profundización — Cierre sobre estado privado.**
+
+1. Implementa una función creadora de contador. 2. Devuelve funciones que leen y modifican el estado capturado. 3. Crea dos instancias y comprueba aislamiento. 4. Explica ciclo de vida de referencias.
+
+**Evidencia esperada.** Cada closure mantiene estado independiente y se identifica qué variables conserva.
+
+**Seguridad y límites.** No capturar accidentalmente objetos grandes o datos sensibles por tiempo indefinido.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.1.15 — Hoisting
 
@@ -410,6 +550,16 @@ Hoisting describe cómo declaraciones se procesan antes de ejecutar código. fun
 
 **Comprobación:** ¿Qué es la temporal dead zone?
 
+**Laboratorio de profundización — Inicialización y zona temporal muerta.**
+
+1. Compara declaración function, var, let y const antes de su línea textual. 2. Observa errores de TDZ. 3. Explica qué se eleva y qué no. 4. Refactoriza para declarar antes de usar.
+
+**Evidencia esperada.** Se predice comportamiento y se distingue hoisting de inicialización.
+
+**Seguridad y límites.** No depender de hoisting como estilo; ordenar declaraciones para claridad.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.1.16 — Prototypes
 
 La herencia de JavaScript se basa en cadena de prototipos. Los objetos pueden delegar búsqueda de propiedades a su prototype; class es sintaxis sobre este mecanismo. Object.create y Object.getPrototypeOf permiten inspección.
@@ -425,6 +575,16 @@ La herencia de JavaScript se basa en cadena de prototipos. Los objetos pueden de
 **Errores frecuentes:** Confundir prototype de función con [[Prototype]] de instancia.
 
 **Comprobación:** ¿Qué sucede cuando una propiedad no existe como propia?
+
+**Laboratorio de profundización — Cadena de prototipos.**
+
+1. Crea objeto con Object.create. 2. Consulta Object.getPrototypeOf y hasOwn. 3. Compara propiedad propia y heredada. 4. Explica método compartido frente a método duplicado.
+
+**Evidencia esperada.** Se identifica resolución por cadena y diferencia entre propiedad propia y heredada.
+
+**Seguridad y límites.** No modificar prototipos globales de objetos nativos.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.1.17 — This
 
@@ -442,6 +602,16 @@ El valor de this depende del modo de invocación, no solo del lugar donde se def
 
 **Comprobación:** ¿Por qué una arrow function no crea su propio this?
 
+**Laboratorio de profundización — Binding de this según invocación.**
+
+1. Compara método, llamada independiente, bind, call y apply. 2. Prueba arrow function dentro de objeto. 3. Explica this léxico. 4. Corrige callback que pierde contexto.
+
+**Evidencia esperada.** El valor de this se predice según forma de invocación y se corrige explícitamente.
+
+**Seguridad y límites.** No asumir que this apunta siempre al objeto donde se definió la función.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.1.18 — ES6+
 
 ECMAScript moderno incorpora módulos, let/const, arrow functions, clases, promesas, destructuring, spread, iteradores y otras mejoras. La compatibilidad depende del runtime y objetivo de compilación.
@@ -457,6 +627,16 @@ ECMAScript moderno incorpora módulos, let/const, arrow functions, clases, prome
 **Errores frecuentes:** Confundir versión del lenguaje con versión de Node/navegador.
 
 **Comprobación:** ¿Qué papel cumple un target de compilación?
+
+**Laboratorio de profundización — Uso de características modernas del lenguaje.**
+
+1. Reescribe código con let/const, template literals, destructuring, spread, módulos y async/await. 2. Comprueba compatibilidad del runtime objetivo. 3. Evita transformaciones innecesarias. 4. Documenta soporte de navegadores o Node.
+
+**Evidencia esperada.** El código utiliza sintaxis moderna con compatibilidad definida y sin cambiar semántica accidentalmente.
+
+**Seguridad y límites.** No asumir soporte uniforme de toda característica por todos los navegadores y runtimes.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.1.19 — Modules
 
@@ -474,6 +654,16 @@ Los módulos ES utilizan export e import, tienen scope propio y se evalúan una 
 
 **Comprobación:** ¿Qué diferencia existe entre export nombrado y default?
 
+
+**Laboratorio de profundización — Diseño de módulos y límites de dependencias.**
+
+1. Separa funciones en módulos ES. 2. Compara export nombrado y default. 3. Construye import relativo. 4. Identifica ciclo de dependencias y define API pública pequeña.
+
+**Evidencia esperada.** Los módulos tienen responsabilidades claras y dependencias explícitas.
+
+**Seguridad y límites.** No exponer secretos en módulos frontend ni asumir que ocultar una variable en bundle la protege.
+
+**Registro sugerido.** Conserva runtime y versión, código mínimo, entradas de prueba, salida y observaciones sobre compatibilidad. No marques la práctica como ejecutada sin evidencia real.
 #### 12.2.01 — Document Object Model
 
 El DOM representa el documento como árbol de nodos y permite consultar/modificar estructura, atributos y texto. El DOM vivo refleja cambios; no es lo mismo que el HTML fuente inicial.
