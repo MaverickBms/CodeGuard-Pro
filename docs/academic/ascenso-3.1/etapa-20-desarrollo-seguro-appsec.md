@@ -123,3 +123,191 @@ No se incluyen videos aprobados. Solo se añadirán recursos hablados en españo
 - MDN Web Security: https://developer.mozilla.org/en-US/docs/Web/Security
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se desplegó aplicación vulnerable ni se ejecutaron pruebas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 20
+
+Este desglose conserva las entradas del roadmap maestro, incluidas las notas explicativas que aparecen dentro de algunas listas curriculares. Los apartados son guías de estudio y no acreditan pruebas, autorización de laboratorio ni ejecución de herramientas.
+
+### Módulo 20.1 — Fundamentos
+
+#### 20.1.01 — Secure Coding
+Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.1.02 — Security by Design
+Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.1.03 — Security by Default
+Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.1.04 — Least Privilege
+Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.1.05 — Defense in Depth
+Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.1.06 — Threat Modeling
+Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.1.07 — Attack Surface
+Estudiar este elemento desde su función y sus límites en fundamentos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 20.2 — Seguridad web
+
+#### 20.2.01 — SQL Injection
+Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.2.02 — XSS
+Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.2.03 — CSRF
+Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.2.04 — SSRF
+Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.2.05 — IDOR
+Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.2.06 — Broken Access Control
+Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.2.07 — Path Traversal
+Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.2.08 — Command Injection
+Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.2.09 — File Upload Vulnerabilities
+Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.2.10 — Authentication Flaws
+Estudiar este elemento desde su función y sus límites en seguridad web; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 20.3 — OWASP Top 10
+
+#### 20.3.01 — A01: Broken Access Control
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.02 — A02: Security Misconfiguration
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.03 — A03: Software Supply Chain Failures
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.04 — A04: Cryptographic Failures
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.05 — A05: Injection
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.06 — A06: Insecure Design
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.07 — A07: Authentication Failures
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.08 — A08: Software or Data Integrity Failures
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.09 — A09: Security Logging and Alerting Failures
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.10 — A10: Mishandling of Exceptional Conditions
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.11 — Esta es la edición publicada más reciente que hemos verificado
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.3.12 — OWASP Top 10:2025
+Estudiar este elemento desde su función y sus límites en owasp top 10; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 20.4 — Autenticación y autorización
+
+#### 20.4.01 — Authentication
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.02 — Authorization
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.03 — Sessions
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.04 — Cookies
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.05 — JWT
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.06 — OAuth2
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.07 — OpenID Connect
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.08 — MFA
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.09 — RBAC
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.10 — ABAC
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.11 — Password Hashing
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.4.12 — Secure Password Storage
+Estudiar este elemento desde su función y sus límites en autenticación y autorización; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 20.5 — Seguridad de APIs
+
+#### 20.5.01 — OWASP API Security Top 10
+Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.5.02 — Broken Object Level Authorization
+Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.5.03 — Broken Authentication
+Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.5.04 — Unrestricted Resource Consumption
+Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.5.05 — API Misconfiguration
+Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.5.06 — Unsafe API Consumption
+Estudiar este elemento desde su función y sus límites en seguridad de apis; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 20.6 — Seguridad de infraestructura
+
+#### 20.6.01 — HTTPS
+Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.6.02 — TLS
+Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.6.03 — Secure Headers
+Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.6.04 — CORS
+Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.6.05 — Secrets Management
+Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.6.06 — Environment Variables
+Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.6.07 — Rate Limiting
+Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.6.08 — Input Validation
+Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.6.09 — Output Encoding
+Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 20.6.10 — Secure Error Handling
+Estudiar este elemento desde su función y sus límites en seguridad de infraestructura; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
