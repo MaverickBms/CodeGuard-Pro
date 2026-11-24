@@ -1067,102 +1067,260 @@ El modo strict de TypeScript habilita un conjunto de comprobaciones más riguros
 **Comprobación:** ¿Qué clase de errores detecta strictNullChecks?
 
 #### 12.6.01 — Components
-Un componente React encapsula una parte de interfaz y suele expresarse como función que devuelve JSX. Divide por responsabilidad y reutilización, mantén componentes puros cuando sea posible y no llames componentes como funciones ordinarias.
 
+Los componentes React encapsulan UI reutilizable como funciones que reciben props y devuelven elementos React. Deben ser predecibles, con responsabilidades claras y composición antes que jerarquías profundas.
 
-**Práctica y evidencia:** Construye un componente React pequeño y reutilizable con una única responsabilidad. **Evidencia:** muestra su uso en dos contextos y explica qué datos recibe.
+**Ejemplo técnico:** function Saludo({nombre}) { return <p>Hola, {nombre}</p>; }
+
+**Práctica guiada:** Crea componente funcional y renderízalo con dos props distintas.
+
+**Actividad independiente:** Divide una página en componentes de responsabilidad única.
+
+**Criterios de aceptación:** Props explícitas y salida determinista para mismos datos/estado.
+
+**Errores frecuentes:** Componentes monolíticos o mutar props.
+
+**Comprobación:** ¿Por qué un componente no debe modificar sus props?
 
 #### 12.6.02 — JSX
-JSX es una sintaxis que permite describir estructuras similares a HTML dentro de JavaScript y se transforma durante el build. Usa `className`, expresiones entre llaves y claves estables en listas; JSX no es HTML literal y aplica reglas de JavaScript.
 
+JSX es una sintaxis que se transforma en llamadas/estructuras React; permite expresiones JavaScript dentro de marcado. Reglas como un solo nodo raíz, className y escape automático aplican; dangerouslySetInnerHTML requiere control estricto.
 
-**Práctica y evidencia:** Escribe JSX con expresiones, listas y atributos correctos. **Evidencia:** identifica diferencias con HTML, incluida `className` y la necesidad de keys estables en listas.
+**Ejemplo técnico:** `<h1>{titulo}</h1>` interpola expresión y escapa texto.
+
+**Práctica guiada:** Convierte fragmento HTML a JSX y resuelve atributos/expresiones.
+
+**Actividad independiente:** Crea vista que muestra datos dinámicos seguros.
+
+**Criterios de aceptación:** JSX válido y datos no confiables renderizados como texto.
+
+**Errores frecuentes:** Insertar HTML no confiable con dangerouslySetInnerHTML.
+
+**Comprobación:** ¿Qué protección ofrece el escape automático de JSX?
 
 #### 12.6.03 — Props
-Props son entradas de solo lectura que el componente recibe de su padre. Define nombres y tipos claros, evita mutarlas y pasa callbacks para comunicar acciones hacia arriba en lugar de modificar directamente el estado de otro componente.
 
+Props son entradas de solo lectura para un componente. Deben tiparse y tener valores por defecto cuando corresponda; callbacks permiten comunicar eventos hacia arriba.
 
-**Práctica y evidencia:** Pasa datos y callbacks mediante props y evita mutarlas dentro del componente. **Evidencia:** demuestra flujo unidireccional y tipa las propiedades.
+**Ejemplo técnico:** <Tarjeta titulo="Curso" activo={true}/>
+
+**Práctica guiada:** Pasa props de tipos distintos y prueba ausencia/valor por defecto.
+
+**Actividad independiente:** Diseña API de componente sin estado duplicado.
+
+**Criterios de aceptación:** Contrato claro y sin mutación de props.
+
+**Errores frecuentes:** Usar props como almacenamiento mutable interno.
+
+**Comprobación:** ¿Qué patrón permite que un hijo notifique una acción al padre?
 
 #### 12.6.04 — State
-State representa información que puede cambiar y cuya actualización provoca un nuevo render. Trata el estado como inmutable, calcula actualizaciones desde el valor previo cuando dependa de él y evita duplicar datos derivados que puedan calcularse.
 
+State representa datos que cambian con el tiempo y afectan renderizado. En React se actualiza mediante setter; las actualizaciones pueden agruparse y dependen del valor previo. No se mutan objetos/arrays de estado directamente.
 
-**Práctica y evidencia:** Gestiona estado local con un valor primitivo y un objeto, actualizando de forma inmutable. **Evidencia:** explica por qué mutar directamente no garantiza renderizado.
+**Ejemplo técnico:** setCount(prev => prev + 1) evita depender de cierre obsoleto.
+
+**Práctica guiada:** Crea contador y actualiza usando forma funcional.
+
+**Actividad independiente:** Implementa formulario controlado con estado inmutable.
+
+**Criterios de aceptación:** UI refleja estado actualizado y no hay mutaciones directas.
+
+**Errores frecuentes:** Modificar objeto state directamente o usar valor obsoleto en actualización concurrente.
+
+**Comprobación:** ¿Por qué la forma funcional es útil cuando el nuevo estado depende del anterior?
 
 #### 12.6.05 — Hooks
-Hooks permiten utilizar estado y otras capacidades de React desde componentes funcionales. Llámalos en el nivel superior y en el mismo orden en cada render; no los invoques dentro de condiciones, ciclos o funciones anidadas.
 
+Hooks permiten usar estado, efectos y otras capacidades en componentes funcionales. Deben llamarse en nivel superior de componente o custom hook y conservar orden entre renderizados. No deben ejecutarse condicionalmente ni dentro de bucles.
 
-**Práctica y evidencia:** Identifica reglas de Hooks y el propósito de estado, efectos y referencias. **Evidencia:** explica por qué los Hooks deben llamarse en el nivel superior de componentes o Hooks personalizados.
+**Ejemplo técnico:** useState al inicio del componente conserva orden de hooks.
+
+**Práctica guiada:** Identifica usos válidos e inválidos en fragmentos.
+
+**Actividad independiente:** Extrae lógica repetida en custom hook.
+
+**Criterios de aceptación:** Reglas de hooks respetadas y dependencias justificadas.
+
+**Errores frecuentes:** Llamar hooks dentro de if, callback o bucle.
+
+**Comprobación:** ¿Por qué React exige el mismo orden de hooks en cada render?
 
 #### 12.6.06 — useState
-`useState` añade estado local y devuelve el valor actual y una función de actualización. Si el nuevo valor depende del anterior, utiliza la forma funcional; no modifiques arrays u objetos existentes directamente.
 
+useState devuelve valor actual y setter. El setter solicita nuevo render; no modifica variable local inmediatamente. Para estado derivado del anterior se usa updater funcional; inicializadores costosos pueden ser funciones.
 
-**Práctica y evidencia:** Implementa un contador con `useState` y una actualización funcional cuando depende del valor anterior. **Evidencia:** prueba varias actualizaciones seguidas y explica batching.
+**Ejemplo técnico:** const [items,setItems]=useState([]); setItems(prev=>[...prev,nuevo]);
+
+**Práctica guiada:** Implementa lista con alta y eliminación inmutable.
+
+**Actividad independiente:** Gestiona estado complejo sin mutar arrays.
+
+**Criterios de aceptación:** Actualizaciones inmutables y UI sincronizada.
+
+**Errores frecuentes:** Esperar cambio inmediato en variable local o mutar array con push.
+
+**Comprobación:** ¿Por qué setState no cambia inmediatamente la variable capturada en el render actual?
 
 #### 12.6.07 — useEffect
-`useEffect` sincroniza un componente con sistemas externos después del render, como suscripciones o temporizadores. Declara dependencias correctas y limpieza; no lo uses para calcular valores derivados que pueden obtenerse durante el render.
 
+useEffect sincroniza componente con sistemas externos: suscripciones, timers o conexiones. Dependencias deben reflejar valores usados; cleanup desuscribe o cancela. No debe usarse para calcular datos derivados que pueden calcularse durante render.
 
-**Práctica y evidencia:** Utiliza `useEffect` para sincronizar con un sistema externo y limpia suscripciones o temporizadores. **Evidencia:** demuestra dependencias correctas y ausencia de efectos repetidos innecesarios.
+**Ejemplo técnico:** Effect que suscribe evento y retorna cleanup para removerlo.
+
+**Práctica guiada:** Implementa suscripción y comprueba montaje/desmontaje.
+
+**Actividad independiente:** Carga datos con cancelación y manejo de carrera.
+
+**Criterios de aceptación:** Dependencias correctas y cleanup evita fugas/actualizaciones obsoletas.
+
+**Errores frecuentes:** Usar effect para derivar estado o ignorar cleanup.
+
+**Comprobación:** ¿Qué problema resuelve la función cleanup?
 
 #### 12.6.08 — useContext
-`useContext` lee el valor del contexto más cercano para compartir datos a través del árbol. Mantén el contexto para información realmente transversal y divide contextos de alta frecuencia de cambio para evitar renders innecesarios.
 
+useContext lee valor del proveedor más cercano y permite compartir datos entre componentes sin pasar props por muchos niveles. Cambios de contexto pueden volver a renderizar consumidores; dividir contextos reduce actualizaciones innecesarias.
 
-**Práctica y evidencia:** Comparte un dato de tema o sesión mediante Context sin prop drilling excesivo. **Evidencia:** identifica proveedor, consumidor y coste de rerenderizado.
+**Ejemplo técnico:** Contexto de tema expone theme y toggleTheme.
+
+**Práctica guiada:** Crea Provider y consume valor en componente descendiente.
+
+**Actividad independiente:** Separa contexto de datos y contexto de acciones si sus cambios difieren.
+
+**Criterios de aceptación:** Provider cubre consumidores y valor estable.
+
+**Errores frecuentes:** Usar context para todo el estado global o consumir fuera de Provider sin fallback.
+
+**Comprobación:** ¿Qué sucede si un consumidor no encuentra Provider?
 
 #### 12.6.09 — useRef
-`useRef` conserva un objeto mutable entre renders sin provocar un render al cambiar su propiedad `current`. Sirve para referencias DOM y valores persistentes no visuales; si un cambio debe reflejarse en pantalla, normalmente corresponde a state.
 
+useRef conserva objeto mutable entre renders sin provocar nuevo render al cambiar current. Se usa para referencias DOM o valores persistentes no visuales; no sustituye state cuando el valor debe actualizar UI.
 
-**Práctica y evidencia:** Usa `useRef` para conservar una referencia DOM o valor mutable que no debe disparar renderizado. **Evidencia:** compara con state y justifica cuándo corresponde cada uno.
+**Ejemplo técnico:** ref.current almacena referencia a input y permite focus().
+
+**Práctica guiada:** Enfoca input con ref y compara con estado.
+
+**Actividad independiente:** Guarda ID de timer sin renderizar por cada cambio.
+
+**Criterios de aceptación:** Ref estable y uso coherente con render.
+
+**Errores frecuentes:** Usar ref para datos visuales que deberían ser state.
+
+**Comprobación:** ¿Por qué cambiar ref.current no provoca render?
 
 #### 12.6.10 — Forms
-Los formularios React pueden ser controlados por estado o utilizar referencias y APIs nativas. Define validación y mensajes accesibles, evita actualizar estado de manera innecesaria por cada pulsación y protege datos sensibles en el flujo de envío.
 
+React puede controlar formularios mediante value/onChange o permitir lectura nativa al submit. Los campos controlados deben mantener valor sincronizado y asociar etiquetas/errores; la validación del servidor sigue siendo autoritativa.
 
-**Práctica y evidencia:** Implementa un formulario controlado y valida valores con mensajes accesibles. **Evidencia:** prueba envío, error, corrección y conservación de datos.
+**Ejemplo técnico:** value={email} onChange={e=>setEmail(e.target.value)}
+
+**Práctica guiada:** Implementa formulario controlado y evita cambiar entre controlado/no controlado.
+
+**Actividad independiente:** Construye formulario accesible con estado de envío y error.
+
+**Criterios de aceptación:** Valores, etiquetas y errores sincronizados.
+
+**Errores frecuentes:** Input controlado sin onChange o validación solo cliente.
+
+**Comprobación:** ¿Qué diferencia existe entre controlado y no controlado?
 
 #### 12.6.11 — Routing
-Routing asocia rutas de URL con vistas y navegación de una aplicación. Distingue rutas cliente de navegación de servidor, maneja rutas desconocidas y protege recursos en backend; ocultar un enlace no constituye autorización.
 
+El routing del cliente asocia rutas URL con vistas y navegación sin recarga completa. Debe gestionar rutas desconocidas, parámetros, query strings, navegación accesible e historial; autenticación y autorización no deben depender solo de ocultar rutas.
 
-**Práctica y evidencia:** Configura rutas y enlaces con la solución de routing seleccionada para el proyecto. **Evidencia:** prueba navegación directa, parámetros y ruta inexistente.
+**Ejemplo técnico:** Ruta /cursos/:id extrae parámetro id y carga recurso autorizado.
+
+**Práctica guiada:** Define rutas, navegación y fallback 404.
+
+**Actividad independiente:** Protege vistas y valida permisos también en servidor/API.
+
+**Criterios de aceptación:** URL y vista coherentes; rutas desconocidas manejadas.
+
+**Errores frecuentes:** Confiar en guard de frontend como control de acceso.
+
+**Comprobación:** ¿Por qué una ruta oculta no protege el recurso del servidor?
 
 #### 12.6.12 — Context API
-Context API distribuye valores compartidos sin pasar props por cada nivel. Es adecuada para temas, idioma o sesión de interfaz, pero no sustituye automáticamente una estrategia de estado compleja ni el almacenamiento seguro de credenciales.
 
+Context API permite compartir valores a través del árbol. Provider define el alcance y consumidores acceden al contexto; para estado complejo puede combinarse con reducer y dividir contextos para limitar renders.
 
-**Práctica y evidencia:** Diseña Context API para estado transversal de baja o moderada frecuencia de cambio. **Evidencia:** explica cuándo conviene dividir contextos o usar otra solución de estado.
+**Ejemplo técnico:** Contexto AuthProvider ofrece usuario y acciones de sesión.
+
+**Práctica guiada:** Construye contexto tipado con valor inicial seguro.
+
+**Actividad independiente:** Define límites de contexto y estrategia de test.
+
+**Criterios de aceptación:** API contextual documentada y Provider en raíz apropiada.
+
+**Errores frecuentes:** Crear contexto global monolítico que provoca renders amplios.
+
+**Comprobación:** ¿Cuándo conviene separar un contexto de estado y otro de acciones?
 
 #### 12.6.13 — Component lifecycle
-El ciclo de vida describe montaje, actualización y desmontaje de componentes. En componentes funcionales, efectos y su limpieza expresan sincronización con sistemas externos; el modo estricto de desarrollo puede repetir ciclos para revelar efectos no seguros.
 
+En componentes funcionales, render, commit y efectos describen fases de actualización. Hooks reemplazan muchos patrones de lifecycle de clases; el montaje/desmontaje no debe equipararse a cada ejecución de render. Strict Mode puede repetir ciertas operaciones de desarrollo para detectar efectos no seguros.
 
-**Práctica y evidencia:** Relaciona montaje, actualización y desmontaje con el modelo actual de componentes funcionales y efectos. **Evidencia:** explica qué sincronización se limpia al desmontar sin tratar Hooks como equivalentes literales a todos los lifecycle methods.
+**Ejemplo técnico:** Un componente puede renderizar varias veces antes de un commit visible.
+
+**Práctica guiada:** Registra render y cleanup en entorno de desarrollo.
+
+**Actividad independiente:** Asegura que efectos sean idempotentes y limpiables.
+
+**Criterios de aceptación:** No hay dependencia de ejecutar efecto exactamente una vez en desarrollo.
+
+**Errores frecuentes:** Usar efecto como constructor que asume ejecución única.
+
+**Comprobación:** ¿Por qué Strict Mode puede revelar efectos con side effects no seguros?
 
 #### 12.6.14 — State management
-State management define cómo se representa, actualiza y comparte el estado de una aplicación. Separa estado local, estado de servidor, estado de URL y estado global; selecciona la herramienta menos compleja que cubra las necesidades reales.
 
+La gestión de estado define dónde vive cada dato, quién puede modificarlo y cómo se sincroniza. Estado local, Context, reducers y librerías externas resuelven escalas distintas; estado servidor requiere caché, invalidación y sincronización diferenciadas.
 
-**Práctica y evidencia:** Compara estado local, estado compartido y estado remoto; elige dónde mantener cada dato. **Evidencia:** presenta un diagrama de flujo y evita duplicar estado derivable.
+**Ejemplo técnico:** Estado de modal local; usuario autenticado compartido; datos remotos con caché/query layer.
+
+**Práctica guiada:** Clasifica estado UI, dominio y servidor.
+
+**Actividad independiente:** Diseña estrategia de estado para panel con filtros, sesión y datos remotos.
+
+**Criterios de aceptación:** Cada estado tiene propietario y ciclo de vida definidos.
+
+**Errores frecuentes:** Guardar todo en un único contexto o duplicar estado servidor en varios componentes.
+
+**Comprobación:** ¿Por qué estado de servidor y estado de interfaz suelen requerir estrategias distintas?
 
 #### 12.6.15 — Custom Hooks
-Custom Hooks encapsulan lógica reutilizable que usa otros hooks y devuelve datos o acciones. Sus nombres comienzan con `use`, respetan las reglas de hooks y abstraen comportamiento, no necesariamente interfaz visual.
 
+Un custom hook encapsula lógica reutilizable que usa otros hooks y comparte estado por instancia de llamada, no crea automáticamente estado global. Su nombre comienza por use y respeta reglas de hooks.
 
-**Práctica y evidencia:** Extrae lógica reutilizable en un Hook personalizado con nombre `use...` y dependencias claras. **Evidencia:** úsalo en dos componentes y demuestra que no comparte estado automáticamente entre llamadas.
+**Ejemplo técnico:** useDebounce(value,delay) mantiene valor derivado mediante timer y cleanup.
+
+**Práctica guiada:** Extrae lógica de listener a hook y prueba dos instancias independientes.
+
+**Actividad independiente:** Crea hook de carga con abort/cancelación y estados explícitos.
+
+**Criterios de aceptación:** API pequeña, cleanup y dependencias correctas.
+
+**Errores frecuentes:** Suponer que dos componentes comparten estado solo por llamar el mismo hook.
+
+**Comprobación:** ¿Qué diferencia existe entre reutilizar lógica con custom hook y compartir estado global?
 
 #### 12.6.16 — Error Boundaries
-Error Boundaries capturan errores de renderizado en partes del árbol React y muestran una interfaz alternativa. No capturan todos los errores asíncronos ni eventos; registra contexto sin exponer datos privados y ofrece recuperación o navegación segura.
 
+Error Boundaries capturan errores de renderizado en componentes descendientes y muestran fallback; no capturan todos los errores de eventos, async callbacks ni fallos fuera del árbol. La estrategia debe registrar errores sin exponer datos sensibles.
 
-**Práctica y evidencia:** Implementa una frontera de error para capturar errores de renderizado y ofrece fallback. **Evidencia:** demuestra qué errores captura y cuáles, como ciertos fallos asíncronos o de eventos, requieren manejo separado.
+**Ejemplo técnico:** Un boundary alrededor de panel muestra fallback si un componente hijo lanza durante render.
 
-### Módulo 12.7 — Next.js
+**Práctica guiada:** Implementa fallback de sección y prueba error controlado en desarrollo.
+
+**Actividad independiente:** Diseña recuperación/reintento y reporte de error seguro.
+
+**Criterios de aceptación:** Fallo aislado, mensaje comprensible y registro sin secretos.
+
+**Errores frecuentes:** Asumir que boundary captura errores de fetch o event handlers.
+
+**Comprobación:** ¿Qué tipos de errores no captura un Error Boundary tradicional?
 
 #### 12.7.01 — App Router
 App Router organiza rutas y layouts mediante la estructura de archivos de `app` en Next.js. Comprende segmentos, layouts anidados, loading, error y not-found; consulta la documentación de la versión del proyecto porque convenciones pueden evolucionar.
