@@ -475,60 +475,148 @@ Los módulos ES utilizan export e import, tienen scope propio y se evalúan una 
 **Comprobación:** ¿Qué diferencia existe entre export nombrado y default?
 
 #### 12.2.01 — Document Object Model
-El DOM representa el documento como un árbol de nodos que scripts pueden consultar y modificar. Comprende la diferencia entre HTML fuente y DOM vivo, y evita asumir que la estructura permanece igual después de scripts, componentes o interacciones.
 
+El DOM representa el documento como árbol de nodos y permite consultar/modificar estructura, atributos y texto. El DOM vivo refleja cambios; no es lo mismo que el HTML fuente inicial.
 
-**Práctica y evidencia:** Inspecciona el árbol DOM de una página y localiza nodos elemento, texto y atributo. **Evidencia:** dibuja un fragmento del árbol y distingue DOM de HTML fuente.
+**Ejemplo técnico:** document.querySelector('main') obtiene el primer main del documento.
+
+**Práctica guiada:** Inspecciona árbol DOM y relación padre/hijo.
+
+**Actividad independiente:** Construye estructura simple y localiza nodos por selector.
+
+**Criterios de aceptación:** Se distingue fuente, DOM y renderizado.
+
+**Errores frecuentes:** Asumir que DOM y HTML fuente siempre son idénticos.
+
+**Comprobación:** ¿Qué ocurre con el DOM después de modificar un nodo?
 
 #### 12.2.02 — Selección de elementos
-La selección de elementos utiliza APIs como `getElementById`, `querySelector` y `querySelectorAll`. Prefiere selectores específicos y comprueba si la búsqueda devuelve `null` o una colección vacía antes de modificar nodos.
 
+querySelector/querySelectorAll usan selectores CSS y devuelven elemento o NodeList; getElementById busca por id. La selección debe ser específica y manejar ausencia de resultados.
 
-**Práctica y evidencia:** Selecciona elementos mediante `querySelector` y `querySelectorAll` usando selectores concretos. **Evidencia:** explica por qué el primero devuelve un nodo y el segundo una colección estática.
+**Ejemplo técnico:** querySelectorAll('.item') devuelve colección estática de coincidencias.
+
+**Práctica guiada:** Selecciona por id, clase y atributo; prueba cero coincidencias.
+
+**Actividad independiente:** Implementa función que valida si un elemento existe antes de usarlo.
+
+**Criterios de aceptación:** No hay referencias nulas no controladas.
+
+**Errores frecuentes:** Asumir que querySelectorAll devuelve array o que siempre encuentra nodo.
+
+**Comprobación:** ¿Qué diferencia hay entre querySelector y querySelectorAll?
 
 #### 12.2.03 — Manipulación del DOM
-Manipular el DOM incluye crear, insertar, actualizar y eliminar nodos y atributos. Usa `textContent` para texto no confiable, evita insertar HTML sin sanitización y agrupa cambios cuando sea posible para reducir trabajo de renderizado.
 
+Se pueden crear, insertar, reemplazar y eliminar nodos. textContent trata contenido como texto; innerHTML interpreta marcado y requiere sanitización estricta ante datos no confiables.
 
-**Práctica y evidencia:** Actualiza texto y atributos con APIs seguras como `textContent` y `setAttribute`. **Evidencia:** explica por qué no insertar entradas no confiables mediante `innerHTML`.
+**Ejemplo técnico:** createElement + textContent evita interpretar texto de usuario como HTML.
+
+**Práctica guiada:** Crea lista dinámica con createElement y append.
+
+**Actividad independiente:** Renderiza datos sintéticos sin concatenar HTML no confiable.
+
+**Criterios de aceptación:** Datos se presentan sin ejecutar marcado no previsto.
+
+**Errores frecuentes:** Insertar entradas de usuario con innerHTML sin sanitizar.
+
+**Comprobación:** ¿Por qué textContent es más seguro para mostrar texto no confiable?
 
 #### 12.2.04 — Eventos
-Un evento representa una interacción o suceso como clic, teclado, envío o carga. Identifica el objetivo, la fase de propagación y el contexto; no supongas que todos los eventos se comportan igual en ratón, teclado y pantallas táctiles.
 
+Los eventos notifican acciones o cambios; el objeto Event contiene tipo, target, currentTarget y otros datos. La propagación incluye fases de captura, target y burbujeo.
 
-**Práctica y evidencia:** Implementa un botón que cambie una interfaz ante un evento y distingue evento, objetivo y manejador. **Evidencia:** prueba clic y teclado y documenta el resultado.
+**Ejemplo técnico:** click se propaga desde el elemento objetivo hacia ancestros durante bubbling.
+
+**Práctica guiada:** Registra target/currentTarget y observa propagación.
+
+**Actividad independiente:** Implementa acción con evento y estado accesible.
+
+**Criterios de aceptación:** El manejador responde al evento correcto sin efectos duplicados.
+
+**Errores frecuentes:** Usar eventos inline en HTML y mezclar responsabilidades.
+
+**Comprobación:** ¿Qué diferencia target de currentTarget?
 
 #### 12.2.05 — Event listeners
-`addEventListener` registra una función para responder a un evento y permite opciones como `once`, `capture` y `signal`. Retira listeners cuando su ciclo de vida termina o usa una señal de aborto para evitar fugas y respuestas duplicadas.
 
+addEventListener registra manejadores con opciones como capture, once, passive y signal. removeEventListener requiere referencia compatible; AbortController permite cancelar grupos de listeners.
 
-**Práctica y evidencia:** Registra y elimina un listener con la misma referencia de función y opciones compatibles. **Evidencia:** demuestra que el evento deja de procesarse tras eliminar el listener.
+**Ejemplo técnico:** {once:true} ejecuta manejador una vez; signal permite limpiar listeners al abortar.
+
+**Práctica guiada:** Registra y retira listener con referencia estable.
+
+**Actividad independiente:** Implementa componente que limpia listeners al desmontarse.
+
+**Criterios de aceptación:** No quedan listeners duplicados tras recrear componente.
+
+**Errores frecuentes:** Crear listeners repetidos sin cleanup o pasar función distinta al retirar.
+
+**Comprobación:** ¿Por qué guardar referencia al callback facilita removeEventListener?
 
 #### 12.2.06 — Event bubbling
-Event bubbling describe cómo muchos eventos se propagan desde el objetivo hacia sus ancestros. `event.target` identifica el origen y `currentTarget` el nodo que ejecuta el listener; detén propagación solo cuando exista una razón funcional clara.
 
+En bubbling el evento asciende desde target por ancestros; stopPropagation detiene propagación y preventDefault cancela acción predeterminada cuando es cancelable. No deben usarse indiscriminadamente.
 
-**Práctica y evidencia:** Construye un ejemplo con evento en un elemento hijo y observa su propagación hacia ancestros. **Evidencia:** explica captura, target y bubbling y usa `stopPropagation` solo cuando sea necesario.
+**Ejemplo técnico:** Un click en botón puede activar listener del contenedor padre.
+
+**Práctica guiada:** Compara bubbling y capture con árbol simple.
+
+**Actividad independiente:** Evita detener propagación salvo que exista razón de interacción.
+
+**Criterios de aceptación:** Comportamiento predecible y sin handlers duplicados.
+
+**Errores frecuentes:** Confundir stopPropagation con preventDefault.
+
+**Comprobación:** ¿Qué cancela preventDefault y qué detiene stopPropagation?
 
 #### 12.2.07 — Event delegation
-Event delegation coloca un listener en un ancestro para gestionar eventos de varios descendientes. Es útil para listas dinámicas; filtra el objetivo con `closest`, verifica que pertenezca al contenedor y considera eventos que no hacen bubbling.
 
+La delegación coloca un listener en un ancestro para manejar eventos de descendientes mediante target/closest. Reduce listeners en listas dinámicas, pero requiere validar que el target pertenezca al contenedor.
 
-**Práctica y evidencia:** Implementa delegación de eventos en una lista dinámica usando `closest` y comprobación de contenedor. **Evidencia:** demuestra que elementos añadidos después también responden y que eventos externos se ignoran.
+**Ejemplo técnico:** Un ul gestiona clicks de sus li mediante closest('li').
+
+**Práctica guiada:** Añade y elimina elementos y comprueba que listener delegado sigue funcionando.
+
+**Actividad independiente:** Implementa lista dinámica con acciones por item.
+
+**Criterios de aceptación:** Acciones se limitan al contenedor y reconocen elementos correctos.
+
+**Errores frecuentes:** Confiar en target exacto cuando el clic ocurre en un icono hijo.
+
+**Comprobación:** ¿Qué ventaja ofrece closest al delegar eventos?
 
 #### 12.2.08 — Formularios
-Los formularios del DOM exponen controles, valores y eventos de envío. Gestiona `submit` en el formulario, permite la interacción por teclado y evita depender únicamente del clic del botón; el servidor debe volver a validar todos los datos.
 
+Los formularios generan submit y exponen valores mediante FormData. Deben manejar submit, validar entradas, informar errores y prevenir navegación solo cuando la aplicación controla el flujo. Validación servidor sigue siendo obligatoria.
 
-**Práctica y evidencia:** Construye un formulario y captura `submit`, leyendo datos con `FormData`. **Evidencia:** prueba envío con Enter y botón, y explica la prevención del envío tradicional cuando aplica.
+**Ejemplo técnico:** new FormData(form) recoge controles con atributo name.
+
+**Práctica guiada:** Captura submit, inspecciona FormData y evita enviar datos reales.
+
+**Actividad independiente:** Implementa formulario de laboratorio con estados y mensajes accesibles.
+
+**Criterios de aceptación:** Datos y errores se procesan sin pérdida y sin confiar solo en cliente.
+
+**Errores frecuentes:** Leer inputs por selector frágil o validar únicamente en navegador.
+
+**Comprobación:** ¿Por qué los controles necesitan name para incluirse en FormData?
 
 #### 12.2.09 — Validaciones
-La validación de formularios combina restricciones nativas, lógica de interfaz y validación de servidor. Comunica el campo, el motivo y cómo corregirlo; normaliza entradas y nunca uses validación cliente como control de seguridad.
 
+La validación combina restricciones HTML, lógica cliente y reglas autoritativas del servidor. Constraint Validation API expone validity, checkValidity y setCustomValidity. Errores deben ser específicos, accesibles y no filtrar información sensible.
 
-**Práctica y evidencia:** Valida campos en cliente con restricciones HTML y lógica complementaria, sin confiar en ellas como control de seguridad. **Evidencia:** muestra que el servidor vuelve a validar los datos recibidos.
+**Ejemplo técnico:** input type=email valida formato básico, no existencia del buzón ni permiso de uso.
 
-### Módulo 12.3 — Asincronía
+**Práctica guiada:** Prueba required, minlength y setCustomValidity con datos sintéticos.
+
+**Actividad independiente:** Diseña validación con resumen y mensaje asociado al campo.
+
+**Criterios de aceptación:** Casos válidos/invalidos cubiertos y mensajes claros.
+
+**Errores frecuentes:** Confiar en HTML como barrera de seguridad o usar mensajes genéricos que no permiten corregir.
+
+**Comprobación:** ¿Qué validaciones deben repetirse en servidor?
 
 #### 12.3.01 — Synchronous programming
 La programación síncrona ejecuta operaciones en secuencia y una operación bloqueante impide avanzar en ese hilo. Es sencilla de razonar, pero una operación lenta de I/O puede congelar la interfaz o retrasar otras tareas.
