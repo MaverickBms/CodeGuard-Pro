@@ -202,3 +202,14 @@ Se incorporó un desglose por encabezado para las lecciones oficiales de las eta
 - **Etapa 13 — Internet, HTTP, APIs y comunicación entre sistemas:** 63 lecciones (13 arquitectura web, 11 HTTP, 14 APIs, 10 consumo, 5 estilos de comunicación, 6 seguridad y 4 documentación).
 
 Los documentos conservan explicaciones temáticas, proyectos, autoevaluaciones y referencias técnicas; el desglose facilita navegación y correspondencia curricular. Las frases de propósito asociadas a cada encabezado son guías de estudio, no resultados de evaluación. No se ejecutaron navegadores de prueba, compilaciones frontend, servidores, APIs ni laboratorios de seguridad en esta sesión. Las tres etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
+
+
+### Expansión granular — etapas 14 a 16
+
+Se incorporó el desglose individual de las lecciones oficiales de las etapas 14–16:
+
+- **Etapa 14 — Backend I: Java y Spring Boot:** 58 lecciones distribuidas en arquitectura backend, Spring Framework, Spring Boot, persistencia, seguridad, backend avanzado y construcción/dependencias.
+- **Etapa 15 — Backend II: Node.js y NestJS:** 53 lecciones distribuidas en Node.js, Express.js, NestJS, persistencia, seguridad y temas avanzados.
+- **Etapa 16 — Backend III: PHP, Laravel y .NET:** 46 lecciones distribuidas en PHP, Laravel, C#/.NET y ASP.NET Core.
+
+Los encabezados siguen los títulos y el orden del roadmap oficial y se apoyan en las guías técnicas y proyectos existentes. Las frases de propósito son orientaciones de estudio, no evidencias de dominio. No se ejecutaron servidores, migraciones, pruebas automatizadas ni laboratorios de autenticación en esta sesión. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
