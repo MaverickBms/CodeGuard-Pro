@@ -97,3 +97,158 @@ No se incluyen videos aprobados. Se incorporarán solo recursos hablados en espa
 - NIST SP 800-86: https://csrc.nist.gov/pubs/sp/800/86/final
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se analizaron imágenes ni evidencias reales en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 28
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Las guías de estudio se orientan a administración defensiva, monitoreo y análisis autorizado; no constituyen evidencia de operación en un entorno empresarial.
+
+### Módulo 28.1 — Threat Hunting
+
+#### 28.1.01 — Hipótesis
+Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.1.02 — Telemetría
+Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.1.03 — Threat Indicators
+Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.1.04 — Anomaly Detection
+Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.1.05 — Event Correlation
+Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.1.06 — TTP
+Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.1.07 — Threat Investigation
+Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.1.08 — Documentation
+Comprender el concepto, los datos o controles involucrados y su papel dentro de threat hunting; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 28.2 — Inteligencia de amenazas
+
+#### 28.2.01 — Threat Intelligence
+Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.2.02 — Threat Actors
+Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.2.03 — Campaigns
+Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.2.04 — Attack Patterns
+Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.2.05 — IOC
+Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.2.06 — IOA
+Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.2.07 — MITRE ATT&CK
+Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.2.08 — Threat Feeds
+Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.2.09 — Threat Reports
+Comprender el concepto, los datos o controles involucrados y su papel dentro de inteligencia de amenazas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 28.3 — Incident Response
+
+#### 28.3.01 — Preparation
+Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.3.02 — Identification
+Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.3.03 — Analysis
+Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.3.04 — Containment
+Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.3.05 — Eradication
+Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.3.06 — Recovery
+Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.3.07 — Lessons Learned
+Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.3.08 — Incident Reporting
+Comprender el concepto, los datos o controles involucrados y su papel dentro de incident response; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 28.4 — Forense digital (DFIR)
+
+#### 28.4.01 — Digital Forensics
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.4.02 — Incident Response
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.4.03 — Evidence Preservation
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.4.04 — Chain of Custody
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.4.05 — Disk Forensics
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.4.06 — Memory Forensics
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.4.07 — File System Analysis
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.4.08 — Metadata
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.4.09 — Timeline Analysis
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.4.10 — Log Analysis
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.4.11 — Incident Reconstruction
+Comprender el concepto, los datos o controles involucrados y su papel dentro de forense digital (dfir); relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 28.5 — Herramientas
+
+#### 28.5.01 — Autopsy
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.5.02 — Sleuth Kit
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.5.03 — Volatility
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.5.04 — KAPE
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.5.05 — Sysmon
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.5.06 — Eric Zimmerman Tools (introducción)
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 28.6 — Estándares
+
+#### 28.6.01 — NIST SP 800-61
+Comprender el concepto, los datos o controles involucrados y su papel dentro de estándares; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.6.02 — NIST CSF 2.0
+Comprender el concepto, los datos o controles involucrados y su papel dentro de estándares; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.6.03 — MITRE ATT&CK
+Comprender el concepto, los datos o controles involucrados y su papel dentro de estándares; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 28.6.04 — CSRC
+Comprender el concepto, los datos o controles involucrados y su papel dentro de estándares; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
