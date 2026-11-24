@@ -23,9 +23,11 @@ Al finalizar podrás:
 
 Uso básico de un computador y distinción elemental entre hardware y software. No se requiere abrir físicamente el equipo.
 
-## 1.1.1 — CPU y ALU
+## 1.1.1 — CPU
 
 La CPU ejecuta instrucciones de programas y coordina operaciones del sistema. No es una pieza que «piensa» ni realiza por sí sola todas las tareas: trabaja con memoria, dispositivos de entrada/salida y otros procesadores.
+
+## 1.1.2 — ALU
 
 La ALU es una unidad funcional que realiza operaciones aritméticas (por ejemplo, suma y resta) y lógicas (AND, OR, NOT y comparaciones). La CPU también contiene lógica de control y otros bloques; por tanto, ALU y CPU no son sinónimos.
 
@@ -33,7 +35,7 @@ La ALU es una unidad funcional que realiza operaciones aritméticas (por ejemplo
 
 **Comprueba tu comprensión:** explica por qué afirmar «la ALU es todo el procesador» es incorrecto.
 
-## 1.1.2 — Registros
+## 1.1.3 — Registros
 
 Los registros son pequeñas ubicaciones de almacenamiento de muy alta velocidad integradas en el procesador. Mantienen valores que la CPU necesita de inmediato: operandos, direcciones, resultados intermedios o información de control.
 
@@ -43,9 +45,13 @@ No todos los procesadores exponen el mismo conjunto de registros ni usan los mis
 
 **Ejercicio:** describe qué tipo de dato podría mantener un registro durante la suma de dos enteros y qué papel podría tener otro registro al indicar la siguiente instrucción.
 
-## 1.1.3 — Núcleos e hilos de ejecución
+## 1.1.4 — Núcleos
 
-Un núcleo es una unidad de procesamiento capaz de ejecutar flujos de instrucciones. Un procesador puede integrar varios núcleos. Los hilos de ejecución son secuencias de trabajo planificadas por el sistema operativo; algunas CPU permiten que un núcleo mantenga el estado de más de un hilo de hardware mediante técnicas de multithreading simultáneo.
+Un núcleo es una unidad de procesamiento capaz de ejecutar flujos de instrucciones. Un procesador puede integrar varios núcleos.
+
+## 1.1.5 — Hilos de ejecución
+
+Los hilos de ejecución son secuencias de trabajo planificadas por el sistema operativo; algunas CPU permiten que un núcleo mantenga el estado de más de un hilo de hardware mediante técnicas de multithreading simultáneo.
 
 No confundas:
 - **Proceso:** programa en ejecución con recursos y espacio de memoria propios.
@@ -57,7 +63,7 @@ Tener más núcleos o hilos no garantiza que cualquier aplicación sea más ráp
 
 **Caso:** una tarea estrictamente secuencial puede no aprovechar ocho núcleos. Una tarea paralelizable puede distribuir trabajo, aunque debe coordinar resultados y evitar condiciones de carrera.
 
-## 1.1.4 — Frecuencia
+## 1.1.6 — Frecuencia
 
 La frecuencia del reloj se expresa en hercios (Hz), habitualmente GHz para CPU modernas. Indica ciclos por segundo, no instrucciones completadas por segundo. Una instrucción puede requerir varios ciclos y distintas microarquitecturas pueden completar cantidades diferentes de trabajo por ciclo.
 
@@ -70,7 +76,7 @@ El rendimiento depende, entre otros factores, de:
 
 **Error frecuente:** comparar dos CPU únicamente por GHz. Es una comparación insuficiente si difieren en arquitectura, generación, límites de potencia o carga.
 
-## 1.1.5 — Caché L1, L2 y L3
+## 1.1.7 — Caché L1, L2 y L3
 
 La caché conserva copias de datos e instrucciones que podrían volver a necesitarse. Aprovecha la localidad temporal (reutilizar pronto un dato) y espacial (acceder a direcciones cercanas).
 
@@ -83,9 +89,11 @@ No asumas que todos los fabricantes organizan las cachés de la misma manera. La
 
 **Analogía y límite:** una mesa de trabajo representa la caché y un almacén distante representa la RAM. La analogía ayuda a entender proximidad, pero no describe políticas de reemplazo, coherencia ni circuitos reales.
 
-## 1.1.6 — RAM y ROM
+## 1.1.8 — RAM
 
 La RAM principal almacena temporalmente programas y datos que el sistema está utilizando. Es volátil en los sistemas habituales: al perder alimentación, su contenido no se conserva.
+
+## 1.1.9 — ROM
 
 ROM significa memoria de solo lectura en sentido histórico. En equipos actuales, el firmware suele almacenarse en memoria flash reprogramable, no necesariamente en una ROM inmutable. La denominación ROM se mantiene en el temario para estudiar la función de memoria no volátil asociada al firmware.
 
@@ -94,9 +102,13 @@ Distingue:
 - **Firmware:** software de bajo nivel que inicializa y configura hardware; suele residir en memoria no volátil.
 - **Almacenamiento:** conserva archivos y programas incluso cuando el equipo se apaga.
 
-## 1.1.7 — SSD y HDD
+## 1.1.10 — SSD
 
-Un HDD almacena datos magnéticamente en platos giratorios y utiliza cabezales mecánicos. Un SSD utiliza memoria flash y no tiene partes móviles para acceder a los datos.
+Un SSD utiliza memoria flash y no tiene partes móviles para acceder a los datos.
+
+## 1.1.11 — HDD
+
+Un HDD almacena datos magnéticamente en platos giratorios y utiliza cabezales mecánicos.
 
 | Criterio | HDD | SSD |
 |---|---|---|
@@ -110,7 +122,7 @@ El rendimiento real depende de interfaz, controlador, tipo de memoria, carga y e
 
 **Ejercicio:** recomienda un tipo de unidad para un portátil que prioriza arranque rápido y movilidad, y otro para un archivo local de gran capacidad con presupuesto limitado. Explica las compensaciones y recuerda que siempre se requiere una estrategia de copias de seguridad.
 
-## 1.1.8 — GPU
+## 1.1.12 — GPU
 
 La GPU está especializada en procesar grandes cantidades de operaciones gráficas y otras cargas paralelas. Puede estar integrada en el procesador o ser una tarjeta dedicada. En una tarjeta dedicada suelen existir procesador gráfico, memoria propia y circuitos de alimentación y refrigeración.
 
@@ -118,7 +130,7 @@ La GPU no reemplaza a la CPU: ambas cooperan. La CPU coordina gran parte de la e
 
 **Caso:** renderizar una escena 3D puede aprovechar miles de operaciones paralelas; ejecutar lógica secuencial compleja puede depender más de la CPU.
 
-## 1.1.9 — Motherboard (placa base)
+## 1.1.13 — Motherboard (placa base)
 
 La motherboard es la placa de circuito impreso que conecta procesador, RAM, almacenamiento, expansión, alimentación y periféricos. Incluye zócalos, ranuras, conectores, circuitos de regulación de energía y controladores.
 
@@ -132,19 +144,19 @@ La compatibilidad exige revisar, entre otros elementos:
 
 No se debe comprar una pieza basándose únicamente en que «cabe» físicamente.
 
-## 1.1.10 — Buses
+## 1.1.14 — Buses
 
 Un bus o interconexión permite transferir información entre componentes. Para entender su función se distinguen conceptualmente señales de datos, direcciones y control; los diseños actuales pueden usar enlaces punto a punto y protocolos complejos en lugar de un bus único compartido.
 
 Al comparar interconexiones importa el ancho, la velocidad de transferencia, la codificación, el protocolo y la topología. No confundas el ancho de banda teórico con el rendimiento observado por una aplicación.
 
-## 1.1.11 — Fuente de alimentación
+## 1.1.15 — Fuente de alimentación
 
 La fuente convierte la corriente alterna de la red en tensiones continuas que necesitan los componentes. Debe ofrecer potencia suficiente, conectores compatibles y protecciones eléctricas adecuadas. Una fuente de mayor potencia nominal no hace automáticamente más rápido el computador.
 
 Nunca abras una fuente de alimentación: puede conservar tensiones peligrosas incluso desconectada. Para esta etapa basta identificar su etiqueta, conectores y función externa. Las intervenciones internas corresponden a personal cualificado.
 
-## 1.1.12 — Periféricos
+## 1.1.16 — Periféricos
 
 Un periférico permite entrada, salida, almacenamiento o comunicación:
 - entrada: teclado, ratón, micrófono, escáner;
