@@ -127,24 +127,20 @@ La sintaxis PHP define cómo declarar instrucciones, bloques, funciones y etique
 **Práctica y evidencia:** Escribe un script PHP pequeño y ejecútalo desde CLI, comprobando salida y código de retorno. **Evidencia:** explica etiquetas PHP, punto y coma y modo de ejecución.
 
 #### 16.1.02 — Variables
-Las variables PHP comienzan con `# Etapa 16 — Backend III: PHP, Laravel y .NET
-
-**Prioridad:** P2 · Complementaria  
-**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
-**Objetivo oficial:** conocer otros ecosistemas empresariales y poder adaptarte a proyectos que utilicen diferentes tecnologías.  
-**Proyecto oficial:** crear una API pequeña en Laravel y otra en ASP.NET Core, comparando su arquitectura con Spring Boot y NestJS.
-
-#### 16.1.03 — Tipos
-PHP maneja tipos escalares, compuestos y especiales con coerciones que dependen del contexto y la versión. Utiliza declaraciones de tipos y comparaciones estrictas cuando sea posible, y valida datos provenientes de formularios, JSON o bases de datos.
-
-
-**Escenario aplicado.** Un JSON contiene un valor numérico representado como cadena. La aplicación valida el tipo esperado en runtime y evita depender de coerciones implícitas.
-
-**Criterio de análisis.** La respuesta debe justificar el control o decisión, identificar el fallo que previene y proponer evidencia verificable. **Pregunta de comprensión:** ¿Qué riesgo introducen las conversiones implícitas al validar datos externos?
+Las variables PHP comienzan con `$` y su alcance depende del contexto de función, objeto o ámbito global. Usa nombres descriptivos, evita variables globales compartidas y valida toda entrada antes de incorporarla a consultas o HTML.
 
 **Escenario aplicado.** Una variable procedente de un formulario se valida antes de incorporarse a una consulta o salida HTML. El nombre y alcance se mantienen explícitos para evitar estado global accidental.
 
 **Criterio de análisis.** La respuesta debe identificar fuente, validación y contexto de uso. **Pregunta de comprensión:** ¿Por qué no debe confiarse en una variable solo porque llega desde un formulario?
+
+**Práctica y evidencia:** Declara variables y constantes y prueba su alcance en funciones. **Evidencia:** explica convención de nombres y diferencias entre variable local y global.
+
+#### 16.1.03 — Tipos
+PHP maneja tipos escalares, compuestos y especiales con coerciones que dependen del contexto y la versión. Utiliza declaraciones de tipos y comparaciones estrictas cuando sea posible, y valida datos provenientes de formularios, JSON o bases de datos.
+
+**Escenario aplicado.** Un JSON contiene un valor numérico representado como cadena. La aplicación valida el tipo esperado en runtime y evita depender de coerciones implícitas.
+
+**Criterio de análisis.** La respuesta debe justificar el control o decisión, identificar el fallo que previene y proponer evidencia verificable. **Pregunta de comprensión:** ¿Qué riesgo introducen las conversiones implícitas al validar datos externos?
 
 **Práctica y evidencia:** Compara tipos escalares, arrays, objetos, null y conversiones. **Evidencia:** demuestra validación explícita de datos recibidos desde una petición.
 
