@@ -1,7 +1,7 @@
 # Etapa 15 — Backend II: Node.js y NestJS
 
 **Prioridad:** Especialización complementaria  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** desarrollar aplicaciones backend con JavaScript y TypeScript.  
 **Proyecto oficial:** API completa con NestJS, autenticación, roles, bases de datos y documentación.
 
@@ -109,4 +109,4 @@ No se aprueban videos todavía. Solo se añadirán piezas con audio hablado en e
 - Redis: https://redis.io/docs/
 - OWASP API Security: https://owasp.org/www-project-api-security/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** proyecto no ejecutado en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** proyecto no ejecutado en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
