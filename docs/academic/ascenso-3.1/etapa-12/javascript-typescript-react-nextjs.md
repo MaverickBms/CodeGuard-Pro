@@ -173,120 +173,234 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 #### 12.1.01 — Variables
 `let`, `const` y `var` declaran enlaces con reglas distintas de ámbito y reasignación. Prefiere `const` cuando no reasignas, `let` cuando sí y evita `var` en código moderno; recuerda que `const` no vuelve inmutable un objeto.
 
+
+**Práctica y evidencia:** Declara variables de prueba con `const` y `let` y observa qué ocurre al intentar reasignarlas. **Evidencia:** explica por qué `const` impide reasignar el binding, pero no vuelve inmutable un objeto.
+
 #### 12.1.02 — Tipos
 JavaScript es dinámicamente tipado: un valor tiene tipo en tiempo de ejecución y una variable puede referirse a valores de tipos distintos. Distingue `undefined`, `null`, boolean, number, bigint, string, symbol y object; usa comprobaciones explícitas al validar entradas externas.
+
+
+**Práctica y evidencia:** Compara `typeof` para valores primitivos y utiliza `Array.isArray` para arrays. **Evidencia:** clasifica ejemplos y explica la particularidad de `typeof null`.
 
 #### 12.1.03 — Operadores
 Los operadores realizan operaciones aritméticas, comparación, asignación, lógica y acceso. Comprende precedencia, coerción y diferencia entre `===` y `==`; usa comparación estricta por defecto y agrupa expresiones complejas para hacer visible la intención.
 
+
+**Práctica y evidencia:** Prueba operadores aritméticos, de igualdad estricta, comparación y cortocircuito con entradas conocidas. **Evidencia:** predice resultados antes de ejecutar y explica coerción cuando aparezca.
+
 #### 12.1.04 — Condicionales
 Las condicionales ejecutan rutas según una expresión booleana mediante `if`, `else` o `switch`. Convierte las reglas del negocio en condiciones mutuamente comprensibles y prueba valores ausentes, límites y tipos inesperados.
+
+
+**Práctica y evidencia:** Implementa una selección de tarifa según rangos, incluyendo valores límite. **Evidencia:** demuestra cobertura de límites y ausencia de ramas ambiguas.
 
 #### 12.1.05 — Bucles
 Los bucles `for`, `while`, `do...while` y `for...of` repiten operaciones bajo distintos criterios. Selecciona el bucle según si recorres una colección o esperas una condición, y evita mutar la colección mientras la iteras sin comprender el efecto.
 
+
+**Práctica y evidencia:** Recorre una colección con `for...of` y compara con `forEach` cuando no necesitas controlar el flujo. **Evidencia:** explica cuándo `break` y `continue` son válidos.
+
 #### 12.1.06 — Funciones
 Una función encapsula comportamiento y puede recibir parámetros y devolver un valor. JavaScript admite declaraciones, expresiones y funciones flecha; elige nombres descriptivos, define contratos de entrada/salida y evita mezclar cálculo, acceso a red y manipulación visual en una sola función.
+
+
+**Práctica y evidencia:** Escribe una función que calcule subtotal con parámetros validados y un valor de retorno explícito. **Evidencia:** prueba entradas válidas, inválidas y casos límite.
 
 #### 12.1.07 — Objetos
 Los objetos agrupan propiedades y métodos y pueden crearse con literales, constructores o clases. Accede de forma segura a propiedades opcionales, evita asumir que datos JSON externos tienen la forma esperada y valida el contrato antes de utilizarlos.
 
+
+**Práctica y evidencia:** Crea un objeto producto y accede a propiedades por notación punto y corchetes. **Evidencia:** explica propiedad ausente, `undefined` y mutación del objeto.
+
 #### 12.1.08 — Arrays
 Los arrays son colecciones ordenadas con métodos de iteración, transformación y búsqueda. Practica `map`, `filter`, `reduce`, `find` y `some`; distingue métodos que mutan el array de los que producen uno nuevo y no uses índices como identificadores persistentes.
+
+
+**Práctica y evidencia:** Transforma un array de productos con `map`, `filter` y `reduce`. **Evidencia:** compara la colección original con el resultado y explica el acumulador.
 
 #### 12.1.09 — Strings
 Las cadenas son secuencias UTF-16 y ofrecen métodos de búsqueda, extracción y transformación. Ten presente que longitud e índices no siempre equivalen a caracteres visuales Unicode; valida y normaliza texto según el requisito de la aplicación.
 
+
+**Práctica y evidencia:** Normaliza entradas de texto con `trim`, `toLowerCase` y métodos de búsqueda. **Evidencia:** prueba cadenas vacías, espacios y caracteres Unicode.
+
 #### 12.1.10 — Destructuring
 Destructuring extrae valores de arrays u objetos en variables mediante patrones. Permite asignar valores predeterminados y renombrar propiedades; úsalo para hacer explícita la forma de los datos, sin ocultar estructuras complejas en una sola línea.
+
+
+**Práctica y evidencia:** Extrae propiedades de objetos y elementos de arrays mediante destructuring con valores por defecto. **Evidencia:** demuestra el comportamiento ante propiedades ausentes.
 
 #### 12.1.11 — Spread
 Spread (`...`) expande elementos iterables o propiedades enumerables en un nuevo array u objeto. Es una copia superficial: los objetos anidados siguen compartiendo referencias, por lo que no garantiza inmutabilidad profunda.
 
+
+**Práctica y evidencia:** Combina arrays y copia objetos mediante spread, distinguiendo copia superficial de profunda. **Evidencia:** modifica una estructura anidada y demuestra qué referencia continúa compartida.
+
 #### 12.1.12 — Rest
 Rest (`...`) agrupa los argumentos restantes o propiedades no extraídas en una nueva colección. En parámetros de función debe ser el último parámetro; úsalo para APIs flexibles sin perder claridad sobre qué argumentos son obligatorios.
+
+
+**Práctica y evidencia:** Implementa una función que reciba un número variable de argumentos con rest. **Evidencia:** muestra que el parámetro rest debe ocupar la última posición y que recibe un array.
 
 #### 12.1.13 — Scope
 Scope determina dónde puede resolverse un identificador: global, de función o de bloque. `let` y `const` tienen ámbito de bloque y zona temporal muerta; limita variables al menor ámbito útil para reducir efectos colaterales.
 
+
+**Práctica y evidencia:** Compara variables globales, de función y de bloque usando `var`, `let` y `const`. **Evidencia:** predice qué identificadores son accesibles en cada bloque.
+
 #### 12.1.14 — Closures
 Una closure conserva acceso al entorno léxico donde se creó una función, incluso después de terminar la función externa. Es útil para encapsular estado y crear funciones especializadas; controla referencias retenidas para no mantener memoria innecesaria.
+
+
+**Práctica y evidencia:** Crea una función externa que devuelva una función interna que recuerde un contador privado. **Evidencia:** explica el cierre léxico y demuestra que llamadas independientes conservan estados distintos.
 
 #### 12.1.15 — Hoisting
 Hoisting describe cómo el motor procesa declaraciones antes de ejecutar el código, pero no significa que todas las variables puedan usarse antes de declararse. Las declaraciones `var`, `let`, `const` y `function` tienen reglas distintas; escribe declaraciones antes de su uso.
 
+
+**Práctica y evidencia:** Compara declaración de función, expresión y variable antes de su inicialización. **Evidencia:** explica diferencias de hoisting y temporal dead zone sin depender de reglas memorizadas.
+
 #### 12.1.16 — Prototypes
 Los prototypes permiten delegar la búsqueda de propiedades a otros objetos y forman la base de la herencia basada en prototipos. Comprende `Object.getPrototypeOf` y la cadena de prototipos; evita modificar prototipos globales de objetos nativos.
+
+
+**Práctica y evidencia:** Define un objeto con prototipo y consulta la cadena con `Object.getPrototypeOf`. **Evidencia:** distingue propiedad propia de heredada y evita modificar prototipos globales.
 
 #### 12.1.17 — This
 `this` se determina principalmente por cómo se invoca una función, no por dónde se declara; las funciones flecha capturan `this` léxico. Analiza llamadas como método, función independiente, constructor y `bind` para evitar referencias inesperadas.
 
+
+**Práctica y evidencia:** Invoca un método desde distintos contextos y observa el valor de `this`; compara método, función separada y arrow function. **Evidencia:** explica cómo se determina el contexto en cada caso.
+
 #### 12.1.18 — ES6+
 ES6+ agrupa mejoras del lenguaje como `let`/`const`, funciones flecha, clases, módulos, destructuring, iteradores y promesas. No trates la etiqueta como una versión única: verifica compatibilidad del runtime y del navegador objetivo antes de utilizar una API.
 
+
+**Práctica y evidencia:** Utiliza características modernas del lenguaje como optional chaining, nullish coalescing y template literals. **Evidencia:** compara `??` con `||` usando cero y cadena vacía.
+
 #### 12.1.19 — Modules
 Los módulos separan código mediante `export` e `import`, con ámbitos propios y dependencias explícitas. Define una interfaz pública pequeña, evita ciclos innecesarios y distingue módulos ECMAScript de formatos históricos como CommonJS.
+
+
+**Práctica y evidencia:** Divide una aplicación pequeña en módulos ES con exportaciones nombradas y default. **Evidencia:** explica dependencias, ruta de importación y diferencia entre módulos y scripts clásicos.
 
 ### Módulo 12.2 — DOM
 
 #### 12.2.01 — Document Object Model
 El DOM representa el documento como un árbol de nodos que scripts pueden consultar y modificar. Comprende la diferencia entre HTML fuente y DOM vivo, y evita asumir que la estructura permanece igual después de scripts, componentes o interacciones.
 
+
+**Práctica y evidencia:** Inspecciona el árbol DOM de una página y localiza nodos elemento, texto y atributo. **Evidencia:** dibuja un fragmento del árbol y distingue DOM de HTML fuente.
+
 #### 12.2.02 — Selección de elementos
 La selección de elementos utiliza APIs como `getElementById`, `querySelector` y `querySelectorAll`. Prefiere selectores específicos y comprueba si la búsqueda devuelve `null` o una colección vacía antes de modificar nodos.
+
+
+**Práctica y evidencia:** Selecciona elementos mediante `querySelector` y `querySelectorAll` usando selectores concretos. **Evidencia:** explica por qué el primero devuelve un nodo y el segundo una colección estática.
 
 #### 12.2.03 — Manipulación del DOM
 Manipular el DOM incluye crear, insertar, actualizar y eliminar nodos y atributos. Usa `textContent` para texto no confiable, evita insertar HTML sin sanitización y agrupa cambios cuando sea posible para reducir trabajo de renderizado.
 
+
+**Práctica y evidencia:** Actualiza texto y atributos con APIs seguras como `textContent` y `setAttribute`. **Evidencia:** explica por qué no insertar entradas no confiables mediante `innerHTML`.
+
 #### 12.2.04 — Eventos
 Un evento representa una interacción o suceso como clic, teclado, envío o carga. Identifica el objetivo, la fase de propagación y el contexto; no supongas que todos los eventos se comportan igual en ratón, teclado y pantallas táctiles.
+
+
+**Práctica y evidencia:** Implementa un botón que cambie una interfaz ante un evento y distingue evento, objetivo y manejador. **Evidencia:** prueba clic y teclado y documenta el resultado.
 
 #### 12.2.05 — Event listeners
 `addEventListener` registra una función para responder a un evento y permite opciones como `once`, `capture` y `signal`. Retira listeners cuando su ciclo de vida termina o usa una señal de aborto para evitar fugas y respuestas duplicadas.
 
+
+**Práctica y evidencia:** Registra y elimina un listener con la misma referencia de función y opciones compatibles. **Evidencia:** demuestra que el evento deja de procesarse tras eliminar el listener.
+
 #### 12.2.06 — Event bubbling
 Event bubbling describe cómo muchos eventos se propagan desde el objetivo hacia sus ancestros. `event.target` identifica el origen y `currentTarget` el nodo que ejecuta el listener; detén propagación solo cuando exista una razón funcional clara.
+
+
+**Práctica y evidencia:** Construye un ejemplo con evento en un elemento hijo y observa su propagación hacia ancestros. **Evidencia:** explica captura, target y bubbling y usa `stopPropagation` solo cuando sea necesario.
 
 #### 12.2.07 — Event delegation
 Event delegation coloca un listener en un ancestro para gestionar eventos de varios descendientes. Es útil para listas dinámicas; filtra el objetivo con `closest`, verifica que pertenezca al contenedor y considera eventos que no hacen bubbling.
 
+
+**Práctica y evidencia:** Implementa delegación de eventos en una lista dinámica usando `closest` y comprobación de contenedor. **Evidencia:** demuestra que elementos añadidos después también responden y que eventos externos se ignoran.
+
 #### 12.2.08 — Formularios
 Los formularios del DOM exponen controles, valores y eventos de envío. Gestiona `submit` en el formulario, permite la interacción por teclado y evita depender únicamente del clic del botón; el servidor debe volver a validar todos los datos.
 
+
+**Práctica y evidencia:** Construye un formulario y captura `submit`, leyendo datos con `FormData`. **Evidencia:** prueba envío con Enter y botón, y explica la prevención del envío tradicional cuando aplica.
+
 #### 12.2.09 — Validaciones
 La validación de formularios combina restricciones nativas, lógica de interfaz y validación de servidor. Comunica el campo, el motivo y cómo corregirlo; normaliza entradas y nunca uses validación cliente como control de seguridad.
+
+
+**Práctica y evidencia:** Valida campos en cliente con restricciones HTML y lógica complementaria, sin confiar en ellas como control de seguridad. **Evidencia:** muestra que el servidor vuelve a validar los datos recibidos.
 
 ### Módulo 12.3 — Asincronía
 
 #### 12.3.01 — Synchronous programming
 La programación síncrona ejecuta operaciones en secuencia y una operación bloqueante impide avanzar en ese hilo. Es sencilla de razonar, pero una operación lenta de I/O puede congelar la interfaz o retrasar otras tareas.
 
+
+**Práctica y evidencia:** Identifica operaciones síncronas que bloquean el hilo principal y mide el efecto de una tarea de prueba. **Evidencia:** explica por qué la interfaz deja de responder durante trabajo prolongado.
+
 #### 12.3.02 — Asynchronous programming
 La programación asíncrona permite iniciar una operación y continuar mientras se espera su resultado. No significa necesariamente ejecución paralela; distingue concurrencia, asincronía y paralelismo al explicar cómo se programan las tareas.
+
+
+**Práctica y evidencia:** Compara una operación síncrona con una asíncrona basada en temporizador o red. **Evidencia:** dibuja la secuencia temporal y explica qué trabajo puede continuar mientras se espera.
 
 #### 12.3.03 — Callbacks
 Un callback es una función entregada a otra operación para invocarse posteriormente o durante un proceso. Es común en eventos y APIs, pero anidar muchos callbacks dificulta el manejo de errores y la lectura; promesas suelen expresar mejor cadenas asíncronas.
 
+
+**Práctica y evidencia:** Convierte una operación basada en callback en una función que notifique éxito o error. **Evidencia:** explica convención error-first y cómo evitar llamadas duplicadas.
+
 #### 12.3.04 — Promises
 Una Promise representa un resultado futuro con estados pending, fulfilled o rejected. Encadena con `then`, `catch` y `finally`, devuelve siempre una nueva promesa desde callbacks y maneja rechazos para evitar errores no observados.
+
+
+**Práctica y evidencia:** Encadena Promises con `then`, `catch` y `finally`, incluyendo una promesa rechazada. **Evidencia:** identifica dónde se propaga el error y cómo se recupera el flujo.
 
 #### 12.3.05 — Async/Await
 `async` declara una función que devuelve una promesa y `await` pausa su continuación hasta que la promesa se resuelve o rechaza. Usa `try/catch` para errores y evita esperar en serie tareas independientes que podrían ejecutarse concurrentemente.
 
+
+**Práctica y evidencia:** Reescribe una cadena de promesas con `async`/`await` y captura errores con `try/catch`. **Evidencia:** explica que `await` pausa la función async, no bloquea el hilo principal.
+
 #### 12.3.06 — Event Loop
 El Event Loop coordina la pila de ejecución, colas de tareas y trabajos de microtareas del entorno. Comprende que JavaScript ejecuta código de usuario en un hilo principal en muchos entornos, mientras ciertas operaciones las realiza el runtime o el navegador.
+
+
+**Práctica y evidencia:** Dibuja la pila de llamadas, cola de tareas y trabajo de temporizadores en el Event Loop. **Evidencia:** predice el orden de varios `console.log` con temporizadores y promesas.
 
 #### 12.3.07 — Microtasks
 Las microtasks incluyen continuaciones de promesas y se procesan en puntos específicos del ciclo de eventos antes de continuar con la siguiente tarea. Una cadena interminable de microtasks puede retrasar renderizado y otras tareas.
 
+
+**Práctica y evidencia:** Programa una Promise resuelta y un temporizador para observar el orden de ejecución. **Evidencia:** identifica las microtasks y explica cuándo se vacía su cola.
+
 #### 12.3.08 — Macrotasks
 Las macrotasks (término didáctico habitual para tareas del event loop) incluyen callbacks de temporizadores y eventos según el entorno. Los temporizadores establecen un tiempo mínimo de espera, no garantizan ejecución exacta en ese instante.
+
+
+**Práctica y evidencia:** Compara temporizadores y eventos de interfaz como tareas del entorno del navegador. **Evidencia:** explica por qué `setTimeout(fn, 0)` no significa ejecución inmediata.
 
 #### 12.3.09 — Error handling
 El manejo de errores asíncronos requiere capturar rechazos, propagar contexto y distinguir fallos de red, HTTP y parseo. `fetch` no rechaza automáticamente por respuestas HTTP 4xx/5xx; comprueba `response.ok` y presenta errores sin filtrar secretos.
 
+
+**Práctica y evidencia:** Maneja fallos de red, errores de parseo y rechazos de promesas diferenciando mensajes para usuario y detalles de diagnóstico. **Evidencia:** registra error controlado sin filtrar secretos.
+
 #### 12.3.10 — Race conditions
 Race conditions ocurren cuando el resultado depende del orden de operaciones concurrentes o asíncronas. Cancela solicitudes obsoletas, usa identificadores de petición o controles de versión y evita que una respuesta antigua sobrescriba datos más recientes.
+
+
+**Práctica y evidencia:** Simula dos solicitudes concurrentes que actualizan el mismo estado y observa cuál termina primero. **Evidencia:** identifica la condición de carrera y propone cancelación, versionado o coordinación.
 
 ### Módulo 12.4 — Web APIs
 
