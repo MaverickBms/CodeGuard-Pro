@@ -162,3 +162,291 @@ No se aprueban videos en esta versión. Se incorporarán solo tras confirmar aud
 - Tailwind CSS: https://tailwindcss.com/docs
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** ejemplos y proyecto no ejecutados en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 12
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados desarrollan las lecciones a partir del contenido conceptual de esta guía; no representan evaluación, aprobación ni ejecución práctica.
+
+### Módulo 12.1 — JavaScript
+
+#### 12.1.01 — Variables
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.02 — Tipos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.03 — Operadores
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.04 — Condicionales
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.05 — Bucles
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.06 — Funciones
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.07 — Objetos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.08 — Arrays
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.09 — Strings
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.10 — Destructuring
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.11 — Spread
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.12 — Rest
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.13 — Scope
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.14 — Closures
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.15 — Hoisting
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.16 — Prototypes
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.17 — This
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.18 — ES6+
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.1.19 — Modules
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de javascript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 12.2 — DOM
+
+#### 12.2.01 — Document Object Model
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.2.02 — Selección de elementos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.2.03 — Manipulación del DOM
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.2.04 — Eventos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.2.05 — Event listeners
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.2.06 — Event bubbling
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.2.07 — Event delegation
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.2.08 — Formularios
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.2.09 — Validaciones
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de dom. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 12.3 — Asincronía
+
+#### 12.3.01 — Synchronous programming
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.3.02 — Asynchronous programming
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.3.03 — Callbacks
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.3.04 — Promises
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.3.05 — Async/Await
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.3.06 — Event Loop
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.3.07 — Microtasks
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.3.08 — Macrotasks
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.3.09 — Error handling
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.3.10 — Race conditions
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de asincronía. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 12.4 — Web APIs
+
+#### 12.4.01 — Fetch API
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.4.02 — LocalStorage
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.4.03 — SessionStorage
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.4.04 — Cookies
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.4.05 — Geolocation
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.4.06 — Clipboard
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.4.07 — File API
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de web apis. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 12.5 — TypeScript
+
+#### 12.5.01 — Tipos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.5.02 — Interfaces
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.5.03 — Type aliases
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.5.04 — Union types
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.5.05 — Intersection types
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.5.06 — Generics
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.5.07 — Type narrowing
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.5.08 — Utility types
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.5.09 — Enums
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.5.10 — Type inference
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.5.11 — Strict mode
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de typescript. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 12.6 — React
+
+#### 12.6.01 — Components
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.02 — JSX
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.03 — Props
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.04 — State
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.05 — Hooks
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.06 — useState
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.07 — useEffect
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.08 — useContext
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.09 — useRef
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.10 — Forms
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.11 — Routing
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.12 — Context API
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.13 — Component lifecycle
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.14 — State management
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.15 — Custom Hooks
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.6.16 — Error Boundaries
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de react. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 12.7 — Next.js
+
+#### 12.7.01 — App Router
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.7.02 — Routing
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.7.03 — Server Components
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.7.04 — Client Components
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.7.05 — Server-side rendering
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.7.06 — Static site generation
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.7.07 — Data fetching
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.7.08 — Authentication
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.7.09 — Metadata
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.7.10 — Deployment
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de next.js. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 12.8 — Herramientas
+
+#### 12.8.01 — npm
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.8.02 — pnpm
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.8.03 — Vite
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.8.04 — ESLint
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.8.05 — Prettier
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.8.06 — Tailwind CSS
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 12.8.07 — React DevTools
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de herramientas. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
