@@ -7,7 +7,7 @@
 
 ## 1. Alcance y precisión del estado
 
-La rama contiene 33 documentos de etapa (0–32), además de cuatro documentos de módulos de la etapa 0, cinco documentos de módulos de la etapa 1 y dos estándares editoriales. Esto representa una **primera cobertura documental de las 33 etapas**, no 1.946 lecciones terminadas. El roadmap oficial contiene 33 etapas, 212 módulos y 1.946 títulos de lección. Los documentos actuales son guías de desarrollo de etapa/módulo; aún debe desglosarse y redactarse cada lección con el nivel de profundidad exigido por el estándar editorial.
+La rama contiene 33 documentos de etapa (0–32), además de cuatro documentos de módulos de la etapa 0, cinco documentos de módulos de la etapa 1 y dos estándares editoriales. Esto representa una **primera cobertura documental de las 33 etapas**, no 1.946 lecciones terminadas. El roadmap oficial contiene 33 etapas, 212 módulos y 1.946 títulos de lección. Los documentos son guías de desarrollo de etapa/módulo. Se incorporó granularidad de encabezados por lección para las etapas 1–32 y se ampliaron sus guías, pero el nivel de desarrollo de cada lección es variable: todavía se requiere completar teoría, ejemplos, ejercicios, referencias trazables y evidencia de verificación según el estándar editorial. La existencia de un encabezado no equivale a una lección completa.
 
 No se deben comunicar las 33 etapas como «curso completo», «lecciones completas» ni «contenido listo para publicar».
 
@@ -53,7 +53,7 @@ La política se corrigió en los documentos editoriales: el audio hablado debe s
 
 | Riesgo | Acción requerida antes de publicación |
 |---|---|
-| Las guías de etapa no equivalen a 1.946 lecciones desarrolladas | Desglosar cada módulo y redactar cada lección con la plantilla editorial. |
+| Las guías y encabezados granulares no equivalen a 1.946 lecciones desarrolladas | Completar cada lección con teoría, ejemplos, ejercicios, referencias trazables y evidencia según la plantilla editorial. |
 | No se dispone del UUID de cada lección en este entorno | Exportar un manifiesto de UUID desde la instalación/DB de destino; cotejar título, etapa y módulo. |
 | Los ejemplos/ejercicios también requieren claves estables existentes | Inventariar sus UUID reales o acordar, mediante el flujo de ingeniería correspondiente, cómo se crean antes de importar. |
 | Fuentes no registradas/licencia sin revisar | Registrar fuentes reales, verificar edición/licencia/alcance y asociar IDs existentes. |
@@ -269,3 +269,21 @@ Se incorporó el desglose individual de las entradas oficiales de las etapas 29�
 - **Etapa 32 — Proyecto profesional, portafolio y preparación laboral:** 54 entradas en portafolio, proyectos full stack, infraestructura, seguridad, colaboración y preparación laboral.
 
 Las prácticas de cloud y DevSecOps se limitan a cuentas y entornos autorizados; las pruebas de IA se limitan a sistemas propios/autorizados y sin exponer secretos; el análisis de malware se limita a muestras controladas y entornos aislados. Los proyectos profesionales deben reflejar contribuciones y resultados reales. No se desplegó infraestructura cloud, no se ejecutaron pruebas de IA, no se analizaron muestras de malware y no se realizaron evaluaciones laborales. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
+
+
+## 7. Cierre de la expansión granular de etapas 1–32 — 2026-11-24
+
+Se completó la pasada de organización granular de las 32 etapas posteriores a la etapa 0. Las etapas 11–32 cuentan con encabezados individuales para cada entrada de lección del roadmap; se verificó que los conteos por etapa coinciden con las listas oficiales de sus módulos. Las etapas 1–10 ya habían recibido desarrollo y expansión en la continuidad previa.
+
+Esta finalización se refiere a la cobertura documental y a la correspondencia de encabezados, no a la redacción exhaustiva de 1.916 lecciones completas. El contenido de los encabezados agregados en esta pasada incluye orientaciones breves de estudio; aún debe ampliarse con explicaciones completas, ejemplos, ejercicios, fuentes verificadas y evidencia práctica antes de importación, aprobación o publicación.
+
+- Etapas documentadas: 33/33 (0–32).
+- Etapas posteriores a la etapa 0 con trabajo de continuidad: 32/32.
+- Roadmap oficial: 33 etapas, 212 módulos y 1.946 lecciones nominales.
+- Conteos de encabezados de etapas 11–32: coinciden con el número de entradas del roadmap para cada etapa.
+- JSON curricular: sin cambios; SHA del archivo en la rama y en `release/1.0.0`: `43b6350dd911350c2b5f68c3d3de3dea4696f878`.
+- Objetivo de etapa 25: permanece vacío.
+- Importación a SQLite, aprobación editorial y publicación: no realizadas.
+- Laboratorios de programación, bases de datos, redes, seguridad, cloud y forense: no ejecutados en esta pasada.
+
+La siguiente fase académica es desarrollar las lecciones individuales a profundidad y reunir evidencias verificables, conservando el flujo editorial y el manifiesto real de UUID como condiciones previas a cualquier importación.
