@@ -1,6 +1,6 @@
 # Etapa 4 — Programación Orientada a Objetos y paradigmas
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 4.  
 **Prioridad:** P1 · Obligatoria.  
 **Objetivo oficial:** comprender cómo diseñar programas organizados y mantenibles.
@@ -364,4 +364,4 @@ No se incluye video en esta versión. Para aprobar un recurso de POO/UML debe co
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** ejemplos de código y proyecto propuestos; no ejecutados ni compilados en esta sesión.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
