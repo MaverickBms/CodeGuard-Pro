@@ -377,3 +377,10 @@ La cobertura es documental y estructural; no se ejecutaron instancias ni laborat
 Se desarrollaron las 60 lecciones oficiales de HTML, CSS y fundamentos frontend: HTML (21), accesibilidad (8), CSS (17), diseño de interfaces (8) y SEO (6). Cada lección incluye explicación, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
 
 La cobertura es documental y estructural; no se ejecutaron pruebas de navegador, auditorías WCAG ni validaciones SEO reales. La revisión técnica independiente y el cotejo bibliográfico exhaustivo siguen pendientes. La auditoría de continuidad registra el alcance y las limitaciones. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
+
+
+### Desarrollo documental individual — etapa 12 (24-11-2026)
+
+Se desarrollaron las 89 lecciones oficiales de JavaScript, TypeScript, React y Next.js: JavaScript (19), DOM (9), asincronía (10), Web APIs (7), TypeScript (11), React (16), Next.js (10) y herramientas (7). Cada lección incluye explicación, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
+
+La cobertura es documental y estructural; no se ejecutaron ejemplos, builds, pruebas de navegador ni laboratorios de frameworks. La validación técnica independiente, el cotejo de versiones y la revisión bibliográfica exhaustiva siguen pendientes. La auditoría de continuidad registra alcance y límites. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
