@@ -38,339 +38,339 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 #### 9.1.1 — Qué es una base de datos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una base de datos es una colección organizada de datos mantenida para consulta, actualización y administración. Distingue datos, información, esquema y motor de almacenamiento. **Práctica:** define qué datos necesita el sistema de ventas del proyecto y qué preguntas debe responder. **Evidencia:** presenta cinco requisitos de consulta y relaciona cada uno con datos necesarios.
 
 #### 9.1.2 — DBMS (Sistema Gestor de Bases de Datos)
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Un DBMS administra almacenamiento, consultas, concurrencia, integridad, seguridad y recuperación. Distingue el gestor del modelo de datos y de la aplicación cliente. **Práctica:** compara las responsabilidades de MySQL Server y PostgreSQL con las de un cliente SQL. **Evidencia:** clasifica cinco tareas según correspondan al gestor, al cliente o a la aplicación.
 
 #### 9.1.3 — Servidor de bases de datos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+El servidor de bases de datos ejecuta el motor y atiende conexiones, autenticación, consultas y transacciones. Puede ser un proceso local o un servicio remoto. **Práctica:** dibuja cliente, red, puerto y proceso servidor para una instalación de laboratorio. **Evidencia:** identifica dónde residen los datos y qué componente escucha las conexiones.
 
 #### 9.1.4 — Cliente de bases de datos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Un cliente de bases de datos envía instrucciones y presenta resultados; puede ser una CLI, interfaz gráfica, ORM o aplicación. **Práctica:** ejecuta una consulta equivalente desde una terminal y una herramienta gráfica. **Evidencia:** compara conexión, consulta y resultado sin confundir el cliente con el servidor.
 
 #### 9.1.5 — Bases relacionales
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+El modelo relacional organiza datos en relaciones (tablas) y define operaciones sobre conjuntos, con integridad mediante claves y restricciones. **Práctica:** modela clientes y pedidos como relaciones separadas. **Evidencia:** explica por qué una tabla no es simplemente una hoja de cálculo y cómo se representa una asociación.
 
 #### 9.1.6 — Tablas
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una tabla representa una relación con atributos y tuplas; cada columna tiene dominio y restricciones. **Práctica:** diseña la tabla `cliente` con identificador, correo y fecha de alta, justificando nulabilidad y unicidad. **Evidencia:** presenta DDL y explica cada atributo.
 
 #### 9.1.7 — Filas
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una fila representa una tupla o registro con valores para las columnas de una tabla. La identidad lógica debe establecerse mediante una clave, no por la posición física de la fila. **Práctica:** inserta dos clientes de prueba y consulta ambos sin depender del orden natural. **Evidencia:** explica por qué se necesita `ORDER BY` para garantizar orden.
 
 #### 9.1.8 — Columnas
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una columna define un atributo con nombre, tipo y restricciones. La elección del tipo afecta validación, almacenamiento, comparación y operaciones. **Práctica:** selecciona tipos para precio, fecha, correo y estado de pedido. **Evidencia:** justifica precisión, longitud, nulabilidad y posibles restricciones.
 
 #### 9.1.9 — Esquemas
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Un esquema agrupa objetos de base de datos y organiza nombres, permisos y dependencias; su significado exacto varía entre motores. **Práctica:** identifica bases de datos y esquemas en MySQL y PostgreSQL. **Evidencia:** describe la diferencia entre database y schema en ambos motores sin asumir que son equivalentes.
 
 #### 9.1.10 — Tipos de datos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Los tipos de datos limitan y describen valores: enteros, decimales, texto, fechas, booleanos y tipos específicos del motor. Evita almacenar importes monetarios en coma flotante binaria cuando se requiere exactitud decimal. **Práctica:** define tipos para precio, cantidad y fecha de pedido. **Evidencia:** explica por qué usar DECIMAL para importes y cómo se controlan rangos.
 
 ### 9.2 — Modelado
 
 #### 9.2.1 — Entidades
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una entidad representa un objeto o concepto del dominio sobre el que se almacenan datos, como Cliente, Producto o Pedido. **Práctica:** extrae entidades del enunciado del sistema de ventas y descarta sustantivos que no requieran persistencia propia. **Evidencia:** lista entidades con una breve justificación de existencia.
 
 #### 9.2.2 — Atributos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Un atributo describe una propiedad de una entidad y debe tener significado, dominio y reglas de validación. Distingue atributos simples, compuestos, derivados y multivaluados. **Práctica:** analiza dirección, nombre completo y edad para decidir si requieren descomposición o cálculo. **Evidencia:** documenta decisiones y dependencias.
 
 #### 9.2.3 — Relaciones
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una relación expresa una asociación entre entidades, por ejemplo cliente realiza pedido o pedido contiene producto. **Práctica:** redacta relaciones en ambos sentidos y asigna nombres verbales claros. **Evidencia:** produce un diagrama con roles y explica el significado de cada asociación.
 
 #### 9.2.4 — Cardinalidad
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+La cardinalidad describe cuántas instancias pueden participar en una relación: uno a uno, uno a muchos o muchos a muchos, con mínimos y máximos. **Práctica:** define cardinalidad entre cliente y pedido y entre pedido y producto. **Evidencia:** justifica participación obligatoria u opcional con reglas del negocio.
 
 #### 9.2.5 — Claves primarias
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una clave primaria identifica de forma única cada fila y no admite valores nulos. Compara claves naturales y sustitutas, y evita elegir atributos que cambien con frecuencia. **Práctica:** define una PK para cliente y pedido. **Evidencia:** explica unicidad, estabilidad y razón de la elección.
 
 #### 9.2.6 — Claves foráneas
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una clave foránea mantiene una referencia válida a una clave candidata de otra tabla y protege integridad referencial. **Práctica:** relaciona pedido con cliente mediante FK y prueba una inserción con cliente inexistente en un entorno de prueba. **Evidencia:** registra el rechazo y explica las acciones ON DELETE/UPDATE seleccionadas.
 
 #### 9.2.7 — Restricciones
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Las restricciones expresan reglas que el motor debe hacer cumplir: NOT NULL, UNIQUE, CHECK, PRIMARY KEY y FOREIGN KEY. **Práctica:** define restricciones para correo único, cantidad positiva y estado permitido. **Evidencia:** intenta insertar datos inválidos y registra qué restricción impide cada caso.
 
 #### 9.2.8 — Diagramas entidad-relación
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Un diagrama entidad-relación representa entidades, atributos, relaciones y cardinalidades antes de implementar tablas. **Práctica:** dibuja el modelo inicial del sistema de ventas con clientes, pedidos, detalle, productos y pagos. **Evidencia:** marca PK/FK y detecta relaciones muchos a muchos.
 
 #### 9.2.9 — Modelo conceptual
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+El modelo conceptual expresa reglas y conceptos del negocio sin comprometerse con un motor o tipos SQL. **Práctica:** describe entidades y relaciones del sistema de ventas en lenguaje del dominio. **Evidencia:** entrega un diagrama comprensible para una persona no técnica.
 
 #### 9.2.10 — Modelo lógico
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+El modelo lógico transforma el modelo conceptual en estructuras relacionales: relaciones, atributos, claves y restricciones. **Práctica:** convierte la relación Pedido–Producto en una entidad asociativa DetallePedido. **Evidencia:** muestra PK, FKs y atributos propios de la asociación.
 
 #### 9.2.11 — Modelo físico
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+El modelo físico concreta el diseño para un DBMS, incluyendo tipos, índices, particiones, nombres y decisiones de almacenamiento. **Práctica:** transforma una tabla lógica de pedido en DDL para el motor elegido. **Evidencia:** anota qué decisiones dependen del motor y cuáles son independientes.
 
 ### 9.3 — MySQL
 
 #### 9.3.1 — Instalación de MySQL Server
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Instalar MySQL Server implica elegir una distribución compatible, configurar el servicio, proteger credenciales iniciales y verificar el proceso. La guía exacta depende del sistema operativo y versión. **Práctica:** instala una instancia aislada siguiendo la documentación oficial de la versión elegida. **Evidencia:** registra versión, servicio, puerto y resultado de una conexión local.
 
 #### 9.3.2 — Configuración
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+La configuración de MySQL controla red, directorios, memoria, registros, autenticación y límites. Cambios deben justificarse y probarse antes de aplicarse a producción. **Práctica:** inspecciona variables de solo lectura como `port`, `datadir` y `version`. **Evidencia:** registra valores efectivos y explica qué componente los define.
 
 #### 9.3.3 — MySQL Workbench
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+MySQL Workbench es una herramienta gráfica para modelar, consultar y administrar conexiones; no es el servidor que almacena datos. **Práctica:** crea una conexión a una instancia local y ejecuta una consulta de solo lectura. **Evidencia:** identifica host, puerto, usuario y resultado, sin guardar secretos en el repositorio.
 
 #### 9.3.4 — Creación de bases de datos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`CREATE DATABASE` crea un contenedor lógico de objetos; charset y collation determinan aspectos de codificación y comparación. **Práctica:** crea una base de datos de laboratorio con codificación Unicode apropiada. **Evidencia:** consulta metadatos y explica por qué charset/collation afectan búsquedas y ordenamiento.
 
 #### 9.3.5 — Creación de tablas
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`CREATE TABLE` define columnas, tipos, claves, restricciones y valores por defecto. **Práctica:** implementa tablas `cliente` y `pedido` con PK y FK. **Evidencia:** presenta el DDL y demuestra que el motor rechaza una referencia inexistente.
 
 #### 9.3.6 — Usuarios
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Los usuarios de MySQL son identidades de autenticación asociadas a un origen/host y métodos de autenticación. Distingue cuenta de sistema operativo y cuenta del DBMS. **Práctica:** consulta cuentas de laboratorio con privilegios de lectura, sin exponer hashes ni contraseñas. **Evidencia:** explica cómo se determina la identidad efectiva.
 
 #### 9.3.7 — Permisos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Los permisos conceden acciones sobre objetos y alcance definidos; aplica mínimo privilegio en lugar de usar root para aplicaciones. **Práctica:** crea o diseña un rol de solo lectura para el esquema de ventas y verifica qué operaciones permite. **Evidencia:** muestra permisos otorgados y una operación denegada.
 
 #### 9.3.8 — Conexiones
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una conexión combina host, puerto, protocolo, base de datos y credenciales; puede fallar por red, servicio, autenticación, TLS o permisos. **Práctica:** conecta una CLI a la instancia local y diagnostica por separado servicio, puerto y credenciales. **Evidencia:** registra un árbol de diagnóstico sin incluir secretos.
 
 #### 9.3.9 — Una distinción importante
 
-Separa motor/servidor, cliente y herramienta de administración; una interfaz gráfica no reemplaza al servicio de base de datos.
+MySQL Server es el gestor que almacena y administra los datos; MySQL Workbench es un cliente gráfico para diseñar, consultar y administrar conexiones. Workbench no sustituye al servidor ni mantiene por sí solo la base de datos. **Práctica:** detén la conexión del cliente y comprueba que el servicio del servidor sigue siendo un componente separado. **Evidencia:** explica qué ocurre si se cierra Workbench mientras el servidor continúa activo.
 
 ### 9.4 — SQL
 
 #### 9.4.1 — DDL
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+DDL agrupa instrucciones que definen o modifican estructuras, como CREATE, ALTER y DROP. El comportamiento transaccional de DDL puede variar por motor. **Práctica:** identifica qué sentencias de un script cambian esquema y cuáles manipulan filas. **Evidencia:** clasifica instrucciones y advierte antes de operaciones destructivas.
 
 #### 9.4.2 — DML
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+DML manipula filas mediante operaciones como INSERT, UPDATE y DELETE; algunas clasificaciones incluyen SELECT en DML y otras lo separan como DQL. **Práctica:** prepara un script que inserte y actualice datos de prueba dentro de una transacción cuando el motor lo permita. **Evidencia:** muestra estado antes y después.
 
 #### 9.4.3 — DQL
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+DQL es una categoría didáctica para consultas, principalmente SELECT; no todos los estándares o motores separan formalmente esta categoría. **Práctica:** formula consultas para filtrar, ordenar y proyectar clientes. **Evidencia:** explica qué columnas y filas devuelve cada consulta.
 
 #### 9.4.4 — DCL
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+DCL reúne instrucciones de control de privilegios, como GRANT y REVOKE en motores que las implementan. **Práctica:** revisa un ejemplo de concesión de SELECT sobre un esquema de laboratorio. **Evidencia:** identifica sujeto, privilegio, objeto y alcance, y comprueba el principio de mínimo privilegio.
 
 #### 9.4.5 — TCL
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+TCL describe el control de transacciones mediante COMMIT, ROLLBACK y, según el motor, SAVEPOINT. **Práctica:** ejecuta una modificación dentro de una transacción y decide confirmarla o revertirla. **Evidencia:** demuestra el estado final después de cada decisión.
 
 #### 9.4.6 — CREATE
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`CREATE` define objetos como bases de datos, tablas, índices y vistas. La sintaxis y opciones varían entre MySQL y PostgreSQL. **Práctica:** crea una tabla con PK, NOT NULL y CHECK en el motor elegido. **Evidencia:** muestra el DDL y consulta el catálogo para confirmar su estructura.
 
 #### 9.4.7 — ALTER
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`ALTER` modifica la definición de objetos, por ejemplo agregando columnas o restricciones. Los cambios pueden bloquear tablas o requerir migraciones cuidadosas. **Práctica:** agrega una columna opcional a una tabla de laboratorio y luego define su restricción si procede. **Evidencia:** presenta antes/después y explica impacto en datos existentes.
 
 #### 9.4.8 — DROP
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`DROP` elimina objetos y puede destruir datos dependientes; no debe confundirse con DELETE, que elimina filas. **Práctica:** compara `DROP TABLE` y `DELETE FROM` en una base descartable. **Evidencia:** explica el alcance de cada sentencia y verifica el efecto sin usar datos reales.
 
 #### 9.4.9 — SELECT
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`SELECT` proyecta columnas y obtiene filas de una o varias fuentes. Evita `SELECT *` en consultas de aplicación cuando no se necesitan todas las columnas. **Práctica:** consulta nombre y correo de clientes activos. **Evidencia:** explica proyección, origen y cardinalidad del resultado.
 
 #### 9.4.10 — INSERT
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`INSERT` agrega filas y debe respetar tipos, restricciones y columnas obligatorias. Especifica columnas para evitar depender del orden físico de la tabla. **Práctica:** inserta un cliente con lista explícita de columnas. **Evidencia:** consulta la fila creada y registra cómo se obtuvo su identificador.
 
 #### 9.4.11 — UPDATE
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`UPDATE` modifica filas que cumplen una condición; omitir WHERE puede afectar toda la tabla. **Práctica:** cambia el estado de un pedido de prueba identificándolo por PK y ejecuta primero un SELECT equivalente. **Evidencia:** registra filas afectadas y demuestra que ninguna otra cambió.
 
 #### 9.4.12 — DELETE
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`DELETE` elimina filas seleccionadas y puede activar reglas referenciales o triggers. **Práctica:** elimina un registro de prueba después de revisar la condición con SELECT y dentro de una transacción si procede. **Evidencia:** documenta filas afectadas y posibilidad de rollback.
 
 #### 9.4.13 — WHERE
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`WHERE` filtra filas mediante condiciones; NULL requiere operadores IS NULL/IS NOT NULL y la lógica ternaria afecta comparaciones. **Práctica:** consulta pedidos por estado, rango de fecha y valores nulos. **Evidencia:** explica por qué `columna = NULL` no produce el resultado esperado.
 
 #### 9.4.14 — ORDER BY
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`ORDER BY` ordena el resultado por una o varias expresiones; sin orden explícito no se garantiza la secuencia de filas. **Práctica:** ordena pedidos por fecha descendente y luego por identificador para desempatar. **Evidencia:** justifica orden estable para paginación.
 
 #### 9.4.15 — GROUP BY
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`GROUP BY` agrupa filas para calcular agregaciones como COUNT, SUM, AVG, MIN y MAX. **Práctica:** calcula ventas totales por cliente con un conjunto de datos de prueba. **Evidencia:** explica la granularidad del resultado y evita seleccionar columnas no agrupadas sin agregación.
 
 #### 9.4.16 — HAVING
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`HAVING` filtra grupos después de la agregación, mientras WHERE filtra filas antes de agrupar. **Práctica:** muestra clientes con más de dos pedidos usando GROUP BY y HAVING. **Evidencia:** explica por qué la condición de agregado no corresponde a WHERE en esa consulta.
 
 #### 9.4.17 — JOIN
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+JOIN combina filas relacionadas de tablas; INNER, LEFT y otras variantes tienen semánticas distintas. **Práctica:** une pedidos con clientes y conserva clientes sin pedidos mediante LEFT JOIN. **Evidencia:** explica filas con NULL y cómo una condición en WHERE puede convertir accidentalmente el resultado en uno similar a INNER JOIN.
 
 #### 9.4.18 — Subqueries
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una subconsulta es una consulta anidada que puede producir un escalar, conjunto o tabla derivada. Puede ser correlacionada y evaluarse conceptualmente por fila. **Práctica:** busca pedidos cuyo importe supera el promedio global. **Evidencia:** identifica consulta interna, externa y tipo de resultado.
 
 #### 9.4.19 — CTE
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una CTE definida con WITH nombra un resultado temporal dentro de una sentencia y mejora legibilidad; las CTE recursivas permiten recorrer jerarquías en motores compatibles. **Práctica:** expresa una consulta de ventas por cliente mediante CTE. **Evidencia:** compara legibilidad con una subconsulta equivalente y comprueba soporte del motor.
 
 ### 9.5 — Diseño y normalización
 
 #### 9.5.1 — Primera forma normal (1NF)
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Primera forma normal requiere valores atómicos por celda y ausencia de grupos repetidos en una misma fila, según el modelo relacional clásico. **Práctica:** transforma una tabla que almacena varios teléfonos en una estructura separada. **Evidencia:** explica qué anomalía se evita y cómo se relacionan las tablas.
 
 #### 9.5.2 — Segunda forma normal (2NF)
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Segunda forma normal exige 1NF y que cada atributo no primo dependa de toda la clave candidata, no solo de una parte de una clave compuesta. **Práctica:** analiza una tabla detalle con clave pedido-producto y separa datos propios del producto. **Evidencia:** identifica dependencia parcial.
 
 #### 9.5.3 — Tercera forma normal (3NF)
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Tercera forma normal elimina dependencias transitivas de atributos no clave respecto de claves candidatas, bajo la definición formal. **Práctica:** separa datos de ciudad/provincia que se repiten en clientes cuando existe dependencia funcional adecuada. **Evidencia:** documenta dependencias antes y después.
 
 #### 9.5.4 — BCNF
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+BCNF requiere que todo determinante de una dependencia funcional no trivial sea superclave; es más estricta que 3NF. **Práctica:** analiza un ejemplo con dependencias entre curso, instructor y aula. **Evidencia:** identifica el determinante que incumple BCNF y propone descomposición sin pérdida cuando corresponda.
 
 #### 9.5.5 — Redundancia
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+La redundancia almacena repetidamente hechos y puede provocar anomalías de actualización, inserción y eliminación. No toda duplicación es incorrecta: la desnormalización puede ser una decisión consciente por rendimiento. **Práctica:** identifica un dato repetido en una tabla de ventas. **Evidencia:** describe una anomalía y una estrategia para evitarla.
 
 #### 9.5.6 — Integridad referencial
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+La integridad referencial asegura que las referencias entre tablas apunten a filas válidas, mediante claves foráneas y acciones referenciales. **Práctica:** intenta insertar un detalle de pedido con producto inexistente en una base descartable. **Evidencia:** registra rechazo y justifica ON DELETE RESTRICT, CASCADE o SET NULL según el dominio.
 
 #### 9.5.7 — Relaciones uno a uno
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una relación uno a uno asocia como máximo una fila de cada lado; puede implementarse con FK UNIQUE o una PK compartida. **Práctica:** modela cliente y perfil extendido con datos opcionales. **Evidencia:** explica cuándo separar el perfil y cómo impedir duplicados.
 
 #### 9.5.8 — Uno a muchos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una relación uno a muchos coloca normalmente la FK en el lado muchos, por ejemplo pedido pertenece a cliente. **Práctica:** implementa cliente y pedido con FK y crea varios pedidos para un cliente. **Evidencia:** consulta la asociación y explica por qué la FK no se repite en la tabla padre.
 
 #### 9.5.9 — Muchos a muchos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una relación muchos a muchos se transforma en una tabla asociativa que contiene FKs y atributos de la relación, por ejemplo detalle de pedido. **Práctica:** crea pedido, producto y detalle con PK compuesta o sustituta y restricción única apropiada. **Evidencia:** demuestra múltiples productos por pedido y múltiples pedidos por producto.
 
 ### 9.6 — Bases de datos avanzadas
 
 #### 9.6.1 — Índices
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Un índice mantiene una estructura auxiliar para acelerar búsquedas, ordenamientos o joins, a cambio de almacenamiento y coste de escritura. **Práctica:** compara EXPLAIN antes y después de indexar una columna selectiva en datos de prueba. **Evidencia:** explica plan y coste, sin asumir que todo índice mejora cualquier consulta.
 
 #### 9.6.2 — B-Tree
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+B-Tree organiza claves ordenadas y permite búsquedas por rango y prefijos según el motor y la definición del índice. **Práctica:** consulta el plan de una búsqueda por rango sobre una columna indexada. **Evidencia:** explica búsqueda, recorrido y por qué la selectividad importa.
 
 #### 9.6.3 — Índices compuestos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Un índice compuesto contiene varias columnas en un orden definido; el orden de las columnas afecta qué predicados pueden aprovecharlo. **Práctica:** compara índices `(cliente_id, fecha)` y `(fecha, cliente_id)` para consultas distintas. **Evidencia:** relaciona el prefijo izquierdo con los filtros del plan.
 
 #### 9.6.4 — Vistas
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una vista presenta una consulta con nombre y puede simplificar acceso y abstracción; una vista normal no necesariamente almacena resultados. **Práctica:** crea una vista de pedidos con datos no sensibles y consulta desde ella. **Evidencia:** explica dependencia de la consulta base y límites de actualización.
 
 #### 9.6.5 — Triggers
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Un trigger ejecuta lógica ante eventos de una tabla, como INSERT, UPDATE o DELETE, según capacidades del motor. Puede ocultar efectos secundarios y complicar depuración. **Práctica:** diseña un trigger de auditoría solo en una base descartable. **Evidencia:** documenta evento, condición, efecto y riesgo de recursión o duplicación.
 
 #### 9.6.6 — Stored Procedures
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Un stored procedure encapsula operaciones ejecutadas en el servidor con parámetros y control de flujo propio del motor. **Práctica:** compara una rutina almacenada con una transacción coordinada desde la aplicación. **Evidencia:** identifica qué lógica conviene centralizar y cómo se versiona.
 
 #### 9.6.7 — Transacciones
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Una transacción agrupa operaciones para tratarlas como unidad lógica, con confirmación o reversión. **Práctica:** transfiere una cantidad entre dos cuentas de prueba dentro de una transacción. **Evidencia:** demuestra que ambas actualizaciones se confirman o ninguna queda aplicada.
 
 #### 9.6.8 — ACID
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+ACID resume atomicidad, consistencia, aislamiento y durabilidad; el grado concreto depende del motor, configuración y almacenamiento. **Práctica:** asocia cada propiedad con un fallo posible durante una venta. **Evidencia:** explica qué garantía aporta y qué no cubre cada propiedad.
 
 #### 9.6.9 — Commit
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`COMMIT` confirma los cambios de una transacción y los hace visibles/durables según las garantías del motor. **Práctica:** actualiza un pedido dentro de una transacción y confirma. **Evidencia:** abre una segunda sesión y verifica la visibilidad posterior al commit.
 
 #### 9.6.10 — Rollback
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`ROLLBACK` revierte cambios no confirmados dentro de la transacción, sujeto a límites del motor y operaciones ejecutadas. **Práctica:** modifica un dato de prueba y revierte la transacción. **Evidencia:** demuestra que el valor original permanece.
 
 #### 9.6.11 — Locks
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Los locks coordinan accesos concurrentes y pueden aplicarse a filas, páginas, tablas u otros recursos según el motor. **Práctica:** en dos sesiones de laboratorio, bloquea una fila y observa el comportamiento de una actualización concurrente con timeout controlado. **Evidencia:** identifica bloqueo y espera sin dejar sesiones colgadas.
 
 #### 9.6.12 — Deadlocks
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Un deadlock ocurre cuando transacciones esperan recursos retenidos entre sí formando un ciclo; los motores suelen detectar y abortar una de ellas. **Práctica:** modela dos transacciones que bloquean filas en orden opuesto, sin ejecutar cargas peligrosas. **Evidencia:** dibuja el ciclo y propone un orden consistente de adquisición.
 
 #### 9.6.13 — Isolation Levels
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Los niveles de aislamiento regulan anomalías de lectura concurrente; nombres y comportamientos exactos dependen del motor. **Práctica:** compara READ COMMITTED y REPEATABLE READ con dos sesiones y un conjunto pequeño de datos. **Evidencia:** registra qué lecturas cambian y cita el comportamiento del motor probado.
 
 #### 9.6.14 — Optimización
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Optimizar consultas comienza por medir y comprender el plan, cardinalidad, índices, filtros y volumen, no por añadir índices al azar. **Práctica:** identifica una consulta lenta simulada y formula hipótesis antes de cambiarla. **Evidencia:** registra métrica base, cambio, resultado y posible coste de escritura.
 
 #### 9.6.15 — EXPLAIN
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+`EXPLAIN` muestra el plan que el optimizador considera para ejecutar una consulta; variantes como EXPLAIN ANALYZE pueden ejecutar realmente la sentencia. **Práctica:** analiza un SELECT de laboratorio y distingue estimaciones de mediciones reales. **Evidencia:** identifica acceso, joins, filas estimadas y advertencias del plan.
 
 ### 9.7 — PostgreSQL
 
 #### 9.7.1 — Arquitectura
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+PostgreSQL utiliza una arquitectura cliente-servidor con procesos backend, memoria compartida y archivos de datos/WAL. **Práctica:** consulta `version()` y vistas de actividad en una instancia de laboratorio. **Evidencia:** explica conexión, proceso servidor y persistencia sin confundir proceso cliente con backend.
 
 #### 9.7.2 — Roles
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Los roles de PostgreSQL representan identidades y pueden actuar como usuarios o grupos, con atributos de inicio de sesión y privilegios. **Práctica:** inspecciona roles de laboratorio con `\du` o vistas de catálogo. **Evidencia:** distingue LOGIN, pertenencia y privilegios de superusuario.
 
 #### 9.7.3 — Esquemas
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Los esquemas de PostgreSQL organizan objetos dentro de una base de datos y participan en resolución de nombres mediante search_path. **Práctica:** crea un esquema de laboratorio y una tabla cualificada por esquema. **Evidencia:** explica cómo cambia la resolución de una tabla según search_path.
 
 #### 9.7.4 — Tipos de datos
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+PostgreSQL ofrece tipos nativos como UUID, arrays, interval, JSON/JSONB y tipos geométricos, además de tipos SQL comunes. **Práctica:** selecciona tipos para identificador, fecha de evento y estado. **Evidencia:** justifica precisión, operadores disponibles y validación.
 
 #### 9.7.5 — JSONB
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+JSONB almacena documentos JSON en una representación binaria que permite operadores e índices específicos; no sustituye automáticamente un modelo relacional. **Práctica:** inserta un documento pequeño y consulta una clave con operadores JSONB. **Evidencia:** compara JSON y JSONB y justifica qué campos deben seguir normalizados.
 
 #### 9.7.6 — Índices
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+PostgreSQL admite índices B-tree, Hash, GiST, SP-GiST, GIN y BRIN con casos de uso diferentes. **Práctica:** analiza un índice B-tree para igualdad/rango y un GIN para búsqueda en JSONB o arrays. **Evidencia:** explica por qué el tipo de índice debe corresponder al operador y patrón de consulta.
 
 #### 9.7.7 — Transacciones
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Las transacciones PostgreSQL siguen el modelo ACID y MVCC para gestionar concurrencia; vacuum mantiene versiones y espacio reutilizable. **Práctica:** observa una transacción en dos sesiones y consulta el estado de actividad. **Evidencia:** explica snapshots y por qué una fila antigua puede permanecer temporalmente visible.
 
 #### 9.7.8 — Consultas avanzadas
 
-Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+Las consultas avanzadas combinan CTE, funciones de ventana, agregaciones, JSONB y joins según el problema. **Práctica:** calcula ranking de ventas por cliente con una función de ventana y CTE. **Evidencia:** explica PARTITION BY, ORDER BY y diferencia entre ranking y agrupación.
 
 ## Resultados de aprendizaje
 
