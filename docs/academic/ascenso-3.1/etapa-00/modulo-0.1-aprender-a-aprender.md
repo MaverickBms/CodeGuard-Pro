@@ -521,3 +521,115 @@ Los enlaces de esta tabla son candidatos, no videos aprobados. Antes de recomend
 - Los videos pueden cambiar, quedar privados o perder subtítulos. Los enlaces se revisan antes de publicar y periódicamente; un recurso caído se retira o sustituye conservando historial.
 - No se descarga ni se vuelve a alojar material de terceros. Se enlaza al original y se respeta la plataforma y los derechos del creador.
 - La disponibilidad de subtítulos puede variar por país, cuenta y dispositivo. La ficha debe describir lo que se verificó, no prometer una pista que no se comprobó.
+
+
+---
+
+## Profundización de evaluación — lecciones 0.1.3 a 0.1.7
+
+**Fecha:** 2026-11-24. Esta ampliación complementa las ocho lecciones existentes sin modificar sus títulos. Añade recuperación activa y retroalimentación para las lecciones que no tenían una autoevaluación individual explícita. No sustituye la evaluación integradora del módulo.
+
+### 0.1.3 — Método Feynman como ejercicio de explicación
+
+**Actividad de recuperación:** explica en voz alta, sin consultar apuntes, qué diferencia hay entre una función y una variable. Después responde:
+1. ¿Qué parte de tu explicación depende de una analogía?
+2. ¿Qué definición formal no puede omitirse?
+3. ¿Qué caso límite podría contradecir tu explicación?
+
+**Criterio de éxito:** la explicación define ambos conceptos, ofrece un ejemplo correcto y reconoce el límite de la analogía.
+
+**Retroalimentación orientativa:** si dices que «una función siempre devuelve un valor», tu definición es demasiado amplia para algunos lenguajes y construcciones. Revisa el lenguaje y distingue función, procedimiento y efecto secundario según el contexto.
+
+### 0.1.4 — Repetición espaciada
+
+**Actividad de planificación:** elige tres conceptos nuevos y programa una sesión de recuperación al terminar el estudio, otra al día siguiente y otras oportunidades posteriores. Ajusta el intervalo según dificultad y desempeño; no presentes este calendario como óptimo universal.
+
+**Autoevaluación**
+1. ¿Por qué una sesión de repaso debe comenzar intentando recordar antes de releer?
+2. ¿Qué haces cuando una respuesta es incorrecta?
+3. ¿Por qué un intervalo fijo puede no ser adecuado para todos los conceptos?
+
+**Respuestas razonadas**
+1. La recuperación revela qué puede producirse sin pistas y permite detectar vacíos.
+2. Se contrasta la respuesta, se identifica el error, se corrige y se programa otra oportunidad.
+3. Dificultad, conocimiento previo, retención y consecuencias del olvido varían por contenido y estudiante.
+
+### 0.1.5 — Práctica deliberada y práctica enfocada
+
+**Caso:** una estudiante resuelve veinte ejercicios idénticos, pero continúa fallando al interpretar entradas nuevas.
+
+La cantidad de repeticiones no basta para demostrar práctica deliberada. La actividad necesita una habilidad objetivo delimitada, dificultad adecuada, concentración, retroalimentación informativa y corrección posterior. La práctica enfocada reduce distracciones y dirige la atención, pero no es sinónimo automático de práctica deliberada.
+
+**Diseño de una sesión**
+1. Selecciona una habilidad concreta (por ejemplo, identificar condiciones de borde).
+2. Define una tarea que permita observarla.
+3. Establece un nivel de dificultad que exija esfuerzo sin ser inabordable.
+4. Resuelve sin copiar una solución.
+5. Compara con criterios o una solución fiable.
+6. Clasifica el error (concepto, procedimiento, descuido o interpretación).
+7. Repite con un caso distinto que compruebe transferencia.
+
+**Autoevaluación**
+- ¿Qué diferencia existe entre practicar mucho y practicar con una meta específica?
+- ¿Qué evidencia demuestra que la habilidad mejoró?
+- ¿Por qué el feedback debe ser oportuno y específico?
+
+**Respuesta orientativa:** mejora no significa completar más ejercicios; se demuestra con mayor precisión, menor dependencia de pistas o transferencia a casos nuevos, medidos bajo condiciones comparables. El feedback debe identificar qué cambiar y por qué, no limitarse a «bien» o «mal».
+
+### 0.1.6 — Resolución de problemas
+
+**Caso guiado:** un programa produce un total distinto del esperado.
+
+Antes de cambiar código:
+1. define entradas y salidas;
+2. escribe una regla verificable;
+3. construye un ejemplo pequeño;
+4. calcula manualmente el resultado esperado;
+5. separa hechos de hipótesis;
+6. prueba una causa por vez;
+7. valida el resultado y sus límites.
+
+**Autoevaluación**
+1. ¿Qué información debe fijarse antes de proponer una solución?
+2. ¿Qué diferencia hay entre una causa y una correlación?
+3. ¿Cuándo conviene detenerse y reformular el problema?
+
+**Respuestas razonadas**
+1. Objetivo, restricciones, entradas, salidas y condiciones de aceptación.
+2. Una correlación es una asociación observada; una causa requiere evidencia que apoye un mecanismo y descarte alternativas razonables.
+3. Cuando el objetivo no es medible, faltan datos esenciales o las hipótesis actuales no explican la evidencia.
+
+### 0.1.7 — Descomposición de problemas complejos
+
+**Ejercicio de transferencia:** descompón «crear un sistema de notas» en capacidades, por ejemplo: crear, editar, listar, buscar y exportar. Para cada capacidad registra entradas, salidas, reglas, dependencias y una prueba de aceptación. Después identifica qué partes pueden desarrollarse y probarse de forma independiente.
+
+**Autoevaluación**
+1. ¿Qué propiedad debe tener una subtarea para ser útil?
+2. ¿Cómo detectas una descomposición que omite una dependencia?
+3. ¿Por qué dividir en demasiadas subtareas puede ser contraproducente?
+
+**Respuestas razonadas**
+1. Debe tener alcance comprensible, resultado observable y relación explícita con el objetivo mayor.
+2. Recorre los flujos completos y comprueba que cada salida requerida tenga una fuente y cada dependencia esté representada.
+3. Aumenta la coordinación y fragmenta el trabajo sin reducir la incertidumbre real.
+
+### Matriz de evidencia para el estudiante
+
+| Lección | Evidencia mínima | Señal de dominio |
+|---|---|---|
+| 0.1.3 | Explicación propia con ejemplo y límite | Conceptos precisos sin analogía engañosa |
+| 0.1.4 | Agenda de repaso y registro de recuperación | Recupera, comprueba y ajusta intervalos |
+| 0.1.5 | Dos sesiones con feedback y revisión | Mejora observable en una habilidad delimitada |
+| 0.1.6 | Informe de problema con hipótesis y pruebas | Distingue datos, hipótesis y conclusión |
+| 0.1.7 | Descomposición y pruebas de aceptación | Subtareas completas y dependencias explícitas |
+
+**Criterio de corrección:** una respuesta se considera suficiente cuando aporta razonamiento y evidencia coherentes. La coincidencia literal con una respuesta modelo no es el criterio de dominio.
+
+## Registro de verificación de la ampliación
+
+- Se inspeccionaron los ocho encabezados de lección y la sección de referencias del documento existente.
+- Las lecciones 0.1.3–0.1.7 carecían de una sección individual de autoevaluación explícita; esta ampliación cubre esa brecha.
+- Se mantienen las referencias bibliográficas existentes; no se incorporan citas nuevas ni se atribuyen resultados adicionales a los autores citados.
+- No se ejecutaron experimentos educativos ni se midió aprendizaje de estudiantes.
+- Los videos siguen como candidatos pendientes de escucha y revisión.
+- Estado editorial: BORRADOR; la revisión técnica/pedagógica completa sigue pendiente.
