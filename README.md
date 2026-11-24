@@ -252,3 +252,8 @@ La documentación técnica extendida (índice, arquitectura, estructura del repo
 ### Continuidad ASCENSO 3.1 — etapa 9
 
 La documentación de la etapa 9 (Bases de datos relacionales y SQL) quedó desglosada en 81 encabezados de lección, distribuidos en sus siete módulos según el roadmap oficial. Incluye fundamentos, modelado, MySQL, SQL, normalización, temas avanzados y PostgreSQL. Es una base de trabajo activa: los ejemplos y laboratorios no se consideran ejecutados ni aprobados por este cambio.
+
+
+### Continuidad ASCENSO 3.1 — etapa 10
+
+La documentación de la etapa 10 (Bases de datos NoSQL y almacenamiento moderno) quedó desglosada en 38 encabezados de lección, distribuidos en sus cuatro módulos según el roadmap oficial. Se mantienen las distinciones entre modelos, consistencia, MongoDB, Redis y otras arquitecturas, junto con el proyecto híbrido. Es base de trabajo activa; los laboratorios no se declaran ejecutados ni aprobados.
