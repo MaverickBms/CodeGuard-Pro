@@ -117,145 +117,152 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 ### Módulo 16.1 — PHP
 
 #### 16.1.01 — Sintaxis
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+La sintaxis PHP define cómo declarar instrucciones, bloques, funciones y etiquetas dentro de archivos PHP. Comprende apertura/cierre de código, punto y coma, namespaces y modos de ejecución; evita mezclar lógica de presentación y dominio en scripts monolíticos.
 
 #### 16.1.02 — Variables
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Las variables PHP comienzan con `$` y su alcance depende del contexto de función, objeto o ámbito global. Usa nombres descriptivos, evita variables globales compartidas y valida toda entrada antes de incorporarla a consultas o HTML.
 
 #### 16.1.03 — Tipos
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+PHP maneja tipos escalares, compuestos y especiales con coerciones que dependen del contexto y la versión. Utiliza declaraciones de tipos y comparaciones estrictas cuando sea posible, y valida datos provenientes de formularios, JSON o bases de datos.
 
 #### 16.1.04 — Operadores
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Los operadores realizan operaciones aritméticas, lógicas, comparación, asignación y manejo de tipos. Distingue `==` de `===`, comprende precedencia y evita coerciones implícitas ambiguas en reglas de negocio.
 
 #### 16.1.05 — Funciones
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Las funciones encapsulan lógica reutilizable y pueden declarar parámetros, valores predeterminados, tipos y retorno. Mantén funciones pequeñas, evita efectos colaterales innecesarios y documenta excepciones y precondiciones.
 
 #### 16.1.06 — Arrays
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Los arrays PHP funcionan como mapas ordenados que pueden utilizar claves numéricas o cadenas. Distingue arrays indexados y asociativos, valida la existencia de claves y evita asumir que una estructura recibida tiene la forma esperada.
 
 #### 16.1.07 — Objetos
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Los objetos agrupan estado y comportamiento mediante clases, propiedades y métodos. Controla visibilidad, invariantes y construcción; no expongas propiedades sensibles ni permitas que cualquier consumidor modifique el estado sin validación.
 
 #### 16.1.08 — POO
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+La POO en PHP utiliza encapsulamiento, herencia, interfaces, traits y polimorfismo. Prefiere composición cuando reduce acoplamiento y diseña contratos que permitan sustituir implementaciones sin romper el comportamiento esperado.
 
 #### 16.1.09 — Namespaces
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Namespaces organizan símbolos y evitan colisiones de nombres entre clases, interfaces y funciones. Declara namespaces coherentes con la estructura del proyecto y utiliza imports explícitos para que dependencias y nombres sean legibles.
 
 #### 16.1.10 — Excepciones
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Las excepciones representan condiciones anómalas que pueden propagarse y capturarse. Captura tipos específicos en el límite donde puedas recuperarte, registra contexto sin secretos y no silencies fallos con bloques catch vacíos.
 
 #### 16.1.11 — Composer
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Composer administra dependencias PHP, autoloading y metadatos del proyecto mediante `composer.json`. Revisa paquetes y scripts, fija restricciones de versión razonables y conserva `composer.lock` en aplicaciones para reproducir instalaciones.
 
 #### 16.1.12 — Autoloading
-Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Autoloading carga clases según reglas configuradas, habitualmente PSR-4 en proyectos modernos. Mantén correspondencia entre namespace y rutas, regenera el autoloader cuando cambie la configuración y evita incluir archivos manualmente sin necesidad.
 
 ### Módulo 16.2 — Laravel
 
 #### 16.2.01 — Routing
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Routing de Laravel asocia métodos HTTP y URI con controladores o closures. Define rutas nombradas y agrupadas, valida parámetros y protege rutas sensibles mediante middleware; no confundas ocultar una ruta en frontend con protegerla.
 
 #### 16.2.02 — Controllers
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Controllers coordinan solicitudes y respuestas y delegan reglas a servicios o modelos. Mantén controladores delgados, valida entradas mediante Form Requests y devuelve recursos/redirects consistentes.
 
 #### 16.2.03 — Models
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Models de Eloquent representan entidades persistentes y facilitan consultas y relaciones. Define atributos asignables y ocultos cuidadosamente, controla mass assignment y evita exponer columnas sensibles en serialización.
 
 #### 16.2.04 — Eloquent ORM
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Eloquent ORM permite consultar y relacionar modelos mediante una abstracción orientada a objetos. Comprende lazy/eager loading y consultas N+1; inspecciona SQL generado y aplica scopes cuando expresen reglas reutilizables.
 
 #### 16.2.05 — Migrations
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Migrations versionan cambios de esquema y permiten recrear la estructura de base de datos. Escribe migraciones reversibles cuando sea posible, revisa impacto sobre datos existentes y no ejecutes cambios destructivos en producción sin respaldo y plan.
 
 #### 16.2.06 — Seeders
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Seeders cargan datos iniciales o de demostración de forma repetible. Separa fixtures de prueba de datos reales, evita credenciales predeterminadas y asegúrate de que repetir el seeder no corrompa el estado.
 
 #### 16.2.07 — Middleware
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Middleware procesa solicitudes antes o después de llegar al controlador, por ejemplo para autenticación, throttling o headers. Ordena el middleware y aplica la protección adecuada a cada grupo de rutas.
 
 #### 16.2.08 — Validation
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Validation verifica que los datos cumplan reglas de formato, presencia, rango y relación. Utiliza reglas del framework y mensajes claros, pero valida también invariantes en el dominio y constraints en la base de datos.
 
 #### 16.2.09 — Authentication
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Authentication en Laravel identifica usuarios mediante guards y providers configurados. Selecciona el mecanismo adecuado para sesión o API, protege cookies y credenciales y aplica expiración, rotación y revocación.
 
 #### 16.2.10 — Authorization
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Authorization determina qué acciones puede realizar un usuario mediante gates, policies y permisos. Comprueba autorización por recurso y operación, incluyendo identificadores manipulados, y no confíes en botones ocultos como control de acceso.
 
 #### 16.2.11 — Queues
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Queues ejecuta tareas diferidas en workers para desacoplar solicitudes lentas. Configura backend, reintentos, timeout y failed jobs; diseña tareas idempotentes y monitorea workers detenidos.
 
 #### 16.2.12 — Jobs
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Jobs encapsulan trabajo que puede ejecutarse de manera inmediata o en cola. Mantén payloads serializables y pequeños, maneja reintentos y evita depender de estado temporal que desaparezca entre procesos.
 
 #### 16.2.13 — Events
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Events y listeners separan la emisión de un hecho de las acciones que reaccionan a él. Define si el listener es síncrono o en cola, considera duplicados y orden, y evita ciclos de eventos difíciles de rastrear.
 
 #### 16.2.14 — Notifications
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Notifications envía avisos mediante canales como correo, base de datos o servicios integrados. Controla preferencias, frecuencia y datos personales, y no incluyas tokens de acceso o información sensible en notificaciones sin protección.
 
 #### 16.2.15 — API Resources
-Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+API Resources transforman modelos y colecciones a representaciones JSON controladas. Expón solo campos autorizados, define relaciones y paginación explícitas y evita serializar automáticamente el modelo completo.
 
 ### Módulo 16.3 — C# y .NET
 
 #### 16.3.01 — Sintaxis de C#
-Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+La sintaxis de C# define declaraciones, expresiones, bloques, patrones y construcciones del lenguaje. Mantén estilo coherente y conoce las características disponibles en la versión de lenguaje configurada en el proyecto.
 
 #### 16.3.02 — Tipos
-Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+C# es estáticamente tipado y ofrece tipos por valor, referencia, nullable y genéricos. Comprende conversiones y nullability, activa nullable reference types cuando sea posible y valida datos externos en runtime.
 
 #### 16.3.03 — Clases
-Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Las clases definen tipos de referencia con estado, métodos, constructores y propiedades. Diseña invariantes y visibilidad explícita, y evita clases que acumulen responsabilidades no relacionadas.
 
 #### 16.3.04 — Interfaces
-Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Las interfaces definen contratos que pueden implementar múltiples clases o structs. Programa contra abstracciones cuando facilite sustitución y pruebas, pero evita interfaces innecesarias que solo duplican una implementación sin aportar límite útil.
 
 #### 16.3.05 — POO
-Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+La POO en C# combina encapsulamiento, herencia, polimorfismo, interfaces y composición. Elige herencia para relaciones de sustitución válidas y utiliza composición para combinar capacidades con menor acoplamiento.
 
 #### 16.3.06 — LINQ
-Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+LINQ permite consultar secuencias y colecciones mediante operadores como `Where`, `Select`, `OrderBy` y `GroupBy`. Distingue ejecución diferida de materialización, evita enumerar varias veces consultas costosas y revisa la traducción cuando el proveedor es una base de datos.
 
 #### 16.3.07 — Generics
-Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Generics permiten escribir clases y métodos reutilizables con parámetros de tipo y restricciones. Conservan seguridad estática y evitan casts; define constraints solo cuando una operación necesita capacidades específicas.
 
 #### 16.3.08 — Async/Await
-Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Async/Await simplifica operaciones asíncronas mediante `Task` y `Task<T>`. Evita bloquear con `.Result` o `.Wait()` en rutas asíncronas, propaga cancellation tokens y maneja excepciones de tareas.
 
 #### 16.3.09 — Exception handling
-Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Exception handling utiliza `try`, `catch`, `finally` y `throw` para gestionar fallos. Captura excepciones específicas, preserva stack trace al relanzar y no utiliza excepciones como flujo normal de negocio.
 
 ### Módulo 16.4 — ASP.NET Core
 
 #### 16.4.01 — Arquitectura
-Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+ASP.NET Core organiza aplicaciones web mediante middleware, routing, servicios y hosting. Comprende el pipeline de solicitudes y el entorno de ejecución, y configura logging, errores y headers seguros desde el inicio.
 
 #### 16.4.02 — Controllers
-Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Controllers en ASP.NET Core agrupan endpoints MVC y coordinan model binding, validación y respuestas. Mantén acciones delgadas, utiliza DTOs y devuelve resultados HTTP coherentes.
 
 #### 16.4.03 — Minimal APIs
-Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Minimal APIs permiten definir endpoints con menos estructura de controladores, adecuadas para servicios pequeños o límites concretos. Mantén agrupación, validación, filtros y documentación claras para que la concisión no convierta el archivo en un monolito.
 
 #### 16.4.04 — Dependency Injection
-Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Dependency Injection es parte del host de ASP.NET Core y registra servicios con ciclos de vida transient, scoped y singleton. Selecciona el ciclo correcto y no inyectes servicios scoped en singletons sin un patrón seguro.
 
 #### 16.4.05 — Middleware
-Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Middleware compone el pipeline HTTP y puede inspeccionar, modificar o terminar solicitudes. El orden afecta autenticación, autorización, routing y manejo de errores; prueba el pipeline completo y evita registrar cuerpos sensibles.
 
 #### 16.4.06 — Entity Framework Core
-Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Entity Framework Core es un ORM para mapear entidades y consultar bases relacionales mediante LINQ. Controla tracking, carga, transacciones y migraciones; inspecciona consultas SQL y evita operaciones N+1 o actualizaciones masivas accidentales.
 
 #### 16.4.07 — REST
-Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+REST en ASP.NET Core expone recursos mediante rutas, métodos HTTP, status codes y representaciones. Define contratos versionados, valida entradas, pagina resultados y protege cada operación por recurso.
 
 #### 16.4.08 — Authentication
-Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Authentication en ASP.NET Core identifica usuarios mediante esquemas como cookies o Bearer. Configura issuer, audience, firma y expiración para tokens y protege claves; no confundas autenticación con permisos.
 
 #### 16.4.09 — Authorization
-Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Authorization aplica políticas, roles y requisitos sobre endpoints o recursos. Usa políticas explícitas y comprobaciones por objeto cuando corresponda; un rol genérico no basta para proteger recursos de otros usuarios.
 
 #### 16.4.10 — JWT
-Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+JWT permite transportar claims firmados para verificar integridad y contexto de identidad. Valida firma, algoritmo, issuer, audience y expiración, limita duración y diseña rotación/revocación; el contenido firmado suele ser legible.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 46 orientaciones genéricas por explicaciones específicas para PHP, Laravel, C#/.NET y ASP.NET Core. Se desarrollaron lenguaje y tipos, POO, namespaces, Composer/autoloading, routing, Eloquent, migraciones, middleware, validación, autorización, queues/jobs/events, LINQ, async/await, DI y EF Core.
+
+**Revisión interna:** 46/46 entradas desarrolladas y cotejadas con el roadmap. Se reforzaron mass assignment, validación en runtime, manejo de secretos, acceso por recurso, ciclos de vida DI y riesgos de consultas ORM. Pendiente: fijar versiones de PHP/Laravel/.NET, ejecutar suites de pruebas, migraciones y flujos de autenticación/autorización en entornos aislados. No se declara ejecución ni aprobación externa.
