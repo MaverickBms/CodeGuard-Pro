@@ -41,67 +41,129 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 ### 7.1.1 — Kernel
 
+El kernel es el componente privilegiado que administra CPU, memoria, dispositivos y servicios fundamentales del sistema. Expón la diferencia entre el kernel y el sistema operativo completo: utilidades, bibliotecas y aplicaciones se ejecutan alrededor de él. **Práctica:** identifica la versión del kernel con `uname -r` en Linux y registra la arquitectura con `uname -m`. **Evidencia:** explica qué información entrega cada comando y por qué no describe por sí solo toda la distribución.
+
 ### 7.1.2 — Kernel Space
+
+Kernel Space es el espacio de ejecución protegido donde opera el núcleo y donde se aplican privilegios elevados; no es una carpeta ni una partición de memoria asignada al usuario. Relaciona el modo privilegiado con la protección frente a accesos arbitrarios a hardware y memoria. **Práctica:** dibuja la frontera entre espacio de usuario y espacio de kernel y sitúa una llamada al sistema en el cruce. **Evidencia:** describe qué riesgo evita esa separación.
 
 ### 7.1.3 — User Space
 
+User Space es el entorno donde se ejecutan procesos ordinarios con permisos restringidos. Explica cómo una aplicación solicita servicios al kernel sin acceder directamente a recursos privilegiados y por qué el aislamiento entre procesos es una propiedad central. **Práctica:** observa procesos de usuario con `ps` y distingue PID, usuario y comando. **Evidencia:** interpreta tres filas sin confundir proceso con hilo.
+
 ### 7.1.4 — System Calls
+
+Una system call es la interfaz controlada mediante la cual un proceso solicita una operación al kernel, por ejemplo abrir un archivo o crear un proceso. Distingue la llamada al sistema de una función de biblioteca: la biblioteca puede preparar argumentos y finalmente invocar el mecanismo del kernel. **Práctica:** examina `open`, `read` o `write` en la documentación local con `man 2`. **Evidencia:** describe la secuencia de solicitud, validación y resultado.
 
 ### 7.1.5 — Procesos
 
+Un proceso es una instancia de programa en ejecución con espacio de direcciones, recursos y estado propios. Desarrolla estados, PID, creación y terminación, y diferencia el programa almacenado del proceso activo. **Práctica:** ejecuta `sleep 60 &`, localiza su PID con `ps` y termina únicamente ese proceso de laboratorio. **Evidencia:** registra el cambio de estado y explica por qué el PID identifica la instancia.
+
 ### 7.1.6 — Hilos
+
+Un hilo es una secuencia de ejecución dentro de un proceso; los hilos de un mismo proceso comparten recursos como el espacio de direcciones, aunque cada uno mantiene su contexto de ejecución. Compara su coste y coordinación con procesos separados, sin afirmar que todos los lenguajes implementan hilos igual. **Práctica:** dibuja un proceso con dos hilos y marca qué recursos comparten y cuáles son propios. **Evidencia:** identifica un riesgo de condición de carrera.
 
 ### 7.1.7 — Scheduler
 
+El scheduler decide qué tarea ejecutable recibe tiempo de CPU y cuándo ocurre el cambio, sujeto a políticas y prioridades del sistema. Distingue planificación de procesos/hilos de la planificación de trabajos de una aplicación. **Práctica:** observa `top` o `htop` y compara estado, prioridad y uso de CPU de procesos de prueba. **Evidencia:** explica por qué un proceso en espera de I/O no consume CPU continuamente.
+
 ### 7.1.8 — Context Switching
+
+Un context switch guarda el contexto de una tarea y restaura el de otra para permitir la multiplexación de CPU. Explica que el cambio tiene un coste y puede implicar efectos de caché, pero no debe confundirse con el cambio entre modo usuario y modo kernel. **Práctica:** construye una línea temporal de dos tareas que alternan CPU. **Evidencia:** señala qué estado debe preservarse para reanudar correctamente cada tarea.
 
 ### 7.1.9 — Memoria virtual
 
+La memoria virtual ofrece a cada proceso un espacio de direcciones lógico que el sistema traduce a memoria física mediante tablas de páginas y mecanismos del procesador. Explica aislamiento, paginación y fallos de página; diferencia memoria virtual de swap, que es solo uno de los mecanismos posibles de respaldo. **Práctica:** consulta `free -h` y `vmstat` si está disponible, sin interpretar swap como memoria RAM adicional equivalente. **Evidencia:** explica una traducción virtual-física de forma conceptual.
+
 ### 7.1.10 — Drivers
+
+Un driver permite que el sistema operativo controle un dispositivo mediante una interfaz definida. Distingue controladores del kernel, módulos cargables y software de usuario; su disponibilidad y modelo varían por sistema operativo y dispositivo. **Práctica:** en Linux consulta `lsmod` y `lspci -k` si las herramientas están instaladas. **Evidencia:** relaciona un dispositivo con el controlador asociado sin descargar ni modificar módulos.
 
 ### 7.1.11 — Sistema de archivos
 
+El sistema de archivos organiza nombres, directorios, metadatos y bloques persistentes sobre un dispositivo o volumen. Compara estructura lógica con el soporte físico y explica montaje, permisos, enlaces y journaling a nivel introductorio. **Práctica:** crea un directorio y un archivo temporal, inspecciona tipo y metadatos con `stat` y elimínalos al finalizar. **Evidencia:** diferencia nombre, inode y contenido.
+
 ### 7.1.12 — IPC (comunicación entre procesos)
+
+La comunicación entre procesos (IPC) permite intercambiar datos o sincronizar tareas mediante mecanismos como pipes, sockets, memoria compartida, colas y señales. Compara comunicación local y de red, y explica por qué cada mecanismo tiene diferentes garantías y costes. **Práctica:** conecta `printf` con `grep` mediante una pipe y describe el flujo entre procesos. **Evidencia:** identifica productor, consumidor y canal.
 
 ### 7.1.13 — Concurrencia
 
+La concurrencia describe la composición de varias tareas cuyo progreso se solapa; puede ocurrir incluso en un único núcleo mediante intercalado. Explica interleavings, secciones críticas, exclusión mutua y condiciones de carrera con un ejemplo de contador compartido. **Práctica:** construye una secuencia de dos hilos que actualizan el mismo valor y marca dónde podría perderse una actualización. **Evidencia:** propone una sincronización adecuada.
+
 ### 7.1.14 — Paralelismo
+
+El paralelismo ocurre cuando varias tareas se ejecutan simultáneamente en recursos de cómputo distintos, por ejemplo varios núcleos. Contrástalo con concurrencia y analiza límites como dependencias, contención y coste de coordinación. **Práctica:** clasifica tres escenarios (servidor de solicitudes, descarga concurrente y cálculo dividido entre núcleos) indicando si hay concurrencia, paralelismo o ambos. **Evidencia:** justifica cada clasificación.
 
 ## 7.2 — Linux
 
 ### 7.2.1 — Distribuciones
 
+Una distribución Linux integra el kernel con utilidades, gestor de paquetes, bibliotecas, instalador, políticas y ciclo de mantenimiento. Compara criterios de selección —soporte, estabilidad, comunidad, repositorios y uso— sin reducir las distribuciones a temas visuales. **Práctica:** compara las páginas oficiales de Ubuntu y Debian para identificar versiones y periodos de soporte publicados. **Evidencia:** recomienda una para un laboratorio y justifica la decisión.
+
 ### 7.2.2 — Kernel Linux
+
+El kernel Linux es el núcleo del sistema y se desarrolla como proyecto de código abierto; una distribución selecciona, configura y empaqueta una versión junto con otros componentes. Distingue versión upstream, kernel empaquetado y kernel en ejecución. **Práctica:** consulta `uname -r` y `cat /proc/version`. **Evidencia:** explica por qué el número mostrado no identifica por sí solo la versión completa de la distribución.
 
 ### 7.2.3 — Ubuntu
 
+Ubuntu es una distribución basada en Debian que publica ediciones y ciclos de soporte definidos por Canonical. Explica diferencias generales entre LTS y versiones intermedias y la importancia de consultar el ciclo vigente antes de instalar en producción. **Práctica:** identifica versión, codename y origen de paquetes en una VM con `lsb_release -a` o `/etc/os-release`. **Evidencia:** registra la edición y su fuente oficial de soporte.
+
 ### 7.2.4 — Debian
+
+Debian es una distribución comunitaria con ramas y políticas de publicación propias, conocida por priorizar estabilidad y criterios de software libre. Distingue stable, testing y unstable como ramas de desarrollo, no como niveles de seguridad garantizados. **Práctica:** inspecciona `/etc/os-release` y la configuración de repositorios de una VM Debian sin cambiarla. **Evidencia:** explica qué rama está configurada y por qué no se deben mezclar repositorios indiscriminadamente.
 
 ### 7.2.5 — Estructura del sistema de archivos
 
+La jerarquía del sistema de archivos Linux presenta una vista unificada de recursos y volúmenes bajo una raíz `/`; no equivale a las letras de unidad de Windows. Explica rutas absolutas y relativas, directorios montados y convenciones del Filesystem Hierarchy Standard. **Práctica:** recorre `/`, `/home`, `/etc` y `/var` en modo lectura. **Evidencia:** clasifica qué tipo de información suele residir en cada ubicación.
+
 ### 7.2.6 — Directorios del sistema de archivos
+
+Los directorios `/etc`, `/var`, `/home`, `/usr`, `/tmp` y `/opt` tienen propósitos distintos: configuración del sistema, datos variables, perfiles, software y recursos compartidos, temporales y aplicaciones adicionales. Advierte que los detalles pueden variar por distribución y paquete. **Práctica:** localiza un archivo de configuración y un log sin modificarlos. **Evidencia:** justifica por qué cada ruta es apropiada y evita almacenar secretos en ubicaciones públicas.
 
 ### 7.2.7 — Usuarios
 
+Las cuentas de usuario representan identidades locales con UID, grupo principal, directorio personal y shell, entre otros atributos. Distingue nombre visible de UID y explica cuentas de servicio frente a cuentas interactivas. **Práctica:** consulta `id`, `getent passwd` y `whoami` en una VM. **Evidencia:** interpreta UID, GID y grupos suplementarios sin revelar datos sensibles del host.
+
 ### 7.2.8 — Grupos
+
+Los grupos reúnen identidades para asignar permisos de forma administrable; una cuenta puede pertenecer a un grupo principal y a varios suplementarios. Explica el uso de grupos para compartir recursos sin conceder privilegios globales. **Práctica:** inspecciona `getent group` y `id` con una cuenta de laboratorio. **Evidencia:** diseña un grupo para un directorio compartido y describe qué acceso habilitaría.
 
 ### 7.2.9 — Permisos
 
+Los permisos tradicionales de Unix representan lectura, escritura y ejecución para propietario, grupo y otros; también existen ACL y bits especiales. Explica que el significado de ejecución cambia entre archivos y directorios. **Práctica:** crea un archivo de prueba y compara `chmod 640` con `chmod 750` usando `ls -l`. **Evidencia:** traduce ambos modos a permisos efectivos y selecciona el mínimo necesario.
+
 ### 7.2.10 — Propietarios
+
+La propiedad de archivos y directorios identifica un usuario y un grupo asociados al objeto. Distingue propietario de quien creó el archivo originalmente y explica cómo la propiedad influye en la evaluación de permisos. **Práctica:** consulta `stat` y `ls -ln` sobre archivos de laboratorio. **Evidencia:** identifica UID/GID propietarios y explica qué cambiaría al reasignar el grupo.
 
 ### 7.2.11 — Root
 
+Root es la cuenta de UID 0 con privilegios administrativos amplios; no es simplemente un usuario normal con una contraseña más fuerte. Explica el riesgo de operar como root de forma continua y el principio de mínimo privilegio. **Práctica:** verifica `id` y `whoami` en una cuenta ordinaria; no habilites acceso root remoto. **Evidencia:** describe dos tareas que requieren elevación y dos que no.
+
 ### 7.2.12 — Sudo
+
+`sudo` permite ejecutar comandos con privilegios delegados conforme a una política, normalmente registrada en `/etc/sudoers` y archivos asociados. Explica autenticación, alcance, auditoría y el riesgo de conceder permisos demasiado amplios. **Práctica:** en una VM desechable, ejecuta `sudo -l` para inspeccionar permisos; no edites sudoers con un editor ordinario. **Evidencia:** diferencia autorización para un comando concreto de acceso administrativo irrestricto.
 
 ### 7.2.13 — Procesos
 
+La administración de procesos en Linux utiliza PID, señales, prioridades y herramientas de observación. Distingue procesos en ejecución, durmientes, detenidos y zombis, y evita terminar procesos desconocidos del sistema. **Práctica:** lanza `sleep 120` en una terminal, localízalo con `pgrep -a sleep` y finaliza solo el PID creado. **Evidencia:** registra comando, PID y resultado.
+
 ### 7.2.14 — Servicios
+
+Un servicio es una función persistente o de larga duración administrada por el sistema; en muchas distribuciones modernas systemd gestiona unidades y dependencias. Distingue servicio, proceso y unidad. **Práctica:** consulta `systemctl status` de un servicio existente sin cambiar su estado. **Evidencia:** interpreta activo/inactivo, habilitado/deshabilitado y el proceso asociado.
 
 ### 7.2.15 — Paquetes
 
+El gestor de paquetes resuelve dependencias, verifica metadatos y registra la instalación de software desde repositorios configurados. Compara el rol de APT en Debian/Ubuntu con el de otros gestores sin mezclar comandos entre distribuciones. **Práctica:** consulta `apt-cache policy` o `apt show` para un paquete conocido, sin instalarlo. **Evidencia:** identifica versión candidata, repositorio y dependencias declaradas.
+
 ### 7.2.16 — Logs
 
+Los logs registran eventos del sistema y aplicaciones; su formato, ubicación y retención dependen del servicio y la distribución. Explica niveles de severidad, marcas temporales, correlación y protección de datos sensibles. **Práctica:** consulta `journalctl -b -p warning` y limita la salida a un servicio de laboratorio. **Evidencia:** resume un evento sin copiar credenciales ni datos personales.
+
 ### 7.2.17 — Variables de entorno
+
+Las variables de entorno transmiten configuración a procesos hijos, como rutas, idioma y opciones de ejecución; no son un almacén seguro para secretos por defecto. Distingue variables de shell, entorno exportado y archivos de configuración persistentes. **Práctica:** inspecciona `printenv`, crea una variable temporal y expórtala a un proceso hijo. **Evidencia:** explica por qué una variable no exportada no aparece en el entorno de un subproceso.
 
 ## 7.3 — Administración Linux
 
