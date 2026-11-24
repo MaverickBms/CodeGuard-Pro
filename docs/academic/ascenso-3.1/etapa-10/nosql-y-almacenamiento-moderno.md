@@ -399,47 +399,179 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 #### 10.3.1 — Key-value
 
-Un almacén key-value asocia claves únicas con valores y optimiza acceso directo por clave; el valor puede ser opaco para el servidor. **Práctica:** diseña claves con prefijos por dominio para sesiones y caché. **Evidencia:** define convención, expiración y estrategia para evitar colisiones.
+**Propósito y modelo.** El modelo clave-valor asocia una clave única con un valor opaco o estructurado para el motor. Es eficiente cuando la aplicación conoce la clave exacta, pero ofrece consultas por atributos limitadas en comparación con modelos relacionales o documentales. Diseño de claves, expiración y tamaño de valor son decisiones importantes.
+
+**Ejemplo desarrollado.** Una sesión puede almacenarse bajo una clave namespaced como session:token-id y un valor con estado serializado. La clave debe ser impredecible y el contenido no debe incluir secretos innecesarios.
+
+**Práctica guiada.** Diseña convención de claves para sesiones, caché y contadores. Identifica colisiones, expiración y separación por entorno.
+
+**Actividad independiente.** Compara clave-valor con tabla relacional para almacenar preferencias de usuario y explica consultas que cada modelo soporta.
+
+**Criterios de aceptación.** Explica lookup por clave y justifica esquema de nombres, TTL y tamaño.
+
+**Errores frecuentes.** Utilizar claves sin namespace o asumir que una base clave-valor puede responder eficientemente cualquier consulta por campos internos.
+
+**Comprobación.** ¿Qué limitación aparece cuando el sistema necesita buscar valores por atributos y no conoce la clave?
 
 #### 10.3.2 — Strings
 
-Redis Strings almacenan cadenas o secuencias binarias y admiten operaciones como SET, GET e incrementos atómicos sobre valores numéricos. **Práctica:** guarda un contador de laboratorio con `SET`, `GET` e `INCR`. **Evidencia:** explica atomicidad de INCR y por qué no equivale a leer, sumar y escribir desde el cliente.
+**Propósito y modelo.** Redis Strings almacena secuencias de bytes y soporta operaciones de lectura/escritura, incremento atómico y expiración. Puede guardar texto, números codificados o datos binarios; el cliente debe definir serialización y límites de tamaño. Las operaciones atómicas ayudan a evitar carreras en contadores simples.
+
+**Ejemplo desarrollado.** INCR contador:visitas incrementa un contador atómicamente; SET clave valor EX 60 guarda un valor con expiración. La atomicidad de comando no equivale a transacción de negocio completa.
+
+**Práctica guiada.** En Redis de laboratorio ejecuta SET, GET, INCR y TTL sobre claves con prefijo lab:. Comprueba expiración y elimina únicamente tus claves de práctica.
+
+**Actividad independiente.** Diseña un contador de solicitudes por minuto con expiración y analiza qué pasa cuando varios clientes incrementan simultáneamente.
+
+**Criterios de aceptación.** Explica almacenamiento de bytes, operaciones atómicas y TTL; evita claves compartidas con datos reales.
+
+**Errores frecuentes.** Guardar objetos complejos sin versión de serialización o usar un contador como registro financiero durable sin respaldo.
+
+**Comprobación.** ¿Qué ventaja ofrece INCR frente a leer, incrementar en la aplicación y volver a escribir?
 
 #### 10.3.3 — Lists
 
-Redis Lists mantienen secuencias ordenadas con operaciones en extremos, útiles para colas simples o historiales acotados. **Práctica:** usa LPUSH, RPUSH, LRANGE y LPOP en una lista de tareas ficticias. **Evidencia:** dibuja el orden después de cada operación y distingue cola y pila.
+**Propósito y modelo.** Redis Lists almacena secuencias ordenadas de valores y permite inserción/eliminación en extremos y operaciones de cola. Puede utilizarse para colas sencillas, pero el diseño debe contemplar confirmación, reintentos, duplicados y pérdida de consumidores. Para colas robustas pueden convenir Redis Streams o sistemas especializados.
+
+**Ejemplo desarrollado.** LPUSH agrega trabajo a un extremo y RPOP lo retira del otro, formando una cola FIFO según combinación de operaciones. Si un consumidor falla después de retirar un elemento, puede perderse salvo que se implemente mecanismo de recuperación.
+
+**Práctica guiada.** En instancia de laboratorio crea una lista lab:queue, inserta tres elementos y observa orden con LRANGE y operaciones de extremos.
+
+**Actividad independiente.** Diseña cola de tareas con política de reintento, visibilidad, idempotencia y registro de errores; identifica por qué una lista simple puede no bastar.
+
+**Criterios de aceptación.** Explica orden, operaciones de extremos y riesgo de pérdida al consumir.
+
+**Errores frecuentes.** Confundir pop con confirmación durable o asumir entrega exactamente una vez sin mecanismo adicional.
+
+**Comprobación.** ¿Qué ocurre si un consumidor retira una tarea y se cae antes de procesarla?
 
 #### 10.3.4 — Sets
 
-Redis Sets almacenan miembros únicos sin orden garantizado y ofrecen operaciones de unión, intersección y diferencia. **Práctica:** crea conjuntos de etiquetas para dos productos y calcula elementos comunes. **Evidencia:** explica cómo se elimina duplicación y cuándo el orden no debe asumirse.
+**Propósito y modelo.** Redis Sets almacena valores únicos sin orden definido y soporta operaciones de pertenencia, unión, intersección y diferencia. Es útil para etiquetas, conjuntos de permisos temporales o membresías, siempre que se consideren cardinalidad y memoria.
+
+**Ejemplo desarrollado.** SADD grupo:lab usuario1 usuario2 crea membresías; SISMEMBER verifica pertenencia. SINTER permite obtener elementos compartidos por dos conjuntos.
+
+**Práctica guiada.** Crea dos sets sintéticos y ejecuta SADD, SISMEMBER, SCARD, SINTER y SDIFF. Elimina solo claves del namespace lab:.
+
+**Actividad independiente.** Modela etiquetas de productos y grupos de usuarios y define operaciones frecuentes de unión e intersección.
+
+**Criterios de aceptación.** Distingue unicidad de orden y aplica operaciones de conjuntos correctamente.
+
+**Errores frecuentes.** Depender del orden de iteración o utilizar Sets para datos que requieren valores repetidos o atributos por elemento.
+
+**Comprobación.** ¿Por qué un Set no es adecuado cuando cada elemento necesita almacenar atributos adicionales asociados?
 
 #### 10.3.5 — Hashes
 
-Redis Hashes almacenan pares campo-valor dentro de una clave, adecuados para representar atributos de una entidad pequeña. **Práctica:** crea un hash de perfil de prueba con HSET y consulta campos con HGET/HGETALL. **Evidencia:** explica por qué un hash no sustituye automáticamente una base relacional.
+**Propósito y modelo.** Redis Hash almacena pares campo-valor bajo una clave y es útil para representar objetos pequeños y modificables por campo. Los valores son cadenas de bytes; no hay esquema relacional ni validación automática de tipos. Deben definirse convenciones, versionado y límites.
+
+**Ejemplo desarrollado.** HSET usuario:42 nombre Ana estado activo guarda campos; HGET obtiene uno y HGETALL recupera todos. La clave debe estar namespaced y los datos personales deben minimizarse y protegerse.
+
+**Práctica guiada.** Crea hash lab:usuario:1 con campos ficticios, consulta HGET/HGETALL y aplica expiración a la clave.
+
+**Actividad independiente.** Diseña un hash para estado temporal de proceso y explica cuándo conviene documento MongoDB o fila SQL en su lugar.
+
+**Criterios de aceptación.** Diferencia hash Redis de función hash criptográfica y explica estructura campo-valor.
+
+**Errores frecuentes.** Guardar grandes objetos sin límite o confundir Redis Hash con hash de contraseña.
+
+**Comprobación.** ¿Por qué un Redis Hash no sustituye automáticamente a una tabla relacional?
 
 #### 10.3.6 — Sorted Sets
 
-Sorted Sets asocian miembros únicos con puntuaciones numéricas y permiten consultas por rango o ranking. **Práctica:** registra puntuaciones de jugadores ficticios y consulta el top con ZREVRANGE o equivalente de la versión. **Evidencia:** explica desempates y por qué la puntuación no garantiza unicidad.
+**Propósito y modelo.** Redis Sorted Sets asocia miembros únicos con puntuaciones numéricas y mantiene orden por score. Soporta rankings, colas priorizadas y ventanas temporales. Deben definirse desempates, precisión, actualización de score y expiración; la puntuación no es una identidad.
+
+**Ejemplo desarrollado.** ZADD ranking 150 usuarioA 120 usuarioB agrega puntuaciones; ZREVRANGE obtiene ranking descendente. Si dos miembros tienen igual score, Redis aplica un orden lexicográfico entre miembros en los comandos correspondientes.
+
+**Práctica guiada.** Crea ranking sintético y ejecuta ZADD, ZSCORE, ZRANGE y ZREVRANGE. Actualiza un score y verifica posición.
+
+**Actividad independiente.** Diseña un ranking semanal que elimine o archive puntuaciones antiguas y gestione empates.
+
+**Criterios de aceptación.** Explica score, miembro y orden; define estrategia de desempate.
+
+**Errores frecuentes.** Usar puntuaciones como identificadores o asumir que score conserva precisión decimal arbitraria.
+
+**Comprobación.** ¿Qué sucede cuando dos miembros tienen la misma puntuación en un Sorted Set?
 
 #### 10.3.7 — TTL
 
-TTL define cuánto tiempo permanece una clave antes de expirar; es útil para cachés y datos temporales, no para registros que requieren retención permanente. **Práctica:** crea una clave con expiración breve y consulta TTL y existencia. **Evidencia:** registra el tiempo restante y explica la diferencia entre expiración y borrado manual.
+**Propósito y modelo.** TTL define el tiempo restante antes de que una clave expire. Es útil para caché, sesiones y datos temporales. La expiración no debe utilizarse como único mecanismo de cumplimiento legal o borrado seguro; la persistencia, réplicas, snapshots y backups pueden conservar copias según configuración.
+
+**Ejemplo desarrollado.** SET clave valor EX 300 establece cinco minutos. TTL informa segundos restantes, -1 puede indicar ausencia de expiración y -2 clave inexistente, según comando y estado.
+
+**Práctica guiada.** En Redis de laboratorio asigna TTL a una clave lab:, consulta con TTL y espera expiración. No uses claves de otros usuarios.
+
+**Actividad independiente.** Define TTL para caché, token de recuperación y sesión; justifica duración y revocación anticipada.
+
+**Criterios de aceptación.** Interpreta TTL y explica diferencia entre expiración y borrado garantizado de todas las copias.
+
+**Errores frecuentes.** Asumir que TTL es un reloj exacto de ejecución o almacenar secretos de larga duración sin renovación/revocación.
+
+**Comprobación.** ¿Por qué una expiración de clave no equivale necesariamente a eliminación inmediata de todas las copias persistentes?
 
 #### 10.3.8 — Cache
 
-Una caché conserva temporalmente resultados para reducir latencia y carga, pero introduce invalidación, obsolescencia y límites de memoria. **Práctica:** diseña cache-aside para una ficha de producto. **Evidencia:** describe hit, miss, TTL e invalidación tras actualizar el producto.
+**Propósito y modelo.** Una caché guarda temporalmente resultados para reducir latencia o carga sobre una fuente de verdad. Las estrategias incluyen cache-aside, write-through y write-behind. La invalidación, TTL, consistencia y protección frente a cache stampede son parte del diseño.
+
+**Ejemplo desarrollado.** En cache-aside, la aplicación consulta Redis; si falta el dato, lee SQL, lo almacena con TTL y devuelve el resultado. Al actualizar la fuente debe invalidar o refrescar la clave.
+
+**Práctica guiada.** Dibuja cache hit y cache miss para una ficha de producto. Identifica qué sucede al actualizar el precio en la base principal.
+
+**Actividad independiente.** Diseña estrategia de caché para catálogo con TTL, invalidación, claves versionadas y comportamiento cuando Redis no está disponible.
+
+**Criterios de aceptación.** Distingue fuente de verdad y caché y define política de coherencia.
+
+**Errores frecuentes.** Tratar caché como almacenamiento definitivo o invalidar una clave antes de confirmar la escritura en la fuente de verdad sin estrategia de consistencia.
+
+**Comprobación.** ¿Qué problema puede causar un cache stampede cuando una clave muy consultada expira?
 
 #### 10.3.9 — Sessions
 
-Una sesión mantiene estado temporal asociado a un usuario o cliente entre solicitudes; el identificador debe ser impredecible y protegido. **Práctica:** diseña una clave de sesión sin almacenar contraseñas ni datos sensibles en texto claro. **Evidencia:** define expiración, renovación y revocación.
+**Propósito y modelo.** Una sesión mantiene estado temporal asociado a un usuario o cliente. Redis puede almacenar identificador opaco y datos de sesión con TTL, pero el diseño requiere aleatoriedad criptográfica del token, protección en tránsito, control de acceso, rotación, revocación y no almacenar secretos innecesarios.
+
+**Ejemplo desarrollado.** El navegador conserva un cookie de sesión con atributos Secure, HttpOnly y SameSite; el servidor usa el identificador para recuperar el estado en Redis. El valor no debe contener contraseña ni datos de tarjeta.
+
+**Práctica guiada.** Diseña flujo de inicio/cierre de sesión sin crear credenciales reales. Identifica dónde se genera token, cómo se almacena y cómo se invalida.
+
+**Actividad independiente.** Define política de TTL, renovación, cierre global, detección de reutilización y protección de sesiones.
+
+**Criterios de aceptación.** Explica token opaco, almacenamiento de sesión y revocación; reconoce que Redis no autentica al usuario por sí mismo.
+
+**Errores frecuentes.** Usar identificadores predecibles, exponer Redis públicamente o confiar solo en TTL para revocar sesiones comprometidas.
+
+**Comprobación.** ¿Qué controles impiden que conocer una clave Redis permita a un atacante suplantar directamente a un usuario?
 
 #### 10.3.10 — Pub/Sub
 
-Pub/Sub permite publicar mensajes a canales y distribuirlos a suscriptores conectados; no debe asumirse persistencia o entrega a clientes desconectados. **Práctica:** publica eventos sintéticos en un canal y suscríbete desde dos terminales de laboratorio. **Evidencia:** describe qué ocurre si un suscriptor se desconecta.
+**Propósito y modelo.** Redis Pub/Sub distribuye mensajes efímeros a suscriptores de canales. Los suscriptores desconectados no reciben mensajes publicados mientras no están conectados; no es una cola durable ni garantiza entrega. Para persistencia y replay se requieren mecanismos como Streams u otro broker.
+
+**Ejemplo desarrollado.** Un servicio publica evento en canal notificaciones y clientes conectados lo reciben. Si un cliente está desconectado, el mensaje no queda esperando para él.
+
+**Práctica guiada.** En Redis local abre dos sesiones de laboratorio, suscribe una al canal lab:events y publica un mensaje sintético desde la otra. Comprueba qué ocurre al desconectar el suscriptor.
+
+**Actividad independiente.** Decide entre Pub/Sub, Streams y una cola durable para notificaciones que pueden perderse frente a órdenes que no deben perderse.
+
+**Criterios de aceptación.** Explica publicación/suscripción y ausencia de persistencia/replay del Pub/Sub clásico.
+
+**Errores frecuentes.** Usar Pub/Sub como registro de eventos duradero o publicar datos sensibles en canales accesibles a demasiados roles.
+
+**Comprobación.** ¿Qué limitación presenta Pub/Sub cuando un consumidor está desconectado durante la publicación?
 
 #### 10.3.11 — Rate Limiting
 
-Rate limiting limita solicitudes por identidad, token o recurso para reducir abuso y proteger capacidad. Redis puede apoyar contadores con expiración, pero la estrategia debe considerar concurrencia y múltiples nodos. **Práctica:** diseña un límite de cinco solicitudes por minuto con ventana definida. **Evidencia:** describe clave, contador, expiración y respuesta al exceder el límite.
+**Propósito y modelo.** Rate limiting limita frecuencia de operaciones por identidad, IP, token o recurso para reducir abuso y proteger capacidad. Puede implementarse con ventana fija, ventana deslizante, token bucket o leaky bucket. Redis permite contadores y operaciones atómicas, pero la implementación debe manejar concurrencia, expiración y distribución.
+
+**Ejemplo desarrollado.** Un contador con TTL limita solicitudes por usuario durante una ventana; incrementos no atómicos o carreras entre INCR y EXPIRE pueden producir resultados incorrectos si no se diseña con script o transacción apropiada.
+
+**Práctica guiada.** Simula en papel una ventana de 60 segundos con límite de 10 solicitudes y compara ventana fija con token bucket. No generes tráfico contra servicios externos.
+
+**Actividad independiente.** Diseña rate limit por usuario y por IP para una API, incluyendo respuestas 429, cabeceras de cuota y tratamiento de clientes legítimos detrás de NAT.
+
+**Criterios de aceptación.** Explica algoritmo, clave de partición, atomicidad y comportamiento de límite superado.
+
+**Errores frecuentes.** Limitar solo por IP sin considerar NAT, usar contadores no atómicos o permitir bypass con múltiples identificadores triviales.
+
+**Comprobación.** ¿Qué ventaja ofrece token bucket frente a una ventana fija para permitir ráfagas controladas?
 
 ### 10.4 — Otras arquitecturas de almacenamiento
 
