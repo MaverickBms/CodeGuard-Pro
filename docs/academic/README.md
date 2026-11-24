@@ -219,3 +219,12 @@ Se amplió el desarrollo de las **38 lecciones** de NoSQL: fundamentos (8), Mong
 Comprobación estructural: 38/38 encabezados cotejados con el roadmap oficial. No se ejecutaron instancias MongoDB/Redis, consultas, benchmarks, failover ni sharding. Las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. La cobertura documental no equivale a validación técnica ni aprobación.
 
 Acumulado documental ampliado: etapas 1–6, 265; etapa 7, 84; etapa 8, 81; etapa 9, 81; etapa 10, 38; total etapas 1–10: **549 lecciones**. Restan 1.397 lecciones nominales de las etapas 11–32. El roadmap JSON permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó ni publicó contenido.
+
+
+### Profundización documental integral — etapa 11 — 2026-11-24
+
+Se amplió el desarrollo de las **60 lecciones** de HTML/CSS/frontend: HTML (21), accesibilidad (8), CSS (17), diseño de interfaces (8) y SEO (6). Se incorporaron prácticas específicas, evidencias esperadas, criterios de aceptación y límites de seguridad.
+
+Comprobación estructural: 60/60 encabezados cotejados con el roadmap oficial. No se ejecutaron validadores HTML/CSS, pruebas cross-browser, lectores de pantalla, mediciones de contraste ni pruebas de indexación. Las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. La cobertura documental no equivale a conformidad WCAG, validación técnica ni aprobación.
+
+Acumulado documental ampliado: etapas 1–6, 265; etapa 7, 84; etapa 8, 81; etapa 9, 81; etapa 10, 38; etapa 11, 60; total etapas 1–11: **609 lecciones**. Restan 1.337 lecciones nominales de las etapas 12–32. El roadmap JSON permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó ni publicó contenido.
