@@ -1158,3 +1158,26 @@ Se añadieron laboratorios específicos de modelado, claves, restricciones, admi
 **Estado:** desarrollo documental de la etapa 9 completado en esta pasada; ejecución reproducible, verificación de referencias y aprobación independiente pendientes. La cobertura 81/81 no equivale a pruebas ejecutadas ni a aprobación.
 
 El roadmap JSON permanece sin cambios. No se importó ni publicó contenido.
+
+
+## Addendum de profundización — módulo 7.4 Bash (2026-11-24)
+
+Se amplió el módulo 7.4 con laboratorios aplicados específicos para sus 12 lecciones: variables, operadores, condicionales, bucles, funciones, arrays, pipes, redirecciones, códigos de salida, scripts, cron y automatización. Cada laboratorio define pasos reproducibles, evidencia que debe registrarse y límites de seguridad; se aclara expresamente que el diseño de una práctica no demuestra que haya sido ejecutada.
+
+### Estado documental actualizado de la etapa 7
+
+El documento de etapa 7 contiene las 84 lecciones de sus seis módulos oficiales. En este ciclo se trabajaron directamente 63 lecciones de 7.1 a 7.4: 51 desarrolladas en los lotes previos y 12 con laboratorios aplicados añadidos ahora. Los módulos 7.5 (12 lecciones) y 7.6 (9 lecciones) ya contienen desarrollo, prácticas y laboratorios documentados en el archivo; no se modificaron en este lote ni se consideran validados técnicamente por ello.
+
+| Módulo | Lecciones oficiales | Alcance de esta intervención acumulada |
+|---|---:|---|
+| 7.1 Fundamentos de sistemas operativos | 14 | 14 lecciones trabajadas en lotes previos |
+| 7.2 Linux | 17 | 17 lecciones profundizadas |
+| 7.3 Administración Linux | 20 | 20 lecciones profundizadas |
+| 7.4 Bash | 12 | 12 lecciones con laboratorios aplicados añadidos |
+| 7.5 Windows | 12 | Desarrollo previo existente; no modificado en este lote |
+| 7.6 Virtualización | 9 | Desarrollo previo existente; no modificado en este lote |
+| **Total** | **84** | **84 entradas de lección presentes; revisión técnica de ejecución pendiente** |
+
+### Validación pendiente
+
+No se ejecutaron los laboratorios Bash en una máquina virtual durante este lote. No se validaron scripts con shellcheck ni se probaron cron, permisos o automatizaciones en un entorno aislado. La cobertura documental completa de la etapa no equivale a validación técnica, editorial externa ni aprobación. Las etapas 8–32 requieren continuar con verificación de contenido y evidencia por lección.
