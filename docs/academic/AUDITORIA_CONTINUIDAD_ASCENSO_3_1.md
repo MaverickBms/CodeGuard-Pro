@@ -149,3 +149,10 @@ La separación conserva las explicaciones y ejemplos existentes y mejora la corr
 El documento de la etapa 2 se reorganizó para que cada uno de sus 39 temas nominales tenga un encabezado con identificador curricular exacto (2.1.1–2.5.7). Se separaron las entradas, el procesamiento y las salidas; pseudocódigo y diagramas; contadores y acumuladores; proporciones y porcentajes; relaciones y grafos; y los conceptos lógicos que antes compartían un encabezado. El orden de las lecciones de algoritmos se ajustó al roadmap.
 
 Se conservaron las explicaciones, ejemplos, proyecto y ejercicios existentes. Esta alineación mejora la navegación y trazabilidad; no representa una evaluación formal ni ejecución del proyecto.
+
+
+### Expansión granular — etapa 3
+
+El documento de programación inicial con Java quedó alineado con las 48 lecciones nominales del roadmap mediante encabezados curriculares individuales: 13 de fundamentos, 9 de control de flujo, 7 de métodos, 7 de manejo de información, 6 de manejo de errores y 6 de archivos. Se separaron conceptos que antes compartían encabezado (JDK/JVM/JRE, compilación/ejecución, sintaxis/semántica, variables/constantes, ramas de control, parámetros/argumentos, entrada/Scanner, throw/throws y lectura/escritura/directorios/rutas).
+
+Se conservaron los ejemplos y el proyecto de inventario, y se mantuvo explícito que los comandos y ejemplos no se han compilado ni ejecutado en esta sesión.
