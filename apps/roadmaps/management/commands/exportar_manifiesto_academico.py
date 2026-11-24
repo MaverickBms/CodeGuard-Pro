@@ -55,6 +55,11 @@ class Command(BaseCommand):
         module_count = 0
         example_count = 0
         exercise_count = 0
+        legacy_body_count = 0
+        active_content_count = 0
+        version_state_counts = {
+            state: 0 for state, _label in VersionContenidoLeccion.ESTADOS
+        }
 
         queryset = roadmap.etapas.prefetch_related(
             "modulos__lecciones__ejemplos",
