@@ -1,7 +1,7 @@
 # Etapa 21 — Fundamentos de ciberseguridad, gestión de riesgos y ética
 
 **Prioridad:** P1 · Obligatoria  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** comprender el panorama de la ciberseguridad, sus principios, amenazas, responsabilidades y marcos de protección.  
 **Proyecto oficial:** elaborar una evaluación de riesgos para una empresa ficticia, identificando activos, amenazas, vulnerabilidades, impactos y controles.
 
@@ -129,4 +129,4 @@ No se incluyen videos aprobados. Se añadirán solo con audio hablado en españo
 - OWASP: https://owasp.org/
 - Colombia, MinTIC: https://www.mintic.gov.co/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** ejercicio ficticio no auditado en organización real. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** ejercicio ficticio no auditado en organización real. **Estado:** base de trabajo activa; sin aprobación ni publicación.
