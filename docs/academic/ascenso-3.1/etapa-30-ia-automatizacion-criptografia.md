@@ -1,7 +1,7 @@
 # Etapa 30 — Inteligencia artificial, automatización y seguridad avanzada
 
 **Prioridad:** P2/P3 · Especialización avanzada  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** comprender amenazas modernas y desarrollar capacidades de automatización de seguridad.  
 **Proyecto oficial:** crear un sistema de automatización en Python que recopile información de fuentes autorizadas, procese indicadores de compromiso y genere reportes de seguridad.
 
@@ -115,4 +115,4 @@ No se incluyen videos aprobados. Se añadirán solo con audio español y relaci�
 - NIST FIPS 205: https://csrc.nist.gov/pubs/fips/205/final
 - NIST Post-Quantum Cryptography: https://csrc.nist.gov/projects/post-quantum-cryptography
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutó agente ni automatización sobre fuentes externas en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutó agente ni automatización sobre fuentes externas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
