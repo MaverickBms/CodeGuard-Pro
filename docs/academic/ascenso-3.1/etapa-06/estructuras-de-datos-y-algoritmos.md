@@ -1,6 +1,6 @@
 # Etapa 6 — Estructuras de datos y algoritmos
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 6.  
 **Prioridad:** P1 · Obligatoria.  
 **Objetivo oficial:** comprender cómo organizar información y desarrollar soluciones eficientes.
@@ -322,4 +322,4 @@ No se incorporan videos en esta versión. Cada estructura o algoritmo requiere u
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** implementaciones y proyecto propuestos; no compilados ni ejecutados en esta sesión.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado..
