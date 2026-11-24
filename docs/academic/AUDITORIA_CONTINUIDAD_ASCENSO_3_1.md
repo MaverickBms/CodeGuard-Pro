@@ -847,3 +847,39 @@ Las lecciones incluyen desarrollo conceptual específico, ejemplos técnicos o e
 La etapa 7 queda desarrollada documentalmente en sus 84 lecciones. Este cierre no implica que las etapas 8–32 estén terminadas ni que las 1.916 lecciones de las etapas 1–32 estén validadas. El trabajo debe continuar con la etapa 8 y avanzar en secuencia, conservando el baseline curricular oficial.
 
 No se modificó `apps/roadmaps/data/ascenso_3_1.json`; no se inventaron UUID; no se ejecutó importación, aprobación ni publicación. El objetivo de la etapa 25 permanece vacío y sin cambios.
+
+
+## Addendum de continuidad — etapa 8, módulos 8.1–8.4 (2026-11-24)
+
+### Desarrollo individualizado realizado
+
+Se desarrollaron 51 lecciones de los primeros cuatro módulos de la etapa 8:
+
+- **8.1 Fundamentos de redes:** 13 lecciones, desde LAN/WAN/MAN hasta dispositivos de interconexión y acceso inalámbrico.
+- **8.2 Modelos de comunicación:** 9 lecciones sobre OSI, TCP/IP, encapsulamiento, paquetes, tramas, segmentos y MTU.
+- **8.3 Direccionamiento:** 13 lecciones sobre MAC, IPv4/IPv6, rangos públicos/privados, máscaras, subnetting, CIDR, VLSM, gateway, broadcast, ARP y DHCP.
+- **8.4 Protocolos:** 16 lecciones sobre TCP, UDP, ICMP, DNS, HTTP(S), SSH, FTP/SFTP, correo, SMB, LDAP, Kerberos y WebSockets.
+
+Cada lección incluye explicación conceptual específica, práctica guiada, actividad independiente, criterios de aceptación, errores frecuentes y pregunta de comprobación. Se limitaron las prácticas a sistemas propios, capturas de laboratorio y consultas autorizadas; no se proponen escaneos ni accesos a redes ajenas.
+
+### Cobertura de etapa 8
+
+| Módulo | Lecciones oficiales | Desarrolladas en esta entrega |
+|---|---:|---:|
+| 8.1 Fundamentos de redes | 13 | 13 |
+| 8.2 Modelos de comunicación | 9 | 9 |
+| 8.3 Direccionamiento | 13 | 13 |
+| 8.4 Protocolos | 16 | 16 |
+| 8.5 Routing y Switching | 10 | 0 |
+| 8.6 Seguridad de redes | 9 | 0 |
+| 8.7 Herramientas | 11 | 0 |
+| **Total** | **81** | **51** |
+
+### Límites de validación
+
+- Se comprobó el número de lecciones de cada uno de los módulos 8.1–8.4 contra los encabezados oficiales del documento.
+- No se ejecutaron capturas de paquetes, consultas DNS, trazas, pruebas de conectividad ni configuraciones de red en un laboratorio real durante esta entrega.
+- No se verificó de manera exhaustiva cada referencia externa ni se obtuvo revisión técnica independiente.
+- La etapa 8 no se declara terminada: faltan 30 lecciones de routing/switching, seguridad y herramientas.
+
+La etapa 7 queda documentada con desarrollo individualizado de sus 84 lecciones. La etapa 8 presenta 51 de 81 lecciones profundizadas. El roadmap oficial y sus identidades curriculares permanecen sin modificación; no se importó ni publicó contenido.
