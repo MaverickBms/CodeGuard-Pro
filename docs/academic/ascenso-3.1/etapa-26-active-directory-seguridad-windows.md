@@ -100,3 +100,137 @@ No se incluyen videos aprobados. Solo se incorporarán recursos hablados en espa
 - Sysinternals: https://learn.microsoft.com/en-us/sysinternals/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se creó un dominio ni se ejecutaron herramientas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 26
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Las guías de estudio se orientan a administración defensiva, monitoreo y análisis autorizado; no constituyen evidencia de operación en un entorno empresarial.
+
+### Módulo 26.1 — Active Directory
+
+#### 26.1.01 — Domain
+Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.1.02 — Domain Controller
+Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.1.03 — Forest
+Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.1.04 — Tree
+Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.1.05 — Organizational Units
+Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.1.06 — Users
+Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.1.07 — Groups
+Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.1.08 — Computers
+Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.1.09 — Group Policy Objects
+Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 26.2 — Protocolos
+
+#### 26.2.01 — LDAP
+Comprender el concepto, los datos o controles involucrados y su papel dentro de protocolos; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.2.02 — Kerberos
+Comprender el concepto, los datos o controles involucrados y su papel dentro de protocolos; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.2.03 — NTLM
+Comprender el concepto, los datos o controles involucrados y su papel dentro de protocolos; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.2.04 — SMB
+Comprender el concepto, los datos o controles involucrados y su papel dentro de protocolos; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.2.05 — DNS
+Comprender el concepto, los datos o controles involucrados y su papel dentro de protocolos; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 26.3 — Administración
+
+#### 26.3.01 — Usuarios
+Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.3.02 — Grupos
+Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.3.03 — Permisos
+Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.3.04 — Políticas
+Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.3.05 — Autenticación
+Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.3.06 — Autorización
+Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.3.07 — Gestión de identidades
+Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 26.4 — Seguridad de Active Directory
+
+#### 26.4.01 — Misconfigurations
+Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.4.02 — Privileged Accounts
+Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.4.03 — Excessive Permissions
+Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.4.04 — Kerberos Security
+Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.4.05 — NTLM Risks
+Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.4.06 — Lateral Movement Concepts
+Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.4.07 — Privilege Escalation Paths
+Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.4.08 — Credential Security
+Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 26.5 — Herramientas
+
+#### 26.5.01 — BloodHound
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.5.02 — SharpHound
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.5.03 — PowerShell
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.5.04 — Windows Event Viewer
+Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+### Módulo 26.6 — Hardening
+
+#### 26.6.01 — Least Privilege
+Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.6.02 — Privileged Access
+Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.6.03 — Credential Protection
+Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.6.04 — Group Policy Security
+Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.6.05 — Auditing
+Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+
+#### 26.6.06 — Logging
+Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
