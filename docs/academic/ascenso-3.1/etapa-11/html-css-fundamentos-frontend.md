@@ -827,108 +827,276 @@ La semántica nativa ofrece roles y comportamientos reconocibles. Utilizar eleme
 **Comprobación:** ¿Qué se gana al usar la semántica HTML correcta desde el inicio?
 
 #### 11.3.01 — Selectores
-Los selectores CSS identifican elementos por tipo, clase, ID, atributo, estado o relación. Prefiere clases con significado de componente y selectores acotados; selectores globales complejos aumentan acoplamiento y hacen más difícil predecir qué regla afecta a cada elemento.
 
+Los selectores CSS identifican elementos por tipo, clase, ID, atributo, estado o relación. Deben mantenerse legibles y limitar alcance para evitar estilos difíciles de sobrescribir.
 
-**Práctica y evidencia:** Crea reglas con selectores de elemento, clase, ID, atributo y combinadores. **Evidencia:** predice qué reglas coinciden con cada nodo y confirma en DevTools.
+**Ejemplo técnico:** `.card > h2` selecciona encabezados directos; `.card h2` incluye descendientes a cualquier profundidad.
+
+**Práctica guiada:** Aplica selectores de tipo, clase, atributo y descendiente en una página de prueba.
+
+**Actividad independiente:** Refactoriza selectores excesivamente específicos y elimina duplicación.
+
+**Criterios de aceptación:** Cada regla afecta solo componentes previstos y la cascada resulta predecible.
+
+**Errores frecuentes:** Usar IDs para todos los estilos o selectores globales que afectan controles no relacionados.
+
+**Comprobación:** ¿Qué diferencia existe entre selector hijo y selector descendiente?
 
 #### 11.3.02 — Cascade
-La cascada decide qué declaración prevalece considerando origen, importancia, capas, especificidad y orden de aparición. Depurar CSS exige revisar la cascada completa y no asumir que la última regla siempre gana; herramientas del navegador muestran declaraciones aplicadas y sobrescritas.
 
+La cascada decide qué declaración prevalece según origen, importancia, capa, especificidad y orden. Herencia y valores iniciales también influyen. Comprenderla evita resolver conflictos con `!important` indiscriminadamente.
 
-**Práctica y evidencia:** Ordena dos reglas con igual especificidad y cambia su orden para observar la cascada. **Evidencia:** explica origen, importancia y orden de aparición.
+**Ejemplo técnico:** Una regla de componente puede sobrescribir estilo heredado, pero una declaración importante puede alterar prioridades.
+
+**Práctica guiada:** Crea dos reglas que compitan y predice el resultado antes de inspeccionarlo.
+
+**Actividad independiente:** Organiza estilos por capas o convenciones para reducir conflictos.
+
+**Criterios de aceptación:** Puedes explicar por qué gana cada declaración.
+
+**Errores frecuentes:** Agregar `!important` sin investigar origen y especificidad.
+
+**Comprobación:** ¿Qué factores principales intervienen en la cascada?
 
 #### 11.3.03 — Specificity
-La especificidad es un peso comparativo de selectores dentro de la cascada, no una puntuación universal que resuelva todos los conflictos. Mantén selectores sencillos y evita encadenar IDs o `!important` para compensar una arquitectura de estilos desordenada.
 
+La especificidad compara selectores mediante componentes de ID, clase/atributo/pseudoclase y tipo/pseudoelemento. No es el único factor de la cascada. `:where()` aporta especificidad cero y `:is()` toma la del selector más específico de sus argumentos.
 
-**Práctica y evidencia:** Compara selectores de distinta especificidad y resuelve un conflicto sin recurrir automáticamente a `!important`. **Evidencia:** calcula la especificidad y justifica la regla ganadora.
+**Ejemplo técnico:** `.nav a.active` tiene más especificidad que `a`, pero no necesariamente vence a una regla de mayor prioridad por origen/capa.
+
+**Práctica guiada:** Calcula especificidad de cinco selectores y verifica con DevTools.
+
+**Actividad independiente:** Reduce reglas con ID y construye estilos de componentes reutilizables.
+
+**Criterios de aceptación:** Calcula y explica precedencia sin recurrir a prueba/error.
+
+**Errores frecuentes:** Confundir número de clases con suma simple de todos los selectores o ignorar capas.
+
+**Comprobación:** ¿Por qué una regla con mayor especificidad puede no ganar?
 
 #### 11.3.04 — Inheritance
-La herencia transmite determinadas propiedades desde un elemento ancestro a sus descendientes, como algunas propiedades tipográficas y de color. Otras propiedades, como márgenes y bordes, normalmente no se heredan; utiliza `inherit`, `initial` y `unset` solo cuando la intención sea explícita.
 
+Algunas propiedades CSS se heredan desde el elemento padre; otras no. color y font-family suelen heredarse, mientras margin, border y padding no. `inherit`, `initial`, `unset` y `revert` controlan valores según reglas distintas.
 
-**Práctica y evidencia:** Prueba herencia de `color` y `font-family` frente a propiedades no heredadas. **Evidencia:** identifica qué valores se heredan y cuándo conviene usar `inherit` o `initial`.
+**Ejemplo técnico:** Un font-family en body puede aplicarse a descendientes; un margin de section no se transmite a sus hijos.
+
+**Práctica guiada:** Prueba propiedades heredadas y no heredadas en árbol simple.
+
+**Actividad independiente:** Define tipografía y color a nivel raíz y sobrescribe solo componentes necesarios.
+
+**Criterios de aceptación:** Distingue herencia de cascada y aplica valores de forma deliberada.
+
+**Errores frecuentes:** Suponer que todas las propiedades se heredan o usar inherit para arreglar cualquier conflicto.
+
+**Comprobación:** ¿Por qué margin no suele heredarse?
 
 #### 11.3.05 — Box Model
-El Box Model combina contenido, padding, borde y margen para determinar el espacio de un elemento. `box-sizing: border-box` hace que ancho y alto incluyan padding y borde, lo que simplifica layouts; prueba además el comportamiento con contenido largo y traducciones.
 
+El box model define content, padding, border y margin. Con content-box el width aplica al contenido; con border-box incluye padding y borde. Márgenes pueden colapsar en ciertos contextos y el modelo debe considerarse al calcular layout.
 
-**Práctica y evidencia:** Construye tres cajas y observa content, padding, border y margin con DevTools. **Evidencia:** calcula el tamaño exterior con `content-box` y `border-box`.
+**Ejemplo técnico:** Con `box-sizing:border-box; width:200px`, el ancho declarado incluye padding y border.
+
+**Práctica guiada:** Crea cajas con ambos box-sizing y mide dimensiones en DevTools.
+
+**Actividad independiente:** Aplica border-box global y documenta excepciones.
+
+**Criterios de aceptación:** Las dimensiones observadas coinciden con el modelo esperado.
+
+**Errores frecuentes:** Olvidar padding/border al calcular ancho o compensar con márgenes arbitrarios.
+
+**Comprobación:** ¿Qué cambia al aplicar border-box?
 
 #### 11.3.06 — Display
-`display` determina cómo participa un elemento en el flujo y el layout: block, inline, flex, grid y otros valores tienen reglas distintas. No confundas `display: none` con ocultación visual: también elimina el elemento del árbol de accesibilidad en el uso habitual.
 
+display determina cómo participa un elemento en layout: block, inline, inline-block, flex, grid, none y otros valores. `display:none` retira del árbol de layout y accesibilidad; visibility y opacity tienen efectos distintos.
 
-**Práctica y evidencia:** Compara `block`, `inline`, `inline-block`, `flex`, `grid` y `none` con elementos de prueba. **Evidencia:** explica cómo cambia el flujo y el espacio ocupado.
+**Ejemplo técnico:** Un botón inline-block permite dimensiones; un contenedor flex distribuye hijos en un eje.
+
+**Práctica guiada:** Compara block, inline, inline-block y none en una página.
+
+**Actividad independiente:** Selecciona display para una navegación sin alterar semántica.
+
+**Criterios de aceptación:** Layout y comportamiento corresponden a objetivo.
+
+**Errores frecuentes:** Usar display:none para contenido que debe estar disponible o forzar elementos inline a layout complejo.
+
+**Comprobación:** ¿Qué diferencia práctica existe entre display:none y visibility:hidden?
 
 #### 11.3.07 — Position
-`position` controla el posicionamiento estático, relativo, absoluto, fijo o sticky y define el contexto de referencia de elementos posicionados. Reserva `absolute` para elementos superpuestos que realmente lo necesiten y verifica que el contenido no se solape con zoom o pantallas estrechas.
 
+position controla ubicación: static, relative, absolute, fixed y sticky. Los elementos absolute se posicionan respecto a un containing block; fixed suele referirse al viewport; sticky depende del contenedor de scroll y límites.
 
-**Práctica y evidencia:** Posiciona elementos con `static`, `relative`, `absolute`, `fixed` y `sticky`. **Evidencia:** identifica el containing block y el contexto de desplazamiento.
+**Ejemplo técnico:** Un badge absolute dentro de una tarjeta relative se ubica respecto a la tarjeta.
+
+**Práctica guiada:** Prueba cada modo en una página con scroll y observa containing block.
+
+**Actividad independiente:** Diseña encabezado sticky sin ocultar contenido al enfocar enlaces.
+
+**Criterios de aceptación:** Posición y foco no se superponen y el contenido permanece accesible.
+
+**Errores frecuentes:** Usar fixed para todo o crear elementos que cubren controles al hacer zoom.
+
+**Comprobación:** ¿Qué elemento sirve de referencia para un absolute?
 
 #### 11.3.08 — Flexbox
-Flexbox distribuye elementos en un eje principal y otro transversal, con alineación y distribución flexibles. Practica `flex-direction`, `justify-content`, `align-items`, `gap`, `flex-wrap` y factores de crecimiento/reducción; prueba contenido de longitud variable para detectar desbordamientos.
 
+Flexbox organiza elementos en una dimensión principal y una transversal. flex-direction, justify-content, align-items, gap y flex-wrap permiten distribuir espacio; tamaño base, shrink y grow determinan ajuste.
 
-**Práctica y evidencia:** Construye una barra flexible con `display:flex`, `gap`, `justify-content` y `align-items`. **Evidencia:** demuestra adaptación al cambiar el ancho del viewport.
+**Ejemplo técnico:** Una barra de acciones usa display:flex y gap; flex-wrap permite adaptarse a pantallas estrechas.
+
+**Práctica guiada:** Crea una fila de tarjetas y prueba wrap, gap y alineación.
+
+**Actividad independiente:** Construye header adaptable con logo y acciones.
+
+**Criterios de aceptación:** No hay desbordamiento ni pérdida de orden lógico.
+
+**Errores frecuentes:** Usar flexbox para estructuras bidimensionales complejas que requieren grid.
+
+**Comprobación:** ¿Qué diferencia principal existe entre eje principal y transversal?
 
 #### 11.3.09 — Grid
-Grid organiza elementos en dos dimensiones mediante tracks, líneas y áreas. Define columnas y filas con unidades flexibles como `fr`, funciones `minmax()` y `repeat()`; evita fijar dimensiones rígidas que impidan que el contenido crezca.
 
+CSS Grid organiza layout en dos dimensiones mediante filas, columnas, tracks, áreas y gaps. Puede definir columnas flexibles, minmax y auto-fit/auto-fill. El contenido y el tamaño mínimo automático pueden provocar desbordamiento.
 
-**Práctica y evidencia:** Diseña una cuadrícula de tarjetas con columnas responsivas y áreas nombradas. **Evidencia:** explica tracks, gaps y comportamiento en un viewport estrecho.
+**Ejemplo técnico:** `grid-template-columns: repeat(auto-fit,minmax(15rem,1fr))` adapta tarjetas al ancho disponible.
+
+**Práctica guiada:** Crea grid de tarjetas y prueba distintos anchos de viewport.
+
+**Actividad independiente:** Diseña dashboard con áreas nombradas y fallback razonable.
+
+**Criterios de aceptación:** Columnas y filas se adaptan sin scroll horizontal innecesario.
+
+**Errores frecuentes:** Fijar anchos rígidos o confundir auto-fit y auto-fill sin probar.
+
+**Comprobación:** ¿Cuándo es preferible Grid frente a Flexbox?
 
 #### 11.3.10 — Pseudoclases
-Las pseudoclases seleccionan elementos según estados o relaciones, como `:hover`, `:focus-visible`, `:checked` y `:first-child`. No dependas solo de hover, porque dispositivos táctiles y usuarios de teclado requieren estados equivalentes y visibles.
 
+Las pseudoclases seleccionan estados o relaciones, como :hover, :focus-visible, :checked, :disabled, :first-child y :not(). Deben incluir estados de interacción accesibles; no depender solo de hover porque pantallas táctiles y teclado difieren.
 
-**Práctica y evidencia:** Aplica `:hover`, `:focus-visible`, `:checked` y `:disabled` a controles. **Evidencia:** verifica estados con ratón y teclado.
+**Ejemplo técnico:** `:focus-visible` resalta controles al navegar con teclado sin forzar el mismo estilo en cada clic de ratón.
+
+**Práctica guiada:** Prueba estados hover, focus-visible, checked y disabled en controles nativos.
+
+**Actividad independiente:** Diseña estados de botón con contraste y foco visibles.
+
+**Criterios de aceptación:** Cada estado es perceptible y no altera funcionalidad.
+
+**Errores frecuentes:** Eliminar outline o usar solo hover como indicador de interacción.
+
+**Comprobación:** ¿Por qué focus-visible es esencial en una interfaz accesible?
 
 #### 11.3.11 — Pseudoelementos
-Los pseudoelementos representan partes de un elemento o contenido generado, como `::before`, `::after` y `::placeholder`. El contenido generado es apropiado para decoración y señales complementarias, pero no debe contener la única etiqueta, instrucción o información crítica.
 
+Los pseudoelementos como ::before, ::after, ::first-line y ::marker permiten estilizar partes sin agregar nodos DOM. El contenido generado no debe ser el único lugar donde se comunica información esencial.
 
-**Práctica y evidencia:** Añade un indicador decorativo con `::before` o `::after` sin introducir contenido esencial solo en CSS. **Evidencia:** confirma que el significado permanece disponible sin pseudo-elementos.
+**Ejemplo técnico:** Un icono decorativo ::before puede acompañar una etiqueta, pero el texto del estado debe existir en el DOM.
+
+**Práctica guiada:** Añade marcadores visuales y revisa lectura sin CSS.
+
+**Actividad independiente:** Crea indicador decorativo que no sustituya texto ni nombre accesible.
+
+**Criterios de aceptación:** La información esencial permanece en el contenido DOM.
+
+**Errores frecuentes:** Insertar mensajes importantes solo con content CSS.
+
+**Comprobación:** ¿Por qué no debe dependerse de ::before para comunicar un error?
 
 #### 11.3.12 — Variables
-Las custom properties (`--token`) almacenan valores reutilizables y participan en la cascada. Define tokens semánticos para color, tipografía y espaciado, y cambia sus valores por tema o contexto; documenta valores de respaldo para propiedades que consumen variables.
 
+Custom properties CSS almacenan valores reutilizables y participan en cascada/herencia. Se declaran con `--nombre` y se consumen con var(), que admite fallback. Pueden definir tokens de color, espaciado, tipografía y temas.
 
-**Práctica y evidencia:** Define tokens de color y espaciado en `:root` y reutilízalos en varios componentes. **Evidencia:** cambia un token y demuestra actualización coherente.
+**Ejemplo técnico:** `:root { --space-2: .5rem }` y `gap: var(--space-2)` centralizan consistencia.
+
+**Práctica guiada:** Define tokens de color y espacio y cambia un tema en un contenedor.
+
+**Actividad independiente:** Crea dos temas que reutilicen la misma estructura de componentes.
+
+**Criterios de aceptación:** Tokens tienen nombres semánticos y fallback razonable.
+
+**Errores frecuentes:** Nombrar variables por color literal y duplicar valores arbitrariamente.
+
+**Comprobación:** ¿Qué ventaja ofrece un token semántico frente a repetir un valor hexadecimal?
 
 #### 11.3.13 — Media Queries
-Las media queries aplican estilos según características del entorno, como ancho, orientación o preferencia de movimiento. Define breakpoints cuando el contenido lo necesite y prueba entre puntos de corte; evita asociar cada breakpoint a un modelo de dispositivo específico.
 
+Media queries aplican estilos según viewport, preferencias y capacidades como prefers-reduced-motion o hover. Breakpoints deben surgir del contenido y no de modelos concretos de dispositivo.
 
-**Práctica y evidencia:** Crea breakpoints basados en el contenido y no en modelos concretos de dispositivo. **Evidencia:** registra el punto donde el layout deja de funcionar y justifica el breakpoint.
+**Ejemplo técnico:** `@media (max-width: 48rem)` puede reorganizar una navegación si el contenido deja de caber.
+
+**Práctica guiada:** Prueba varios anchos y reduce motion en DevTools.
+
+**Actividad independiente:** Define reglas responsive y respeta preferencia de movimiento reducido.
+
+**Criterios de aceptación:** Contenido y controles siguen disponibles en distintos tamaños.
+
+**Errores frecuentes:** Elegir breakpoints solo por marcas de teléfono o ignorar preferencias de usuario.
+
+**Comprobación:** ¿Qué diferencia existe entre media query de viewport y prefers-reduced-motion?
 
 #### 11.3.14 — Responsive Design
-Responsive design adapta contenido y layout a distintos tamaños, densidades y formas de interacción. Comprueba reflow, zoom, navegación, imágenes fluidas y tablas; el objetivo es que la tarea siga siendo posible, no que cada viewport tenga una copia visual idéntica.
 
+Diseño responsive adapta estructura y contenido a tamaños y capacidades diversos mediante layouts fluidos, imágenes adaptables, tipografía flexible y media queries. Debe soportar zoom y orientación sin perder información.
 
-**Práctica y evidencia:** Prueba una página en anchos móvil, tableta y escritorio, incluyendo zoom. **Evidencia:** demuestra ausencia de scroll horizontal no intencional y preservación de jerarquía.
+**Ejemplo técnico:** Grid fluido, max-width y unidades relativas permiten adaptar tarjetas sin fijar cada dispositivo.
+
+**Práctica guiada:** Prueba página a 320px, tablet y escritorio; verifica zoom al 200%.
+
+**Actividad independiente:** Adapta una página con tabla, navegación y formulario para móvil.
+
+**Criterios de aceptación:** No hay pérdida de contenido ni scroll horizontal injustificado.
+
+**Errores frecuentes:** Ocultar información en móvil o usar tamaños rígidos que desbordan.
+
+**Comprobación:** ¿Por qué responsive no significa simplemente reducir todo el tamaño?
 
 #### 11.3.15 — Animations
-CSS animations describen secuencias mediante `@keyframes` y propiedades de duración, retraso, iteración y dirección. Úsalas para comunicar cambios de estado con moderación, proporciona alternativas cuando el movimiento no sea esencial y respeta la preferencia de movimiento reducido.
 
+CSS animations define secuencias con @keyframes, duración, iteración y timing. El movimiento debe aportar significado, ser breve y respetar prefers-reduced-motion. Animaciones intensas pueden causar distracción o malestar.
 
-**Práctica y evidencia:** Anima una propiedad no crítica y respeta `prefers-reduced-motion`. **Evidencia:** verifica movimiento normal y alternativa reducida.
+**Ejemplo técnico:** Una transición de estado puede animar opacity; la alternativa reduced-motion elimina desplazamientos no esenciales.
+
+**Práctica guiada:** Crea animación breve y prueba prefers-reduced-motion.
+
+**Actividad independiente:** Diseña feedback de carga que también tenga alternativa estática.
+
+**Criterios de aceptación:** Movimiento no esencial se reduce y no bloquea interacción.
+
+**Errores frecuentes:** Animaciones infinitas intensas o transmitir estado solo mediante movimiento.
+
+**Comprobación:** ¿Cómo debe responder la interfaz a prefers-reduced-motion?
 
 #### 11.3.16 — Transitions
-Transitions interpolan cambios de propiedades entre estados, por ejemplo al enfocar un botón. Anima solo propiedades adecuadas, evita transiciones excesivas y no retrases acciones o mensajes que deban percibirse inmediatamente.
 
+Transitions interpolan cambios de propiedades entre estados. Deben especificar propiedades concretas, duración y curva; `transition: all` puede producir efectos inesperados y costos de mantenimiento.
 
-**Práctica y evidencia:** Añade transiciones específicas para estados de interacción, evitando `transition: all`. **Evidencia:** comprueba duración, propiedad y comportamiento con movimiento reducido.
+**Ejemplo técnico:** Un botón puede transicionar background-color y transform en 150ms, sin animar dimensiones inesperadas.
+
+**Práctica guiada:** Aplica transición a hover/focus y prueba con teclado.
+
+**Actividad independiente:** Define transiciones consistentes con reducción de movimiento.
+
+**Criterios de aceptación:** Solo propiedades necesarias se animan y la respuesta es inmediata.
+
+**Errores frecuentes:** Usar duración excesiva o `transition: all`.
+
+**Comprobación:** ¿Por qué es preferible indicar propiedades específicas en transition?
 
 #### 11.3.17 — Transformations
-Transformations modifican visualmente traslación, escala, rotación o inclinación sin cambiar necesariamente el flujo del documento. Considera el origen de transformación, el contexto de apilamiento y el movimiento reducido; no uses transformaciones para ocultar problemas de layout.
 
+transform modifica representación visual mediante translate, scale, rotate o skew sin alterar el flujo normal. Puede crear contextos de apilamiento y afectar elementos posicionados. Debe evitarse ocultar foco o provocar desbordamiento.
 
-**Práctica y evidencia:** Aplica `transform` para desplazar o escalar un elemento sin alterar el flujo normal. **Evidencia:** explica el origen de transformación y verifica que el foco y contenido no queden ocultos.
+**Ejemplo técnico:** translateY puede elevar una tarjeta al hover, pero su posición de layout no cambia.
 
-### Módulo 11.4 — Diseño de interfaces
+**Práctica guiada:** Prueba transform y observa flujo, stacking context y foco.
+
+**Actividad independiente:** Diseña microinteracción que no dependa solo de hover y no mueva contenido esencial.
+
+**Criterios de aceptación:** Transformación no oculta controles ni rompe layout/zoom.
+
+**Errores frecuentes:** Usar scale para texto pequeño o crear overlays que tapan foco.
+
+**Comprobación:** ¿Por qué transform no modifica el espacio que el elemento ocupa en el flujo normal?
 
 #### 11.4.01 — Jerarquía visual
 La jerarquía visual establece prioridades mediante tamaño, peso, contraste, posición y agrupación. Diseña primero qué debe comprender y hacer el usuario; valida que la prioridad visual coincide con la importancia funcional y no depende únicamente de color o tamaño.
