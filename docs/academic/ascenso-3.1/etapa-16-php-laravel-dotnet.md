@@ -142,6 +142,10 @@ PHP maneja tipos escalares, compuestos y especiales con coerciones que dependen 
 
 **Criterio de análisis.** La respuesta debe justificar el control o decisión, identificar el fallo que previene y proponer evidencia verificable. **Pregunta de comprensión:** ¿Qué riesgo introducen las conversiones implícitas al validar datos externos?
 
+**Escenario aplicado.** Una variable procedente de un formulario se valida antes de incorporarse a una consulta o salida HTML. El nombre y alcance se mantienen explícitos para evitar estado global accidental.
+
+**Criterio de análisis.** La respuesta debe identificar fuente, validación y contexto de uso. **Pregunta de comprensión:** ¿Por qué no debe confiarse en una variable solo porque llega desde un formulario?
+
 **Práctica y evidencia:** Compara tipos escalares, arrays, objetos, null y conversiones. **Evidencia:** demuestra validación explícita de datos recibidos desde una petición.
 
 #### 16.1.04 — Operadores
