@@ -286,7 +286,7 @@ Estas ampliaciones no son requisitos de aprobación de la etapa 0.
 | Aprobación editorial | Pendiente |
 | Publicación en CodeGuard Pro | No realizada |
 
-**Estado del proyecto:** BORRADOR. Este documento define el trabajo y sus criterios; no constituye evidencia de que el proyecto haya sido construido ni ejecutado.
+**Estado del proyecto:** BASE DE TRABAJO ACTIVA. Esta especificación es la referencia vigente para construir y evaluar el proyecto; todavía no demuestra que el repositorio haya sido creado ni ejecutado.
 
 ## 15. Referencias de apoyo
 
