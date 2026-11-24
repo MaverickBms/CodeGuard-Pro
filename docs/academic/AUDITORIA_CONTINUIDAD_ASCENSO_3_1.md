@@ -805,3 +805,45 @@ Cada lección contiene desarrollo conceptual, ejemplo o escenario razonado, prá
 El roadmap oficial continúa sin cambios. Esta actualización no altera la identidad, cantidad ni orden de lecciones. Las etapas 8–32 continúan pendientes de la misma profundización individualizada sistemática; no se declara completo el total de 1.916 lecciones.
 
 No se importó ni publicó contenido. El objetivo oficial de la etapa 25 permanece vacío y no fue completado por inferencia.
+
+
+## Addendum de cierre documental de la etapa 7 — 2026-11-24
+
+### Resultado
+
+Se completó el desarrollo documental individual de las 84 lecciones oficiales de la etapa 7, distribuidas en seis módulos:
+
+| Módulo | Lecciones | Cobertura documental |
+|---|---:|---|
+| 7.1 — Fundamentos de sistemas operativos | 14 | 14/14 |
+| 7.2 — Linux | 17 | 17/17 |
+| 7.3 — Administración Linux | 20 | 20/20 |
+| 7.4 — Bash | 12 | 12/12 |
+| 7.5 — Windows | 12 | 12/12 |
+| 7.6 — Virtualización | 9 | 9/9 |
+| **Total** | **84** | **84/84** |
+
+Las lecciones incluyen desarrollo conceptual específico, ejemplos técnicos o escenarios razonados, prácticas guiadas, actividades independientes, criterios de aceptación, errores frecuentes y preguntas de comprobación. Se añadieron límites de seguridad para prácticas de permisos, procesos, servicios, firewall, Registro, redes virtuales y operaciones administrativas.
+
+### Revisión estructural realizada
+
+- Se verificaron 84 encabezados de lección y su distribución por módulo.
+- Se comprobó en las 84 lecciones la presencia de práctica guiada, actividad independiente y criterios de aceptación.
+- Se cotejó la distribución de módulos y lecciones con el documento curricular de la etapa 7 en el roadmap oficial.
+- Se mantuvieron los títulos y el orden oficial de las lecciones.
+- Se mantuvieron el proyecto oficial, la evaluación y las secciones de referencias ya existentes.
+
+### Límites de validación
+
+- El resultado representa desarrollo documental y revisión estructural interna; no equivale a validación técnica independiente ni aprobación académica.
+- No se ejecutaron las prácticas en máquinas virtuales Linux o Windows.
+- No se ejecutaron scripts, comandos administrativos, cambios de ACL, modificaciones del Registro, reglas de firewall, montajes ni pruebas de redes virtuales.
+- No se verificaron de manera exhaustiva las referencias bibliográficas ni la vigencia de cada versión de producto.
+- No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para esta actualización.
+- Las prácticas que modifican el sistema requieren VM desechable, autorización, respaldo y registro de resultados antes de considerarse verificadas.
+
+### Estado curricular global
+
+La etapa 7 queda desarrollada documentalmente en sus 84 lecciones. Este cierre no implica que las etapas 8–32 estén terminadas ni que las 1.916 lecciones de las etapas 1–32 estén validadas. El trabajo debe continuar con la etapa 8 y avanzar en secuencia, conservando el baseline curricular oficial.
+
+No se modificó `apps/roadmaps/data/ascenso_3_1.json`; no se inventaron UUID; no se ejecutó importación, aprobación ni publicación. El objetivo de la etapa 25 permanece vacío y sin cambios.
