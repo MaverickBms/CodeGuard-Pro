@@ -524,79 +524,307 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 #### 9.4.1 — DDL
 
-DDL agrupa instrucciones que definen o modifican estructuras, como CREATE, ALTER y DROP. El comportamiento transaccional de DDL puede variar por motor. **Práctica:** identifica qué sentencias de un script cambian esquema y cuáles manipulan filas. **Evidencia:** clasifica instrucciones y advierte antes de operaciones destructivas.
+**Propósito y modelo.** DDL (Data Definition Language) define o modifica estructuras de base de datos: tablas, vistas, índices y otros objetos. CREATE, ALTER y DROP son operaciones DDL comunes. El comportamiento transaccional y bloqueos de DDL varían por motor y versión, por lo que no debe suponerse que toda operación es fácilmente reversible.
+
+**Ejemplo desarrollado.** CREATE TABLE define estructura inicial; ALTER TABLE añade o cambia una columna; DROP TABLE elimina la tabla y sus datos. La migración debe planificarse con respaldo y ventana cuando corresponda.
+
+**Práctica guiada.** Clasifica sentencias SQL de ejemplo como DDL, DML, DQL, DCL o TCL. En una base desechable crea una tabla y revisa su definición.
+
+**Actividad independiente.** Diseña una migración que añada una columna obligatoria a una tabla existente sin romper filas anteriores.
+
+**Criterios de aceptación.** Reconoce operaciones DDL y explica su impacto sobre esquema y datos.
+
+**Errores frecuentes.** Ejecutar DROP en el esquema equivocado o asumir rollback universal para cambios estructurales.
+
+**Comprobación.** ¿Qué diferencia de impacto existe entre ALTER TABLE y UPDATE?
 
 #### 9.4.2 — DML
 
-DML manipula filas mediante operaciones como INSERT, UPDATE y DELETE; algunas clasificaciones incluyen SELECT en DML y otras lo separan como DQL. **Práctica:** prepara un script que inserte y actualice datos de prueba dentro de una transacción cuando el motor lo permita. **Evidencia:** muestra estado antes y después.
+**Propósito y modelo.** DML manipula filas mediante INSERT, UPDATE y DELETE, y en algunas clasificaciones incluye MERGE. Estas operaciones pueden afectar una o muchas filas; una condición WHERE ausente o incorrecta puede modificar datos masivamente. La transacción y el respaldo son controles importantes.
+
+**Ejemplo desarrollado.** UPDATE Producto SET activo = 0 WHERE id = 42 limita el cambio a un registro identificado. Antes de ejecutar, un SELECT con la misma condición permite revisar el conjunto objetivo.
+
+**Práctica guiada.** En una base desechable inserta, actualiza y elimina registros sintéticos. Antes de UPDATE/DELETE ejecuta SELECT con la condición y verifica filas afectadas.
+
+**Actividad independiente.** Prepara una secuencia de corrección de datos con transacción, validación previa, conteo afectado y rollback si el resultado no coincide.
+
+**Criterios de aceptación.** Distingue DML de DDL y demuestra control del alcance de las modificaciones.
+
+**Errores frecuentes.** Ejecutar UPDATE o DELETE sin WHERE, o asumir que una condición devuelve la cantidad de filas esperada sin comprobarla.
+
+**Comprobación.** ¿Qué comprobación debe hacerse antes de ejecutar un DELETE sobre una tabla con muchos registros?
 
 #### 9.4.3 — DQL
 
-DQL es una categoría didáctica para consultas, principalmente SELECT; no todos los estándares o motores separan formalmente esta categoría. **Práctica:** formula consultas para filtrar, ordenar y proyectar clientes. **Evidencia:** explica qué columnas y filas devuelve cada consulta.
+**Propósito y modelo.** DQL suele referirse a consultas de recuperación, especialmente SELECT. Aunque la clasificación de SQL varía entre textos, la operación central es proyectar columnas, filtrar filas, combinar relaciones, agrupar y ordenar resultados. La consulta debe devolver solo los datos necesarios.
+
+**Ejemplo desarrollado.** SELECT nombre, precio FROM Producto WHERE activo = 1 ORDER BY nombre obtiene columnas específicas y aplica filtro y orden explícitos.
+
+**Práctica guiada.** Consulta una tabla sintética con SELECT, WHERE y ORDER BY. Compara SELECT * con proyección explícita y observa el tamaño y claridad del resultado.
+
+**Actividad independiente.** Construye consultas para responder cinco preguntas de negocio y explica cómo cada cláusula modifica el conjunto de resultados.
+
+**Criterios de aceptación.** Explica proyección, selección y ordenamiento; evita recuperar columnas innecesarias.
+
+**Errores frecuentes.** Confiar en el orden sin ORDER BY o utilizar SELECT * de forma indiscriminada en aplicaciones.
+
+**Comprobación.** ¿Qué diferencia conceptual existe entre seleccionar columnas y filtrar filas?
 
 #### 9.4.4 — DCL
 
-DCL reúne instrucciones de control de privilegios, como GRANT y REVOKE en motores que las implementan. **Práctica:** revisa un ejemplo de concesión de SELECT sobre un esquema de laboratorio. **Evidencia:** identifica sujeto, privilegio, objeto y alcance, y comprueba el principio de mínimo privilegio.
+**Propósito y modelo.** DCL agrupa sentencias de control de acceso, como GRANT y REVOKE en muchos DBMS. El alcance puede ser global, base, esquema, tabla, columna o función. La sintaxis y privilegios disponibles varían; deben probarse con cuentas de laboratorio y no con el usuario administrativo de producción.
+
+**Ejemplo desarrollado.** Conceder SELECT sobre una tabla a un rol de analista permite consulta sin conceder UPDATE o DELETE. Retirar el permiso debe comprobarse mediante una nueva sesión y revisión de grants.
+
+**Práctica guiada.** Lee sentencias GRANT/REVOKE y determina objeto, privilegio, principal y alcance. No concedas permisos reales en un servidor compartido.
+
+**Actividad independiente.** Diseña roles de lectura, escritura operativa y administración con mínimo privilegio.
+
+**Criterios de aceptación.** Identifica quién recibe qué privilegio sobre qué objeto y cómo verificarlo.
+
+**Errores frecuentes.** Conceder ALL PRIVILEGES o WITH GRANT OPTION sin necesidad, o confundir autenticación con autorización.
+
+**Comprobación.** ¿Por qué conviene asignar permisos a roles en vez de replicar grants manuales a cada usuario?
 
 #### 9.4.5 — TCL
 
-TCL describe el control de transacciones mediante COMMIT, ROLLBACK y, según el motor, SAVEPOINT. **Práctica:** ejecuta una modificación dentro de una transacción y decide confirmarla o revertirla. **Evidencia:** demuestra el estado final después de cada decisión.
+**Propósito y modelo.** TCL se refiere a control transaccional: BEGIN/START TRANSACTION, COMMIT, ROLLBACK y, según motor, SAVEPOINT. Permite agrupar cambios para que se confirmen o deshagan como unidad. El soporte depende del motor de almacenamiento, sentencia y configuración; algunas operaciones pueden producir commit implícito.
+
+**Ejemplo desarrollado.** Transferir saldo entre cuentas requiere debitar y acreditar dentro de una transacción. Si falla la segunda operación, rollback evita dejar solo el débito aplicado.
+
+**Práctica guiada.** En un motor transaccional de laboratorio inicia una transacción, modifica una fila sintética, consulta el cambio y ejecuta ROLLBACK. Repite y confirma con COMMIT.
+
+**Actividad independiente.** Diseña transacción de transferencia con validación de saldo, bloqueo adecuado y manejo de errores.
+
+**Criterios de aceptación.** Diferencia COMMIT y ROLLBACK y explica atomicidad de un conjunto de operaciones.
+
+**Errores frecuentes.** Suponer que todas las tablas/operaciones son transaccionales o ejecutar DDL dentro de una transacción esperando rollback universal.
+
+**Comprobación.** ¿Qué riesgo evita agrupar el débito y crédito en una misma transacción?
 
 #### 9.4.6 — CREATE
 
-`CREATE` define objetos como bases de datos, tablas, índices y vistas. La sintaxis y opciones varían entre MySQL y PostgreSQL. **Práctica:** crea una tabla con PK, NOT NULL y CHECK en el motor elegido. **Evidencia:** muestra el DDL y consulta el catálogo para confirmar su estructura.
+**Propósito y modelo.** CREATE define objetos como bases de datos, tablas, vistas, índices, roles y otros elementos. Cada objeto tiene sintaxis, permisos y ciclo de vida propios. Antes de crear, comprueba esquema destino, nombre, dependencias, restricciones y convenciones.
+
+**Ejemplo desarrollado.** CREATE TABLE define columnas y restricciones; CREATE INDEX crea una estructura para acelerar ciertas consultas con costo adicional en escrituras y almacenamiento.
+
+**Práctica guiada.** En un esquema desechable crea una tabla con PK, NOT NULL y CHECK cuando el motor lo soporte. Consulta metadatos para verificar definición.
+
+**Actividad independiente.** Escribe DDL para una entidad con dos relaciones y justifica tipos, claves e índices.
+
+**Criterios de aceptación.** El objeto se crea en el esquema esperado y las restricciones corresponden al modelo.
+
+**Errores frecuentes.** Ejecutar CREATE en el esquema incorrecto o crear índices sin una consulta objetivo.
+
+**Comprobación.** ¿Qué verificaciones previas evitan crear accidentalmente un objeto en la base equivocada?
 
 #### 9.4.7 — ALTER
 
-`ALTER` modifica la definición de objetos, por ejemplo agregando columnas o restricciones. Los cambios pueden bloquear tablas o requerir migraciones cuidadosas. **Práctica:** agrega una columna opcional a una tabla de laboratorio y luego define su restricción si procede. **Evidencia:** presenta antes/después y explica impacto en datos existentes.
+**Propósito y modelo.** ALTER modifica estructura de objetos existentes. Puede añadir, cambiar o eliminar columnas, restricciones e índices. El impacto sobre datos, bloqueos, compatibilidad y tiempo de ejecución depende del DBMS, versión, tamaño y operación.
+
+**Ejemplo desarrollado.** Añadir una columna nullable puede ser menos riesgoso que añadir una columna NOT NULL sin valor por defecto a una tabla grande. Una migración escalonada puede añadir, rellenar y luego restringir.
+
+**Práctica guiada.** En una tabla desechable añade una columna opcional, revisa metadatos y elimina solo el objeto de laboratorio al finalizar.
+
+**Actividad independiente.** Planifica una migración para convertir una columna opcional en obligatoria con datos históricos; incluye validación y rollback posible.
+
+**Criterios de aceptación.** Describe estado previo/posterior, impacto sobre filas y compatibilidad de aplicación.
+
+**Errores frecuentes.** Cambiar tipos en producción sin evaluar truncamiento o asumir que ALTER es instantáneo y no bloqueante.
+
+**Comprobación.** ¿Por qué una migración de esquema debe coordinarse con las versiones de la aplicación que escriben datos?
 
 #### 9.4.8 — DROP
 
-`DROP` elimina objetos y puede destruir datos dependientes; no debe confundirse con DELETE, que elimina filas. **Práctica:** compara `DROP TABLE` y `DELETE FROM` en una base descartable. **Evidencia:** explica el alcance de cada sentencia y verifica el efecto sin usar datos reales.
+**Propósito y modelo.** DROP elimina objetos de base de datos. DROP TABLE elimina definición y datos de la tabla; DROP DATABASE puede eliminar todo el contenedor lógico. La reversibilidad depende de respaldos, motor y operación; no debe ejecutarse sin verificar objeto, entorno y autorización.
+
+**Ejemplo desarrollado.** Eliminar una tabla temporal de laboratorio no es equivalente a eliminar una tabla de producción con dependencias y datos históricos. Las claves foráneas y vistas pueden impedir o verse afectadas por el cambio.
+
+**Práctica guiada.** En un esquema desechable crea una tabla temporal, inspecciona su contenido y elimínala explícitamente. Nunca ejecutes DROP sobre bases compartidas.
+
+**Actividad independiente.** Redacta un checklist previo a una eliminación: confirmar ambiente, nombre calificado, dependencias, respaldo restaurable, aprobación y plan de recuperación.
+
+**Criterios de aceptación.** Diferencia DROP de DELETE y TRUNCATE y describe consecuencias.
+
+**Errores frecuentes.** Usar DROP por error en lugar de DELETE o ejecutar comandos destructivos en una conexión cuyo entorno no se verificó.
+
+**Comprobación.** ¿Qué información debe confirmarse antes de ejecutar DROP TABLE?
 
 #### 9.4.9 — SELECT
 
-`SELECT` proyecta columnas y obtiene filas de una o varias fuentes. Evita `SELECT *` en consultas de aplicación cuando no se necesitan todas las columnas. **Práctica:** consulta nombre y correo de clientes activos. **Evidencia:** explica proyección, origen y cardinalidad del resultado.
+**Propósito y modelo.** SELECT recupera datos mediante proyección, filtros, joins, agrupación, ordenamiento y expresiones. SQL opera sobre conjuntos y el orden solo está garantizado cuando se especifica ORDER BY. NULL requiere operadores IS NULL/IS NOT NULL y lógica de tres valores.
+
+**Ejemplo desarrollado.** SELECT nombre FROM Cliente WHERE ciudad = 'Manizales' ORDER BY nombre; devuelve una proyección filtrada y ordenada. La ubicación del ejemplo es ilustrativa y no implica datos reales.
+
+**Práctica guiada.** Escribe consultas que seleccionen columnas, filtren por rango y ordenen por dos atributos. Incluye una consulta que detecte valores NULL.
+
+**Actividad independiente.** Responde preguntas de negocio con SELECT y explica por qué cada condición está en WHERE o en otra cláusula.
+
+**Criterios de aceptación.** La consulta devuelve filas esperadas, maneja NULL y especifica orden cuando importa.
+
+**Errores frecuentes.** Comparar con NULL usando =, depender del orden físico o filtrar agregados en WHERE en lugar de HAVING.
+
+**Comprobación.** ¿Por qué `columna = NULL` no es la forma correcta de buscar valores nulos?
 
 #### 9.4.10 — INSERT
 
-`INSERT` agrega filas y debe respetar tipos, restricciones y columnas obligatorias. Especifica columnas para evitar depender del orden físico de la tabla. **Práctica:** inserta un cliente con lista explícita de columnas. **Evidencia:** consulta la fila creada y registra cómo se obtuvo su identificador.
+**Propósito y modelo.** INSERT agrega filas y debe respetar tipos, claves, restricciones y valores obligatorios. Es recomendable declarar explícitamente columnas para evitar dependencia del orden físico del esquema. Inserciones masivas deben validar duplicados, integridad y tamaño de transacción.
+
+**Ejemplo desarrollado.** INSERT INTO Producto(nombre, precio) VALUES ('Teclado', 25.50) es más robusto que omitir la lista de columnas. La PK puede generarse según configuración del motor.
+
+**Práctica guiada.** Inserta registros sintéticos con columnas explícitas. Prueba un caso que viole NOT NULL o UNIQUE y observa el error sin desactivar restricciones.
+
+**Actividad independiente.** Diseña carga de datos de un CSV con validación de tipos, filas rechazadas, duplicados y registro de resultados.
+
+**Criterios de aceptación.** Inserta filas válidas, detecta violaciones y documenta cantidad aceptada/rechazada.
+
+**Errores frecuentes.** Omitir columnas y confiar en orden implícito, concatenar datos de usuario en SQL o ignorar errores de integridad.
+
+**Comprobación.** ¿Qué riesgo reduce indicar explícitamente la lista de columnas en INSERT?
 
 #### 9.4.11 — UPDATE
 
-`UPDATE` modifica filas que cumplen una condición; omitir WHERE puede afectar toda la tabla. **Práctica:** cambia el estado de un pedido de prueba identificándolo por PK y ejecuta primero un SELECT equivalente. **Evidencia:** registra filas afectadas y demuestra que ninguna otra cambió.
+**Propósito y modelo.** UPDATE modifica columnas de filas que satisfacen una condición. WHERE define el alcance; sin ella, todas las filas pueden cambiar. En operaciones críticas conviene usar transacción, verificar conteo y revisar filas objetivo antes y después.
+
+**Ejemplo desarrollado.** UPDATE Producto SET precio = 30 WHERE id = 7 limita el cambio por clave primaria. Un UPDATE masivo puede ser correcto, pero debe diseñarse y validarse explícitamente.
+
+**Práctica guiada.** En una tabla de laboratorio ejecuta SELECT con la condición, UPDATE dentro de transacción y verifica resultado antes de COMMIT o ROLLBACK.
+
+**Actividad independiente.** Diseña una actualización por lote con criterios de idempotencia, auditoría y recuperación.
+
+**Criterios de aceptación.** La condición coincide con el conjunto esperado y se documenta número de filas afectadas.
+
+**Errores frecuentes.** Omitir WHERE, utilizar condiciones no selectivas o no verificar filas afectadas.
+
+**Comprobación.** ¿Qué paso permite detectar que un UPDATE afectará más filas de las previstas?
 
 #### 9.4.12 — DELETE
 
-`DELETE` elimina filas seleccionadas y puede activar reglas referenciales o triggers. **Práctica:** elimina un registro de prueba después de revisar la condición con SELECT y dentro de una transacción si procede. **Evidencia:** documenta filas afectadas y posibilidad de rollback.
+**Propósito y modelo.** DELETE elimina filas que cumplen una condición y puede participar en transacciones según motor/tabla. Sin WHERE elimina todas las filas de la tabla, aunque conserva su estructura. Las claves foráneas pueden restringir o propagar eliminación según ON DELETE.
+
+**Ejemplo desarrollado.** DELETE FROM Sesion WHERE expira_en < fecha; puede borrar múltiples filas y debe probarse con SELECT equivalente y transacción antes de confirmar.
+
+**Práctica guiada.** En un esquema de laboratorio identifica filas candidatas con SELECT, elimina solo un registro sintético y comprueba restricciones referenciales.
+
+**Actividad independiente.** Diseña una política de retención que archive o elimine datos vencidos respetando obligaciones y relaciones.
+
+**Criterios de aceptación.** Explica alcance de WHERE, acciones referenciales y diferencia entre DELETE y DROP.
+
+**Errores frecuentes.** Ejecutar DELETE sin filtro, asumir que rollback siempre está disponible o borrar datos históricos requeridos.
+
+**Comprobación.** ¿Por qué un SELECT con la misma condición debe preceder a un DELETE de alcance amplio?
 
 #### 9.4.13 — WHERE
 
-`WHERE` filtra filas mediante condiciones; NULL requiere operadores IS NULL/IS NOT NULL y la lógica ternaria afecta comparaciones. **Práctica:** consulta pedidos por estado, rango de fecha y valores nulos. **Evidencia:** explica por qué `columna = NULL` no produce el resultado esperado.
+**Propósito y modelo.** WHERE filtra filas antes de agrupación y proyección final. Admite comparaciones, operadores lógicos, BETWEEN, IN, LIKE y pruebas de NULL. La precedencia de AND/OR debe controlarse con paréntesis; las funciones aplicadas a columnas pueden afectar uso de índices.
+
+**Ejemplo desarrollado.** WHERE estado = 'activo' AND (pais = 'CO' OR pais = 'MX') agrupa correctamente las alternativas. Sin paréntesis, la lógica puede incluir filas no deseadas.
+
+**Práctica guiada.** Construye filtros con AND, OR, NOT, IN y BETWEEN sobre datos sintéticos. Compara resultado con y sin paréntesis.
+
+**Actividad independiente.** Traduce requisitos en lenguaje natural a condiciones SQL y prueba valores límite, NULL y cadenas con caracteres especiales.
+
+**Criterios de aceptación.** La condición expresa exactamente el requisito y cubre casos límite.
+
+**Errores frecuentes.** Ignorar precedencia lógica, usar LIKE cuando se requiere igualdad o comparar NULL con operadores ordinarios.
+
+**Comprobación.** ¿Qué cambia al agrupar una condición OR entre paréntesis dentro de una expresión AND?
 
 #### 9.4.14 — ORDER BY
 
-`ORDER BY` ordena el resultado por una o varias expresiones; sin orden explícito no se garantiza la secuencia de filas. **Práctica:** ordena pedidos por fecha descendente y luego por identificador para desempatar. **Evidencia:** justifica orden estable para paginación.
+**Propósito y modelo.** ORDER BY define el orden del resultado por una o varias expresiones, con dirección ASC o DESC. Sin ORDER BY el motor puede devolver filas en cualquier orden. El tratamiento de NULL, collation y empates puede variar por motor.
+
+**Ejemplo desarrollado.** ORDER BY fecha DESC, id ASC ordena primero por fecha descendente y usa id para resolver empates de manera determinista.
+
+**Práctica guiada.** Ordena datos sintéticos por fecha, precio y nombre. Añade un segundo criterio para estabilizar empates.
+
+**Actividad independiente.** Diseña orden para paginación consistente y explica por qué ordenar solo por un campo no único puede producir páginas inestables.
+
+**Criterios de aceptación.** Define dirección y desempate; reconoce que orden no se conserva sin cláusula.
+
+**Errores frecuentes.** Suponer orden de inserción o paginar sin orden determinista.
+
+**Comprobación.** ¿Por qué conviene incluir una clave única como último criterio de orden al paginar?
 
 #### 9.4.15 — GROUP BY
 
-`GROUP BY` agrupa filas para calcular agregaciones como COUNT, SUM, AVG, MIN y MAX. **Práctica:** calcula ventas totales por cliente con un conjunto de datos de prueba. **Evidencia:** explica la granularidad del resultado y evita seleccionar columnas no agrupadas sin agregación.
+**Propósito y modelo.** GROUP BY agrupa filas con valores comunes para calcular agregados como COUNT, SUM, AVG, MIN y MAX. Las columnas seleccionadas deben ser agregadas o formar parte del agrupamiento según reglas del motor y modo SQL.
+
+**Ejemplo desarrollado.** SELECT cliente_id, COUNT(*) FROM Pedido GROUP BY cliente_id obtiene cantidad de pedidos por cliente. El resultado no incluye automáticamente clientes sin pedidos; para ello se requiere otro diseño con LEFT JOIN.
+
+**Práctica guiada.** Agrupa registros sintéticos por categoría y calcula COUNT y AVG. Compara el resultado con las filas originales.
+
+**Actividad independiente.** Construye un reporte de ventas por mes y categoría, documentando cómo tratar meses sin ventas.
+
+**Criterios de aceptación.** Explica agrupamiento y agrega correctamente sin mezclar granularidades.
+
+**Errores frecuentes.** Seleccionar columnas no agrupadas sin agregación o interpretar el agregado como si fuera una fila original.
+
+**Comprobación.** ¿Qué representa cada fila del resultado después de un GROUP BY?
 
 #### 9.4.16 — HAVING
 
-`HAVING` filtra grupos después de la agregación, mientras WHERE filtra filas antes de agrupar. **Práctica:** muestra clientes con más de dos pedidos usando GROUP BY y HAVING. **Evidencia:** explica por qué la condición de agregado no corresponde a WHERE en esa consulta.
+**Propósito y modelo.** HAVING filtra grupos después de la agregación; WHERE filtra filas antes de agrupar. Las condiciones de HAVING suelen utilizar agregados como COUNT o SUM. La ubicación de cada filtro afecta semántica y rendimiento.
+
+**Ejemplo desarrollado.** GROUP BY cliente_id HAVING COUNT(*) >= 3 devuelve clientes con al menos tres pedidos. Un filtro de fecha que limite pedidos analizados suele pertenecer a WHERE.
+
+**Práctica guiada.** Escribe consulta que agrupe pedidos por cliente, filtre por periodo en WHERE y exija al menos dos pedidos mediante HAVING.
+
+**Actividad independiente.** Explica con datos sintéticos cómo cambia el resultado si una condición de agregado se coloca en WHERE (inválido en SQL estándar) frente a HAVING.
+
+**Criterios de aceptación.** Distingue filtros de filas y grupos y justifica ubicación de condiciones.
+
+**Errores frecuentes.** Usar HAVING para todos los filtros o confundir COUNT de filas con COUNT de valores no nulos.
+
+**Comprobación.** ¿Por qué un filtro de fecha suele aplicarse antes de agrupar y un umbral de COUNT después?
 
 #### 9.4.17 — JOIN
 
-JOIN combina filas relacionadas de tablas; INNER, LEFT y otras variantes tienen semánticas distintas. **Práctica:** une pedidos con clientes y conserva clientes sin pedidos mediante LEFT JOIN. **Evidencia:** explica filas con NULL y cómo una condición en WHERE puede convertir accidentalmente el resultado en uno similar a INNER JOIN.
+**Propósito y modelo.** JOIN combina filas de tablas relacionadas. INNER JOIN devuelve coincidencias; LEFT JOIN conserva todas las filas izquierdas y rellena con NULL cuando no hay coincidencia; RIGHT/FULL OUTER JOIN dependen de soporte del motor. La condición ON debe representar la relación correcta para evitar multiplicación accidental.
+
+**Ejemplo desarrollado.** Cliente JOIN Pedido ON Cliente.id = Pedido.cliente_id relaciona cada pedido con su cliente. Un LEFT JOIN permite listar clientes sin pedidos.
+
+**Práctica guiada.** Crea dos tablas pequeñas con filas coincidentes y no coincidentes. Ejecuta INNER y LEFT JOIN y explica por qué cambia la cantidad de filas.
+
+**Actividad independiente.** Construye reporte de clientes y total de pedidos, incluyendo clientes sin compras y evitando duplicar importes por relaciones adicionales.
+
+**Criterios de aceptación.** Selecciona tipo de JOIN según resultado requerido y utiliza claves de relación explícitas.
+
+**Errores frecuentes.** Omitir ON y producir producto cartesiano o mover una condición del lado derecho a WHERE y convertir inadvertidamente un LEFT JOIN en INNER.
+
+**Comprobación.** ¿Qué filas conserva LEFT JOIN que INNER JOIN descarta?
 
 #### 9.4.18 — Subqueries
 
-Una subconsulta es una consulta anidada que puede producir un escalar, conjunto o tabla derivada. Puede ser correlacionada y evaluarse conceptualmente por fila. **Práctica:** busca pedidos cuyo importe supera el promedio global. **Evidencia:** identifica consulta interna, externa y tipo de resultado.
+**Propósito y modelo.** Una subconsulta es una consulta anidada utilizada como expresión, fuente de filas o condición. Puede ser escalar, de varias filas, correlacionada o no correlacionada. IN, EXISTS y comparaciones deben elegirse considerando NULL, cardinalidad y optimizador.
+
+**Ejemplo desarrollado.** WHERE EXISTS (SELECT 1 FROM Pedido p WHERE p.cliente_id = c.id) selecciona clientes con al menos un pedido sin duplicar cliente por cada pedido.
+
+**Práctica guiada.** Escribe subconsultas con IN y EXISTS sobre datos sintéticos. Compara resultado y plan de ejecución con JOIN cuando sea equivalente.
+
+**Actividad independiente.** Resuelve una consulta de «elementos por encima del promedio» y otra de «entidades sin relación» usando subconsultas.
+
+**Criterios de aceptación.** Identifica correlación, alcance y cardinalidad; valida equivalencia con datos de prueba.
+
+**Errores frecuentes.** Ignorar NULL en NOT IN o utilizar subconsultas correlacionadas sin revisar costo.
+
+**Comprobación.** ¿Por qué NOT EXISTS puede ser más seguro que NOT IN cuando la subconsulta puede devolver NULL?
 
 #### 9.4.19 — CTE
 
-Una CTE definida con WITH nombra un resultado temporal dentro de una sentencia y mejora legibilidad; las CTE recursivas permiten recorrer jerarquías en motores compatibles. **Práctica:** expresa una consulta de ventas por cliente mediante CTE. **Evidencia:** compara legibilidad con una subconsulta equivalente y comprueba soporte del motor.
+**Propósito y modelo.** Una Common Table Expression (CTE) define un conjunto nombrado temporal para una sentencia mediante WITH. Mejora legibilidad y permite expresar consultas recursivas en motores compatibles. No implica necesariamente materialización: el optimizador puede integrar o materializar según motor y versión.
+
+**Ejemplo desarrollado.** WITH ventas_mes AS (...) SELECT ... FROM ventas_mes separa una etapa de agregación del reporte final. Una CTE recursiva puede recorrer jerarquías con condición de terminación.
+
+**Práctica guiada.** Reescribe una subconsulta como CTE y compara legibilidad y plan. Si el motor lo soporta, prueba una CTE recursiva con jerarquía sintética pequeña.
+
+**Actividad independiente.** Diseña consulta recursiva para árbol de categorías y controla ciclos o profundidad máxima.
+
+**Criterios de aceptación.** Explica alcance de la CTE, referencia y límites de recursión según DBMS.
+
+**Errores frecuentes.** Asumir que CTE siempre mejora rendimiento o escribir recursión sin condición de parada.
+
+**Comprobación.** ¿Qué ventaja de mantenimiento ofrece una CTE frente a repetir la misma subconsulta varias veces?
 
 ### 9.5 — Diseño y normalización
 
