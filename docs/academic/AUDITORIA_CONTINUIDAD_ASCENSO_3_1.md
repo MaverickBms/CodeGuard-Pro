@@ -132,3 +132,13 @@ Se añadió [la guía de continuidad académica de las etapas 1–32](ASCENSO_3_
 La clasificación como base activa establece qué documentación debe utilizarse para continuar el trabajo. No significa que las 1.916 lecciones nominales de las etapas 1–32 estén desarrolladas individualmente con el mismo nivel de detalle, ni que todos los ejemplos, laboratorios, videos o proyectos se hayan ejecutado. El desarrollo granular por lección continúa como trabajo pendiente y se realizará sin alterar el inventario oficial.
 
 La secuencia de bloques de la guía es una organización didáctica para facilitar continuidad; no introduce prerrequisitos curriculares obligatorios nuevos ni modifica los siete prerrequisitos registrados.
+
+
+### Primera expansión granular — etapa 1
+
+Se alinearon los módulos 1.1 y 1.2 con la granularidad exacta de sus lecciones en el roadmap, separando temas que antes aparecían combinados bajo un mismo encabezado:
+
+- **Módulo 1.1 — Hardware:** 16 encabezados de lección, desde CPU y ALU hasta fuente de alimentación y periféricos.
+- **Módulo 1.2 — Representación de información:** 9 encabezados de lección, separando sistemas binario, decimal y hexadecimal, y ASCII, Unicode y UTF-8.
+
+La separación conserva las explicaciones y ejemplos existentes y mejora la correspondencia entre identificador curricular y contenido. No se afirma ejecución del laboratorio de hardware ni del codificador. Los módulos 1.3, 1.4 y 1.5 ya presentan 8, 7 y 6 encabezados temáticos respectivamente, en correspondencia con las cantidades nominales del roadmap.
