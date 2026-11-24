@@ -450,3 +450,59 @@ body[data-theme="light"] .main-content:has(.lesson-page) {
 @media (prefers-reduced-motion: reduce) {
   .lesson-page * { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+/* Contenido académico ampliado y recursos externos. */
+.lesson-editorial-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, var(--cg-warning) 38%, var(--cg-border));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--cg-warning) 9%, var(--lesson-card));
+  color: var(--cg-text-secondary);
+  font-size: .86rem;
+  line-height: 1.6;
+}
+.lesson-editorial-banner > i { color: var(--cg-warning); margin-top: 2px; }
+.lesson-editorial-banner strong { color: var(--cg-text); }
+.lesson-prerequisites { border-left: 3px solid var(--cg-info); }
+.lesson-common-errors { border-left: 3px solid var(--cg-warning); }
+.lesson-video-list { display: grid; gap: 12px; }
+.lesson-video-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 15px;
+  border: 1px solid var(--cg-border);
+  border-radius: 14px;
+  background: var(--lesson-card);
+}
+.lesson-video-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border-radius: 13px;
+  color: #b91c1c;
+  background: color-mix(in srgb, #ef4444 10%, var(--lesson-card));
+  font-size: 1.35rem;
+}
+.lesson-video-copy { min-width: 0; }
+.lesson-video-copy h3 { margin: 0 0 4px; color: var(--cg-text); font-size: 1rem; }
+.lesson-video-copy p { margin: 0 0 8px; color: var(--cg-text-secondary); font-size: .86rem; line-height: 1.6; overflow-wrap: anywhere; }
+.lesson-video-meta { color: var(--cg-text-muted) !important; font-size: .78rem !important; }
+.lesson-video-verification { color: var(--cg-text-muted) !important; font-size: .76rem !important; }
+.lesson-video-verification i { color: var(--cg-success); margin-right: 4px; }
+.lesson-source-list { margin: 0; padding-left: 1.1rem; display: grid; gap: 11px; }
+.lesson-source-list li { color: var(--cg-text-secondary); font-size: .86rem; line-height: 1.55; overflow-wrap: anywhere; }
+.lesson-source-list strong { color: var(--cg-text); }
+.lesson-source-url { margin-top: 3px; font-size: .78rem; }
+.lesson-source-url a { color: var(--cg-link, var(--cg-primary)); text-decoration: underline; text-underline-offset: 2px; }
+.lesson-evaluation-links { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 13px; }
+@media (max-width: 620px) {
+  .lesson-video-card { flex-direction: column; }
+  .lesson-video-icon { width: 40px; height: 40px; flex-basis: 40px; }
+}

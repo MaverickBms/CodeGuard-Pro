@@ -119,7 +119,7 @@ def _validate_published_version(version):
     if version.estado != "publicada":
         raise PublicationError("Solo se empaquetan versiones editoriales publicadas.")
     snapshot = version.snapshot
-    if not isinstance(snapshot, dict) or snapshot.get("esquema_version") != 1:
+    if not isinstance(snapshot, dict) or snapshot.get("esquema_version") not in {1, 2}:
         raise PublicationError(f"La versión {version.pk} tiene un snapshot académico incompatible.")
     digest = hashlib.sha256(_json_bytes(snapshot)).hexdigest()
     if digest != version.sha256:
@@ -205,10 +205,12 @@ def _validate_published_version(version):
         "snapshot": snapshot,
         "fuentes": sources,
     }
-    return _json_bytes(document), catalog
+    return _json_bytes(document), catalog, snapshot.get("esquema_version", 1)
 
 
-def _build_deterministic_zip(package_id, package_version, documents, sources=()):
+def _build_deterministic_zip(
+    package_id, package_version, documents, sources=(), *, content_schema_version=1
+):
     entries = []
     for lesson_uuid, payload in sorted(documents, key=lambda item: item[0]):
         path = f"payload/lessons/{lesson_uuid}.json"
@@ -221,7 +223,7 @@ def _build_deterministic_zip(package_id, package_version, documents, sources=())
         "schema_version": 2,
         "package_id": str(package_id),
         "package_version": package_version,
-        "content_schema_version": 1,
+        "content_schema_version": content_schema_version,
         "files": entries,
         "sources": sorted(sources, key=lambda item: item["clave"]),
     }
@@ -305,12 +307,14 @@ def publicar_paquete_conocimiento(
 
     documents = []
     source_catalog = {}
+    content_schema_versions = set()
     for pointer in active_versions:
         version = pointer.version
         if version.leccion_id != pointer.leccion_id:
             raise PublicationError("Un puntero activo no coincide con su lección.")
-        payload, sources = _validate_published_version(version)
+        payload, sources, content_schema_version = _validate_published_version(version)
         documents.append((str(pointer.leccion.clave_contenido), payload))
+        content_schema_versions.add(content_schema_version)
         for source in sources:
             previous = source_catalog.get(source["clave"])
             if previous is not None and previous != source:
@@ -333,8 +337,13 @@ def publicar_paquete_conocimiento(
         uuid.NAMESPACE_URL,
         f"codeguard:{channel}:{sequence}:{package_version}:{content_digest}",
     )
+    package_content_schema = max(content_schema_versions) if content_schema_versions else 1
     package_bytes = _build_deterministic_zip(
-        package_id, package_version, documents, source_catalog.values()
+        package_id,
+        package_version,
+        documents,
+        source_catalog.values(),
+        content_schema_version=package_content_schema,
     )
     package_hash = hashlib.sha256(package_bytes).hexdigest()
 
@@ -349,7 +358,7 @@ def publicar_paquete_conocimiento(
         "sequence": sequence,
         "published_at": published_at.isoformat().replace("+00:00", "Z"),
         "minimum_app_version": minimum_app_version,
-        "content_schema_version": 1,
+        "content_schema_version": package_content_schema,
         "package": {
             "package_id": str(package_id),
             "package_version": package_version,
@@ -403,7 +412,7 @@ def publicar_paquete_conocimiento(
             package_version=package_version,
             channel=channel,
             sequence=sequence,
-            content_schema_version=1,
+            content_schema_version=package_content_schema,
             package_sha256=package_hash,
             manifest_sha256=manifest_hash,
             signature_key_id=key_id,

@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "apps.tutoring",
     "apps.gamification",
     "apps.challenges",
+    "apps.library",
 ]
 
 MIDDLEWARE = [
@@ -136,7 +137,7 @@ AUTH_PASSWORD_HASHERS = [
 # Configuración del tutor IA local (Fase 3, ADR-010).
 CODEGUARD_TUTOR_MODEL = os.environ.get("CODEGUARD_TUTOR_MODEL", "qwen2.5-coder:1.5b")
 CODEGUARD_TUTOR_BASE_URL = os.environ.get("CODEGUARD_TUTOR_BASE_URL", "http://localhost:11434")
-CODEGUARD_TUTOR_TIMEOUT = int(os.environ.get("CODEGUARD_TUTOR_TIMEOUT", "30"))
+CODEGUARD_TUTOR_TIMEOUT = int(os.environ.get("CODEGUARD_TUTOR_TIMEOUT", "12") or 20)
 
 LANGUAGE_CODE = "es"
 TIME_ZONE = "UTC"

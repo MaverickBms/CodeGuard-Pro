@@ -8,16 +8,20 @@ IA para decidir la aprobación académica.
 from __future__ import annotations
 
 import re
+import logging
 from typing import Any
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.db.models import Q
 
 from apps.audit.services import registrar_evento
 
 from .models import CumplimientoCriterio, CriterioFinalizacion, Progreso
 from .models_evaluacion import Pregunta, Quiz, ResultadoEvaluacion, ResultadoPregunta
 from .services import etapas_completadas
+
+logger = logging.getLogger(__name__)
 
 
 def _normalizar_texto(valor: Any, *, colapsar_espacios: bool = True) -> str:
@@ -321,7 +325,13 @@ def actualizar_progreso_por_evaluacion(usuario, quiz: Quiz, resultado: Resultado
                 )
                 evaluar_logros_academicos(usuario)
             except Exception:
-                pass
+                # El resultado académico ya está guardado. No revertimos una
+                # aprobación por un fallo cosmético, pero sí dejamos rastro.
+                logger.exception(
+                    "Falló la recompensa o evaluación de logros del módulo %s para el usuario %s",
+                    modulo.pk,
+                    usuario.pk,
+                )
 
     if quiz.etapa_id is not None and quiz.tipo == Quiz.TIPO_EXAMEN:
         aprobar_etapa_por_evaluacion(usuario, quiz.etapa, quiz, resultado)
@@ -538,10 +548,23 @@ def registrar_cumplimiento_criterio(
             f"'{criterio.titulo}' ({criterio.get_tipo_display()}); origen={origen}."
         ),
     )
-    _intentar_completar_etapa(
-        usuario,
-        criterio.etapa,
-        origen_evento="etapa_homologacion_pendiente_criterios",
-        contexto=f"Criterio registrado: {criterio.titulo}.",
-    )
+    # Una etapa solo puede completarse por evaluación/criterios verificables.
+    # El registro manual de evidencia no debe conceder aprobación académica por
+    # sí mismo; se reevalúa la etapa únicamente si ya existe una evaluación
+    # aprobada del usuario en esa etapa.
+    evaluacion_aprobada = ResultadoEvaluacion.objects.filter(
+        usuario=usuario,
+        aprobado=True,
+        requiere_revision=False,
+    ).filter(
+        Q(quiz__etapa=criterio.etapa) | Q(quiz__modulo__etapa=criterio.etapa)
+    ).exists()
+    if evaluacion_aprobada:
+        _intentar_completar_etapa(
+            usuario,
+            criterio.etapa,
+            evaluacion_aprobada=True,
+            origen_evento="etapa_homologacion_pendiente_criterios",
+            contexto=f"Criterio registrado: {criterio.titulo}.",
+        )
     return cumplimiento

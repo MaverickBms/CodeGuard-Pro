@@ -8,6 +8,7 @@ from apps.accounts.identity import obtener_actor_auditoria, obtener_usuario_loca
 from apps.audit.services import registrar_evento
 from apps.core.models import ConfiguracionSistema
 from apps.roadmaps.models import Etapa, Progreso, Roadmap
+from apps.roadmaps.coverage import calcular_cobertura
 from apps.roadmaps.services import (
     etapas_completadas,
     progreso_general,
@@ -68,6 +69,7 @@ def panel(request):
     proxima_etapa = None
     actividad_reciente = []
     roadmap_existe = roadmap is not None
+    cobertura = calcular_cobertura(roadmap) if roadmap is not None else None
 
     if roadmap_existe:
         avance = progreso_general(usuario, roadmap)
@@ -134,17 +136,17 @@ def panel(request):
                 },
                 {
                     "titulo": "Biblioteca documental",
-                    "descripcion": "Importación y gestión de PDFs.",
+                    "descripcion": "Importación, búsqueda y consulta local de PDFs.",
                     "url": "library:lista",
                     "icono": "📚",
-                    "implementado": False,
+                    "implementado": True,
                 },
                 {
                     "titulo": "Base de conocimiento",
-                    "descripcion": "Conceptos, relaciones y trazabilidad documental.",
-                    "url": "knowledge:lista",
+                    "descripcion": "Fuentes, versiones, paquetes y trazabilidad editorial.",
+                    "url": "roadmaps:conocimiento",
                     "icono": "🧠",
-                    "implementado": False,
+                    "implementado": True,
                 },
                 {
                     "titulo": "Evaluaciones",
@@ -201,5 +203,6 @@ def panel(request):
             "proxima_actividad": proxima_actividad,
             "actividad_reciente": actividad_reciente,
             "roadmap_existe": roadmap_existe,
+            "cobertura": cobertura,
         },
     )

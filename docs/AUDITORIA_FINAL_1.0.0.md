@@ -1,0 +1,412 @@
+# Auditoría final de CodeGuard Pro 1.0.0
+
+**Fecha:** 2026-11-21
+**Rama auditada:** `release/1.0.0-final`
+**Base del PR:** `release/1.0.0`
+**Commit inicial de referencia:** `e17721f`
+**PR:** [#17](https://github.com/MaverickBms/CodeGuard-Pro/pull/17) (abierto, sin fusionar)
+
+> Esta auditoría se ejecutó sobre el árbol real del repositorio. Los resultados
+> de pruebas, rutas y artefactos se separan de las comprobaciones que dependen de
+> hardware o servicios externos. Nada se declara verificado por inferencia.
+
+## 1. Estado inicial
+
+El punto de partida era un release candidate funcional:
+
+- Aplicación Electron + Django + SQLite con servidor en `127.0.0.1`.
+- 349 pruebas Django y 26 pruebas Node/Electron en verde.
+- Migraciones al día.
+- Roadmap ASCENSO 3.1 con 33 etapas, 212 módulos y 1.946 títulos.
+- 8 lecciones redactadas del módulo 0.1 en estado borrador.
+- 0 lecciones aprobadas o publicadas.
+- Espacio editorial, biblioteca PDF, tutor local, gamificación, backups y
+  paneles de cobertura implementados.
+- Windows validado únicamente en CI; macOS/ARM64 y sincronización remota fuera
+  de alcance.
+
+La revisión no encontró una vulnerabilidad crítica que justificara bloquear la
+entrega, pero sí dos defectos de integridad relevantes y varias inconsistencias
+de menor severidad.
+
+## 2. Componentes revisados
+
+| Área | Elementos |
+|---|---|
+| Aplicación | `server_entry.py`, `run.sh`, `codeguard`, `CodeGuardServer.spec` |
+| Configuración | `config/settings/{base,development,desktop}.py`, `config/urls.py`, middleware, health |
+| Backend | 8 apps, 50 modelos, 39 migraciones, vistas, formularios, servicios y comandos |
+| Identidad | propietario local, bootstrap, permisos editoriales, autenticación conservada |
+| Roadmap | instalación idempotente, manifiesto, huellas, prerrequisitos y progreso |
+| Contenido | 8 lecciones, 8 ejemplos, 16 ejercicios, 8 videos, 13 fuentes |
+| Editorial | versiones, snapshots, licencias, revisión, publicación y retirada |
+| Evaluaciones | quizzes/exámenes, respuestas, resultados inmutables y homologación |
+| Tutor | Ollama local, timeout, fallback, límite de 3 pistas y contexto |
+| Biblioteca | importación PDF, SHA-256, duplicados, rangos HTTP y archivo |
+| Gamificación | monedas, logros, misiones, racha, avatar e inventario |
+| Electron | IPC, preload, context isolation, sandbox, CSP, navegación y cierre |
+| Frontend | 27 plantillas HTML, JavaScript propio, 12 temas, accesibilidad y responsive |
+| Backups | creación, verificación, restauración transaccional y rollback |
+| CI/CD | workflows, empaquetado, pruebas Windows y auditorías de dependencias |
+| Documentación | README, informes, inventario, rendimiento y limitaciones |
+
+## 3. Hallazgos y correcciones
+
+### A-01 — Identidad local: elevación implícita de la primera cuenta (Alta, corregida)
+
+**Problema.** `asegurar_propietario_local()` tomaba la primera cuenta activa y
+`_asegurar_permiso_editorial()` la convertía en `is_staff`. En un perfil con
+varias cuentas, o restaurado desde otro equipo, podía elevar una cuenta que no
+era el propietario previsto. La marca de propietario no era explícita.
+
+**Corrección.**
+
+- Nueva columna `Usuario.es_propietario_local` y migración
+  `accounts.0003_usuario_es_propietario_local`.
+- El propietario marcado tiene prioridad.
+- Se acepta el nombre reservado heredado `propietario-local` como identificación
+  explícita de compatibilidad.
+- Si hay varias cuentas activas y ninguna es inequívoca, el arranque no elige ni
+  eleva ninguna; el perfil queda en modo lectura y se registra una advertencia.
+- El comando de siembra ya no eleva cuentas: exige que el arranque haya
+  habilitado al propietario explícito.
+- Se añadieron pruebas de cuenta ordinaria, perfil ambiguo y nombre heredado.
+
+**Riesgo residual.** El propietario sigue siendo una identidad local sin
+credenciales mientras `AUTH_DISABLED=True`. Esto es una decisión de producto
+documentada, no una autenticación remota. El servidor solo escucha en loopback.
+
+### A-02 — Progreso: una lección podía revocar una etapa ya aprobada (Alta, corregida)
+
+**Problema.** `recalcular_progreso_etapa()` reescribía el estado de la etapa a
+`en_progreso` y borraba `fecha_completado` cada vez que se recalculaba el avance
+de lecciones. Completar o reabrir una lección después de aprobar la etapa podía
+perder la aprobación persistida.
+
+**Corrección.** Si la etapa ya está `completado`, el recálculo de lecciones es
+informativo y no altera estado, porcentaje ni fecha. Se añadió una regresión en
+`test_roadmaps`.
+
+### A-03 — Editorial: pérdida de datos en formularios inválidos (Media, corregida)
+
+**Problema.** Al fallar la validación del contenido o de un video, la vista
+reconstruía un formulario vacío y descartaba el texto enviado. El usuario podía
+perder una edición larga.
+
+**Corrección.** La vista conserva los formularios ligados y sus errores; el
+formulario de licencia también conserva los datos inválidos. Se añadió una
+prueba que verifica que el texto enviado sigue visible tras un error.
+
+### A-04 — Videos: verificación técnica confundida con aprobación pedagógica (Media, corregida)
+
+**Problema.** Los videos sembrados tenían `estado_revision="aprobado"` tras
+verificar solo enlace, título, canal, duración e idioma. La interfaz no separaba
+esa verificación técnica de una revisión pedagógica real.
+
+**Corrección.**
+
+- Nuevos campos `estado_pedagogico`, `notas_pedagogicas`,
+  `revisado_pedagogicamente_en` y `revisado_pedagogicamente_por`.
+- Los 8 videos existentes quedan con revisión pedagógica **pendiente**.
+- La aprobación pedagógica exige enlace previamente verificado, fecha, actor y
+  notas de correspondencia didáctica.
+- La vista del estudiante muestra explícitamente «Revisión pedagógica
+  pendiente» cuando corresponde.
+- Se prohíben enlaces `http://` en recursos audiovisuales.
+
+### A-05 — CI: el PR de release no ejecutaba los workflows (Media, corregida)
+
+**Problema.** El workflow solo se activaba en `pull_request` contra `main`; el
+PR #17 tiene como base `release/1.0.0`, por lo que no se ejecutaba en el evento
+de PR. La evidencia Windows existente provenía de `workflow_dispatch`.
+
+**Corrección.** Se añadieron `release/1.0.0` y `release/**` como ramas de PR.
+El empaquetado Windows también se ejecuta en pushes a `release/1.0.0-final`.
+Se añadieron auditorías `pip-audit` y `npm audit --omit=dev` al CI.
+
+### A-06 — Contraseña inicial sin validadores completos (Media, corregida)
+
+**Problema.** El formulario de configuración inicial solo comprobaba longitud
+mínima; no aplicaba los validadores de Django.
+
+**Corrección.** Se aplica `validate_password()` además de la comprobación de
+longitud y confirmación. El flujo de autenticación sigue desactivado por diseño.
+
+### A-07 — Documentación con cifras y rutas contradictorias (Media, corregida)
+
+**Problema.** README e informes mencionaban 7 rutas HTTP y 349 pruebas, mientras
+el smoke vigente comprobaba 9 rutas y la suite ya tenía más pruebas. El run de
+Windows no estaba vinculado a su commit exacto.
+
+**Corrección.** Se actualizaron los documentos a:
+
+- 356 pruebas Django en esta iteración.
+- 26 pruebas Node/Electron.
+- 9 rutas HTTP del smoke actual.
+- Run Windows `44945721326` sobre el commit `5747ec6` (4/4 jobs), no sobre
+  `e17721f`.
+- Artefactos antiguos identificados como tales; los nuevos se documentan con su
+  hash y commit de origen.
+
+### A-08 — Detalles de accesibilidad y estabilidad (Baja, corregidos)
+
+- Se sustituyó `transition: all` por propiedades concretas.
+- Las opciones futuras de la barra lateral llevan etiqueta y título que indican
+  «No disponible en CodeGuard Pro 1.0.0».
+- Se bloquean envíos duplicados de formularios deshabilitando el botón tras el
+  evento `submit`, con restauración en `pageshow`.
+
+### A-09 — Duplicados PDF bajo concurrencia (Media, corregido en esta revisión)
+
+**Problema.** La vista comprobaba el SHA-256 antes de guardar, pero dos procesos
+podían superar esa consulta simultáneamente y crear dos registros con el mismo
+contenido. El conflicto de base de datos tampoco limpiaba necesariamente el
+archivo que el campo FileField hubiera escrito antes del INSERT.
+
+**Corrección.**
+
+- Restricción única condicional sobre SHA-256 no vacío, aplicada en SQLite.
+- La consulta previa se conserva para ofrecer un mensaje claro; la restricción
+  de base de datos es la autoridad ante carreras concurrentes.
+- La vista traduce únicamente el conflicto cuando ya existe el hash ganador,
+  elimina el archivo huérfano y no oculta otros errores de integridad.
+- Migración library.0002_unique_document_sha256: comprueba duplicados
+  históricos y aborta sin borrar ni modificar documentos si encuentra alguno.
+- Se añadieron dos pruebas para la unicidad a nivel de base de datos y la
+  compatibilidad de registros históricos sin hash. La ejecución de estas
+  pruebas queda pendiente de la CI del commit actual.
+
+### A-10 — Recomendación de videos rechazados (Media, corregido en esta revisión)
+
+**Problema.** La consulta de recursos para el estudiante filtraba enlaces
+técnicamente aprobados y disponibles, pero no excluía un video que el editor
+hubiera rechazado en la revisión pedagógica. Un recurso considerado
+didácticamente inadecuado podía seguir apareciendo como recomendación.
+
+**Corrección.** El catálogo del estudiante ahora admite videos con revisión
+pedagógica pendiente (identificados explícitamente como no validados) o aprobada,
+y excluye los rechazados. Se añadió una prueba de regresión sobre el contenido
+sembrado. La ejecución de esta prueba queda pendiente de la CI del HEAD actual.
+
+### A-11 — Sesión heredada como respaldo de identidad local (Alta, corregido en esta revisión)
+
+**Problema.** Aunque el middleware resolvía el propietario local y fallaba
+cerrado ante perfiles ambiguos, get_usuario_actual() podía recurrir a
+request.user cuando request.usuario_local era None. Una sesión de Django
+heredada podía así convertirse en identidad de escritura mientras
+AUTH_DISABLED=True, saltándose la resolución explícita del propietario.
+
+**Corrección.** En modo sin autenticación, get_usuario_actual() devuelve
+exclusivamente request.usuario_local; nunca usa la sesión de Django como
+respaldo. Con autenticación activa conserva el comportamiento anterior. Se
+añadieron dos pruebas para sesión heredada con propietario y para perfil
+ambiguo. Su ejecución queda pendiente de la CI del HEAD actual.
+
+### A-12 — Acceso directo a recursos de etapas bloqueadas (Alta, corregido en esta revisión)
+
+**Problema.** La navegación del roadmap mostraba correctamente las etapas
+bloqueadas y el envío de ejercicios/evaluaciones validaba prerrequisitos, pero
+las vistas de detalle de lección y algunos endpoints del tutor confiaban en que
+el estudiante llegaría desde la navegación. Conociendo un ID, era posible abrir
+directamente una lección o solicitar tutoría de un ejercicio de una etapa aún
+bloqueada. El detalle del quiz tampoco limitaba su consulta al roadmap activo.
+
+**Corrección.**
+
+- La lectura de lecciones sigue disponible en etapas bloqueadas, como indica
+  el diseño del roadmap; no se registra progreso y se ocultan entregas/tutoría
+  hasta cumplir los prerrequisitos.
+- La vista del quiz limita la consulta al roadmap activo y bloquea el acceso
+  directo a evaluaciones de etapas bloqueadas. Resultados e historial también
+  quedan limitados al roadmap activo.
+- Iniciar sesión de tutoría, solicitar pistas y analizar intentos comprueba que
+  el ejercicio pertenezca al roadmap activo y que la etapa esté desbloqueada.
+- Se añadieron tres pruebas de regresión para el acceso directo a lecciones,
+  quizzes y tutoría, incluyendo lectura de solo consulta sin progreso.
+
+### A-13 — Respuesta vacía del modelo de tutoría (Media, corregido en esta revisión)
+
+**Problema.** Si Ollama respondía correctamente a nivel HTTP pero devolvía un
+contenido vacío, el tutor podía guardar y mostrar una pista en blanco.
+
+**Corrección.** Las respuestas vacías o compuestas solo por espacios activan el
+mismo fallback local determinista que se usa cuando Ollama no está disponible.
+Se añadió una prueba de regresión.
+
+### A-14 — Unicidad de progreso con campos NULL (Alta, corregido en esta revisión)
+
+**Problema.** El modelo declaraba una restricción única compuesta por usuario,
+etapa, módulo, lección y actividad. En SQLite, los valores NULL no se consideran
+iguales para una restricción UNIQUE convencional, por lo que podían existir
+varias filas para el mismo progreso de etapa, módulo o lección. Dos accesos
+simultáneos podían crear progreso duplicado y distorsionar el avance.
+
+**Corrección.** Se reemplazó la restricción compuesta por índices únicos
+parciales por nivel (etapa, módulo, lección y actividad). La migración
+roadmaps.0023_progreso_unicidad_por_nivel comprueba los datos existentes y se
+detiene sin borrar ni modificar registros si detecta duplicados históricos.
+Se añadió una prueba que intenta duplicar progreso de etapa, módulo y lección.
+
+### A-15 — Contexto de pistas del tutor con separadores literales (Baja, corregido en esta revisión)
+
+**Problema.** El contexto enviado a Ollama para generar pistas incluía los
+caracteres literales \\n en lugar de saltos de línea. El contenido era
+recibido, pero los campos del ejercicio quedaban concatenados y menos claros.
+
+**Corrección.** Se sustituyeron los separadores literales por saltos de línea
+reales y se añadió una prueba que inspecciona el contexto enviado al modelo.
+
+## 4. Funcionalidades verificadas
+
+| Área | Verificación |
+|---|---|
+| Arranque limpio | Migraciones, propietario, roadmap y 8 lecciones sembradas |
+| Persistencia | Lección completada, intento, tema e ítem de biblioteca sobreviven al reinicio |
+| Roadmap | 33/212/1.946/7 comprobados contra el manifiesto |
+| Lecciones | Contenido, fuentes, videos y ejercicios renderizados |
+| Ejercicio | Respuesta correcta aprobada en backend y lección completada |
+| Editorial | Flujo probado por pruebas; formularios inválidos conservan datos |
+| Biblioteca | Importación PDF real, visor, archivo y restauración |
+| Tutor | Estado con/sin Ollama y fallback determinista probados con mocks |
+| Backups | Crear, verificar, restaurar en perfil aislado y comprobar datos |
+| Frontend | 9 rutas 200, 12 temas, 13 pantallas responsive, formulario real |
+| Electron | IPC/seguridad y cierre sin procesos huérfanos |
+| Seguridad | CSRF, CSP, loopback, uploads, backups y dependencias auditadas |
+
+## 5. Funcionalidades incompletas o fuera de alcance
+
+- Revisión humana independiente del contenido académico.
+- 1.938 lecciones sin cuerpo desarrollado.
+- Revisión pedagógica de los 8 videos (queda pendiente y visible).
+- Publicación editorial: es una decisión explícita, no automática; no se publicó
+  contenido durante la auditoría.
+- Sandbox de ejecución de código.
+- Sincronización remota de producción (sin endpoint ni claves públicas).
+- Laboratorios, competencias, vigencia y ética.
+- macOS, ARM64 y aceptación en hardware Windows físico.
+- Revisión manual de respuestas abiertas: el sistema las deja pendientes y no las
+  aprueba; no existe todavía una pantalla de revisión docente.
+
+## 6. Riesgos residuales
+
+| Riesgo | Severidad | Estado |
+|---|---|---|
+| Propietario local sin credenciales mientras `AUTH_DISABLED=True` | Aceptado por diseño | Servidor solo loopback; escrituras asociadas al propietario marcado |
+| Perfil con varias cuentas ambiguas | Bajo | Falla cerrado: no elige ni eleva; requiere resolución manual |
+| Respuestas abiertas pendientes para siempre | Medio funcional | Documentado; no se autoaprueban |
+| Windows no probado en hardware físico | Medio de distribución | CI 4/4; aceptación física pendiente |
+| Sincronización remota no operativa | Bajo (offline-first) | Falla cerrada; no hay conexiones |
+| Duplicado de PDF en concurrencia | Corregido en esta revisión | Restricción única condicional por SHA-256 y migración conservadora ante duplicados históricos |
+| Progreso duplicado por valores NULL | Corregido en esta revisión | Índices únicos parciales por nivel; migración aborta sin borrar si detecta duplicados históricos |
+| AppImage actual no probado con montaje FUSE directo | Bajo de plataforma | Se ejecutó con extracción; se documenta el fallback |
+
+## 7. Plan de ejecución aplicado
+
+1. Auditar repositorio, rama, PR y estado de CI.
+2. Ejecutar línea base de pruebas y análisis de dependencias.
+3. Corregir identidad y permisos.
+4. Corregir integridad de progreso.
+5. Corregir formularios editoriales y distinguir video técnico/pedagógico.
+6. Endurecer CI y validaciones.
+7. Ejecutar suite completa, smoke Electron, E2E de aprendizaje, backup/restore.
+8. Reconstruir artefactos y calcular hashes.
+9. Actualizar documentación y PR.
+10. No fusionar, no crear tag ni release definitiva.
+
+## 8. Conclusión
+
+No se identificaron bloqueos críticos después de las correcciones. La versión
+queda **lista con limitaciones documentadas**: el producto funciona dentro de su
+alcance local, pero la aceptación Windows física, la revisión pedagógica de
+videos, la ampliación del contenido y la infraestructura remota siguen fuera de
+lo demostrado en esta iteración. El veredicto completo y la evidencia están en
+[`INFORME_FINAL_1.0.0.md`](INFORME_FINAL_1.0.0.md).
+
+
+### A-16 — Referencias de transacciones de monedas sin unicidad en base de datos (Alta, corregido; CI pendiente)
+
+**Problema.** La idempotencia de `acreditar_monedas` dependía de consultar la referencia antes de insertar. El bloqueo del perfil serializa las llamadas por usuario en bases de datos que implementan `SELECT FOR UPDATE`, pero la integridad no quedaba protegida frente a escrituras directas, errores futuros del servicio o motores donde el bloqueo de filas no ofrece la misma garantía.
+
+**Corrección.** Se añadió una restricción única condicional por usuario, tipo y referencia no vacía. Las transacciones sin referencia siguen permitidas y las referencias de crédito y débito pertenecen a espacios separados. La migración `gamification.0004_unique_transaction_reference` inspecciona primero los datos históricos y aborta con un mensaje diagnóstico si encuentra duplicados; no elimina ni modifica transacciones. Se añadió una prueba que intenta insertar una referencia repetida directamente en la base de datos.
+
+**Validación.** La nueva prueba y la migración deben quedar confirmadas por CI del HEAD `59ff81a`; no se atribuye el resultado del run anterior a estos cambios.
+
+
+### A-17 — Colisión de directorios de reversión en restauraciones consecutivas (Alta, corregido; CI pendiente)
+
+**Problema.** El directorio de rollback se construía usando una marca de tiempo con precisión de un segundo. Dos restauraciones rápidas del mismo perfil podían reutilizar el mismo directorio y sobrescribir una copia de reversión anterior.
+
+**Corrección.** Cada restauración crea ahora un directorio exclusivo mediante `tempfile.mkdtemp` dentro del perfil. Si la restauración falla, se revierte el intercambio y se elimina el staging de rollback incompleto; si termina correctamente, la copia anterior se conserva en su directorio único.
+
+**Prueba.** Se añadió un caso que ejecuta dos restauraciones consecutivas y comprueba que ambas copias de reversión existen, tienen rutas distintas y conservan sus respectivas bases de datos. Pendiente de CI del HEAD actual.
+
+### A-18 — Registro manual de criterios podía completar etapa sin evaluación aprobada (Alta, corregido)
+
+**Problema.** `registrar_cumplimiento_criterio` registraba evidencia manual/proyecto y siempre llamaba a `_intentar_completar_etapa`. Un usuario podía satisfacer criterios obligatorios declarativos y obtener la transición de etapa a completada sin una evaluación aprobada, eludiendo la regla de que la etapa se aprueba mediante evaluaciones y criterios verificables.
+
+**Corrección.** El servicio registra la evidencia y solo reevalúa la finalización de etapa cuando existe al menos un `ResultadoEvaluacion` aprobado y sin revisión pendiente para la misma etapa (`apps/roadmaps/services_evaluacion.py`). La finalización por evaluación sigue funcionando a través de `aprobar_etapa_por_evaluacion`.
+
+**Prueba.** `apps/roadmaps/tests/test_evaluacion.py::CumplimientoCriterioValidationTests::test_criterio_manual_no_completa_etapa_sin_evaluacion_aprobada`. La prueba existente `test_cumplimiento_criterio_proyecto_permite_completar_etapa_tras_examen` sigue pasando.
+
+### A-19 — Evaluador estático `codigo_contiene` no completaba lección aunque permitiera completar (Media, corregido)
+
+**Problema.** `_evaluar_configuracion` devolvía `criterios_cumplidos` cuando el chequeo estático pasaba, incluso si `ConfiguracionEvaluacion.permite_completar_leccion` estaba habilitado. `registrar_intento_ejercicio` solo dispara `_completar_leccion_si_corresponde` cuando el resultado es `aprobado`.
+
+**Corrección.** Cuando el chequeo pasa y `permite_completar_leccion=True`, el resultado es `aprobado`; en caso contrario se mantiene `criterios_cumplidos` con la semántica de "no aprobación académica" (`apps/roadmaps/attempts.py`).
+
+**Prueba.** `apps/roadmaps/tests/test_attempts.py::...::test_codigo_contiene_completa_leccion_si_permite_completar`.
+
+### A-20 — Aceptación de esquemas de contenido 1 y 2 en publisher/distribución/importación (Media, corregido parcialmente)
+
+**Problema.** El flujo editorial puede emitir snapshots con `esquema_version` 2 para contenido académico completo, pero publisher, distribución y content_import rechazaban esquema 2, impidiendo empaquetar/publicar ese contenido.
+
+**Corrección.** Se acepta `esquema_version` 1 o 2 en validación de snapshot (publisher, content_import) y `content_schema_version` 1 o 2 en distribución. El publisher emite el `content_schema_version` real del paquete. Queda pendiente validar el flujo editorial completo de esquema 2 extremo a extremo con paquete firmado y publicación real.
+
+### A-21 — Crashes por datos malformados en carga/importación (Media, corregido)
+
+**Problema.** `cargar_contenido_academico` no convertía `ValueError/TypeError/KeyError` de coerciones a `CommandError`. `importar_documentos_validados` no manejaba `Leccion.DoesNotExist` dentro de la transacción.
+
+**Corrección.** Se amplió el manejo de excepciones en el comando y se capturó `DoesNotExist` convirtiéndolo en `ValidationError` con mensaje claro.
+
+### A-22 — `etapa.completada` no se exponía en el contexto de detalle (Baja, corregido)
+
+**Problema.** La plantilla de detalle usaba `etapa.completada`, pero la vista no lo asignaba.
+
+**Corrección.** La vista `detalle` asigna `etapa.completada = etapa.numero in completadas`.
+
+## 9. Auditoría incremental autónoma (2026-11-23, esta sesión)
+
+- Rama: `release/1.0.0-final`. HEAD base auditado: `66468a536554e9747302aa8087ba568d2bda4be1` (CI 4/4 verde en runs 45205752117 y 45205738457).
+- Se verificó el estado de CI del HEAD actual antes de modificar: 4/4 trabajos completados con éxito (Django, Electron, PyInstaller, Windows x64) en los dos workflows registrados.
+- Pruebas ejecutadas en este entorno: `manage.py check` OK; `makemigrations --check --dry-run` OK; `npm run test:electron` 26/26 OK; Django suite `apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges apps.library` **379 pruebas OK**.
+- Smoke HTTP (Django dev server, AUTH_DISABLED, datos sembrados): rutas principales respondieron 200 (`/`, roadmaps, etapa 0/1/25, lección, evaluaciones, evidencias, conocimiento, cobertura, editorial, fuentes editoriales, biblioteca, importar, gamificación perfil, tutoría estado, healthz, backups, login). POST-only endpoints respondieron 405 ante GET. No se observaron trazas 500 en el log del smoke.
+- No se ejecutó auditoría visual automatizada con navegador (no hay Playwright/Selenium configurado; los scripts CDP del repo están orientados a Electron empaquetado). Se realizó revisión estática de plantillas/JS y smoke HTTP. Esta limitación queda documentada.
+- Hallazgos pendientes/no resueltos en esta sesión: brecha de contenido (8 borradores/0 publicadas/1938 pendientes); XP/Niveles no modelados en `PerfilGamificacion` (gamificación muestra monedas/rachas/logros/misiones pero no experiencia/niveles); revisión pedagógica humana de videos pendiente; aceptación Windows física; firma de código; sincronización remota de producción; macOS/ARM64; revisión docente de respuestas abiertas; eliminación de documentos de biblioteca no expuesta en UI; flujo editorial extremo a extremo para esquema 2 requiere validación adicional.
+
+
+## 10. Misión crítica de rendimiento de arranque (2026-11-23, esta sesión)
+
+- **Problema reportado:** ~165 s desde `./codeguard` hasta UI utilizable en Linux AppImage (propietario). No reproducible 1:1 en este entorno.
+- **Instrumentación añadida:** marcas monotónicas en `server_entry.py`, `apps/roadmaps/bootstrap.py`, `electron/main.js`; reportes `startup-perf.json` y `startup-perf-electron.json`; benchmark extendido `scripts/benchmark-startup.py` con modos `--packaged-server` y `--appimage`.
+- **Optimizaciones aplicadas:** caché de migraciones en `/healthz/` (sin omitir comprobación de roadmap), caché de cobertura 60s con invalidación, Waitress 8 hilos configurable, invalidación de caché en servicios editoriales/conocimiento.
+- **Medición servidor empaquetado nuevo (temp profiles):** fresh /healthz 12,446 ms; warm 1,279 ms; historial 1,302 ms; página `/` 277–389 ms. Antes (viejo, ad-hoc): warm ~5,295 ms, fresh ~10,520 ms.
+- **AppImage:** reconstruido; ejecución GUI en este entorno no alcanzó marca `usable` (limitación de entorno). No se declara RESUELTO Y VALIDADO EN APPIMAGE LINUX en este entorno.
+- **Pruebas:** Django 379 OK, `manage.py check` OK, `makemigrations --check --dry-run` OK, Electron 26 OK.
+- **Veredicto arranque:** **PARCIALMENTE RESUELTO**. Mejora sustancial medida en servidor empaquetado e instrumentación completa; falta validación UI-utilizable en AppImage en equipo representativo/propietario.
+
+
+## 11. Pantalla de carga dinámica (2026-11-23, sesión 2)
+
+- Se implementó splash local autocontenido con progreso real por fases, porcentaje, tarea, estado por fase, frases motivacionales locales y estado de error.
+- Se añadió `electron/startup-progress.js` con pesos/fases, cap 99% hasta `app_interactive`, y manejo de eventos duplicados/fuera de orden.
+- Preload expone `onStartupProgress` solo lectura; sin Node en renderer, sin desactivar contextIsolation/sandbox.
+- Electron tests: 31 OK. AppImage reconstruido. Validación GUI end-to-end en AppImage sigue pendiente en entorno representativo/propietario.
+
+
+## 12. Endurecimiento splash/señal interactiva (sesión 4, 2026-11-23)
+
+- Corregido bug IPC: `app-interactive-signal` validaba con `isTrustedIpcSender(event)` sin host/puerto; ahora usa `isTrustedIpcEvent(event)`.
+- Splash: marcas distintas `splash_window_shown/dom_ready/document_loaded/first_paint`; buffer de snapshot al cargar; reintento loadFile; `did-fail-load` no cierra forzadamente para permitir reintento; timeout de seguridad.
+- Interactividad: señal explícita desde frontend (`signalAppInteractive` en preload, llamada en `base.html` tras load). Fallbacks controlados (4s preload, 5s main) marcados; no se usa 2 rAF como confirmación principal.
+- Pruebas Electron: 36 pass. Django check/makemigrations OK. Django suite: 379 OK (269s). Build AppImage Linux: OK. Smoke AppImage en DISPLAY=:0: servidor/healthz OK, carga GUI no concluyente (ERR_FAILED main URL en entorno limitado).
+- Limitación: sin validación gráfica AppImage en este entorno.

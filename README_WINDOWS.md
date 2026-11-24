@@ -1,6 +1,6 @@
 # CodeGuard Pro — Windows
 
-**Estado de la guía:** actualizado el 19-11-2026. La compilación Windows está definida; la aceptación de instalación limpia y primer arranque continúa pendiente. No considerar el paquete listo para distribución hasta cerrar los criterios de QA.
+**Estado de la guía:** actualizado el 21-11-2026. La compilación Windows está definida y validada en CI; la aceptación de instalación limpia y primer arranque en un equipo Windows físico continúa pendiente. No considerar el paquete listo para distribución hasta cerrar los criterios de QA.
 
 ## Arquitectura actual
 
@@ -54,7 +54,15 @@ El script instala dependencias Python y ejecuta `npm run build:win`. Ese comando
 
 `build_windows.bat` delega la generación del servidor a este flujo para evitar dos rutas de build distintas. Instala las dependencias Node de forma reproducible con `npm ci`, respetando `package-lock.json`. No ejecutar `electron-builder` directamente para generar un paquete de distribución: usar `npm run build:win`, `npm run build:linux` o `npm run build`. Los ejecutables Windows se guardan en `dist/`; sus nombres finales los determina electron-builder.
 
-La compilación no crea ni migra una base de datos de desarrollo. Las migraciones y la carga de ASCENSO se ejecutan en el primer arranque del usuario, dentro de su directorio `userData`.
+La compilación no crea ni migra una base de datos de desarrollo. En el primer
+arranque, `CodeGuardServer.exe` aplica las migraciones, crea el propietario local
+sin credenciales (modo sin autenticación), instala ASCENSO 3.1 y siembra el
+módulo académico inicial de 8 lecciones en estado borrador dentro del directorio
+de datos del usuario. En los arranques siguientes verifica la huella
+del contenido y no reconstruye las 1.946 lecciones. La auditoría final midió en
+Linux ~9,6 s de pared en el primer arranque (54 migraciones) y ~0,9 s en el
+segundo; el splash muestra el estado real de cada fase. Son mediciones de este
+host, no una promesa para hardware Windows.
 
 ## Datos locales
 
@@ -75,12 +83,15 @@ pruebas antes de distribuir.
 - El tutor IA usa Ollama local de forma opcional. El equipo debe tener Ollama y el modelo instalado para obtener respuestas generativas; el resto del producto debe seguir funcionando si no están disponibles.
 - No se debe enviar código ni datos académicos a servicios remotos en la configuración privada/offline.
 - La ejecución arbitraria de código permanece bloqueada hasta disponer de un sandbox independiente y auditado.
+- La política de referrer es `same-origin` para que los formularios POST
+  conserven CSRF dentro de Electron. No volver a `no-referrer`: Chromium envía
+  `Origin: null` y Django rechaza las escrituras con 403.
 
 ## Estado de soporte
 
 | Plataforma | Artefacto configurado | Estado |
 |---|---|---|
-| Windows x64 | NSIS installer + portable | **Compilación CI verificada** (job `windows-package`, artefacto `codeguard-windows-x64`); instalación limpia y primer arranque en host Windows pendientes |
+| Windows x64 | NSIS installer + portable | **CI verde en `release/1.0.0-final`** (run `44952905523`, commit `29b836f`/código `24d04b6`: instalación, 9 rutas 200, 12 temas, tema/progreso persistente, desinstalación y portable; artefacto `codeguard-windows-x64`); **sin firma de código**, aceptación física en host Windows pendiente |
 | Linux x64 | AppImage | **Build y E2E verificados** (health check, rutas principales, tema y cierre sin huérfanos); aceptación en equipo limpio pendiente |
 | macOS | No configurado | No soportado/validado todavía |
 | ARM64 | No configurado | No soportado/validado todavía |
@@ -90,10 +101,14 @@ pruebas antes de distribuir.
 1. Instalar en Windows limpio sin Python, Node.js ni Django.
 2. Primer arranque con directorio de datos vacío.
 3. Confirmar migraciones y carga de ASCENSO en el directorio correcto.
-4. Abrir panel, roadmap, lección, ejercicio y evaluación.
-5. Desconectar Internet y repetir los flujos esenciales.
-6. Cerrar desde el menú y comprobar que no queden procesos ni puertos.
-7. Reiniciar y verificar persistencia de progreso, preferencias e intentos.
-8. Probar backup y restauración en un perfil aislado.
+4. Abrir panel, roadmap, lección, ejercicio, evaluación, biblioteca y base de conocimiento.
+5. Importar un PDF desde la biblioteca y comprobar el visor; archivar y restaurar.
+6. Abrir una lección del módulo 0.1, comprobar el aviso de borrador, el video y el ejercicio determinista.
+7. Registrar una evidencia y comprobar que el panel actualiza el progreso y la cobertura.
+8. Desconectar Internet y repetir los flujos esenciales.
+9. Cerrar desde el menú y comprobar que no queden procesos ni puertos.
+10. Reiniciar y verificar persistencia de progreso, preferencias, tema, PDFs e intentos.
+11. Probar backup y restauración en un perfil aislado.
+12. Medir el arranque normal y el primer arranque; documentar el hardware.
 
 No declarar la distribución aceptada hasta completar estas pruebas.

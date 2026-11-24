@@ -26,8 +26,9 @@ function Wait-ForPage([int]$Port, [int]$TimeoutSeconds = 180) {
     while ((Get-Date) -lt $deadline) {
         try {
             $pages = @(Invoke-RestMethod -Uri "http://127.0.0.1:$Port/json" -TimeoutSec 2)
-            if ($pages.Count -gt 0 -and $pages[0].url -like 'http://127.0.0.1:*') {
-                return $pages[0]
+            $page = $pages | Where-Object { $_.url -like 'http://127.0.0.1:*' } | Select-Object -First 1
+            if ($page) {
+                return $page
             }
         } catch {
             # Electron todavía está extrayendo o Django aún no cargó.

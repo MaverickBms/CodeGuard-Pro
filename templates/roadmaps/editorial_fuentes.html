@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Fuentes y licencias — CodeGuard Pro{% endblock %}
+{% block page_title %}Fuentes y licencias{% endblock %}
+{% block page_subtitle %}Registro editorial y decisiones de reutilización{% endblock %}
+
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">{% endblock %}
+
+{% block content %}
+<nav class="roadmap-breadcrumb" aria-label="Migas de pan" style="margin-bottom:1rem;"><a href="{% url 'roadmaps:editorial' %}"><i class="fa-solid fa-arrow-left"></i> Volver al espacio editorial</a></nav>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <h2 style="margin-top:0;"><i class="fa-solid fa-link"></i> Registrar una fuente</h2>
+  <p class="muted">Registrar una fuente no autoriza su reutilización. La decisión de licencia se documenta por separado con evidencia HTTPS y nota editorial.</p>
+  <form method="post">
+    {% csrf_token %}<input type="hidden" name="accion" value="crear_fuente">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:.8rem;">
+      {% for field in formulario %}<div><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}{% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>{% endfor %}
+    </div>
+    <button class="btn btn-primary cg-btn cg-btn-primary" type="submit" style="margin-top:.9rem;"><i class="fa-solid fa-plus me-2"></i>Registrar fuente</button>
+  </form>
+</section>
+
+<section class="glass-card cg-card" aria-label="Fuentes registradas">
+  <h2 style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> Fuentes registradas</h2>
+  {% if fuentes %}
+    <div style="display:grid; gap:.8rem;">
+      {% for fuente in fuentes %}
+        <article style="border:1px solid var(--cg-border); border-radius:12px; padding:.85rem;">
+          <div style="display:flex; justify-content:space-between; gap:.75rem; flex-wrap:wrap; align-items:flex-start;">
+            <div><strong>{{ fuente.titulo }}</strong><div class="muted">{{ fuente.publicador }}{% if fuente.edicion %} · {{ fuente.edicion }}{% endif %}</div><div style="font-size:.8rem; overflow-wrap:anywhere;"><a href="{{ fuente.url_canonica }}" target="_blank" rel="noopener noreferrer" data-external-url="{{ fuente.url_canonica }}">{{ fuente.url_canonica }}</a></div></div>
+            <span class="cg-badge {% if fuente.estado_revision_licencia == 'compatible' %}cg-badge-success{% elif fuente.estado_revision_licencia == 'no_reutilizable' or fuente.estado_revision_licencia == 'requiere_permiso' %}cg-badge-danger{% else %}cg-badge-warning{% endif %}">{{ fuente.get_estado_revision_licencia_display }}</span>
+          </div>
+          {% if fuente.revisada_en %}<div class="muted" style="font-size:.8rem; margin-top:.4rem;">Revisada: {{ fuente.revisada_en|date:"Y-m-d H:i" }}{% if fuente.alcance_licencia %} · Alcance: {{ fuente.alcance_licencia }}{% endif %}</div>{% endif %}
+          <details style="margin-top:.6rem;"><summary>Registrar o actualizar decisión de licencia</summary>
+            <form method="post" style="margin-top:.6rem;">{% csrf_token %}<input type="hidden" name="accion" value="revisar_fuente"><input type="hidden" name="fuente_id" value="{{ fuente.id }}">
+              <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:.6rem;">
+                <div><label class="form-label" for="estado-{{ fuente.id }}">Decisión</label><select class="form-select" id="estado-{{ fuente.id }}" name="estado"><option value="solo_referencia">Solo referencia; contenido original</option><option value="compatible">Reutilización compatible</option><option value="requiere_permiso">Requiere permiso</option><option value="no_reutilizable">No reutilizable</option></select></div>
+                <div><label class="form-label" for="evidencia-{{ fuente.id }}">Evidencia HTTPS</label><input class="form-control" id="evidencia-{{ fuente.id }}" name="evidencia" type="url" required placeholder="https://..."></div>
+                <div><label class="form-label" for="nota-{{ fuente.id }}">Nota de decisión</label><input class="form-control" id="nota-{{ fuente.id }}" name="nota" required maxlength="1000" placeholder="Por qué se permite o no se permite"></div>
+                <div><label class="form-label" for="alcance-{{ fuente.id }}">Alcance autorizado (si aplica)</label><input class="form-control" id="alcance-{{ fuente.id }}" name="alcance" maxlength="1000"></div>
+              </div>
+              <button class="btn btn-secondary btn-sm cg-btn" type="submit" style="margin-top:.6rem;">Guardar decisión</button>
+            </form>
+          </details>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}<div class="v14-empty"><i class="fa-solid fa-link-slash"></i><h3>Sin fuentes registradas</h3><p>Registra la primera fuente para poder crear versiones académicas.</p></div>{% endif %}
+</section>
+{% endblock %}

@@ -793,3 +793,27 @@ class BlockedStageCriterionTests(TestCase):
                 usuario=self.usuario, criterio=self.criterio_libre
             ).exists()
         )
+
+    def test_criterio_manual_no_completa_etapa_sin_evaluacion_aprobada(self):
+        from apps.roadmaps.models import Progreso
+
+        registrar_cumplimiento_criterio(
+            self.usuario,
+            self.criterio_libre,
+            evidencia="Proyecto entregado, pero sin evaluación aprobada.",
+            origen="proyecto",
+        )
+        self.assertTrue(
+            CumplimientoCriterio.objects.filter(
+                usuario=self.usuario, criterio=self.criterio_libre, satisfecho=True
+            ).exists()
+        )
+        self.assertFalse(
+            Progreso.objects.filter(
+                usuario=self.usuario,
+                etapa=self.etapa_libre,
+                modulo__isnull=True,
+                leccion__isnull=True,
+                estado="completado",
+            ).exists()
+        )

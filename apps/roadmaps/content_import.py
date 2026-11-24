@@ -32,6 +32,16 @@ TOP_KEYS = {"schema_version", "resumen_cambios", "snapshot", "fuentes"}
 SNAPSHOT_KEYS = {"esquema_version", "leccion", "contenido", "ejemplos", "ejercicios"}
 LESSON_KEYS = {"clave", "titulo", "descripcion", "tipo"}
 CONTENT_KEYS = {"objetivos_aprendizaje", "teoria_tecnica", "explicacion_sencilla", "notas"}
+CONTENT_KEYS_OPCIONALES = {
+    "conocimientos_previos",
+    "introduccion",
+    "conceptos_fundamentales",
+    "aplicaciones_practicas",
+    "errores_frecuentes",
+    "evaluacion_aprendizaje",
+    "bibliografia_complementaria",
+    "nivel_dificultad",
+}
 EXAMPLE_KEYS = {"clave", "titulo", "contexto", "lenguaje", "codigo", "salida_esperada", "explicacion", "orden"}
 EXERCISE_KEYS = {"clave", "titulo", "enunciado", "instrucciones", "lenguaje", "nivel", "codigo_inicial", "obligatorio", "orden"}
 SOURCE_KEYS = {"clave", "rol", "localizador", "nota_atribucion", "uso_declarado"}
@@ -128,7 +138,7 @@ def _validate_document(document, filename):
 
     snapshot = document["snapshot"]
     _expect_keys(snapshot, SNAPSHOT_KEYS, f"{filename}.snapshot")
-    if type(snapshot["esquema_version"]) is not int or snapshot["esquema_version"] != 1:
+    if type(snapshot["esquema_version"]) is not int or snapshot["esquema_version"] not in {1, 2}:
         raise ImportContentError(f"{filename}.snapshot.esquema_version: versión no soportada.")
 
     lesson = snapshot["leccion"]
@@ -141,11 +151,25 @@ def _validate_document(document, filename):
         raise ImportContentError(f"{filename}.snapshot.leccion.tipo: tipo curricular no permitido.")
 
     content = snapshot["contenido"]
-    _expect_keys(content, CONTENT_KEYS, f"{filename}.snapshot.contenido")
+    if not isinstance(content, dict):
+        raise ImportContentError(f"{filename}.snapshot.contenido: se esperaba un objeto JSON.")
+    missing = CONTENT_KEYS - set(content)
+    unknown = set(content) - (CONTENT_KEYS | CONTENT_KEYS_OPCIONALES)
+    if missing:
+        raise ImportContentError(
+            f"{filename}.snapshot.contenido: faltan propiedades: {', '.join(sorted(missing))}."
+        )
+    if unknown:
+        raise ImportContentError(
+            f"{filename}.snapshot.contenido: propiedades no admitidas: {', '.join(sorted(unknown))}."
+        )
     for field in CONTENT_KEYS:
         _string(content[field], f"{filename}.snapshot.contenido.{field}", required=field in {
             "objetivos_aprendizaje", "teoria_tecnica", "explicacion_sencilla"
         })
+    for field in CONTENT_KEYS_OPCIONALES:
+        if field in content:
+            _string(content[field], f"{filename}.snapshot.contenido.{field}")
 
     examples = snapshot["ejemplos"]
     exercises = snapshot["ejercicios"]
@@ -337,22 +361,65 @@ def importar_documentos_validados(report, *, actor):
     """Crea borradores y referencias; no modifica el contenido activo ni publica."""
     if not getattr(actor, "is_authenticated", False) or not getattr(actor, "is_active", False) or not getattr(actor, "is_staff", False):
         raise ValidationError("La importación requiere un editor activo (is_staff).")
+    # Validar la estructura del informe antes de confiar en sus elementos.
+    if not isinstance(report, dict):
+        raise ValidationError("El informe de validación no tiene un formato válido.")
+    required_report_keys = {"errors", "items", "documents", "valid"}
+    if not required_report_keys.issubset(report):
+        raise ValidationError("El informe de validación está incompleto.")
+    if (not isinstance(report["errors"], list) or not isinstance(report["items"], list)
+            or type(report["documents"]) is not int or type(report["valid"]) is not int):
+        raise ValidationError("El informe de validación contiene tipos de datos inválidos.")
     if report["errors"] or len(report["items"]) != report["documents"] or report["valid"] != report["documents"]:
         raise ValidationError("El lote tiene errores o no fue validado íntegramente.")
+    if not 1 <= report["documents"] <= MAX_DOCUMENTS:
+        raise ValidationError(f"El lote debe contener entre 1 y {MAX_DOCUMENTS} documentos.")
 
-    # Revalidar los documentos y las relaciones dentro de la transacción para evitar
-    # confiar en informes fabricados o en datos que cambiaron tras la prevalidación.
+    # Revalidar documentos y relaciones dentro de la transacción. Un informe puede
+    # haber sido alterado desde la prevalidación: no se confía en sus UUID ni hashes.
     items = []
+    seen_lessons = set()
+    seen_resources = set()
+    total_document_bytes = 0
     for previous in report["items"]:
+        if not isinstance(previous, dict) or not {"document", "filename", "sha256"}.issubset(previous):
+            raise ValidationError("El informe contiene un elemento incompleto.")
         document = previous["document"]
         filename = previous["filename"]
+        if not isinstance(filename, str) or not filename or Path(filename).name != filename:
+            raise ValidationError("El informe contiene un nombre de archivo inválido.")
         try:
+            lesson_uuid = _validate_document(document, filename)
             lesson, sources, warnings = _validate_against_database(document, filename)
-        except ImportContentError as exc:
-            raise ValidationError(str(exc)) from exc
+        except (ImportContentError, TypeError, KeyError) as exc:
+            raise ValidationError(str(exc) or "Documento inválido.") from exc
+
+        if lesson_uuid in seen_lessons:
+            raise ValidationError(f"{filename}: la misma lección aparece más de una vez en el lote.")
+        if lesson_uuid in seen_resources:
+            raise ValidationError(f"{filename}: el UUID de la lección ya fue asignado a otro recurso.")
+        seen_lessons.add(lesson_uuid)
+        for resource in document["snapshot"]["ejemplos"] + document["snapshot"]["ejercicios"]:
+            resource_uuid = uuid.UUID(resource["clave"])
+            if resource_uuid in seen_lessons or resource_uuid in seen_resources:
+                raise ValidationError(f"{filename}: UUID de recurso duplicado o reasignado en el lote.")
+            seen_resources.add(resource_uuid)
+
+        try:
+            serialized_document = json.dumps(
+                document, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+            ).encode("utf-8")
+        except (TypeError, ValueError, RecursionError) as exc:
+            raise ValidationError(f"{filename}: el documento no se puede serializar de forma segura.") from exc
+        if len(serialized_document) > MAX_DOCUMENT_BYTES:
+            raise ValidationError(f"{filename}: supera el límite de 2 MiB.")
+        total_document_bytes += len(serialized_document)
+        if total_document_bytes > MAX_BATCH_BYTES:
+            raise ValidationError("El lote supera el límite total de 100 MiB.")
+
         canonical = json.dumps(document["snapshot"], ensure_ascii=False, sort_keys=True, separators=(",", ":"))
         digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
-        if digest != previous["sha256"]:
+        if not isinstance(previous["sha256"], str) or digest != previous["sha256"]:
             raise ValidationError(f"{filename}: el snapshot cambió después de la validación.")
         items.append({
             "filename": filename, "document": document, "lesson": lesson,
@@ -362,7 +429,12 @@ def importar_documentos_validados(report, *, actor):
     created = []
     duplicates = []
     for item in items:
-        lesson = Leccion.objects.select_for_update().get(pk=item["lesson"].pk)
+        try:
+            lesson = Leccion.objects.select_for_update().get(pk=item["lesson"].pk)
+        except Leccion.DoesNotExist as exc:
+            raise ValidationError(
+                f"{item['filename']}: la lección ya no existe en el catálogo ASCENSO."
+            ) from exc
         candidates = VersionContenidoLeccion.objects.filter(leccion=lesson, sha256=item["sha256"])
         existing = next((version for version in candidates if _same_provenance(version, item)), None)
         if existing:

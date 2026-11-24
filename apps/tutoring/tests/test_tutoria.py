@@ -13,6 +13,7 @@ from apps.roadmaps.models import (
     Modulo,
     Progreso,
     Roadmap,
+    Prerrequisito,
 )
 from apps.roadmaps.attempts import registrar_intento_ejercicio
 from apps.tutoring import services
@@ -44,14 +45,42 @@ class EstadoTutoriaTests(TestCase):
     def setUp(self):
         self.client = Client()
 
-    @patch.object(services, "esta_disponible", return_value=True)
-    def test_estado_devuelve_informacion_del_tutor(self, mock_disponible):
+    @patch.object(
+        services,
+        "estado_tutor",
+        return_value={
+            "disponible": True,
+            "ollama": True,
+            "modelo": "modelo-prueba",
+            "modelo_instalado": True,
+            "modo": "ollama",
+        },
+    )
+    def test_estado_devuelve_informacion_del_tutor(self, mock_estado):
         respuesta = self.client.get(reverse("tutoring:estado"))
         self.assertEqual(respuesta.status_code, 200)
         datos = respuesta.json()
         self.assertTrue(datos["disponible"])
+        self.assertEqual(datos["modo"], "ollama")
         self.assertEqual(datos["limite_pistas"], services.LIMITE_PISTAS_TUTORIA)
-        mock_disponible.assert_called_once()
+        mock_estado.assert_called_once()
+
+    @patch.object(services, "_listar_modelos", return_value=["otro-modelo:latest"])
+    def test_estado_detecta_modelo_no_instalado(self, mock_listar):
+        services._estado_cache.update({"checked_at": 0.0, "valor": None})
+        estado = services.estado_tutor(forzar=True)
+        self.assertFalse(estado["disponible"])
+        self.assertTrue(estado["ollama"])
+        self.assertFalse(estado["modelo_instalado"])
+        self.assertEqual(estado["modo"], "determinista")
+
+    @patch.object(services, "_listar_modelos", side_effect=TutorNoDisponible)
+    def test_estado_detecta_ollama_ausente(self, mock_listar):
+        services._estado_cache.update({"checked_at": 0.0, "valor": None})
+        estado = services.estado_tutor(forzar=True)
+        self.assertFalse(estado["disponible"])
+        self.assertFalse(estado["ollama"])
+        self.assertEqual(estado["modo"], "determinista")
 
 
 @override_settings(AUTH_DISABLED=True)
@@ -69,6 +98,37 @@ class SesionTutoriaViewTests(TestCase):
         self.assertEqual(sesion.usuario_id, self.usuario.id)
         self.assertEqual(sesion.ejercicio_id, self.ejercicio.id)
 
+    def test_tutor_no_inicia_sesion_ni_da_pistas_en_etapa_bloqueada(self):
+        etapa_origen = self.ejercicio.leccion.modulo.etapa
+        etapa_bloqueada = Etapa.objects.create(
+            roadmap=etapa_origen.roadmap,
+            numero=1,
+            titulo="Etapa bloqueada",
+        )
+        Prerrequisito.objects.create(
+            etapa=etapa_bloqueada,
+            etapa_requerida=etapa_origen,
+            justificacion="Completa la etapa anterior.",
+        )
+        modulo = Modulo.objects.create(
+            etapa=etapa_bloqueada, numero="1.1", titulo="Módulo bloqueado"
+        )
+        leccion = Leccion.objects.create(modulo=modulo, titulo="Lección bloqueada")
+        ejercicio = EjercicioLeccion.objects.create(
+            leccion=leccion,
+            titulo="Ejercicio bloqueado",
+            enunciado="No debe recibir tutoría antes de desbloquearse.",
+            publicado=True,
+        )
+
+        iniciar = self.client.post(reverse("tutoring:iniciar", args=[ejercicio.id]))
+        pista = self.client.post(reverse("tutoring:pista", args=[ejercicio.id]))
+
+        self.assertEqual(iniciar.status_code, 403)
+        self.assertEqual(pista.status_code, 403)
+        self.assertFalse(SesionTutoria.objects.filter(ejercicio=ejercicio).exists())
+        self.assertFalse(PistaTutoria.objects.filter(sesion__ejercicio=ejercicio).exists())
+
     def test_iniciar_con_ejercicio_inexistente(self):
         respuesta = self.client.post(reverse("tutoring:iniciar", args=[99999]))
         self.assertEqual(respuesta.status_code, 404)
@@ -78,6 +138,18 @@ class SesionTutoriaViewTests(TestCase):
 class PistaTutoriaViewTests(TestCase):
     def setUp(self):
         self.usuario, self.ejercicio = _crear_contexto_tutoria()
+
+    @patch.object(services, "_llamar_ollama", return_value="Pista de prueba.")
+    def test_contexto_de_pista_usa_saltos_de_linea_reales(self, mock_llamar):
+        respuesta = self.client.post(
+            reverse("tutoring:pista", args=[self.ejercicio.id]),
+            {"tipo": "orientacion"},
+        )
+
+        self.assertEqual(respuesta.status_code, 200)
+        contexto = mock_llamar.call_args.kwargs["usuario"]
+        self.assertIn("\nEnunciado:", contexto)
+        self.assertNotIn("\\nEnunciado:", contexto)
 
     @patch.object(services, "_llamar_ollama", return_value="Pista generada por el tutor.")
     def test_entrega_pista_acepta_tipo_valido(self, mock_llamar):
@@ -102,6 +174,23 @@ class PistaTutoriaViewTests(TestCase):
         )
         self.assertEqual(respuesta.status_code, 400)
         self.assertFalse(respuesta.json()["exito"])
+
+    @patch.object(services, "_llamar_ollama", return_value="   ")
+    def test_entrega_pista_vacia_cae_a_reglas_estaticas(self, mock_llamar):
+        self.ejercicio.pista_1 = "Revisa primero el concepto central."
+        self.ejercicio.save(update_fields=["pista_1", "actualizado_en"])
+
+        respuesta = self.client.post(
+            reverse("tutoring:pista", args=[self.ejercicio.id]),
+            {"tipo": "orientacion"},
+        )
+
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertTrue(respuesta.json()["exito"])
+        self.assertEqual(
+            PistaTutoria.objects.get().contenido,
+            "Revisa primero el concepto central.",
+        )
 
     @patch.object(services, "_llamar_ollama", side_effect=TutorNoDisponible)
     def test_entrega_pista_cae_a_reglas_estaticas_sin_ollama(self, mock_llamar):
@@ -155,6 +244,23 @@ class AnalisisIntentoTutoriaTests(TestCase):
         self.assertTrue(datos["exito"])
         self.assertEqual(datos["resultado_evaluacion"], intento.resultado)
         self.assertEqual(datos["analisis_tutor"], "El tutor explica el error.")
+
+    @patch.object(services, "_llamar_ollama", return_value="   ")
+    def test_analizar_intento_vacio_usa_retroalimentacion_local(self, mock_llamar):
+        intento = registrar_intento_ejercicio(self.usuario, self.ejercicio, "nombre = 'Ada'")
+
+        respuesta = self.client.post(
+            reverse("tutoring:analizar", args=[self.ejercicio.id]),
+            {"intento_ejercicio_id": intento.id},
+        )
+
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertTrue(respuesta.json()["exito"])
+        self.assertTrue(respuesta.json()["analisis_tutor"].strip())
+        self.assertIn(
+            "validador automático",
+            respuesta.json()["analisis_tutor"],
+        )
 
     def test_analizar_sin_intento_devuelve_error(self):
         respuesta = self.client.post(

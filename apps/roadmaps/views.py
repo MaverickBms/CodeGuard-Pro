@@ -24,12 +24,17 @@ from .models import (
     CriterioFinalizacion,
     CumplimientoCriterio,
     EjercicioLeccion,
+    EstadoSincronizacion,
     Etapa,
+    FuenteConocimiento,
     IntentoEjercicio,
     Leccion,
+    PaqueteConocimientoInstalado,
     Pregunta,
+    PublicacionPaqueteConocimiento,
     Quiz,
     ResultadoEvaluacion,
+    VersionContenidoLeccion,
 )
 from .attempts import registrar_intento_ejercicio
 from .services import (
@@ -45,6 +50,13 @@ from .services import (
     roadmap_activo,
 )
 from .services_evaluacion import evaluar_quiz, registrar_cumplimiento_criterio
+
+
+def _etapa_bloqueada_para_usuario(etapa, usuario) -> bool:
+    """Comprueba prerrequisitos también en accesos directos a recursos."""
+    completadas = etapas_completadas(usuario, etapa.roadmap) if usuario is not None else set()
+    return etapa.esta_bloqueada_para(completadas)
+
 
 
 @requiere_acceso
@@ -234,9 +246,27 @@ def detalle(request, numero):
     usuario = get_usuario_actual(request)
 
     etapa = get_object_or_404(Etapa, roadmap=roadmap, numero=numero)
+    etapas_ordenadas = list(
+        roadmap.etapas.only("id", "numero", "titulo").order_by("orden", "numero")
+    )
+    indice_etapa = next(
+        (indice for indice, item in enumerate(etapas_ordenadas) if item.pk == etapa.pk),
+        None,
+    )
+    etapa_anterior = (
+        etapas_ordenadas[indice_etapa - 1]
+        if indice_etapa is not None and indice_etapa > 0
+        else None
+    )
+    etapa_siguiente = (
+        etapas_ordenadas[indice_etapa + 1]
+        if indice_etapa is not None and indice_etapa + 1 < len(etapas_ordenadas)
+        else None
+    )
     modulos = list(etapa.modulos.prefetch_related("lecciones"))
 
     completadas = etapas_completadas(usuario, roadmap)
+    etapa.completada = etapa.numero in completadas
     progreso = mapa_progreso_etapas(usuario, roadmap).get(etapa.id)
     progresos_lecciones = mapa_progreso_lecciones(usuario, etapa)
     progresos_modulos = mapa_progreso_modulos(usuario, etapa)
@@ -279,6 +309,8 @@ def detalle(request, numero):
         {
             "roadmap": roadmap,
             "etapa": etapa,
+            "etapa_anterior": etapa_anterior,
+            "etapa_siguiente": etapa_siguiente,
             "modulos": modulos,
             "progreso": progreso,
             "completada": etapa.numero in completadas,
@@ -420,21 +452,60 @@ def leccion_detalle(request, leccion_id):
         modulo__etapa__roadmap=roadmap,
     )
     usuario = get_usuario_actual(request)
+    etapa_leccion = leccion.modulo.etapa
+    etapa_bloqueada = _etapa_bloqueada_para_usuario(etapa_leccion, usuario)
+
+    # El material de lectura permanece consultable en etapas bloqueadas, pero
+    # no se registra actividad ni se habilitan entregas o tutoría hasta cumplir
+    # los prerrequisitos.
     progreso = None
-    if usuario is not None:
+    if usuario is not None and not etapa_bloqueada:
         progreso = iniciar_leccion(
             usuario,
             leccion,
             actor_auditoria=obtener_actor_auditoria(request),
         )
 
-    contenido_activo = obtener_contenido_activo(leccion)
+    contenido_activo = obtener_contenido_activo(
+        leccion, permitir_borrador=True
+    )
     origen = contenido_activo["origen"]
     contenido = contenido_activo["contenido"]
     ejemplos = contenido_activo["ejemplos"]
     ejercicios = contenido_activo["ejercicios"]
     version_contenido_activa = contenido_activo["version"]
     paquete_contenido_activo = contenido_activo["paquete"]
+    fuentes_contenido = []
+    if version_contenido_activa is not None:
+        for referencia in version_contenido_activa.referencias.select_related("fuente"):
+            fuente = referencia.fuente
+            fuentes_contenido.append(
+                {
+                    "publicador": fuente.publicador,
+                    "titulo": fuente.titulo,
+                    "url": fuente.url_canonica,
+                    "edicion": fuente.edicion,
+                    "licencia": fuente.get_estado_revision_licencia_display(),
+                    "uso": referencia.get_uso_declarado_display(),
+                    "localizador": referencia.localizador,
+                    "nota": referencia.nota_atribucion,
+                }
+            )
+    elif paquete_contenido_activo is not None:
+        for fuente in paquete_contenido_activo.fuentes_catalogo.all():
+            metadatos = fuente.metadatos if isinstance(fuente.metadatos, dict) else {}
+            fuentes_contenido.append(
+                {
+                    "publicador": metadatos.get("publicador", ""),
+                    "titulo": metadatos.get("titulo", "Fuente del paquete"),
+                    "url": metadatos.get("url_canonica", ""),
+                    "edicion": metadatos.get("edicion", ""),
+                    "licencia": metadatos.get("estado_revision_licencia", ""),
+                    "uso": metadatos.get("uso_declarado", ""),
+                    "localizador": metadatos.get("localizador", ""),
+                    "nota": metadatos.get("nota_atribucion", ""),
+                }
+            )
     ejercicios_modelo = list(leccion.ejercicios.all())
 
     if origen in ("paquete", "editorial"):
@@ -454,6 +525,15 @@ def leccion_detalle(request, leccion_id):
             if len(lista_intentos) < 3:
                 lista_intentos.append(intento)
 
+    evaluaciones_leccion = list(
+        Quiz.objects.filter(
+            estado=Quiz.ESTADO_PUBLICADO,
+            preguntas__leccion=leccion,
+        )
+        .distinct()
+        .order_by("nombre")
+    )
+
     ejercicios_por_id = {item.id: item for item in ejercicios_modelo}
     for ejercicio in ejercicios:
         actual = ejercicios_por_id.get(ejercicio.id)
@@ -470,15 +550,82 @@ def leccion_detalle(request, leccion_id):
         {
             "roadmap": roadmap,
             "etapa": leccion.modulo.etapa,
+            "etapa_bloqueada": etapa_bloqueada,
             "modulo": leccion.modulo,
             "leccion": leccion,
-            "contenido": contenido if contenido and contenido.publicado else None,
+            "contenido": contenido,
+            "contenido_es_borrador": contenido_activo["es_borrador"],
+            "estado_editorial": contenido_activo["estado_editorial"],
+            "estado_editorial_etiqueta": {
+                "pendiente": "Pendiente",
+                "en_desarrollo": "En desarrollo",
+                "borrador": "Borrador",
+                "revision": "En revisión",
+                "aprobada": "Aprobada",
+                "publicada": "Publicada",
+            }.get(contenido_activo["estado_editorial"], contenido_activo["estado_editorial"]),
             "ejemplos": ejemplos,
             "ejercicios": ejercicios,
+            "videos": contenido_activo.get("videos", []),
             "progreso": progreso,
             "version_contenido_activa": version_contenido_activa,
             "paquete_contenido_activo": paquete_contenido_activo,
+            "fuentes_contenido": fuentes_contenido,
+            "evaluaciones_leccion": evaluaciones_leccion,
             "fuentes_paquete": list(paquete_contenido_activo.fuentes_catalogo.all()) if paquete_contenido_activo else [],
+        },
+    )
+
+
+@requiere_acceso
+def conocimiento(request):
+    """Panel de solo lectura del flujo editorial y la distribución local.
+
+    No publica, aprueba ni modifica contenido. Expone el estado real de fuentes,
+    versiones, paquetes y sincronización para que el propietario pueda auditar
+    el proceso sin confundir borradores con contenido publicado.
+    """
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
+
+    versiones = VersionContenidoLeccion.objects.filter(
+        leccion__modulo__etapa__roadmap=roadmap
+    ).select_related("leccion__modulo__etapa")
+    estados_version = {
+        fila["estado"]: fila["total"]
+        for fila in versiones.values("estado").annotate(total=Count("id"))
+    }
+    fuentes = FuenteConocimiento.objects.all().order_by("publicador", "titulo")[:200]
+    paquetes = list(
+        PaqueteConocimientoInstalado.objects.all().order_by("channel", "-sequence")[:20]
+    )
+    sincronizacion = list(
+        EstadoSincronizacion.objects.select_related("active_package").order_by("channel")
+    )
+    publicaciones = list(
+        PublicacionPaqueteConocimiento.objects.all().order_by("channel", "-sequence")[:20]
+    )
+
+    from .coverage import calcular_cobertura
+
+    return render(
+        request,
+        "roadmaps/conocimiento.html",
+        {
+            "roadmap": roadmap,
+            "cobertura": calcular_cobertura(roadmap),
+            "fuentes": fuentes,
+            "total_fuentes": FuenteConocimiento.objects.count(),
+            "versiones": list(versiones.order_by("-publicada_en", "-id")[:50]),
+            "estados_version": estados_version,
+            "total_versiones": versiones.count(),
+            "paquetes": paquetes,
+            "sincronizacion": sincronizacion,
+            "publicaciones": publicaciones,
+            "lecciones_publicadas": versiones.filter(
+                estado="publicada"
+            ).values("leccion_id").distinct().count(),
         },
     )
 
@@ -524,14 +671,24 @@ def _preguntas_seguras(quiz: Quiz):
 @requiere_acceso
 def quiz_detalle(request, quiz_id):
     """Muestra un quiz publicado y procesa su envío."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
     quiz = get_object_or_404(
-        Quiz.objects.select_related("modulo__etapa__roadmap").prefetch_related(
+        Quiz.objects.select_related("modulo__etapa__roadmap", "etapa__roadmap").prefetch_related(
             "preguntas__leccion"
-        ),
+        ).filter(Q(modulo__etapa__roadmap=roadmap) | Q(etapa__roadmap=roadmap)),
         pk=quiz_id,
         estado=Quiz.ESTADO_PUBLICADO,
     )
     usuario = get_usuario_actual(request)
+    etapa_acceso = quiz.modulo.etapa if quiz.modulo_id else quiz.etapa
+    if etapa_acceso is not None and _etapa_bloqueada_para_usuario(etapa_acceso, usuario):
+        messages.warning(
+            request,
+            "Esta evaluación está bloqueada. Completa primero los prerrequisitos de la etapa.",
+        )
+        return redirect("roadmaps:detalle", numero=etapa_acceso.numero)
 
     if request.method == "POST":
         if usuario is None:
@@ -592,8 +749,13 @@ def quiz_detalle(request, quiz_id):
 @requiere_acceso
 def quiz_resultado(request, quiz_id, resultado_id):
     """Muestra el resultado de un intento de quiz del usuario."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
     quiz = get_object_or_404(
-        Quiz.objects.select_related("modulo__etapa"),
+        Quiz.objects.select_related("modulo__etapa", "etapa").filter(
+            Q(modulo__etapa__roadmap=roadmap) | Q(etapa__roadmap=roadmap)
+        ),
         pk=quiz_id,
         estado=Quiz.ESTADO_PUBLICADO,
     )
@@ -625,8 +787,13 @@ def quiz_resultado(request, quiz_id, resultado_id):
 @requiere_acceso
 def quiz_historial(request, quiz_id):
     """Muestra el historial de resultados del usuario para un quiz."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
     quiz = get_object_or_404(
-        Quiz.objects.select_related("modulo__etapa"),
+        Quiz.objects.select_related("modulo__etapa", "etapa").filter(
+            Q(modulo__etapa__roadmap=roadmap) | Q(etapa__roadmap=roadmap)
+        ),
         pk=quiz_id,
         estado=Quiz.ESTADO_PUBLICADO,
     )

@@ -86,7 +86,9 @@
       ],
       "icon": "static/icons/icon.png",
       "category": "Education",
-      "artifactName": "CodeGuard-Pro-${version}-${arch}.${ext}"
+      "artifactName": "CodeGuard-Pro-${version}-${arch}.${ext}",
+      "synopsis": "Plataforma educativa local y offline-first",
+      "syncDesktopName": true
     },
     "win": {
       "target": [
@@ -115,5 +117,6 @@
     "cross-env": "^7.0.3",
     "electron": "^45.2.3",
     "electron-builder": "^26.18.0"
-  }
+  },
+  "desktopName": "codeguard-pro.desktop"
 }

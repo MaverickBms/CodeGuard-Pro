@@ -32,6 +32,7 @@ from .models import (
     Prerrequisito,
     Progreso,
     Roadmap,
+    VersionContenidoLeccion,
 )
 
 RUTA_DATOS_ASCENSO = Path(__file__).resolve().parent / "data" / "ascenso_3_1.json"
@@ -159,6 +160,12 @@ def cargar_ascenso(ruta: str | Path | None = None, *, recrear: bool = False) -> 
                 documentado=True,
             )
 
+    # Registra la huella del contenido instalado para que el próximo arranque
+    # pueda verificar la integridad sin reconstruir las 1.946 lecciones.
+    from .bootstrap import registrar_estado_instalacion
+
+    registrar_estado_instalacion(roadmap, ruta=ruta)
+
     return roadmap
 
 
@@ -263,6 +270,12 @@ def recalcular_progreso_etapa(usuario, etapa: Etapa) -> Progreso:
     la aprobación requerirá evaluaciones y criterios verificables.
     """
     progreso = _progreso_etapa(usuario, etapa)
+    if progreso.estado == "completado":
+        # La etapa ya fue aprobada por criterios/evaluación verificables. El
+        # avance de lecciones es informativo y no debe revocar esa aprobación
+        # ni borrar su fecha de finalización.
+        return progreso
+
     total = Leccion.objects.filter(modulo__etapa=etapa).count()
     completadas = Progreso.objects.filter(
         usuario=usuario,
@@ -400,18 +413,30 @@ def _simple_namespace_ejercicio(item: dict, ejercicio_modelo=None) -> SimpleName
     )
 
 
-def _contenido_simple_namespace(datos_contenido: dict) -> SimpleNamespace:
+def _contenido_simple_namespace(
+    datos_contenido: dict, *, publicado: bool = True
+) -> SimpleNamespace:
     """Construye un SimpleNamespace para el contenido de una lección."""
     return SimpleNamespace(
         objetivos_aprendizaje=datos_contenido.get("objetivos_aprendizaje", ""),
+        conocimientos_previos=datos_contenido.get("conocimientos_previos", ""),
+        introduccion=datos_contenido.get("introduccion", ""),
         teoria_tecnica=datos_contenido.get("teoria_tecnica", ""),
         explicacion_sencilla=datos_contenido.get("explicacion_sencilla", ""),
+        conceptos_fundamentales=datos_contenido.get("conceptos_fundamentales", ""),
+        aplicaciones_practicas=datos_contenido.get("aplicaciones_practicas", ""),
+        errores_frecuentes=datos_contenido.get("errores_frecuentes", ""),
+        evaluacion_aprendizaje=datos_contenido.get("evaluacion_aprendizaje", ""),
+        bibliografia_complementaria=datos_contenido.get("bibliografia_complementaria", ""),
+        nivel_dificultad=datos_contenido.get("nivel_dificultad", "basico"),
         notas=datos_contenido.get("notas", ""),
-        publicado=True,
+        publicado=publicado,
     )
 
 
-def obtener_contenido_activo(leccion: Leccion, canal: str | None = None) -> dict:
+def obtener_contenido_activo(
+    leccion: Leccion, canal: str | None = None, *, permitir_borrador: bool = False
+) -> dict:
     """Resuelve el contenido activo de una lección.
 
     Determina si el contenido se sirve desde un paquete de conocimiento
@@ -437,6 +462,9 @@ def obtener_contenido_activo(leccion: Leccion, canal: str | None = None) -> dict
           conservar como evidencia en IntentoEjercicio.snapshot_ejercicio)
         - version: VersionContenidoLeccion o None
         - paquete: PaqueteConocimientoInstalado o None
+        - videos: enlaces técnicamente verificados y disponibles; los rechazados pedagógicamente se excluyen, los pendientes se identifican como no validados
+        - es_borrador: True si el contenido no está publicado
+        - estado_editorial: pendiente/en_desarrollo/borrador/revision/aprobada/publicada
     """
     if canal is None:
         canal = getattr(settings, "CODEGUARD_KNOWLEDGE_CHANNEL", "stable")
@@ -446,6 +474,13 @@ def obtener_contenido_activo(leccion: Leccion, canal: str | None = None) -> dict
     contenido_modelo = getattr(leccion, "contenido", None)
     ejemplos_modelo = list(leccion.ejemplos.filter(publicado=True))
     ejercicios_modelo = list(leccion.ejercicios.filter(publicado=True))
+    videos = list(
+        leccion.recursos_audiovisuales.filter(
+            estado_revision="aprobado",
+            disponible=True,
+            estado_pedagogico__in=["pendiente", "aprobado"],
+        ).order_by("orden", "id")
+    )
 
     resultado = {
         "origen": "ninguno",
@@ -455,6 +490,11 @@ def obtener_contenido_activo(leccion: Leccion, canal: str | None = None) -> dict
         "contenido": contenido_modelo,
         "ejemplos": ejemplos_modelo,
         "ejercicios": ejercicios_modelo,
+        "videos": videos,
+        "es_borrador": bool(contenido_modelo and not contenido_modelo.publicado),
+        "estado_editorial": (
+            "en_desarrollo" if contenido_modelo is not None else "pendiente"
+        ),
         "ejercicios_raw": [
             {
                 "clave": str(e.clave_contenido),
@@ -529,6 +569,9 @@ def obtener_contenido_activo(leccion: Leccion, canal: str | None = None) -> dict
                 "ejercicios_raw": ejercicios_raw,
                 "version": None,
                 "paquete": paquete_activo,
+                "videos": videos,
+                "es_borrador": False,
+                "estado_editorial": "publicada",
             }
         )
         return resultado
@@ -541,6 +584,59 @@ def obtener_contenido_activo(leccion: Leccion, canal: str | None = None) -> dict
     )
 
     if puntero_activo is None:
+        if not permitir_borrador:
+            return resultado
+        version_borrador = (
+            VersionContenidoLeccion.objects.filter(
+                leccion=leccion,
+                estado__in=["borrador", "revision", "aprobada"],
+            )
+            .order_by("-numero_version")
+            .first()
+        )
+        if version_borrador is None:
+            if contenido_modelo is not None:
+                resultado["es_borrador"] = not contenido_modelo.publicado
+                resultado["estado_editorial"] = "en_desarrollo"
+            return resultado
+
+        snapshot = version_borrador.snapshot
+        datos_leccion = snapshot.get("leccion", {})
+        datos_contenido = snapshot.get("contenido", {})
+        ejercicio_por_clave = {
+            str(item.clave_contenido): item for item in leccion.ejercicios.all()
+        }
+        ejercicios = []
+        ejercicios_raw = []
+        for item in snapshot.get("ejercicios", []):
+            actual = ejercicio_por_clave.get(item.get("clave"))
+            ejercicios.append(_simple_namespace_ejercicio(item, actual))
+            ejercicios_raw.append(item)
+        resultado.update(
+            {
+                "origen": "borrador",
+                "titulo": datos_leccion.get("titulo", leccion.titulo),
+                "descripcion": datos_leccion.get("descripcion", leccion.descripcion),
+                "tipo": datos_leccion.get("tipo", leccion.tipo),
+                "contenido": _contenido_simple_namespace(
+                    datos_contenido, publicado=False
+                ),
+                "ejemplos": [
+                    SimpleNamespace(**item) for item in snapshot.get("ejemplos", [])
+                ],
+                "ejercicios": ejercicios,
+                "ejercicios_raw": ejercicios_raw,
+                "version": version_borrador,
+                "paquete": None,
+                "videos": videos,
+                "es_borrador": True,
+                "estado_editorial": {
+                    "borrador": "borrador",
+                    "revision": "revision",
+                    "aprobada": "aprobada",
+                }.get(version_borrador.estado, "borrador"),
+            }
+        )
         return resultado
 
     snapshot = puntero_activo.version.snapshot
@@ -574,6 +670,9 @@ def obtener_contenido_activo(leccion: Leccion, canal: str | None = None) -> dict
             "ejercicios_raw": ejercicios_raw,
             "version": puntero_activo.version,
             "paquete": None,
+            "videos": videos,
+            "es_borrador": False,
+            "estado_editorial": "publicada",
         }
     )
     return resultado

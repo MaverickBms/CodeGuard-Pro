@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editar {{ leccion.titulo }} — CodeGuard Pro{% endblock %}
+{% block page_title %}Espacio editorial{% endblock %}
+{% block page_subtitle %}Etapa {{ etapa.numero }} · {{ modulo.numero }} · {{ leccion.titulo }}{% endblock %}
+
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}"><link rel="stylesheet" href="{% static 'css/lesson-learning.css' %}">{% endblock %}
+
+{% block content %}
+<nav class="roadmap-breadcrumb" aria-label="Migas de pan" style="margin-bottom:1rem;"><a href="{% url 'roadmaps:editorial' %}"><i class="fa-solid fa-arrow-left"></i> Volver al espacio editorial</a></nav>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+    <div>
+      <h2 style="margin-top:0;">{{ leccion.titulo }}</h2>
+      <p class="muted" style="margin:0;">Estado editorial: <strong>{{ detalle.etiqueta }}</strong>{% if detalle.version %} · versión actual {{ detalle.version.numero_version }} ({{ detalle.version.get_estado_display }}){% endif %}</p>
+    </div>
+    <a class="btn btn-secondary cg-btn" href="{% url 'roadmaps:leccion_detalle' leccion.id %}"><i class="fa-solid fa-eye me-2"></i>Vista del estudiante</a>
+  </div>
+</section>
+
+{% if detalle.version %}
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Transiciones editoriales">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-code-branch"></i> Flujo editorial</h3>
+  <p class="muted">Cada transición queda auditada. Publicar exige una versión aprobada y contenido con la estructura completa.</p>
+  <div style="display:flex; gap:.6rem; flex-wrap:wrap; align-items:flex-start;">
+    {% if detalle.version.estado == "borrador" %}
+      <form method="post">{% csrf_token %}<input type="hidden" name="accion" value="enviar_revision"><input type="hidden" name="version_id" value="{{ detalle.version.id }}"><button class="btn btn-primary cg-btn" type="submit"><i class="fa-solid fa-paper-plane me-2"></i>Enviar a revisión</button></form>
+    {% elif detalle.version.estado == "revision" %}
+      <form method="post">{% csrf_token %}<input type="hidden" name="accion" value="aprobar"><input type="hidden" name="version_id" value="{{ detalle.version.id }}"><button class="btn btn-primary cg-btn" type="submit"><i class="fa-solid fa-check me-2"></i>Aprobar versión</button></form>
+    {% elif detalle.version.estado == "aprobada" %}
+      <form method="post">{% csrf_token %}<input type="hidden" name="accion" value="publicar"><input type="hidden" name="version_id" value="{{ detalle.version.id }}"><button class="btn btn-primary cg-btn" type="submit"><i class="fa-solid fa-globe me-2"></i>Publicar versión</button></form>
+    {% elif detalle.version.estado == "publicada" %}
+      <form method="post" style="display:flex; gap:.5rem; flex-wrap:wrap; align-items:center;">{% csrf_token %}<input type="hidden" name="accion" value="retirar"><input type="hidden" name="version_id" value="{{ detalle.version.id }}"><input class="form-control" name="motivo" maxlength="500" required placeholder="Motivo documentado de retirada" style="min-width:260px;"><button class="btn btn-secondary cg-btn" type="submit">Retirar publicación</button></form>
+    {% endif %}
+    {% if detalle.version.estado != "publicada" %}<span class="cg-badge">La versión activa solo cambia al publicar</span>{% endif %}
+  </div>
+</section>
+{% endif %}
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Contenido editable">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-pen-nib"></i> Contenido editable</h3>
+  <p class="muted">Guardar aquí no publica. Para que el estudiante lo vea como publicado, crea una versión, envíala a revisión, apruébala y publícala.</p>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="accion" value="guardar_contenido">
+    {% if formulario.non_field_errors %}<div class="alert alert-danger cg-alert">{{ formulario.non_field_errors }}</div>{% endif %}
+    {% for field in formulario %}
+      <div style="margin-bottom:.9rem;">
+        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+        {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+    {% endfor %}
+    <button class="btn btn-primary cg-btn cg-btn-primary" type="submit"><i class="fa-solid fa-floppy-disk me-2"></i>Guardar borrador editable</button>
+  </form>
+</section>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Crear versión">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-code-branch"></i> Crear snapshot versionado</h3>
+  <p class="muted">El snapshot es inmutable y solo incluye ejemplos y ejercicios publicados. Debe tener fuentes activas asociadas.</p>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="accion" value="crear_version">
+    <div style="margin-bottom:.75rem;"><label class="form-label" for="resumen">Resumen de cambios</label><input class="form-control" id="resumen" name="resumen" maxlength="1000" placeholder="Ej.: primera redacción revisada del módulo 0.1"></div>
+    <fieldset style="border:1px solid var(--cg-border); border-radius:12px; padding:.75rem; margin-bottom:.9rem;">
+      <legend style="font-size:.9rem; padding:0 .35rem;">Fuentes asociadas</legend>
+      {% for fuente in fuentes_disponibles %}
+        <label style="display:flex; gap:.5rem; align-items:flex-start; padding:.3rem 0;"><input type="checkbox" name="fuentes" value="{{ fuente.id }}" {% if fuente.estado_revision_licencia == "pendiente" %}disabled{% endif %}><span><strong>{{ fuente.titulo }}</strong><br><span class="muted">{{ fuente.publicador }} · {{ fuente.get_estado_revision_licencia_display }}</span></span></label>
+      {% empty %}<p class="muted">No hay fuentes activas. Regístralas en «Fuentes y licencias».</p>{% endfor %}
+    </fieldset>
+    <button class="btn btn-primary cg-btn" type="submit"><i class="fa-solid fa-plus me-2"></i>Crear versión borrador</button>
+  </form>
+</section>
+
+{% if versiones %}
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Historial de versiones">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-clock-rotate-left"></i> Historial de versiones</h3>
+  <div style="overflow-x:auto;"><table class="table" style="width:100%; margin:0; font-size:.88rem;"><thead><tr><th>Versión</th><th>Estado</th><th>Creada</th><th>Revisada</th><th>Publicada</th><th>SHA-256</th></tr></thead><tbody>
+    {% for version in versiones %}<tr><td>v{{ version.numero_version }}</td><td><span class="cg-badge">{{ version.get_estado_display }}</span></td><td>{{ version.creada_en|date:"Y-m-d H:i" }}</td><td>{{ version.revisada_en|date:"Y-m-d H:i"|default:"—" }}</td><td>{{ version.publicada_en|date:"Y-m-d H:i"|default:"—" }}</td><td><code>{{ version.sha256|slice:":12" }}…</code></td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endif %}
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;" aria-label="Recursos audiovisuales">
+  <h3 style="margin-top:0;"><i class="fa-brands fa-youtube"></i> Recursos audiovisuales</h3>
+  <p class="muted">Solo se muestran al estudiante los videos aprobados y disponibles. La aprobación exige documentar la verificación.</p>
+  {% if videos %}
+    <div style="display:grid; gap:.8rem; margin-bottom:1rem;">
+      {% for video in videos %}
+        <article style="border:1px solid var(--cg-border); border-radius:12px; padding:.8rem;">
+          <div style="display:flex; justify-content:space-between; gap:.75rem; flex-wrap:wrap;"><div><strong>{{ video.titulo }}</strong><div class="muted">{{ video.canal }} · {{ video.duracion_legible }} · {{ video.get_subtitulos_display }}</div></div><div style="display:flex; gap:.35rem; flex-wrap:wrap;"><span class="cg-badge {% if video.estado_revision == 'aprobado' %}cg-badge-success{% else %}cg-badge-warning{% endif %}">Enlace: {{ video.get_estado_revision_display }}</span><span class="cg-badge {% if video.estado_pedagogico == 'aprobado' %}cg-badge-success{% elif video.estado_pedagogico == 'rechazado' %}cg-badge-danger{% else %}cg-badge-warning{% endif %}">{{ video.get_estado_pedagogico_display }}</span></div></div>
+          <p class="muted" style="margin:.5rem 0;">{{ video.objetivo_aprendizaje }}</p>
+          {% if video.notas_verificacion %}<p class="muted" style="margin:.35rem 0;"><strong>Verificación técnica:</strong> {{ video.notas_verificacion }}</p>{% endif %}
+          {% if video.notas_pedagogicas %}<p class="muted" style="margin:.35rem 0;"><strong>Revisión pedagógica:</strong> {{ video.notas_pedagogicas }}</p>{% endif %}
+          <div style="display:flex; gap:.45rem; flex-wrap:wrap;">
+            <form method="post" style="display:flex; gap:.4rem; flex-wrap:wrap; align-items:center;">{% csrf_token %}<input type="hidden" name="accion" value="revisar_video"><input type="hidden" name="video_id" value="{{ video.id }}"><input type="hidden" name="decision" value="aprobado"><input class="form-control" name="notas_verificacion" required maxlength="1000" placeholder="Notas de verificación técnica" value="{{ video.notas_verificacion }}" style="min-width:220px;"><button class="btn btn-primary btn-sm cg-btn" type="submit">Aprobar enlace</button></form>
+            <form method="post">{% csrf_token %}<input type="hidden" name="accion" value="revisar_video"><input type="hidden" name="video_id" value="{{ video.id }}"><input type="hidden" name="decision" value="rechazado"><button class="btn btn-secondary btn-sm cg-btn" type="submit">Rechazar enlace</button></form>
+          </div>
+          <details style="margin-top:.6rem;"><summary><strong>Revisión pedagógica</strong></summary>
+            <form method="post" style="margin-top:.5rem; display:flex; gap:.4rem; flex-wrap:wrap; align-items:center;">{% csrf_token %}<input type="hidden" name="accion" value="revisar_video_pedagogico"><input type="hidden" name="video_id" value="{{ video.id }}">
+              <select class="form-select" name="decision_pedagogica" aria-label="Decisión pedagógica" style="max-width:260px;">
+                <option value="pendiente" {% if video.estado_pedagogico == "pendiente" %}selected{% endif %}>Pendiente</option>
+                <option value="aprobado" {% if video.estado_pedagogico == "aprobado" %}selected{% endif %}>Aprobada</option>
+                <option value="rechazado" {% if video.estado_pedagogico == "rechazado" %}selected{% endif %}>Rechazada</option>
+              </select>
+              <input class="form-control" name="notas_pedagogicas" maxlength="1000" placeholder="Correspondencia, nivel y utilidad didáctica" value="{{ video.notas_pedagogicas }}" style="min-width:280px;">
+              <button class="btn btn-secondary btn-sm cg-btn" type="submit">Guardar revisión pedagógica</button>
+            </form>
+          </details>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}<p class="muted">No hay videos asociados.</p>{% endif %}
+  <details><summary><strong>Añadir un video candidato</strong></summary>
+    <form method="post" style="margin-top:.75rem;">{% csrf_token %}<input type="hidden" name="accion" value="crear_video">
+      {% for field in video_form %}<div style="margin-bottom:.6rem;"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>{% endfor %}
+      <button class="btn btn-primary cg-btn" type="submit">Guardar video en revisión</button>
+    </form>
+  </details>
+</section>
+
+{% if fuentes_version %}
+<section class="glass-card cg-card" aria-label="Fuentes de la versión">
+  <h3 style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> Fuentes de la versión actual</h3>
+  <ul class="lesson-source-list">{% for referencia in fuentes_version %}<li><strong>{{ referencia.fuente.titulo }}</strong><div class="muted">{{ referencia.fuente.publicador }} · {{ referencia.get_uso_declarado_display }} · {{ referencia.fuente.get_estado_revision_licencia_display }}</div>{% if referencia.nota_atribucion %}<div class="muted">{{ referencia.nota_atribucion }}</div>{% endif %}</li>{% endfor %}</ul>
+</section>
+{% endif %}
+{% endblock %}

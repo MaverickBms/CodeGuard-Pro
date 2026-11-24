@@ -57,7 +57,8 @@ async function main() {
   const statuses = await evaluate(`
     (async () => {
       const paths = ['/', '/roadmaps/', '/roadmaps/evaluaciones/',
-        '/roadmaps/evidencias/', '/backups/'];
+        '/roadmaps/evidencias/', '/roadmaps/conocimiento/', '/roadmaps/cobertura/',
+        '/roadmaps/editorial/', '/biblioteca/', '/backups/'];
       const result = {};
       for (const path of paths) {
         const response = await fetch(path, { credentials: 'same-origin' });
@@ -90,6 +91,13 @@ async function main() {
     }
   }
   await send('Emulation.clearDeviceMetricsOverride');
+
+  const activeNav = await evaluate(
+    `document.querySelectorAll('.nav-item.cg-nav-active').length`
+  );
+  if (activeNav.result.value > 1) {
+    throw new Error(`Hay ${activeNav.result.value} accesos marcados como activos; se esperaba como máximo 1.`);
+  }
 
   const themeCount = await evaluate(
     `document.querySelectorAll('.ajustes-tema-btn[data-theme]').length`

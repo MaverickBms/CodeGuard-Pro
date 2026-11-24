@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import logging
+import time
 import urllib.error
 import urllib.request
 from typing import Optional
@@ -73,7 +74,13 @@ def _url_ollama_local() -> str:
     return TUTOR_BASE_URL.rstrip("/") + "/api/chat"
 
 
-def _llamar_ollama(sistema: str, usuario: str, modelo: Optional[str] = None) -> str:
+def _llamar_ollama(
+    sistema: str,
+    usuario: str,
+    modelo: Optional[str] = None,
+    *,
+    timeout: float | None = None,
+) -> str:
     """Envía una solicitud a Ollama y devuelve la respuesta de texto.
 
     Usa exclusivamente la librería estándar (urllib) para no añadir
@@ -90,7 +97,8 @@ def _llamar_ollama(sistema: str, usuario: str, modelo: Optional[str] = None) -> 
                 {"role": "user", "content": usuario},
             ],
             "stream": False,
-            "options": {"temperature": 0.4, "num_predict": 500},
+            "keep_alive": "5m",
+            "options": {"temperature": 0.3, "num_predict": 90},
         }
     ).encode("utf-8")
 
@@ -105,7 +113,9 @@ def _llamar_ollama(sistema: str, usuario: str, modelo: Optional[str] = None) -> 
             urllib.request.ProxyHandler({}),
             _NoRedirectHandler(),
         )
-        with opener.open(requisito, timeout=TUTOR_TIMEOUT_SECONDS) as respuesta:
+        with opener.open(
+            requisito, timeout=timeout if timeout is not None else TUTOR_TIMEOUT_SECONDS
+        ) as respuesta:
             datos = json.loads(respuesta.read().decode("utf-8"))
         return str((datos.get("message") or {}).get("content") or "").strip()
     except Exception as exc:  # noqa: BLE001 — degradación controlada del tutor
@@ -126,6 +136,15 @@ def _sistema_tutor() -> str:
         "6. No decidas la aprobación académica; eso corresponde al evaluador determinista.\n"
         "7. Responde en español, de forma concisa y pedagógica.\n"
         "8. No ejecutes ni sugieras ejecutar código arbitrario del estudiante.\n"
+    )
+
+
+def _sistema_tutor_pista() -> str:
+    """Prompt compacto para reducir latencia en equipos sin GPU."""
+    return (
+        "Eres un tutor de programación en español. Da una sola pista concreta, "
+        "máximo dos frases, basada en el enunciado. No reveles la solución, no "
+        "escribas el código final y no decidas la aprobación académica."
     )
 
 
@@ -167,13 +186,13 @@ def entregar_pista(usuario, ejercicio, tipo_pista: str = "orientacion") -> dict:
         }
 
     contexto = (
-        f"Ejercicio: {ejercicio.titulo}\\n"
-        f"Enunciado: {ejercicio.enunciado}\\n"
-        f"Instrucciones: {ejercicio.instrucciones or 'Sin instrucciones adicionales.'}\\n"
-        f"Lenguaje: {ejercicio.lenguaje or 'No especificado'}\\n"
-        f"Nivel: {ejercicio.nivel}\\n"
+        f"Ejercicio: {ejercicio.titulo}\n"
+        f"Enunciado: {ejercicio.enunciado}\n"
+        f"Instrucciones: {ejercicio.instrucciones or 'Sin instrucciones adicionales.'}\n"
+        f"Lenguaje: {ejercicio.lenguaje or 'No especificado'}\n"
+        f"Nivel: {ejercicio.nivel}\n"
         "Entrega una pista gradual, sin revelar la solución completa. "
-        "Máximo tres pistas en total para este ejercicio.\\n"
+        "Máximo tres pistas en total para este ejercicio.\n"
     )
 
     if tipo_pista == "orientacion":
@@ -194,9 +213,11 @@ def entregar_pista(usuario, ejercicio, tipo_pista: str = "orientacion") -> dict:
 
     try:
         contenido_pista = _llamar_ollama(
-            sistema=_sistema_tutor(),
+            sistema=_sistema_tutor_pista(),
             usuario=contexto,
         )
+        if not contenido_pista or not contenido_pista.strip():
+            contenido_pista = None
     except TutorNoDisponible:
         contenido_pista = None
 
@@ -255,7 +276,17 @@ def analizar_intento(usuario, ejercicio, intento_ejercicio) -> IntentoTutoria:
         if intento_ejercicio.resultado == "no_aprobado"
         else "pendiente_revision"
     )
+    contenido_leccion = getattr(ejercicio.leccion, "contenido", None)
+    objetivos = (
+        (contenido_leccion.objetivos_aprendizaje or "").strip()[:300]
+        if contenido_leccion is not None
+        else ""
+    )
     contexto = (
+        f"Etapa: {ejercicio.leccion.modulo.etapa.numero}\n"
+        f"Módulo: {ejercicio.leccion.modulo.titulo}\n"
+        f"Lección: {ejercicio.leccion.titulo}\n"
+        f"Objetivos: {objetivos or 'No declarados.'}\n"
         f"Ejercicio: {ejercicio.titulo}\n"
         f"Enunciado: {ejercicio.enunciado}\n"
         f"Intento del estudiante: {intento_ejercicio.respuesta}\n"
@@ -270,6 +301,8 @@ def analizar_intento(usuario, ejercicio, intento_ejercicio) -> IntentoTutoria:
             sistema=_sistema_tutor(),
             usuario=contexto,
         )
+        if not analisis or not analisis.strip():
+            raise TutorNoDisponible("Ollama devolvió un análisis vacío.")
     except TutorNoDisponible:
         analisis = (
             f"El validador automático indica que el ejercicio '{ejercicio.titulo}' "
@@ -287,13 +320,89 @@ def analizar_intento(usuario, ejercicio, intento_ejercicio) -> IntentoTutoria:
     )
 
 
-def esta_disponible() -> bool:
-    """Devuelve True si Ollama responde y el tutor IA está disponible."""
+ESTADO_CACHE_SEGUNDOS = 30
+_estado_cache: dict = {"checked_at": 0.0, "valor": None}
+
+
+def _listar_modelos(timeout: float = 2.0) -> list[str]:
+    """Consulta /api/tags sin generar texto ni cargar un modelo en memoria."""
+    _url_ollama_local()  # Valida esquema, host loopback y ausencia de credenciales.
+    url = TUTOR_BASE_URL.rstrip("/") + "/api/tags"
+    requisito = urllib.request.Request(
+        url,
+        headers={"Accept": "application/json"},
+        method="GET",
+    )
+    opener = urllib.request.build_opener(
+        urllib.request.ProxyHandler({}),
+        _NoRedirectHandler(),
+    )
     try:
-        _llamar_ollama(
-            sistema="Responde solo con la palabra: ok.",
-            usuario="ok",
-        )
-        return True
+        with opener.open(requisito, timeout=timeout) as respuesta:
+            datos = json.loads(respuesta.read().decode("utf-8"))
+    except Exception as exc:  # noqa: BLE001 — el estado nunca rompe la interfaz
+        logger.info("Tutor IA: Ollama no responde al listado de modelos: %s", exc)
+        raise TutorNoDisponible(
+            "Ollama no está disponible en el puerto local configurado."
+        ) from exc
+
+    modelos = datos.get("models") if isinstance(datos, dict) else None
+    if not isinstance(modelos, list):
+        raise TutorNoDisponible("Ollama devolvió un listado de modelos no válido.")
+    return [
+        str(item.get("name", "")).strip()
+        for item in modelos
+        if isinstance(item, dict) and str(item.get("name", "")).strip()
+    ]
+
+
+def _modelo_instalado(modelos: list[str], modelo: str) -> bool:
+    return any(
+        nombre == modelo or nombre.startswith(f"{modelo}:")
+        for nombre in modelos
+    )
+
+
+def estado_tutor(*, forzar: bool = False, timeout: float = 2.0) -> dict:
+    """Estado operativo del tutor local con caché breve.
+
+    Distingue entre Ollama no disponible y Ollama disponible sin el modelo
+    configurado. En ambos casos la aplicación sigue operativa con pistas
+    deterministas locales.
+    """
+    ahora = time.monotonic()
+    if (
+        not forzar
+        and _estado_cache["valor"] is not None
+        and ahora - _estado_cache["checked_at"] < ESTADO_CACHE_SEGUNDOS
+    ):
+        return dict(_estado_cache["valor"])
+
+    try:
+        modelos = _listar_modelos(timeout=timeout)
     except TutorNoDisponible:
-        return False
+        valor = {
+            "disponible": False,
+            "ollama": False,
+            "modelo": TUTOR_MODEL,
+            "modelo_instalado": False,
+            "modo": "determinista",
+        }
+    else:
+        instalado = _modelo_instalado(modelos, TUTOR_MODEL)
+        valor = {
+            "disponible": instalado,
+            "ollama": True,
+            "modelo": TUTOR_MODEL,
+            "modelo_instalado": instalado,
+            "modo": "ollama" if instalado else "determinista",
+        }
+
+    _estado_cache["checked_at"] = ahora
+    _estado_cache["valor"] = dict(valor)
+    return valor
+
+
+def esta_disponible() -> bool:
+    """Devuelve True si Ollama responde y el modelo configurado está instalado."""
+    return bool(estado_tutor()["disponible"])

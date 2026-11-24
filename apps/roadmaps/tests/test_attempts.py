@@ -799,3 +799,31 @@ class IntentosEjercicioTests(TestCase):
         self.assertFalse(
             IntentoEjercicio.objects.filter(ejercicio=self.ejercicio).exists()
         )
+
+    def test_codigo_contiene_completa_leccion_si_permite_completar(self):
+        from apps.roadmaps.models_attempts import ConfiguracionEvaluacion
+        from apps.roadmaps.models import Progreso
+
+        ConfiguracionEvaluacion.objects.create(
+            ejercicio=self.ejercicio,
+            tipo="codigo_contiene",
+            configuracion={
+                "fragmentos_requeridos": ["nombre"],
+                "fragmentos_prohibidos": [],
+            },
+            activo=True,
+            permite_completar_leccion=True,
+            version=1,
+        )
+        intento = registrar_intento_ejercicio(
+            self.usuario, self.ejercicio, "nombre = 'Ada'"
+        )
+        self.assertEqual(intento.resultado, "aprobado")
+        self.assertTrue(
+            Progreso.objects.filter(
+                usuario=self.usuario,
+                etapa=self.etapa,
+                leccion=self.leccion,
+                estado="completado",
+            ).exists()
+        )

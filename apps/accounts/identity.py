@@ -31,7 +31,27 @@ def obtener_usuario_local(request):
         return None
 
     Usuario = get_user_model()
-    return Usuario.objects.filter(is_active=True).first()
+    propietario = Usuario.objects.filter(
+        is_active=True, es_propietario_local=True
+    ).order_by("id").first()
+    if propietario is not None:
+        return propietario
+
+    heredado = Usuario.objects.filter(
+        is_active=True, username="propietario-local"
+    ).first()
+    if heredado is not None:
+        return heredado
+
+    # Compatibilidad con perfiles anteriores a la marca explícita. Solo se
+    # resuelve una cuenta cuando no hay ambigüedad; con varias cuentas activas
+    # y sin propietario marcado no se elige ninguna al azar.
+    activos = list(
+        Usuario.objects.filter(is_active=True).order_by("id").values_list("id", flat=True)[:2]
+    )
+    if len(activos) == 1:
+        return Usuario.objects.get(pk=activos[0])
+    return None
 
 
 def get_usuario_actual(request):
@@ -45,12 +65,12 @@ def get_usuario_actual(request):
     Las vistas deben manejar este caso: lectura permitida, escritura bloqueada
     con mensaje comprensible. No se crea ningún usuario implícito.
     """
-    usuario_local = getattr(request, "usuario_local", None)
-    if usuario_local is not None:
-        return usuario_local
-    if request.user.is_authenticated:
-        return request.user
-    return None
+    if getattr(settings, "AUTH_DISABLED", False):
+        # No recurrir a request.user en modo local: una cookie de sesión
+        # heredada no debe saltarse la resolución explícita del propietario ni
+        # convertir un perfil ambiguo en un perfil con permisos de escritura.
+        return getattr(request, "usuario_local", None)
+    return request.user if request.user.is_authenticated else None
 
 
 def obtener_actor_auditoria(request):

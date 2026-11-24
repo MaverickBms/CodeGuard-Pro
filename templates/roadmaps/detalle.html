@@ -263,4 +263,13 @@
     {% endif %}
   </aside>
 </div>
+
+<nav class="roadmap-pagination" aria-label="Navegación entre etapas" style="display:flex; justify-content:space-between; gap:.75rem; flex-wrap:wrap; margin-top:1.25rem;">
+  {% if etapa_anterior %}
+    <a class="btn-theme btn-theme-ghost" href="{% url 'roadmaps:detalle' etapa_anterior.numero %}"><i class="fa-solid fa-arrow-left"></i> Etapa {{ etapa_anterior.numero }}: {{ etapa_anterior.titulo|truncatechars:36 }}</a>
+  {% else %}<span></span>{% endif %}
+  {% if etapa_siguiente %}
+    <a class="btn-theme" href="{% url 'roadmaps:detalle' etapa_siguiente.numero %}">Etapa {{ etapa_siguiente.numero }}: {{ etapa_siguiente.titulo|truncatechars:36 }} <i class="fa-solid fa-arrow-right"></i></a>
+  {% endif %}
+</nav>
 {% endblock %}

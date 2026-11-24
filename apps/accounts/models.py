@@ -17,6 +17,15 @@ class Usuario(AbstractUser):
     """
 
     email_verificado = models.BooleanField(default=False, verbose_name="email verificado")
+    es_propietario_local = models.BooleanField(
+        default=False,
+        editable=False,
+        verbose_name="propietario local explícito",
+        help_text=(
+            "Marca la cuenta monousuario que el arranque local identifica como "
+            "propietaria del perfil. No concede acceso remoto ni credenciales."
+        ),
+    )
     fecha_configuracion_inicial = models.DateTimeField(
         null=True, blank=True, verbose_name="fecha de configuración inicial"
     )

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ documento.titulo }} — Biblioteca{% endblock %}
+{% block page_title %}Biblioteca documental{% endblock %}
+{% block page_subtitle %}{{ documento.titulo }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">
+{% endblock %}
+
+{% block content %}
+<nav class="roadmap-breadcrumb" aria-label="Migas de pan" style="margin-bottom:1rem;">
+  <a href="{% url 'library:lista' %}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver a la biblioteca</a>
+</nav>
+
+<section class="glass-card cg-card" style="margin-bottom:1rem;">
+  <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+    <div style="min-width:240px; flex:1;">
+      <div style="display:flex; gap:.4rem; flex-wrap:wrap; align-items:center;">
+        <h2 style="margin:0;">{{ documento.titulo }}</h2>
+        <span class="cg-badge">{{ documento.get_categoria_display }}</span>
+        {% if documento.estado == "archivado" %}<span class="cg-badge cg-badge-muted">Archivado</span>{% endif %}
+      </div>
+      {% if documento.autor %}<p class="muted" style="margin:.35rem 0 0;">{{ documento.autor }}</p>{% endif %}
+      {% if documento.descripcion %}<p style="margin:.75rem 0 0; white-space:pre-line;">{{ documento.descripcion }}</p>{% endif %}
+      {% if documento.etiquetas_lista %}
+        <div style="display:flex; gap:.35rem; flex-wrap:wrap; margin-top:.6rem;">
+          {% for etiqueta in documento.etiquetas_lista %}<span class="cg-badge cg-badge-muted">{{ etiqueta }}</span>{% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+      {% if archivo_disponible %}
+        <a class="btn btn-primary cg-btn cg-btn-primary" href="{% url 'library:archivo' documento.pk %}" download>
+          <i class="fa-solid fa-download me-2" aria-hidden="true"></i>Descargar PDF
+        </a>
+      {% endif %}
+      <form method="post" action="{% url 'library:cambiar_estado' documento.pk %}">
+        {% csrf_token %}
+        {% if documento.estado == "activo" %}
+          <input type="hidden" name="accion" value="archivar">
+          <button class="btn btn-secondary cg-btn" type="submit"><i class="fa-solid fa-box-archive me-2" aria-hidden="true"></i>Archivar</button>
+        {% else %}
+          <input type="hidden" name="accion" value="restaurar">
+          <button class="btn btn-secondary cg-btn" type="submit"><i class="fa-solid fa-rotate-left me-2" aria-hidden="true"></i>Restaurar</button>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</section>
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1rem; align-items:start;">
+  <section class="glass-card cg-card" aria-label="Visor de PDF">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Visor</h3>
+    {% if archivo_disponible %}
+      <iframe
+        src="{% url 'library:archivo' documento.pk %}"
+        title="Visor del documento {{ documento.titulo }}"
+        style="width:100%; height:72vh; min-height:480px; border:1px solid var(--cg-border, #d1d5db); border-radius:10px; background:#fff;"
+      ></iframe>
+      <p class="muted" style="font-size:.85rem; margin:.5rem 0 0;">
+        Si el visor integrado no está disponible en este equipo, usa
+        «Descargar PDF» y ábrelo con tu lector habitual. El archivo permanece en tu perfil local.
+      </p>
+    {% else %}
+      <div class="v14-empty">
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+        <h3>El archivo no está disponible</h3>
+        <p>Los metadatos se conservan, pero el PDF ya no existe en la carpeta de datos.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <aside class="glass-card cg-card" aria-label="Metadatos del documento">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Metadatos</h3>
+    <dl style="margin:0; display:grid; grid-template-columns:auto 1fr; gap:.5rem .75rem; font-size:.92rem;">
+      <dt class="muted">Archivo</dt><dd style="margin:0; overflow-wrap:anywhere;">{{ documento.nombre_original|default:"—" }}</dd>
+      <dt class="muted">Tamaño</dt><dd style="margin:0;">{{ documento.tamano_mb }} MB</dd>
+      <dt class="muted">Tipo</dt><dd style="margin:0;">{{ documento.mime_type }}</dd>
+      <dt class="muted">Importado</dt><dd style="margin:0;">{{ documento.creado_en|date:"Y-m-d H:i" }}</dd>
+      <dt class="muted">Actualizado</dt><dd style="margin:0;">{{ documento.actualizado_en|date:"Y-m-d H:i" }}</dd>
+      <dt class="muted">SHA-256</dt><dd style="margin:0; overflow-wrap:anywhere; font-family:ui-monospace, monospace; font-size:.78rem;">{{ documento.sha256|default:"—" }}</dd>
+    </dl>
+  </aside>
+</div>
+{% endblock %}

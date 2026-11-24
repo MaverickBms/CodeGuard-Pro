@@ -18,6 +18,19 @@ contextBridge.exposeInMainWorld('codeguardAPI', {
     return () => ipcRenderer.removeListener('knowledge-sync-status', handler);
   },
 
+  // Recursos externos verificados (HTTPS) del contenido académico.
+  openExternal: (url) => ipcRenderer.invoke('open-external', url),
+
+  // Progreso de arranque (solo lectura, eventos emitidos por el proceso principal).
+  onStartupProgress: (callback) => {
+    const handler = (_event, payload) => callback(payload);
+    ipcRenderer.on('startup-progress', handler);
+    return () => ipcRenderer.removeListener('startup-progress', handler);
+  },
+
+  // Señal explícita: la interfaz principal terminó su inicialización crítica.
+  signalAppInteractive: (payload) => ipcRenderer.send('app-interactive-signal', payload || { source: 'renderer' }),
+
   // Información del sistema
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
   
@@ -30,6 +43,18 @@ contextBridge.exposeInMainWorld('codeguardAPI', {
     ipcRenderer.on('theme-changed', handler);
     return () => ipcRenderer.removeListener('theme-changed', handler);
   }
+});
+
+// Fallback de seguridad: si la interfaz no emite señal explícita, evitar bloqueo indefinido.
+// La señal principal debe enviarla el frontend cuando los componentes críticos estén inicializados.
+window.addEventListener('load', () => {
+  try {
+    const href = window.location.href || '';
+    if (href.includes('splash.html') || href.startsWith('data:')) return;
+    setTimeout(() => {
+      try { ipcRenderer.send('app-interactive-signal', { source: 'preload-fallback', ts: Date.now() }); } catch (_e) {}
+    }, 20000);
+  } catch (_e) {}
 });
 
 // Exponer utilidades de SweetAlert2 si está disponible

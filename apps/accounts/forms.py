@@ -63,11 +63,17 @@ class SetupInicialForm(forms.Form):
         p2 = cleaned.get("password2")
         if p1 and p2 and p1 != p2:
             raise forms.ValidationError("Las contraseñas no coinciden.")
-        if p1 and len(p1) < 8:
-            self.add_error(
-                "password1",
-                forms.ValidationError("La contraseña debe tener al menos 8 caracteres."),
-            )
+        if p1:
+            if len(p1) < 8:
+                self.add_error(
+                    "password1",
+                    forms.ValidationError("La contraseña debe tener al menos 8 caracteres."),
+                )
+            try:
+                validate_password(p1)
+            except ValidationError as exc:
+                for error in exc.messages:
+                    self.add_error("password1", error)
         return cleaned
 
 

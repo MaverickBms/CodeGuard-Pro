@@ -8,6 +8,8 @@ from apps.roadmaps.models import (
     Etapa,
     Leccion,
     Modulo,
+    Prerrequisito,
+    Progreso,
     Roadmap,
 )
 
@@ -85,10 +87,43 @@ class LeccionDetalleViewTests(TestCase):
             reverse("roadmaps:leccion_detalle", args=[self.leccion.id])
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Teoría técnica")
+        self.assertContains(response, "Explicación teórica")
         self.assertContains(response, "Explicación sencilla")
         self.assertContains(response, "Primer ejemplo")
         self.assertContains(response, "Practica")
+
+    def test_acceso_directo_a_leccion_bloqueada_no_registra_progreso(self):
+        etapa_bloqueada = Etapa.objects.create(
+            roadmap=self.leccion.modulo.etapa.roadmap,
+            numero=1,
+            titulo="Etapa bloqueada",
+        )
+        Prerrequisito.objects.create(
+            etapa=etapa_bloqueada,
+            etapa_requerida=self.leccion.modulo.etapa,
+            justificacion="Completa la etapa anterior.",
+        )
+        modulo = Modulo.objects.create(
+            etapa=etapa_bloqueada, numero="1.1", titulo="Módulo bloqueado"
+        )
+        leccion = Leccion.objects.create(modulo=modulo, titulo="Lección protegida")
+        EjercicioLeccion.objects.create(
+            leccion=leccion,
+            titulo="Ejercicio protegido",
+            enunciado="Debe poder leerse, pero no enviarse aún.",
+            publicado=True,
+        )
+
+        response = self.client.get(
+            reverse("roadmaps:leccion_detalle", args=[leccion.id])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "puedes consultar el material de estudio")
+        self.assertContains(response, "las entregas y la tutoría se habilitarán")
+        self.assertNotContains(response, 'name="respuesta"')
+        self.assertNotContains(response, "lesson-tutor-pista-btn")
+        self.assertFalse(Progreso.objects.filter(leccion=leccion).exists())
 
     def test_leccion_sin_contenido_muestra_estado_en_preparacion(self):
         self.leccion.contenido.delete()

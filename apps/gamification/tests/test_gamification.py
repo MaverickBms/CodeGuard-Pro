@@ -1,8 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from unittest.mock import patch
+from datetime import date
 
 from apps.gamification.models import Logro, LogroObtenido, PerfilGamificacion, TransaccionMoneda
-from apps.gamification.services import acreditar_monedas, otorgar_logro
+from apps.gamification.services import acreditar_monedas, otorgar_logro, recompensar_evento_academico
 
 
 class GamificationServicesTests(TestCase):
@@ -137,3 +139,96 @@ class MisionesRachaTests(TestCase):
         mp = MisionProgreso.objects.get(usuario=self.usuario, mision=mision)
         self.assertTrue(mp.completada)
         self.assertEqual(mp.progreso, 1)
+
+
+class GamificationFailureHandlingTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="gamification-fail", password="ClaveSegura123!"
+        )
+
+    @patch("apps.gamification.services.evaluar_misiones_academicas", side_effect=RuntimeError("fallo simulado"))
+    def test_fallo_de_misiones_se_registra_sin_perder_recompensa(self, _mock_misiones):
+        with self.assertLogs("apps.gamification.services", level="ERROR") as captured:
+            tx = recompensar_evento_academico(
+                self.usuario, "modulo_completado", 42, "Recompensa de prueba", monto=12
+            )
+        self.assertEqual(tx.monto, 12)
+        self.assertEqual(PerfilGamificacion.objects.get(usuario=self.usuario).saldo_monedas, 12)
+        self.assertEqual(TransaccionMoneda.objects.filter(usuario=self.usuario).count(), 1)
+        self.assertIn("No se pudieron evaluar las misiones", captured.output[0])
+
+
+class GamificationEventIdempotencyTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="gamification-event", password="ClaveSegura123!"
+        )
+
+    def test_repetir_evento_no_incrementa_mision_dos_veces(self):
+        from apps.gamification.services import asegurar_misiones_defecto
+        asegurar_misiones_defecto()
+        mision = Mision.objects.get(clave="completar-modulo")
+        mision.objetivo = 3
+        mision.save(update_fields=["objetivo"])
+
+        primera = recompensar_evento_academico(
+            self.usuario, "modulo_completado", 77, "Módulo completado", monto=10
+        )
+        segunda = recompensar_evento_academico(
+            self.usuario, "modulo_completado", 77, "Módulo completado", monto=10
+        )
+
+        self.assertEqual(primera.pk, segunda.pk)
+        progreso = MisionProgreso.objects.get(usuario=self.usuario, mision=mision)
+        self.assertEqual(progreso.progreso, 1)
+        self.assertFalse(progreso.completada)
+        self.assertEqual(PerfilGamificacion.objects.get(usuario=self.usuario).saldo_monedas, 10)
+        self.assertEqual(TransaccionMoneda.objects.filter(usuario=self.usuario).count(), 1)
+
+
+class GamificationReplayStreakTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="gamification-replay", password="ClaveSegura123!"
+        )
+
+    @patch("apps.gamification.services.timezone.localdate", side_effect=[date(2026, 11, 20), date(2026, 11, 21)])
+    def test_repetir_evento_antiguo_no_aumenta_racha_en_otro_dia(self, _mock_localdate):
+        recompensar_evento_academico(
+            self.usuario, "modulo_completado", 88, "Módulo completado", monto=10
+        )
+        recompensar_evento_academico(
+            self.usuario, "modulo_completado", 88, "Módulo completado", monto=10
+        )
+        perfil = PerfilGamificacion.objects.get(usuario=self.usuario)
+        self.assertEqual(perfil.ultima_actividad_fecha, date(2026, 11, 20))
+        self.assertEqual(perfil.racha_dias, 1)
+
+
+class GamificationTransactionConstraintTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            username="gamification-unique-ref", password="ClaveSegura123!"
+        )
+
+    def test_base_de_datos_impide_referencias_no_vacias_duplicadas(self):
+        from django.db import IntegrityError, transaction
+
+        acreditar_monedas(self.usuario, 15, "Primera", referencia="evento:unico:1")
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                TransaccionMoneda.objects.create(
+                    usuario=self.usuario,
+                    tipo="credito",
+                    monto=15,
+                    saldo_resultante=30,
+                    concepto="Duplicada",
+                    referencia="evento:unico:1",
+                )
+        self.assertEqual(
+            TransaccionMoneda.objects.filter(
+                usuario=self.usuario, tipo="credito", referencia="evento:unico:1"
+            ).count(),
+            1,
+        )

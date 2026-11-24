@@ -45,11 +45,17 @@
 
   function renderEstado(statusElement, data) {
     var disponible = Boolean(data && data.disponible);
+    var ollama = Boolean(data && data.ollama);
     var modelo = (data && data.modelo) || 'tutor local';
     var limite = (data && data.limite_pistas) || 3;
-    var texto = disponible
-      ? 'Tutor IA disponible · modelo ' + modelo + ' · ' + limite + ' pistas por ejercicio.'
-      : 'Tutor IA no disponible · se usan las pistas de apoyo de la lección.';
+    var texto;
+    if (disponible) {
+      texto = 'Tutor IA disponible · modelo ' + modelo + ' · ' + limite + ' pistas. Si el modelo tarda, se usan pistas locales.';
+    } else if (ollama) {
+      texto = 'Ollama está activo, pero falta el modelo ' + modelo + '. Se usarán las pistas locales de la lección.';
+    } else {
+      texto = 'Tutor IA no disponible: Ollama no está en marcha. Se usarán las pistas locales de la lección.';
+    }
     var textoElement = statusElement.querySelector('.lesson-tutor-status-text');
     if (textoElement) textoElement.textContent = texto;
   }

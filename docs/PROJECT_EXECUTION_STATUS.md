@@ -1,13 +1,96 @@
 # Estado de ejecución del proyecto
 
-**Última actualización:** 2026-11-19  
-**Fase:** release candidate 1.0.0 — validación final y cierre de Windows  
-**Rama:** `release/1.0.0` (`ec278b8`)  
-**PR:** https://github.com/MaverickBms/CodeGuard-Pro/pull/13 (abierto, borrador, sin fusionar)  
-**Base:** `main` intacta; no se ha fusionado ni creado tag/release.
+**Última actualización:** 2026-11-21 (auditoría final)
+**Fase:** finalización 1.0.0 — identidad, integridad de progreso, contenido y entrega
+**Rama:** `release/1.0.0-final` (base `release/1.0.0`; sin fusionar)
+**PR de finalización:** https://github.com/MaverickBms/CodeGuard-Pro/pull/17 (contra `release/1.0.0`; sin fusionar).
+**Base:** `main` intacta; PR #15 y #16 fuera de alcance.
 
 > Este documento conserva el historial de ejecución. No sustituye los informes
-> anteriores de la rama `documentation`.
+> anteriores de la rama `documentation` ni el informe final
+> [`INFORME_FINAL_1.0.0.md`](INFORME_FINAL_1.0.0.md).
+
+## 0. Auditoría final (21-11-2026)
+
+| Área | Resultado actual |
+|---|---|
+| Commit de código auditado | `24d04b6` |
+| Suite Django | **356 pruebas OK** |
+| Electron | **26/26 OK** |
+| Migraciones | 2 nuevas aplicadas; `makemigrations --check` sin cambios |
+| Rutas smoke | **9 rutas HTTP 200** |
+| Responsive | 13 pantallas a 1024/768 px, `BAD=[]` |
+| Aprendizaje | Lección completada, intento 100 % y persistencia tras reiniciar |
+| Backups | Crear, verificar y restaurar en perfil aislado |
+| Dependencias | `pip-audit` sin hallazgos; `npm audit --omit=dev` 0 |
+| AppImage actual | `7ca64d4e46787aee17cd839d162c965ba549f4f280809a8ca7d4eac915c28202` |
+| Servidor actual | `6080dc8ca8ed731ecdfe38c84e0906eadfce6dd2b6838036911577479ec3d4a5` |
+| CI push | `44952905523`, 4/4 jobs verdes sobre `29b836f` |
+| CI PR | `44952910842`, verde sobre `29b836f` |
+| Windows | CI 4/4 en `29b836f` (`24d04b6`); hardware físico pendiente |
+
+Correcciones de la auditoría: propietario local explícito, fallo cerrado ante
+perfiles ambiguos, conservación de etapa aprobada, formularios editoriales sin
+pérdida de datos, revisión pedagógica de video separada de la verificación
+técnica, CI para ramas release y auditorías de dependencias. Detalle en
+[`AUDITORIA_FINAL_1.0.0.md`](AUDITORIA_FINAL_1.0.0.md).
+
+## 0.1. Base previa de la iteración
+
+### Cambios principales
+
+| Área | Cambio |
+|---|---|
+| Perfil limpio | Propietario local creado una sola vez sin credenciales; las escrituras dejan de fallar |
+| Arranque | Verificación idempotente con huella de manifiesto/contenido; 7 consultas frente a ~4.000 |
+| Electron | Splash con fases reales, timeout configurable, detección temprana de errores y `server_entry.py` también en desarrollo |
+| CSRF | `Referrer-Policy` pasa de `no-referrer` a `same-origin`; los POST de Electron ya no envían `Origin: null` |
+| Biblioteca | Módulo nuevo: importación PDF validada, búsqueda, archivo, visor con rangos HTTP y metadatos |
+| Conocimiento | Panel de solo lectura con fuentes, versiones, paquetes y sincronización |
+| Navegación | Biblioteca y Base de conocimiento activas; un solo acceso activo por página |
+| Dev | Waitress + WhiteNoise en desarrollo; recursos estáticos ya no devuelven 404 |
+| Pruebas | 349 Django + 26 Electron en la base previa (la auditoría final dejó 356 Django) |
+
+### Artefactos históricos de la base previa
+
+- AppImage anterior: `95816a1c9e874fa6ffb8a70ce890cf558cc2adeb8bae55203a606456fd2039d2`.
+- Servidor anterior: `70d428b94ea258ec2e838f37a626435876559c9be3645836e148fbf8ece0e12e`.
+
+Estos hashes ya **no** corresponden al código actual. Los vigentes están en la
+sección 0 y en [`MATRIZ_PRUEBAS_1.0.0.md`](MATRIZ_PRUEBAS_1.0.0.md).
+
+### Contenido académico inicial
+
+- 8 lecciones completas del módulo 0.1 en estado **borrador**.
+- 1.938 lecciones pendientes; 0 publicadas.
+- 8 videos con enlace y metadatos técnicos verificados; 0 con revisión pedagógica aprobada.
+- 13 fuentes registradas con uso `solo_referencia`.
+- Espacio editorial, cobertura y puerta de calidad del esquema 2.
+- Siembra automática idempotente en el primer arranque; no publica.
+- Detalle: `docs/CONTENIDO_ACADEMICO.md`.
+
+### Evidencia de la base previa
+
+- Suite Django: **349 pruebas OK** (histórico; la auditoría final tiene 356).
+- Electron: **26/26 OK**.
+- `pip-audit`: sin vulnerabilidades conocidas.
+- `npm audit --omit=dev`: 0 vulnerabilidades de producción.
+- Primer arranque empaquetado: **~15,2 s**; segundo: **~1,0 s** de servidor y
+  **~2,8 s** con Electron (incluye siembra académica solo en el primero).
+- AppImage: 9 rutas 200 con el smoke vigente (roadmap, evaluaciones, evidencias, conocimiento,
+  cobertura, editorial y backups), 12 temas, formulario PDF real, visor y
+  cierre limpio. El contenido académico y los formularios se validaron en el
+  perfil empaquetado.
+- Backup/restore: base y `media/` restauradas; estado curricular reutilizado.
+
+### Pendientes que no se declaran terminados
+
+- Contenido académico: 8/1.946 lecciones desarrolladas (borradores); 1.938 pendientes; 0 publicadas.
+- Aceptación física Windows.
+- Sincronización remota de producción (sin endpoint/claves).
+- macOS/ARM64.
+- Laboratorios con sandbox, competencias, vigencia y ética.
+
 
 ## 1. Cambios de esta iteración
 
@@ -32,7 +115,7 @@
 
 | Prueba | Resultado |
 |---|---|
-| Suite Django (7 apps) | **292 pruebas OK** |
+| Suite Django (7 apps) | **292 pruebas OK** (histórico; no es la cifra actual) |
 | Pruebas Node/Electron | **20/20 OK** |
 | `manage.py check` | 0 incidencias |
 | `makemigrations --check --dry-run` | Sin cambios |
@@ -41,8 +124,24 @@
 | `npm audit` completo | 6 moderadas, solo cadena de build de electron-builder |
 | Smoke PyInstaller Linux | Primer arranque, ASCENSO, health, cierre de puerto y sync OK |
 | Persistencia de tema (AppImage, dos arranques) | `fantasy` persiste tras reiniciar el paquete |
-| E2E AppImage Linux | 5 rutas HTTP 200, 12 temas, responsive, cierre sin huérfanos |
-| Windows CI run `44574923603` y `44576601446` | **7/7 fases OK**: instalación, primer arranque, health, 5 rutas, tema, progreso, desinstalación, portable y ausencia de huérfanos |
+| E2E AppImage Linux | 9 rutas HTTP 200 con el smoke vigente, 12 temas, responsive, contenido y cierre sin huérfanos |
+| Windows CI run `44574923603` y `44576601446` (histórico) | **7/7 fases OK**; sustituido por el run académico `44945721326` sobre `5747ec6` |
+
+### Artefactos Linux (histórico)
+
+- AppImage: `95816a1c9e874fa6ffb8a70ce890cf558cc2adeb8bae55203a606456fd2039d2`.
+- Servidor PyInstaller: `70d428b94ea258ec2e838f37a626435876559c9be3645836e148fbf8ece0e12e`.
+- **No usar estos hashes para la entrega actual**; ver sección 0.
+
+### Contenido académico inicial
+
+- 8 lecciones completas del módulo 0.1 en estado **borrador**.
+- 1.938 lecciones pendientes; 0 publicadas.
+- 8 videos con enlace y metadatos técnicos verificados; 0 con revisión pedagógica aprobada.
+- 13 fuentes registradas con uso `solo_referencia`.
+- Espacio editorial, cobertura y puerta de calidad del esquema 2.
+- Siembra automática idempotente en el primer arranque; no publica.
+- Detalle: `docs/CONTENIDO_ACADEMICO.md`.
 
 ### Evidencia Windows (CI, no hardware físico)
 
@@ -98,11 +197,13 @@ la aceptación manual en un equipo limpio.
 3. Sincronización remota de producción, macOS/ARM64 y contenido académico completo:
    fuera del alcance de este RC.
 
-## 7. Artefactos finales
+## 7. Artefactos históricos
 
 - Servidor PyInstaller: `c21ff228b40fab302a8081532e227feb3efe54a16194d19b7bbf667f7e84ea53`.
 - AppImage: `3e14314636be75a44665846a0f1a25972352cb847dadbe407d84a9fd11a7f05d`.
 - CI push `e4599aa`: run `44576601446`, **4/4 jobs verdes**.
+- **Estos artefactos no corresponden al código actual.** Los vigentes están en
+  la sección 0 y en [`MATRIZ_PRUEBAS_1.0.0.md`](MATRIZ_PRUEBAS_1.0.0.md).
 
 ## 8. Próximos pasos
 

@@ -441,9 +441,36 @@ class Progreso(models.Model):
         ordering = ["-fecha_actualizacion"]
         constraints = [
             models.UniqueConstraint(
-                fields=["usuario", "etapa", "modulo", "leccion", "actividad"],
-                name="progreso_unico_por_objetivo",
-            )
+                fields=["usuario", "etapa"],
+                condition=models.Q(
+                    modulo__isnull=True,
+                    leccion__isnull=True,
+                    actividad__isnull=True,
+                ),
+                name="progreso_unico_etapa",
+            ),
+            models.UniqueConstraint(
+                fields=["usuario", "modulo"],
+                condition=models.Q(
+                    modulo__isnull=False,
+                    leccion__isnull=True,
+                    actividad__isnull=True,
+                ),
+                name="progreso_unico_modulo",
+            ),
+            models.UniqueConstraint(
+                fields=["usuario", "leccion"],
+                condition=models.Q(
+                    leccion__isnull=False,
+                    actividad__isnull=True,
+                ),
+                name="progreso_unico_leccion",
+            ),
+            models.UniqueConstraint(
+                fields=["usuario", "actividad"],
+                condition=models.Q(actividad__isnull=False),
+                name="progreso_unico_actividad",
+            ),
         ]
 
     def __str__(self) -> str:
@@ -479,6 +506,12 @@ class ContenidoLeccion(models.Model):
     objetivos_aprendizaje = models.TextField(
         blank=True, verbose_name="objetivos de aprendizaje"
     )
+    conocimientos_previos = models.TextField(
+        blank=True,
+        verbose_name="conocimientos previos",
+        help_text="Qué debe dominar el estudiante antes de esta lección.",
+    )
+    introduccion = models.TextField(blank=True, verbose_name="introducción")
     teoria_tecnica = models.TextField(
         blank=True,
         verbose_name="teoría técnica",
@@ -488,6 +521,27 @@ class ContenidoLeccion(models.Model):
         blank=True,
         verbose_name="explicación sencilla",
         help_text="Explicación clara, gradual y sin asumir conocimientos no presentados.",
+    )
+    conceptos_fundamentales = models.TextField(
+        blank=True, verbose_name="conceptos fundamentales"
+    )
+    aplicaciones_practicas = models.TextField(
+        blank=True, verbose_name="aplicaciones prácticas"
+    )
+    errores_frecuentes = models.TextField(
+        blank=True, verbose_name="errores frecuentes"
+    )
+    evaluacion_aprendizaje = models.TextField(
+        blank=True, verbose_name="evaluación del aprendizaje"
+    )
+    bibliografia_complementaria = models.TextField(
+        blank=True, verbose_name="bibliografía complementaria"
+    )
+    nivel_dificultad = models.CharField(
+        max_length=16,
+        choices=[("basico", "Básico"), ("intermedio", "Intermedio"), ("avanzado", "Avanzado")],
+        default="basico",
+        verbose_name="nivel de dificultad",
     )
     notas = models.TextField(blank=True, verbose_name="notas complementarias")
     publicado = models.BooleanField(default=False, verbose_name="publicado")
@@ -503,7 +557,22 @@ class ContenidoLeccion(models.Model):
 
     @property
     def esta_completo(self) -> bool:
+        """Mínimo histórico para versionar (compatibilidad con contenido v1)."""
         return bool(self.teoria_tecnica.strip() and self.explicacion_sencilla.strip())
+
+    @property
+    def calidad_academica_completa(self) -> bool:
+        """Puerta de calidad de la estructura ampliada de 11 secciones."""
+        obligatorios = (
+            self.objetivos_aprendizaje,
+            self.introduccion,
+            self.teoria_tecnica,
+            self.explicacion_sencilla,
+            self.conceptos_fundamentales,
+            self.aplicaciones_practicas,
+            self.evaluacion_aprendizaje,
+        )
+        return all(valor.strip() for valor in obligatorios)
 
 
 
@@ -1480,3 +1549,255 @@ class PublicacionPaqueteConocimiento(models.Model):
 
     def delete(self, *args, **kwargs):
         raise ValidationError("El historial de publicaciones no se elimina físicamente.")
+
+
+class EstadoInstalacionRoadmap(models.Model):
+    """Metadatos persistentes de integridad del roadmap instalado.
+
+    Permite que el arranque normal verifique en milisegundos que el contenido
+    curricular coincide con el manifiesto distribuido y evitar reconstrucciones
+    innecesarias de las 1.946 lecciones. No sustituye la verificación real de
+    la base de datos: el arranque recalcula la huella del contenido y la compara
+    con ``huella_contenido``.
+    """
+
+    ESQUEMA_ACTUAL = 1
+
+    roadmap = models.OneToOneField(
+        Roadmap,
+        on_delete=models.CASCADE,
+        related_name="estado_instalacion",
+        primary_key=True,
+        verbose_name="roadmap",
+    )
+    huella_manifiesto = models.CharField(
+        max_length=64, verbose_name="SHA-256 del manifiesto"
+    )
+    huella_contenido = models.CharField(
+        max_length=64, verbose_name="huella del contenido instalado"
+    )
+    total_etapas = models.PositiveIntegerField(default=0, verbose_name="etapas")
+    total_modulos = models.PositiveIntegerField(default=0, verbose_name="módulos")
+    total_lecciones = models.PositiveIntegerField(default=0, verbose_name="lecciones")
+    total_prerrequisitos = models.PositiveIntegerField(
+        default=0, verbose_name="prerrequisitos"
+    )
+    registros_sobrantes = models.PositiveIntegerField(
+        default=0,
+        verbose_name="registros ajenos al manifiesto",
+        help_text=(
+            "Filas conservadas de versiones anteriores del roadmap. No se "
+            "eliminan automáticamente para no borrar progreso del estudiante."
+        ),
+    )
+    esquema_version = models.PositiveSmallIntegerField(
+        default=ESQUEMA_ACTUAL, verbose_name="versión del esquema de estado"
+    )
+    creado_en = models.DateTimeField(auto_now_add=True)
+    verificado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "estado de instalación del roadmap"
+        verbose_name_plural = "estados de instalación del roadmap"
+
+    def __str__(self) -> str:
+        return f"Estado de {self.roadmap}"
+
+
+class RecursoAudiovisual(models.Model):
+    """Video educativo externo curado y vinculado a una lección.
+
+    Solo se admiten enlaces de YouTube. El video es complementario: no
+    sustituye la explicación, los ejercicios ni la evaluación. La plataforma
+    nunca descarga ni republica el contenido; únicamente enlaza al original.
+    """
+
+    IDIOMAS = [("es", "Español")]
+    SUBTITULOS = [
+        ("manual", "Subtítulos manuales verificados"),
+        ("auto", "Subtítulos automáticos"),
+        ("desconocido", "Sin verificar"),
+        ("ninguno", "Sin subtítulos"),
+    ]
+    ESTADOS = [
+        ("pendiente", "Pendiente"),
+        ("en_revision", "En revisión"),
+        ("aprobado", "Aprobado"),
+        ("rechazado", "Rechazado"),
+        ("retirado", "Retirado"),
+    ]
+
+    leccion = models.ForeignKey(
+        Leccion,
+        on_delete=models.CASCADE,
+        related_name="recursos_audiovisuales",
+        verbose_name="lección",
+    )
+    titulo = models.CharField(max_length=240, verbose_name="título verificable")
+    canal = models.CharField(max_length=160, verbose_name="canal o creador")
+    url = models.URLField(max_length=500, verbose_name="URL canónica")
+    video_id = models.CharField(max_length=11, blank=True, verbose_name="ID de YouTube")
+    idioma = models.CharField(
+        max_length=8, choices=IDIOMAS, default="es", verbose_name="idioma del audio"
+    )
+    subtitulos = models.CharField(
+        max_length=16, choices=SUBTITULOS, default="desconocido", verbose_name="subtítulos"
+    )
+    duracion_segundos = models.PositiveIntegerField(
+        null=True, blank=True, verbose_name="duración verificada (s)"
+    )
+    objetivo_aprendizaje = models.TextField(
+        verbose_name="objetivo de aprendizaje relacionado"
+    )
+    descripcion = models.TextField(blank=True, verbose_name="descripción y encaje curricular")
+    estado_revision = models.CharField(
+        max_length=16, choices=ESTADOS, default="pendiente", verbose_name="estado editorial"
+    )
+    disponible = models.BooleanField(default=True, verbose_name="enlace disponible")
+    verificado_en = models.DateTimeField(
+        null=True, blank=True, verbose_name="verificado el"
+    )
+    verificado_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="recursos_audiovisuales_verificados",
+        verbose_name="verificado por",
+    )
+    notas_verificacion = models.TextField(
+        blank=True, verbose_name="notas de verificación"
+    )
+    ESTADOS_PEDAGOGICOS = [
+        ("pendiente", "Revisión pedagógica pendiente"),
+        ("aprobado", "Revisión pedagógica aprobada"),
+        ("rechazado", "Revisión pedagógica rechazada"),
+    ]
+    estado_pedagogico = models.CharField(
+        max_length=12,
+        choices=ESTADOS_PEDAGOGICOS,
+        default="pendiente",
+        verbose_name="revisión pedagógica",
+    )
+    notas_pedagogicas = models.TextField(
+        blank=True,
+        verbose_name="notas de revisión pedagógica",
+        help_text="Correspondencia con el objetivo, nivel y utilidad didáctica observada.",
+    )
+    revisado_pedagogicamente_en = models.DateTimeField(
+        null=True, blank=True, verbose_name="revisado pedagógicamente el"
+    )
+    revisado_pedagogicamente_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="recursos_audiovisuales_revisados_pedagogicamente",
+        verbose_name="revisado pedagógicamente por",
+    )
+    orden = models.PositiveSmallIntegerField(default=1, verbose_name="orden")
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "recurso audiovisual"
+        verbose_name_plural = "recursos audiovisuales"
+        ordering = ["orden", "id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["leccion", "video_id"], name="recurso_video_unico_por_leccion"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.titulo} ({self.canal})"
+
+    @staticmethod
+    def extraer_video_id(url: str) -> str:
+        from urllib.parse import parse_qs, urlsplit
+        import re as _re
+
+        try:
+            parsed = urlsplit((url or "").strip())
+        except ValueError as exc:
+            raise ValidationError("La URL del video no es válida.") from exc
+        host = (parsed.hostname or "").lower()
+        if parsed.scheme != "https" or parsed.username or parsed.password:
+            raise ValidationError("La URL del video debe ser HTTPS sin credenciales.")
+        if host in {"youtu.be", "www.youtu.be"}:
+            candidate = parsed.path.strip("/").split("/")[0]
+        elif host in {"youtube.com", "www.youtube.com", "m.youtube.com"}:
+            if parsed.path.startswith("/watch"):
+                candidate = (parse_qs(parsed.query).get("v") or [""])[0]
+            elif parsed.path.startswith("/shorts/") or parsed.path.startswith("/embed/"):
+                parts = parsed.path.strip("/").split("/")
+                candidate = parts[1] if len(parts) > 1 else ""
+            else:
+                candidate = ""
+        else:
+            raise ValidationError("Solo se admiten enlaces de YouTube.")
+        if not _re.fullmatch(r"[A-Za-z0-9_-]{11}", candidate or ""):
+            raise ValidationError("La URL no contiene un identificador de YouTube válido.")
+        return candidate
+
+    def clean(self) -> None:
+        super().clean()
+        if not (self.titulo or "").strip():
+            raise ValidationError({"titulo": "El recurso necesita un título verificable."})
+        if not (self.canal or "").strip():
+            raise ValidationError({"canal": "Indica el canal o creador del video."})
+        if not (self.objetivo_aprendizaje or "").strip():
+            raise ValidationError(
+                {"objetivo_aprendizaje": "Relaciona el video con un objetivo de la lección."}
+            )
+        if self.idioma != "es":
+            raise ValidationError({"idioma": "Solo se admiten videos con audio en español."})
+        if self.duracion_segundos is not None and self.duracion_segundos <= 0:
+            raise ValidationError({"duracion_segundos": "La duración debe ser positiva."})
+        if self.estado_revision == "aprobado" and not self.verificado_en:
+            raise ValidationError(
+                {"verificado_en": "Un recurso aprobado exige fecha de verificación."}
+            )
+        if self.estado_revision == "aprobado" and not self.disponible:
+            raise ValidationError(
+                {"disponible": "Un recurso aprobado debe tener un enlace disponible."}
+            )
+        if self.estado_pedagogico == "aprobado":
+            if self.estado_revision != "aprobado":
+                raise ValidationError(
+                    {
+                        "estado_pedagogico": (
+                            "No se puede aprobar pedagógicamente un video cuyo "
+                            "enlace y metadatos no han sido verificados."
+                        )
+                    }
+                )
+            if not self.revisado_pedagogicamente_en or not self.notas_pedagogicas.strip():
+                raise ValidationError(
+                    {
+                        "estado_pedagogico": (
+                            "La aprobación pedagógica exige fecha y notas de revisión."
+                        )
+                    }
+                )
+
+    def save(self, *args, **kwargs):
+        self.video_id = self.extraer_video_id(self.url)
+        self.url = f"https://www.youtube.com/watch?v={self.video_id}"
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    @property
+    def publicado(self) -> bool:
+        return self.estado_revision == "aprobado" and self.disponible
+
+    @property
+    def revision_pedagogica_aprobada(self) -> bool:
+        return self.estado_pedagogico == "aprobado"
+
+    @property
+    def duracion_legible(self) -> str:
+        if not self.duracion_segundos:
+            return "Duración no verificada"
+        minutos, segundos = divmod(int(self.duracion_segundos), 60)
+        return f"{minutos}:{segundos:02d} min"

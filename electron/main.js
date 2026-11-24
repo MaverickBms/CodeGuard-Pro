@@ -13,12 +13,23 @@ const fs = require('fs');
 const os = require('os');
 const http = require('http');
 const net = require('net');
+const { performance } = require('perf_hooks');
 const { isTrustedIpcSender } = require('./ipc-security');
 const { getChildStartupFailure } = require('./process-health');
 const { resolveBackupPath } = require('./restore-backup');
 const { FILE_NAME: THEME_FILE, readTheme, writeTheme } = require('./theme-preference');
+const { isAllowedExternalUrl } = require('./external-links');
+const {
+  parseBootEvent,
+  formatBootMessage,
+  startupTimeoutMs,
+  describeHealth
+} = require('./startup-status');
+const { createStartupProgress } = require('./startup-progress');
+const { classifyInteractiveSignal, shouldAcceptInteractiveSignal } = require('./startup-ipc');
 
 let mainWindow = null;
+let splashWindow = null;
 let djangoProcess = null;
 let djangoPort = null;
 let syncProcess = null;
@@ -27,6 +38,68 @@ let syncInitialTimer = null;
 let syncStatus = { state: 'idle', message: 'Sin comprobaciones recientes.', checkedAt: null };
 let quitting = false;
 let restoring = false;
+let startupStartedAt = 0;
+let lastBootMessage = '';
+let lastHealth = null;
+let splashReady = false;
+let splashFrameReady = false;
+let lastDjangoError = '';
+
+const PERF_T0 = performance.now();
+const startupPerf = {
+  process_start_iso: new Date().toISOString(),
+  marks_ms: {},
+};
+
+function perfMark(name, extra = {}) {
+  const ms = Math.round((performance.now() - PERF_T0) * 100) / 100;
+  startupPerf.marks_ms[name] = ms;
+  Object.assign(startupPerf, extra);
+  console.log(`[Startup] ${name} ${ms}ms`);
+  return ms;
+}
+
+function writeStartupPerf(extra = {}) {
+  try {
+    Object.assign(startupPerf, extra);
+    startupPerf.written_at_iso = new Date().toISOString();
+    const dir = dataDir();
+    fs.writeFileSync(
+      path.join(dir, 'startup-perf-electron.json'),
+      JSON.stringify(startupPerf, null, 2),
+      'utf-8'
+    );
+  } catch (error) {
+    console.warn('[Startup] No se pudo escribir startup-perf-electron.json:', error.message);
+  }
+}
+perfMark('electron_main_loaded');
+
+const startupProgress = createStartupProgress();
+const startupState = startupProgress.state;
+
+function renderTerminalProgress(payload) {
+  if (!process.stdout.isTTY) return;
+  const pct = String(payload.percent).padStart(3, ' ');
+  const width = 20;
+  const filled = Math.round((payload.percent / 100) * width);
+  const bar = '█'.repeat(filled) + '░'.repeat(width - filled);
+  const task = (payload.task || '').slice(0, 50);
+  const line = `\r[CodeGuard] [${bar}] ${pct}% ${task}`;
+  try { process.stdout.write(line.padEnd(100)); if (payload.percent === 100) process.stdout.write('\n'); } catch (_e) {}
+}
+
+function emitStartupProgress(update = {}) {
+  if (startupPerf.marks_ms.app_interactive) update.interactive = true;
+  const payload = startupProgress.update(update);
+  const targets = [splashWindow, mainWindow];
+  for (const win of targets) {
+    if (win && !win.isDestroyed() && win.webContents) {
+      win.webContents.send('startup-progress', payload);
+    }
+  }
+  renderTerminalProgress(payload);
+}
 
 const DJANGO_HOST = '127.0.0.1';
 const SYNC_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -99,8 +172,23 @@ function getFreePort() {
   });
 }
 
-function waitForServer(url, child, timeoutMs = 120000) {
+function waitForServer(url, child, timeoutMs = startupTimeoutMs()) {
   const started = Date.now();
+  let lastProgressAt = 0;
+  let lastHealthState = '';
+
+  const reportProgress = (force = false) => {
+    const now = Date.now();
+    if (!force && now - lastProgressAt < 1000) return;
+    lastProgressAt = now;
+    const elapsed = Math.round((now - started) / 1000);
+    const detail = describeHealth(lastHealth);
+    updateSplash(
+      `Comprobando el servidor local… ${elapsed} s`,
+      detail || lastBootMessage || 'El servidor está iniciando en 127.0.0.1.'
+    );
+  };
+
   return new Promise((resolve, reject) => {
     const retry = () => {
       const startupFailure = getChildStartupFailure(child);
@@ -109,12 +197,15 @@ function waitForServer(url, child, timeoutMs = 120000) {
         return;
       }
       if (Date.now() - started > timeoutMs) {
+        const detail = describeHealth(lastHealth);
         reject(new Error(
-          `El servidor local no superó la comprobación de salud en ${Math.round(timeoutMs / 1000)} s. ` +
-          'Revisa la inicialización de la base de datos y el roadmap.'
+          `El servidor local no superó la comprobación de salud en ${Math.round(timeoutMs / 1000)} s.` +
+          (detail ? ` Estado: ${detail}.` : '') +
+          ' Revisa la inicialización de la base de datos y el roadmap.'
         ));
         return;
       }
+      reportProgress();
       setTimeout(attempt, 250);
     };
 
@@ -133,21 +224,37 @@ function waitForServer(url, child, timeoutMs = 120000) {
           if (body.length < 4096) body += chunk;
         });
         response.on('end', () => {
+          let health = null;
+          try {
+            health = JSON.parse(body);
+          } catch (_error) {
+            health = null;
+          }
+          if (health && typeof health === 'object') {
+            lastHealth = health;
+            const summary = describeHealth(health);
+            if (summary && summary !== lastHealthState) {
+              lastHealthState = summary;
+              updateSplash('Comprobando el estado del perfil…', summary);
+            }
+          }
           if (response.statusCode !== 200) {
+            if (!startupPerf.marks_ms.healthz_first_response) {
+              perfMark('healthz_first_response', { healthz_first_status: response.statusCode });
+            }
             scheduleRetry();
             return;
           }
-          try {
-            const health = JSON.parse(body);
-            const ready = health.status === 'ok' &&
-              health.database === 'ok' &&
-              health.migrations === 'ok' &&
-              health.roadmap === 'ok';
-            if (ready) resolve();
-            else scheduleRetry();
-          } catch (_error) {
-            scheduleRetry();
+          if (!startupPerf.marks_ms.healthz_first_200) {
+            perfMark('healthz_first_200');
           }
+          const ready = health &&
+            health.status === 'ok' &&
+            health.database === 'ok' &&
+            health.migrations === 'ok' &&
+            health.roadmap === 'ok';
+          if (ready) resolve();
+          else scheduleRetry();
         });
       });
       request.on('error', scheduleRetry);
@@ -161,25 +268,83 @@ function waitForServer(url, child, timeoutMs = 120000) {
   });
 }
 
+function updateSplash(message, detail, phaseUpdate) {
+  lastBootMessage = message || lastBootMessage;
+  const task = typeof message === 'string' ? message.slice(0, 240) : startupState.task;
+  const det = typeof detail === 'string' ? detail.slice(0, 300) : startupState.detail;
+  const update = { task, detail: det, ...(phaseUpdate || {}) };
+  emitStartupProgress(update);
+  const win = splashWindow && !splashWindow.isDestroyed() ? splashWindow : (mainWindow && !mainWindow.isDestroyed() ? mainWindow : null);
+  if (!win || !splashReady) return;
+  const script = `(() => { if (window.__codeguardSetProgress) window.__codeguardSetProgress(${JSON.stringify({task, detail: det, ...(phaseUpdate||{})})}); })();`;
+  win.webContents.executeJavaScript(script, true).catch(() => {});
+}
+
 function attachProcessLogs(child) {
+  let stdoutBuffer = '';
+
+  const handleLine = (line) => {
+    if (!line) return;
+    console.log(`[Django] ${line}`);
+    if (line.startsWith('[CodeGuard PERF] ')) {
+      try {
+        const payload = JSON.parse(line.slice('[CodeGuard PERF] '.length));
+        if (payload && payload.phase) {
+          perfMark(`server_${payload.phase}`, payload);
+        }
+      } catch (_e) {
+        // ignore
+      }
+    }
+    const event = parseBootEvent(line);
+    if (!event) return;
+    perfMark(`boot_${event.phase}_${event.status}`, event);
+    const phaseMap = { database: 'database', profile: 'profile', roadmap: 'roadmap', content: 'roadmap', ready: 'services' };
+    const splashPhase = phaseMap[event.phase];
+    let phaseStatus = 'active';
+    if (event.status === 'ready' || event.status === 'ok' || event.status === 'loaded' || event.status === 'seeded') phaseStatus = 'done';
+    if (event.status === 'unavailable' || event.status === 'error') phaseStatus = 'error';
+    const message = formatBootMessage(event);
+    const detail = describeHealth(lastHealth) || '';
+    if (message) {
+      console.log(`[Startup] ${event.phase}:${event.status} ${message}`);
+      updateSplash(message, detail, splashPhase ? { phase: splashPhase, status: phaseStatus } : undefined);
+    } else if (splashPhase) {
+      emitStartupProgress({ phase: splashPhase, status: phaseStatus, detail });
+    }
+  };
+
   child.stdout.on('data', (data) => {
-    console.log(`[Django] ${data.toString().trim()}`);
+    stdoutBuffer += data.toString();
+    const lines = stdoutBuffer.split(/\r?\n/);
+    stdoutBuffer = lines.pop() || '';
+    if (stdoutBuffer.length > 8192) stdoutBuffer = stdoutBuffer.slice(-8192);
+    lines.forEach(handleLine);
   });
   child.stderr.on('data', (data) => {
-    console.error(`[Django ERR] ${data.toString().trim()}`);
+    const line = data.toString().trim();
+    if (!line) return;
+    console.error(`[Django ERR] ${line.slice(0, 2000)}`);
+    if (/ERROR|Traceback|OperationalError|Exception|Error/i.test(line)) {
+      lastDjangoError = line.slice(-500);
+    }
   });
   child.on('error', (error) => {
     child.spawnError = error;
     console.error('[Django] No se pudo iniciar el proceso:', error);
   });
   child.on('close', (code) => {
+    if (stdoutBuffer) handleLine(stdoutBuffer);
     console.log(`[Django] Proceso terminado con código ${code}`);
     djangoProcess = null;
   });
 }
 
 async function startDjango() {
+  const started = Date.now();
   djangoPort = await getFreePort();
+  perfMark('django_port_allocated', { django_port: djangoPort });
+  updateSplash('Iniciando el servidor local…', 'El servidor escuchará solo en 127.0.0.1.');
   const env = {
     ...process.env,
     DJANGO_SETTINGS_MODULE: app.isPackaged
@@ -204,6 +369,7 @@ async function startDjango() {
       );
     }
 
+    perfMark('django_spawn_start', { packaged: true });
     djangoProcess = spawn(serverPath, [], {
       cwd: serverDir,
       env,
@@ -221,14 +387,13 @@ async function startDjango() {
       pythonPath = process.platform === 'win32' ? 'python' : 'python3';
     }
 
+    // En desarrollo se usa el mismo punto de entrada que en el paquete:
+    // migraciones pendientes, propietario local y verificación del roadmap.
+    // Así un perfil limpio también funciona con `npm start`.
+    perfMark('django_spawn_start', { packaged: false });
     djangoProcess = spawn(
       pythonPath,
-      [
-        path.join(projectRoot(), 'manage.py'),
-        'runserver',
-        `${DJANGO_HOST}:${djangoPort}`,
-        '--noreload'
-      ],
+      [path.join(projectRoot(), 'server_entry.py')],
       {
         cwd: projectRoot(),
         env,
@@ -237,10 +402,15 @@ async function startDjango() {
       }
     );
   }
+  perfMark('django_spawned', { django_pid: djangoProcess.pid });
+  emitStartupProgress({ phase: 'services', status: 'active', task: 'Iniciando el servidor local…', detail: 'Arrancando los servicios de aprendizaje.' });
 
   attachProcessLogs(djangoProcess);
 
   await waitForServer(`http://${DJANGO_HOST}:${djangoPort}/healthz/`, djangoProcess);
+  perfMark('healthz_ready');
+  emitStartupProgress({ phase: 'services', status: 'done', task: 'Servidor local listo', detail: 'Los servicios locales están disponibles.' });
+  console.log(`[Startup] Servidor Django listo en ${Date.now() - started} ms.`);
   return `http://${DJANGO_HOST}:${djangoPort}`;
 }
 
@@ -620,54 +790,173 @@ async function promptRestoreBackup() {
   app.exit(0);
 }
 
-function splashHtml() {
-  return `data:text/html;charset=utf-8,${encodeURIComponent(`
-    <!doctype html>
-    <html lang="es">
-      <head>
-        <meta charset="utf-8">
-        <title>CodeGuard Pro</title>
-        <style>
-          :root { color-scheme: dark; }
-          * { box-sizing: border-box; }
-          body {
-            margin: 0; min-height: 100vh; display: grid; place-items: center;
-            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at 30% 20%, #1e3a8a, #0f172a 65%);
-            color: #f8fafc;
-          }
-          .card { text-align: center; padding: 40px; }
-          .shield {
-            width: 84px; height: 84px; margin: 0 auto 22px;
-            border-radius: 22px; display: grid; place-items: center;
-            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
-            box-shadow: 0 18px 50px rgba(0,0,0,.45);
-            font-size: 42px;
-          }
-          h1 { margin: 0 0 10px; font-size: 1.6rem; letter-spacing: -.02em; }
-          p { margin: 0; color: #cbd5e1; font-size: .95rem; }
-          .spinner {
-            width: 28px; height: 28px; margin: 26px auto 0;
-            border: 3px solid rgba(255,255,255,.18);
-            border-top-color: #60a5fa; border-radius: 50%;
-            animation: spin .9s linear infinite;
-          }
-          @keyframes spin { to { transform: rotate(360deg); } }
-        </style>
-      </head>
-      <body>
-        <div class="card">
-          <div class="shield">🛡️</div>
-          <h1>CodeGuard Pro</h1>
-          <p>Iniciando el servidor local seguro…</p>
-          <div class="spinner"></div>
-        </div>
-      </body>
-    </html>
-  `)}`;
+function createSplashWindow() {
+  if (splashWindow && !splashWindow.isDestroyed()) return splashWindow;
+  perfMark('splash_window_create_start');
+  splashWindow = new BrowserWindow({
+    width: 760,
+    height: 560,
+    resizable: false,
+    minimizable: true,
+    maximizable: false,
+    fullscreenable: false,
+    frame: true,
+    title: 'CodeGuard Pro — Iniciando',
+    icon: iconPath(),
+    backgroundColor: '#0f172a',
+    show: true,
+    autoHideMenuBar: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+      allowRunningInsecureContent: false
+    }
+  });
+  perfMark('splash_window_created');
+
+  splashReady = false;
+  splashFrameReady = false;
+  const markSplashShown = () => {
+    if (!startupPerf.marks_ms.splash_window_shown) perfMark('splash_window_shown');
+  };
+  splashWindow.once('ready-to-show', markSplashShown);
+  splashWindow.once('show', markSplashShown);
+
+  splashWindow.webContents.on('dom-ready', () => {
+    if (!splashWindow || splashWindow.isDestroyed()) return;
+    if (!startupPerf.marks_ms.splash_dom_ready) perfMark('splash_dom_ready');
+  });
+  splashWindow.webContents.on('did-finish-load', () => {
+    if (!splashWindow || splashWindow.isDestroyed()) return;
+    const currentUrl = splashWindow.webContents.getURL();
+    const isSplashContent = currentUrl.includes('splash.html') || currentUrl.startsWith('data:text/html');
+    if (!isSplashContent) return;
+    if (!startupPerf.marks_ms.splash_document_loaded) perfMark('splash_document_loaded', { splash_url: currentUrl.slice(0, 40) });
+    splashReady = true;
+    // Enviar estado actual al splash (buffer de eventos previos a la suscripción).
+    const snapshot = startupProgress.snapshot();
+    splashWindow.webContents.send('startup-progress', snapshot);
+    emitStartupProgress({ phase: 'electron', status: 'done', task: 'Preparando servicios locales…', detail: 'Pantalla de carga lista.' });
+    if (lastBootMessage) updateSplash(lastBootMessage, startupState.detail);
+    // Frame del renderer listo (rAF x2). No es prueba de pintado físico en pantalla.
+    splashWindow.webContents.executeJavaScript(
+      'new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))',
+      true
+    ).then(() => {
+      if (!splashWindow || splashWindow.isDestroyed()) return;
+      splashFrameReady = true;
+      if (!startupPerf.marks_ms.splash_renderer_frame_ready) perfMark('splash_renderer_frame_ready');
+      // Alias legacy documentado: frame renderer listo, no pintado físico garantizado.
+      if (!startupPerf.marks_ms.splash_first_paint) perfMark('splash_first_paint', { verified: 'renderer_frame_only' });
+      if (startupPerf.marks_ms.app_interactive || startupPerf.marks_ms.app_interactive_fallback) closeSplashWindow();
+    }).catch((err) => {
+      if (!startupPerf.marks_ms.splash_renderer_frame_check_failed) {
+        perfMark('splash_renderer_frame_check_failed', { error: err && err.message ? err.message : String(err) });
+      }
+      // No marcar first_paint. Permitir cierre eventual por seguridad sin afirmar pintado.
+      setTimeout(() => {
+        if (splashWindow && !splashWindow.isDestroyed() && splashReady && !splashFrameReady) {
+          splashFrameReady = true;
+          if (!startupPerf.marks_ms.splash_renderer_frame_ready_fallback) perfMark('splash_renderer_frame_ready_fallback');
+          if (startupPerf.marks_ms.app_interactive || startupPerf.marks_ms.app_interactive_fallback) closeSplashWindow();
+        }
+      }, 3000);
+    });
+  });
+  splashWindow.webContents.on('did-fail-load', (_event, code, desc, validatedURL, isMainFrame) => {
+    if (!isMainFrame) return;
+    console.error('[Splash] did-fail-load', { code, desc, validatedURL });
+    perfMark('splash_did_fail_load', { code, desc });
+    // No cerrar aquí: loadFile() maneja reintento/recuperación para evitar cerrar durante carga.
+  });
+  splashWindow.webContents.on('render-process-gone', (_event, details) => {
+    console.error('[Splash] render-process-gone', details);
+    if (!mainWindow || mainWindow.isDestroyed()) { try { createMainWindow(); } catch (_e) {} }
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+    closeSplashWindow(true);
+  });
+  splashWindow.on('closed', () => {
+    splashWindow = null;
+    splashReady = false;
+  });
+
+  perfMark('splash_load_start');
+  emitStartupProgress({ phase: 'electron', status: 'active', task: 'Inicializando el entorno de escritorio…', detail: 'Cargando la pantalla de inicio.' });
+
+  const splashPath = path.join(__dirname, 'splash.html');
+  const loadSplashDataUrl = () => {
+    try {
+      const html = fs.readFileSync(splashPath, 'utf8');
+      return 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
+    } catch (_e) {
+      return null;
+    }
+  };
+  const attemptSplashLoad = (attempt = 1) => {
+    if (!splashWindow || splashWindow.isDestroyed()) return;
+    // Preferir data URL: más fiable dentro de AppImage/asar y evita problemas de file://.
+    const dataUrl = loadSplashDataUrl();
+    const loadPromise = dataUrl
+      ? splashWindow.loadURL(dataUrl)
+      : splashWindow.loadFile(splashPath);
+    loadPromise.then(() => {
+      if (!startupPerf.marks_ms.splash_loadfile_resolved) perfMark('splash_loadfile_resolved', { attempt, via: dataUrl ? 'data-url' : 'file' });
+    }).catch((err) => {
+      console.error(`[Splash] load failed (attempt ${attempt}):`, err);
+      perfMark('splash_load_failed', { attempt, error: err && err.message ? err.message : String(err) });
+      if (attempt < 2 && splashWindow && !splashWindow.isDestroyed()) {
+        setTimeout(() => attemptSplashLoad(attempt + 1), 250);
+        return;
+      }
+      // Último intento con loadFile si data URL falló.
+      if (dataUrl && splashWindow && !splashWindow.isDestroyed()) {
+        splashWindow.loadFile(splashPath).then(() => {
+          if (!startupPerf.marks_ms.splash_loadfile_resolved) perfMark('splash_loadfile_resolved', { attempt: attempt + 1, via: 'file-fallback' });
+        }).catch(() => {
+          if (!mainWindow || mainWindow.isDestroyed()) { try { createMainWindow(); } catch (_e) {} }
+          if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+          closeSplashWindow(true);
+        });
+        return;
+      }
+      if (!mainWindow || mainWindow.isDestroyed()) { try { createMainWindow(); } catch (_e) {} }
+      if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+      closeSplashWindow(true);
+    });
+  };
+  attemptSplashLoad(1);
+  // Seguridad: si el splash no termina de cargar, no dejar al usuario sin feedback.
+  setTimeout(() => {
+    if (!splashWindow || splashWindow.isDestroyed()) return;
+    if (splashReady) return;
+    console.error('[Splash] timeout esperando carga del splash');
+    perfMark('splash_load_timeout');
+    if (!mainWindow || mainWindow.isDestroyed()) { try { createMainWindow(); } catch (_e) {} }
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+    closeSplashWindow(true);
+  }, 15000);
+  return splashWindow;
 }
 
-function createWindow() {
+function closeSplashWindow(force = false) {
+  if (!splashWindow || splashWindow.isDestroyed()) return;
+  // Nunca cancelar loadFile() antes de que el splash haya terminado de cargar
+  // y el frame del renderer esté listo. ERR_FAILED (-2) podía ser consecuencia del cierre prematuro.
+  // Si el check de frame falló, permitir cierre solo cuando app_interactive o force.
+  if (!force && !splashReady) return;
+  if (!force && !splashFrameReady && !startupPerf.marks_ms.app_interactive && !startupPerf.marks_ms.app_interactive_fallback) return;
+  try { splashWindow.close(); } catch (_e) {}
+  splashWindow = null;
+  splashReady = false;
+  splashFrameReady = false;
+}
+
+function createMainWindow() {
+  if (mainWindow && !mainWindow.isDestroyed()) return mainWindow;
+  perfMark('window_create_start');
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
@@ -687,17 +976,66 @@ function createWindow() {
       allowRunningInsecureContent: false
     }
   });
+  perfMark('window_created');
 
-  mainWindow.loadURL(splashHtml());
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (!mainWindow || mainWindow.isDestroyed()) return;
+    const currentUrl = mainWindow.webContents.getURL();
+    if (currentUrl.includes('splash.html')) return;
+    if (!startupPerf.marks_ms.main_did_finish_load) {
+      perfMark('document_loaded', { main_url: currentUrl });
+      perfMark('main_did_finish_load', { main_url: currentUrl });
+      emitStartupProgress({ phase: 'ui', status: 'active', task: 'Cargando la interfaz…', detail: 'Finalizando la carga de la interfaz.' });
+      // Frame del renderer principal listo (rAF x2, no prueba de pintado físico).
+      mainWindow.webContents.executeJavaScript(
+        'new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))',
+        true
+      ).then(() => {
+        if (!startupPerf.marks_ms.main_renderer_frame_ready) perfMark('main_renderer_frame_ready');
+        if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint', { verified: 'renderer_frame_only' });
+      }).catch(() => {});
+      // Fallback de recuperación: no bloquear al usuario, pero sin afirmar interactividad verificada.
+      setTimeout(() => {
+        if (startupPerf.marks_ms.app_interactive || startupPerf.marks_ms.app_interactive_fallback) return;
+        if (!mainWindow || mainWindow.isDestroyed()) return;
+        console.warn('[Startup] Fallback: señal app-interactive verificada no recibida; recuperación controlada.');
+        if (!startupPerf.marks_ms.main_renderer_frame_ready) perfMark('main_renderer_frame_ready', { source: 'interactive-signal' });
+  if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint', { verified: 'renderer_frame_only' });
+        perfMark('app_interactive_fallback', { source: 'main-timeout' });
+        emitStartupProgress({
+          phase: 'ui',
+          status: 'active',
+          task: 'Aplicación visible (verificación pendiente)',
+          detail: 'No se confirmó inicialización completa; se mostró por recuperación controlada.',
+        });
+        writeStartupPerf({ usable: false, interactive_source: 'main-timeout', verified: false });
+        mainWindow.show();
+        mainWindow.setFullScreen(true);
+        closeSplashWindow();
+      }, 30000);
+    }
+  });
+  mainWindow.webContents.on('dom-ready', () => {
+    if (!mainWindow || mainWindow.isDestroyed()) return;
+    const currentUrl = mainWindow.webContents.getURL();
+    if (!currentUrl.includes('splash.html') && !startupPerf.marks_ms.main_dom_ready) {
+      perfMark('main_dom_ready');
+    }
+  });
+  mainWindow.webContents.on('did-fail-load', (_event, code, desc, validatedURL, isMainFrame) => {
+    if (!isMainFrame) return;
+    console.error('[Main] did-fail-load', { code, desc, validatedURL });
+    perfMark('main_did_fail_load', { code, desc, validatedURL });
+    emitStartupProgress({ phase: 'ui', status: 'error', task: 'Error al cargar la interfaz', detail: desc || 'Fallo de carga', error: String(desc || code) });
+  });
+  mainWindow.webContents.on('render-process-gone', (_event, details) => {
+    console.error('[Main] render-process-gone', details);
+    perfMark('main_render_process_gone', details || {});
+    emitStartupProgress({ phase: 'ui', status: 'error', task: 'Error en la interfaz', detail: 'El proceso de renderizado se detuvo inesperadamente.', error: String(details && details.reason || 'render-process-gone') });
+  });
 
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show();
-    // Forzar maximizado después de un breve delay para asegurar que se aplique
-    setTimeout(() => {
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.maximize();
-      }
-    }, 100);
+    perfMark('window_ready_to_show');
   });
 
   mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
@@ -716,6 +1054,7 @@ function createWindow() {
   });
 
   buildMenu();
+  return mainWindow;
 }
 
 function buildMenu() {
@@ -882,6 +1221,71 @@ ipcMain.handle('check-knowledge-updates', event => {
   return syncStatus;
 });
 
+// IPC: señal de interactividad desde el renderer principal.
+ipcMain.on('app-interactive-signal', (event, payload = {}) => {
+  const trusted = isTrustedIpcEvent(event);
+  const senderIsMain = !!(mainWindow && !mainWindow.isDestroyed() && event.sender === mainWindow.webContents);
+  const { source, verified } = classifyInteractiveSignal(payload);
+  const decision = shouldAcceptInteractiveSignal({
+    trusted,
+    senderIsMain,
+    alreadyInteractive: !!startupPerf.marks_ms.app_interactive,
+    alreadyFallback: !!startupPerf.marks_ms.app_interactive_fallback,
+    verified,
+  });
+  if (!decision.ok) {
+    perfMark('app_interactive_signal_rejected', { reason: decision.reason, source, verified });
+    return;
+  }
+
+  perfMark('app_interactive_signal_received', { source, verified, upgrade: !!decision.upgrade });
+
+  if (!verified) {
+    // Fallback: mostrar para no bloquear al usuario, pero sin declarar usable/100%.
+    console.warn(`[Startup] Señal interactiva no verificada (source=${source}). Se usa recuperación controlada.`);
+    perfMark('app_interactive_fallback', { source });
+    emitStartupProgress({
+      phase: 'ui',
+      status: 'active',
+      task: 'Aplicación visible (verificación pendiente)',
+      detail: 'No se confirmó inicialización completa; se mostró por recuperación controlada.',
+    });
+    writeStartupPerf({ usable: false, interactive_source: source, verified: false });
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.show();
+      mainWindow.setFullScreen(true);
+    }
+    closeSplashWindow();
+    return;
+  }
+
+  if (decision.upgrade) {
+    perfMark('app_interactive_upgraded_from_fallback', { source });
+  }
+  if (!startupPerf.marks_ms.main_renderer_frame_ready) perfMark('main_renderer_frame_ready', { source: 'interactive-signal' });
+  if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint', { verified: 'renderer_frame_only' });
+  perfMark('app_interactive', { source });
+  emitStartupProgress({ phase: 'ui', status: 'done', task: 'Aplicación lista', detail: 'CodeGuard Pro está listo para usarse.', interactive: true });
+  writeStartupPerf({ usable: true, interactive_source: source, verified: true, upgraded_from_fallback: !!decision.upgrade });
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.show();
+    mainWindow.setFullScreen(true);
+  }
+  closeSplashWindow();
+});
+
+// IPC: abre un recurso externo HTTPS (video o fuente) en el navegador del sistema.
+ipcMain.handle('open-external', async (event, url) => {
+  if (!isTrustedIpcEvent(event)) {
+    throw new Error('Origen IPC no autorizado.');
+  }
+  if (!isAllowedExternalUrl(url)) {
+    throw new Error('Enlace externo no permitido.');
+  }
+  await shell.openExternal(url);
+  return true;
+});
+
 // IPC: información del sistema (sin datos sensibles).
 ipcMain.handle('get-system-info', async event => {
   if (!isTrustedIpcEvent(event)) {
@@ -918,23 +1322,57 @@ if (!gotLock) {
   });
 
   app.whenReady().then(async () => {
+    perfMark('electron_app_ready');
+    emitStartupProgress({ phase: 'electron', status: 'active', task: 'Entorno de escritorio listo…', detail: 'Creando la ventana principal.' });
+    startupStartedAt = Date.now();
     if (process.platform === 'win32') {
       app.setAppUserModelId('com.codeguard.pro');
     }
 
-    createWindow();
+    createSplashWindow();
+
+    const loadMainWithRetry = async (url, attempt = 1) => {
+      if (!mainWindow || mainWindow.isDestroyed()) throw new Error('Ventana principal no disponible');
+      updateSplash('Cargando la interfaz…', 'Aplicando preferencias del perfil.', { phase: 'ui', status: 'active' });
+      perfMark(attempt === 1 ? 'main_load_start' : `main_load_retry_${attempt}`, { main_url: url, attempt });
+      try {
+        await mainWindow.loadURL(url);
+        perfMark('main_load_resolved', { attempt });
+        return true;
+      } catch (err) {
+        const detail = err && err.message ? err.message : String(err);
+        perfMark('main_load_failed', { attempt, detail, main_url: url });
+        console.error(`[Startup] main load failed (attempt ${attempt}):`, detail);
+        if (attempt < 2 && !quitting) {
+          await new Promise(r => setTimeout(r, 1500));
+          if (mainWindow && !mainWindow.isDestroyed()) return loadMainWithRetry(url, attempt + 1);
+        }
+        throw err;
+      }
+    };
 
     try {
       const url = await startDjango();
-      if (mainWindow) {
-        await mainWindow.loadURL(url);
-      }
+      if (!mainWindow || mainWindow.isDestroyed()) createMainWindow();
+      await loadMainWithRetry(url, 1);
+      console.log(`[Startup] Carga principal iniciada en ${Date.now() - startupStartedAt} ms.`);
       scheduleKnowledgeSync();
     } catch (error) {
       console.error('No se pudo iniciar la aplicación:', error);
+      const detalleError = lastDjangoError
+        ? `\n\nÚltimo error del servidor:\n${lastDjangoError}`
+        : '';
+      const mensaje = `${error.message}${detalleError}`;
+      perfMark('startup_failed', { message: (error.message || '').slice(0, 300) });
+      writeStartupPerf({ usable: false, failed: true, error: (error.message || '').slice(0, 300) });
+      emitStartupProgress({ task: 'No se pudo iniciar CodeGuard Pro', detail: error.message || '', error: mensaje.slice(0, 500), phase: 'services', status: 'error' });
+      updateSplash('No se pudo iniciar CodeGuard Pro', error.message || '', { phase: 'services', status: 'error' });
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        try { mainWindow.show(); } catch (_e) {}
+      }
       dialog.showErrorBox(
         'No se pudo iniciar CodeGuard Pro',
-        `${error.message}\n\nRevisa los registros en:\n${path.join(dataDir(), 'logs')}`
+        `${mensaje}\n\nRevisa los registros en:\n${path.join(dataDir(), 'logs')}`
       );
       quitting = true;
       stopDjango();
@@ -943,7 +1381,8 @@ if (!gotLock) {
 
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow();
+        createSplashWindow();
+        createMainWindow();
       }
     });
   });

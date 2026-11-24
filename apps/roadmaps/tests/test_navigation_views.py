@@ -57,6 +57,34 @@ class EvaluacionesIndexTests(TestCase):
         self.assertNotContains(respuesta, "Quiz borrador")
         self.assertContains(respuesta, "1 publicada")
 
+    def test_acceso_directo_a_quiz_bloqueado_redirige_a_etapa(self):
+        etapa_bloqueada = Etapa.objects.create(
+            roadmap=self.roadmap, numero=2, titulo="Etapa protegida"
+        )
+        Prerrequisito.objects.create(
+            etapa=etapa_bloqueada,
+            etapa_requerida=self.etapa,
+            justificacion="Completa primero Fundamentos.",
+        )
+        modulo = Modulo.objects.create(
+            etapa=etapa_bloqueada, numero="2.1", titulo="Módulo protegido"
+        )
+        quiz = Quiz.objects.create(
+            nombre="Quiz protegido",
+            tipo=Quiz.TIPO_QUIZ,
+            modulo=modulo,
+            estado=Quiz.ESTADO_PUBLICADO,
+        )
+
+        with override_settings(AUTH_DISABLED=True):
+            respuesta = self.client.get(
+                reverse("roadmaps:quiz_detalle", args=[quiz.id])
+            )
+
+        self.assertRedirects(
+            respuesta, reverse("roadmaps:detalle", args=[etapa_bloqueada.numero])
+        )
+
     def test_indice_marca_evaluacion_de_etapa_bloqueada(self):
         etapa_bloqueada = Etapa.objects.create(
             roadmap=self.roadmap, numero=1, titulo="Etapa bloqueada"
@@ -121,3 +149,87 @@ class EvidenciasIndexTests(TestCase):
         self.assertContains(respuesta, "Proyecto registrado")
         self.assertContains(respuesta, "Criterio pendiente")
         self.assertContains(respuesta, "1 registrada")
+
+
+class ConocimientoIndexTests(TestCase):
+    def setUp(self):
+        self.roadmap = Roadmap.objects.create(
+            nombre="ASCENSO conocimiento", edicion="3.1", activo=True
+        )
+        Etapa.objects.create(roadmap=self.roadmap, numero=0, titulo="Fundamentos")
+
+    def test_panel_de_conocimiento_es_solo_lectura_y_muestra_estado(self):
+        with override_settings(AUTH_DISABLED=True):
+            respuesta = self.client.get(reverse("roadmaps:conocimiento"))
+
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertContains(respuesta, "Estado del conocimiento")
+        self.assertContains(respuesta, "solo lectura")
+        self.assertContains(respuesta, "Sin fuentes registradas")
+        self.assertContains(respuesta, "1.946 lecciones")
+        self.assertNotContains(respuesta, 'name="accion"')
+
+
+class NavegacionActivaTests(TestCase):
+    def setUp(self):
+        from apps.accounts.bootstrap import asegurar_propietario_local
+
+        asegurar_propietario_local()
+        self.roadmap = Roadmap.objects.create(
+            nombre="ASCENSO navegación", edicion="3.1", activo=True
+        )
+        Etapa.objects.create(roadmap=self.roadmap, numero=0, titulo="Fundamentos")
+
+    def test_solo_un_acceso_aparece_activo(self):
+        import re
+
+        for nombre in (
+            "core:panel",
+            "roadmaps:lista",
+            "roadmaps:evaluaciones",
+            "roadmaps:evidencias",
+            "roadmaps:conocimiento",
+            "roadmaps:cobertura",
+            "roadmaps:editorial",
+            "roadmaps:editorial_fuentes",
+            "library:lista",
+        ):
+            with self.subTest(vista=nombre), override_settings(AUTH_DISABLED=True):
+                respuesta = self.client.get(reverse(nombre))
+                self.assertEqual(respuesta.status_code, 200)
+                activos = re.findall(
+                    r'class="nav-item[^"]*cg-nav-active', respuesta.content.decode()
+                )
+                self.assertEqual(
+                    len(activos),
+                    1,
+                    f"{nombre} tiene {len(activos)} accesos activos; revisa la navegación.",
+                )
+
+
+class NavegacionEntreEtapasTests(TestCase):
+    def setUp(self):
+        self.roadmap = Roadmap.objects.create(
+            nombre="ASCENSO paginación", edicion="3.1", activo=True
+        )
+        for numero in range(3):
+            Etapa.objects.create(
+                roadmap=self.roadmap,
+                numero=numero,
+                titulo=f"Etapa {numero}",
+                orden=numero,
+            )
+
+    def test_detalle_enlaza_etapa_anterior_y_siguiente(self):
+        with override_settings(AUTH_DISABLED=True):
+            respuesta = self.client.get(reverse("roadmaps:detalle", args=[1]))
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertContains(respuesta, "Navegación entre etapas")
+        self.assertContains(respuesta, reverse("roadmaps:detalle", args=[0]))
+        self.assertContains(respuesta, reverse("roadmaps:detalle", args=[2]))
+
+    def test_primera_etapa_no_tiene_enlace_anterior(self):
+        with override_settings(AUTH_DISABLED=True):
+            respuesta = self.client.get(reverse("roadmaps:detalle", args=[0]))
+        self.assertIsNone(respuesta.context["etapa_anterior"])
+        self.assertContains(respuesta, reverse("roadmaps:detalle", args=[1]))

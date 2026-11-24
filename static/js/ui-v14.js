@@ -14,4 +14,19 @@ if(backdrop)backdrop.addEventListener('click',closeMobile);
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMobile();});
 window.addEventListener('resize',function(){if(!small())closeMobile();});
 document.querySelectorAll('.nav-item[data-url]').forEach(function(item){var url=item.getAttribute('data-url'),label=item.querySelector('.nav-label');if(label&&!item.hasAttribute('title'))item.setAttribute('title',label.textContent.trim());if(item.disabled||item.classList.contains('cg-btn-disabled'))return;item.addEventListener('click',function(){if(url&&url!=='#')window.location.assign(url);closeMobile();});});
+// Evita envíos duplicados por doble clic. El navegador ya validó el formulario
+// antes de emitir submit; si la respuesta vuelve a renderizar, el nuevo
+// documento restaura los controles.
+document.addEventListener('submit',function(event){
+  if(event.defaultPrevented)return;
+  var submitter=event.submitter;
+  if(!submitter||submitter.disabled)return;
+  submitter.disabled=true;
+  submitter.setAttribute('aria-busy','true');
+});
+window.addEventListener('pageshow',function(){
+  document.querySelectorAll('button[aria-busy="true"]').forEach(function(button){
+    button.disabled=false;button.removeAttribute('aria-busy');
+  });
+});
 })();

@@ -10,8 +10,11 @@ from django.db import transaction
 from django.db.models import F
 
 from datetime import date, timedelta
+import logging
 
 from django.utils import timezone
+
+logger = logging.getLogger(__name__)
 
 from .models import (
     AvatarPerfil,
@@ -35,19 +38,24 @@ def acreditar_monedas(usuario, monto: int, concepto: str, referencia: str = "") 
     if monto <= 0:
         raise ValueError("El monto a acreditar debe ser mayor que cero.")
 
+    # Bloquear primero el perfil serializa los créditos del mismo usuario.
+    # La comprobación idempotente debe ocurrir DESPUÉS del bloqueo: de lo
+    # contrario, dos operaciones simultáneas pueden observar que no existe
+    # la referencia y acreditar ambas.
+    perfil = PerfilGamificacion.objects.select_for_update().get_or_create(usuario=usuario)[0]
     if referencia:
-        existente = TransaccionMoneda.objects.select_for_update().filter(
-            usuario=usuario, referencia=referencia, tipo="credito"
+        existente = TransaccionMoneda.objects.filter(
+            usuario=usuario, referencia=referencia[:120], tipo="credito"
         ).first()
         if existente:
+            existente._creada_ahora = False
             return existente
 
-    perfil = PerfilGamificacion.objects.select_for_update().get_or_create(usuario=usuario)[0]
     perfil.saldo_monedas = F("saldo_monedas") + int(monto)
     perfil.save(update_fields=["saldo_monedas", "actualizado_en"])
     perfil.refresh_from_db(fields=["saldo_monedas"])
 
-    return TransaccionMoneda.objects.create(
+    transaccion = TransaccionMoneda.objects.create(
         usuario=usuario,
         tipo="credito",
         monto=int(monto),
@@ -55,6 +63,8 @@ def acreditar_monedas(usuario, monto: int, concepto: str, referencia: str = "") 
         concepto=concepto[:160],
         referencia=referencia[:120],
     )
+    transaccion._creada_ahora = True
+    return transaccion
 
 
 @transaction.atomic
@@ -87,13 +97,24 @@ def recompensar_evento_academico(usuario, evento: str, objeto_id: int, concepto:
     """
     if usuario is None or not getattr(usuario, "is_authenticated", False):
         return None
-    actualizar_racha(usuario)
     referencia = f"evento:{evento}:{objeto_id}:usuario:{usuario.id}"
     tx = acreditar_monedas(usuario, int(monto), concepto, referencia=referencia)
+    # Repetir el mismo evento no debe volver a incrementar misiones. La marca
+    # procede de acreditar_monedas DESPUÉS de tomar el bloqueo del perfil, por
+    # lo que también cubre llamadas concurrentes que compiten por la referencia.
+    if not getattr(tx, "_creada_ahora", True):
+        return tx
+    actualizar_racha(usuario)
     try:
         evaluar_misiones_academicas(usuario, evento)
     except Exception:
-        pass
+        # Las misiones no deben invalidar una recompensa ya registrada, pero
+        # el fallo debe quedar visible para diagnóstico en lugar de silenciarse.
+        logger.exception(
+            "No se pudieron evaluar las misiones del evento académico %s para el usuario %s",
+            evento,
+            usuario.pk,
+        )
     return tx
 
 
@@ -215,12 +236,15 @@ def _incrementar_mision(usuario, mision: Mision, incremento: int = 1) -> MisionP
     return progreso
 
 
+@transaction.atomic
 def evaluar_misiones_academicas(usuario, evento: str) -> None:
     """Actualiza misiones relacionadas a eventos académicos (idempotente por progreso)."""
     if usuario is None or not getattr(usuario, "is_authenticated", False):
         return
     asegurar_misiones_defecto()
-    actualizar_racha(usuario)
+
+    # La racha se actualiza una sola vez en recompensar_evento_academico,
+    # después de confirmar que el evento produjo una transacción nueva.
 
     # Misiones por evento (incrementales)
     claves_evento = {
@@ -233,11 +257,13 @@ def evaluar_misiones_academicas(usuario, evento: str) -> None:
             _incrementar_mision(usuario, mision, 1)
 
     # Misión por racha (estado alcanzado)
-    perfil = PerfilGamificacion.objects.filter(usuario=usuario).first()
+    perfil = PerfilGamificacion.objects.select_for_update().filter(usuario=usuario).first()
     if perfil:
         mision_racha = Mision.objects.filter(clave="racha-3-dias", activo=True).first()
         if mision_racha:
-            mp, _ = MisionProgreso.objects.get_or_create(usuario=usuario, mision=mision_racha, defaults={"progreso": 0})
+            mp, _ = MisionProgreso.objects.select_for_update().get_or_create(
+                usuario=usuario, mision=mision_racha, defaults={"progreso": 0}
+            )
             if not mp.completada:
                 mp.progreso = min(mision_racha.objetivo, perfil.racha_dias)
                 if mp.progreso >= mision_racha.objetivo:

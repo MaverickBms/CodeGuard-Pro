@@ -4,9 +4,9 @@
 - Restricción de host: ALLOWED_HOSTS limita el encabezado Host y el servidor
   empaquetado se enlaza exclusivamente a 127.0.0.1.
 - Cierre de sesión por inactividad (RF-002 / CG-005).
-- Identidad local (AccesoLocalMiddleware): resuelve el propietario local existente
-  cuando la autenticación está desactivada (AUTH_DISABLED=True), sin crear sesiones
-  ni autenticar mediante request.user.
+- Identidad local (AccesoLocalMiddleware): resuelve el propietario explícito cuando
+  la autenticación está desactivada (AUTH_DISABLED=True), sin crear sesiones ni
+  usar request.user como respaldo.
 
 Nota: La aplicación es local, monousuario y offline-first. Sin autenticación
 remota ni multiusuario.
@@ -27,10 +27,10 @@ class AccesoLocalMiddleware:
     """Resuelve el propietario local existente para el modo sin autenticación.
 
     Cuando ``AUTH_DISABLED`` es True:
-      - Establece ``request.usuario_local`` con el primer usuario activo de la BD.
-      - No toca la sesión ni la autenticación de Django (request.user sigue
-        siendo AnonymousUser).
-      - No crea cuentas ficticias ni inicia sesión.
+      - Establece ``request.usuario_local`` con el propietario explícito resuelto.
+      - No crea cuentas ni inicia sesión. Una sesión Django heredada puede seguir
+        presente, pero get_usuario_actual() no la usa como identidad local.
+      - Si el perfil es ambiguo, deja ``request.usuario_local`` en None.
     Cuando es False, no hace nada y el flujo de autenticación original sigue intacto.
 
     Debe colocarse después de AuthenticationMiddleware en settings.
@@ -57,12 +57,18 @@ class CabecerasSeguridadMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
 
-        # Evitar clickjacking.
-        response["X-Frame-Options"] = "DENY"
+        # Evitar clickjacking. El visor de la biblioteca necesita incrustar
+        # únicamente su propio PDF del mismo origen; el resto queda denegado.
+        allow_same_origin_frame = bool(
+            getattr(response, "_cg_allow_same_origin_frame", False)
+        )
+        response["X-Frame-Options"] = (
+            "SAMEORIGIN" if allow_same_origin_frame else "DENY"
+        )
         # Evitar MIME-sniffing.
         response["X-Content-Type-Options"] = "nosniff"
         # Control del referrer.
-        response["Referrer-Policy"] = "no-referrer"
+        response["Referrer-Policy"] = "same-origin"
         # Permissions policy restrictiva (sin APIs innecesarias).
         response["Permissions-Policy"] = (
             "camera=(), microphone=(), geolocation=()"
@@ -79,10 +85,11 @@ class CabecerasSeguridadMiddleware:
             "font-src 'self'; "
             "connect-src 'self'; "
             "object-src 'none'; "
-            "frame-src 'none'; "
-            "frame-ancestors 'none'; "
+            "frame-src 'self'; "
+            "frame-ancestors '%s'; "
             "form-action 'self'; "
             "base-uri 'self';"
+            % ("self" if allow_same_origin_frame else "none")
         )
         response["Content-Security-Policy"] = csp
 

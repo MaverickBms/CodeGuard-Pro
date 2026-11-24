@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Importar PDF — Biblioteca{% endblock %}
+{% block page_title %}Biblioteca documental{% endblock %}
+{% block page_subtitle %}Importar un documento PDF{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/roadmaps.css' %}">
+{% endblock %}
+
+{% block content %}
+<nav class="roadmap-breadcrumb" aria-label="Migas de pan" style="margin-bottom:1rem;">
+  <a href="{% url 'library:lista' %}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver a la biblioteca</a>
+</nav>
+
+<section class="glass-card cg-card" style="max-width:820px;">
+  <h2 style="margin-top:0;"><i class="fa-solid fa-file-arrow-up" aria-hidden="true"></i> Importar documento</h2>
+  <p class="muted">
+    Solo se aceptan PDFs de hasta 50 MB. Se comprueba la firma del archivo, se
+    calcula su SHA-256 y se rechazan duplicados. El documento no se envía a
+    Internet ni se procesa con servicios externos.
+  </p>
+
+  <form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {% if formulario.non_field_errors %}
+      <div class="alert alert-danger cg-alert" role="alert">
+        {% for error in formulario.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+      </div>
+    {% endif %}
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1rem;">
+      <div>
+        <label class="form-label" for="{{ formulario.titulo.id_for_label }}">Título <span aria-hidden="true">*</span></label>
+        {{ formulario.titulo }}
+        {% for error in formulario.titulo.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+      <div>
+        <label class="form-label" for="{{ formulario.autor.id_for_label }}">Autor</label>
+        {{ formulario.autor }}
+        {% for error in formulario.autor.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+      <div>
+        <label class="form-label" for="{{ formulario.categoria.id_for_label }}">Categoría</label>
+        {{ formulario.categoria }}
+        {% for error in formulario.categoria.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+      <div>
+        <label class="form-label" for="{{ formulario.etiquetas.id_for_label }}">Etiquetas</label>
+        {{ formulario.etiquetas }}
+        <div class="form-text">Sepáralas con comas, por ejemplo: redes, seguridad, práctica.</div>
+        {% for error in formulario.etiquetas.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+    </div>
+
+    <div style="margin-top:1rem;">
+      <label class="form-label" for="{{ formulario.descripcion.id_for_label }}">Descripción</label>
+      {{ formulario.descripcion }}
+      {% for error in formulario.descripcion.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+    </div>
+
+    <div style="margin-top:1rem;">
+      <label class="form-label" for="{{ formulario.archivo.id_for_label }}">Archivo PDF <span aria-hidden="true">*</span></label>
+      {{ formulario.archivo }}
+      {% for error in formulario.archivo.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+    </div>
+
+    <div class="lesson-submission-footer" style="margin-top:1.25rem; display:flex; gap:.6rem; justify-content:flex-end; flex-wrap:wrap;">
+      <a class="btn btn-secondary cg-btn" href="{% url 'library:lista' %}">Cancelar</a>
+      <button class="btn btn-primary cg-btn cg-btn-primary" type="submit">
+        <i class="fa-solid fa-shield-halved me-2" aria-hidden="true"></i>Validar e importar
+      </button>
+    </div>
+  </form>
+</section>
+{% endblock %}

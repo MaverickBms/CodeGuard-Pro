@@ -31,8 +31,9 @@ def _serializar_snapshot(leccion: Leccion, contenido: ContenidoLeccion) -> dict:
         leccion=leccion, publicado=True
     ).order_by("orden", "id")
 
+    esquema_version = 2 if contenido.calidad_academica_completa else 1
     return {
-        "esquema_version": 1,
+        "esquema_version": esquema_version,
         "leccion": {
             "clave": str(leccion.clave_contenido),
             "titulo": leccion.titulo,
@@ -41,8 +42,16 @@ def _serializar_snapshot(leccion: Leccion, contenido: ContenidoLeccion) -> dict:
         },
         "contenido": {
             "objetivos_aprendizaje": contenido.objetivos_aprendizaje,
+            "conocimientos_previos": contenido.conocimientos_previos,
+            "introduccion": contenido.introduccion,
             "teoria_tecnica": contenido.teoria_tecnica,
             "explicacion_sencilla": contenido.explicacion_sencilla,
+            "conceptos_fundamentales": contenido.conceptos_fundamentales,
+            "aplicaciones_practicas": contenido.aplicaciones_practicas,
+            "errores_frecuentes": contenido.errores_frecuentes,
+            "evaluacion_aprendizaje": contenido.evaluacion_aprendizaje,
+            "bibliografia_complementaria": contenido.bibliografia_complementaria,
+            "nivel_dificultad": contenido.nivel_dificultad,
             "notas": contenido.notas,
         },
         "ejemplos": [
@@ -109,7 +118,7 @@ def crear_version_contenido_leccion(
         version = VersionContenidoLeccion.objects.create(
             leccion=leccion,
             numero_version=ultima_version + 1,
-            esquema_version=1,
+            esquema_version=snapshot["esquema_version"],
             estado="borrador",
             snapshot=snapshot,
             sha256=digest,
@@ -140,6 +149,8 @@ def crear_version_contenido_leccion(
             referencia.full_clean()
             referencia.save()
 
+        from .coverage import invalidar_cache_cobertura
+        invalidar_cache_cobertura()
         return version
 
 
@@ -152,6 +163,67 @@ def _validar_actor_editorial(actor) -> None:
         or not getattr(actor, "is_staff", False)
     ):
         raise ValidationError("Se requiere un usuario activo con permisos editoriales.")
+
+
+CAMPOS_ACADEMICOS_AMPLIADOS = {
+    "objetivos_aprendizaje": 40,
+    "conocimientos_previos": 20,
+    "introduccion": 100,
+    "teoria_tecnica": 300,
+    "explicacion_sencilla": 150,
+    "conceptos_fundamentales": 200,
+    "aplicaciones_practicas": 150,
+    "evaluacion_aprendizaje": 100,
+}
+
+
+def _validar_calidad_academica(version: VersionContenidoLeccion) -> None:
+    """Puerta de calidad para snapshots nuevos (esquema 2).
+
+    Las versiones históricas v1 conservan la validación mínima anterior para no
+    invalidar contenido ya auditado. Todo contenido nuevo debe declarar la
+    estructura completa y al menos un ejemplo y un ejercicio.
+    """
+    snapshot = version.snapshot
+    if snapshot.get("esquema_version") != 2:
+        return
+    contenido = snapshot.get("contenido")
+    if not isinstance(contenido, dict):
+        raise ValidationError("El snapshot no contiene el objeto de contenido.")
+    faltantes = []
+    for campo, longitud_minima in CAMPOS_ACADEMICOS_AMPLIADOS.items():
+        valor = contenido.get(campo)
+        if not isinstance(valor, str) or len(valor.strip()) < longitud_minima:
+            faltantes.append(f"{campo} (mínimo {longitud_minima} caracteres)")
+    if faltantes:
+        raise ValidationError(
+            "El contenido no alcanza la estructura académica mínima: "
+            + ", ".join(faltantes)
+            + "."
+        )
+
+    ejemplos = snapshot.get("ejemplos")
+    ejercicios = snapshot.get("ejercicios")
+    if not isinstance(ejemplos, list) or not ejemplos:
+        raise ValidationError("La lección debe incluir al menos un ejemplo guiado.")
+    if not isinstance(ejercicios, list) or not ejercicios:
+        raise ValidationError("La lección debe incluir al menos un ejercicio evaluable.")
+    for indice, ejemplo in enumerate(ejemplos, start=1):
+        if not isinstance(ejemplo, dict):
+            raise ValidationError(f"El ejemplo {indice} no tiene estructura válida.")
+        for campo in ("titulo", "contexto", "explicacion"):
+            if not str(ejemplo.get(campo, "")).strip():
+                raise ValidationError(
+                    f"El ejemplo {indice} necesita {campo.replace('_', ' ')}."
+                )
+    for indice, ejercicio in enumerate(ejercicios, start=1):
+        if not isinstance(ejercicio, dict):
+            raise ValidationError(f"El ejercicio {indice} no tiene estructura válida.")
+        for campo in ("titulo", "enunciado", "instrucciones"):
+            if not str(ejercicio.get(campo, "")).strip():
+                raise ValidationError(
+                    f"El ejercicio {indice} necesita {campo.replace('_', ' ')}."
+                )
 
 
 def _validar_version_para_revision(version: VersionContenidoLeccion) -> None:
@@ -170,6 +242,8 @@ def _validar_version_para_revision(version: VersionContenidoLeccion) -> None:
 
     if version.snapshot["leccion"].get("clave") != str(version.leccion.clave_contenido):
         raise ValidationError("La identidad de la lección no coincide con el snapshot.")
+
+    _validar_calidad_academica(version)
 
     if not version.referencias.exists():
         raise ValidationError("La versión debe incluir al menos una fuente documentada.")
@@ -248,6 +322,8 @@ def enviar_version_a_revision(version_id: int, *, actor) -> VersionContenidoLecc
     version.enviada_por = actor
     version.enviada_en = timezone.now()
     version.save(update_fields=["estado", "enviada_por", "enviada_en"])
+    from .coverage import invalidar_cache_cobertura
+    invalidar_cache_cobertura()
     return version
 
 
@@ -265,6 +341,8 @@ def aprobar_version_contenido(version_id: int, *, actor) -> VersionContenidoLecc
     version.revisada_en = timezone.now()
     version.revisada_por = actor
     version.save(update_fields=["estado", "revisada_en", "revisada_por"])
+    from .coverage import invalidar_cache_cobertura
+    invalidar_cache_cobertura()
     return version
 
 
@@ -299,6 +377,8 @@ def publicar_version_contenido(version_id: int, *, actor) -> VersionContenidoLec
         leccion=version.leccion,
         defaults={"version": version},
     )
+    from .coverage import invalidar_cache_cobertura
+    invalidar_cache_cobertura()
     return version
 
 
@@ -324,6 +404,8 @@ def retirar_version_publicada(
     puntero = ContenidoLeccionActivo.objects.filter(version=version).first()
     if puntero:
         puntero.delete()
+    from .coverage import invalidar_cache_cobertura
+    invalidar_cache_cobertura()
     return version
 
 

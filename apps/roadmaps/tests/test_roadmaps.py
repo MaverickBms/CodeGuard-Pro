@@ -1,6 +1,7 @@
 """Pruebas del módulo académico (Roadmap ASCENSO)."""
 
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError, transaction
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
@@ -89,6 +90,23 @@ class ProgresoTest(TestCase):
             username="tester", password="ClaveSegura123!"
         )
 
+    def test_base_datos_impide_progreso_duplicado_en_etapa_modulo_y_leccion(self):
+        etapa = Etapa.objects.get(roadmap=self.roadmap, numero=0)
+        modulo = Modulo.objects.filter(etapa=etapa).first()
+        leccion = Leccion.objects.filter(modulo=modulo).first()
+        objetivos = (
+            {"etapa": etapa, "modulo": None, "leccion": None, "actividad": None},
+            {"etapa": etapa, "modulo": modulo, "leccion": None, "actividad": None},
+            {"etapa": etapa, "modulo": modulo, "leccion": leccion, "actividad": None},
+        )
+
+        for campos in objetivos:
+            with self.subTest(objetivo=campos):
+                Progreso.objects.create(usuario=self.usuario, **campos)
+                with self.assertRaises(IntegrityError):
+                    with transaction.atomic():
+                        Progreso.objects.create(usuario=self.usuario, **campos)
+
     def test_etapa_bloqueada_por_prerrequisito(self):
         etapa10 = Etapa.objects.get(roadmap=self.roadmap, numero=10)
         self.assertTrue(etapa10.esta_bloqueada_para(set()))
@@ -143,6 +161,38 @@ class ProgresoTest(TestCase):
         self.assertEqual(avance["completadas"], 0)
         self.assertEqual(avance["total"], 33)
         self.assertEqual(avance["porcentaje"], 0)
+
+    def test_recalcular_lecciones_no_revoca_una_etapa_ya_aprobada(self):
+        from apps.roadmaps.services import recalcular_progreso_etapa
+
+        etapa0 = Etapa.objects.get(roadmap=self.roadmap, numero=0)
+        leccion = Leccion.objects.filter(modulo__etapa=etapa0).first()
+        marcar_leccion(self.usuario, leccion, completada=False)
+        progreso = Progreso.objects.get(
+            usuario=self.usuario,
+            etapa=etapa0,
+            modulo__isnull=True,
+            leccion__isnull=True,
+            actividad__isnull=True,
+        )
+        progreso.estado = "completado"
+        progreso.porcentaje = 100
+        progreso.fecha_completado = timezone.now()
+        progreso.save(
+            update_fields=[
+                "estado",
+                "porcentaje",
+                "fecha_completado",
+                "fecha_actualizacion",
+            ]
+        )
+
+        recalcular_progreso_etapa(self.usuario, etapa0)
+
+        progreso.refresh_from_db()
+        self.assertEqual(progreso.estado, "completado")
+        self.assertEqual(progreso.porcentaje, 100)
+        self.assertIsNotNone(progreso.fecha_completado)
 
 
 @override_settings(AUTH_DISABLED=False)
