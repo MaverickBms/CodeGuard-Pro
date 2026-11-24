@@ -1094,3 +1094,35 @@ Cada lección incluye explicación técnica, ejemplo, práctica guiada, activida
 - No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para este lote.
 
 No se modificó el roadmap JSON, no se inventaron UUID y no se importó, aprobó ni publicó contenido. Las etapas siguientes permanecen pendientes de desarrollo equivalente; el objetivo oficial vacío de etapa 25 permanece intacto.
+
+
+## Profundización documental integral — etapa 8 (2026-11-24)
+
+### Alcance
+
+Se amplió el desarrollo didáctico de las **81 lecciones** oficiales de redes informáticas y protocolos:
+
+| Módulo | Lecciones | Cobertura documental |
+|---|---:|---:|
+| 8.1 Fundamentos de redes | 13 | 13/13 |
+| 8.2 Modelos de comunicación | 9 | 9/9 |
+| 8.3 Direccionamiento | 13 | 13/13 |
+| 8.4 Protocolos | 16 | 16/16 |
+| 8.5 Routing y Switching | 10 | 10/10 |
+| 8.6 Seguridad de redes | 9 | 9/9 |
+| 8.7 Herramientas | 11 | 11/11 |
+| **Total** | **81** | **81/81** |
+
+Se incorporaron laboratorios conceptuales y prácticos específicos sobre topologías, direccionamiento, subnetting, protocolos, routing, switching, segmentación, firewalls y herramientas de diagnóstico. Las prácticas se limitan a redes propias, ficticias o expresamente autorizadas y contemplan evidencias y límites de interpretación.
+
+### Control editorial y técnico
+
+- Se cotejaron los siete módulos y las cantidades de lecciones contra el roadmap oficial.
+- Se verificaron estructuralmente 81 encabezados de lección, coincidentes con el conteo del JSON.
+- Se incluyeron restricciones explícitas para Nmap, Wireshark, tcpdump, pruebas de conectividad, firewall y captura de tráfico.
+- No se ejecutaron capturas, escaneos, cambios de routing, pruebas de firewall ni laboratorios en redes reales durante esta intervención.
+- No se verificaron individualmente todas las referencias ni se obtuvo revisión técnica externa.
+
+**Estado:** desarrollo documental de la etapa 8 completado en esta pasada; ejecución reproducible, verificación de referencias y aprobación independiente pendientes. La cobertura 81/81 no equivale a pruebas ejecutadas ni a aprobación.
+
+El roadmap JSON permanece sin cambios. No se importó ni publicó contenido.
