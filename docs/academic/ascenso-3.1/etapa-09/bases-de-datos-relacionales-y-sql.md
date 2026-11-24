@@ -976,63 +976,243 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 #### 9.6.1 — Índices
 
-Un índice mantiene una estructura auxiliar para acelerar búsquedas, ordenamientos o joins, a cambio de almacenamiento y coste de escritura. **Práctica:** compara EXPLAIN antes y después de indexar una columna selectiva en datos de prueba. **Evidencia:** explica plan y coste, sin asumir que todo índice mejora cualquier consulta.
+**Propósito y modelo.** Un índice es una estructura auxiliar que permite localizar filas sin recorrer toda la tabla en determinados patrones de consulta. Mejora algunas lecturas, pero consume espacio y añade trabajo a INSERT, UPDATE y DELETE. El optimizador decide si utilizarlo según estadísticas y costo estimado.
+
+**Ejemplo desarrollado.** Un índice sobre email puede acelerar búsquedas de igualdad; si la consulta filtra por estado y fecha, un índice diferente podría ser más apropiado. No existe un índice universal para todas las consultas.
+
+**Práctica guiada.** En una base desechable crea una tabla sintética, consulta su plan con EXPLAIN antes y después de un índice y compara filas estimadas y acceso elegido.
+
+**Actividad independiente.** Propón índices para tres consultas reales hipotéticas y justifica selectividad, tamaño y costo de mantenimiento.
+
+**Criterios de aceptación.** Relaciona índice con patrón de consulta y evalúa costo de escritura/almacenamiento.
+
+**Errores frecuentes.** Indexar todas las columnas o asumir que la presencia de índice garantiza que el optimizador lo utilizará.
+
+**Comprobación.** ¿Por qué un índice puede mejorar SELECT y empeorar una carga con muchas escrituras?
 
 #### 9.6.2 — B-Tree
 
-B-Tree organiza claves ordenadas y permite búsquedas por rango y prefijos según el motor y la definición del índice. **Práctica:** consulta el plan de una búsqueda por rango sobre una columna indexada. **Evidencia:** explica búsqueda, recorrido y por qué la selectividad importa.
+**Propósito y modelo.** B-Tree y variantes como B+Tree mantienen claves ordenadas y equilibran altura para soportar búsquedas, rangos e inserciones con costo logarítmico aproximado. Muchos DBMS utilizan variantes de árboles balanceados para índices, pero implementación, páginas y detalles dependen del motor.
+
+**Ejemplo desarrollado.** Un índice B-Tree sobre fecha puede apoyar consultas por igualdad y rangos temporales. Una búsqueda por prefijo de columna puede aprovechar el orden; una función aplicada a la columna puede impedir el uso directo del índice si no existe índice funcional adecuado.
+
+**Práctica guiada.** Dibuja un árbol balanceado pequeño y muestra cómo localizar una clave y un rango. Relaciona el recorrido con páginas de índice sin asumir estructura exacta del motor.
+
+**Actividad independiente.** Compara búsqueda por igualdad y por rango en índice B-Tree frente a escaneo secuencial.
+
+**Criterios de aceptación.** Explica orden, balance y utilidad en rangos; reconoce que detalles varían por DBMS.
+
+**Errores frecuentes.** Confundir B-Tree con árbol binario simple o asumir que cualquier condición WHERE utiliza el índice.
+
+**Comprobación.** ¿Por qué un índice ordenado puede acelerar consultas de rango?
 
 #### 9.6.3 — Índices compuestos
 
-Un índice compuesto contiene varias columnas en un orden definido; el orden de las columnas afecta qué predicados pueden aprovecharlo. **Práctica:** compara índices `(cliente_id, fecha)` y `(fecha, cliente_id)` para consultas distintas. **Evidencia:** relaciona el prefijo izquierdo con los filtros del plan.
+**Propósito y modelo.** Un índice compuesto incluye varias columnas y su orden importa. El principio de prefijo izquierdo en muchos índices B-Tree permite aprovechar las columnas iniciales; cambiar el orden puede alterar utilidad y selectividad. Debe diseñarse según filtros, joins y ordenamientos frecuentes.
+
+**Ejemplo desarrollado.** Un índice (cliente_id, fecha) puede apoyar búsquedas por cliente y rangos de fecha para ese cliente; no suele equivaler a un índice separado por fecha para consultas sin cliente_id.
+
+**Práctica guiada.** En una tabla sintética compara EXPLAIN para consultas por primera columna, ambas columnas y solo segunda columna de un índice compuesto.
+
+**Actividad independiente.** Diseña un índice compuesto para historial de pedidos por cliente y fecha, explicando orden y consultas esperadas.
+
+**Criterios de aceptación.** Justifica orden de columnas y valida con plan de ejecución y datos representativos.
+
+**Errores frecuentes.** Elegir orden alfabético de columnas o duplicar índices que comparten prefijos sin medir beneficio.
+
+**Comprobación.** ¿Por qué un índice (A,B) no necesariamente optimiza una consulta que filtra solo por B?
 
 #### 9.6.4 — Vistas
 
-Una vista presenta una consulta con nombre y puede simplificar acceso y abstracción; una vista normal no necesariamente almacena resultados. **Práctica:** crea una vista de pedidos con datos no sensibles y consulta desde ella. **Evidencia:** explica dependencia de la consulta base y límites de actualización.
+**Propósito y modelo.** Una vista es una consulta almacenada que presenta datos como una relación virtual. Puede simplificar consultas, encapsular joins y limitar columnas expuestas. Una vista ordinaria no necesariamente almacena resultados; vistas materializadas existen en algunos motores y tienen ciclo de actualización distinto.
+
+**Ejemplo desarrollado.** Una vista de reporte puede mostrar pedidos y clientes sin exponer columnas de credenciales. La seguridad efectiva depende de permisos y modo de ejecución definido por el DBMS.
+
+**Práctica guiada.** Crea una vista simple en un esquema desechable, consulta sus resultados y revisa definición. Comprueba qué ocurre al cambiar una tabla subyacente.
+
+**Actividad independiente.** Diseña vistas de lectura para analistas que oculten datos personales y mantengan solo columnas necesarias.
+
+**Criterios de aceptación.** Distingue vista virtual y materializada y explica ventajas y límites de seguridad.
+
+**Errores frecuentes.** Creer que una vista siempre mejora rendimiento o que oculta datos frente a usuarios con privilegios suficientes sobre tablas base.
+
+**Comprobación.** ¿Qué diferencia operativa existe entre una vista normal y una materializada?
 
 #### 9.6.5 — Triggers
 
-Un trigger ejecuta lógica ante eventos de una tabla, como INSERT, UPDATE o DELETE, según capacidades del motor. Puede ocultar efectos secundarios y complicar depuración. **Práctica:** diseña un trigger de auditoría solo en una base descartable. **Evidencia:** documenta evento, condición, efecto y riesgo de recursión o duplicación.
+**Propósito y modelo.** Un trigger ejecuta lógica asociada a eventos de INSERT, UPDATE o DELETE, antes o después según motor. Puede imponer reglas, auditar o mantener datos derivados, pero introduce efectos secundarios implícitos y dificulta depuración. Debe documentarse y probarse con transacciones.
+
+**Ejemplo desarrollado.** Un trigger de auditoría puede registrar cambios de estado de una orden. Si el trigger falla, la operación original puede fallar según motor y contexto.
+
+**Práctica guiada.** Lee un trigger de ejemplo y determina evento, momento, tabla afectada y datos disponibles. En un entorno desechable crea uno que registre cambios sintéticos.
+
+**Actividad independiente.** Diseña auditoría de cambios sin almacenar contraseñas ni datos sensibles innecesarios; especifica retención y control de acceso.
+
+**Criterios de aceptación.** Explica evento/momento y documenta efectos secundarios y condiciones de fallo.
+
+**Errores frecuentes.** Ocultar lógica de negocio crítica en múltiples triggers o crear recursión y efectos difíciles de rastrear.
+
+**Comprobación.** ¿Qué dificultad de mantenimiento puede generar un trigger que modifica varias tablas sin que la aplicación lo indique?
 
 #### 9.6.6 — Stored Procedures
 
-Un stored procedure encapsula operaciones ejecutadas en el servidor con parámetros y control de flujo propio del motor. **Práctica:** compara una rutina almacenada con una transacción coordinada desde la aplicación. **Evidencia:** identifica qué lógica conviene centralizar y cómo se versiona.
+**Propósito y modelo.** Un procedimiento almacenado es lógica ejecutada en el servidor DBMS, con parámetros, control de flujo y permisos propios. Puede reducir viajes de red y centralizar operaciones, pero aumenta dependencia del motor y requiere versionado, pruebas y revisión de privilegios.
+
+**Ejemplo desarrollado.** Un procedimiento puede registrar una orden y sus detalles en una transacción. Debe validar entradas y manejar errores sin revelar información sensible.
+
+**Práctica guiada.** Lee la definición de un procedimiento sintético y describe parámetros IN/OUT, operaciones, transacción y manejo de errores. Si el motor lo permite, ejecútalo solo en un esquema temporal.
+
+**Actividad independiente.** Diseña una operación de negocio que deba ser atómica y compara implementarla en backend frente a procedimiento almacenado.
+
+**Criterios de aceptación.** Identifica parámetros, permisos, transacción y dependencia del DBMS.
+
+**Errores frecuentes.** Dar privilegios elevados al procedimiento sin necesidad o introducir SQL dinámico inseguro.
+
+**Comprobación.** ¿Qué riesgo introduce construir SQL dinámico concatenando parámetros no confiables?
 
 #### 9.6.7 — Transacciones
 
-Una transacción agrupa operaciones para tratarlas como unidad lógica, con confirmación o reversión. **Práctica:** transfiere una cantidad entre dos cuentas de prueba dentro de una transacción. **Evidencia:** demuestra que ambas actualizaciones se confirman o ninguna queda aplicada.
+**Propósito y modelo.** Una transacción agrupa operaciones para preservar consistencia ante concurrencia y fallos. Sus límites se controlan con BEGIN/START TRANSACTION, COMMIT y ROLLBACK, según motor. La atomicidad requiere soporte del motor de almacenamiento y las operaciones deben mantener invariantes del dominio.
+
+**Ejemplo desarrollado.** Una transferencia debita una cuenta y acredita otra dentro de una transacción. Si una validación o escritura falla, rollback evita confirmar solo una parte.
+
+**Práctica guiada.** En tablas de laboratorio ejecuta dos modificaciones dentro de una transacción, verifica estado intermedio y deshaz. Repite con commit.
+
+**Actividad independiente.** Diseña una transacción de compra que reduzca inventario, cree pedido y registre pago con manejo de errores y compensación cuando un servicio externo no pueda participar.
+
+**Criterios de aceptación.** Identifica límites y estados de transacción y explica qué se confirma o revierte.
+
+**Errores frecuentes.** Mantener transacciones abiertas demasiado tiempo o asumir que una llamada a API externa se revierte con rollback SQL.
+
+**Comprobación.** ¿Por qué una transacción de base de datos no puede deshacer automáticamente un cobro realizado por un proveedor externo?
 
 #### 9.6.8 — ACID
 
-ACID resume atomicidad, consistencia, aislamiento y durabilidad; el grado concreto depende del motor, configuración y almacenamiento. **Práctica:** asocia cada propiedad con un fallo posible durante una venta. **Evidencia:** explica qué garantía aporta y qué no cubre cada propiedad.
+**Propósito y modelo.** ACID resume cuatro propiedades: Atomicidad (todo o nada), Consistencia (preservar invariantes), Aislamiento (controlar efectos concurrentes) y Durabilidad (persistencia tras confirmación). El nivel efectivo depende del motor, configuración, almacenamiento y aislamiento; ACID no elimina errores de lógica.
+
+**Ejemplo desarrollado.** Una transferencia conserva el total de fondos (consistencia) y no deja solo un débito confirmado (atomicidad). Tras COMMIT, la durabilidad depende de configuración y garantías del motor.
+
+**Práctica guiada.** Relaciona cada propiedad con un fallo sintético y describe qué comportamiento esperas del DBMS.
+
+**Actividad independiente.** Evalúa una operación de inventario y explica cómo cada propiedad contribuye a evitar inconsistencias.
+
+**Criterios de aceptación.** Define las cuatro propiedades y aporta ejemplo concreto por cada una.
+
+**Errores frecuentes.** Suponer que ACID garantiza reglas de negocio correctas o que todos los niveles de aislamiento ofrecen el mismo comportamiento.
+
+**Comprobación.** ¿Qué propiedad describe que una transacción confirmada sobreviva a un reinicio conforme a las garantías configuradas?
 
 #### 9.6.9 — Commit
 
-`COMMIT` confirma los cambios de una transacción y los hace visibles/durables según las garantías del motor. **Práctica:** actualiza un pedido dentro de una transacción y confirma. **Evidencia:** abre una segunda sesión y verifica la visibilidad posterior al commit.
+**Propósito y modelo.** COMMIT confirma los cambios de una transacción y los hace visibles conforme al aislamiento y las garantías de durabilidad del motor. Una vez confirmado, no se revierte con ROLLBACK ordinario; la corrección posterior requiere otra transacción o recuperación desde respaldo.
+
+**Ejemplo desarrollado.** Después de validar filas afectadas y restricciones, COMMIT consolida el cambio. Un error posterior de la aplicación no deshace por sí solo el commit.
+
+**Práctica guiada.** En una base desechable actualiza una fila dentro de transacción, verifica el valor y ejecuta COMMIT. Abre una nueva sesión y comprueba persistencia.
+
+**Actividad independiente.** Diseña un flujo de aprobación antes de confirmar una operación financiera, incluyendo conteos, validación y registro de auditoría.
+
+**Criterios de aceptación.** Explica momento de confirmación y diferencia entre error previo y posterior al commit.
+
+**Errores frecuentes.** Confirmar antes de validar resultados o asumir que cerrar la conexión equivale siempre a rollback.
+
+**Comprobación.** ¿Qué opciones quedan después de un COMMIT si se detecta un dato incorrecto?
 
 #### 9.6.10 — Rollback
 
-`ROLLBACK` revierte cambios no confirmados dentro de la transacción, sujeto a límites del motor y operaciones ejecutadas. **Práctica:** modifica un dato de prueba y revierte la transacción. **Evidencia:** demuestra que el valor original permanece.
+**Propósito y modelo.** ROLLBACK deshace cambios no confirmados dentro de una transacción, hasta el inicio o un SAVEPOINT según motor. No revierte efectos externos ni necesariamente operaciones con commit implícito. Debe conocerse qué motor y almacenamiento se utilizan.
+
+**Ejemplo desarrollado.** Si una actualización cambia por error varias filas, rollback dentro de la transacción puede restaurar el estado previo antes de confirmar. Si ya hubo COMMIT, se necesita una operación compensatoria o restauración.
+
+**Práctica guiada.** Ejecuta un UPDATE sintético, consulta cambios en la sesión y aplica ROLLBACK; verifica con SELECT que se restauró el valor.
+
+**Actividad independiente.** Redacta procedimiento para abortar una carga de datos que detecta más filas afectadas de las esperadas.
+
+**Criterios de aceptación.** Identifica alcance de rollback y diferencia cambios transaccionales de efectos externos/commit implícito.
+
+**Errores frecuentes.** Esperar que rollback revierta un correo enviado, una API llamada o un DDL con commit implícito.
+
+**Comprobación.** ¿Por qué un rollback SQL no puede deshacer un archivo ya enviado a un sistema externo?
 
 #### 9.6.11 — Locks
 
-Los locks coordinan accesos concurrentes y pueden aplicarse a filas, páginas, tablas u otros recursos según el motor. **Práctica:** en dos sesiones de laboratorio, bloquea una fila y observa el comportamiento de una actualización concurrente con timeout controlado. **Evidencia:** identifica bloqueo y espera sin dejar sesiones colgadas.
+**Propósito y modelo.** Los locks coordinan acceso concurrente a recursos y protegen operaciones frente a conflictos. Pueden ser de fila, página, tabla, predicado o estructuras internas según motor. El alcance y granularidad influyen en concurrencia; bloquear más de lo necesario reduce rendimiento.
+
+**Ejemplo desarrollado.** Una transacción puede bloquear una fila de inventario mientras comprueba y actualiza unidades disponibles. Otra transacción que requiere el mismo recurso puede esperar o recibir conflicto según timeout y aislamiento.
+
+**Práctica guiada.** Dibuja dos transacciones que acceden a la misma fila y marca cuándo se adquiere y libera el bloqueo. En una instancia de laboratorio observa locks con vistas disponibles, sin bloquear sistemas compartidos.
+
+**Actividad independiente.** Diseña una operación de reserva de inventario que evite vender unidades inexistentes y limite duración de locks.
+
+**Criterios de aceptación.** Explica bloqueo, espera y alcance; relaciona duración de transacción con contención.
+
+**Errores frecuentes.** Mantener transacciones abiertas durante interacción de usuario o asumir que todos los motores bloquean filas de la misma manera.
+
+**Comprobación.** ¿Qué efecto puede producir una transacción larga sobre otras sesiones que necesitan las mismas filas?
 
 #### 9.6.12 — Deadlocks
 
-Un deadlock ocurre cuando transacciones esperan recursos retenidos entre sí formando un ciclo; los motores suelen detectar y abortar una de ellas. **Práctica:** modela dos transacciones que bloquean filas en orden opuesto, sin ejecutar cargas peligrosas. **Evidencia:** dibuja el ciclo y propone un orden consistente de adquisición.
+**Propósito y modelo.** Un deadlock ocurre cuando transacciones esperan recursos retenidos por otras y forman un ciclo de espera. El DBMS suele detectar el ciclo y abortar una transacción víctima, pero el criterio depende del motor. La aplicación debe manejar el error y reintentar de forma segura cuando corresponda.
+
+**Ejemplo desarrollado.** T1 bloquea fila A y solicita B; T2 bloquea B y solicita A. Ninguna puede continuar hasta que el motor resuelva el ciclo.
+
+**Práctica guiada.** Representa dos transacciones con orden de acceso inverso y dibuja el grafo de espera. No provoques deadlocks en una base compartida.
+
+**Actividad independiente.** Propón estrategia para reducir deadlocks: orden consistente de acceso, transacciones breves, índices adecuados y reintentos limitados con backoff.
+
+**Criterios de aceptación.** Identifica ciclo de espera y diferencia deadlock de bloqueo prolongado o timeout.
+
+**Errores frecuentes.** Reintentar infinitamente sin límite o capturar el error y continuar como si la transacción siguiera activa.
+
+**Comprobación.** ¿Por qué acceder a recursos en un orden consistente puede reducir deadlocks?
 
 #### 9.6.13 — Isolation Levels
 
-Los niveles de aislamiento regulan anomalías de lectura concurrente; nombres y comportamientos exactos dependen del motor. **Práctica:** compara READ COMMITTED y REPEATABLE READ con dos sesiones y un conjunto pequeño de datos. **Evidencia:** registra qué lecturas cambian y cita el comportamiento del motor probado.
+**Propósito y modelo.** Los niveles de aislamiento regulan anomalías de lectura/escritura concurrente. READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ y SERIALIZABLE son niveles habituales, pero comportamientos exactos, MVCC y anomalías permitidas dependen del DBMS. No se debe inferir equivalencia solo por el nombre del nivel.
+
+**Ejemplo desarrollado.** Una lectura no repetible ocurre cuando una fila leída cambia y se vuelve a leer dentro de la misma transacción. Una lectura fantasma implica que una consulta por predicado devuelve nuevas filas tras una inserción concurrente.
+
+**Práctica guiada.** Analiza dos sesiones hipotéticas con lecturas y escrituras intercaladas. Identifica dirty read, non-repeatable read y phantom read según nivel descrito.
+
+**Actividad independiente.** Selecciona nivel de aislamiento para reporte, inventario y transferencia de saldo; explica consistencia, concurrencia y costo.
+
+**Criterios de aceptación.** Define anomalías y relaciona nivel con comportamiento del motor documentado.
+
+**Errores frecuentes.** Suponer que SERIALIZABLE siempre se implementa igual o subir aislamiento sin evaluar bloqueos y rendimiento.
+
+**Comprobación.** ¿Qué anomalía evita impedir que una transacción vea cambios no confirmados de otra?
 
 #### 9.6.14 — Optimización
 
-Optimizar consultas comienza por medir y comprender el plan, cardinalidad, índices, filtros y volumen, no por añadir índices al azar. **Práctica:** identifica una consulta lenta simulada y formula hipótesis antes de cambiarla. **Evidencia:** registra métrica base, cambio, resultado y posible coste de escritura.
+**Propósito y modelo.** Optimizar consultas implica medir, comprender planes, revisar índices, cardinalidad, estadísticas, selectividad, volumen y patrón de acceso. No consiste en añadir índices indiscriminadamente ni reescribir SQL por intuición. Debe utilizarse datos representativos y comparar antes/después.
+
+**Ejemplo desarrollado.** Un filtro sobre columna indexada puede seguir provocando escaneo completo si devuelve gran parte de la tabla o la estadística no favorece el índice. Una consulta con N+1 desde la aplicación puede ser más costosa que una consulta SQL individual.
+
+**Práctica guiada.** Ejecuta una consulta en un esquema de laboratorio, registra plan y tiempo con dataset fijo, cambia una variable a la vez y vuelve a medir.
+
+**Actividad independiente.** Prepara un informe de optimización con consulta, volumen, plan, índice propuesto, costo de escritura y evidencia comparativa.
+
+**Criterios de aceptación.** Formula hipótesis medible y demuestra efecto con plan y datos representativos.
+
+**Errores frecuentes.** Medir una sola vez, optimizar sin conocer el objetivo o comparar datasets y cachés distintos.
+
+**Comprobación.** ¿Por qué un plan de ejecución es más informativo que afirmar que una consulta «parece lenta»?
 
 #### 9.6.15 — EXPLAIN
 
-`EXPLAIN` muestra el plan que el optimizador considera para ejecutar una consulta; variantes como EXPLAIN ANALYZE pueden ejecutar realmente la sentencia. **Práctica:** analiza un SELECT de laboratorio y distingue estimaciones de mediciones reales. **Evidencia:** identifica acceso, joins, filas estimadas y advertencias del plan.
+**Propósito y modelo.** EXPLAIN muestra el plan estimado de ejecución de una consulta: acceso a tablas, índices posibles/elegidos, orden de joins, cardinalidad estimada y operaciones. Algunos motores ofrecen EXPLAIN ANALYZE para ejecutar y medir el plan real; debe utilizarse con cautela si la consulta tiene efectos o alto costo.
+
+**Ejemplo desarrollado.** Un plan puede mostrar full table scan, index lookup, nested loop o sort. Un escaneo completo no es automáticamente malo: puede ser eficiente cuando se requiere gran parte de la tabla.
+
+**Práctica guiada.** Ejecuta EXPLAIN sobre consultas SELECT en una base sintética. Compara plan antes/después de un índice y anota filas estimadas y método de acceso.
+
+**Actividad independiente.** Analiza un plan de join con tablas pequeñas y señala dónde se concentra el costo estimado; propone una prueba para validar hipótesis.
+
+**Criterios de aceptación.** Interpreta operador, acceso e índices y diferencia plan estimado de ejecución medida.
+
+**Errores frecuentes.** Asumir que usar índice siempre es mejor o ejecutar EXPLAIN ANALYZE sobre operaciones destructivas sin control.
+
+**Comprobación.** ¿Qué diferencia existe entre EXPLAIN y EXPLAIN ANALYZE en los motores que ofrecen ambas opciones?
 
 ### 9.7 — PostgreSQL
 
