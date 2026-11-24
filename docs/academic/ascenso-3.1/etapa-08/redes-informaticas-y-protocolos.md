@@ -874,43 +874,163 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 ### 8.5.1 — Switching
 
-Switching reenvía tramas dentro de una red de capa 2 usando una tabla de direcciones MAC y dominios de broadcast. **Práctica:** simula el aprendizaje de MAC en una topología con tres hosts. **Evidencia:** explica flooding, aprendizaje y filtrado.
+**Propósito y modelo.** Switching reenvía tramas dentro de una red de capa 2 usando información de direcciones MAC y VLAN. El switch aprende MAC de origen por puerto, filtra tráfico conocido e inunda destinos desconocidos dentro de la VLAN. STP y variantes previenen bucles de capa 2 en topologías redundantes.
+
+**Ejemplo desarrollado.** Si una MAC se mueve de puerto, la tabla CAM puede actualizarse al recibir tramas de origen desde la nueva ubicación. Una tormenta de broadcast puede saturar el segmento si existe un bucle o una mala configuración.
+
+**Práctica guiada.** Dibuja cuatro switches con enlaces redundantes y explica por qué se necesita un mecanismo de prevención de bucles. Consulta tabla MAC en un switch de laboratorio administrado.
+
+**Actividad independiente.** Diseña dos VLAN con switches de acceso y distribución; especifica puertos de acceso, enlaces troncales y controles contra bucles.
+
+**Criterios de aceptación.** Explica aprendizaje MAC, dominios de broadcast, VLAN y propósito de STP.
+
+**Errores frecuentes.** Conectar enlaces redundantes sin control de bucles o creer que una VLAN equivale a una subred IP en todos los diseños.
+
+**Comprobación.** ¿Qué puede ocurrir en una red Ethernet conmutada si se forma un bucle de capa 2?
 
 ### 8.5.2 — Routing
 
-Routing selecciona caminos para reenviar paquetes entre redes mediante prefijos y métricas. Distingue plano de control y plano de datos a nivel introductorio. **Práctica:** interpreta una tabla de rutas de una VM. **Evidencia:** explica la regla de prefijo más específico.
+**Propósito y modelo.** Routing selecciona el siguiente salto para un paquete IP a partir de una tabla de rutas. Las rutas pueden ser conectadas, estáticas o aprendidas dinámicamente. La selección suele considerar el prefijo más largo y después métricas/administrative distance según plataforma.
+
+**Ejemplo desarrollado.** Una ruta /24 prevalece sobre una ruta por defecto /0 para un destino dentro de ese bloque. Si dos rutas tienen el mismo prefijo, la métrica y política determinan cuál se utiliza.
+
+**Práctica guiada.** Lee una tabla de rutas de ejemplo y selecciona la ruta para tres destinos. Consulta `ip route` en tu equipo sin modificarla.
+
+**Actividad independiente.** Diseña rutas entre tres subredes conectadas por dos routers y documenta rutas de ida y retorno.
+
+**Criterios de aceptación.** Aplica longest-prefix match y diferencia ruta estática de ruta aprendida.
+
+**Errores frecuentes.** Suponer que una ruta de ida garantiza ruta de retorno o elegir por menor número de saltos sin considerar métricas.
+
+**Comprobación.** ¿Por qué una ruta de retorno ausente puede romper una conexión aunque la ida funcione?
 
 ### 8.5.3 — Tablas de rutas
 
-Una tabla de rutas asocia destinos con siguiente salto, interfaz, métrica y origen de la ruta. **Práctica:** ejecuta `ip route` o `route print` en un equipo de laboratorio. **Evidencia:** identifica ruta conectada, ruta por defecto y ruta más específica para un destino.
+**Propósito y modelo.** La tabla de rutas relaciona prefijos destino con siguiente salto, interfaz, métrica y origen de ruta. Los hosts también tienen tablas de rutas; no son exclusivas de routers dedicados. Las rutas conectadas y la ruta por defecto suelen estar presentes en una configuración básica.
+
+**Ejemplo desarrollado.** Una entrada 0.0.0.0/0 indica ruta por defecto IPv4; ::/0 cumple función equivalente en IPv6. Una ruta más específica tiene precedencia para destinos que coinciden.
+
+**Práctica guiada.** Ejecuta `ip route`, `ip -6 route` o `route print`. Identifica prefijo, gateway, interfaz y métrica. No ejecutes comandos de modificación.
+
+**Actividad independiente.** Dada una tabla de rutas sintética, determina qué ruta se usa para cinco direcciones destino y explica el criterio.
+
+**Criterios de aceptación.** Interpreta ruta conectada, estática y por defecto y calcula coincidencia de prefijos.
+
+**Errores frecuentes.** Confundir gateway con interfaz o asumir que una ruta por defecto se utiliza cuando existe una ruta más específica.
+
+**Comprobación.** ¿Qué campos mínimos necesitas para comprender por dónde se enviará un paquete?
 
 ### 8.5.4 — Rutas estáticas
 
-Una ruta estática es configurada explícitamente por un administrador y no se adapta automáticamente a cambios de topología. **Práctica:** redacta la configuración conceptual para alcanzar una subred de laboratorio a través de un router conocido; no alteres rutas del host principal. **Evidencia:** indica destino, prefijo y siguiente salto.
+**Propósito y modelo.** Una ruta estática es configurada manualmente por un administrador y define destino, prefijo y siguiente salto o interfaz. Es predecible y útil en topologías pequeñas o rutas específicas, pero requiere mantenimiento y puede fallar si cambia la topología.
+
+**Ejemplo desarrollado.** Una ruta a 198.51.100.0/24 vía 192.0.2.1 indica que el siguiente salto debe alcanzarse por la red local. Las direcciones se reservan para documentación.
+
+**Práctica guiada.** Analiza comandos de ejemplo para Linux y Windows, pero no los ejecutes en el host. Identifica destino, máscara/prefijo, gateway e interfaz y describe cómo verificar y revertir.
+
+**Actividad independiente.** Diseña rutas estáticas para conectar dos sucursales y documenta rutas de retorno y ruta de respaldo.
+
+**Criterios de aceptación.** Construye una ruta coherente en papel y explica riesgo de rutas obsoletas.
+
+**Errores frecuentes.** Configurar un gateway no alcanzable o olvidar la ruta de retorno; cambiar rutas remotas sin acceso alternativo.
+
+**Comprobación.** ¿Qué procedimiento de reversión debe prepararse antes de modificar la tabla de rutas de un equipo remoto?
 
 ### 8.5.5 — Rutas dinámicas
 
-Los protocolos de routing dinámico intercambian información para calcular rutas y responder a cambios; ejemplos incluyen OSPF y BGP con ámbitos y objetivos distintos. **Práctica:** compara OSPF dentro de un sistema autónomo con BGP entre sistemas autónomos. **Evidencia:** describe qué problema resuelve cada uno sin equipararlos.
+**Propósito y modelo.** Los protocolos de routing dinámico intercambian información de alcanzabilidad y calculan rutas. OSPF es un protocolo de estado de enlace dentro de un sistema autónomo; BGP intercambia rutas entre sistemas autónomos y también puede usarse internamente. Cada protocolo tiene métricas, políticas y requisitos propios.
+
+**Ejemplo desarrollado.** OSPF calcula rutas a partir de una base de estado de enlace y costo; BGP selecciona rutas según atributos y políticas, no simplemente por menor distancia física.
+
+**Práctica guiada.** Compara conceptualmente OSPF y BGP en un diagrama con tres routers y dos sistemas autónomos. No establezcas sesiones de routing en redes ajenas.
+
+**Actividad independiente.** Selecciona routing estático u OSPF para una red interna pequeña y justifica convergencia, complejidad, redundancia y operación.
+
+**Criterios de aceptación.** Diferencia routing interior y exterior y explica por qué las políticas afectan selección de rutas.
+
+**Errores frecuentes.** Tratar BGP como un protocolo que elige siempre la ruta más corta o habilitar vecinos sin filtros y autenticación donde aplique.
+
+**Comprobación.** ¿Por qué la selección BGP depende de políticas además de la alcanzabilidad?
 
 ### 8.5.6 — NAT
 
-NAT modifica direcciones o puertos en el tránsito entre redes; PAT permite compartir una dirección pública mediante puertos. **Práctica:** dibuja una conexión desde dos hosts privados hacia un servidor externo. **Evidencia:** explica traducción de origen y por qué NAT no sustituye un firewall.
+**Propósito y modelo.** NAT modifica información de direcciones IP y, en variantes como PAT/NAPT, puertos de transporte para permitir que varias direcciones privadas compartan una dirección externa. No es un control de autenticación ni reemplaza firewall; puede complicar trazabilidad y conectividad extremo a extremo.
+
+**Ejemplo desarrollado.** Un router traduce origen privado 192.168.1.10:50000 a una dirección WAN y puerto asignado. La tabla de traducción mantiene asociación para devolver respuestas.
+
+**Práctica guiada.** Dibuja una traducción NAT/PAT con direcciones de documentación y registra tuplas antes/después. No configures NAT en equipos de producción.
+
+**Actividad independiente.** Diseña conectividad saliente para una LAN privada y explica qué controles adicionales requiere publicar un servicio entrante.
+
+**Criterios de aceptación.** Distingue NAT estático, dinámico y PAT a nivel conceptual; explica límites de seguridad.
+
+**Errores frecuentes.** Afirmar que NAT es equivalente a firewall o exponer servicios sin limitar puertos y orígenes.
+
+**Comprobación.** ¿Qué información mantiene PAT para asociar una respuesta al host interno correcto?
 
 ### 8.5.7 — VLAN
 
-Una VLAN segmenta lógicamente una infraestructura de capa 2 en dominios separados. Explica etiquetado 802.1Q y la necesidad de routing para comunicar VLAN distintas. **Práctica:** diseña VLAN de usuarios y servidores con subredes separadas. **Evidencia:** identifica qué tráfico queda aislado y qué equipo permitiría comunicación controlada.
+**Propósito y modelo.** Una VLAN crea un dominio lógico de capa 2 independiente sobre infraestructura conmutada compartida. La etiqueta IEEE 802.1Q identifica VLAN en enlaces troncales; puertos de acceso suelen transportar una VLAN sin etiqueta hacia el equipo final. La comunicación entre VLAN requiere routing de capa 3 y políticas.
+
+**Ejemplo desarrollado.** Usuarios en VLAN 10 y servidores en VLAN 20 no se comunican directamente a través de capa 2; el router o switch capa 3 enruta entre ellas y aplica ACL/firewall según diseño.
+
+**Práctica guiada.** Dibuja dos VLAN en un switch y un enlace a un router o switch capa 3. Identifica puertos access y trunk. No cambies VLAN de un switch productivo.
+
+**Actividad independiente.** Diseña VLAN para usuarios, invitados, servidores y administración con subredes y flujos permitidos.
+
+**Criterios de aceptación.** Explica dominio de broadcast, tagging 802.1Q y necesidad de routing inter-VLAN.
+
+**Errores frecuentes.** Considerar VLAN como cifrado o permitir todas las VLAN en trunks sin necesidad.
+
+**Comprobación.** ¿Por qué una VLAN no impide por sí sola que dos segmentos se comuniquen mediante un router?
 
 ### 8.5.8 — Trunking
 
-Trunking transporta tráfico de varias VLAN por un enlace, normalmente mediante etiquetas 802.1Q. Distingue puerto access y trunk y el riesgo de VLAN nativa mal configurada. **Práctica:** representa dos switches conectados por trunk y dos VLAN. **Evidencia:** indica qué tramas llevan etiqueta y cómo se preserva la segmentación.
+**Propósito y modelo.** Un enlace trunk transporta tráfico de varias VLAN entre switches, routers o hipervisores, normalmente mediante etiquetas 802.1Q. La VLAN nativa y la lista de VLAN permitidas deben configurarse de forma coherente en ambos extremos. Un trunk mal configurado puede filtrar o exponer tráfico.
+
+**Ejemplo desarrollado.** Un trunk entre switches puede transportar VLAN 10, 20 y 99; permitir VLAN adicionales innecesarias amplía el dominio de exposición. La VLAN nativa debe coincidir para evitar comportamientos inesperados.
+
+**Práctica guiada.** Interpreta una configuración de trunk de laboratorio e identifica modo, VLAN nativa y VLAN permitidas. No modifiques enlaces de producción.
+
+**Actividad independiente.** Diseña un trunk entre switch de acceso y distribución con solo las VLAN requeridas y un plan de validación.
+
+**Criterios de aceptación.** Diferencia access/trunk y explica etiquetas, VLAN nativa y lista permitida.
+
+**Errores frecuentes.** Dejar todas las VLAN permitidas o usar la VLAN nativa como red de usuarios sin evaluar riesgo.
+
+**Comprobación.** ¿Qué riesgo reduce limitar explícitamente las VLAN permitidas en un trunk?
 
 ### 8.5.9 — Segmentación
 
-La segmentación divide una red en zonas con políticas distintas para reducir movimiento lateral y limitar exposición. **Práctica:** separa usuarios, servidores y administración en un diagrama de laboratorio. **Evidencia:** define flujos necesarios y denegaciones por defecto.
+**Propósito y modelo.** La segmentación divide una red en zonas con diferentes niveles de confianza o función. Puede implementarse con VLAN, subredes, firewalls, ACL, VRF y controles de identidad. La segmentación efectiva requiere definir flujos necesarios y bloquear el resto; separar direcciones sin aplicar políticas no basta.
+
+**Ejemplo desarrollado.** Una aplicación de tres capas separa frontend, backend y base de datos. Solo el frontend acepta tráfico de usuarios; backend permite conexión desde frontend; base de datos solo acepta conexiones del backend.
+
+**Práctica guiada.** Construye una matriz de origen/destino/servicio/justificación para tres zonas. Identifica reglas que deben denegarse.
+
+**Actividad independiente.** Diseña segmentación para una organización con usuarios, servidores, invitados, IoT y administración; incluye monitoreo y excepciones documentadas.
+
+**Criterios de aceptación.** Define zonas, flujos permitidos y denegación por defecto; justifica controles de capa 2/3/4.
+
+**Errores frecuentes.** Crear VLAN sin ACL intersegmento o permitir administración desde la red de invitados.
+
+**Comprobación.** ¿Cómo se demuestra que una segmentación funciona y no es solo una separación lógica de direcciones?
 
 ### 8.5.10 — Subredes
 
-Una subred es una partición lógica de un espacio IP identificada por prefijo. Relaciona subnetting con límites de broadcast IPv4 y diseño de rutas. **Práctica:** calcula una subred para una cantidad dada de hosts y comprueba que no se solape con otra. **Evidencia:** entrega red, prefijo, broadcast y rango.
+**Propósito y modelo.** Una subred es un bloque de direcciones IP definido por un prefijo. La división en subredes organiza rutas, dominios de broadcast IPv4 y políticas de acceso. El tamaño debe responder al número de hosts, crecimiento, servicios y necesidades de resiliencia.
+
+**Ejemplo desarrollado.** Un /27 contiene 32 direcciones IPv4 totales; en una subred convencional, 30 son asignables a hosts. Las excepciones de punto a punto y protocolos deben tratarse según diseño.
+
+**Práctica guiada.** Resuelve una subred /27 con direcciones de documentación y determina red, broadcast, rango asignable y gateway posible.
+
+**Actividad independiente.** Asigna subredes a cinco áreas con tamaños distintos, sin solapamiento y con reserva para crecimiento.
+
+**Criterios de aceptación.** Calcula límites, evita solapamientos y distingue subred de VLAN.
+
+**Errores frecuentes.** Tratar VLAN y subred como equivalentes absolutos o asignar un gateway fuera del prefijo.
+
+**Comprobación.** ¿Qué relación existe entre una VLAN y una subred IP, y por qué no son el mismo concepto?
 
 ## 8.6 — Seguridad de redes
 
