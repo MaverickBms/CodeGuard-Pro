@@ -779,48 +779,116 @@ Una race condition aparece cuando el resultado depende del orden temporal de ope
 **Comprobación:** ¿Cómo evitas que una respuesta antigua sobrescriba resultados recientes?
 
 #### 12.4.01 — Fetch API
-Fetch API realiza solicitudes de red y devuelve una promesa con un objeto `Response`. Configura método, headers y body según el contrato; comprueba `ok`, tipo de contenido y errores, y no asumas que una respuesta siempre contiene JSON.
 
+Fetch API realiza solicitudes HTTP y devuelve Promise de Response. Debe comprobarse response.ok, parsear cuerpo según formato y manejar abortos, errores de red y políticas CORS. Un HTTP 4xx/5xx no rechaza automáticamente la Promise.
 
-**Práctica y evidencia:** Realiza una solicitud `fetch` a un endpoint de prueba y gestiona estados HTTP, errores de red y parseo. **Evidencia:** distingue respuesta HTTP no exitosa de rechazo de la promesa.
+**Ejemplo técnico:** fetch(url).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+
+**Práctica guiada:** Consulta endpoint público de prueba y registra status y tipo de contenido.
+
+**Actividad independiente:** Implementa cliente API con timeout/cancelación y errores tipados.
+
+**Criterios de aceptación:** Estados HTTP y errores de red se distinguen.
+
+**Errores frecuentes:** Asumir que 404 provoca rechazo o desactivar CORS como solución.
+
+**Comprobación:** ¿Qué comprueba response.ok?
 
 #### 12.4.02 — LocalStorage
-LocalStorage persiste pares clave/valor de texto en el origen del navegador y sobrevive al cierre de pestaña. No almacenes contraseñas, tokens sensibles ni datos de alto riesgo; los scripts del mismo origen pueden leerlo y una vulnerabilidad XSS expone su contenido.
 
+localStorage conserva pares clave-valor de texto por origen y persiste entre sesiones. No es almacén seguro para tokens sensibles; puede ser leído por JavaScript del mismo origen y queda expuesto ante XSS. El acceso puede fallar por políticas del navegador.
 
-**Práctica y evidencia:** Guarda una preferencia no sensible en LocalStorage y comprueba persistencia tras recargar. **Evidencia:** explica alcance por origen, persistencia y riesgo de almacenar tokens o secretos accesibles a JavaScript.
+**Ejemplo técnico:** setItem/getItem almacenan cadenas; JSON.stringify/parse serializan objetos.
+
+**Práctica guiada:** Guarda preferencia ficticia y verifica persistencia y manejo de JSON inválido.
+
+**Actividad independiente:** Implementa preferencia no sensible con versión de esquema.
+
+**Criterios de aceptación:** Datos no sensibles, validación y manejo de cuota/error.
+
+**Errores frecuentes:** Guardar contraseñas o tokens de sesión en localStorage.
+
+**Comprobación:** ¿Qué amenaza expone tokens guardados en localStorage ante XSS?
 
 #### 12.4.03 — SessionStorage
-SessionStorage conserva datos por origen y contexto de pestaña durante la sesión de página. Úsalo para estado temporal de interfaz, no como almacén seguro; define qué ocurre al recargar, duplicar o cerrar pestañas.
 
+sessionStorage mantiene datos por origen y contexto de pestaña, normalmente durante la sesión de esa pestaña. No es un mecanismo de seguridad ni un canal de sincronización entre pestañas.
 
-**Práctica y evidencia:** Guarda un dato temporal en SessionStorage y abre otra pestaña para observar su alcance. **Evidencia:** compara ciclo de vida con LocalStorage sin asumir sincronización entre pestañas.
+**Ejemplo técnico:** setItem guarda estado temporal que desaparece al cerrar la pestaña/contexto según comportamiento del navegador.
+
+**Práctica guiada:** Compara localStorage y sessionStorage en dos pestañas.
+
+**Actividad independiente:** Guarda un estado temporal de formulario no sensible.
+
+**Criterios de aceptación:** Alcance y ciclo de vida documentados.
+
+**Errores frecuentes:** Asumir que sessionStorage cifra o que sustituye gestión de sesión del servidor.
+
+**Comprobación:** ¿Qué diferencia de ciclo de vida tiene respecto a localStorage?
 
 #### 12.4.04 — Cookies
-Las cookies son pequeños datos enviados en solicitudes según dominio, ruta y políticas del navegador. Para sesiones, configura `Secure`, `HttpOnly` y `SameSite` apropiadamente, define expiración y evita guardar información sensible legible por JavaScript.
 
+Las cookies se envían automáticamente según dominio, path, SameSite y Secure. HttpOnly impide lectura desde JavaScript; Secure limita envío a HTTPS; SameSite ayuda frente a CSRF pero requiere diseño. Las cookies no deben almacenar secretos innecesarios y necesitan expiración y protección adecuadas.
 
-**Práctica y evidencia:** Inspecciona cookies de prueba con atributos Secure, HttpOnly, SameSite, Path y expiración. **Evidencia:** explica cuáles son accesibles desde JavaScript y cómo se reduce exposición CSRF/XSS.
+**Ejemplo técnico:** Cookie de sesión con Secure, HttpOnly, SameSite y expiración configurada por servidor.
+
+**Práctica guiada:** Inspecciona cookies de un entorno de prueba y explica atributos sin copiar valores.
+
+**Actividad independiente:** Diseña cookie de sesión segura y flujo de rotación/revocación.
+
+**Criterios de aceptación:** Atributos y alcance corresponden al modelo de amenaza.
+
+**Errores frecuentes:** Creer que HttpOnly evita CSRF o guardar JWT sensible sin estrategia.
+
+**Comprobación:** ¿Qué amenaza mitiga HttpOnly y cuál no?
 
 #### 12.4.05 — Geolocation
-Geolocation API solicita permiso para acceder a una ubicación estimada del dispositivo. Explica el propósito, solicita el dato solo cuando sea necesario y minimiza retención; la precisión y disponibilidad dependen del dispositivo, permisos y entorno.
 
+Geolocation API solicita permiso explícito y devuelve ubicación bajo políticas de seguridad del navegador. Es dato sensible; debe pedirse solo cuando sea necesario, explicar finalidad y minimizar precisión/retención. HTTPS suele ser requisito de contexto seguro.
 
-**Práctica y evidencia:** Solicita geolocalización solo tras una acción explícita del usuario y gestiona permiso denegado. **Evidencia:** demuestra que la función no debe bloquear la experiencia cuando el usuario no comparte ubicación.
+**Ejemplo técnico:** navigator.geolocation.getCurrentPosition requiere permiso y puede fallar por rechazo o timeout.
+
+**Práctica guiada:** Prueba flujo con ubicación simulada, no publiques coordenadas reales.
+
+**Actividad independiente:** Diseña función con permiso, alternativa manual y política de retención.
+
+**Criterios de aceptación:** No se solicita hasta que el usuario inicia acción y existe alternativa.
+
+**Errores frecuentes:** Solicitar ubicación al cargar página o registrar coordenadas sin necesidad.
+
+**Comprobación:** ¿Por qué debe existir una alternativa si el usuario deniega ubicación?
 
 #### 12.4.06 — Clipboard
-Clipboard API permite leer o escribir en el portapapeles bajo restricciones de seguridad y permisos del navegador. Ofrece una acción explícita, maneja rechazo de permisos y proporciona alternativa manual para copiar cuando la API no esté disponible.
 
+Clipboard API permite leer/escribir portapapeles bajo contexto seguro y restricciones de permiso/gesto de usuario. Copiar datos sensibles puede exponerlos a otras aplicaciones; la interfaz debe indicar qué se copia y evitar lecturas inesperadas.
 
-**Práctica y evidencia:** Copia texto mediante Clipboard API en respuesta a una interacción del usuario y maneja contexto no seguro o permiso denegado. **Evidencia:** muestra alternativa manual y no copia información sensible sin consentimiento.
+**Ejemplo técnico:** navigator.clipboard.writeText requiere condiciones del navegador y suele necesitar interacción del usuario.
+
+**Práctica guiada:** Implementa botón copiar para texto de prueba y maneja rechazo de permiso.
+
+**Actividad independiente:** Añade feedback accesible y evita copiar secretos por defecto.
+
+**Criterios de aceptación:** Acción explícita, feedback y fallback razonable.
+
+**Errores frecuentes:** Leer portapapeles sin contexto o asumir que API siempre está disponible.
+
+**Comprobación:** ¿Por qué la copia al portapapeles debe ser una acción explícita?
 
 #### 12.4.07 — File API
-File API permite que una página lea archivos que el usuario selecciona o suelta, sin conceder acceso arbitrario al sistema de archivos. Valida tipo, tamaño y contenido en servidor; el nombre o MIME declarado no demuestra que el archivo sea seguro.
 
+File API permite seleccionar, leer y procesar archivos mediante input file, File, Blob y FileReader/streams. El nombre, MIME type y extensión enviados por el cliente no prueban contenido seguro; servidor debe validar tipo real, tamaño, autorización y almacenamiento.
 
-**Práctica y evidencia:** Lee un archivo seleccionado por el usuario con File API y valida tipo/tamaño también en servidor. **Evidencia:** demuestra que el atributo accept no constituye una validación de seguridad.
+**Ejemplo técnico:** input type=file expone File; el cliente puede leer texto, pero no debe confiar en MIME declarado.
 
-### Módulo 12.5 — TypeScript
+**Práctica guiada:** Selecciona archivo sintético y muestra nombre/tamaño sin subirlo.
+
+**Actividad independiente:** Diseña carga con límite, validación de servidor y almacenamiento fuera de rutas ejecutables.
+
+**Criterios de aceptación:** Tipos, tamaño y errores manejados; el servidor revalida.
+
+**Errores frecuentes:** Confiar en extensión o MIME del cliente o cargar archivos sin límites.
+
+**Comprobación:** ¿Por qué el servidor debe inspeccionar el contenido del archivo y no confiar solo en su extensión?
 
 #### 12.5.01 — Tipos
 Los tipos TypeScript describen las formas de valores y permiten detectar incompatibilidades durante el análisis estático. El sistema se elimina en la compilación y no valida datos en runtime; valida entradas externas con esquemas o comprobaciones reales.
