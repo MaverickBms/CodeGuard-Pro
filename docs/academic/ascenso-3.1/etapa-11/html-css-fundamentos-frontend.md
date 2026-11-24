@@ -924,6 +924,16 @@ WCAG define principios POUR: perceptible, operable, comprensible y robusto. Los 
 
 **Comprobación:** ¿Por qué WCAG exige revisar procesos completos y no solo elementos aislados?
 
+**Laboratorio de profundización — Auditoría básica con criterios WCAG.**
+
+1. Selecciona una página de laboratorio. 2. Evalúa percepción, operabilidad, comprensión y robustez. 3. Identifica criterios aplicables de nivel A/AA. 4. Registra evidencia, impacto y propuesta de corrección.
+
+**Evidencia esperada.** La auditoría identifica criterio y evidencia concreta; no se limita a una puntuación automática.
+
+**Seguridad y límites.** No afirmar conformidad WCAG completa a partir de una sola herramienta automática o una revisión parcial.
+
+**Registro sugerido.** Anota navegador, sistema operativo, tecnología de asistencia o herramienta, criterio evaluado, pasos reproducibles y barreras detectadas. No marques conformidad completa sin evaluación integral.
+
 #### 11.2.02 — ARIA
 
 WAI-ARIA aporta roles, estados y propiedades para comunicar semántica a tecnologías de asistencia cuando HTML nativo no basta. No reemplaza elementos nativos ni agrega comportamiento por sí sola; un widget ARIA debe implementar teclado, foco y estados.
@@ -939,6 +949,16 @@ WAI-ARIA aporta roles, estados y propiedades para comunicar semántica a tecnolo
 **Errores frecuentes:** Agregar role=button a un botón nativo o usar ARIA sin implementar interacción.
 
 **Comprobación:** ¿Por qué se prefiere HTML nativo antes de añadir ARIA?
+
+**Laboratorio de profundización — Uso mínimo y correcto de ARIA.**
+
+1. Inspecciona controles nativos y sus roles implícitos. 2. Añade ARIA solo cuando HTML nativo no expresa el patrón requerido. 3. Compara aria-label, aria-labelledby y aria-describedby. 4. Comprueba árbol de accesibilidad.
+
+**Evidencia esperada.** Se prefiere semántica HTML nativa y los atributos ARIA no contradicen el rol ni el estado real.
+
+**Seguridad y límites.** No añadir roles ARIA redundantes ni crear controles personalizados sin teclado y estados completos.
+
+**Registro sugerido.** Anota navegador, sistema operativo, tecnología de asistencia o herramienta, criterio evaluado, pasos reproducibles y barreras detectadas. No marques conformidad completa sin evaluación integral.
 
 #### 11.2.03 — Navegación por teclado
 
@@ -956,6 +976,16 @@ Toda funcionalidad debe poder operarse con teclado sin trampas de foco. Tab y Sh
 
 **Comprobación:** ¿Qué problema causa un componente que recibe foco pero no permite salir de él?
 
+**Laboratorio de profundización — Recorrido completo sin ratón.**
+
+1. Navega la página usando Tab, Shift+Tab, Enter, Space y flechas según control. 2. Verifica orden lógico y foco visible. 3. Abre y cierra menú y diálogo. 4. Comprueba que no exista trampa de teclado.
+
+**Evidencia esperada.** Todos los controles son alcanzables y operables y el foco sigue orden comprensible.
+
+**Seguridad y límites.** No eliminar outline sin alternativa visible ni utilizar tabindex positivo como reparación general.
+
+**Registro sugerido.** Anota navegador, sistema operativo, tecnología de asistencia o herramienta, criterio evaluado, pasos reproducibles y barreras detectadas. No marques conformidad completa sin evaluación integral.
+
 #### 11.2.04 — Etiquetas accesibles
 
 Los controles necesitan nombre accesible que comunique propósito. label asociado, texto visible, aria-label y aria-labelledby tienen usos distintos; placeholder no reemplaza label. El nombre debe coincidir con la etiqueta visible para facilitar reconocimiento por voz.
@@ -971,6 +1001,16 @@ Los controles necesitan nombre accesible que comunique propósito. label asociad
 **Errores frecuentes:** Usar texto ambiguo como «clic aquí» o duplicar nombres en controles distintos sin contexto.
 
 **Comprobación:** ¿Por qué placeholder no es sustituto de label?
+
+**Laboratorio de profundización — Nombre, descripción y asociación de campos.**
+
+1. Crea controles con label explícito mediante for/id. 2. Añade instrucciones con aria-describedby cuando sea necesario. 3. Comprueba nombre accesible. 4. Verifica que placeholder no sustituya label.
+
+**Evidencia esperada.** Cada control tiene nombre accesible y las instrucciones se anuncian en contexto.
+
+**Seguridad y límites.** No usar solo placeholder ni asociar múltiples controles al mismo id.
+
+**Registro sugerido.** Anota navegador, sistema operativo, tecnología de asistencia o herramienta, criterio evaluado, pasos reproducibles y barreras detectadas. No marques conformidad completa sin evaluación integral.
 
 #### 11.2.05 — Contraste
 
@@ -988,6 +1028,16 @@ El contraste entre texto y fondo debe evaluarse con luminancia relativa y umbral
 
 **Comprobación:** ¿Por qué un mensaje de error debe tener texto además de color?
 
+**Laboratorio de profundización — Medición de contraste de texto y controles.**
+
+1. Selecciona combinaciones de color de primer plano y fondo. 2. Calcula contraste para texto normal y grande. 3. Revisa estados hover, focus, error y deshabilitado. 4. Ajusta paleta y repite medición.
+
+**Evidencia esperada.** La medición documenta ratios y el umbral WCAG aplicable a cada tipo de contenido.
+
+**Seguridad y límites.** No comunicar estado solo mediante color; verificar también contraste de componentes y foco.
+
+**Registro sugerido.** Anota navegador, sistema operativo, tecnología de asistencia o herramienta, criterio evaluado, pasos reproducibles y barreras detectadas. No marques conformidad completa sin evaluación integral.
+
 #### 11.2.06 — Lectores de pantalla
 
 Los lectores de pantalla exponen estructura, nombres, roles, estados y relaciones del árbol de accesibilidad. La experiencia depende de semántica HTML, orden de lectura, etiquetas, encabezados y actualizaciones dinámicas anunciadas apropiadamente.
@@ -1003,6 +1053,16 @@ Los lectores de pantalla exponen estructura, nombres, roles, estados y relacione
 **Errores frecuentes:** Agregar aria-live a contenedores enormes o anunciar mensajes repetitivos.
 
 **Comprobación:** ¿Qué diferencia existe entre anunciar una actualización y mover el foco?
+
+**Laboratorio de profundización — Prueba de lectura y landmarks.**
+
+1. Activa un lector de pantalla disponible. 2. Recorre encabezados, landmarks, enlaces, botones y formularios. 3. Compara orden anunciado con orden visual. 4. Registra etiquetas ambiguas o contenido repetido.
+
+**Evidencia esperada.** El contenido se comprende sin depender de la presentación visual y los controles anuncian propósito y estado.
+
+**Seguridad y límites.** No suponer que una sola combinación de navegador y lector representa todas las tecnologías de asistencia.
+
+**Registro sugerido.** Anota navegador, sistema operativo, tecnología de asistencia o herramienta, criterio evaluado, pasos reproducibles y barreras detectadas. No marques conformidad completa sin evaluación integral.
 
 #### 11.2.07 — Formularios accesibles
 
@@ -1020,6 +1080,16 @@ Un formulario accesible asocia etiquetas, instrucciones, agrupaciones y errores 
 
 **Comprobación:** ¿Qué debe poder comprender y hacer una persona después de recibir un error de validación?
 
+**Laboratorio de profundización — Errores y ayudas anunciadas.**
+
+1. Construye un formulario con campos obligatorios. 2. Provoca error de validación. 3. Asocia mensaje al campo y comunica resumen de errores. 4. Comprueba foco y anuncio de estado sin perder datos.
+
+**Evidencia esperada.** El error se identifica en texto, se asocia al campo y el usuario puede corregirlo con teclado.
+
+**Seguridad y límites.** No borrar valores introducidos al mostrar errores ni depender solo de color o alertas temporales.
+
+**Registro sugerido.** Anota navegador, sistema operativo, tecnología de asistencia o herramienta, criterio evaluado, pasos reproducibles y barreras detectadas. No marques conformidad completa sin evaluación integral.
+
 #### 11.2.08 — HTML semántico
 
 La semántica nativa ofrece roles y comportamientos reconocibles. Utilizar elementos adecuados reduce ARIA y código adicional. La estructura debe probarse con tecnologías de asistencia y teclado, porque una etiqueta semántica mal aplicada puede confundir.
@@ -1036,6 +1106,16 @@ La semántica nativa ofrece roles y comportamientos reconocibles. Utilizar eleme
 
 **Comprobación:** ¿Qué se gana al usar la semántica HTML correcta desde el inicio?
 
+
+**Laboratorio de profundización — Comparación de árbol DOM y árbol accesible.**
+
+1. Crea una página con divs genéricos y otra con landmarks semánticos. 2. Compara navegación por regiones y encabezados. 3. Revisa roles implícitos. 4. Documenta cuándo usar section, article, nav y main.
+
+**Evidencia esperada.** La versión semántica comunica estructura y reduce necesidad de roles ARIA explícitos.
+
+**Seguridad y límites.** No asignar roles manuales que contradigan la semántica nativa.
+
+**Registro sugerido.** Anota navegador, sistema operativo, tecnología de asistencia o herramienta, criterio evaluado, pasos reproducibles y barreras detectadas. No marques conformidad completa sin evaluación integral.
 #### 11.3.01 — Selectores
 
 Los selectores CSS identifican elementos por tipo, clase, ID, atributo, estado o relación. Deben mantenerse legibles y limitar alcance para evitar estilos difíciles de sobrescribir.
