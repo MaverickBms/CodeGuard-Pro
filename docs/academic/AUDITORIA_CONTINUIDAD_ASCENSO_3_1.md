@@ -604,3 +604,14 @@ Se añadieron prácticas y evidencias específicas a las **63 lecciones** de Int
 **Límites:** no se ejecutaron solicitudes, servidores, pruebas de CORS, JWT, OAuth/tokens, webhooks, gRPC, GraphQL ni herramientas Postman/Insomnia. No se verificaron todas las referencias ni versiones. El resultado es ampliación documental y comprobación estructural, no validación técnica por ejecución ni aprobación externa.
 
 **Acumulado registrado:** etapas 1–6: 265 lecciones según el informe de OpenCode; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63. Total de etapas 1–13 con desarrollo documental ampliado: **761 lecciones**. Etapas 14–32: 1.155 lecciones requieren profundización equivalente. Se mantienen pendientes la ejecución reproducible, revisión bibliográfica individual y revisión técnica/pedagógica independiente. No se importó ni publicó contenido.
+
+
+## Addendum de profundización didáctica — etapa 14 — 2026-11-24
+
+Se añadieron prácticas y evidencias a las **58 lecciones** de Java y Spring Boot: arquitectura por capas, IoC/DI, configuración, REST, validación, persistencia, seguridad, transacciones, caché, mensajería y herramientas de build.
+
+**Comprobación documental:** se releyó el archivo actualizado y se verificó el número de unidades con el desglose del roadmap. La práctica asociada a cada lección plantea una aplicación o comprobación y una evidencia observable.
+
+**Límites:** no se ejecutaron compilaciones Java, pruebas Spring, conexiones a MySQL/PostgreSQL, flujos OAuth/OIDC, JWT, colas, WebSockets ni despliegues. No se verificaron versiones ni bibliografía de forma individual. La ampliación no constituye validación técnica por ejecución ni aprobación externa.
+
+**Acumulado:** etapas 1–6: 265 lecciones según el informe de OpenCode; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63; etapa 14: 58. Total de etapas 1–14 con desarrollo documental ampliado: **819 lecciones**. Etapas 15–32: 1.097 lecciones requieren profundización equivalente. Permanecen pendientes la ejecución reproducible, verificación bibliográfica individual y revisión técnica/pedagógica independiente. No se importó ni publicó contenido.
