@@ -1182,47 +1182,179 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 ### 8.7.1 — Wireshark
 
-Wireshark captura y analiza paquetes, decodificando protocolos y permitiendo filtros de captura y visualización. **Práctica:** captura tráfico generado por tu propia VM y filtra DNS o TCP. **Evidencia:** identifica interfaz, filtro y campos relevantes; elimina o anonimiza datos sensibles antes de compartir la captura.
+**Propósito y modelo.** Wireshark captura y analiza paquetes mediante una interfaz gráfica y disectores de protocolos. Permite filtrar captura y visualización, reconstruir conversaciones y examinar cabeceras. La captura puede contener credenciales, cookies, datos personales o contenido confidencial; debe limitarse a interfaces y redes autorizadas y protegerse como evidencia sensible.
+
+**Ejemplo desarrollado.** Un filtro de visualización `dns` muestra paquetes DNS ya capturados; un filtro de captura limita lo que se almacena desde el inicio. Son sintaxis y momentos de aplicación distintos.
+
+**Práctica guiada.** Abre una captura de ejemplo o genera tráfico propio en loopback/laboratorio. Filtra DNS y TCP, identifica origen, destino, puertos y protocolo. No captures redes de terceros.
+
+**Actividad independiente.** Documenta una conversación TCP con handshake, datos y cierre; redacta hallazgos sin incluir secretos ni payloads sensibles.
+
+**Criterios de aceptación.** Distingue captura de visualización, identifica campos y conserva evidencia con fecha, interfaz y alcance autorizado.
+
+**Errores frecuentes.** Compartir archivos PCAP sin sanitizar o creer que un filtro de visualización impide capturar datos sensibles.
+
+**Comprobación.** ¿Por qué un archivo PCAP debe tratarse como información potencialmente confidencial?
 
 ### 8.7.2 — tcpdump
 
-`tcpdump` captura tráfico desde interfaz y permite filtros BPF para limitar lo observado. **Práctica:** captura unos pocos paquetes ICMP o DNS en una interfaz de laboratorio con permisos adecuados. **Evidencia:** documenta comando, interfaz, filtro y límite de paquetes; no captures tráfico de terceros.
+**Propósito y modelo.** tcpdump captura y muestra paquetes desde interfaces mediante filtros BPF. Permite observar tráfico en sistemas sin interfaz gráfica y guardar PCAP para análisis posterior. Requiere privilegios elevados en muchos sistemas; la captura debe tener alcance mínimo, duración definida y autorización.
+
+**Ejemplo desarrollado.** `tcpdump -i lo -nn port 53` limita la observación a loopback y tráfico del puerto DNS. `-w` escribe un archivo de captura, que puede contener datos sensibles.
+
+**Práctica guiada.** En una VM propia captura una consulta DNS de laboratorio en loopback o interfaz aislada, con duración breve. Identifica interfaz, filtro y número de paquetes. No captures tráfico de terceros.
+
+**Actividad independiente.** Redacta un plan de captura con objetivo, interfaz, filtro, tiempo, permisos, almacenamiento y borrado seguro.
+
+**Criterios de aceptación.** Explica interfaz, filtro BPF, salida en pantalla y PCAP; justifica minimización de datos.
+
+**Errores frecuentes.** Capturar en todas las interfaces indefinidamente o guardar PCAP en carpetas compartidas sin control de acceso.
+
+**Comprobación.** ¿Qué diferencia hay entre seleccionar una interfaz y definir un filtro BPF?
 
 ### 8.7.3 — Nmap
 
-Nmap descubre hosts y servicios mediante técnicas de sondeo; su uso debe limitarse a sistemas propios o con autorización explícita. **Práctica:** escanea únicamente la VM objetivo de tu laboratorio aislado y un puerto que hayas habilitado deliberadamente. **Evidencia:** registra alcance, comando, hora y resultado, y explica límites de detección.
+**Propósito y modelo.** Nmap descubre hosts y caracteriza servicios en redes bajo autorización. Las técnicas pueden generar tráfico detectable y afectar sistemas frágiles; el alcance debe limitarse a activos propios o expresamente autorizados, con ventana y tasa apropiadas. Un resultado «open», «closed» o «filtered» describe observación de red, no certifica vulnerabilidad.
+
+**Ejemplo desarrollado.** Un escaneo de un host de laboratorio con un conjunto limitado de puertos puede mostrar si el puerto responde como abierto, cerrado o filtrado. El resultado depende de firewall, ruta y técnica de sondeo.
+
+**Práctica guiada.** Utiliza únicamente un objetivo local o una VM propia aislada. Ejecuta un escaneo básico limitado a un único host de laboratorio y pocos puertos; registra fecha, objetivo autorizado y parámetros. No escanees rangos públicos ni redes ajenas.
+
+**Actividad independiente.** Elabora un informe de exposición para una VM propia y contrasta cada puerto con el inventario de servicios esperado. Define cómo cerrar o justificar cada exposición, sin explotar servicios.
+
+**Criterios de aceptación.** Diferencia descubrimiento, estado de puerto y evaluación de vulnerabilidades; documenta autorización y alcance exacto.
+
+**Errores frecuentes.** Escanear direcciones fuera del alcance, interpretar filtered como closed o afirmar que un puerto abierto implica vulnerabilidad.
+
+**Comprobación.** ¿Qué evidencia adicional se necesita para determinar si un servicio expuesto es vulnerable?
 
 ### 8.7.4 — ping
 
-`ping` envía solicitudes ICMP Echo para comprobar respuesta y estimar latencia, pero un bloqueo ICMP no demuestra que el host esté caído. **Práctica:** ejecuta un número limitado de solicitudes a otra VM propia. **Evidencia:** interpreta pérdida, RTT y posibles causas de ausencia de respuesta.
+**Propósito y modelo.** ping envía mensajes ICMP Echo para comprobar si un destino responde y medir tiempo de ida y vuelta aproximado. El resultado depende de rutas, firewall, priorización y configuración del destino; no mide por sí solo la calidad de una aplicación ni demuestra que todos los servicios funcionen.
+
+**Ejemplo desarrollado.** Un servidor puede responder ping pero tener HTTPS caído; otro puede bloquear Echo y ofrecer SSH correctamente. La pérdida observada puede deberse a filtrado o limitación de ICMP.
+
+**Práctica guiada.** Ejecuta ping hacia loopback y una VM propia. Compara respuesta con una comprobación de servicio TCP autorizada.
+
+**Actividad independiente.** Interpreta tres resultados: respuesta estable, pérdida parcial y timeout completo. Indica qué hipótesis y pruebas adicionales corresponden.
+
+**Criterios de aceptación.** Explica RTT, pérdida y límites de ICMP Echo; no infiere disponibilidad de aplicación solo por ping.
+
+**Errores frecuentes.** Concluir que un host está apagado cuando no responde o comparar RTT de pruebas realizadas en condiciones distintas sin contexto.
+
+**Comprobación.** ¿Qué demuestra una respuesta Echo y qué no demuestra sobre un servicio web?
 
 ### 8.7.5 — traceroute
 
-`traceroute` o `tracert` infiere saltos de una ruta mediante TTL/Hop Limit y respuestas de red; firewalls y balanceo pueden alterar resultados. **Práctica:** ejecuta la herramienta hacia un destino autorizado y limita el número de saltos. **Evidencia:** explica asteriscos y por qué cada salto no necesariamente revela toda la ruta.
+**Propósito y modelo.** traceroute/tracert infiere saltos de una ruta utilizando TTL IPv4 o Hop Limit IPv6 y respuestas de routers. Las técnicas varían entre sistemas (UDP, ICMP o TCP). Algunos dispositivos no responden o filtran sondas, por lo que los asteriscos no prueban pérdida de tránsito.
+
+**Ejemplo desarrollado.** Un salto intermedio puede no responder a la sonda y el destino final sí responder. El tráfico de aplicación puede seguir una ruta distinta por políticas, balanceo o rutas asimétricas.
+
+**Práctica guiada.** Ejecuta traceroute hacia un destino público común o una VM propia, respetando políticas locales. Registra saltos y latencias sin interpretar cada silencio como fallo.
+
+**Actividad independiente.** Compara dos trazas realizadas en momentos diferentes y explica cambios posibles por balanceo, rutas dinámicas y filtrado ICMP.
+
+**Criterios de aceptación.** Explica TTL/Hop Limit y límites de visibilidad de la ruta.
+
+**Errores frecuentes.** Tratar traceroute como mapa exacto de todos los routers o asumir que un salto sin respuesta está descartando tráfico de usuario.
+
+**Comprobación.** ¿Por qué un router puede reenviar tráfico correctamente y no responder a las sondas de traceroute?
 
 ### 8.7.6 — ip
 
-`ip` administra y consulta interfaces, direcciones, vecinos y rutas en Linux. **Práctica:** utiliza `ip addr`, `ip link` e `ip route` en modo lectura. **Evidencia:** documenta interfaz, dirección, estado, MAC y gateway sin ejecutar cambios de configuración.
+**Propósito y modelo.** La utilidad ip de iproute2 administra y consulta interfaces, direcciones, vecinos, rutas y túneles en Linux. Permite observar configuración con subcomandos como `ip addr`, `ip link`, `ip route` e `ip neigh`. Los subcomandos de modificación pueden interrumpir conectividad y deben probarse en VM aislada.
+
+**Ejemplo desarrollado.** `ip addr show` consulta direcciones; `ip route` muestra rutas. `ip link set` cambia estado de interfaz y no debe ejecutarse en un equipo remoto sin acceso alternativo.
+
+**Práctica guiada.** Ejecuta solo consultas `ip addr`, `ip link`, `ip route` e `ip neigh` en una VM propia. Registra interfaz, dirección, gateway y vecinos.
+
+**Actividad independiente.** Diagnostica un caso sintético de host sin conectividad ordenando comprobaciones de enlace, dirección, ruta, vecino y DNS.
+
+**Criterios de aceptación.** Diferencia subcomandos de consulta y modificación y explica qué capa de información presenta cada uno.
+
+**Errores frecuentes.** Ejecutar cambios de interfaz sobre una sesión remota sin consola o confundir configuración IP con resolución DNS.
+
+**Comprobación.** ¿Qué información ofrece `ip neigh` que no aparece en `ip route`?
 
 ### 8.7.7 — ss
 
-`ss` muestra sockets y conexiones; opciones como `-l`, `-t`, `-u`, `-n` y `-p` filtran escuchas, protocolos y procesos. **Práctica:** consulta sockets TCP en escucha de tu VM. **Evidencia:** identifica dirección local, puerto, estado y proceso cuando los permisos lo permiten.
+**Propósito y modelo.** ss consulta sockets y estadísticas de red en Linux. Permite listar conexiones TCP/UDP, puertos en escucha, estados y procesos asociados cuando se dispone de permisos. La salida representa una instantánea y debe interpretarse con dirección local/remota y estado.
+
+**Ejemplo desarrollado.** `ss -lntp` muestra sockets TCP en escucha con información de proceso cuando está disponible; `ss -tunap` ofrece una vista más amplia de sockets TCP/UDP.
+
+**Práctica guiada.** Ejecuta `ss -lnt` y registra puertos TCP en escucha de tu VM. Compara una escucha en loopback con una en todas las interfaces. No cierres procesos.
+
+**Actividad independiente.** Relaciona puertos en escucha con inventario de servicios y prioriza los que no tienen justificación.
+
+**Criterios de aceptación.** Identifica protocolo, estado y direcciones; distingue escucha de conexión establecida.
+
+**Errores frecuentes.** Suponer que un puerto en escucha es accesible desde Internet o terminar el proceso sin verificar dependencias.
+
+**Comprobación.** ¿Qué significa que un servicio escuche en 127.0.0.1 en lugar de 0.0.0.0?
 
 ### 8.7.8 — netstat
 
-`netstat` muestra conexiones, rutas y estadísticas en sistemas donde está disponible; en Linux moderno suele preferirse `ss`. **Práctica:** compara la salida equivalente de ambas herramientas en un entorno que tenga las dos. **Evidencia:** explica qué información coincide y cuál depende de opciones o implementación.
+**Propósito y modelo.** netstat es una herramienta tradicional para consultar conexiones, puertos, estadísticas y rutas; en Linux ha sido reemplazada en gran medida por ss, aunque sigue disponible en diversos sistemas. Las opciones y salidas difieren entre Windows, Linux y otros entornos.
+
+**Ejemplo desarrollado.** En Windows `netstat -ano` muestra conexiones y PID; en Linux `netstat -tulpen` puede mostrar sockets y procesos si está instalado. El PID debe correlacionarse con el proceso antes de actuar.
+
+**Práctica guiada.** En un sistema propio consulta conexiones y puertos en escucha con las opciones apropiadas para ese sistema. No termines procesos ni publiques direcciones internas.
+
+**Actividad independiente.** Compara netstat y ss para una misma VM Linux: campos, velocidad, disponibilidad y utilidad actual.
+
+**Criterios de aceptación.** Identifica plataforma y opciones, interpreta local/remoto/estado/PID y explica limitaciones.
+
+**Errores frecuentes.** Copiar opciones de Linux en Windows o asumir que netstat es un analizador de paquetes.
+
+**Comprobación.** ¿Por qué se recomienda conocer la plataforma antes de utilizar opciones de netstat?
 
 ### 8.7.9 — dig
 
-`dig` consulta DNS y presenta respuesta, autoridad, información adicional y tiempos. **Práctica:** consulta registros A, AAAA y MX de un dominio público de documentación. **Evidencia:** identifica servidor, tipo, TTL y sección de respuesta.
+**Propósito y modelo.** dig consulta servidores DNS y presenta respuestas detalladas, autoridad, secciones adicionales y tiempos. Permite especificar tipo de registro, resolver y opciones de diagnóstico. Las consultas deben limitarse a dominios y servidores para los que se tiene autorización cuando se realizan pruebas avanzadas.
+
+**Ejemplo desarrollado.** `dig example.com A` consulta un registro A; `dig +short` reduce la salida. `dig @servidor nombre tipo` selecciona explícitamente el resolver.
+
+**Práctica guiada.** Consulta A, AAAA y MX de un dominio de prueba. Identifica status, flags, answer y TTL. No realices AXFR ni enumeración de zonas sin autorización explícita.
+
+**Actividad independiente.** Diagnostica un escenario sintético donde un cliente usa un resolver incorrecto o recibe una respuesta obsoleta en caché.
+
+**Criterios de aceptación.** Interpreta tipo, TTL, servidor consultado y código de respuesta; diferencia NXDOMAIN de timeout.
+
+**Errores frecuentes.** Confundir respuesta vacía con NXDOMAIN o concluir que el servidor autoritativo está caído porque un resolver no responde.
+
+**Comprobación.** ¿Qué diferencia hay entre NXDOMAIN y SERVFAIL?
 
 ### 8.7.10 — nslookup
 
-`nslookup` permite consultar servidores DNS de forma interactiva o directa; su presentación varía por plataforma. **Práctica:** consulta un nombre y una dirección inversa en un entorno de prueba. **Evidencia:** compara el resultado con `dig` y explica diferencias de formato.
+**Propósito y modelo.** nslookup es una herramienta de consulta DNS disponible en Windows y otros sistemas. Permite resolver nombres, consultar tipos de registro y seleccionar servidor DNS. Su salida es más simple que dig en ciertos escenarios, pero resulta útil para diagnósticos básicos y entornos Windows.
+
+**Ejemplo desarrollado.** `nslookup example.com` consulta el resolver configurado; `nslookup -type=MX example.com` solicita registros MX. La respuesta muestra servidor consultado y datos devueltos.
+
+**Práctica guiada.** Consulta un dominio de documentación y sus registros A, AAAA y MX. Compara el resultado con `dig` si está disponible.
+
+**Actividad independiente.** Redacta una secuencia para distinguir error de resolución, respuesta NXDOMAIN y problema de conectividad hacia el servidor DNS.
+
+**Criterios de aceptación.** Identifica servidor, nombre, tipo de registro y respuesta; explica limitaciones de la herramienta.
+
+**Errores frecuentes.** Interpretar «Server: Unknown» como prueba automática de fallo DNS o asumir que una resolución exitosa prueba conectividad a la aplicación.
+
+**Comprobación.** ¿Qué indica nslookup cuando muestra una respuesta DNS válida pero el sitio no abre?
 
 ### 8.7.11 — curl
 
-`curl` realiza solicitudes a URLs y permite inspeccionar cabeceras, métodos, códigos y cuerpos; no es solo una herramienta de descarga. **Práctica:** usa `curl -I` y una solicitud GET a una API pública de prueba o servicio propio. **Evidencia:** registra URL, método, estado y cabeceras sin enviar credenciales.
+**Propósito y modelo.** curl transfiere datos mediante protocolos como HTTP, HTTPS, FTP y otros, según compilación. En HTTP permite inspeccionar cabeceras, códigos, redirecciones y tiempos; también puede enviar datos y modificar estado. Las opciones deben usarse con cuidado para no transmitir secretos ni ejecutar operaciones destructivas.
+
+**Ejemplo desarrollado.** `curl -I https://example.com` solicita cabeceras; `curl -i` muestra cabeceras y cuerpo. `-k` desactiva validación TLS y no debe utilizarse como solución permanente.
+
+**Práctica guiada.** Consulta un endpoint público de prueba con `curl -I` y registra código de estado, servidor y cabeceras relevantes. No incluyas tokens ni datos personales.
+
+**Actividad independiente.** Diseña pruebas de API para respuesta 200, 401, 404 y timeout; define qué opción de curl usarías y qué evidencia guardarías.
+
+**Criterios de aceptación.** Distingue método, cabeceras, cuerpo y código; explica por qué no se debe desactivar la validación TLS.
+
+**Errores frecuentes.** Pegar tokens en historial de shell, seguir redirecciones sin revisar destino o enviar POST de prueba a servicios reales sin autorización.
+
+**Comprobación.** ¿Qué información aporta `curl -I` y qué limitación tiene frente a una solicitud completa?
 
 ## Proyecto oficial — Red virtual de varias máquinas
 
