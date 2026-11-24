@@ -830,39 +830,147 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 #### 9.5.1 — Primera forma normal (1NF)
 
-Primera forma normal requiere valores atómicos por celda y ausencia de grupos repetidos en una misma fila, según el modelo relacional clásico. **Práctica:** transforma una tabla que almacena varios teléfonos en una estructura separada. **Evidencia:** explica qué anomalía se evita y cómo se relacionan las tablas.
+**Propósito y modelo.** La primera forma normal exige que cada atributo almacene un valor atómico respecto del dominio definido y que no se representen grupos repetitivos en una misma fila. «Atómico» depende del uso: un nombre completo puede ser texto si no se consulta por partes; si se requiere buscar apellido, conviene separar componentes.
+
+**Ejemplo desarrollado.** Una columna telefonos con valores «111,222,333» dificulta validar, buscar y relacionar cada número. Una tabla TelefonoCliente con una fila por teléfono modela mejor la multiplicidad.
+
+**Práctica guiada.** Revisa una tabla con columnas curso1, curso2, curso3 y otra con lista separada por comas. Propón estructura normalizada y claves.
+
+**Actividad independiente.** Transforma un registro de ventas con productos repetidos en una estructura de tablas que cumpla 1NF.
+
+**Criterios de aceptación.** Identifica grupos repetitivos y propone una representación relacional sin listas embebidas no justificadas.
+
+**Errores frecuentes.** Considerar que cualquier texto compuesto viola 1NF o dividir columnas sin necesidad del dominio.
+
+**Comprobación.** ¿Qué problema de consulta y actualización aparece cuando una fila almacena una lista de valores independientes?
 
 #### 9.5.2 — Segunda forma normal (2NF)
 
-Segunda forma normal exige 1NF y que cada atributo no primo dependa de toda la clave candidata, no solo de una parte de una clave compuesta. **Práctica:** analiza una tabla detalle con clave pedido-producto y separa datos propios del producto. **Evidencia:** identifica dependencia parcial.
+**Propósito y modelo.** La segunda forma normal requiere 1NF y que cada atributo no primo dependa de la clave candidata completa, no solo de una parte de una clave compuesta. Se analiza principalmente cuando una tabla tiene claves compuestas y dependencias funcionales parciales.
+
+**Ejemplo desarrollado.** En DetallePedido(pedido_id, producto_id, nombre_producto, cantidad), la clave puede ser (pedido_id, producto_id), pero nombre_producto depende solo de producto_id. El nombre debe residir en Producto y no repetirse por cada pedido.
+
+**Práctica guiada.** Identifica clave compuesta y dependencias funcionales en una tabla de matrículas con estudiante_id, curso_id, nombre_estudiante y nota.
+
+**Actividad independiente.** Descompón una relación con dependencias parciales y demuestra cómo se reduce redundancia conservando las relaciones.
+
+**Criterios de aceptación.** Explica dependencia parcial y separa atributos que dependen de una parte de la clave compuesta.
+
+**Errores frecuentes.** Aplicar la definición sin identificar primero claves candidatas o dividir tablas sin preservar dependencias y uniones.
+
+**Comprobación.** ¿Por qué un atributo que depende solo de una parte de una clave compuesta viola 2NF?
 
 #### 9.5.3 — Tercera forma normal (3NF)
 
-Tercera forma normal elimina dependencias transitivas de atributos no clave respecto de claves candidatas, bajo la definición formal. **Práctica:** separa datos de ciudad/provincia que se repiten en clientes cuando existe dependencia funcional adecuada. **Evidencia:** documenta dependencias antes y después.
+**Propósito y modelo.** La tercera forma normal requiere 2NF y elimina dependencias transitivas de atributos no clave respecto de claves candidatas, bajo la definición formal de 3NF. En términos prácticos, atributos descriptivos deben depender de la clave, de toda la clave y de nada más que la clave, con matices formales para atributos primos.
+
+**Ejemplo desarrollado.** En Empleado(id, departamento_id, nombre_departamento), nombre_departamento depende de departamento_id y no directamente de id. Separar Departamento evita repetir nombre y anomalías al renombrar.
+
+**Práctica guiada.** Analiza una tabla de empleados con dirección y nombre de departamento. Identifica dependencias transitivas y propone tablas separadas.
+
+**Actividad independiente.** Normaliza un esquema de pedidos hasta 3NF y prueba que las consultas necesarias pueden reconstruirse con joins.
+
+**Criterios de aceptación.** Identifica dependencia transitiva y justifica descomposición sin pérdida.
+
+**Errores frecuentes.** Eliminar toda redundancia sin evaluar rendimiento o confundir cualquier dependencia entre atributos con una violación automática de 3NF.
+
+**Comprobación.** ¿Qué anomalía de actualización puede evitar separar un departamento repetido en muchos registros de empleados?
 
 #### 9.5.4 — BCNF
 
-BCNF requiere que todo determinante de una dependencia funcional no trivial sea superclave; es más estricta que 3NF. **Práctica:** analiza un ejemplo con dependencias entre curso, instructor y aula. **Evidencia:** identifica el determinante que incumple BCNF y propone descomposición sin pérdida cuando corresponda.
+**Propósito y modelo.** Boyce-Codd Normal Form exige que todo determinante de una dependencia funcional no trivial sea una superclave. Es más estricta que 3NF y puede requerir descomposiciones adicionales. El análisis debe considerar todas las dependencias funcionales reales del dominio, no solo los datos de muestra.
+
+**Ejemplo desarrollado.** En una relación Profesor-Curso-Aula, si cada profesor enseña un curso en un aula y cada curso se imparte en un aula por profesor, pueden existir determinantes que no sean superclaves. El modelo debe formular reglas exactas antes de descomponer.
+
+**Práctica guiada.** Recibe un conjunto sintético de dependencias funcionales, identifica cierres de atributos y determina superclaves candidatas.
+
+**Actividad independiente.** Construye un ejemplo donde 3NF se cumpla pero BCNF no, y muestra la descomposición necesaria y sus posibles pérdidas de preservación de dependencias.
+
+**Criterios de aceptación.** Define determinante, superclave y dependencia no trivial; aplica la condición de BCNF.
+
+**Errores frecuentes.** Declarar BCNF solo observando filas actuales o asumir que toda descomposición conserva automáticamente todas las dependencias.
+
+**Comprobación.** ¿Qué condición adicional impone BCNF respecto a 3NF?
 
 #### 9.5.5 — Redundancia
 
-La redundancia almacena repetidamente hechos y puede provocar anomalías de actualización, inserción y eliminación. No toda duplicación es incorrecta: la desnormalización puede ser una decisión consciente por rendimiento. **Práctica:** identifica un dato repetido en una tabla de ventas. **Evidencia:** describe una anomalía y una estrategia para evitarla.
+**Propósito y modelo.** La redundancia es repetición de información. Puede producir anomalías de inserción, actualización y eliminación, y aumentar almacenamiento. No toda duplicación es incorrecta: índices, cachés y desnormalización deliberada pueden mejorar rendimiento si existe estrategia de consistencia.
+
+**Ejemplo desarrollado.** Repetir la dirección de un proveedor en cada pedido puede generar versiones contradictorias al actualizarla. Guardar una instantánea histórica de dirección en la factura puede ser correcto si representa el dato vigente al momento de la transacción.
+
+**Práctica guiada.** Identifica redundancia accidental en un conjunto de tablas y clasifica cada repetición como necesaria, histórica o evitable.
+
+**Actividad independiente.** Diseña un caso donde la desnormalización mejore una consulta y define cómo mantener sincronizada la copia derivada.
+
+**Criterios de aceptación.** Distingue redundancia problemática de duplicación intencional con propósito y control.
+
+**Errores frecuentes.** Eliminar toda duplicación sin considerar historial o duplicar atributos sin definir cuál es la fuente de verdad.
+
+**Comprobación.** ¿Qué diferencia existe entre redundancia accidental y desnormalización controlada?
 
 #### 9.5.6 — Integridad referencial
 
-La integridad referencial asegura que las referencias entre tablas apunten a filas válidas, mediante claves foráneas y acciones referenciales. **Práctica:** intenta insertar un detalle de pedido con producto inexistente en una base descartable. **Evidencia:** registra rechazo y justifica ON DELETE RESTRICT, CASCADE o SET NULL según el dominio.
+**Propósito y modelo.** La integridad referencial garantiza que las relaciones entre filas mantengan coherencia mediante claves foráneas y acciones referenciales. Debe decidirse cómo tratar borrado, actualización, registros huérfanos y ciclos. Las reglas deben reflejar retención e historia del negocio.
+
+**Ejemplo desarrollado.** Un detalle de pedido referencia un pedido existente. Si se intenta borrar el pedido con detalles, RESTRICT puede impedirlo; CASCADE elimina dependientes y solo es correcto cuando esa eliminación representa la regla del dominio.
+
+**Práctica guiada.** Diseña casos de inserción de hijo sin padre, borrado de padre con hijos y actualización de clave. Predice el resultado según RESTRICT, CASCADE y SET NULL.
+
+**Actividad independiente.** Define política referencial para cliente, pedido, factura y detalle, protegiendo registros contables históricos.
+
+**Criterios de aceptación.** Explica integridad y selecciona acciones según reglas del negocio.
+
+**Errores frecuentes.** Usar cascadas para simplificar sin evaluar eliminación masiva o desactivar restricciones para cargar datos sin validación posterior.
+
+**Comprobación.** ¿Qué riesgo introduce ON DELETE CASCADE en tablas que representan historial legal o financiero?
 
 #### 9.5.7 — Relaciones uno a uno
 
-Una relación uno a uno asocia como máximo una fila de cada lado; puede implementarse con FK UNIQUE o una PK compartida. **Práctica:** modela cliente y perfil extendido con datos opcionales. **Evidencia:** explica cuándo separar el perfil y cómo impedir duplicados.
+**Propósito y modelo.** Una relación 1:1 asocia como máximo una fila de una entidad con una de otra. Puede implementarse con FK UNIQUE, PK compartida o tabla de extensión. Debe existir una razón de dominio para separar entidades, como ciclo de vida, sensibilidad o datos opcionales.
+
+**Ejemplo desarrollado.** Usuario y PerfilPrivado pueden relacionarse 1:1; perfil_privado.usuario_id puede ser FK UNIQUE. La unicidad evita varios perfiles para el mismo usuario, mientras NOT NULL/participación define obligatoriedad.
+
+**Práctica guiada.** Diseña Usuario y CredencialesSeparadas con PK/FK compartida o FK única y analiza inserción, eliminación y opcionalidad.
+
+**Actividad independiente.** Decide si dirección de envío debe ser 1:1 o 1:N con Cliente según historial de pedidos y múltiples direcciones.
+
+**Criterios de aceptación.** Implementa unicidad y explica participación opcional/obligatoria.
+
+**Errores frecuentes.** Crear 1:1 sin justificación o olvidar UNIQUE en la FK, permitiendo una relación 1:N.
+
+**Comprobación.** ¿Qué restricción garantiza que una FK no se repita y por tanto limite la relación a 1:1?
 
 #### 9.5.8 — Uno a muchos
 
-Una relación uno a muchos coloca normalmente la FK en el lado muchos, por ejemplo pedido pertenece a cliente. **Práctica:** implementa cliente y pedido con FK y crea varios pedidos para un cliente. **Evidencia:** consulta la asociación y explica por qué la FK no se repite en la tabla padre.
+**Propósito y modelo.** En una relación 1:N, una fila del lado uno puede asociarse con muchas filas del lado N; cada fila del lado N referencia como máximo una fila del lado uno mediante FK. La FK se ubica normalmente en la tabla del lado muchos.
+
+**Ejemplo desarrollado.** Un cliente puede tener muchos pedidos; Pedido almacena cliente_id. La FK puede ser NOT NULL si cada pedido debe pertenecer a un cliente.
+
+**Práctica guiada.** Diseña Autor y Libro para un caso donde cada libro tiene un autor principal. Coloca PK/FK y define si la participación es obligatoria.
+
+**Actividad independiente.** Modela Departamento y Empleado, considerando empleados sin departamento y departamentos sin empleados.
+
+**Criterios de aceptación.** Ubica FK en el lado N y explica cardinalidad y opcionalidad.
+
+**Errores frecuentes.** Almacenar una lista de IDs en la fila del lado uno o colocar la FK en el lado incorrecto sin necesidad de una relación inversa.
+
+**Comprobación.** ¿En qué tabla se coloca normalmente la clave foránea en una relación 1:N?
 
 #### 9.5.9 — Muchos a muchos
 
-Una relación muchos a muchos se transforma en una tabla asociativa que contiene FKs y atributos de la relación, por ejemplo detalle de pedido. **Práctica:** crea pedido, producto y detalle con PK compuesta o sustituta y restricción única apropiada. **Evidencia:** demuestra múltiples productos por pedido y múltiples pedidos por producto.
+**Propósito y modelo.** Una relación N:M permite que muchas filas de A se asocien con muchas filas de B. En un modelo relacional se implementa con una tabla asociativa que contiene FKs a ambas entidades y puede incluir atributos de la asociación.
+
+**Ejemplo desarrollado.** Estudiante y Curso se conectan mediante Matrícula(estudiante_id, curso_id, fecha, estado). Una clave compuesta o identificador propio más restricción UNIQUE impide matrículas duplicadas según regla.
+
+**Práctica guiada.** Diseña tablas para Producto y Pedido con DetallePedido como asociación. Añade cantidad y precio_unitario histórico.
+
+**Actividad independiente.** Modela autores y libros cuando un libro puede tener varios autores y un autor varios libros; define orden de autoría como atributo de relación.
+
+**Criterios de aceptación.** Crea tabla puente, FKs y clave única; ubica atributos que pertenecen a la relación.
+
+**Errores frecuentes.** Guardar IDs separados por comas o poner atributos de la relación en una de las entidades sin justificación.
+
+**Comprobación.** ¿Por qué cantidad pertenece a DetallePedido y no a Producto ni a Pedido?
 
 ### 9.6 — Bases de datos avanzadas
 
