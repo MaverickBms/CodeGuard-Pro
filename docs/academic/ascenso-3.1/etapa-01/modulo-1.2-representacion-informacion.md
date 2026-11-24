@@ -12,22 +12,23 @@ Comprender cómo se representan números, caracteres y valores numéricos dentro
 
 Podrás convertir números enteros entre decimal, binario y hexadecimal; interpretar bits y bytes; explicar la diferencia entre ASCII, Unicode y UTF-8; reconocer representaciones de enteros con y sin signo; y explicar por qué los números de punto flotante pueden tener errores de precisión.
 
-## 1.2.1 — Sistemas de numeración posicionales
+## 1.2.1 — Sistema binario
 
-En un sistema posicional, el valor de cada dígito depende de su posición y de la base. En base (b), cada posición representa una potencia de (b).
+En un sistema posicional, el valor de cada dígito depende de su posición y de la base. El sistema binario utiliza base 2 y los dígitos 0 y 1. Cada posición representa una potencia de 2.
 
-**Decimal (base 10):** utiliza los dígitos 0–9.  
-(472_{10}=4\cdot10^2+7\cdot10^1+2\cdot10^0).
+Ejemplo: (1101_2=1\cdot8+1\cdot4+0\cdot2+1\cdot1=13_{10}).
 
-**Binario (base 2):** utiliza 0 y 1.  
-(1101_2=1\cdot8+1\cdot4+0\cdot2+1\cdot1=13_{10}).
+Para convertir un número binario a decimal, multiplica cada bit por la potencia de 2 que corresponde a su posición, empezando por (2^0) a la derecha.
 
-**Hexadecimal (base 16):** utiliza 0–9 y A–F, donde A=10, B=11, …, F=15.  
-(2F_{16}=2\cdot16+15=47_{10}).
+Ejemplo: (10110_2=1\cdot16+0\cdot8+1\cdot4+1\cdot2+0=22_{10}).
 
-### Conversión decimal a binario
+## 1.2.2 — Sistema decimal
 
-Divide sucesivamente entre 2 y registra los restos. Lee los restos desde el último al primero.
+El sistema decimal utiliza base 10 y los dígitos 0–9. Cada posición representa una potencia de 10.
+
+Ejemplo: (472_{10}=4\cdot10^2+7\cdot10^1+2\cdot10^0).
+
+Para convertir un entero decimal a binario, divide sucesivamente entre 2 y registra los restos. Lee los restos desde el último al primero.
 
 Ejemplo: (13_{10})
 - 13 ÷ 2 = 6, resto 1
@@ -37,13 +38,11 @@ Ejemplo: (13_{10})
 
 Resultado: (1101_2).
 
-### Conversión binario a decimal
+## 1.2.3 — Sistema hexadecimal
 
-Multiplica cada bit por la potencia de 2 que corresponde a su posición, empezando por (2^0) a la derecha.
+El sistema hexadecimal utiliza base 16 y los símbolos 0–9 y A–F, donde A=10, B=11, …, F=15.
 
-(10110_2=1\cdot16+0\cdot8+1\cdot4+1\cdot2+0=22_{10}).
-
-### Binario y hexadecimal
+Ejemplo: (2F_{16}=2\cdot16+15=47_{10}).
 
 Cada dígito hexadecimal corresponde exactamente a cuatro bits:
 - 0000 = 0
@@ -55,7 +54,7 @@ Ejemplo: (1101\ 1010_2 = DA_{16}). Agrupa desde la derecha en bloques de cuatro;
 
 **Errores frecuentes:** leer restos en orden incorrecto; olvidar que la primera posición vale (b^0); confundir el número de dígitos con el valor; interpretar A–F como letras sin valor numérico.
 
-## 1.2.2 — Bits y bytes
+## 1.2.4 — Bits y bytes
 
 Un bit (b) es una unidad binaria que puede tomar dos valores. Un byte (B) está formado por ocho bits. La distinción entre b y B importa: Mb/s suele expresar megabits por segundo; MB/s, megabytes por segundo.
 
@@ -68,11 +67,15 @@ En contextos comerciales se usan con frecuencia unidades decimales; algunos sist
 **Ejercicio:** convierte 3 KiB a bytes y 24 bits a bytes.  
 Solución: (3\times1024=3072) bytes; (24/8=3) bytes.
 
-## 1.2.3 — ASCII, Unicode y UTF-8
+## 1.2.5 — ASCII
 
 **ASCII** es un código histórico de 7 bits que asigna valores a letras latinas básicas, dígitos, signos y caracteres de control. Los valores ASCII originales van de 0 a 127.
 
+## 1.2.6 — Unicode
+
 **Unicode** define un repertorio de caracteres y puntos de código para representar sistemas de escritura y símbolos de muchas lenguas. Un punto de código se escribe, por ejemplo, como U+0041 para la letra A. Unicode no es por sí mismo una codificación de bytes.
+
+## 1.2.7 — UTF-8
 
 **UTF-8** es una codificación de Unicode de longitud variable: un punto de código se representa usando entre uno y cuatro bytes. Los primeros 128 valores coinciden con ASCII, lo que permite compatibilidad con texto ASCII básico.
 
@@ -89,7 +92,7 @@ No confundas:
 
 Un carácter percibido por el usuario puede estar formado por varios puntos de código (por ejemplo, una letra más una marca combinante). Por eso «un carácter siempre ocupa un byte» es falso.
 
-## 1.2.4 — Representación de enteros
+## 1.2.8 — Representación de enteros
 
 Un entero sin signo de (n) bits puede representar desde 0 hasta (2^n-1). Por ejemplo, con 8 bits: 0 a 255.
 
@@ -104,7 +107,7 @@ El ancho es importante. Si un resultado excede el rango representable, puede ocu
 **Ejercicio:** indica el rango de un entero sin signo de 16 bits y de uno con signo en complemento a dos de 16 bits.  
 Solución: 0 a 65.535; −32.768 a 32.767.
 
-## 1.2.5 — Números de punto flotante
+## 1.2.9 — Números de punto flotante
 
 Los números de punto flotante representan un conjunto amplio de valores mediante signo, exponente y significando (mantisa en terminología tradicional). El estándar IEEE 754 define formatos y operaciones ampliamente utilizados.
 
