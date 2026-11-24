@@ -1,7 +1,7 @@
 # Etapa 17 — Testing, aseguramiento y calidad del software
 
 **Prioridad:** P1 · Obligatoria  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** aprender a demostrar que el software funciona, cumple requisitos y tiene una calidad verificable.  
 **Proyecto oficial:** diseñar un plan de pruebas completo y automatizar las pruebas de una aplicación construida en etapas anteriores.
 
@@ -124,4 +124,4 @@ No se incluyen videos aprobados. Se incorporarán solo tras confirmar audio en e
 - ISO catalogue: https://www.iso.org/standards.html
 - CMMI: https://cmmiinstitute.com/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutaron suites ni pruebas de carga en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutaron suites ni pruebas de carga en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
