@@ -336,3 +336,16 @@ Se desarrollaron individualmente las 157 entradas oficiales de las etapas 14–1
 Se sustituyeron las orientaciones genéricas por explicaciones específicas con función, decisiones de arquitectura, límites, riesgos y aplicación técnica. Se reforzaron inyección de dependencias, DTOs, validación, persistencia, migraciones, autorización por recurso, secretos, OAuth/OIDC/JWT, procesamiento asíncrono, idempotencia, dependencias y pruebas.
 
 **Validación interna:** se cotejaron encabezados y cantidad de entradas con el JSON curricular y se comprobó que no quedaran placeholders genéricos en los documentos de las tres etapas. Pendiente: fijar versiones exactas de runtimes/frameworks/ORMs, compilar, ejecutar pruebas, migraciones e integración de seguridad en laboratorios aislados. La revisión es documental y no equivale a aprobación externa.
+
+
+## Desarrollo profundo individual — etapas 17 a 19 — 2026-11-24
+
+Se desarrollaron individualmente las 228 entradas oficiales de las etapas 17–19:
+
+- **Etapa 17 — Testing, aseguramiento y calidad:** 61/61 lecciones.
+- **Etapa 18 — Arquitectura, diseño y planeación:** 100/100 lecciones.
+- **Etapa 19 — DevOps, Docker, CI/CD y servidores:** 67/67 lecciones.
+
+Se sustituyeron las orientaciones genéricas por explicaciones específicas y se añadieron límites de uso, criterios técnicos y riesgos. En 18.6 se preservan «Creacionales», «Estructurales» y «Comportamiento» porque son entradas explícitas del roadmap, explicadas como rótulos de familia y no como patrones individuales.
+
+**Validación interna:** conteos cotejados con el JSON y ausencia de placeholders genéricos comprobada. Pendiente: ejecutar suites de testing, pruebas de carga, diagramas/revisión con stakeholders, builds, pipelines, despliegues y laboratorios cloud/Kubernetes/Terraform aislados. No se declara ejecución ni aprobación académica externa.
