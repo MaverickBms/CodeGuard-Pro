@@ -487,9 +487,17 @@ No se incorpora video en esta versión. La selección audiovisual de esta etapa 
 - OpenStax, **College Algebra** (material educativo abierto para álgebra, funciones y ecuaciones): https://openstax.org/details/books/college-algebra-2e
 - OpenStax, **Precalculus 2e** (funciones, conjuntos y probabilidad introductoria según capítulos): https://openstax.org/details/books/precalculus-2e
 - MIT OpenCourseWare, **Mathematics for Computer Science** (lógica, pruebas, combinatoria y grafos; recurso académico en inglés, referencia de consulta para autoría, no video recomendado al estudiante): https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/
-- NIST, **Discrete Mathematics** no se atribuye como estándar; para conceptos de modularidad se recomienda consultar textos académicos y materiales del curso indicado.
 - Khan Academy en Español, biblioteca de matemáticas: https://es.khanacademy.org/math
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** algoritmos y ejercicios propuestos; el proyecto aún no se implementa ni ejecuta como software.  
 **Estado editorial:** en desarrollo; referencias y pertinencia audiovisual pendientes de revisión antes de aprobar.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** revisión documental de alineación con el módulo 2.1 del roadmap, cobertura de los títulos oficiales, secuencia didáctica, consistencia terminológica, ejemplos, actividad práctica, evaluación, seguridad y referencias.
+
+**Resultado:** revisión interna realizada; no equivale a aprobación académica externa ni a validación práctica. Se identificaron los ajustes anotados en este registro y se mantienen explícitas las actividades pendientes. Los laboratorios y ejemplos no se declaran ejecutados. Antes de cambiar el estado editorial se requiere cotejo bibliográfico final, ejecución reproducible de actividades y revisión por un segundo evaluador.
+
+**Hallazgos y pendientes específicos:** Se revisaron las cinco áreas y sus 39 entradas, el proyecto empresarial, casos límite, soluciones y rúbrica. Se retirará una referencia bibliográfica formulada como nota editorial, que no debe figurar como recurso al estudiante. Pendiente: validar ejercicios con una segunda resolución independiente y comprobar coherencia de la rúbrica.
