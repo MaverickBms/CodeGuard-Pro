@@ -137,7 +137,7 @@ Los siete prerrequisitos se conservan según el inventario contrastado con el DO
 | `etapa-00/modulo-0.4-depuracion.md` | Se añadieron casos de debugging, breakpoints, stack traces, logs, hipótesis, reproducción y análisis de causas en el orden oficial; se diseñó un laboratorio con defecto de frontera, pruebas y solución razonada. | BORRADOR |
 | `etapa-00/modulo-0.1-aprender-a-aprender.md` | Se conserva el documento previo con ocho lecciones desarrolladas a nivel de borrador; no se ha declarado superada su auditoría individual. | BORRADOR |
 
-La ampliación no convierte automáticamente una lección en «desarrollada» ni un laboratorio en «ejecutado». Los ejemplos de código y comandos incorporados son propuestas didácticas no ejecutadas en este entorno.
+La ampliación de los cuatro módulos no convierte automáticamente una lección en «desarrollada» ni un laboratorio en «ejecutado». Los ejemplos de código y comandos incorporados son propuestas didácticas no ejecutadas en este entorno.
 
 ### 3. Matriz de estado editorial y evidencias
 
@@ -162,7 +162,7 @@ La ampliación no convierte automáticamente una lección en «desarrollada» ni
 
 ### 4. Verificación técnica y pedagógica pendiente
 
-- **0.1:** auditar las ocho lecciones individualmente, especialmente la correspondencia entre evidencia pedagógica, ejercicios, soluciones y rúbricas.
+- **0.1:** auditar las ocho lecciones individualmente, especialmente la correspondencia entre evidencia pedagógica, ejercicios, soluciones y rúbricas; la ampliación de recuperación no equivale a revisión independiente.
 - **0.2:** comprobar en un entorno controlado los pasos y ejemplos que se decida ejecutar; revisar que las páginas de documentación sigan vigentes al preparar una versión publicable.
 - **0.3:** ejecutar por separado los recorridos de Bash/Zsh, PowerShell o CMD que correspondan; validar el laboratorio de Git en un repositorio descartable y la inspección DevTools en una página propia.
 - **0.4:** ejecutar el laboratorio Python, comprobar que las pruebas fallan antes y pasan después, y verificar el procedimiento de breakpoint en un runtime real.
