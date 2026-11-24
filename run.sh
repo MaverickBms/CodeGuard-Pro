@@ -33,7 +33,7 @@ if [ "${#APPIMAGES[@]}" -ne 1 ]; then
     exit 1
 fi
 
-APPIMAGE="${APPIMAGES[0]}"
+APPIMAGE="$PROJECT_DIR/${APPIMAGES[0]}"
 
 # Misma ruta que app.getPath('userData') de Electron para que abrir el
 # AppImage directamente o mediante ./codeguard use el mismo perfil.
