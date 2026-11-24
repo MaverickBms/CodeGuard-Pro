@@ -100,3 +100,172 @@ No se aprueban videos en esta versión. Se añadirán solo con audio hablado en 
 - OWASP Juice Shop: https://owasp.org/www-project-juice-shop/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutó proxy ni laboratorio en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 25
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados son guías de estudio, no evidencias de ejecución ni autorización para evaluar sistemas de terceros.
+
+### Módulo 25.1 — Arquitectura de seguridad web
+
+#### 25.1.01 — Cliente-servidor
+Estudiar el concepto dentro de arquitectura de seguridad web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.1.02 — Frontend
+Estudiar el concepto dentro de arquitectura de seguridad web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.1.03 — Backend
+Estudiar el concepto dentro de arquitectura de seguridad web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.1.04 — Database
+Estudiar el concepto dentro de arquitectura de seguridad web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.1.05 — API
+Estudiar el concepto dentro de arquitectura de seguridad web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.1.06 — Sessions
+Estudiar el concepto dentro de arquitectura de seguridad web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.1.07 — Cookies
+Estudiar el concepto dentro de arquitectura de seguridad web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.1.08 — Authentication
+Estudiar el concepto dentro de arquitectura de seguridad web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.1.09 — Authorization
+Estudiar el concepto dentro de arquitectura de seguridad web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.1.10 — TLS
+Estudiar el concepto dentro de arquitectura de seguridad web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 25.2 — Vulnerabilidades web
+
+#### 25.2.01 — SQL Injection
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.02 — NoSQL Injection
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.03 — Cross-Site Scripting (XSS)
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.04 — Cross-Site Request Forgery (CSRF)
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.05 — Server-Side Request Forgery (SSRF)
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.06 — IDOR
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.07 — Broken Access Control
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.08 — Path Traversal
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.09 — Command Injection
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.10 — Insecure File Upload
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.11 — Authentication Bypass
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.2.12 — Security Misconfiguration
+Estudiar el concepto dentro de vulnerabilidades web, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 25.3 — OWASP
+
+#### 25.3.01 — OWASP Top 10:2025
+Estudiar el concepto dentro de owasp, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.3.02 — OWASP Web Security Testing Guide
+Estudiar el concepto dentro de owasp, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.3.03 — Secure Coding
+Estudiar el concepto dentro de owasp, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.3.04 — Threat Modeling
+Estudiar el concepto dentro de owasp, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.3.05 — Security Testing
+Estudiar el concepto dentro de owasp, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 25.4 — Burp Suite
+
+#### 25.4.01 — Proxy
+Estudiar el concepto dentro de burp suite, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.4.02 — HTTP History
+Estudiar el concepto dentro de burp suite, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.4.03 — Repeater
+Estudiar el concepto dentro de burp suite, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.4.04 — Intruder
+Estudiar el concepto dentro de burp suite, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.4.05 — Decoder
+Estudiar el concepto dentro de burp suite, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.4.06 — Comparer
+Estudiar el concepto dentro de burp suite, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.4.07 — Target
+Estudiar el concepto dentro de burp suite, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.4.08 — Scanner (según disponibilidad y licencia)
+Estudiar el concepto dentro de burp suite, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.4.09 — Análisis de requests y responses
+Estudiar el concepto dentro de burp suite, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 25.5 — Seguridad de APIs
+
+#### 25.5.01 — REST Security
+Estudiar el concepto dentro de seguridad de apis, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.5.02 — API Authentication
+Estudiar el concepto dentro de seguridad de apis, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.5.03 — API Authorization
+Estudiar el concepto dentro de seguridad de apis, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.5.04 — Token Management
+Estudiar el concepto dentro de seguridad de apis, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.5.05 — API Rate Limiting
+Estudiar el concepto dentro de seguridad de apis, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.5.06 — API Inventory
+Estudiar el concepto dentro de seguridad de apis, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.5.07 — Broken Object Level Authorization
+Estudiar el concepto dentro de seguridad de apis, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.5.08 — Unrestricted Resource Consumption
+Estudiar el concepto dentro de seguridad de apis, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.5.09 — Unsafe API Consumption
+Estudiar el concepto dentro de seguridad de apis, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+### Módulo 25.6 — Herramientas
+
+#### 25.6.01 — Burp Suite
+Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.6.02 — Postman
+Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.6.03 — OWASP ZAP
+Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.6.04 — OWASP Juice Shop
+Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+#### 25.6.05 — Web Security Academy
+Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+
+**Nota curricular:** el campo oficial `objetivo` de la etapa 25 permanece vacío. Este desglose no añade ni propone un objetivo sustituto.
