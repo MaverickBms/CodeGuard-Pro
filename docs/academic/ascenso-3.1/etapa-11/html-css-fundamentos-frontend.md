@@ -1,6 +1,6 @@
 # Etapa 11 — HTML y CSS: fundamentos profesionales del frontend
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 11.  
 **Prioridad oficial:** P1 · Obligatoria.  
 **Objetivo oficial:** construir interfaces web correctamente estructuradas, accesibles y adaptables.
@@ -353,4 +353,4 @@ No se incluyen videos en esta versión. HTML, CSS, accesibilidad y SEO requieren
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** sitio y ejercicios propuestos; no desplegados ni sometidos a auditoría automatizada en esta sesión.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado..
