@@ -1,6 +1,6 @@
 # Etapa 0 · Módulo 0.2 — Investigación técnica
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · referencia operativa vigente de la lección 0.2. No implica publicación ni aprobación editorial.  
 **Alineación curricular:** ASCENSO 3.1, Etapa 0, apartado 0.2.  
 **Objetivo:** desarrollar un método sostenible para investigar problemas técnicos.
 
