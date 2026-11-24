@@ -149,7 +149,7 @@ Comandos de gestión disponibles:
 | `verificar_backup RUTA.zip` | Verifica estructura, hashes e integridad SQLite de una copia |
 | `restaurar_backup RUTA.zip --confirm` | Restaura base y `media/` con validación previa y rollback |
 
-Para obtener el inventario real de una instalación de desarrollo (incluidos UUID), ejecuta `python manage.py exportar_manifiesto_academico --nombre "PROYECTO ASCENSO — Roadmap Maestro Consolidado" --edicion "3.1" --salida RUTA_PRIVADA.json --incluir-fuentes`. El nombre del ejemplo corresponde al registro creado desde el JSON maestro actual; si tu instalación usa otro, consulta el nombre y la edición exactos en el registro `Roadmap`. El archivo contiene identificadores propios de esa instalación: mantenlo fuera del repositorio público. La exportación es de solo lectura y no incluye progreso ni datos de usuarios.
+Para obtener el inventario real de una instalación de desarrollo (incluidos UUID), ejecuta `python manage.py exportar_manifiesto_academico --nombre "PROYECTO ASCENSO — Roadmap Maestro Consolidado" --edicion "3.1" --salida RUTA_PRIVADA.json --incluir-fuentes`. El nombre del ejemplo corresponde al registro creado desde el JSON maestro actual; si tu instalación usa otro, consulta el nombre y la edición exactos en el registro `Roadmap`. El archivo contiene identificadores propios de esa instalación: mantenlo fuera del repositorio público. La exportación es de solo lectura y no incluye progreso ni datos de usuarios. Este manifiesto es un inventario de correspondencia; no es un paquete JSON v1 importable ni genera contenido académico.
 
 ### Copias de seguridad y restauración
 
