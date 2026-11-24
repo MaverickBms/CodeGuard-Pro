@@ -201,3 +201,12 @@ Se creó `etapa-00/revision-tecnica-pedagogica-modulo-0.1.md` con una inspecció
 **Resultado:** los ocho títulos oficiales y su orden están presentes; las ocho lecciones contienen objetivos, actividades y criterios identificables. Esto es una comprobación estructural/editorial, no una validación de aprendizaje ni una aprobación. Se identificaron ajustes específicos: fortalecer la ficha de verificación de fuentes en 0.1.2; añadir producto y rúbrica a 0.1.3; plantilla y ajuste de intervalos en 0.1.4; ejemplo de retroalimentación en 0.1.5; solución de referencia con casos de prueba en 0.1.6; descomposición resuelta en 0.1.7; y separar anexos/material audiovisual de la lección 0.1.8.
 
 **Estado:** 0/8 lecciones aprobadas; 0/8 con revisión independiente completa; 0 actividades ejecutadas en esta revisión. Los seis videos candidatos siguen sin verificación audiovisual. El informe no altera el currículo ni eleva el estado editorial del módulo.
+
+
+### 9. Segunda iteración del módulo 0.1
+
+Se completaron mejoras documentales específicas en las lecciones 0.1.2–0.1.8: ficha de verificación de fuentes con conclusión calibrada; ejemplo resuelto de autoexplicación; registro de práctica espaciada; ejemplo de tres sesiones con feedback; pseudocódigo del promedio con supuesto de escala declarado y cinco casos de prueba; descomposición de referencia de biblioteca; y criterios de aceptación verificables para los cinco hitos del proyecto de aprendizaje.
+
+La revisión se mantuvo dentro de los encabezados de las lecciones oficiales. Se hizo una comprobación estática de los ocho títulos, presencia de objetivos/criterios y balance de bloques de código Markdown. El JSON curricular se volvió a leer y no se modificó.
+
+**Estado actualizado del módulo 0.1:** 8/8 lecciones con ampliación documental de objetivos/actividades; ejemplos y guías adicionales incorporados en 0.1.2–0.1.8; 0/8 revisiones independientes; 0 aprobadas; 0 actividades probadas con estudiantes; 0 videos verificados. Sigue en BORRADOR. Los chequeos estáticos no son una validación pedagógica ni una ejecución de código.
