@@ -629,3 +629,43 @@ Se añadieron prácticas y evidencias a **99 lecciones**:
 **Límites:** no se ejecutaron scripts Node/PHP, builds .NET, pruebas de frameworks, migraciones de bases de datos, colas, autenticación ni despliegues. No se verificaron referencias/versiones una por una. El estado es ampliación documental y estructural, no validación técnica por ejecución ni aprobación externa.
 
 **Acumulado:** etapas 1–6: 265; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63; etapa 14: 58; etapas 15–16: 99. Total de etapas 1–16 con desarrollo documental ampliado: **918 lecciones**. Etapas 17–32: 998 lecciones requieren profundización equivalente. No se importó ni publicó contenido.
+
+
+## Addendum de profundización — módulos 7.2 y 7.3 (2026-11-24)
+
+### Alcance realizado
+
+Se profundizaron 17 lecciones del módulo 7.2 «Linux» y 20 lecciones del módulo 7.3 «Administración Linux» en el documento de la etapa 7.
+
+- Módulo 7.2: distribuciones, kernel Linux, Ubuntu, Debian, jerarquía del sistema de archivos, directorios FHS, usuarios, grupos, permisos, propietarios, root, sudo, procesos, servicios, paquetes, logs y variables de entorno.
+- Módulo 7.3: pwd, ls, cd, mkdir, touch, cp, mv, rm, find, grep, chmod, chown, ps, top, kill, systemctl, journalctl, df, du y mount.
+
+Las lecciones se desarrollaron con explicaciones específicas, ejemplos, prácticas guiadas, actividades independientes, criterios de aceptación, errores frecuentes y preguntas de comprobación. Las actividades administrativas destructivas o privilegiadas se limitaron a entornos de laboratorio y se documentaron precauciones explícitas.
+
+### Conteo acumulado de la etapa 7
+
+| Módulo | Lecciones oficiales | Lecciones profundizadas en estos lotes |
+|---|---:|---:|
+| 7.1 — Fundamentos de sistemas operativos | 14 | 14 |
+| 7.2 — Linux | 17 | 17 |
+| 7.3 — Administración Linux | 20 | 20 |
+| 7.4 — Bash | 12 | 0 |
+| 7.5 — Windows | 12 | 0 |
+| 7.6 — Virtualización | 9 | 0 |
+| **Total** | **84** | **51** |
+
+### Comprobaciones y límites
+
+- Se cotejaron los títulos y cantidades de los módulos 7.1–7.3 contra el roadmap oficial.
+- Se verificó que el documento conserve los módulos 7.4–7.6, el proyecto, la evaluación y las referencias existentes.
+- Se corrigió la secuencia de encabezados del módulo 7.1 para hacerla coincidir con el orden oficial del JSON.
+- No se ejecutaron comandos en una VM Linux real ni se probaron cambios de permisos, servicios, montajes o procesos en un host.
+- No se ejecutaron scripts ni pruebas de automatización; los comandos incluidos son propuestas documentadas, no evidencia de ejecución.
+- No se verificaron individualmente las referencias mediante consulta web en estos lotes.
+- No se declara la etapa 7 terminada: los 33 temas de Bash, Windows y virtualización aún requieren esta profundización.
+
+### Estado acumulado de trabajo
+
+En esta sesión se profundizaron 51 de las 84 lecciones de la etapa 7. Esto no añade lecciones al roadmap ni altera su identidad curricular. Las etapas 8–32 permanecen sujetas a revisión y profundización progresiva; no se declara completado el objetivo global de 1.916 lecciones.
+
+El roadmap JSON permanece sin cambios (SHA del archivo en la rama: `43b6350dd911350c2b5f68c3d3de3dea4696f878`). El objetivo oficial de la etapa 25 continúa vacío. No se importó, aprobó ni publicó contenido.
