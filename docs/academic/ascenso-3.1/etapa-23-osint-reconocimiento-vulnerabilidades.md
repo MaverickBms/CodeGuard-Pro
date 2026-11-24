@@ -1,7 +1,7 @@
 # Etapa 23 — Reconocimiento, OSINT y gestión de vulnerabilidades
 
 **Prioridad:** P1 (fundamentos) · P2 (profundización avanzada)  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** aprender a recopilar información y evaluar la exposición de una infraestructura.  
 **Proyecto oficial:** elaborar un informe de reconocimiento y evaluación de vulnerabilidades sobre un laboratorio propio, con evidencias, clasificación y recomendaciones.
 
@@ -105,4 +105,4 @@ No se incluyen videos aprobados. Se incorporarán únicamente recursos en españ
 - Greenbone Documentation: https://greenbone.github.io/docs/
 - OWASP: https://owasp.org/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se realizaron escaneos ni consultas OSINT en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se realizaron escaneos ni consultas OSINT en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
