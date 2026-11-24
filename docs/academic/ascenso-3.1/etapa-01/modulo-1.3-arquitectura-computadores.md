@@ -1,168 +1,515 @@
 # Etapa 1 · Módulo 1.3 — Arquitectura de computadores
 
-**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
-**Alineación:** ASCENSO 3.1, Etapa 1, apartado 1.3.  
-**Temas oficiales:** arquitectura Von Neumann, arquitectura Harvard, ciclo Fetch-Decode-Execute, conjunto de instrucciones, registros del procesador, memoria, entrada y salida e interrupciones.
+**Estado:** borrador académico desarrollado (pendiente validación editorial externa y verificación técnica formal).  
+**Alineación:** ASCENSO 3.1, Etapa 1, Módulo 1.3.  
+**Última actualización:** 2026-11-24
 
-## Objetivo
+## Identificación del módulo
+- **Etapa:** 1 — Fundamentos de computación y arquitectura del computador.
+- **Módulo:** 1.3 — Arquitectura de computadores.
+- **Lecciones oficiales:** 8 (1.3.1 a 1.3.8).
+- **Prerrequisitos:** Módulos 1.1 y 1.2.
 
-Explicar cómo se organiza un computador a nivel lógico para ejecutar instrucciones, almacenar datos y comunicarse con dispositivos.
+## Propósito del módulo
+Explicar cómo se organiza internamente un computador para ejecutar instrucciones, mover datos y atender eventos. Este módulo conecta hardware con ejecución de software.
 
-## Resultados de aprendizaje
+## Resultados de aprendizaje del módulo
+1. Describir modelos Von Neumann y Harvard.
+2. Explicar el ciclo Fetch-Decode-Execute.
+3. Distinguir ISA, microarquitectura y organización.
+4. Comprender registros, memoria, E/S e interrupciones.
 
-Podrás describir las ideas centrales de Von Neumann y Harvard; recorrer conceptualmente el ciclo de instrucción; distinguir ISA de microarquitectura; identificar la función de registros, memoria y entrada/salida; y explicar qué es una interrupción y por qué existe.
+---
 
-## 1.3.1 — Arquitectura Von Neumann
+## Lección 1.3.1 — Arquitectura Von Neumann
 
-La arquitectura Von Neumann describe un modelo de programa almacenado en el que instrucciones y datos comparten un espacio de memoria y, en el modelo clásico, caminos de comunicación. La CPU obtiene instrucciones de memoria, las interpreta y opera sobre datos.
+### Identificación
+- **Lección oficial:** 1.3.1 — Arquitectura Von Neumann. **Secuencia:** 1/8.
 
-Bloques conceptuales:
-- CPU: control y procesamiento;
-- memoria: instrucciones y datos;
-- entrada/salida: comunicación con el exterior;
-- interconexiones: transporte de direcciones, datos y señales de control.
+### Propósito de aprendizaje
+Comprender el modelo Von Neumann y su impacto en el diseño de computadores.
 
-El llamado cuello de botella de Von Neumann describe una limitación potencial: instrucciones y datos compiten por transferencias a través de recursos compartidos. Los sistemas modernos incorporan cachés, buses separados, ejecución especulativa y otras optimizaciones; no son una implementación literal y simple del diagrama clásico.
+### Conocimientos previos
+CPU, memoria, buses, bits/bytes.
 
-## 1.3.2 — Arquitectura Harvard
+### Resultados de aprendizaje
+- Describir componentes clave del modelo Von Neumann.
+- Explicar el concepto de programa almacenado.
+- Identificar el cuello de botella de Von Neumann.
+- Relacionar el modelo con computadores de propósito general.
 
-La arquitectura Harvard separa memorias o caminos de acceso para instrucciones y datos. Esto puede permitir transferencias simultáneas y características distintas para cada espacio.
+### Desarrollo conceptual
+La arquitectura Von Neumann describe un sistema donde instrucciones y datos se almacenan en la misma memoria y comparten rutas de acceso. El modelo clásico incluye CPU (unidad de control y ALU), memoria principal, dispositivos de entrada/salida y buses/interconexiones.
 
-En sistemas reales hay variantes, incluida la arquitectura Harvard modificada: por ejemplo, memorias caché separadas para instrucciones y datos con una memoria principal unificada. No clasifiques todo procesador moderno como «Harvard puro» o «Von Neumann puro» sin precisar el nivel de abstracción.
+La idea central es el **programa almacenado**: las instrucciones son datos en memoria que la CPU puede leer y ejecutar. Esto permitió computadores más flexibles que los sistemas cableados para una sola tarea.
 
-**Comparación:** Von Neumann facilita un espacio unificado; Harvard puede separar accesos y formatos. La elección depende del diseño, coste, rendimiento y requisitos.
+El **cuello de botella de Von Neumann** se refiere a la limitación de ancho de banda/latencia entre CPU y memoria, especialmente cuando instrucciones y datos compiten por el mismo canal. Cachés, pipelines y arquitecturas modernas mitigan parcialmente este problema, pero no lo eliminan por completo.
 
-## 1.3.3 — Ciclo Fetch-Decode-Execute
+### Ejemplo técnico desarrollado
+**Ejecución de un programa simple:**
+1. El programa compilado se carga en RAM: instrucciones y datos.
+2. La CPU lee la siguiente instrucción desde la dirección indicada por el contador de programa.
+3. Decodifica y ejecuta la instrucción.
+4. Si necesita un dato, lo solicita a la misma memoria (a través de la jerarquía).
+5. Repite hasta terminar o ser interrumpida.
 
-El ciclo describe, de forma simplificada, la ejecución de una instrucción:
+**Interpretación:** la flexibilidad viene de almacenar programas en memoria; el costo es la contención en el acceso.
 
-1. **Fetch (búsqueda):** obtener la instrucción indicada por el contador de programa.
-2. **Decode (decodificación):** interpretar la operación y sus operandos.
-3. **Execute (ejecución):** realizar la operación, acceder a memoria o iniciar una transferencia.
-4. **Write-back (escritura del resultado):** cuando corresponde, guardar el resultado en un registro o destino.
+### Práctica guiada
+- Dibuja un diagrama con CPU, memoria, E/S y bus. Etiqueta dónde van instrucciones y datos.
+- Señala en el diagrama dónde ocurre el cuello de botella.
 
-El ciclo real de una CPU moderna puede solaparse y dividirse en etapas (pipeline), ejecutar instrucciones fuera de orden, predecir saltos y retirar resultados en orden arquitectónico. El modelo de tres pasos sirve para comprender la idea, no para describir todos los circuitos de una CPU actual.
+### Actividad independiente
+Explica con tus palabras por qué el programa almacenado fue un cambio importante frente a máquinas de propósito fijo.
 
-**Ejemplo conceptual:** una instrucción suma dos registros y guarda el resultado en otro. La CPU obtiene la instrucción, identifica registros fuente/destino y activa las unidades que realizan la operación.
+### Criterios de aceptación
+- Diagrama correcto.
+- Define programa almacenado.
+- Explica el cuello de botella sin exagerarlo.
 
-## 1.3.4 — Conjunto de instrucciones (ISA)
+### Errores frecuentes y recomendaciones
+- **Error:** decir que Von Neumann está “obsoleto”. **Recomendación:** es un modelo base; los sistemas modernos lo extienden.
+- **Error:** confundir Von Neumann con una marca o CPU específica. **Recomendación:** es un modelo arquitectónico.
 
-La ISA define el contrato visible entre software de bajo nivel y procesador: instrucciones, registros arquitectónicos, modos de direccionamiento, tipos de datos, excepciones y reglas de ejecución.
+### Evaluación de comprensión
+1. ¿Qué significa programa almacenado?
+2. ¿Qué comparten instrucciones y datos en Von Neumann?
+3. ¿Qué es el cuello de botella de Von Neumann?
 
-Ejemplos de familias ISA son x86-64 y AArch64. Un mismo ISA puede tener múltiples microarquitecturas distintas: implementaciones diferentes que ejecutan el mismo contrato, con distintos diseños internos y rendimiento.
+### Referencias
+- Von Neumann, J. *First Draft of a Report on the EDVAC*, 1945. https://web.mit.edu/STS.035/www/PDFs/edvac.pdf. Consultado: 2026-11-24.
+- Patterson, D. A., & Hennessy, J. L. *Computer Organization and Design*. Morgan Kaufmann.
 
-No confundas:
-- **ISA:** qué instrucciones y comportamiento debe ofrecer el procesador.
-- **Microarquitectura:** cómo está construido internamente para implementar la ISA.
-- **Lenguaje de alto nivel:** abstracción que un compilador traduce, directa o indirectamente, a instrucciones de máquina.
+---
 
-## 1.3.5 — Registros del procesador
+## Lección 1.3.2 — Arquitectura Harvard
 
-Los registros visibles por la ISA pueden incluir:
-- registros de propósito general;
-- contador de programa o equivalente;
-- registro de estado/flags;
-- registros de control;
-- registros vectoriales o de punto flotante.
+### Identificación
+- **Lección oficial:** 1.3.2 — Arquitectura Harvard. **Secuencia:** 2/8.
 
-Los nombres, cantidades y funciones dependen de la ISA. En una explicación introductoria, el contador de programa permite entender qué instrucción se buscará a continuación y los registros generales mantienen operandos/resultados. No todos los procesadores exponen un registro llamado literalmente «contador de programa» al software.
+### Propósito de aprendizaje
+Comprender la arquitectura Harvard y compararla con Von Neumann.
 
-## 1.3.6 — Memoria
+### Conocimientos previos
+- Lección 1.3.1.
 
-El procesador necesita memoria para obtener instrucciones y datos. La jerarquía típica incluye registros, cachés, RAM y almacenamiento persistente. Cada nivel ofrece compromisos distintos de latencia, capacidad, coste y persistencia.
+### Resultados de aprendizaje
+- Describir separación de memoria/caminos para instrucciones y datos.
+- Comparar ventajas y limitaciones frente a Von Neumann.
+- Identificar usos típicos (embebidos, DSP, caches modernas).
 
-La memoria direccionable se organiza en posiciones identificadas por direcciones. El tamaño de una dirección y el modelo de memoria dependen de la arquitectura y del sistema. Una dirección virtual usada por un proceso no debe confundirse con una dirección física de RAM.
+### Desarrollo conceptual
+La arquitectura Harvard separa físicamente o lógicamente el almacenamiento y/o los buses de instrucciones y datos. Esto permite que la CPU lea una instrucción y acceda a datos al mismo tiempo, reduciendo la contención del modelo Von Neumann.
 
-## 1.3.7 — Entrada y salida
+En la práctica, muchos sistemas modernos usan una **arquitectura Harvard modificada**: cachés separadas para instrucciones y datos (L1i/L1d), pero memoria principal unificada. Esto combina flexibilidad y rendimiento.
 
-Los mecanismos de entrada/salida conectan CPU y memoria con dispositivos externos o internos. Algunos dispositivos se comunican mediante registros mapeados en memoria; otros usan mecanismos específicos de instrucciones o controladores.
+Harvard pura es común en microcontroladores y sistemas embebidos simples, donde el programa puede estar en memoria no volátil y los datos en RAM.
 
-**Ejemplo:** al pulsar una tecla, el controlador del dispositivo detecta el evento y el sistema operativo recibe información para entregarla a la aplicación correspondiente. El teclado no escribe directamente caracteres en el código fuente: hay varias capas de hardware y software.
+### Ejemplo técnico desarrollado
+**Comparación:**
 
-## 1.3.8 — Interrupciones
+| Aspecto | Von Neumann | Harvard |
+|---|---|---|
+| Memoria | Instrucciones y datos compartidos | Separados |
+| Buses | Compartidos (clásico) | Separados |
+| Acceso simultáneo instrucción/dato | Limitado | Posible |
+| Flexibilidad | Alta | Depende de implementación |
+| Uso típico | PCs de propósito general | Embebidos, DSP, caches |
 
-Una interrupción es una señal o evento que hace que el procesador atienda una condición que requiere servicio. Puede provenir de hardware (por ejemplo, un dispositivo) o de mecanismos internos/arquitectónicos.
+### Práctica guiada
+- Completa la tabla anterior con un ejemplo real o hipotético para cada arquitectura.
 
-Flujo conceptual:
-1. ocurre el evento;
-2. el procesador reconoce la interrupción según reglas de prioridad y habilitación;
-3. conserva el estado necesario;
-4. transfiere el control a una rutina de atención;
-5. se atiende el evento;
-6. se restaura el contexto y continúa la ejecución cuando corresponde.
+### Actividad independiente
+Investiga si tu CPU tiene caché L1 separada para instrucciones y datos. ¿Eso la hace Harvard pura? Justifica.
 
-Una excepción suele ser un evento síncrono asociado a la instrucción que se está ejecutando; una interrupción externa suele ser asíncrona respecto al flujo de instrucciones. La terminología exacta depende de la arquitectura.
+### Criterios de aceptación
+- Explica separación instrucción/dato.
+- Compara correctamente con Von Neumann.
+- Reconoce Harvard modificada.
 
-No todas las interrupciones implican que la CPU detenga todo el sistema por un tiempo largo. Los manejadores deben ser breves y delegar trabajo cuando el sistema operativo lo requiere.
+### Errores frecuentes y recomendaciones
+- **Error:** clasificar sistemas modernos como puramente Harvard o Von Neumann. **Recomendación:** usar “Harvard modificada” cuando corresponda.
+- **Error:** creer que Harvard elimina toda latencia de memoria. **Recomendación:** solo reduce un tipo de contención.
 
-## Laboratorio conceptual — Simulador de ciclo de instrucción
+### Evaluación de comprensión
+1. ¿Qué separa la arquitectura Harvard?
+2. ¿Qué ventaja ofrece sobre Von Neumann?
+3. ¿Qué es una Harvard modificada?
 
-Construye una simulación en papel, hoja de cálculo o programa sencillo con:
-- cuatro registros generales;
-- un contador de programa;
-- memoria con instrucciones y datos;
-- instrucciones abstractas `LOAD`, `ADD`, `STORE`, `JUMP`;
-- una secuencia paso a paso de Fetch, Decode, Execute y Write-back.
+### Referencias
+- Patterson, D. A., & Hennessy, J. L. *Computer Organization and Design*. Morgan Kaufmann.
+- Arm. *Cortex-M Architecture*. https://developer.arm.com/documentation/. Consultado: 2026-11-24.
 
-Programa de ejemplo abstracto:
-1. cargar 7 en R1;
-2. cargar 5 en R2;
-3. sumar R1 y R2 y guardar en R3;
-4. almacenar R3 en una posición de memoria.
+---
 
-La simulación debe mostrar el estado de registros, contador de programa y memoria después de cada instrucción. No pretende emular una ISA real; es un modelo didáctico.
+## Lección 1.3.3 — Ciclo Fetch-Decode-Execute
 
-### Extensión de interrupción
+### Identificación
+- **Lección oficial:** 1.3.3 — Ciclo Fetch-Decode-Execute. **Secuencia:** 3/8.
 
-Añade un evento externo que se produce después de la segunda instrucción. Registra qué estado debe conservarse, qué rutina atiende el evento y cómo se reanuda el programa.
+### Propósito de aprendizaje
+Comprender el ciclo básico de ejecución de instrucciones.
 
-### Entregables y evaluación (100 puntos)
+### Conocimientos previos
+- Lecciones 1.3.1, 1.1.1-1.1.3.
 
-| Criterio | Puntos |
-|---|---:|
-| Diferencia Von Neumann/Harvard | 15 |
-| Explicación correcta del ciclo | 20 |
-| Diferencia ISA/microarquitectura | 15 |
-| Modelo de registros y memoria | 20 |
-| Simulación de E/S e interrupción | 20 |
-| Claridad y límites del modelo | 10 |
+### Resultados de aprendizaje
+- Describir fases fetch, decode y execute.
+- Explicar el rol del contador de programa y registros.
+- Reconocer que es un modelo simplificado.
+- Trazar un ciclo simple paso a paso.
 
-## Ejercicios
+### Desarrollo conceptual
+El ciclo Fetch-Decode-Execute (FDE) describe cómo la CPU procesa instrucciones:
 
-1. ¿Qué característica central distingue el modelo clásico Von Neumann?
-2. ¿Qué ventaja potencial ofrece Harvard?
-3. ¿Por qué Fetch-Decode-Execute es un modelo simplificado?
-4. ¿Qué diferencia hay entre ISA y microarquitectura?
-5. ¿Qué representa conceptualmente el contador de programa?
-6. ¿Qué evento podría generar una interrupción?
-7. ¿Por qué una dirección virtual no es necesariamente una dirección física?
+1. **Fetch:** la CPU obtiene la instrucción desde la dirección indicada por el Program Counter (PC).
+2. **Decode:** la unidad de control interpreta la instrucción: qué operación es, qué operandos usa, dónde está el resultado.
+3. **Execute:** se realiza la operación en la ALU/u otra unidad; puede implicar leer/escribir memoria o cambiar el PC.
+4. **Writeback/Update:** en muchos modelos se incluye escribir el resultado y actualizar el PC.
 
-**Respuestas orientativas:** Von Neumann usa un espacio compartido para instrucciones y datos; Harvard separa caminos/memorias; CPUs modernas solapan etapas y usan optimizaciones; ISA es el contrato y microarquitectura la implementación; el contador identifica la siguiente instrucción; un controlador de dispositivo puede generar un evento; la traducción de memoria virtual permite aislar procesos y mapear páginas a marcos físicos.
+Es un modelo simplificado. CPUs modernas usan pipelines, ejecución fuera de orden, predicción de saltos y paralelismo. Pero el FDE sigue siendo útil para entender la base.
 
-## Autoevaluación aplicada
+### Ejemplo técnico desarrollado
+**Instrucción:** `ADD R1, R2, R3` (R1 = R2 + R3).
 
-Explica el recorrido de una instrucción de suma desde la memoria hasta que el resultado queda disponible. Después describe qué cambia si llega un evento de entrada/salida durante la ejecución. Identifica qué partes de tu explicación son modelo conceptual y cuáles dependen de una ISA concreta.
+1. **Fetch:** PC apunta a la dirección de la instrucción; se carga en el registro de instrucción.
+2. **Decode:** se identifica operación ADD, operandos R2,R3, destino R1.
+3. **Execute:** ALU suma valores de R2 y R3.
+4. **Writeback:** resultado se escribe en R1; PC avanza a la siguiente instrucción.
 
-## Recursos audiovisuales
+### Práctica guiada
+- Traza el ciclo FDE para `LOAD R1, [0x100]`.
+- Indica qué componente participa en cada fase.
 
-No se incluye video en esta versión: no se ha comprobado un recurso con audio hablado en español que explique directamente Von Neumann, Harvard, el ciclo de instrucción, ISA e interrupciones con precisión suficiente. No se recomienda una animación genérica sin validar idioma y correspondencia temática.
+### Actividad independiente
+Simula en papel 3 instrucciones consecutivas: LOAD, ADD, STORE. Muestra PC, IR y registros relevantes en cada paso.
 
-## Referencias
+### Criterios de aceptación
+- Fases correctas.
+- PC actualizado.
+- Distingue fetch de execute.
 
-- Intel, **Intel® 64 and IA-32 Architectures Software Developer’s Manuals**: https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
-- Arm, **Arm Architecture Reference Manuals**: https://developer.arm.com/documentation
-- Nand2Tetris, **The Elements of Computing Systems** (material académico del proyecto; útil como ruta de construcción conceptual): https://www.nand2tetris.org/
-- IES Antonio González González, **Arquitectura y funcionamiento del ordenador**, material educativo institucional: https://centros.edu.xunta.gal/iesblancoamorculleredo/aulavirtual/mod/book/view.php?chapterid=4332&id=19998
+### Errores frecuentes y recomendaciones
+- **Error:** creer que FDE describe exactamente todas las CPUs modernas. **Recomendación:** presentarlo como modelo base.
+- **Error:** olvidar actualización del PC. **Recomendación:** incluirlo explícitamente.
+- **Error:** confundir decodificar con ejecutar. **Recomendación:** separar interpretación de acción.
 
-**Consulta de fuentes:** 2026-11-19.  
-**Verificación práctica:** simulador propuesto; no ejecutado.  
-**Estado editorial:** en desarrollo; no aprobado ni publicado.
+### Evaluación de comprensión
+1. ¿Qué ocurre en fetch?
+2. ¿Qué rol tiene el PC?
+3. ¿Por qué el FDE es una simplificación útil?
 
+### Referencias
+- Intel. *Intel® 64 and IA-32 Architectures Software Developer Manuals*. https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html. Consultado: 2026-11-24.
+- Null, L., & Lobur, J. *Essentials of Computer Organization and Architecture*. Jones & Bartlett Learning.
 
-## Registro de revisión editorial interna — 2026-11-24
+---
 
-**Alcance:** revisión documental de alineación con el módulo 1.3 del roadmap, cobertura de los títulos oficiales, secuencia didáctica, consistencia terminológica, ejemplos, actividad práctica, evaluación, seguridad y referencias.
+## Lección 1.3.4 — Conjunto de instrucciones
 
-**Resultado:** revisión interna realizada; no equivale a aprobación académica externa ni a validación práctica. Se identificaron los ajustes anotados en este registro y se mantienen explícitas las actividades pendientes. Los laboratorios y ejemplos no se declaran ejecutados. Antes de cambiar el estado editorial se requiere cotejo bibliográfico final, ejecución reproducible de actividades y revisión por un segundo evaluador.
+### Identificación
+- **Lección oficial:** 1.3.4 — Conjunto de instrucciones. **Secuencia:** 4/8.
 
-**Hallazgos y pendientes específicos:** Se revisaron los modelos de arquitectura, el flujo de instrucción, ISA, entrada/salida e interrupciones. El simulador permanece como práctica conceptual no ejecutada. Pendiente: validar la representación con una ISA y simulador concretos, sin presentar el modelo didáctico como microarquitectura universal.
+### Propósito de aprendizaje
+Comprender qué es una ISA y cómo define la interfaz entre software y hardware.
+
+### Conocimientos previos
+- Lecciones 1.1.1, 1.3.3.
+
+### Resultados de aprendizaje
+- Definir ISA (Instruction Set Architecture).
+- Distinguir ISA y microarquitectura.
+- Identificar tipos de instrucciones.
+- Reconocer implicaciones de compatibilidad.
+
+### Desarrollo conceptual
+El **Instruction Set Architecture (ISA)** es el contrato que define qué instrucciones puede ejecutar un procesador, qué registros son visibles, cómo se direcciona memoria, qué tipos de datos soporta y cómo se comportan interrupciones/excepciones. Ejemplos: x86-64, ARMv8-A, RISC-V.
+
+La **microarquitectura** es la implementación interna de la ISA: pipelines, cachés, ejecución fuera de orden, tamaño de buffers. Dos CPUs pueden implementar la misma ISA pero tener microarquitecturas diferentes y rendimiento distinto.
+
+Tipos comunes de instrucciones: aritméticas/lógicas, transferencia de datos, control de flujo (saltos/llamadas), E/S y sistema.
+
+### Ejemplo técnico desarrollado
+**Compatibilidad:** un binario compilado para x86-64 no se ejecuta nativamente en ARM, porque la ISA es diferente. Puede requerir recompilación o emulación/traducción.
+
+**Interpretación:** la ISA define compatibilidad de software a nivel binario.
+
+### Práctica guiada
+- Clasifica estas instrucciones hipotéticas: `MOV`, `ADD`, `JMP`, `CMP`, `LOAD`.
+- Indica si pertenecen a transferencia, aritmética, control o comparación.
+
+### Actividad independiente
+Investiga una diferencia visible entre x86-64 y ARM (licencia, uso típico, o filosofía RISC/CISC) y explica por qué no significa que una sea “mejor” en todo.
+
+### Criterios de aceptación
+- Define ISA correctamente.
+- Distingue ISA de microarquitectura.
+- Explica implicación de compatibilidad.
+
+### Errores frecuentes y recomendaciones
+- **Error:** confundir ISA con lenguaje de programación. **Recomendación:** ISA es nivel máquina.
+- **Error:** pensar que mismo ISA implica mismo rendimiento. **Recomendación:** la microarquitectura importa.
+- **Error:** usar “RISC/CISC” como etiqueta absoluta moderna. **Recomendación:** matizar que las arquitecturas actuales combinan ideas.
+
+### Evaluación de comprensión
+1. ¿Qué define una ISA?
+2. ¿Qué diferencia hay entre ISA y microarquitectura?
+3. ¿Por qué un programa compilado para una ISA puede no funcionar en otra?
+
+### Referencias
+- Arm. *Learn the architecture*. https://developer.arm.com/documentation/. Consultado: 2026-11-24.
+- RISC-V International. *Specifications*. https://riscv.org/specifications/. Consultado: 2026-11-24.
+- Intel. *Software Developer Manuals*. https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html. Consultado: 2026-11-24.
+
+---
+
+## Lección 1.3.5 — Registros del procesador
+
+### Identificación
+- **Lección oficial:** 1.3.5 — Registros del procesador. **Secuencia:** 5/8.
+
+### Propósito de aprendizaje
+Profundizar en los tipos de registros y su rol en la ejecución.
+
+### Conocimientos previos
+- Lección 1.1.3, 1.3.3.
+
+### Resultados de aprendizaje
+- Identificar tipos comunes de registros.
+- Explicar rol de PC, IR, SP y flags.
+- Relacionar registros con el ciclo FDE.
+- Reconocer variación por arquitectura.
+
+### Desarrollo conceptual
+Además de registros de propósito general, la CPU usa registros especiales:
+
+- **PC (Program Counter):** dirección de la siguiente instrucción.
+- **IR (Instruction Register):** instrucción actual cargada.
+- **SP (Stack Pointer):** tope de la pila.
+- **FLAGS/Status Register:** estado de operaciones (cero, carry, overflow, negativo).
+- **Registros de propósito general:** operandos y resultados temporales.
+
+Estos registros son visibles en distintos grados según el modelo. En programación de alto nivel, el compilador los asigna; en ensamblador, pueden manipularse directamente según la ISA.
+
+### Ejemplo técnico desarrollado
+**Condicional: `if (a == b)`**
+
+1. Se cargan `a` y `b` en registros.
+2. Se ejecuta comparación (CMP/SUB según ISA).
+3. Se actualiza el flag Z (zero) si son iguales.
+4. Una instrucción de salto condicional consulta el flag.
+5. El PC cambia a la dirección del bloque correspondiente.
+
+### Práctica guiada
+- Crea una tabla con PC, IR, SP, FLAGS, R1. Describe su función en una frase.
+
+### Actividad independiente
+Explica qué pasaría si el PC no se actualizara correctamente tras una instrucción.
+
+### Criterios de aceptación
+- Identifica al menos 4 registros especiales.
+- Relaciona flags con control de flujo.
+- Describe consecuencia de PC incorrecto.
+
+### Errores frecuentes y recomendaciones
+- **Error:** pensar que hay un único conjunto de registros para todas las CPUs. **Recomendación:** depender de la ISA.
+- **Error:** confundir SP con heap. **Recomendación:** SP apunta a pila, no a heap.
+
+### Evaluación de comprensión
+1. ¿Qué almacena el IR?
+2. ¿Para qué sirve el flag zero?
+3. ¿Qué registro indica la siguiente instrucción?
+
+### Referencias
+- Intel. *Software Developer Manuals*. https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html. Consultado: 2026-11-24.
+- Arm. *Programmer's Guide*. https://developer.arm.com/documentation/. Consultado: 2026-11-24.
+
+---
+
+## Lección 1.3.6 — Memoria
+
+### Identificación
+- **Lección oficial:** 1.3.6 — Memoria. **Secuencia:** 6/8.
+
+### Propósito de aprendizaje
+Comprender la memoria como componente arquitectónico para instrucciones y datos.
+
+### Conocimientos previos
+- Lecciones 1.1.7-1.1.9, 1.3.1.
+
+### Resultados de aprendizaje
+- Explicar rol de memoria en la arquitectura.
+- Distinguir memoria principal, caché y almacenamiento.
+- Comprender direccionamiento básico.
+- Relacionar memoria con rendimiento.
+
+### Desarrollo conceptual
+En la arquitectura del computador, la memoria almacena instrucciones y datos necesarios para la ejecución. La **memoria principal** (RAM) es la zona de trabajo activa. La **caché** reduce latencia entre CPU y RAM. El **almacenamiento** (SSD/HDD) conserva datos persistentes, pero es más lento.
+
+El direccionamiento permite ubicar datos. La CPU usa direcciones para leer/escribir. En sistemas modernos, la dirección virtual se traduce a física mediante MMU y tablas de páginas, lo que permite aislamiento y memoria virtual.
+
+La jerarquía de memoria existe por el compromiso costo/velocidad/capacidad: lo más rápido es pequeño y caro; lo más grande es más lento y barato por bit.
+
+### Ejemplo técnico desarrollado
+**Acceso a dato:**
+1. CPU solicita dirección X.
+2. Busca en L1 → miss.
+3. Busca en L2 → miss.
+4. Busca en L3 → hit.
+5. Se entrega dato a CPU y se copia en niveles superiores según política.
+
+**Interpretación:** varios niveles intentan ocultar la latencia de RAM.
+
+### Práctica guiada
+- Dibuja la jerarquía de memoria y anota velocidad/capacidad relativa.
+
+### Actividad independiente
+Explica por qué aumentar RAM puede mejorar rendimiento en algunos casos pero no en otros.
+
+### Criterios de aceptación
+- Jerarquía correcta.
+- Diferencia memoria principal y almacenamiento.
+- Explica miss/hit a nivel básico.
+
+### Errores frecuentes y recomendaciones
+- **Error:** llamar “memoria” solo al disco. **Recomendación:** distinguir RAM y almacenamiento.
+- **Error:** ignorar memoria virtual. **Recomendación:** mencionar que el SO puede usar disco como extensión.
+
+### Evaluación de comprensión
+1. ¿Qué diferencia hay entre RAM y SSD en arquitectura?
+2. ¿Qué es un cache hit?
+3. ¿Por qué existe la jerarquía de memoria?
+
+### Referencias
+- Hennessy, J. L., & Patterson, D. A. *Computer Architecture: A Quantitative Approach*. Morgan Kaufmann.
+- Microsoft Learn. *Windows memory management*. https://learn.microsoft.com/en-us/windows/win32/memory/memory-management. Consultado: 2026-11-24.
+
+---
+
+## Lección 1.3.7 — Entrada y salida
+
+### Identificación
+- **Lección oficial:** 1.3.7 — Entrada y salida. **Secuencia:** 7/8.
+
+### Propósito de aprendizaje
+Comprender cómo el sistema se comunica con dispositivos externos.
+
+### Conocimientos previos
+- Lecciones 1.1.16, 1.3.1, 1.3.6.
+
+### Resultados de aprendizaje
+- Definir subsistema de E/S.
+- Distinguir E/S programada, por interrupciones y DMA a nivel básico.
+- Explicar rol de controladores/drivers.
+- Identificar cuellos de botella de E/S.
+
+### Desarrollo conceptual
+La entrada/salida (I/O) permite que el computador reciba datos y envíe resultados. Incluye teclados, discos, red, pantallas, sensores, etc. El subsistema de E/S involucra hardware (controladores, puertos, buses) y software (drivers, sistema operativo).
+
+Modos básicos:
+- **E/S programada (polling):** la CPU consulta repetidamente el estado del dispositivo. Simple, pero desperdicia CPU.
+- **E/S por interrupciones:** el dispositivo avisa cuando está listo. Más eficiente.
+- **DMA (Direct Memory Access):** un controlador transfiere datos entre dispositivo y memoria sin ocupar la CPU en cada byte. La CPU se libera para otras tareas.
+
+Los drivers traducen solicitudes del SO a comandos del dispositivo. Sin driver adecuado, el dispositivo puede no funcionar correctamente.
+
+### Ejemplo técnico desarrollado
+**Lectura de disco:**
+1. Aplicación pide leer archivo.
+2. SO solicita al driver.
+3. Controlador inicia lectura.
+4. Datos se transfieren a memoria por DMA.
+5. Controlador genera interrupción al finalizar.
+6. SO entrega datos a la aplicación.
+
+### Práctica guiada
+- Compara polling vs interrupciones en una tabla: uso de CPU, complejidad, latencia/respuesta.
+
+### Actividad independiente
+Identifica un dispositivo de tu equipo y describe qué tipo de E/S sería más eficiente para él.
+
+### Criterios de aceptación
+- Define E/S y menciona 3 modos.
+- Explica DMA correctamente.
+- Relaciona driver con dispositivo.
+
+### Errores frecuentes y recomendaciones
+- **Error:** creer que la CPU siempre mueve todos los datos. **Recomendación:** incluir DMA.
+- **Error:** confundir driver con aplicación. **Recomendación:** driver es software de interfaz con hardware.
+
+### Evaluación de comprensión
+1. ¿Qué ventaja tiene DMA?
+2. ¿Qué problema tiene el polling?
+3. ¿Qué es un driver?
+
+### Referencias
+- Silberschatz, A., et al. *Operating System Concepts*. Wiley.
+- Linux Kernel Documentation. *DMA*. https://www.kernel.org/doc/html/latest/core-api/dma-api.html. Consultado: 2026-11-24.
+
+---
+
+## Lección 1.3.8 — Interrupciones
+
+### Identificación
+- **Lección oficial:** 1.3.8 — Interrupciones. **Secuencia:** 8/8.
+
+### Propósito de aprendizaje
+Comprender cómo las interrupciones permiten responder a eventos sin espera activa.
+
+### Conocimientos previos
+- Lecciones 1.3.3, 1.3.7.
+
+### Resultados de aprendizaje
+- Definir interrupción y excepción.
+- Explicar el flujo básico de manejo.
+- Distinguir interrupciones hardware/software.
+- Reconocer importancia para multitarea y E/S.
+
+### Desarrollo conceptual
+Una **interrupción** es una señal que altera el flujo normal de ejecución para atender un evento. Puede ser de hardware (teclado, red, disco) o de software (llamada al sistema, instrucción especial). Las **excepciones** suelen generarse por condiciones durante la ejecución: división por cero, fallo de página, instrucción inválida.
+
+Flujo básico:
+1. Se recibe la interrupción.
+2. CPU guarda estado mínimo (PC, flags, registros necesarios).
+3. Se identifica el vector/manejador.
+4. Se ejecuta la rutina de servicio (ISR).
+5. Se restaura estado y se reanuda la ejecución.
+
+Las interrupciones permiten eficiencia: en lugar de hacer polling, la CPU trabaja en otras tareas y responde cuando llega el evento. También son base para planificación del sistema operativo.
+
+### Ejemplo técnico desarrollado
+**Llegada de paquete de red:**
+1. NIC recibe paquete y genera interrupción.
+2. CPU pausa tarea actual, guarda contexto.
+3. ISR/driver procesa el evento o programa procesamiento posterior.
+4. CPU restaura contexto y continúa.
+
+### Práctica guiada
+- Dibuja el flujo de manejo de interrupción en 5 pasos.
+
+### Actividad independiente
+Da un ejemplo de interrupción de hardware y uno de excepción de software. Explica la diferencia.
+
+### Criterios de aceptación
+- Define interrupción y excepción.
+- Describe flujo correcto.
+- Da ejemplos adecuados.
+
+### Errores frecuentes y recomendaciones
+- **Error:** confundir interrupción con error siempre. **Recomendación:** muchas interrupciones son eventos normales.
+- **Error:** pensar que la ISR debe hacer todo el trabajo pesado. **Recomendación:** suele diferir trabajo al kernel/colas.
+
+### Evaluación de comprensión
+1. ¿Qué diferencia hay entre interrupción y excepción?
+2. ¿Por qué las interrupciones mejoran eficiencia frente a polling?
+3. ¿Qué se debe guardar antes de atender una interrupción?
+
+### Referencias
+- Intel. *Software Developer Manuals*. https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html. Consultado: 2026-11-24.
+- Silberschatz, A., et al. *Operating System Concepts*. Wiley.
+
+---
+
+## Cierre del módulo
+- **Evaluación:** trazar FDE, comparar Von Neumann/Harvard, explicar ISA, describir interrupción.
+- **Criterio:** 75% y explicación coherente de flujo de ejecución.

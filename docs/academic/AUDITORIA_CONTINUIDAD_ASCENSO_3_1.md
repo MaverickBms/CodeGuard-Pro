@@ -295,8 +295,8 @@ Se realizó una pasada de revisión editorial documental sobre las etapas 1–10
 
 ### Ajustes editoriales aplicados
 
-- **Etapa 1:** revisión de los cinco módulos; se consolidó el segundo bloque de autoevaluación de representación de información como cierre reflexivo para evitar un encabezado duplicado.
-- **Etapa 2:** revisión de las 39 entradas; se retiró una referencia que era una nota editorial y no un recurso bibliográfico para estudiantes.
+- **Etapa 1:** desarrollo documental por lección completado en esta sesión para los 5 módulos (46/46 lecciones) con estructura didáctica por lección (identificación, propósito, prerrequisitos, resultados, desarrollo, ejemplo, práctica guiada, actividad independiente, criterios, errores, evaluación y referencias). Estado: **DESARROLLADO**; pendiente validación editorial externa, verificación técnica y ejecución de ejemplos.
+- **Etapa 2:** desarrollo documental por lección completado en esta sesión para los 5 módulos (39/39 lecciones) con la misma estructura por lección; el documento monolítico fue reemplazado por índice y módulos 2.1-2.5. Estado: **DESARROLLADO**; pendiente validación editorial externa, verificación técnica y ejecución de ejemplos.
 - **Etapa 3:** revisión de las 48 entradas; se declaró JDK 21 como línea base para reproducibilidad y se documentaron las APIs que requieren Java 11 o posterior.
 - **Etapa 4:** revisión de POO, relaciones, diseño, paradigmas y UML; se alineó la compatibilidad de ejemplos con JDK 21.
 - **Etapa 5:** se ordenó la secuencia de Git según el roadmap, se corrigió puntuación y se reforzaron las precauciones para comandos destructivos, ramas y secretos.
@@ -427,3 +427,29 @@ Esta pasada completa la **redacción individual inicial y la revisión editorial
 5. evidencias trazables y resolución de hallazgos antes de cualquier importación.
 
 No se ejecutaron pruebas ni laboratorios en esta pasada; no se aprobaron, importaron ni publicaron lecciones. El objetivo oficial de la etapa 25 continúa vacío. El JSON curricular permanece intacto.
+
+## Addendum de sesión — 2026-11-24 (worktree local, agente)
+
+### Contexto
+
+- Trabajo realizado en `content/ascenso-stage-0-learning-method` (worktree separado), después de detectar que la rama remota tenía commits adicionales respecto a la base local inicial. Se hizo rebase sobre `origin/content/ascenso-stage-0-learning-method` y se resolvieron conflictos conservando el contenido más detallado para etapas 1-2.
+
+### Desarrollo realizado en esta sesión
+
+- **Etapa 1 (46 lecciones, módulos 1.1-1.5):** reescritura a nivel lección con estructura didáctica completa por lección: identificación, propósito, conocimientos previos, resultados observables, desarrollo conceptual, ejemplo técnico, práctica guiada, actividad independiente, criterios de aceptación, errores frecuentes, evaluación de comprensión y referencias.
+- **Etapa 2 (39 lecciones, módulos 2.1-2.5):** creación de módulos por lección con la misma estructura; el documento monolítico quedó como índice.
+
+### Cobertura honesta de esta sesión
+
+- Lecciones desarrolladas documentalmente por lección en esta sesión: **85** (Etapa 1: 46, Etapa 2: 39).
+- Lecciones validadas técnicamente: **0**.
+- Lecciones con ejecución de ejemplos: **0**.
+- Referencias: incluidas como fuentes candidatas; **no verificadas una por una** por web/fetch en esta sesión.
+
+### Pendientes críticos
+
+- Verificar referencias/URLs y vigencia de todas las lecciones desarrolladas.
+- Ejecutar ejemplos de código/labs en entorno controlado y registrar evidencia.
+- Revisar coherencia técnica con revisión humana experta.
+- Continuar desarrollo por lección de etapas 3-32 según prioridad y estado real de sus documentos.
+- Obtener manifiesto UUID real antes de cualquier conversión/importación.

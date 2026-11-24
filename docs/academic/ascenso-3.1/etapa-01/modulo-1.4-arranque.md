@@ -1,143 +1,447 @@
 # Etapa 1 · Módulo 1.4 — Arranque
 
-**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
-**Alineación:** ASCENSO 3.1, Etapa 1, apartado 1.4.  
-**Temas oficiales:** BIOS, UEFI, POST, bootloader, kernel, secuencia de arranque y Secure Boot.
+**Estado:** borrador académico desarrollado (pendiente validación editorial externa y verificación técnica formal).  
+**Alineación:** ASCENSO 3.1, Etapa 1, Módulo 1.4.  
+**Última actualización:** 2026-11-24
 
-## Objetivo
+## Identificación del módulo
+- **Etapa:** 1 — Fundamentos de computación y arquitectura del computador.
+- **Módulo:** 1.4 — Arranque.
+- **Lecciones oficiales:** 7 (1.4.1 a 1.4.7).
+- **Prerrequisitos:** Módulos 1.1, 1.2, 1.3.
 
-Comprender la secuencia general que sigue un computador desde que recibe energía hasta que el sistema operativo toma el control.
+## Propósito del módulo
+Explicar cómo un computador pasa de estar apagado a tener un sistema operativo en ejecución, identificando componentes, secuencias y controles de seguridad.
 
-## Resultados de aprendizaje
+## Resultados de aprendizaje del módulo
+1. Describir BIOS, UEFI, POST, bootloader, kernel y secuencia de arranque.
+2. Explicar el rol de Secure Boot.
+3. Diagnosticar conceptualmente fallos básicos de arranque.
 
-Podrás diferenciar BIOS y UEFI; explicar la función del POST; identificar el cargador de arranque y el kernel; ordenar las fases generales del inicio; explicar qué protege Secure Boot y qué no garantiza.
+---
 
-## 1.4.1 — Secuencia general de arranque
+## Lección 1.4.1 — BIOS
 
-La secuencia exacta depende del firmware, la arquitectura, el sistema operativo y la configuración. Como modelo general:
+### Identificación
+- **Lección oficial:** 1.4.1 — BIOS. **Secuencia:** 1/7.
 
-1. Se aplica alimentación y se inicializan circuitos.
-2. El firmware de la plataforma comienza a ejecutarse.
-3. Se inicializan y comprueban componentes esenciales.
-4. El firmware selecciona un dispositivo u opción de arranque.
-5. Se ejecuta un cargador de arranque o una aplicación de arranque.
-6. El cargador prepara y transfiere el control al kernel.
-7. El kernel inicializa memoria, controladores y subsistemas.
-8. Se inician servicios y la interfaz o sesión del usuario.
+### Propósito de aprendizaje
+Comprender qué es la BIOS y su rol histórico en el arranque.
 
-Esta secuencia es un mapa conceptual; algunos pasos pueden ocurrir en otro orden o combinarse.
+### Conocimientos previos
+- ROM/firmware, CPU, memoria.
 
-## 1.4.2 — BIOS
+### Resultados de aprendizaje
+- Definir BIOS.
+- Explicar funciones básicas de inicialización.
+- Reconocer limitaciones frente a UEFI.
+- Identificar riesgos de actualización de firmware.
 
-BIOS (Basic Input/Output System) es el firmware tradicional de arranque de PC. Proporciona inicialización básica y mecanismos para iniciar desde un dispositivo. El término también se usa informalmente para referirse a la configuración del firmware.
+### Desarrollo conceptual
+BIOS (Basic Input/Output System) es firmware tradicional de PCs que inicializa hardware básico al encender el equipo y proporciona servicios de arranque. Se ejecuta desde memoria no volátil y prepara el sistema para cargar un bootloader desde un dispositivo de arranque.
 
-Los equipos actuales suelen utilizar UEFI. Por ello, «entrar al BIOS» puede significar realmente abrir la configuración UEFI.
+Funciones típicas: POST, detección básica de hardware, configuración (CMOS/Setup), orden de arranque y carga del sector de arranque (MBR en esquemas clásicos).
 
-## 1.4.3 — UEFI
+Limitaciones: soporte histórico para MBR, interfaces de configuración limitadas, arranque menos flexible y menos capacidades modernas de seguridad comparado con UEFI. Hoy muchos sistemas usan UEFI, aunque el término “BIOS” se usa coloquialmente.
 
-UEFI (Unified Extensible Firmware Interface) es una especificación de interfaz entre firmware y software de plataforma. Define servicios de arranque, variables, tablas y aplicaciones EFI, entre otros elementos.
+### Ejemplo técnico desarrollado
+**Flujo clásico:**
+1. Encendido.
+2. BIOS ejecuta POST.
+3. Detecta discos/teclado/video básicos.
+4. Lee MBR del dispositivo seleccionado.
+5. Carga bootloader.
 
-En una configuración UEFI habitual, el firmware puede cargar una aplicación EFI desde una partición del sistema EFI. En equipos con Windows o Linux, esa aplicación puede ser un gestor de arranque del sistema.
+### Práctica guiada
+- En un equipo de laboratorio o VM, identifica si el firmware es BIOS/Legacy o UEFI (sin cambiar configuración).
+- Registra el método usado.
 
-UEFI no es un sistema operativo ni un sustituto del kernel. Es parte de la plataforma de firmware que prepara el entorno para iniciar software.
+### Actividad independiente
+Compara 3 limitaciones de BIOS clásico frente a UEFI en una tabla.
 
-## 1.4.4 — POST
+### Criterios de aceptación
+- Define BIOS correctamente.
+- Identifica rol en arranque.
+- Menciona al menos 2 limitaciones.
 
-POST (Power-On Self-Test) es el nombre común para las comprobaciones e inicializaciones que el firmware realiza durante el encendido. Puede detectar o informar problemas con memoria, CPU, vídeo u otros componentes esenciales.
+### Errores frecuentes y recomendaciones
+- **Error:** usar BIOS como sinónimo exacto de UEFI. **Recomendación:** distinguir firmware legacy y UEFI.
+- **Error:** actualizar firmware sin necesidad. **Recomendación:** solo con respaldo y guía oficial.
 
-No todos los equipos muestran un mensaje «POST» explícito. Pueden comunicar errores mediante códigos, luces, pitidos, registros o mensajes del fabricante. Un POST satisfactorio tampoco demuestra que todos los componentes funcionen perfectamente bajo carga.
+### Evaluación de comprensión
+1. ¿Qué hace la BIOS al encender?
+2. ¿Qué es MBR en el contexto clásico?
+3. ¿Por qué UEFI reemplazó en gran medida a BIOS?
 
-**Ejercicio:** consulta el manual del fabricante de un equipo de laboratorio y localiza cómo comunica errores de arranque. No provoques fallos físicos para probarlo.
+### Referencias
+- UEFI Forum. *UEFI Specifications*. https://uefi.org/specifications. Consultado: 2026-11-24.
+- Dell Support. *BIOS and UEFI*. https://www.dell.com/support/kbdoc/en-us/000124211/dell-bios-updates. Consultado: 2026-11-24.
 
-## 1.4.5 — Bootloader (cargador de arranque)
+---
 
-El bootloader es el software que prepara la carga del sistema operativo y transfiere el control al kernel. Puede mostrar un menú de sistemas, parámetros de inicio o herramientas de recuperación.
+## Lección 1.4.2 — UEFI
 
-Ejemplos dependen del sistema: GRUB es común en muchas distribuciones Linux; Windows Boot Manager forma parte del ecosistema Windows. No todos los equipos utilizan el mismo cargador ni todos los sistemas requieren un menú visible.
+### Identificación
+- **Lección oficial:** 1.4.2 — UEFI. **Secuencia:** 2/7.
 
-## 1.4.6 — Kernel
+### Propósito de aprendizaje
+Comprender UEFI como firmware moderno de arranque.
 
-El kernel (núcleo del sistema operativo) administra recursos esenciales: procesos, memoria, dispositivos, interrupciones, llamadas al sistema y aislamiento. Durante el arranque, el cargador lo ubica en memoria y le transfiere el control con los parámetros y estructuras que correspondan.
+### Conocimientos previos
+- Lección 1.4.1.
 
-El kernel no equivale a toda la experiencia del sistema operativo: después de iniciarse pueden cargarse controladores, servicios, procesos de usuario, entorno gráfico y aplicaciones.
+### Resultados de aprendizaje
+- Definir UEFI.
+- Explicar ventajas frente a BIOS.
+- Comprender ESP y arranque UEFI a nivel básico.
+- Relacionar UEFI con Secure Boot.
 
-## 1.4.7 — Secure Boot
+### Desarrollo conceptual
+UEFI (Unified Extensible Firmware Interface) es una especificación de interfaz entre firmware y sistema operativo. Proporciona inicialización de hardware, servicios de arranque y un entorno más flexible que BIOS.
 
-Secure Boot es una función de UEFI que verifica firmas y políticas de confianza para controlar qué aplicaciones EFI pueden ejecutarse durante el arranque. Su propósito es reducir el riesgo de que código no autorizado se ejecute antes del sistema operativo.
+Ventajas comunes: soporte para discos GPT grandes, interfaz más rica, drivers y aplicaciones UEFI, arranque desde partición EFI System Partition (ESP), y soporte para Secure Boot.
 
-Límites importantes:
-- no impide todos los ataques;
-- no garantiza que el sistema operativo esté libre de vulnerabilidades;
-- depende de claves, bases de confianza, revocaciones y configuración;
-- una cadena de arranque confiable no sustituye actualizaciones, cifrado, controles de acceso ni copias de seguridad.
+La ESP es una partición formateada normalmente en FAT32 que contiene cargadores de arranque y archivos necesarios. UEFI puede cargar un ejecutable EFI directamente, según configuración NVRAM.
 
-No cambies claves, desactives Secure Boot ni modifiques el modo de arranque de tu equipo principal como parte de este módulo. Un cambio incorrecto puede impedir el inicio o afectar la capacidad de arrancar medios instalados.
+### Ejemplo técnico desarrollado
+**Arranque UEFI típico:**
+1. Firmware UEFI inicializa hardware.
+2. Lee entradas de arranque en NVRAM.
+3. Carga el cargador EFI desde la ESP.
+4. El cargador inicia el kernel/sistema operativo.
 
-## Laboratorio — Reconstruir la ruta de arranque
+### Práctica guiada
+- En Linux, verifica si el sistema arrancó en UEFI: `test -d /sys/firmware/efi && echo UEFI || echo Legacy`.
+- Documenta el resultado.
 
-**Objetivo:** documentar el arranque de un equipo propio sin modificar firmware ni configuración.
+### Actividad independiente
+Crea una tabla comparativa BIOS vs UEFI con 5 criterios: disco, partición, seguridad, interfaz, extensibilidad.
 
-1. Identifica modelo y fabricante del equipo.
-2. Consulta documentación del fabricante para saber si usa UEFI.
-3. Desde el sistema operativo, consulta de forma no invasiva el modo de arranque y la información de Secure Boot, si está disponible.
-4. Identifica el gestor de arranque y el sistema operativo instalado.
-5. Dibuja la secuencia firmware → selección de arranque → bootloader → kernel → servicios/sesión.
-6. Señala qué fases pudiste observar y cuáles inferiste a partir de documentación.
-7. Añade un apartado de recuperación: cómo consultar el manual oficial antes de realizar cambios.
+### Criterios de aceptación
+- Define UEFI.
+- Menciona ESP o NVRAM.
+- Compara correctamente con BIOS.
 
-No modifiques particiones, entradas de firmware, claves, NVRAM ni configuración de Secure Boot. No ejecutes comandos de reparación ni de escritura.
+### Errores frecuentes y recomendaciones
+- **Error:** decir que UEFI es “una BIOS nueva” sin matizar. **Recomendación:** es una especificación diferente.
+- **Error:** confundir UEFI con Secure Boot. **Recomendación:** Secure Boot es una capacidad relacionada.
 
-### Evidencias
+### Evaluación de comprensión
+1. ¿Qué es la ESP?
+2. ¿Qué mejora UEFI sobre BIOS clásico?
+3. ¿UEFI y Secure Boot son lo mismo?
 
-- ficha del equipo sin número de serie;
-- captura redactada o transcripción de la información no sensible;
-- diagrama de secuencia;
-- tabla «observado / documentado / inferido»;
-- conclusión con límites y fuentes.
+### Referencias
+- UEFI Forum. *UEFI Specification*. https://uefi.org/specifications. Consultado: 2026-11-24.
+- Microsoft Learn. *UEFI firmware*. https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-uefi. Consultado: 2026-11-24.
 
-### Rúbrica (100 puntos)
+---
 
-| Criterio | Puntos |
-|---|---:|
-| Diferencia BIOS/UEFI | 15 |
-| Explica POST y firmware | 15 |
-| Ubica bootloader y kernel | 20 |
-| Ordena la secuencia correctamente | 20 |
-| Explica Secure Boot y límites | 20 |
-| Seguridad y trazabilidad | 10 |
+## Lección 1.4.3 — POST
 
-## Ejercicios
+### Identificación
+- **Lección oficial:** 1.4.3 — POST. **Secuencia:** 3/7.
 
-1. ¿Por qué decir «BIOS» puede ser impreciso en un equipo UEFI?
-2. ¿Qué objetivo tiene POST?
-3. ¿Qué tarea realiza el bootloader?
-4. ¿Qué administra el kernel?
-5. ¿Qué verifica Secure Boot?
-6. ¿Por qué Secure Boot no garantiza un sistema completamente seguro?
+### Propósito de aprendizaje
+Comprender el POST como verificación inicial de hardware.
 
-**Respuestas orientativas:** muchos equipos usan firmware UEFI; POST inicializa y comprueba componentes; bootloader prepara y carga el kernel; kernel administra recursos y mecanismos centrales; Secure Boot valida confianza/firma de aplicaciones de arranque; la seguridad también depende de vulnerabilidades, configuración, actualizaciones, credenciales y controles posteriores.
+### Conocimientos previos
+- Lecciones 1.4.1 o 1.4.2.
 
-## Recursos audiovisuales
+### Resultados de aprendizaje
+- Definir POST.
+- Identificar qué verifica a alto nivel.
+- Interpretar señales de falla básicas (beeps/códigos/LEDs) con cautela.
+- Distinguir POST de arranque del SO.
 
-No se incorpora video en esta versión porque no se ha verificado una pieza con audio hablado en español que explique de manera precisa BIOS, UEFI, POST, bootloader, kernel y Secure Boot. No se recomienda un tutorial de cambio de BIOS/UEFI como sustituto de una explicación conceptual segura.
+### Desarrollo conceptual
+POST (Power-On Self-Test) es un proceso de verificación inicial ejecutado por el firmware al encender el equipo. Comprueba componentes básicos necesarios para iniciar: CPU, memoria, video básico, teclado y otros dispositivos esenciales, según plataforma.
 
-## Referencias
+Si detecta fallas críticas, puede emitir códigos de pitidos, códigos en pantalla, LEDs de diagnóstico o detener el arranque. Los códigos son específicos del fabricante/placa.
 
-- UEFI Forum, **UEFI Specifications**: https://uefi.org/specifications
-- Microsoft Learn, **Secure Boot**: https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-secure-boot
-- Microsoft Learn, **Windows boot process**: https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/boot-and-uefi
-- GNU GRUB Manual: https://www.gnu.org/software/grub/manual/grub/grub.html
-- EducACCIÓN dixital (Xunta de Galicia), **Análise de sistemas. Software** (secuencia de arranque, material institucional): https://recursos.edu.xunta.gal/sites/default/files/recurso/1639064851/32_anlise_de_sistemas_software.html
+POST no garantiza que todo el sistema esté perfecto; solo verifica condiciones básicas para continuar el arranque.
 
-**Consulta de fuentes:** 2026-11-19.  
-**Verificación práctica:** laboratorio de observación propuesto; no ejecutado en un equipo físico.  
-**Estado editorial:** en desarrollo; no aprobado ni publicado.
+### Ejemplo técnico desarrollado
+**Caso:** equipo enciende pero no muestra imagen y emite pitidos.
+1. Firmware inicia POST.
+2. Detecta problema en RAM.
+3. Emite código de pitidos según fabricante.
+4. No continúa al bootloader.
 
+**Interpretación:** el fallo ocurre antes de cargar el sistema operativo.
 
-## Registro de revisión editorial interna — 2026-11-24
+### Práctica guiada
+- Busca en el manual de una placa base de ejemplo qué significan dos códigos de POST. Registra fabricante y modelo.
 
-**Alcance:** revisión documental de alineación con el módulo 1.4 del roadmap, cobertura de los títulos oficiales, secuencia didáctica, consistencia terminológica, ejemplos, actividad práctica, evaluación, seguridad y referencias.
+### Actividad independiente
+Describe un árbol de diagnóstico simple: si no hay video, ¿qué revisarías primero sin abrir la PSU?
 
-**Resultado:** revisión interna realizada; no equivale a aprobación académica externa ni a validación práctica. Se identificaron los ajustes anotados en este registro y se mantienen explícitas las actividades pendientes. Los laboratorios y ejemplos no se declaran ejecutados. Antes de cambiar el estado editorial se requiere cotejo bibliográfico final, ejecución reproducible de actividades y revisión por un segundo evaluador.
+### Criterios de aceptación
+- Define POST.
+- Distingue POST de carga del SO.
+- Usa precaución con códigos específicos del fabricante.
 
-**Hallazgos y pendientes específicos:** Se revisaron la secuencia firmware–POST–cargador–kernel y las diferencias entre BIOS heredado y UEFI. Se conserva el enfoque de observación, sin modificar firmware. Pendiente: verificar el recorrido en equipos de referencia y documentar diferencias de fabricante/arranque.
+### Errores frecuentes y recomendaciones
+- **Error:** interpretar cualquier pitido sin consultar el manual. **Recomendación:** revisar documentación del fabricante.
+- **Error:** asumir que si pasa POST todo el hardware está bien. **Recomendación:** POST es verificación básica.
+
+### Evaluación de comprensión
+1. ¿Cuándo ocurre el POST?
+2. ¿Qué tipo de fallas puede detectar?
+3. ¿Por qué los códigos de pitido dependen del fabricante?
+
+### Referencias
+- AMI. *AMIBIOS Beep Codes / documentation* (referencia de fabricante; verificar modelo específico). https://www.ami.com/support/. Consultado: 2026-11-24.
+- HP Support. *POST error messages*. https://support.hp.com/. Consultado: 2026-11-24.
+
+---
+
+## Lección 1.4.4 — Bootloader
+
+### Identificación
+- **Lección oficial:** 1.4.4 — Bootloader. **Secuencia:** 4/7.
+
+### Propósito de aprendizaje
+Comprender el rol del bootloader en la carga del sistema operativo.
+
+### Conocimientos previos
+- Lecciones 1.4.1-1.4.3.
+
+### Resultados de aprendizaje
+- Definir bootloader.
+- Explicar su función entre firmware y kernel.
+- Identificar ejemplos comunes (GRUB, Windows Boot Manager).
+- Reconocer riesgos de configuración incorrecta.
+
+### Desarrollo conceptual
+El bootloader es un programa pequeño encargado de cargar el sistema operativo o el kernel en memoria y transferirle el control. Puede presentar un menú de arranque, pasar parámetros al kernel y soportar múltiples sistemas.
+
+Ejemplos: GRUB en muchas distribuciones Linux, Windows Boot Manager en Windows, bootloaders de Android/embebidos.
+
+En UEFI, el bootloader suele ser un ejecutable EFI en la ESP. En BIOS legacy, puede cargarse desde MBR y etapas posteriores.
+
+Un bootloader mal configurado puede impedir el arranque, aunque el hardware y el SO estén intactos.
+
+### Ejemplo técnico desarrollado
+**GRUB simplificado:**
+1. Firmware carga GRUB.
+2. GRUB lee su configuración.
+3. Muestra opciones de kernel.
+4. Usuario selecciona o se usa opción por defecto.
+5. GRUB carga kernel e initramfs en memoria.
+6. Pasa control al kernel.
+
+### Práctica guiada
+- En una VM Linux, observa el menú de GRUB (si está visible) o revisa `/boot/grub/grub.cfg` sin editarlo.
+- Identifica una entrada de arranque.
+
+### Actividad independiente
+Explica la diferencia entre bootloader y BIOS/UEFI.
+
+### Criterios de aceptación
+- Define bootloader.
+- Ubica bootloader en la secuencia de arranque.
+- Da un ejemplo real.
+
+### Errores frecuentes y recomendaciones
+- **Error:** confundir bootloader con kernel. **Recomendación:** bootloader carga; kernel gestiona el sistema.
+- **Error:** editar GRUB sin respaldo. **Recomendación:** no modificar en sistemas críticos sin conocimiento.
+
+### Evaluación de comprensión
+1. ¿Qué hace el bootloader?
+2. ¿Qué carga antes del kernel?
+3. Menciona un ejemplo de bootloader.
+
+### Referencias
+- GNU GRUB Manual. https://www.gnu.org/software/grub/manual/grub/grub.html. Consultado: 2026-11-24.
+- Microsoft Learn. *Boot and UEFI*. https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/boot-and-uefi. Consultado: 2026-11-24.
+
+---
+
+## Lección 1.4.5 — Kernel
+
+### Identificación
+- **Lección oficial:** 1.4.5 — Kernel. **Secuencia:** 5/7.
+
+### Propósito de aprendizaje
+Comprender el rol del kernel en el arranque y operación del sistema.
+
+### Conocimientos previos
+- Lecciones 1.4.4, 1.3.6, 1.3.8.
+
+### Resultados de aprendizaje
+- Definir kernel.
+- Explicar qué hace durante el arranque.
+- Distinguir kernel de bootloader y de shell.
+- Reconocer tipos generales (monolítico, microkernel, híbrido) a nivel básico.
+
+### Desarrollo conceptual
+El kernel es el núcleo del sistema operativo. Gestiona CPU, memoria, dispositivos, sistemas de archivos, procesos y seguridad. Durante el arranque, una vez cargado por el bootloader, inicializa subsistemas esenciales, monta el sistema de archivos raíz y arranca el proceso inicial (init/systemd en Linux, sesión de inicio en Windows).
+
+El kernel opera en modo privilegiado. Las aplicaciones se ejecutan en modo usuario y solicitan servicios mediante llamadas al sistema.
+
+Tipos generales: monolítico (muchos servicios en espacio kernel), microkernel (mínimo en kernel, servicios en espacio usuario), híbrido. La clasificación real puede ser matizada.
+
+### Ejemplo técnico desarrollado
+**Arranque Linux simplificado:**
+1. GRUB carga kernel y initramfs.
+2. Kernel inicializa drivers y memoria.
+3. Monta root filesystem.
+4. Inicia `systemd`/init.
+5. Se levantan servicios y login.
+
+### Práctica guiada
+- En Linux, ejecuta `uname -r` para ver la versión del kernel.
+- Registra el resultado y explica qué indica.
+
+### Actividad independiente
+Explica la diferencia entre kernel panic y una aplicación que se cierra.
+
+### Criterios de aceptación
+- Define kernel.
+- Ubica kernel después del bootloader.
+- Distingue kernel de aplicación.
+
+### Errores frecuentes y recomendaciones
+- **Error:** confundir kernel con terminal. **Recomendación:** kernel es núcleo; shell es interfaz.
+- **Error:** actualizar kernel sin plan en sistemas críticos. **Recomendación:** usar versiones soportadas y respaldo.
+
+### Evaluación de comprensión
+1. ¿Qué carga al kernel?
+2. ¿Qué hace el kernel durante el arranque?
+3. ¿Qué es una llamada al sistema?
+
+### Referencias
+- Linux Kernel Documentation. https://www.kernel.org/doc/html/latest/. Consultado: 2026-11-24.
+- Microsoft Learn. *Windows architecture*. https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/. Consultado: 2026-11-24.
+
+---
+
+## Lección 1.4.6 — Secuencia de arranque
+
+### Identificación
+- **Lección oficial:** 1.4.6 — Secuencia de arranque. **Secuencia:** 6/7.
+
+### Propósito de aprendizaje
+Integrar todos los componentes en una secuencia de arranque coherente.
+
+### Conocimientos previos
+- Lecciones 1.4.1 a 1.4.5.
+
+### Resultados de aprendizaje
+- Describir la secuencia completa de arranque.
+- Identificar puntos de fallo comunes.
+- Distinguir fases: firmware, bootloader, kernel, espacio usuario.
+- Documentar un arranque observado.
+
+### Desarrollo conceptual
+La secuencia de arranque típica es:
+
+1. **Energizado:** fuente entrega energía estable.
+2. **Firmware (BIOS/UEFI):** inicializa hardware mínimo.
+3. **POST:** verifica componentes básicos.
+4. **Selección de dispositivo:** según orden de arranque.
+5. **Bootloader:** carga kernel e initramfs.
+6. **Kernel:** inicializa drivers, memoria, filesystem.
+7. **Init/systemd/servicios:** arranca espacio usuario.
+8. **Login/interfaz:** sistema listo para uso.
+
+Los puntos de fallo pueden ubicarse por fase: sin energía, fallo POST, no encuentra bootloader, kernel panic, fallo de servicio.
+
+### Ejemplo técnico desarrollado
+**Diagnóstico por fase:**
+- Sin LEDs/ventiladores: energía/fuente.
+- Pitidos, sin video: POST/RAM/GPU.
+- “No boot device”: firmware no encuentra dispositivo arrancable.
+- Error GRUB: bootloader/configuración.
+- Kernel panic: kernel, drivers, filesystem.
+
+### Práctica guiada
+- Crea un diagrama de flujo de la secuencia de arranque con 8 pasos y 2 posibles fallos por fase.
+
+### Actividad independiente
+Observa el arranque de una VM y anota mensajes visibles o fases identificables. No modifiques configuración crítica.
+
+### Criterios de aceptación
+- Secuencia ordenada y completa.
+- Fallos ubicados por fase.
+- Diagrama legible.
+
+### Errores frecuentes y recomendaciones
+- **Error:** culpar al SO por fallos antes del bootloader. **Recomendación:** ubicar la fase.
+- **Error:** saltar a reinstalar sin diagnóstico. **Recomendación:** observar mensajes y fase.
+
+### Evaluación de comprensión
+1. ¿Qué ocurre antes del bootloader?
+2. ¿En qué fase aparece un kernel panic?
+3. ¿Cómo ayuda la secuencia a diagnosticar?
+
+### Referencias
+- Microsoft Learn. *Boot process*. https://learn.microsoft.com/en-us/windows/client-management/client-tools/boot-process. Consultado: 2026-11-24.
+- Linux Kernel Docs. *Booting*. https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html. Consultado: 2026-11-24.
+
+---
+
+## Lección 1.4.7 — Secure Boot
+
+### Identificación
+- **Lección oficial:** 1.4.7 — Secure Boot. **Secuencia:** 7/7.
+
+### Propósito de aprendizaje
+Comprender Secure Boot como mecanismo de verificación de integridad en el arranque.
+
+### Conocimientos previos
+- Lecciones 1.4.2, 1.4.4, 1.4.6.
+
+### Resultados de aprendizaje
+- Definir Secure Boot.
+- Explicar qué verifica y qué no verifica.
+- Reconocer beneficios y limitaciones.
+- Identificar casos donde requiere configuración consciente.
+
+### Desarrollo conceptual
+Secure Boot es una característica de UEFI que verifica que los componentes de arranque estén firmados por claves confiables antes de ejecutarlos. Su objetivo es reducir el riesgo de bootkits/malware en etapas tempranas del arranque.
+
+Secure Boot verifica la cadena de arranque según la política y claves configuradas. No protege contra todos los ataques: no reemplaza antivirus/EDR, no evita vulnerabilidades en el SO después del arranque, y no garantiza que el sistema esté libre de malware.
+
+Puede requerir configuración especial para dual boot, drivers o kernels personalizados. Deshabilitarlo debe ser una decisión consciente, documentada y reversible.
+
+### Ejemplo técnico desarrollado
+**Caso:** instalador Linux no arranca con Secure Boot activo.
+1. Firmware verifica firma del bootloader.
+2. Si la firma no es confiable según claves, bloquea ejecución.
+3. Usuario debe usar medio firmado, registrar clave o ajustar configuración según política del entorno.
+
+**Interpretación:** Secure Boot protege, pero también exige compatibilidad de componentes firmados.
+
+### Práctica guiada
+- Verifica estado de Secure Boot: en Linux `mokutil --sb-state` si está disponible; en Windows `Confirm-SecureBootUEFI` en PowerShell con privilegios adecuados.
+- Documenta el resultado.
+
+### Actividad independiente
+Escribe una recomendación de seguridad: ¿cuándo mantener Secure Boot activo y cuándo documentar una excepción?
+
+### Criterios de aceptación
+- Define Secure Boot correctamente.
+- Menciona al menos una limitación.
+- No presenta Secure Boot como protección total.
+
+### Errores frecuentes y recomendaciones
+- **Error:** desactivar Secure Boot “por si acaso”. **Recomendación:** mantenerlo activo salvo necesidad documentada.
+- **Error:** creer que Secure Boot protege todo el sistema. **Recomendación:** es una capa de arranque.
+
+### Evaluación de comprensión
+1. ¿Qué verifica Secure Boot?
+2. ¿Qué no garantiza?
+3. ¿Cuándo puede generar fricción legítima?
+
+### Referencias
+- UEFI Forum. *Secure Boot*. https://uefi.org/specifications. Consultado: 2026-11-24.
+- Microsoft Learn. *Secure Boot*. https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-secure-boot. Consultado: 2026-11-24.
+- Linux Foundation. *Secure Boot*. https://www.linuxfoundation.org/blog/blog/secure-boot-and-linux. Consultado: 2026-11-24.
+
+---
+
+## Cierre del módulo
+- **Evaluación:** secuencia de arranque completa, diferencia BIOS/UEFI, rol de bootloader/kernel, explicación de Secure Boot.
+- **Criterio:** 75% y diagnóstico por fase correcto.
