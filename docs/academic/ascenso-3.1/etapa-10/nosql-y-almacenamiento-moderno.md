@@ -35,6 +35,170 @@ La secuencia práctica indicada por el roadmap es:
 
 El criterio de dominio es poder modelar desde requisitos, explicar relaciones, escribir SQL, comprender transacciones y analizar consultas lentas. No basta memorizar comandos.
 
+## Desarrollo granular por lección
+
+Este desglose conserva los 38 títulos oficiales y añade una unidad identificable para cada uno. Los criterios de selección deben justificarse por requisitos y patrones de acceso, no por popularidad del motor.
+
+### 10.1 — Fundamentos NoSQL
+
+#### 10.1.1 — Qué es NoSQL
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.1.2 — Diferencias SQL vs. NoSQL
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.1.3 — Modelos de almacenamiento
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.1.4 — Consistencia
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.1.5 — Disponibilidad
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.1.6 — Escalabilidad
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.1.7 — CAP Theorem
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.1.8 — Denormalización
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+### 10.2 — MongoDB
+
+#### 10.2.1 — Documentos
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.2 — Colecciones
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.3 — BSON
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.4 — JSON
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.5 — CRUD
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.6 — Queries
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.7 — Filters
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.8 — Indexes
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.9 — Aggregation Pipeline
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.10 — Relationships
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.11 — Embedding
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.12 — Referencing
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.13 — Replication
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.2.14 — Sharding
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+### 10.3 — Redis
+
+#### 10.3.1 — Key-value
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.3.2 — Strings
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.3.3 — Lists
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.3.4 — Sets
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.3.5 — Hashes
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.3.6 — Sorted Sets
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.3.7 — TTL
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.3.8 — Cache
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.3.9 — Sessions
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.3.10 — Pub/Sub
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.3.11 — Rate Limiting
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+### 10.4 — Otras arquitecturas de almacenamiento
+
+#### 10.4.1 — Document databases
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.4.2 — Key-value databases
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.4.3 — Column-family databases
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.4.4 — Graph databases
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
+#### 10.4.5 — Time-series databases
+
+Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+
 ## Resultados de aprendizaje
 
 Podrás explicar por qué NoSQL no es un único modelo; distinguir bases documentales, clave-valor, columnares, grafos y series temporales; describir compromisos de consistencia y disponibilidad; modelar documentos en MongoDB; ejecutar operaciones CRUD, filtros, proyecciones y agregaciones; decidir entre embedding y referencing; comprender índices, replicación y sharding; utilizar estructuras Redis para caché y sesiones; aplicar TTL, Pub/Sub y rate limiting; y justificar una arquitectura híbrida junto con controles de seguridad, persistencia y recuperación.
