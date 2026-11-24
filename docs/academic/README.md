@@ -20,7 +20,7 @@ Las etapas 0–32 cuentan con un documento de desarrollo en esta rama. Todos per
 - [Auditoría de continuidad ASCENSO 3.1](AUDITORIA_CONTINUIDAD_ASCENSO_3_1.md)
 - [Auditoría y seguimiento de producción de la etapa 0](AUDITORIA_PRELIMINAR_ETAPA_00_ASCENSO_3.1.md)
 
-**Seguimiento 2026-11-24:** los cuatro módulos de la etapa 0 tienen cobertura documental inicial para sus 30 títulos nominales y continúan en `BORRADOR`. Las ampliaciones de 0.2, 0.3 y 0.4 incluyen actividades y rúbricas adicionales; no se declaran laboratorios ejecutados, lecciones revisadas, aprobadas ni publicadas. Consultar la auditoría enlazada para el inventario de evidencias y pendientes.
+**Seguimiento 2026-11-24:** los cuatro módulos de la etapa 0 tienen cobertura documental inicial para sus 30 títulos nominales y continúan en `BORRADOR`. Las ampliaciones de 0.1–0.4 incluyen actividades y rúbricas adicionales; se añadió la especificación del proyecto integrador ASCENSO-Knowledge-Base. No se declaran laboratorios ejecutados, lecciones revisadas, aprobadas ni publicadas. Consultar la auditoría enlazada para el inventario de evidencias y pendientes.
 
 ## Estándares transversales
 - [Estándar editorial académico](ASCENSO_ESTANDAR_EDITORIAL.md)
@@ -31,6 +31,7 @@ Las etapas 0–32 cuentan con un documento de desarrollo en esta rama. Todos per
 - [Etapa 0.2 — Investigación técnica](ascenso-3.1/etapa-00/modulo-0.2-investigacion-tecnica.md)
 - [Etapa 0.3 — Herramientas](ascenso-3.1/etapa-00/modulo-0.3-herramientas.md)
 - [Etapa 0.4 — Depuración](ascenso-3.1/etapa-00/modulo-0.4-depuracion.md)
+- [Proyecto integrador — ASCENSO-Knowledge-Base](ascenso-3.1/etapa-00/proyecto-integrador-ascenso-knowledge-base.md)
 - [Etapa 1.1 — Hardware](ascenso-3.1/etapa-01/modulo-1.1-hardware.md)
 - [Etapa 1.2 — Representación de información](ascenso-3.1/etapa-01/modulo-1.2-representacion-informacion.md)
 - [Etapa 1.3 — Arquitectura de computadores](ascenso-3.1/etapa-01/modulo-1.3-arquitectura-computadores.md)
