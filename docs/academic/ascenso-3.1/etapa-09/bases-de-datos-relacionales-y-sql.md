@@ -1962,6 +1962,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué función cumple WAL en la recuperación y durabilidad?
 
+**Laboratorio de profundización — Mapa de procesos y almacenamiento PostgreSQL.**
+
+1. Dibuja cliente, proceso servidor, procesos auxiliares y archivos de datos. 2. Identifica memoria compartida y WAL conceptualmente. 3. Explica conexión backend por cliente. 4. Consulta documentación oficial de la versión elegida para confirmar nombres y comportamiento.
+
+**Evidencia esperada.** El diagrama separa servidor, sesión, procesos auxiliares y almacenamiento persistente.
+
+**Seguridad y límites.** No inspeccionar ni modificar archivos internos de una instancia en ejecución.
+
+**Registro sugerido.** Registra versión de PostgreSQL, esquema aislado, SQL, resultados, explain plan y observaciones. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.7.2 — Roles
 
 **Propósito y modelo.** PostgreSQL utiliza roles para representar usuarios, grupos y capacidades. Un rol puede iniciar sesión (LOGIN), heredar privilegios, crear bases o roles según atributos concedidos. Los privilegios sobre objetos se administran aparte de atributos de rol; crear un rol no implica acceso automático a todas las tablas.
@@ -1977,6 +1987,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Conceder SUPERUSER a la aplicación o asumir que ser miembro de un rol concede automáticamente todos los privilegios sin revisar INHERIT/SET ROLE.
 
 **Comprobación.** ¿Por qué separar el rol de despliegue del rol de ejecución de la aplicación?
+
+**Laboratorio de profundización — Diseño de roles y herencia.**
+
+1. Define roles de login, lectura y escritura para una base de laboratorio. 2. Separa atributos de login y privilegios. 3. Diseña membresía y herencia. 4. Comprueba permisos efectivos con SET ROLE o consulta de catálogo en laboratorio.
+
+**Evidencia esperada.** La matriz aplica mínimo privilegio y explica herencia de roles y capacidad de login.
+
+**Seguridad y límites.** No conceder superuser ni crear roles compartidos para aplicaciones.
+
+**Registro sugerido.** Registra versión de PostgreSQL, esquema aislado, SQL, resultados, explain plan y observaciones. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.7.3 — Esquemas
 
@@ -1994,6 +2014,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué riesgo puede producir un search_path que incluya un esquema donde un usuario no confiable puede crear objetos?
 
+**Laboratorio de profundización — Namespaces y privilegios por esquema.**
+
+1. Crea conceptualmente esquemas ventas y auditoria. 2. Define propietario, USAGE y CREATE. 3. Explica search_path y riesgo de resolución de objetos. 4. Diseña nombres cualificados para evitar ambigüedad.
+
+**Evidencia esperada.** Se diferencia esquema de base de datos y se describe el efecto de search_path.
+
+**Seguridad y límites.** No conceder CREATE a roles no confiables en esquemas incluidos en search_path privilegiado.
+
+**Registro sugerido.** Registra versión de PostgreSQL, esquema aislado, SQL, resultados, explain plan y observaciones. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.7.4 — Tipos de datos
 
 **Propósito y modelo.** PostgreSQL ofrece tipos escalares, temporales, numéricos, UUID, arrays, rangos, JSON/JSONB y tipos definidos por usuario. La elección debe responder a semántica, validación, índices y portabilidad. TIMESTAMP WITH TIME ZONE normaliza instantes; no conserva literalmente la zona original ingresada.
@@ -2009,6 +2039,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Guardar todos los datos en JSONB sin modelar campos críticos o asumir que timestamptz almacena la zona horaria original.
 
 **Comprobación.** ¿Qué diferencia práctica existe entre JSON y JSONB en PostgreSQL?
+
+**Laboratorio de profundización — Selección de tipos PostgreSQL.**
+
+1. Selecciona integer/bigint, numeric, text, timestamp y boolean para un sistema de ventas. 2. Compara numeric con real/double precision. 3. Define zona horaria para timestamps. 4. Explica tipos enum y dominios como opciones de modelado.
+
+**Evidencia esperada.** Los tipos preservan precisión y semántica y se documenta la diferencia entre timestamp with/without time zone.
+
+**Seguridad y límites.** No almacenar importes en tipos flotantes sin justificar tolerancia ni guardar fechas como texto.
+
+**Registro sugerido.** Registra versión de PostgreSQL, esquema aislado, SQL, resultados, explain plan y observaciones. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.7.5 — JSONB
 
@@ -2026,6 +2066,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué costo de integridad puede aparecer si se almacenan campos críticos exclusivamente dentro de JSONB?
 
+**Laboratorio de profundización — Consultas y límites de JSONB.**
+
+1. Diseña una columna JSONB para atributos variables de producto. 2. Consulta claves y valores con operadores de PostgreSQL. 3. Compara datos estables en columnas relacionales frente a atributos flexibles. 4. Diseña índice solo para patrones de consulta previstos.
+
+**Evidencia esperada.** Se justifica cuándo usar JSONB y se evita convertir toda la estructura relacional en documentos opacos.
+
+**Seguridad y límites.** Validar estructura y tamaño; no almacenar secretos ni datos personales innecesarios en JSONB.
+
+**Registro sugerido.** Registra versión de PostgreSQL, esquema aislado, SQL, resultados, explain plan y observaciones. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.7.6 — Índices
 
 **Propósito y modelo.** PostgreSQL soporta varios tipos de índices, como B-tree, Hash, GiST, SP-GiST, GIN y BRIN. Cada uno se adapta a operadores y estructuras diferentes. Los índices aumentan espacio y costo de escritura; el planificador decide su uso según estadísticas, selectividad y costo.
@@ -2042,6 +2092,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué un índice BRIN puede resultar útil cuando los datos están físicamente correlacionados con una columna?
 
+**Laboratorio de profundización — Selección de índices PostgreSQL.**
+
+1. Compara B-tree, GIN y GiST según tipo de consulta. 2. Diseña índice para una consulta WHERE/ORDER BY. 3. Examina EXPLAIN en dataset de laboratorio. 4. Mide impacto en escritura y almacenamiento.
+
+**Evidencia esperada.** La selección se justifica por operadores y patrón de consulta, no por popularidad del índice.
+
+**Seguridad y límites.** No crear índices de todos los campos ni asumir que un índice se utilizará siempre.
+
+**Registro sugerido.** Registra versión de PostgreSQL, esquema aislado, SQL, resultados, explain plan y observaciones. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.7.7 — Transacciones
 
 **Propósito y modelo.** PostgreSQL implementa transacciones con MVCC, snapshots y niveles de aislamiento. Las lecturas pueden observar versiones consistentes sin bloquear todas las escrituras, pero existen conflictos y bloqueos. SERIALIZABLE utiliza detección de dependencias y puede abortar transacciones que deben reintentarse.
@@ -2057,6 +2117,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Suponer que MVCC elimina todos los bloqueos o ignorar que una transacción SERIALIZABLE puede abortarse.
 
 **Comprobación.** ¿Por qué una aplicación debe estar preparada para reintentar una transacción abortada por serialización?
+
+**Laboratorio de profundización — Concurrencia y MVCC en PostgreSQL.**
+
+1. Abre dos sesiones de laboratorio. 2. Lee y actualiza una fila desde ambas. 3. Observa comportamiento bajo Read Committed y Repeatable Read. 4. Explica snapshots MVCC y necesidad de VACUUM conceptualmente.
+
+**Evidencia esperada.** El estudiante explica visibilidad de versiones y diferencias observadas entre niveles de aislamiento.
+
+**Seguridad y límites.** No mantener transacciones ociosas ni generar bloqueos en instancias compartidas.
+
+**Registro sugerido.** Registra versión de PostgreSQL, esquema aislado, SQL, resultados, explain plan y observaciones. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.7.8 — Consultas avanzadas
 
@@ -2487,3 +2557,13 @@ No se incluyen videos en esta versión. Se incorporarán por subtema (modelado r
 **Resultado:** revisión documental interna realizada con los ajustes y hallazgos siguientes: Se revisó la correspondencia de las 81 entradas, el modelado relacional, SQL, normalización, transacciones, índices y diferencias de MySQL/PostgreSQL. Se mantiene la entrada 9.3.9 tal como figura en el roadmap, aunque su título debe tratarse como nota de distinción conceptual y no como producto o comando. Pendiente: ejecutar scripts en versiones declaradas, comprobar consultas, constraints, transacciones, planes EXPLAIN, backup y restauración.
 
 **Límite de validación:** no se ejecutaron laboratorios, scripts, servicios, bases de datos, máquinas virtuales ni capturas de red en esta revisión. No se declara aprobación académica externa. La etapa continúa en desarrollo hasta completar las pruebas reproducibles y la segunda revisión.
+
+**Laboratorio de profundización — CTE, ventanas y agregaciones.**
+
+1. Construye una consulta con CTE para ventas mensuales. 2. Añade función de ventana para ranking por cliente. 3. Compara resultado con GROUP BY. 4. Usa EXPLAIN para revisar plan y cardinalidad.
+
+**Evidencia esperada.** La consulta devuelve resultado verificable y se explica diferencia entre agregación y ventana.
+
+**Seguridad y límites.** No asumir que CTE siempre materializa ni ejecutar consultas costosas sobre producción sin estimación.
+
+**Registro sugerido.** Registra versión de PostgreSQL, esquema aislado, SQL, resultados, explain plan y observaciones. No marques la práctica como ejecutada sin evidencia real.
