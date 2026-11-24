@@ -100,7 +100,7 @@ Markdown es una sintaxis ligera para documentar proyectos.
 
 **Ejercicio:** escribe instrucciones de un proyecto ficticio con objetivo, requisitos, instalación, ejecución, resultado esperado y solución de dos problemas.
 
-## 0.3.7 — Draw.io y diagramación
+## Apéndice didáctico — Draw.io y diagramación
 
 Draw.io (diagrams.net) permite representar procesos y sistemas. La herramienta no valida la arquitectura: las decisiones deben justificarse.
 
@@ -316,7 +316,7 @@ Una bitácora con fecha, pasos y evidencias no sensibles.
 
 **Ejercicio:** intercambia el README con otra persona. Si necesita preguntarte cómo empezar, registra qué instrucción falta y mejora el documento.
 
-### 0.3.7 — Draw.io y herramientas de diagramación: elegir el diagrama por la pregunta
+### 0.3.7 — Draw.io: elegir el diagrama por la pregunta
 
 Antes de dibujar, define qué pregunta debe responder el diagrama:
 - flujo: ¿qué pasos y decisiones ocurren?;
@@ -328,6 +328,34 @@ Antes de dibujar, define qué pregunta debe responder el diagrama:
 **Ejemplo resuelto:** para representar el registro de una nota, un diagrama de flujo es apropiado si interesan validación y decisiones; un diagrama de secuencia es más apropiado si interesa el intercambio entre navegador, API y base de datos. Un único diagrama no tiene que contestar todas las preguntas.
 
 **Ejercicio:** crea dos diagramas del mismo caso con propósitos distintos. Incluye título, alcance, leyenda si hay notación no obvia y fuente editable.
+
+
+### 0.3.8 — Herramientas de diagramación
+
+**Objetivos específicos**
+- seleccionar una herramienta de diagramación según el tipo de representación y el flujo de colaboración;
+- comparar facilidad de edición, control de versiones, exportación, accesibilidad y portabilidad;
+- mantener el archivo fuente además de una exportación visual;
+- explicar los límites de un diagrama y evitar que sustituya una especificación necesaria.
+
+**Criterios de selección**
+1. Tipo de diagrama requerido: flujo, secuencia, componentes, despliegue o datos.
+2. Audiencia: equipo técnico, usuario, docente o persona evaluadora.
+3. Colaboración: edición simultánea, comentarios, permisos y control de cambios.
+4. Mantenibilidad: posibilidad de editar el original, revisar diferencias y conservar historial.
+5. Interoperabilidad: formatos de exportación y posibilidad de reutilizar el archivo fuente.
+6. Privacidad: ubicación de almacenamiento, acceso compartido y tratamiento de información sensible.
+7. Accesibilidad: contraste, tamaño de texto, lectura y alternativa textual.
+
+**Ejemplo resuelto:** un diagrama de arquitectura que cambia con frecuencia necesita una fuente editable y un proceso de revisión. Una imagen PNG aislada facilita la lectura, pero dificulta rastrear cambios. La entrega recomendada conserva el archivo fuente y exporta una imagen o PDF para consulta.
+
+**Ejercicio:** toma el proceso de registro de una nota y produce una versión de flujo y otra de secuencia. Para cada una registra herramienta, formato fuente, formato de entrega, audiencia, ventajas y una limitación.
+
+**Criterios de dominio:** la herramienta se elige por necesidad explícita; el archivo fuente puede abrirse y editarse; el diagrama tiene alcance y leyenda; la exportación coincide con la fuente; se proporciona descripción textual cuando la imagen no sea accesible.
+
+**Errores frecuentes:** elegir una herramienta por popularidad, exportar solo una imagen y perder la fuente, mezclar varios propósitos en un solo diagrama, usar conectores ambiguos o incluir secretos en diagramas compartidos.
+
+**Referencia:** diagrams.net, documentación oficial: https://www.drawio.com/doc/ (consultada 2026-11-24). La selección de herramienta es una decisión contextual; esta fuente documenta diagrams.net, no una comparación neutral de todos los productos.
 
 ## Proyecto práctico de módulo — Kit de herramientas ASCENSO, versión ampliada
 
