@@ -1,6 +1,6 @@
 # Etapa 1 · Módulo 1.5 — Memoria
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 1, apartado 1.5.  
 **Temas oficiales:** memoria física, memoria virtual, stack, heap, paginación y direccionamiento de memoria.
 
@@ -156,4 +156,4 @@ No se incluye video en esta versión: no se ha verificado una pieza en español 
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** laboratorio de observación propuesto; no ejecutado.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
