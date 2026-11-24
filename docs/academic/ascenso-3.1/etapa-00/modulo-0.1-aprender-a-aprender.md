@@ -432,6 +432,21 @@ Después dibuja un diagrama de dependencias y explica por qué elegiste esa divi
 ### Criterios de evaluación
 Las partes tienen responsabilidades claras, no duplican innecesariamente la misma tarea, se identifican dependencias y la suma de las partes cubre el objetivo general.
 
+
+### Solución de referencia: descomponer un sistema de biblioteca
+
+| Responsabilidad | Entrada | Salida | Error previsible | Dependencia |
+|---|---|---|---|---|
+| Registrar libro | ISBN o identificador, título, autor | Libro registrado | Identificador duplicado, datos incompletos | Validación |
+| Buscar catálogo | Texto, autor o identificador | Lista de coincidencias | Consulta vacía o sin resultados | Catálogo |
+| Registrar usuario | Datos mínimos del usuario | Usuario registrado | Datos inválidos o duplicados | Validación |
+| Prestar ejemplar | Usuario y ejemplar | Préstamo creado | Ejemplar no disponible, usuario bloqueado | Catálogo, usuarios |
+| Devolver ejemplar | Préstamo activo | Ejemplar disponible y préstamo cerrado | Préstamo inexistente o ya cerrado | Préstamos, catálogo |
+| Consultar préstamos | Usuario o estado | Lista de préstamos | Usuario inexistente | Usuarios, préstamos |
+| Gestionar disponibilidad | Estado de ejemplares | Disponibilidad actualizada | Estado inconsistente | Catálogo, préstamos |
+
+**Comprobación de cobertura:** un flujo «buscar libro → prestar ejemplar → devolver ejemplar» puede recorrerse usando las responsabilidades anteriores. Si no se puede explicar de dónde procede un dato o quién actualiza el estado, falta una responsabilidad o una dependencia. Esta es una posible descomposición, no la única correcta.
+
 ---
 
 ## Lección 0.1.8 — Aprendizaje basado en proyectos
@@ -489,21 +504,6 @@ Al finalizar, responde:
 
 ### Criterios de evaluación
 El repositorio puede ser comprendido por otra persona, contiene evidencia real del proceso, distingue material propio de fuentes externas y muestra al menos una revisión posterior.
-
-
-### Solución de referencia: descomponer un sistema de biblioteca
-
-| Responsabilidad | Entrada | Salida | Error previsible | Dependencia |
-|---|---|---|---|---|
-| Registrar libro | ISBN o identificador, título, autor | Libro registrado | Identificador duplicado, datos incompletos | Validación |
-| Buscar catálogo | Texto, autor o identificador | Lista de coincidencias | Consulta vacía o sin resultados | Catálogo |
-| Registrar usuario | Datos mínimos del usuario | Usuario registrado | Datos inválidos o duplicados | Validación |
-| Prestar ejemplar | Usuario y ejemplar | Préstamo creado | Ejemplar no disponible, usuario bloqueado | Catálogo, usuarios |
-| Devolver ejemplar | Préstamo activo | Ejemplar disponible y préstamo cerrado | Préstamo inexistente o ya cerrado | Préstamos, catálogo |
-| Consultar préstamos | Usuario o estado | Lista de préstamos | Usuario inexistente | Usuarios, préstamos |
-| Gestionar disponibilidad | Estado de ejemplares | Disponibilidad actualizada | Estado inconsistente | Catálogo, préstamos |
-
-**Comprobación de cobertura:** un flujo «buscar libro → prestar ejemplar → devolver ejemplar» puede recorrerse usando las responsabilidades anteriores. Si no se puede explicar de dónde procede un dato o quién actualiza el estado, falta una responsabilidad o una dependencia. Esta es una posible descomposición, no la única correcta.
 
 
 ---
