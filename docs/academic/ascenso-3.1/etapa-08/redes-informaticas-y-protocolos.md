@@ -546,67 +546,227 @@ DHCP asigna parámetros de red como dirección IP, máscara/prefijo, gateway, DN
 
 ### 8.4.1 — TCP
 
-TCP ofrece un flujo de bytes fiable y ordenado con establecimiento de conexión, retransmisión y control de congestión. **Práctica:** observa el handshake de tres vías en una captura propia. **Evidencia:** identifica SYN, SYN-ACK y ACK y explica qué no garantiza TCP sobre la aplicación.
+TCP es un protocolo de transporte orientado a conexión que ofrece flujo de bytes fiable y ordenado, control de flujo y control de congestión. Utiliza puertos, secuencias, ACK y retransmisiones. No conserva límites de mensajes de la aplicación.
+
+**Práctica guiada:** Analiza una captura de laboratorio y localiza handshake SYN/SYN-ACK/ACK, puertos y números de secuencia.
+
+**Actividad independiente:** Explica cómo TCP detecta pérdida y por qué una aplicación debe definir su propio encuadre de mensajes.
+
+**Criterios de aceptación:** Describe establecimiento, fiabilidad y flujo de bytes.
+
+**Errores frecuentes:** Afirmar que cada llamada de escritura equivale a un segmento o mensaje recibido.
+
+**Comprobación:** ¿Qué problema resuelve el número de secuencia en TCP?
 
 ### 8.4.2 — UDP
 
-UDP ofrece datagramas sin establecimiento de conexión ni garantía de entrega u orden; las aplicaciones gestionan las necesidades adicionales. **Práctica:** identifica tráfico UDP en una captura de DNS de laboratorio. **Evidencia:** compara overhead y garantías frente a TCP.
+UDP es un protocolo de transporte sin conexión que envía datagramas con encabezado reducido. No garantiza entrega, orden ni retransmisión; las aplicaciones pueden implementar mecanismos propios. Es útil cuando latencia, simplicidad o semántica de la aplicación justifican esas propiedades.
+
+**Práctica guiada:** Inspecciona una captura UDP autorizada e identifica puertos, longitud y checksum cuando esté disponible.
+
+**Actividad independiente:** Compara un caso de voz en tiempo real y una transferencia de archivo; justifica cuándo podría elegirse UDP o TCP.
+
+**Criterios de aceptación:** Diferencia datagrama UDP de segmento TCP y explica qué garantías no ofrece UDP.
+
+**Errores frecuentes:** Tratar UDP como inseguro por definición o asumir que no puede transportar aplicaciones fiables.
+
+**Comprobación:** ¿Qué responsabilidades debe asumir una aplicación si necesita fiabilidad sobre UDP?
 
 ### 8.4.3 — ICMP
 
-ICMP comunica errores y condiciones de red, y también sustenta herramientas de diagnóstico como ping. No es un protocolo de transporte para aplicaciones. **Práctica:** interpreta una respuesta Echo y un mensaje Destination Unreachable en capturas de laboratorio. **Evidencia:** diferencia diagnóstico de garantía de disponibilidad.
+ICMP comunica errores y diagnósticos relacionados con IP. ping utiliza mensajes Echo Request/Reply, mientras traceroute aprovecha respuestas asociadas a TTL/Hop Limit y otros mecanismos. Filtrado ICMP puede afectar diagnóstico y descubrimiento de MTU.
+
+**Práctica guiada:** Ejecuta ping hacia un destino propio o autorizado y registra pérdida y latencia. No interpretes ausencia de respuesta como prueba única de indisponibilidad.
+
+**Actividad independiente:** Explica cómo traceroute identifica saltos y por qué algunos routers no responden.
+
+**Criterios de aceptación:** Identifica función de ICMP y diferencia mensaje de control de protocolo de transporte.
+
+**Errores frecuentes:** Confundir ICMP con TCP/UDP o concluir que un host está caído solo porque bloquea Echo Reply.
+
+**Comprobación:** ¿Por qué un servicio puede funcionar aunque ping no reciba respuesta?
 
 ### 8.4.4 — DNS
 
-DNS traduce nombres a registros como A, AAAA, MX, TXT y CNAME mediante consultas recursivas e iterativas. **Práctica:** consulta un dominio propio o de documentación con `dig`. **Evidencia:** identifica tipo, TTL, servidor consultado y diferencia entre respuesta autoritativa y recursiva.
+DNS traduce nombres de dominio a registros como A, AAAA, MX, CNAME y TXT mediante una jerarquía distribuida y cachés. Los resolvers recursivos consultan servidores autoritativos; TTL controla cuánto tiempo puede conservarse una respuesta en caché.
+
+**Práctica guiada:** Consulta un dominio propio o público con `dig` o `nslookup`; identifica tipo de registro, servidor consultado y TTL.
+
+**Actividad independiente:** Diagnostica un caso donde una IP responde pero el nombre no resuelve; distingue problema de DNS de conectividad.
+
+**Criterios de aceptación:** Explica resolver, zona, servidor autoritativo, caché y registros básicos.
+
+**Errores frecuentes:** Confundir DNS con gateway o asumir que cambiar un registro se refleja instantáneamente por caché y TTL.
+
+**Comprobación:** ¿Qué diferencia existe entre un resolver recursivo y un servidor autoritativo?
 
 ### 8.4.5 — HTTP
 
-HTTP define semántica de solicitudes y respuestas, métodos, códigos de estado, cabeceras y representación de recursos. **Práctica:** consulta una URL pública de documentación con `curl -I`. **Evidencia:** interpreta método, estado y cabeceras principales sin asumir que un 200 garantiza corrección funcional.
+HTTP es un protocolo de aplicación de solicitud/respuesta utilizado para transferir recursos. Define métodos, URI, encabezados, códigos de estado y semántica de caché. HTTP por sí solo no cifra el tráfico ni autentica criptográficamente al servidor.
+
+**Práctica guiada:** Consulta un endpoint público permitido con `curl -I` y registra método, código de estado y encabezados relevantes.
+
+**Actividad independiente:** Diseña una petición GET y una POST ficticias; explica diferencias de semántica, idempotencia y exposición de datos.
+
+**Criterios de aceptación:** Interpreta solicitud, respuesta, método y códigos de estado sin confundirlos.
+
+**Errores frecuentes:** Asumir que POST siempre es seguro o que un código 200 demuestra que la lógica de negocio fue correcta.
+
+**Comprobación:** ¿Qué información aporta el código de estado HTTP y qué no garantiza?
 
 ### 8.4.6 — HTTPS
 
-HTTPS es HTTP protegido mediante TLS, que aporta confidencialidad, integridad y autenticación del servidor según validación de certificados. **Práctica:** inspecciona certificado y versión TLS de un sitio propio o autorizado. **Evidencia:** explica cadena de confianza, nombre del servidor y por qué cifrado no equivale a que el sitio sea legítimo.
+HTTPS es HTTP protegido por TLS. TLS proporciona confidencialidad, integridad y autenticación del servidor mediante certificados y validación de nombre/cadena. La seguridad depende de configuración, versiones, certificados y verificación del cliente.
+
+**Práctica guiada:** Ejecuta `curl -I https://example.com` o consulta un sitio permitido y observa el resultado de la validación TLS. No desactives la verificación del certificado.
+
+**Actividad independiente:** Explica qué valida el cliente en el certificado y qué riesgo existe al ignorar advertencias TLS.
+
+**Criterios de aceptación:** Distingue HTTP de HTTPS y describe autenticación, cifrado e integridad provistos por TLS.
+
+**Errores frecuentes:** Tratar el candado como garantía de legitimidad del sitio o usar opciones que deshabilitan validación en producción.
+
+**Comprobación:** ¿Qué protege TLS y qué tipo de fraude no evita por sí solo?
 
 ### 8.4.7 — SSH
 
-SSH proporciona acceso remoto seguro y canales cifrados, normalmente mediante autenticación por clave o contraseña. **Práctica:** conecta dos VMs propias en una red aislada y verifica la huella de host antes de confiar. **Evidencia:** distingue autenticación del servidor y del usuario.
+SSH proporciona acceso remoto seguro y canales cifrados para administración y transferencia. La autenticación puede usar claves o contraseñas; la verificación de la clave del host ayuda a detectar suplantación. La configuración debe limitar usuarios, algoritmos y exposición.
+
+**Práctica guiada:** Inspecciona la versión cliente con `ssh -V` y revisa una configuración de ejemplo sin conectarte a sistemas ajenos.
+
+**Actividad independiente:** Diseña acceso administrativo con claves, passphrase, registro, cuentas nominativas y restricción por red.
+
+**Criterios de aceptación:** Explica cifrado del canal, autenticación del usuario y verificación del host.
+
+**Errores frecuentes:** Aceptar una nueva host key sin verificarla o compartir claves privadas entre administradores.
+
+**Comprobación:** ¿Qué diferencia hay entre la clave del host y la clave privada del usuario?
 
 ### 8.4.8 — FTP
 
-FTP transfiere archivos mediante un canal de control y otro de datos; el protocolo clásico no cifra credenciales ni contenido. **Práctica:** analiza conceptualmente puertos activo/pasivo y explica por qué FTP sin cifrar no debe utilizarse en redes no confiables. **Evidencia:** compara sus riesgos con SFTP.
+FTP transfiere archivos mediante un canal de control y canales de datos, con modos activo y pasivo. El FTP clásico no cifra credenciales ni contenido, por lo que no debe utilizarse para transferencias sensibles en redes no confiables.
+
+**Práctica guiada:** Analiza un diagrama de conexión FTP activo y pasivo; no transmitas credenciales reales ni habilites un servidor expuesto.
+
+**Actividad independiente:** Compara FTP clásico con SFTP y FTPS por canal, cifrado, puertos y administración.
+
+**Criterios de aceptación:** Explica canales de control/datos y riesgos de FTP sin cifrado.
+
+**Errores frecuentes:** Confundir FTP con SFTP o pensar que el modo pasivo añade cifrado.
+
+**Comprobación:** ¿Qué información sensible puede quedar expuesta al usar FTP clásico?
 
 ### 8.4.9 — SFTP
 
-SFTP es un protocolo de transferencia de archivos que funciona sobre SSH y no es simplemente FTP protegido por TLS. **Práctica:** describe una sesión SFTP hacia un servidor de laboratorio y las operaciones de listar, subir y descargar. **Evidencia:** identifica el canal SSH y los permisos que limitan acceso.
+SFTP es un protocolo de transferencia de archivos que funciona sobre SSH; no es simplemente FTP con TLS. Utiliza el canal SSH autenticado y cifrado, y su acceso depende de las cuentas y permisos del servidor.
+
+**Práctica guiada:** Consulta documentación del cliente SFTP instalado y representa una sesión con un servidor de laboratorio autorizado. No uses credenciales ajenas.
+
+**Actividad independiente:** Diseña una cuenta de transferencia restringida a un directorio y explica permisos y registro necesarios.
+
+**Criterios de aceptación:** Diferencia SFTP, FTP y FTPS y explica su relación con SSH.
+
+**Errores frecuentes:** Asumir que SFTP utiliza los mismos puertos y mecanismos de FTP clásico.
+
+**Comprobación:** ¿Sobre qué protocolo se transporta SFTP?
 
 ### 8.4.10 — SMTP
 
-SMTP transporta y retransmite correo entre clientes y servidores o entre servidores; el envío autenticado suele utilizar extensiones y TLS según configuración. **Práctica:** dibuja el flujo desde cliente de correo hasta servidor receptor. **Evidencia:** distingue SMTP de protocolos de acceso como IMAP y POP3.
+SMTP transfiere correo entre clientes y servidores o entre servidores de correo. La entrega puede involucrar relay, autenticación, políticas antispam y TLS oportunista o requerido. La recepción de correo suele utilizar protocolos distintos, como IMAP o POP3.
+
+**Práctica guiada:** Identifica registros MX de un dominio con `dig MX` y dibuja el flujo desde cliente de envío hasta servidor destinatario.
+
+**Actividad independiente:** Explica diferencias entre envío SMTP, almacenamiento del buzón y lectura por IMAP/POP3.
+
+**Criterios de aceptación:** Describe el papel de SMTP y reconoce la función de MX y relay.
+
+**Errores frecuentes:** Confundir SMTP con el protocolo de lectura del buzón o asumir que TLS está siempre configurado de igual forma.
+
+**Comprobación:** ¿Por qué SMTP no suele ser el protocolo que utiliza el usuario para leer su buzón?
 
 ### 8.4.11 — IMAP
 
-IMAP permite acceder y sincronizar mensajes almacenados en el servidor, carpetas y estados entre varios clientes. **Práctica:** compara una cuenta de prueba configurada con IMAP frente a un modelo de descarga local. **Evidencia:** explica sincronización, carpetas y almacenamiento remoto.
+IMAP permite acceder y administrar mensajes almacenados en el servidor, sincronizando carpetas y estados entre clientes. TLS protege la sesión cuando está correctamente configurado. Las políticas del servidor determinan almacenamiento, cuotas y retención.
+
+**Práctica guiada:** Compara conceptualmente una cuenta IMAP en dos dispositivos y registra qué estados deben sincronizarse. No introduzcas credenciales en herramientas de terceros.
+
+**Actividad independiente:** Diseña una política de buzón compartido con permisos, retención y autenticación reforzada.
+
+**Criterios de aceptación:** Explica sincronización de mensajes y carpetas y distingue IMAP de SMTP.
+
+**Errores frecuentes:** Tratar IMAP como protocolo de envío o almacenar contraseñas de correo en texto plano.
+
+**Comprobación:** ¿Qué ventaja ofrece IMAP frente a descargar y eliminar mensajes del servidor?
 
 ### 8.4.12 — POP3
 
-POP3 está orientado a recuperar mensajes desde el servidor, con comportamientos de descarga y conservación que dependen del cliente. **Práctica:** compara un flujo POP3 con IMAP en un diagrama. **Evidencia:** justifica cuál se adapta mejor a varios dispositivos y qué limitaciones operativas tiene.
+POP3 es un protocolo de acceso al correo con un modelo tradicional de descarga de mensajes. Las opciones de conservar copia en servidor dependen del cliente y servidor. POP3 no ofrece la misma sincronización de carpetas y estados que IMAP.
+
+**Práctica guiada:** Compara los flujos conceptuales POP3 e IMAP sin introducir credenciales reales ni conectarte a servidores ajenos.
+
+**Actividad independiente:** Explica qué ocurre cuando dos dispositivos acceden a una cuenta configurada para descargar y eliminar mensajes.
+
+**Criterios de aceptación:** Diferencia modelo de descarga POP3 y sincronización IMAP.
+
+**Errores frecuentes:** Afirmar que POP3 siempre elimina mensajes o que no puede operar protegido por TLS.
+
+**Comprobación:** ¿Qué limitación presenta POP3 para usuarios que consultan el correo desde varios dispositivos?
 
 ### 8.4.13 — SMB
 
-SMB permite compartir archivos, impresoras y otros recursos en redes, especialmente en entornos Windows. Explica autenticación, permisos compartidos y NTFS, y versiones del protocolo. **Práctica:** inspecciona un recurso compartido en una red de laboratorio. **Evidencia:** calcula el acceso efectivo considerando ambos niveles de permisos.
+SMB permite compartir archivos, impresoras y otros recursos en redes Windows y también en otros sistemas mediante implementaciones compatibles. La seguridad depende de autenticación, firma/cifrado según versión, permisos de recurso compartido y ACL del sistema de archivos.
+
+**Práctica guiada:** Inspecciona recursos compartidos de un laboratorio autorizado y distingue permiso SMB de permiso NTFS. No enumeres equipos ajenos.
+
+**Actividad independiente:** Diseña una carpeta compartida con grupos de lectura/escritura y acceso mínimo; define auditoría y cifrado según el entorno.
+
+**Criterios de aceptación:** Explica negociación, autenticación y combinación de permisos compartidos/NTFS.
+
+**Errores frecuentes:** Habilitar SMBv1 sin necesidad o conceder permisos amplios para solucionar un problema puntual.
+
+**Comprobación:** ¿Cómo se determina el acceso efectivo cuando se combinan permisos SMB y NTFS?
 
 ### 8.4.14 — LDAP
 
-LDAP es un protocolo de acceso y consulta a servicios de directorio mediante entradas, atributos y nombres distinguidos. **Práctica:** interpreta un DN y un filtro LDAP de ejemplo sin consultar directorios ajenos. **Evidencia:** identifica base de búsqueda, atributo y alcance.
+LDAP es un protocolo para consultar y modificar servicios de directorio mediante entradas organizadas jerárquicamente y atributos. Define operaciones de búsqueda, bind y modificación. La seguridad requiere TLS/StartTLS, autenticación adecuada y control de permisos; LDAP no equivale a Active Directory aunque AD lo implemente.
+
+**Práctica guiada:** Examina un esquema LDIF ficticio y localiza DN, atributos y clases de objeto; no consultes directorios reales sin autorización.
+
+**Actividad independiente:** Diseña una estructura de directorio para usuarios y grupos y especifica quién puede leer o modificar cada atributo.
+
+**Criterios de aceptación:** Interpreta DN y atributos y explica operaciones básicas de LDAP.
+
+**Errores frecuentes:** Confundir LDAP con una base de datos relacional o enviar credenciales en claro mediante una conexión no protegida.
+
+**Comprobación:** ¿Qué representa el DN de una entrada LDAP?
 
 ### 8.4.15 — Kerberos
 
-Kerberos es un protocolo de autenticación basado en tickets y un tercero de confianza, común en dominios Windows/Active Directory. Explica KDC, TGT, tickets de servicio y dependencia de sincronización horaria. **Práctica:** dibuja el intercambio de autenticación sin incluir secretos reales. **Evidencia:** explica por qué la contraseña no se envía al servicio en cada solicitud.
+Kerberos es un protocolo de autenticación de red basado en tickets y un tercero de confianza (KDC). En entornos de dominio, los tickets permiten demostrar identidad sin enviar la contraseña a cada servicio. La sincronización horaria, protección de claves y configuración del realm son importantes.
+
+**Práctica guiada:** Dibuja cliente, KDC, servicio y flujo simplificado de TGT y ticket de servicio; utiliza un escenario conceptual, no intentes extraer tickets reales.
+
+**Actividad independiente:** Explica por qué la sincronización horaria y la protección de cuentas privilegiadas son críticas para Kerberos.
+
+**Criterios de aceptación:** Identifica KDC, TGT y ticket de servicio y explica autenticación mutua en términos generales.
+
+**Errores frecuentes:** Confundir Kerberos con cifrado de todo el tráfico de aplicación o compartir tickets como si fueran credenciales inocuas.
+
+**Comprobación:** ¿Qué función cumple el TGT en el flujo de autenticación?
 
 ### 8.4.16 — WebSockets
 
-WebSocket mantiene un canal bidireccional persistente entre cliente y servidor tras un handshake iniciado sobre HTTP. **Práctica:** compara una aplicación de chat por polling con otra basada en WebSocket. **Evidencia:** identifica cuándo conviene cada enfoque y qué controles de autenticación/origen siguen siendo necesarios.
+WebSocket proporciona un canal de comunicación bidireccional persistente entre cliente y servidor, iniciado normalmente mediante un handshake HTTP Upgrade. Es útil para interacción en tiempo real; requiere autenticación, autorización por mensaje, validación de origen y límites de recursos.
+
+**Práctica guiada:** Identifica en una captura o documentación el handshake Upgrade y diferencia una conexión WebSocket de solicitudes HTTP independientes.
+
+**Actividad independiente:** Diseña un canal de notificaciones en tiempo real y define autorización, validación de mensajes, límites y cierre de sesión.
+
+**Criterios de aceptación:** Explica handshake, comunicación bidireccional y controles de seguridad necesarios.
+
+**Errores frecuentes:** Suponer que abrir el socket autentica cada operación o que HTTPS elimina la necesidad de validar mensajes.
+
+**Comprobación:** ¿Qué riesgo aparece si el servidor autoriza la conexión pero no valida cada mensaje recibido?
 
 ## 8.5 — Routing y Switching
 
