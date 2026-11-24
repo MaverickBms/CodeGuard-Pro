@@ -619,66 +619,164 @@ La validación combina restricciones HTML, lógica cliente y reglas autoritativa
 **Comprobación:** ¿Qué validaciones deben repetirse en servidor?
 
 #### 12.3.01 — Synchronous programming
-La programación síncrona ejecuta operaciones en secuencia y una operación bloqueante impide avanzar en ese hilo. Es sencilla de razonar, pero una operación lenta de I/O puede congelar la interfaz o retrasar otras tareas.
 
+En ejecución síncrona, las instrucciones se procesan en orden y una operación bloqueante impide continuar en ese hilo hasta completarse. JavaScript en navegador ejecuta código de cada contexto principal en un hilo de ejecución, aunque el runtime use otros hilos internamente.
 
-**Práctica y evidencia:** Identifica operaciones síncronas que bloquean el hilo principal y mide el efecto de una tarea de prueba. **Evidencia:** explica por qué la interfaz deja de responder durante trabajo prolongado.
+**Ejemplo técnico:** Un bucle costoso en el hilo principal bloquea interacción y renderizado.
+
+**Práctica guiada:** Mide duración de una operación sintética y observa bloqueo de UI.
+
+**Actividad independiente:** Refactoriza trabajo pesado para no congelar interacción.
+
+**Criterios de aceptación:** Se identifica qué operación bloquea y cómo medirla.
+
+**Errores frecuentes:** Confundir síncrono con «rápido» o asumir que todo JavaScript es monohilo en todos los contextos.
+
+**Comprobación:** ¿Qué experiencia percibe el usuario cuando el hilo principal queda bloqueado?
 
 #### 12.3.02 — Asynchronous programming
-La programación asíncrona permite iniciar una operación y continuar mientras se espera su resultado. No significa necesariamente ejecución paralela; distingue concurrencia, asincronía y paralelismo al explicar cómo se programan las tareas.
 
+La programación asíncrona permite iniciar operaciones y continuar mientras se espera resultado. En JavaScript se expresa con callbacks, Promises y async/await; no implica que todo trabajo se ejecute en paralelo.
 
-**Práctica y evidencia:** Compara una operación síncrona con una asíncrona basada en temporizador o red. **Evidencia:** dibuja la secuencia temporal y explica qué trabajo puede continuar mientras se espera.
+**Ejemplo técnico:** Una petición fetch devuelve Promise y la interfaz puede seguir respondiendo mientras espera.
+
+**Práctica guiada:** Compara una espera bloqueante simulada con una Promise.
+
+**Actividad independiente:** Diseña carga de datos con estado loading/error/success.
+
+**Criterios de aceptación:** La interfaz mantiene respuesta y gestiona todos los estados.
+
+**Errores frecuentes:** Confundir asíncrono con paralelo o no manejar rechazo.
+
+**Comprobación:** ¿Qué diferencia existe entre concurrencia asíncrona y paralelismo?
 
 #### 12.3.03 — Callbacks
-Un callback es una función entregada a otra operación para invocarse posteriormente o durante un proceso. Es común en eventos y APIs, pero anidar muchos callbacks dificulta el manejo de errores y la lectura; promesas suelen expresar mejor cadenas asíncronas.
 
+Un callback es una función pasada para ejecutarse después o durante otra operación. Puede expresar eventos y resultados asíncronos, pero anidamiento excesivo complica flujo y errores; Promises suelen mejorar composición.
 
-**Práctica y evidencia:** Convierte una operación basada en callback en una función que notifique éxito o error. **Evidencia:** explica convención error-first y cómo evitar llamadas duplicadas.
+**Ejemplo técnico:** setTimeout(callback, 0) agenda callback en una tarea posterior, no ejecuta inmediatamente.
+
+**Práctica guiada:** Crea callback de éxito/error para operación simulada.
+
+**Actividad independiente:** Refactoriza callbacks anidados a funciones pequeñas o Promise.
+
+**Criterios de aceptación:** Orden de ejecución y errores documentados.
+
+**Errores frecuentes:** No pasar función sino resultado de ejecutarla o perder contexto this.
+
+**Comprobación:** ¿Por qué el callback de setTimeout no se ejecuta en la misma línea?
 
 #### 12.3.04 — Promises
-Una Promise representa un resultado futuro con estados pending, fulfilled o rejected. Encadena con `then`, `catch` y `finally`, devuelve siempre una nueva promesa desde callbacks y maneja rechazos para evitar errores no observados.
 
+Una Promise representa resultado futuro: pending, fulfilled o rejected. then/catch/finally componen flujo; cada then devuelve otra Promise y los errores se propagan por la cadena hasta manejarse.
 
-**Práctica y evidencia:** Encadena Promises con `then`, `catch` y `finally`, incluyendo una promesa rechazada. **Evidencia:** identifica dónde se propaga el error y cómo se recupera el flujo.
+**Ejemplo técnico:** Promise.resolve(valor).then(transformar).catch(manejar).
+
+**Práctica guiada:** Encadena dos transformaciones y fuerza rechazo controlado.
+
+**Actividad independiente:** Implementa carga de datos con propagación y manejo central de errores.
+
+**Criterios de aceptación:** Cada rama termina en resultado o error manejado.
+
+**Errores frecuentes:** Olvidar return dentro de then o crear promesas que nunca se resuelven.
+
+**Comprobación:** ¿Qué valor devuelve un then y cómo afecta a la cadena?
 
 #### 12.3.05 — Async/Await
-`async` declara una función que devuelve una promesa y `await` pausa su continuación hasta que la promesa se resuelve o rechaza. Usa `try/catch` para errores y evita esperar en serie tareas independientes que podrían ejecutarse concurrentemente.
 
+async declara una función que devuelve Promise; await pausa la continuación de esa función hasta que la Promise se resuelve o rechaza, sin bloquear el hilo principal. try/catch maneja rechazos y la secuencia debe paralelizarse conscientemente.
 
-**Práctica y evidencia:** Reescribe una cadena de promesas con `async`/`await` y captura errores con `try/catch`. **Evidencia:** explica que `await` pausa la función async, no bloquea el hilo principal.
+**Ejemplo técnico:** await Promise.all([cargarA(), cargarB()]) espera operaciones concurrentes.
+
+**Práctica guiada:** Convierte cadena then/catch a async/await y compara manejo de error.
+
+**Actividad independiente:** Implementa dos cargas independientes en paralelo y una dependiente en secuencia.
+
+**Criterios de aceptación:** Errores capturados y paralelismo usado solo cuando es seguro.
+
+**Errores frecuentes:** Esperar secuencialmente tareas independientes o olvidar await en operaciones críticas.
+
+**Comprobación:** ¿Cuándo conviene Promise.all en lugar de varios await secuenciales?
 
 #### 12.3.06 — Event Loop
-El Event Loop coordina la pila de ejecución, colas de tareas y trabajos de microtareas del entorno. Comprende que JavaScript ejecuta código de usuario en un hilo principal en muchos entornos, mientras ciertas operaciones las realiza el runtime o el navegador.
 
+El event loop coordina ejecución de stack, tareas y microtareas. El código síncrono actual termina antes de que se procese la cola; las microtareas suelen drenarse antes de la siguiente tarea de temporizador o interacción.
 
-**Práctica y evidencia:** Dibuja la pila de llamadas, cola de tareas y trabajo de temporizadores en el Event Loop. **Evidencia:** predice el orden de varios `console.log` con temporizadores y promesas.
+**Ejemplo técnico:** Promise.then se ejecuta como microtarea; setTimeout callback como tarea.
+
+**Práctica guiada:** Predice orden de logs mezclando código síncrono, Promise y timer.
+
+**Actividad independiente:** Explica una traza y cómo evitar bloquear el event loop.
+
+**Criterios de aceptación:** Orden predicho coincide con reglas de cola.
+
+**Errores frecuentes:** Afirmar que setTimeout(0) se ejecuta inmediatamente.
+
+**Comprobación:** ¿Por qué una microtarea puede ejecutarse antes que un timer?
 
 #### 12.3.07 — Microtasks
-Las microtasks incluyen continuaciones de promesas y se procesan en puntos específicos del ciclo de eventos antes de continuar con la siguiente tarea. Una cadena interminable de microtasks puede retrasar renderizado y otras tareas.
 
+Microtasks incluyen callbacks de Promise y queueMicrotask. Se procesan en puntos definidos del event loop, habitualmente tras vaciar la pila actual y antes de la siguiente tarea; crear microtareas infinitamente puede retrasar renderizado.
 
-**Práctica y evidencia:** Programa una Promise resuelta y un temporizador para observar el orden de ejecución. **Evidencia:** identifica las microtasks y explica cuándo se vacía su cola.
+**Ejemplo técnico:** queueMicrotask(() => ...) agenda microtarea después del código síncrono actual.
+
+**Práctica guiada:** Compara Promise.then, queueMicrotask y setTimeout.
+
+**Actividad independiente:** Diagnostica una secuencia que posterga renderizado por exceso de microtareas.
+
+**Criterios de aceptación:** Se explica cola y orden sin confundirlo con ejecución paralela.
+
+**Errores frecuentes:** Crear cadena infinita de microtareas o pensar que toda callback es microtarea.
+
+**Comprobación:** ¿Qué riesgo produce programar microtareas continuamente?
 
 #### 12.3.08 — Macrotasks
-Las macrotasks (término didáctico habitual para tareas del event loop) incluyen callbacks de temporizadores y eventos según el entorno. Los temporizadores establecen un tiempo mínimo de espera, no garantizan ejecución exacta en ese instante.
 
+Macrotask o task describe tareas del event loop como timers, eventos y ciertos callbacks de I/O; la terminología exacta depende del modelo del runtime. Entre tareas pueden procesarse microtareas y renderizado.
 
-**Práctica y evidencia:** Compara temporizadores y eventos de interfaz como tareas del entorno del navegador. **Evidencia:** explica por qué `setTimeout(fn, 0)` no significa ejecución inmediata.
+**Ejemplo técnico:** setTimeout y evento click se procesan como tareas en el navegador.
+
+**Práctica guiada:** Ordena logs de click, timer y Promise en un ejemplo.
+
+**Actividad independiente:** Construye demostración visual de cola de tareas y microtareas.
+
+**Criterios de aceptación:** Diferencia task de microtask y reconoce puntos de renderizado.
+
+**Errores frecuentes:** Usar macrotask y microtask como categorías idénticas en todos los runtimes.
+
+**Comprobación:** ¿Qué suele ocurrir con microtareas antes de iniciar la siguiente task?
 
 #### 12.3.09 — Error handling
-El manejo de errores asíncronos requiere capturar rechazos, propagar contexto y distinguir fallos de red, HTTP y parseo. `fetch` no rechaza automáticamente por respuestas HTTP 4xx/5xx; comprueba `response.ok` y presenta errores sin filtrar secretos.
 
+El manejo de errores asíncronos requiere capturar excepciones, rechazos y fallos de red, distinguir errores recuperables y presentar mensajes útiles. AbortController permite cancelar fetch; los errores no deben revelar tokens ni detalles internos.
 
-**Práctica y evidencia:** Maneja fallos de red, errores de parseo y rechazos de promesas diferenciando mensajes para usuario y detalles de diagnóstico. **Evidencia:** registra error controlado sin filtrar secretos.
+**Ejemplo técnico:** try/catch alrededor de await fetch y comprobación de response.ok.
+
+**Práctica guiada:** Simula rechazo, HTTP 404 y cancelación con AbortController.
+
+**Actividad independiente:** Diseña política de reintento limitado y feedback de error.
+
+**Criterios de aceptación:** Cada fallo se distingue y la interfaz permite recuperación segura.
+
+**Errores frecuentes:** Asumir que fetch rechaza por 404 o reintentar indefinidamente.
+
+**Comprobación:** ¿Por qué fetch no rechaza automáticamente ante una respuesta HTTP 404?
 
 #### 12.3.10 — Race conditions
-Race conditions ocurren cuando el resultado depende del orden de operaciones concurrentes o asíncronas. Cancela solicitudes obsoletas, usa identificadores de petición o controles de versión y evita que una respuesta antigua sobrescriba datos más recientes.
 
+Una race condition aparece cuando el resultado depende del orden temporal de operaciones concurrentes. En UI, una respuesta antigua puede llegar después de una nueva y sobrescribir estado; se controla con cancelación, identificadores de petición o comparación de versión.
 
-**Práctica y evidencia:** Simula dos solicitudes concurrentes que actualizan el mismo estado y observa cuál termina primero. **Evidencia:** identifica la condición de carrera y propone cancelación, versionado o coordinación.
+**Ejemplo técnico:** Dos búsquedas con distinto texto terminan fuera de orden y la primera pisa el resultado más reciente.
 
-### Módulo 12.4 — Web APIs
+**Práctica guiada:** Simula respuestas con retrasos diferentes y observa orden de llegada.
+
+**Actividad independiente:** Implementa búsqueda que ignore respuestas obsoletas o aborte petición previa.
+
+**Criterios de aceptación:** Solo la respuesta correspondiente al estado actual modifica UI.
+
+**Errores frecuentes:** Asumir que las respuestas llegan en el mismo orden que las solicitudes.
+
+**Comprobación:** ¿Cómo evitas que una respuesta antigua sobrescriba resultados recientes?
 
 #### 12.4.01 — Fetch API
 Fetch API realiza solicitudes de red y devuelve una promesa con un objeto `Response`. Configura método, headers y body según el contrato; comprueba `ok`, tipo de contenido y errores, y no asumas que una respuesta siempre contiene JSON.
