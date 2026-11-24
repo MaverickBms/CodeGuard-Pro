@@ -389,6 +389,18 @@ Ejecuta con `python -m unittest -v`. La prueba del límite debe fallar con el c�
 
 **Dominio sugerido:** 80/100 y evidencia de que la prueba de frontera falla antes y pasa después. La puntuación no reemplaza la revisión de un docente.
 
+## Matriz de evidencias por tema
+
+| Tema | Evidencia mínima | Señal de dominio |
+|---|---|---|
+| 0.4.1 Debugging | Registro del contrato, reproducción, hipótesis y secuencia de diagnóstico | Sigue un proceso repetible sin cambiar varias variables a la vez |
+| 0.4.2 Breakpoints | Observaciones de variables antes y después de la operación sospechosa | Explica qué hipótesis respalda cada observación |
+| 0.4.3 Stack traces | Análisis de frames, excepción y contexto de llamada | Distingue lugar de manifestación y posible origen del defecto |
+| 0.4.4 Logs | Seis eventos ficticios saneados y justificación de campos | Aporta contexto sin registrar secretos ni datos sensibles |
+| 0.4.5 Hipótesis | Dos hipótesis alternativas con predicciones y prueba discriminante | La prueba permite distinguir explicaciones |
+| 0.4.6 Reproducción | Caso mínimo con entorno, pasos y resultados esperado/real | Otra persona reproduce el fallo o identifica el dato que falta |
+| 0.4.7 Causa y regresión | Diff, prueba de frontera y evidencia antes/después | La corrección responde al contrato y la prueba de regresión cubre el defecto observado |
+
 ## Autoevaluación con retroalimentación
 
 1. **¿Por qué el último frame de un stack trace no siempre es la causa raíz?**  
