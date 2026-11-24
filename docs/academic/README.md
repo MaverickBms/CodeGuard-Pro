@@ -55,7 +55,12 @@ Las etapas 0–32 cuentan con documentos de desarrollo en esta rama. **Etapa 0: 
 - [Etapa 3.5 — Manejo de errores](ascenso-3.1/etapa-03/modulo-3.5-manejo-errores.md)
 - [Etapa 3.6 — Archivos](ascenso-3.1/etapa-03/modulo-3.6-archivos.md)
 - [Índice Etapa 3](ascenso-3.1/etapa-03/programacion-desde-cero-java.md)
-- [Etapa 4 — POO y paradigmas](ascenso-3.1/etapa-04/poo-y-paradigmas.md)
+- [Etapa 4.1 — POO](ascenso-3.1/etapa-04/modulo-4.1-poo.md)
+- [Etapa 4.2 — Relaciones](ascenso-3.1/etapa-04/modulo-4.2-relaciones.md)
+- [Etapa 4.3 — Conceptos de diseño](ascenso-3.1/etapa-04/modulo-4.3-conceptos-diseno.md)
+- [Etapa 4.4 — Paradigmas](ascenso-3.1/etapa-04/modulo-4.4-paradigmas.md)
+- [Etapa 4.5 — UML](ascenso-3.1/etapa-04/modulo-4.5-uml.md)
+- [Índice Etapa 4](ascenso-3.1/etapa-04/poo-y-paradigmas.md)
 - [Etapa 5 — Git, GitHub, terminal y modularidad](ascenso-3.1/etapa-05/git-github-terminal-modularidad.md)
 - [Etapa 6 — Estructuras de datos y algoritmos](ascenso-3.1/etapa-06/estructuras-de-datos-y-algoritmos.md)
 
