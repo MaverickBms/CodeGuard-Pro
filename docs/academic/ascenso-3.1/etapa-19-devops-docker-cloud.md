@@ -1,7 +1,7 @@
 # Etapa 19 — DevOps, Docker, CI/CD y servidores
 
 **Prioridad:** P1 (fundamentos) · P2 (profundización avanzada)  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** aprender a ejecutar, desplegar, mantener y administrar aplicaciones en infraestructura real.  
 **Proyecto oficial:** desplegar una aplicación Full Stack en un servidor Linux mediante Docker, Nginx y un pipeline CI/CD.
 
@@ -119,4 +119,4 @@ No se incluyen videos aprobados. Se añadirán solo con audio español confirmad
 - Terraform: https://developer.hashicorp.com/terraform/docs
 - OpenTelemetry: https://opentelemetry.io/docs/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se desplegó infraestructura ni se ejecutó pipeline en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se desplegó infraestructura ni se ejecutó pipeline en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
