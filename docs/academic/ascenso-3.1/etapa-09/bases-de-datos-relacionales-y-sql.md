@@ -30,6 +30,348 @@ Arquitectura; roles; esquemas; tipos de datos; JSONB; índices; transacciones; c
 
 **Proyecto oficial:** diseñar la base de datos de un sistema de ventas con clientes, productos, proveedores, facturación, inventario y pagos.
 
+## Desarrollo granular por lección
+
+La secuencia siguiente desglosa los 81 títulos oficiales en unidades identificables. Los ejemplos de nombres y sentencias son didácticos; las diferencias de sintaxis, versión y configuración deben comprobarse en la documentación del motor utilizado.
+
+### 9.1 — Fundamentos
+
+#### 9.1.1 — Qué es una base de datos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.1.2 — DBMS (Sistema Gestor de Bases de Datos)
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.1.3 — Servidor de bases de datos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.1.4 — Cliente de bases de datos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.1.5 — Bases relacionales
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.1.6 — Tablas
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.1.7 — Filas
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.1.8 — Columnas
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.1.9 — Esquemas
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.1.10 — Tipos de datos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+### 9.2 — Modelado
+
+#### 9.2.1 — Entidades
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.2.2 — Atributos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.2.3 — Relaciones
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.2.4 — Cardinalidad
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.2.5 — Claves primarias
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.2.6 — Claves foráneas
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.2.7 — Restricciones
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.2.8 — Diagramas entidad-relación
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.2.9 — Modelo conceptual
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.2.10 — Modelo lógico
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.2.11 — Modelo físico
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+### 9.3 — MySQL
+
+#### 9.3.1 — Instalación de MySQL Server
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.3.2 — Configuración
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.3.3 — MySQL Workbench
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.3.4 — Creación de bases de datos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.3.5 — Creación de tablas
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.3.6 — Usuarios
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.3.7 — Permisos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.3.8 — Conexiones
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.3.9 — Una distinción importante
+
+Separa motor/servidor, cliente y herramienta de administración; una interfaz gráfica no reemplaza al servicio de base de datos.
+
+### 9.4 — SQL
+
+#### 9.4.1 — DDL
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.2 — DML
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.3 — DQL
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.4 — DCL
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.5 — TCL
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.6 — CREATE
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.7 — ALTER
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.8 — DROP
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.9 — SELECT
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.10 — INSERT
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.11 — UPDATE
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.12 — DELETE
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.13 — WHERE
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.14 — ORDER BY
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.15 — GROUP BY
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.16 — HAVING
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.17 — JOIN
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.18 — Subqueries
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.4.19 — CTE
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+### 9.5 — Diseño y normalización
+
+#### 9.5.1 — Primera forma normal (1NF)
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.5.2 — Segunda forma normal (2NF)
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.5.3 — Tercera forma normal (3NF)
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.5.4 — BCNF
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.5.5 — Redundancia
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.5.6 — Integridad referencial
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.5.7 — Relaciones uno a uno
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.5.8 — Uno a muchos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.5.9 — Muchos a muchos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+### 9.6 — Bases de datos avanzadas
+
+#### 9.6.1 — Índices
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.2 — B-Tree
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.3 — Índices compuestos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.4 — Vistas
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.5 — Triggers
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.6 — Stored Procedures
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.7 — Transacciones
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.8 — ACID
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.9 — Commit
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.10 — Rollback
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.11 — Locks
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.12 — Deadlocks
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.13 — Isolation Levels
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.14 — Optimización
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.6.15 — EXPLAIN
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+### 9.7 — PostgreSQL
+
+#### 9.7.1 — Arquitectura
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.7.2 — Roles
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.7.3 — Esquemas
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.7.4 — Tipos de datos
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.7.5 — JSONB
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.7.6 — Índices
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.7.7 — Transacciones
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
+#### 9.7.8 — Consultas avanzadas
+
+Estudia el concepto, su función en el modelo relacional y su aplicación en el proyecto de ventas; verifica sintaxis y comportamiento en la documentación oficial del motor.
+
 ## Resultados de aprendizaje
 
 Podrás distinguir motor, servidor, cliente y herramienta gráfica; modelar un dominio relacional; convertir un modelo entidad-relación en tablas; definir claves y restricciones; instalar y configurar MySQL Server; consultar desde Workbench y terminal; escribir SQL de definición, manipulación, consulta, control y transacciones; normalizar esquemas; comprender índices y planes de ejecución; gestionar transacciones y privilegios; y reconocer conceptos principales de PostgreSQL sin confundirlos con características exclusivas de MySQL.
