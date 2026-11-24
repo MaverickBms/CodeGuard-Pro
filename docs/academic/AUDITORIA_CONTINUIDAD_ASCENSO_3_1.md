@@ -191,3 +191,14 @@ La etapa 9 quedó alineada con 81 lecciones oficiales: 10 de fundamentos, 11 de 
 ### Expansión granular — etapa 10
 
 La etapa 10 quedó alineada con 38 lecciones oficiales: 8 de fundamentos NoSQL, 14 de MongoDB, 11 de Redis y 5 de otras arquitecturas de almacenamiento. Se individualizaron CAP, consistencia, disponibilidad, escalabilidad, CRUD, filtros, índices, aggregation pipeline, embedding/referencing, replicación, sharding, estructuras Redis, TTL, caché, sesiones, Pub/Sub y rate limiting. Se conservó el proyecto híbrido MySQL/MongoDB/Redis y se reforzó la distinción entre fuente de verdad, caché y replicación. Los comandos y laboratorios no se ejecutaron contra instancias reales en esta sesión.
+
+
+### Expansión granular — etapas 11 a 13
+
+Se incorporó un desglose por encabezado para las lecciones oficiales de las etapas 11–13, conservando el orden y los títulos del JSON curricular:
+
+- **Etapa 11 — HTML y CSS:** 60 lecciones (21 HTML, 8 accesibilidad, 17 CSS, 8 diseño de interfaces y 6 SEO).
+- **Etapa 12 — JavaScript, TypeScript y frameworks frontend:** 89 lecciones (19 JavaScript, 9 DOM, 10 asincronía, 7 Web APIs, 11 TypeScript, 16 React, 10 Next.js y 7 herramientas).
+- **Etapa 13 — Internet, HTTP, APIs y comunicación entre sistemas:** 63 lecciones (13 arquitectura web, 11 HTTP, 14 APIs, 10 consumo, 5 estilos de comunicación, 6 seguridad y 4 documentación).
+
+Los documentos conservan explicaciones temáticas, proyectos, autoevaluaciones y referencias técnicas; el desglose facilita navegación y correspondencia curricular. Las frases de propósito asociadas a cada encabezado son guías de estudio, no resultados de evaluación. No se ejecutaron navegadores de prueba, compilaciones frontend, servidores, APIs ni laboratorios de seguridad en esta sesión. Las tres etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
