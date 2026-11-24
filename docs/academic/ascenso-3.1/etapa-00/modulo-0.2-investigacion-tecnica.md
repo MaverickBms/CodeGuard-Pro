@@ -17,7 +17,7 @@ Al terminar, podrás:
 6. Separar hechos, hipótesis, opiniones y experiencias.
 7. Registrar una investigación reproducible.
 
-## 0.2.1 — Formular preguntas técnicas
+## Apéndice didáctico — Formular preguntas técnicas (comunicación reproducible)
 
 Una búsqueda eficaz comienza describiendo el problema, no adivinando una solución.
 
@@ -37,7 +37,7 @@ Nunca publiques contraseñas, tokens, claves privadas, datos personales ni archi
 
 **Ejercicio:** transforma tres dudas vagas en reportes con contexto, resultado esperado, resultado real y evidencia.
 
-## 0.2.2 — Buscar y leer documentación
+## Apéndice didáctico — Buscar y leer documentación
 
 La documentación oficial del proyecto o mantenedor suele ser el punto de partida para conocer comportamiento soportado, opciones, sintaxis, compatibilidad y cambios entre versiones.
 
@@ -60,7 +60,7 @@ La documentación oficial del proyecto o mantenedor suele ser el punto de partid
 
 **Ejercicio:** elige una biblioteca. Localiza documentación oficial, identifica la versión y encuentra instalación, tutorial y referencia API. Resume qué responde tu pregunta y qué no.
 
-## 0.2.3 — Buscar soluciones a errores
+## Apéndice didáctico — Buscar soluciones a errores
 
 Un mensaje de error contiene pistas. Antes de buscarlo, elimina datos sensibles y conserva el texto técnico distintivo.
 
@@ -79,7 +79,7 @@ El primer resultado, una respuesta votada o una respuesta de IA no es garantía 
 
 **Ejercicio:** toma un error no sensible de un proyecto propio o ejemplo preparado. Registra búsqueda, fuentes, hipótesis, prueba y conclusión.
 
-## 0.2.4 — Leer Stack Overflow críticamente
+## Apéndice didáctico — Leer Stack Overflow críticamente
 
 Stack Overflow es un repositorio comunitario, no documentación normativa del lenguaje o framework.
 
@@ -94,7 +94,7 @@ Evalúa cada respuesta:
 
 **Práctica:** toma una respuesta antigua y busca la documentación actual del método. Anota qué sigue vigente, qué cambió y qué no puedes confirmar.
 
-## 0.2.5 — Consultar GitHub e investigar repositorios
+## Apéndice didáctico — Consultar GitHub e investigar repositorios
 
 Antes de usar un repositorio:
 1. Confirma propietario, nombre y URL.
@@ -110,7 +110,7 @@ Una estrella o muchas descargas no demuestran seguridad, calidad ni mantenimient
 
 **Ejercicio:** investiga un repositorio pequeño. Entrega mapa de carpetas, propósito, lenguaje, licencia, instrucciones de prueba, mantenimiento observado y tres límites de lo que no pudiste confirmar.
 
-## 0.2.6 — Diferenciar información verificada de opiniones
+## Apéndice didáctico — Diferenciar información verificada de opiniones
 
 Clasifica las afirmaciones:
 - **Hecho comprobado:** respaldado por fuente primaria o prueba reproducible.
@@ -126,7 +126,7 @@ Registra procedencia, autor/mantenedor, fecha, versión, contexto y limitaciones
 
 **Ejercicio:** toma cinco afirmaciones de un tutorial, clasifícalas y busca evidencia primaria para las que sean comprobables.
 
-## 0.2.7 — Comunicar una investigación
+## Apéndice didáctico — Comunicar una investigación
 
 Una buena respuesta permite que otra persona entienda y reproduzca el diagnóstico.
 
@@ -204,6 +204,9 @@ Responde con tus palabras y justifica cada respuesta con un ejemplo.
 
 
 ---
+
+
+> **Nota de alineación curricular:** las secciones heredadas de la primera versión se conservan como material complementario, pero no establecen la numeración oficial. La secuencia canónica y sus siete títulos se desarrolla en la sección «Profundización didáctica — versión 0.2.0» que sigue, y coincide con el orden del JSON maestro.
 
 ## Profundización didáctica — versión 0.2.0 (24-11-2026)
 
