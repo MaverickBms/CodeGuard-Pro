@@ -354,3 +354,198 @@ No se incluyen videos en esta versión. HTML, CSS, accesibilidad y SEO requieren
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** sitio y ejercicios propuestos; no desplegados ni sometidos a auditoría automatizada en esta sesión.  
 **Estado editorial:** en desarrollo; no aprobado ni publicado..
+
+
+## Desglose granular de lecciones oficiales — etapa 11
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados desarrollan las lecciones a partir del contenido conceptual de esta guía; no representan evaluación, aprobación ni ejecución práctica.
+
+### Módulo 11.1 — HTML
+
+#### 11.1.01 — Estructura de documentos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.02 — DOCTYPE
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.03 — Head
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.04 — Body
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.05 — Etiquetas
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.06 — Atributos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.07 — HTML semántico
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.08 — Headings
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.09 — Sections
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.10 — Articles
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.11 — Header
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.12 — Footer
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.13 — Nav
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.14 — Forms
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.15 — Inputs
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.16 — Selects
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.17 — Textareas
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.18 — Tables
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.19 — Multimedia
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.20 — SVG
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.1.21 — Canvas
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de html. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 11.2 — Accesibilidad
+
+#### 11.2.01 — WCAG
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de accesibilidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.2.02 — ARIA
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de accesibilidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.2.03 — Navegación por teclado
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de accesibilidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.2.04 — Etiquetas accesibles
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de accesibilidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.2.05 — Contraste
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de accesibilidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.2.06 — Lectores de pantalla
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de accesibilidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.2.07 — Formularios accesibles
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de accesibilidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.2.08 — HTML semántico
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de accesibilidad. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 11.3 — CSS
+
+#### 11.3.01 — Selectores
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.02 — Cascade
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.03 — Specificity
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.04 — Inheritance
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.05 — Box Model
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.06 — Display
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.07 — Position
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.08 — Flexbox
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.09 — Grid
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.10 — Pseudoclases
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.11 — Pseudoelementos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.12 — Variables
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.13 — Media Queries
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.14 — Responsive Design
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.15 — Animations
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.16 — Transitions
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.3.17 — Transformations
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de css. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 11.4 — Diseño de interfaces
+
+#### 11.4.01 — Jerarquía visual
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de diseño de interfaces. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.4.02 — Espaciado
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de diseño de interfaces. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.4.03 — Tipografía
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de diseño de interfaces. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.4.04 — Layouts
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de diseño de interfaces. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.4.05 — Componentes
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de diseño de interfaces. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.4.06 — Design Systems
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de diseño de interfaces. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.4.07 — Consistencia visual
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de diseño de interfaces. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.4.08 — Mobile-first
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de diseño de interfaces. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+### Módulo 11.5 — SEO
+
+#### 11.5.01 — Metadatos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seo. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.5.02 — Títulos
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seo. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.5.03 — Descripciones
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seo. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.5.04 — Estructura semántica
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seo. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.5.05 — Indexación
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seo. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
+
+#### 11.5.06 — Datos estructurados (introducción)
+Identificar el concepto, explicar su función y reconocer cómo se aplica dentro de seo. Relacionarlo con las decisiones de diseño, implementación y mantenimiento del proyecto de la etapa.
