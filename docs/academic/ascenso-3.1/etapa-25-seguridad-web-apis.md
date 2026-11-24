@@ -1,7 +1,7 @@
 # Etapa 25 — Seguridad de aplicaciones web y APIs
 
 **Prioridad:** P1 para el perfil · P2 avanzado  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Enfoque:** integrar desarrollo de software y ciberseguridad.  
 **Proyecto oficial:** construir una aplicación deliberadamente vulnerable en entorno local, evaluarla, documentar hallazgos y desarrollar correcciones.
 
@@ -99,4 +99,4 @@ No se aprueban videos en esta versión. Se añadirán solo con audio hablado en 
 - OWASP ZAP: https://www.zaproxy.org/docs/
 - OWASP Juice Shop: https://owasp.org/www-project-juice-shop/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutó proxy ni laboratorio en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutó proxy ni laboratorio en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
