@@ -143,3 +143,326 @@ No se incluyen videos aprobados. Se incorporarán únicamente con audio hablado 
 - ADR GitHub: https://adr.github.io/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** proyecto de diseño no implementado ni validado en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 18
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados orientan el estudio de los conceptos dentro de la guía y el proyecto de la etapa; no constituyen resultados de pruebas ni evidencias de implementación.
+
+### Módulo 18.1 — Análisis de requerimientos
+
+#### 18.1.01 — Requerimientos funcionales
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de requerimientos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.1.02 — No funcionales
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de requerimientos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.1.03 — Historias de usuario
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de requerimientos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.1.04 — Casos de uso
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de requerimientos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.1.05 — Reglas de negocio
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de requerimientos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.1.06 — Restricciones
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de requerimientos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.1.07 — Stakeholders
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de requerimientos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.1.08 — Alcance del proyecto
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de requerimientos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 18.2 — Metodologías ágiles
+
+#### 18.2.01 — Manifiesto Ágil
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.02 — Scrum
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.03 — Kanban
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.04 — Sprints
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.05 — Product Backlog
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.06 — Sprint Backlog
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.07 — Planning
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.08 — Daily
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.09 — Review
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.10 — Retrospective
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.11 — Definition of Done
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.12 — Story Points
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.2.13 — Gestión del trabajo en progreso (WIP)
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías ágiles, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 18.3 — Documentación
+
+#### 18.3.01 — README
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.3.02 — Especificación de requisitos
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.3.03 — Documentación técnica
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.3.04 — Documentación funcional
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.3.05 — API Documentation
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.3.06 — Architecture Decision Records (ADR)
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.3.07 — Changelog
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.3.08 — Manual de instalación
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.3.09 — Manual de usuario
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.3.10 — Plan de pruebas
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.3.11 — Documentación de despliegue
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en documentación, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 18.4 — Diagramas
+
+#### 18.4.01 — Diagramas de flujo
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diagramas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.4.02 — UML
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diagramas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.4.03 — Diagrama de clases
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diagramas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.4.04 — Diagrama de secuencia
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diagramas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.4.05 — Diagrama de actividades
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diagramas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.4.06 — Diagrama de componentes
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diagramas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.4.07 — Diagrama de despliegue
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diagramas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.4.08 — Diagramas ER
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diagramas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.4.09 — C4 Model
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diagramas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 18.5 — Principios de diseño
+
+#### 18.5.01 — SOLID
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en principios de diseño, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.5.02 — DRY
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en principios de diseño, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.5.03 — KISS
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en principios de diseño, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.5.04 — YAGNI
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en principios de diseño, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.5.05 — Separation of Concerns
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en principios de diseño, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.5.06 — High Cohesion
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en principios de diseño, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.5.07 — Low Coupling
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en principios de diseño, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.5.08 — Dependency Inversion
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en principios de diseño, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 18.6 — Patrones GoF
+
+#### 18.6.01 — Creacionales
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.02 — Factory
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.03 — Abstract Factory
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.04 — Builder
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.05 — Singleton
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.06 — Prototype
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.07 — Estructurales
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.08 — Adapter
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.09 — Decorator
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.10 — Facade
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.11 — Proxy
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.12 — Composite
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.13 — Bridge
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.14 — Flyweight
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.15 — Comportamiento
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.16 — Strategy
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.17 — Observer
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.18 — Command
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.19 — State
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.20 — Iterator
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.21 — Mediator
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.22 — Template Method
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.6.23 — Chain of Responsibility
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en patrones gof, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 18.7 — Arquitecturas
+
+#### 18.7.01 — Monolithic Architecture
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en arquitecturas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.7.02 — Modular Monolith
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en arquitecturas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.7.03 — Layered Architecture
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en arquitecturas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.7.04 — MVC
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en arquitecturas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.7.05 — Clean Architecture
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en arquitecturas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.7.06 — Hexagonal Architecture
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en arquitecturas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.7.07 — Onion Architecture
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en arquitecturas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.7.08 — Event-Driven Architecture
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en arquitecturas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.7.09 — Microservices
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en arquitecturas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 18.8 — Diseño de sistemas
+
+#### 18.8.01 — Scalability
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.02 — Availability
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.03 — Reliability
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.04 — Consistency
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.05 — CAP Theorem
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.06 — Load Balancing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.07 — Caching
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.08 — Message Queues
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.09 — Distributed Systems
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.10 — API Gateway
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.11 — Service Discovery
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.8.12 — Fault Tolerance
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en diseño de sistemas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 18.9 — Modelado de dominios
+
+#### 18.9.01 — Domain-Driven Design
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en modelado de dominios, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.9.02 — Entities
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en modelado de dominios, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.9.03 — Value Objects
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en modelado de dominios, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.9.04 — Aggregates
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en modelado de dominios, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.9.05 — Repositories
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en modelado de dominios, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.9.06 — Bounded Contexts
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en modelado de dominios, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 18.9.07 — Ubiquitous Language
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en modelado de dominios, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
