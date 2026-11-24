@@ -1,6 +1,6 @@
 # Etapa 0 · Módulo 0.4 — Depuración
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · referencia operativa vigente de la lección 0.4. No implica publicación ni aprobación editorial.  
 **Alineación:** ASCENSO 3.1, Etapa 0, apartado 0.4.  
 **Temas exactos:** debugging, breakpoints, stack traces, logs, hipótesis, reproducción de errores y análisis de causas.
 
