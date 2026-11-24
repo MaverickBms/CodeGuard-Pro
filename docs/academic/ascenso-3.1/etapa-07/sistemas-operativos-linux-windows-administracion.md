@@ -823,51 +823,183 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 ### 7.4.1 — Variables
 
-En Bash las variables se asignan sin espacios alrededor del igual. Distingue variable de shell y variable exportada al entorno; compara comillas simples y dobles. **Práctica:** asigna un valor con espacios, imprímelo y expórtalo a un subproceso. **Evidencia:** demuestra cuándo se conserva la expansión y cuándo se transmite al proceso hijo.
+Bash mantiene variables locales a la shell y variables exportadas al entorno de procesos hijos. La asignación no admite espacios alrededor de `=`. Las comillas simples conservan texto literal; las dobles permiten expansiones. Ejemplo: `proyecto="laboratorio azul"` y `printf '%s\\n' "$proyecto"`. Sin comillas, los espacios pueden dividir el valor en varios argumentos.
+
+**Práctica guiada:** asigna un valor con espacios, imprímelo y compáralo con el resultado de un subproceso antes y después de exportar la variable. Usa datos ficticios, nunca secretos.
+
+**Actividad independiente:** valida que una variable requerida no esté vacía sin revelar su contenido.
+
+**Criterios de aceptación:** diferencia asignación, expansión y exportación; conserva espacios mediante comillas y demuestra qué recibe el proceso hijo.
+
+**Errores frecuentes:** espacios alrededor de `=`, olvidar comillas o asumir que exportar vuelve persistente la variable entre sesiones.
+
+**Comprobación:** ¿qué cambia al exportar una variable y qué no cambia?
 
 ### 7.4.2 — Operadores
 
-Bash ofrece operadores de comparación, aritmética y lógica; `[[ ]]`, `(( ))` y `[ ]` tienen reglas distintas. **Práctica:** comprueba si un archivo temporal existe y si una variable no está vacía. **Evidencia:** explica el valor lógico de cada condición y evita mezclar sintaxis de otros lenguajes.
+Bash ofrece pruebas de archivos, cadenas y números, además de expresiones aritméticas. `[[ ... ]]` es una construcción de Bash; `(( ... ))` evalúa aritmética; `[ ... ]` tiene reglas de argumentos propias. Ejemplo: `[[ -f "$ruta" ]]` comprueba un archivo regular y `(( intentos < 3 ))` compara números.
+
+**Práctica guiada:** crea un archivo temporal dentro del laboratorio y prueba `-f`, `-d`, `-r` y una comparación numérica. Comprueba el estado de salida de cada prueba.
+
+**Actividad independiente:** valida un número entre 1 y 5 y rechaza entradas vacías, no numéricas y fuera de rango.
+
+**Criterios de aceptación:** selecciona la construcción adecuada y prueba casos válidos y límite.
+
+**Errores frecuentes:** mezclar sintaxis de otros lenguajes, no citar rutas o evaluar entradas con `eval`.
+
+**Comprobación:** ¿por qué una prueba de archivo y una comparación aritmética utilizan construcciones distintas?
 
 ### 7.4.3 — Condicionales
 
-`if`, `elif` y `else` seleccionan ramas según el estado de salida de una orden o una expresión de prueba. Bash evalúa códigos de salida, no valores booleanos de otros lenguajes. **Práctica:** comprueba si un directorio existe antes de listar su contenido. **Evidencia:** prueba ambos caminos y registra la salida.
+`if`, `elif` y `else` seleccionan ramas según el estado de salida de una orden. En Unix, cero representa éxito y un valor distinto de cero representa fallo o condición no satisfecha. Ejemplo: verificar `[[ -d "$destino" ]]` antes de escribir en una ruta.
+
+**Práctica guiada:** crea un bloque que reciba una ruta, distinga directorio existente de ruta inexistente y muestre mensajes diferentes. Ejecuta ambos escenarios y registra el código de salida.
+
+**Actividad independiente:** añade una comprobación de permiso de escritura y explica por qué no garantiza que una operación posterior vaya a tener éxito.
+
+**Criterios de aceptación:** prueba ambas ramas y devuelve un estado útil al programa llamador.
+
+**Errores frecuentes:** confundir salida textual con éxito o ignorar fallos de órdenes dentro de una rama.
+
+**Comprobación:** ¿qué información aporta el código de salida que no aporta necesariamente el mensaje impreso?
 
 ### 7.4.4 — Bucles
 
-`for`, `while` y `until` repiten instrucciones; la elección depende de si se recorre una colección o se espera una condición. Advierte sobre expansión de nombres de archivo y lectura de líneas. **Práctica:** recorre una lista sintética cuyos elementos incluyen espacios. **Evidencia:** demuestra que cada elemento se conserva como unidad.
+`for` recorre listas o expansiones; `while` repite mientras una condición tenga éxito; `until` repite hasta que tenga éxito. La expansión de palabras y comodines puede alterar elementos si no se cita. Para leer líneas se recomienda `while IFS= read -r linea`.
+
+**Práctica guiada:** recorre una lista sintética de tres elementos, uno con espacios, e imprime cada elemento entre delimitadores para comprobar que se conserva como unidad.
+
+**Actividad independiente:** procesa un archivo de texto sintético línea por línea conservando espacios y barras invertidas.
+
+**Criterios de aceptación:** no se pierden ni fragmentan elementos y el bucle tiene terminación clara.
+
+**Errores frecuentes:** usar `for x in $(cat archivo)` para leer líneas o crear bucles infinitos.
+
+**Comprobación:** ¿qué problema evita la combinación `IFS= read -r`?
 
 ### 7.4.5 — Funciones
 
-Las funciones encapsulan instrucciones reutilizables y reciben argumentos mediante `$1`, `$2` y `"$@"`. Distingue salida por stdout de código de retorno; `return` no devuelve cadenas arbitrarias. **Práctica:** crea una función que valide si una ruta es un directorio. **Evidencia:** invócala con una ruta válida y otra inexistente.
+Las funciones agrupan operaciones reutilizables y reciben argumentos posicionales como `$1` y `$2`. `"$@"` conserva cada argumento como unidad. La función comunica información por stdout/stderr y éxito o fallo mediante su código de retorno; `return` devuelve un estado numérico.
+
+**Ejemplo:** `validar_directorio() { [[ -d "$1" ]]; }` puede utilizarse directamente como condición de un `if`.
+
+**Práctica guiada:** implementa la función y ejecútala con una ruta válida y otra inexistente. Comprueba los estados.
+
+**Actividad independiente:** exige exactamente dos argumentos, valida ambos y prueba nombres de ruta con espacios.
+
+**Criterios de aceptación:** valida argumentos, conserva espacios y separa salida textual de estado.
+
+**Errores frecuentes:** intentar devolver cadenas con `return` o expandir `$@` sin comillas.
+
+**Comprobación:** ¿cuándo conviene imprimir un resultado y cuándo devolver un código de estado?
 
 ### 7.4.6 — Arrays
 
-Los arrays indexados almacenan secuencias y los asociativos relacionan claves con valores; la sintaxis depende de la versión de Bash. Explica `${array[@]}` y la importancia de citar la expansión. **Práctica:** recorre un array de servicios ficticios conservando elementos con espacios. **Evidencia:** demuestra que cada elemento llega como argumento independiente.
+Los arrays indexados almacenan secuencias; los asociativos relacionan claves y valores y requieren una versión de Bash compatible. `"${array[@]}"` expande cada elemento como argumento separado. `"${array[*]}"` puede unir elementos dentro de comillas.
+
+**Práctica guiada:** crea un array con tres servicios ficticios, uno con espacios; imprime cada elemento y cuenta los elementos con `${#servicios[@]}`.
+
+**Actividad independiente:** crea un inventario asociativo de servicios y puertos, comprueba que la clave exista antes de consultarla y anota la versión de Bash.
+
+**Criterios de aceptación:** conserva límites entre elementos, interpreta el conteo y reconoce la dependencia de versión.
+
+**Errores frecuentes:** confundir `[@]` con `[*]`, omitir comillas o asumir que POSIX sh implementa arrays Bash.
+
+**Comprobación:** ¿por qué `"${array[@]}"` es la forma habitual de pasar elementos como argumentos separados?
 
 ### 7.4.7 — Pipes
 
-Una pipe (`|`) conecta stdout de un proceso con stdin de otro y permite componer herramientas. Explica que el estado del pipeline puede requerir `set -o pipefail`. **Práctica:** usa `printf` y `grep` para filtrar líneas sintéticas. **Evidencia:** identifica productor, filtro y resultado.
+Una tubería conecta stdout de un proceso con stdin del siguiente y permite componer herramientas. Las etapas pueden ejecutarse concurrentemente. Por defecto, el estado suele reflejar la última orden; `set -o pipefail` permite detectar fallos de etapas anteriores.
+
+**Ejemplo:** `printf '%s\\n' INFO WARN ERROR | grep ERROR` filtra líneas sintéticas.
+
+**Práctica guiada:** ejecuta el pipeline y después introduce una orden inexistente en una etapa. Compara el estado antes y después de activar pipefail en una subshell.
+
+**Actividad independiente:** filtra eventos sintéticos por severidad y cuenta coincidencias; explica qué ocurre si falla la fuente.
+
+**Criterios de aceptación:** identifica productor, consumidor, flujo y estado.
+
+**Errores frecuentes:** creer que la tubería transmite stderr automáticamente o ignorar fallos intermedios.
+
+**Comprobación:** ¿qué error puede quedar oculto si solo se consulta el estado de la última orden?
 
 ### 7.4.8 — Redirecciones
 
-Las redirecciones controlan stdin, stdout y stderr; `>` sobrescribe, `>>` añade y `2>` redirige errores. Explica el orden de las redirecciones y el riesgo de truncar archivos. **Práctica:** separa salida normal y errores de una orden inocua en dos archivos temporales. **Evidencia:** interpreta los descriptores 0, 1 y 2.
+Los descriptores estándar son stdin (0), stdout (1) y stderr (2). `>` crea o trunca, `>>` añade, `2>` redirige errores y `2>&1` duplica stderr hacia el destino actual de stdout. El orden de evaluación importa.
+
+**Ejemplo:** `comando >salida.txt 2>errores.txt` separa ambos flujos; `comando >todo.txt 2>&1` los dirige al mismo archivo.
+
+**Práctica guiada:** ejecuta órdenes inocuas con salida normal y error controlado; guarda los flujos en archivos temporales separados y revísalos.
+
+**Actividad independiente:** documenta cómo capturar ambos flujos en un archivo y cómo mantenerlos separados.
+
+**Criterios de aceptación:** predice el destino de cada descriptor y diferencia truncar de añadir.
+
+**Errores frecuentes:** sobrescribir registros importantes o asumir que `2>&1 >archivo` equivale a `>archivo 2>&1`.
+
+**Comprobación:** ¿por qué el orden de redirecciones cambia el resultado?
 
 ### 7.4.9 — Exit codes
 
-El exit code comunica el resultado de una orden: por convención cero indica éxito y otro valor indica alguna condición de fallo. `$?` contiene el estado de la última orden y debe capturarse inmediatamente. **Práctica:** ejecuta una orden válida y otra que falle de forma controlada. **Evidencia:** usa los estados en una condición.
+El estado de salida comunica el resultado de una orden. Cero suele significar éxito; otros valores representan fallo o condiciones específicas. En Bash, `$?` contiene el estado de la última orden y debe guardarse inmediatamente.
+
+**Ejemplo:** grep suele devolver 0 si encuentra coincidencias, 1 si no encuentra y otro valor para errores. «Sin coincidencias» no equivale necesariamente a «no pudo leer el archivo».
+
+**Práctica guiada:** ejecuta una búsqueda con coincidencia, otra sin coincidencia y otra sobre un archivo inexistente. Guarda cada estado antes de ejecutar otra orden.
+
+**Actividad independiente:** diseña una función que diferencie resultado positivo, ausencia de resultados y error de lectura.
+
+**Criterios de aceptación:** interpreta los tres escenarios y conserva los estados correctamente.
+
+**Errores frecuentes:** consultar `$?` después de otra orden o tratar todos los estados distintos de cero como iguales.
+
+**Comprobación:** ¿qué diferencia hay entre no encontrar datos y no poder ejecutar correctamente la búsqueda?
 
 ### 7.4.10 — Scripts
 
-Un script Bash debe declarar intérprete, validar argumentos, citar variables y gestionar errores. `set -e` tiene excepciones y no sustituye el manejo explícito de fallos. **Práctica:** escribe un script que valide una ruta y muestre un mensaje claro. **Evidencia:** prueba entrada válida, ausente y ruta inexistente; conserva código y resultados.
+Un script reúne órdenes en un archivo ejecutable por un intérprete. Puede incluir shebang, validación de argumentos, funciones, control de errores y códigos de salida. `set -e` tiene excepciones y no sustituye comprobaciones explícitas.
+
+**Práctica guiada:** crea un script Bash que valide un argumento de ruta y liste su contenido solo si es un directorio. Prueba argumento ausente, ruta inexistente y ruta válida dentro del laboratorio.
+
+**Actividad independiente:** añade logging con timestamp y salida controlada; nunca registres contraseñas, tokens ni datos sensibles.
+
+**Criterios de aceptación:** gestiona los casos de prueba, preserva espacios en rutas y devuelve estados coherentes.
+
+**Errores frecuentes:** no citar variables, silenciar todos los errores o confiar únicamente en `set -e`.
+
+**Comprobación:** ¿qué validaciones deben preceder a una operación de escritura sobre una ruta recibida como argumento?
 
 ### 7.4.11 — Cron
 
-`cron` programa tareas periódicas mediante expresiones de cinco campos y un entorno reducido. Distingue cron de usuario y del sistema; PATH, zona horaria y permisos pueden diferir de una sesión interactiva. **Práctica:** interpreta una expresión y redacta una entrada de ejemplo sin instalarla en el host. **Evidencia:** explica cada campo.
+cron programa tareas periódicas mediante cinco campos: minuto, hora, día del mes, mes y día de la semana. Su entorno suele ser reducido y distinto al de una terminal interactiva. PATH, zona horaria, permisos y disponibilidad del daemon influyen en la ejecución.
+
+**Ejemplo:** `0 2 * * 1` representa las 02:00 cada lunes en la interpretación habitual; la expresión no determina por sí sola la zona horaria.
+
+**Práctica guiada:** interpreta expresiones de ejemplo sin instalarlas. Consulta `crontab -l` solo para inspeccionar tu propia tabla.
+
+**Actividad independiente:** diseña una programación semanal de respaldo con destino, retención, logging, comprobación de éxito y prevención de solapamientos.
+
+**Criterios de aceptación:** interpreta los cinco campos y enumera diferencias entre cron y una shell interactiva.
+
+**Errores frecuentes:** asumir que cron hereda PATH, ignorar zona horaria o no controlar tareas simultáneas.
+
+**Comprobación:** ¿por qué una orden que funciona en tu terminal puede fallar desde cron?
 
 ### 7.4.12 — Automatización
 
-La automatización combina scripts, planificación, logs, manejo de errores, idempotencia y permisos mínimos. Una tarea debe poder repetirse sin efectos inesperados. **Práctica:** diseña un script que cree una carpeta de salida si no existe y registre fecha y estado. **Evidencia:** ejecútalo dos veces en el laboratorio y demuestra estabilidad.
+Una automatización fiable combina repetibilidad, idempotencia, observabilidad, control de errores, privilegios mínimos y reversión. Debe documentar entradas, efectos, dependencias y forma de verificar el resultado.
+
+**Ejemplo:** crear un directorio si no existe es idempotente respecto a su existencia; añadir la misma línea a un archivo en cada ejecución puede duplicar datos.
+
+**Práctica guiada:** crea una tarea que prepare una carpeta de reportes y escriba un timestamp. Ejecútala dos veces y verifica que no duplique estructura ni cambie permisos inesperadamente.
+
+**Actividad independiente:** diseña una comprobación de espacio en disco que alerte al superar un umbral, sin borrar archivos ni reiniciar servicios.
+
+**Criterios de aceptación:** la tarea puede repetirse, registra resultados, gestiona errores y no requiere privilegios innecesarios.
+
+**Errores frecuentes:** acciones destructivas sin simulación, credenciales en texto plano o ejecuciones concurrentes sin control.
+
+**Comprobación:** ¿qué propiedad permite repetir una automatización sin efectos acumulativos no deseados?
 
 ## 7.5 — Windows
 
