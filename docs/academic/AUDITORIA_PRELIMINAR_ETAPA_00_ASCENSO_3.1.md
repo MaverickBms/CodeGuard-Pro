@@ -192,3 +192,12 @@ La etapa 25 mantiene el campo `objetivo` vacío en el JSON. No se propone ni se 
 Se añadió `docs/academic/ascenso-3.1/etapa-00/proyecto-integrador-ascenso-knowledge-base.md`, alineado con el proyecto indicado por el JSON maestro. La especificación incluye contexto, resultados observables, requisitos funcionales/no funcionales, estructura de referencia, plantillas, fases conectadas con los cuatro módulos, entregables, criterios de validación, rúbrica analítica, errores frecuentes y registro de ejecución.
 
 **Estado:** BORRADOR. Se ha redactado la especificación; el repositorio del estudiante no se ha creado, no se han producido entregables, no se ha ejecutado una revisión por pares y no se ha aprobado ni publicado el proyecto.
+
+
+### 8. Revisión de escritorio del módulo 0.1
+
+Se creó `etapa-00/revision-tecnica-pedagogica-modulo-0.1.md` con una inspección individual de las ocho lecciones. La revisión contrasta objetivos, ejemplos, actividades, evidencias, criterios, autoevaluación y fuentes, y propone criterios de salida para una revisión independiente.
+
+**Resultado:** los ocho títulos oficiales y su orden están presentes; las ocho lecciones contienen objetivos, actividades y criterios identificables. Esto es una comprobación estructural/editorial, no una validación de aprendizaje ni una aprobación. Se identificaron ajustes específicos: fortalecer la ficha de verificación de fuentes en 0.1.2; añadir producto y rúbrica a 0.1.3; plantilla y ajuste de intervalos en 0.1.4; ejemplo de retroalimentación en 0.1.5; solución de referencia con casos de prueba en 0.1.6; descomposición resuelta en 0.1.7; y separar anexos/material audiovisual de la lección 0.1.8.
+
+**Estado:** 0/8 lecciones aprobadas; 0/8 con revisión independiente completa; 0 actividades ejecutadas en esta revisión. Los seis videos candidatos siguen sin verificación audiovisual. El informe no altera el currículo ni eleva el estado editorial del módulo.
