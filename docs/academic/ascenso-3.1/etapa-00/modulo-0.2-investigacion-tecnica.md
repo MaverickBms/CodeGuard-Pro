@@ -227,7 +227,7 @@ Para cada caso conserva un archivo Markdown con:
 
 No incluyas secretos, datos personales ni fragmentos de código cuya licencia no permita redistribución.
 
-### Taller 0.2.1 — Buscar documentación: localizar el contrato correcto
+### Lección 0.2.1 — Buscar documentación: localizar el contrato correcto
 
 **Situación:** una persona encuentra en un tutorial un parámetro que no existe en la versión instalada de una biblioteca.
 
@@ -245,7 +245,7 @@ No incluyas secretos, datos personales ni fragmentos de código cuya licencia no
 
 **Evidencia esperada:** ficha con enlaces a la página de versión y a la referencia API. Una captura sin URL, versión o contexto no es evidencia suficiente.
 
-### Taller 0.2.2 — Buscar soluciones a errores: construir una consulta discriminante
+### Lección 0.2.2 — Buscar soluciones a errores: construir una consulta discriminante
 
 **Situación simulada:** un proyecto muestra un error de importación de un módulo. La búsqueda inicial «no funciona Python» devuelve resultados demasiado amplios.
 
@@ -264,7 +264,7 @@ No incluyas secretos, datos personales ni fragmentos de código cuya licencia no
 
 **Criterio:** la consulta debe permitir distinguir al menos dos hipótesis plausibles, no limitarse a repetir el mensaje de error.
 
-### Taller 0.2.3 — Leer Stack Overflow: validar una respuesta antes de aplicarla
+### Lección 0.2.3 — Leer Stack Overflow: validar una respuesta antes de aplicarla
 
 **Caso:** una respuesta antigua recomienda una función que el proyecto ha marcado como obsoleta.
 
@@ -283,7 +283,7 @@ Los votos, la aceptación y la reputación son señales de participación comuni
 
 **Solución orientativa:** si la respuesta recomienda un método que la documentación actual declara obsoleto, no se copia sin más. Se busca la alternativa oficial y se explican las diferencias. Si no hay evidencia suficiente para determinar compatibilidad, el veredicto debe ser «no verificable».
 
-### Taller 0.2.4 — Consultar GitHub: navegar issues, pull requests y código
+### Lección 0.2.4 — Consultar GitHub: navegar issues, pull requests y código
 
 **Caso:** una biblioteca presenta un comportamiento inesperado y existe una issue con un título parecido.
 
@@ -300,7 +300,7 @@ Los votos, la aceptación y la reputación son señales de participación comuni
 
 **Límite:** el estado «closed» por sí solo no demuestra que el defecto esté corregido; la issue pudo cerrarse por duplicación, falta de información o decisión de no implementar.
 
-### Taller 0.2.5 — Investigar repositorios: evaluar mantenibilidad y riesgo
+### Lección 0.2.5 — Investigar repositorios: evaluar mantenibilidad y riesgo
 
 **Caso:** debes decidir si utilizar un paquete de terceros en un proyecto académico.
 
@@ -321,7 +321,7 @@ Evalúa al menos:
 
 **Criterio:** toda valoración («mantenido», «seguro», «apto») debe acompañarse de observaciones concretas y no de una impresión basada en estrellas.
 
-### Taller 0.2.6 — Diferenciar información verificada de opiniones: calibrar conclusiones
+### Lección 0.2.6 — Diferenciar información verificada de opiniones: calibrar conclusiones
 
 Clasifica cada afirmación con una categoría y una evidencia:
 - hecho respaldado por fuente primaria;
@@ -339,7 +339,7 @@ Esta frase no es verificable mientras no se especifiquen carga, versiones, hardw
 
 **Retroalimentación:** si la evidencia no permite una conclusión, no fuerces un sí/no. Expresa qué se sabe, qué no se sabe y qué prueba falta.
 
-### Taller 0.2.7 — Formular preguntas técnicas: producir un reporte reproducible
+### Lección 0.2.7 — Formular preguntas técnicas: producir un reporte reproducible
 
 **Plantilla de reporte**
 1. Título que describa el fallo, no una conclusión.
