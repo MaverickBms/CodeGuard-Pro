@@ -363,132 +363,340 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 ### Módulo 11.1 — HTML
 
 #### 11.1.01 — Estructura de documentos
-Un documento HTML es un árbol de nodos cuyo elemento raíz es `html`; dentro de él, `head` contiene metadatos y referencias a recursos, mientras `body` contiene el contenido del documento. Mantén una estructura completa y declara el idioma principal para que navegadores y tecnologías de asistencia interpreten correctamente el contenido.
 
+HTML define un árbol DOM que el navegador interpreta. La estructura mínima contiene doctype, html, head y body; declara idioma y metadatos.
 
-**Práctica y evidencia:** Construye un HTML mínimo con `html`, `head` y `body`; valida su árbol en DevTools. **Evidencia:** captura del DOM y explicación de la función de cada región.
+**Ejemplo técnico:** Documento en español con UTF-8, viewport, title y h1.
+
+**Práctica guiada:** Crea index.html y revisa el DOM.
+
+**Actividad independiente:** Página de curso sin CSS.
+
+**Criterios de aceptación:** Idioma, metadatos y anidamiento correctos.
+
+**Errores frecuentes:** Omitir doctype o anidar mal.
+
+**Comprobación:** ¿Qué representa el DOM?
 
 #### 11.1.02 — DOCTYPE
-`<!doctype html>` activa el modo estándar de renderizado en navegadores modernos; no es una etiqueta HTML ni una instrucción de presentación. Colócalo al inicio del documento y evita omitirlo, porque el modo de compatibilidad puede producir diferencias de layout difíciles de depurar.
 
+`<!doctype html>` activa el modo estándar; es una declaración, no un elemento.
 
-**Práctica y evidencia:** Crea dos documentos idénticos, uno con DOCTYPE y otro sin él, y observa el modo de renderizado que informa el navegador. **Evidencia:** explica por qué el modo estándar evita compatibilidad heredada.
+**Ejemplo técnico:** Sin doctype el navegador puede activar quirks mode.
+
+**Práctica guiada:** Compara archivos con y sin doctype.
+
+**Actividad independiente:** Documenta por qué va al inicio.
+
+**Criterios de aceptación:** Aparece antes de html.
+
+**Errores frecuentes:** Escribirlo como etiqueta.
+
+**Comprobación:** ¿Qué modo activa?
 
 #### 11.1.03 — Head
-`head` aloja información no presentada como contenido principal: codificación, viewport, título, descripción, iconos, hojas de estilo y metadatos. Declara UTF-8 y un título específico; carga únicamente recursos necesarios y evita incluir información privada en metadatos públicos.
 
+head contiene metadatos, title y enlaces a recursos; no el contenido principal.
 
-**Práctica y evidencia:** Añade charset UTF-8, viewport, título, descripción y una hoja CSS local. **Evidencia:** inspecciona el `head` y explica qué metadatos afectan representación o descubrimiento.
+**Ejemplo técnico:** charset, viewport, title y description.
+
+**Práctica guiada:** Añade y verifica metadatos.
+
+**Actividad independiente:** Diseña head para una página de producto.
+
+**Criterios de aceptación:** Metadatos pertinentes.
+
+**Errores frecuentes:** Contenido visible dentro de head.
+
+**Comprobación:** ¿Qué diferencia head de body?
 
 #### 11.1.04 — Body
-`body` contiene el contenido que el usuario puede explorar e interactuar. Organiza sus regiones con elementos semánticos y garantiza que el contenido esencial no dependa de scripts que fallen o de estilos que puedan no cargarse.
 
+body contiene contenido, navegación, formularios y regiones semánticas.
 
-**Práctica y evidencia:** Organiza el `body` de una página de documentación con encabezado, navegación, contenido principal y pie. **Evidencia:** árbol DOM con regiones semánticas identificadas.
+**Ejemplo técnico:** header, nav, main y footer.
+
+**Práctica guiada:** Organiza una página y revisa landmarks.
+
+**Actividad independiente:** Reestructura una página hecha solo con div.
+
+**Criterios de aceptación:** Jerarquía coherente.
+
+**Errores frecuentes:** Duplicar landmarks sin nombre.
+
+**Comprobación:** ¿Qué aporta semántica a lectores de pantalla?
 
 #### 11.1.05 — Etiquetas
-Las etiquetas delimitan elementos y aportan significado según el estándar; algunos elementos tienen etiqueta de apertura y cierre y otros son elementos vacíos. Usa elementos válidos para el contexto, respeta el anidamiento y no inventes etiquetas para conseguir un efecto visual.
 
+Los elementos expresan semántica y comportamiento; se eligen por función.
 
-**Práctica y evidencia:** Revisa una página y corrige etiquetas mal anidadas o elementos inválidos para el contexto. **Evidencia:** validación HTML sin errores estructurales relevantes.
+**Ejemplo técnico:** button para acción, a para navegación, p para párrafo.
+
+**Práctica guiada:** Reemplaza div clicables por controles nativos.
+
+**Actividad independiente:** Justifica cinco decisiones semánticas.
+
+**Criterios de aceptación:** Elementos y comportamiento apropiados.
+
+**Errores frecuentes:** Controles custom sin teclado.
+
+**Comprobación:** ¿Por qué preferir button nativo?
 
 #### 11.1.06 — Atributos
-Los atributos configuran un elemento o aportan información como `id`, `class`, `href`, `src`, `alt`, `type` y `name`. Respeta los atributos globales y los específicos de cada elemento; los atributos booleanos se expresan por presencia y los valores dinámicos deben escaparse según el contexto.
 
+Los atributos configuran elementos; algunos son globales y otros específicos.
 
-**Práctica y evidencia:** Añade `id`, `class`, `lang`, `title` y atributos específicos a controles de un formulario. **Evidencia:** explica cuáles son globales y cuáles dependen del elemento.
+**Ejemplo técnico:** img usa src/alt; a usa href; input usa type/name; id es único.
+
+**Práctica guiada:** Añade y valida atributos.
+
+**Actividad independiente:** Audita formulario y galería.
+
+**Criterios de aceptación:** Valores válidos e IDs únicos.
+
+**Errores frecuentes:** Repetir id u omitir alt.
+
+**Comprobación:** ¿Qué diferencia class de id?
 
 #### 11.1.07 — HTML semántico
-HTML semántico expresa la función de una región, no su apariencia: `main`, `nav`, `article`, `section` y `aside` ofrecen estructura comprensible. Elige el elemento por el significado del contenido y reserva `div` para agrupaciones sin semántica específica.
 
+HTML semántico refleja función y jerarquía mediante elementos especializados.
 
-**Práctica y evidencia:** Reemplaza contenedores genéricos por `main`, `nav`, `article` y `aside` donde el significado lo justifique. **Evidencia:** justifica cada elección por el contenido, no por su apariencia.
+**Ejemplo técnico:** main, nav, article y section.
+
+**Práctica guiada:** Reestructura landing y revisa árbol accesible.
+
+**Actividad independiente:** Diseña artículo técnico semántico.
+
+**Criterios de aceptación:** Cada elemento se justifica por función.
+
+**Errores frecuentes:** Usar section como div universal.
+
+**Comprobación:** ¿Cuándo usar article?
 
 #### 11.1.08 — Headings
-Los encabezados `h1`–`h6` describen títulos y niveles de sección. Mantén una jerarquía lógica que permita comprender el documento sin depender del tamaño tipográfico; utiliza CSS para ajustar la apariencia y no saltes niveles solo para obtener un estilo.
 
+h1–h6 expresan jerarquía; CSS controla apariencia.
 
-**Práctica y evidencia:** Estructura una guía con niveles `h1`–`h3` sin saltos arbitrarios. **Evidencia:** esquema de encabezados y comprobación de lectura sin CSS.
+**Ejemplo técnico:** h1 título, h2 capítulos, h3 subsecciones.
+
+**Práctica guiada:** Corrige árbol de encabezados.
+
+**Actividad independiente:** Esquema de títulos para una guía.
+
+**Criterios de aceptación:** Niveles coherentes.
+
+**Errores frecuentes:** Elegir nivel por tamaño.
+
+**Comprobación:** ¿Por qué cambiar tamaño con CSS?
 
 #### 11.1.09 — Sections
-`section` agrupa contenido temáticamente relacionado y suele tener un encabezado que identifica su propósito. Si solo necesitas un contenedor para estilos, utiliza `div`; una página no necesita multiplicar secciones vacías ni convertir cada bloque visual en una región semántica.
 
+section agrupa contenido temático, normalmente con encabezado; div es genérico.
 
-**Práctica y evidencia:** Divide una página extensa en secciones temáticas con encabezado propio. **Evidencia:** explica por qué cada sección constituye una unidad temática.
+**Ejemplo técnico:** Objetivos, Contenido y Evaluación.
+
+**Práctica guiada:** Clasifica contenedores.
+
+**Actividad independiente:** Organiza documentación en secciones.
+
+**Criterios de aceptación:** Propósito temático claro.
+
+**Errores frecuentes:** Convertir todos los div en section.
+
+**Comprobación:** ¿Qué distingue section de div?
 
 #### 11.1.10 — Articles
-`article` representa una composición autónoma que puede distribuirse o reutilizarse de forma independiente, como una noticia, entrada o ficha completa. Comprueba si el bloque conserva sentido fuera de la página; si depende totalmente del contexto circundante, probablemente corresponda a otra estructura.
 
+article representa contenido autónomo y reutilizable.
 
-**Práctica y evidencia:** Convierte una noticia o ficha autónoma en `article` y prueba si conserva sentido fuera de la página. **Evidencia:** justifica si el bloque puede distribuirse de forma independiente.
+**Ejemplo técnico:** Noticia con título, fecha y cuerpo.
+
+**Práctica guiada:** Marca noticias y comprueba que tengan sentido aisladas.
+
+**Actividad independiente:** Estructura un artículo técnico.
+
+**Criterios de aceptación:** Contenido autónomo.
+
+**Errores frecuentes:** Usar article para cualquier bloque.
+
+**Comprobación:** ¿Qué característica justifica article?
 
 #### 11.1.11 — Header
-`header` introduce una página o una sección y puede contener título, marca o navegación contextual. No debe confundirse con `head`, que contiene metadatos; un documento puede tener varios `header` asociados a regiones distintas.
 
+header contiene información introductoria o navegación; no es head.
 
-**Práctica y evidencia:** Añade `header` al documento y a un `article` para distinguir cabeceras de página y de contenido. **Evidencia:** identifica ambos contextos y evita confundir `header` con `head`.
+**Ejemplo técnico:** Header global y header de artículo.
+
+**Práctica guiada:** Identifica ambos contextos.
+
+**Actividad independiente:** Diseña header responsive accesible.
+
+**Criterios de aceptación:** Uso contextual.
+
+**Errores frecuentes:** Ubicar header dentro de head.
+
+**Comprobación:** ¿Qué diferencia head de header?
 
 #### 11.1.12 — Footer
-`footer` reúne información de cierre de una página o sección, como autoría, enlaces relacionados o datos legales. Su significado depende del contexto del elemento que lo contiene; evita utilizarlo únicamente como una caja posicionada al final de la pantalla.
 
+footer contiene información de cierre de página o sección.
 
-**Práctica y evidencia:** Crea un `footer` para la página y otro para un artículo con autoría y fecha. **Evidencia:** describe a qué región pertenece cada pie.
+**Ejemplo técnico:** Contacto global y autoría de artículo.
+
+**Práctica guiada:** Incorpora ambos contextos.
+
+**Actividad independiente:** Diseña pie con enlaces agrupados.
+
+**Criterios de aceptación:** Contenido asociado al contexto.
+
+**Errores frecuentes:** Usarlo como contenedor fijo sin semántica.
+
+**Comprobación:** ¿Puede haber varios footer?
 
 #### 11.1.13 — Nav
-`nav` identifica un bloque importante de enlaces de navegación. No todos los grupos de enlaces requieren `nav`; cuando hay varias regiones de navegación, asigna nombres accesibles distintos para que el usuario pueda diferenciarlas.
 
+nav identifica una región principal de navegación; no todo grupo de enlaces lo requiere.
 
-**Práctica y evidencia:** Crea navegación principal y navegación contextual con nombres accesibles distintos. **Evidencia:** verifica que un lector de pantalla pueda distinguir las regiones.
+**Ejemplo técnico:** Navegación principal e índice con aria-label distinto.
+
+**Práctica guiada:** Crea ambas regiones y recorre con teclado.
+
+**Actividad independiente:** Diseña menú móvil accesible.
+
+**Criterios de aceptación:** Regiones distinguibles.
+
+**Errores frecuentes:** Envolver todos los enlaces en nav.
+
+**Comprobación:** ¿Por qué nombrar dos nav?
 
 #### 11.1.14 — Forms
-`form` agrupa controles que envían datos mediante una acción y un método. Define `action` y `method` de forma consciente, utiliza botones con tipo explícito y recuerda que la validación del navegador mejora la experiencia, pero no reemplaza la validación y autorización del servidor.
 
+form agrupa controles y define envío; requiere etiquetas y validación cliente/servidor.
 
-**Práctica y evidencia:** Implementa un formulario con método explícito, etiquetas y validación nativa; valida también del lado servidor en el proyecto. **Evidencia:** documenta datos enviados y límites de la validación cliente.
+**Ejemplo técnico:** Formulario con label, email y mensaje.
+
+**Práctica guiada:** Construye y prueba con teclado.
+
+**Actividad independiente:** Diseña inscripción con resumen de errores.
+
+**Criterios de aceptación:** Campos etiquetados y validación servidor.
+
+**Errores frecuentes:** Placeholder como única etiqueta.
+
+**Comprobación:** ¿Por qué validar en servidor?
 
 #### 11.1.15 — Inputs
-`input` ofrece controles de distintos tipos: texto, correo, número, fecha, búsqueda, contraseña y otros. Selecciona el tipo que refleje el dato esperado, asocia un `label`, define `name` para el envío y no uses `type=number` para identificadores que no representan cantidades.
 
+input ofrece controles variados; el tipo debe reflejar el dato.
 
-**Práctica y evidencia:** Selecciona tipos de input adecuados para correo, fecha y contraseña; asocia cada control con `label`. **Evidencia:** prueba teclado, autofill y mensajes de validación sin depender solo del placeholder.
+**Ejemplo técnico:** type=password oculta texto, pero no cifra transporte.
+
+**Práctica guiada:** Crea email, fecha y checkbox etiquetados.
+
+**Actividad independiente:** Selecciona tipos y autocomplete.
+
+**Criterios de aceptación:** Tipo y etiqueta correctos.
+
+**Errores frecuentes:** Usar number para códigos con ceros iniciales.
+
+**Comprobación:** ¿Por qué un código postal suele ser texto?
 
 #### 11.1.16 — Selects
-`select` permite elegir una opción de un conjunto definido; `option` representa cada alternativa y `optgroup` puede agruparlas. Proporciona una etiqueta clara, una opción inicial comprensible y valida en servidor que el valor recibido pertenezca a las opciones permitidas.
 
+select permite elegir opciones; option requiere texto y value estable.
 
-**Práctica y evidencia:** Crea un `select` con opciones agrupadas y una opción inicial que no simule un valor válido. **Evidencia:** demuestra que el servidor rechaza valores fuera del catálogo permitido.
+**Ejemplo técnico:** País visible y código enviado.
+
+**Práctica guiada:** Crea select etiquetado y prueba teclado.
+
+**Actividad independiente:** Diseña opción Otra accesible.
+
+**Criterios de aceptación:** Opciones claras.
+
+**Errores frecuentes:** Usar placeholder como valor.
+
+**Comprobación:** ¿Qué diferencia texto y value?
 
 #### 11.1.17 — Textareas
-`textarea` recoge texto multilínea y su tamaño visual se controla con atributos o CSS. Define límites y ayudas cuando sean necesarios, conserva el texto del usuario ante errores y evita interpretar el contenido como HTML confiable.
 
+textarea permite texto multilínea; label, ayuda y límites deben asociarse.
 
-**Práctica y evidencia:** Construye un `textarea` con etiqueta, límite razonable y mensaje de ayuda. **Evidencia:** comprueba conservación del texto cuando hay error de validación.
+**Ejemplo técnico:** Descripción con maxlength y aria-describedby.
+
+**Práctica guiada:** Crea campo con ayuda y límite.
+
+**Actividad independiente:** Diseña contador accesible.
+
+**Criterios de aceptación:** Etiqueta y errores accesibles.
+
+**Errores frecuentes:** Confiar en maxlength como seguridad.
+
+**Comprobación:** ¿Por qué escapar texto al mostrarlo?
 
 #### 11.1.18 — Tables
-`table` representa datos con relaciones entre filas y columnas, no sirve como técnica de maquetación. Utiliza `caption`, `thead`, `tbody`, `th` y `scope` cuando corresponda para que los encabezados se asocien con los datos, especialmente en tablas complejas.
 
+Las tablas representan datos, no layout. caption, thead, tbody, th y scope relacionan encabezados.
 
-**Práctica y evidencia:** Representa un conjunto de ventas en tabla con `caption`, encabezados y `scope`. **Evidencia:** inspecciona asociaciones de encabezado y datos.
+**Ejemplo técnico:** Tabla de notas con encabezados de filas y columnas.
+
+**Práctica guiada:** Semantiza tabla y revisa accesibilidad.
+
+**Actividad independiente:** Diseña tabla con encabezados agrupados.
+
+**Criterios de aceptación:** Caption y encabezados identificables.
+
+**Errores frecuentes:** Usar tablas para maquetación.
+
+**Comprobación:** ¿Qué aporta scope?
 
 #### 11.1.19 — Multimedia
-Los elementos multimedia `img`, `audio`, `video`, `source` y `track` incorporan medios al documento. Ofrece texto alternativo útil, subtítulos o transcripciones cuando el contenido lo requiera y evita reproducción automática con sonido; comprueba formatos, controles y alternativas.
 
+HTML integra imagen, audio y video; se requieren alt, subtítulos o transcripciones.
 
-**Práctica y evidencia:** Añade imagen con texto alternativo y video con subtítulos o transcripción cuando el contenido lo requiera. **Evidencia:** prueba el contenido sin imagen y sin audio.
+**Ejemplo técnico:** Video con controls y track captions.
+
+**Práctica guiada:** Integra video de prueba con subtítulos.
+
+**Actividad independiente:** Diseña galería accesible.
+
+**Criterios de aceptación:** Alternativas y controles accesibles.
+
+**Errores frecuentes:** Video sin subtítulos.
+
+**Comprobación:** ¿Qué alternativa ofrecer si el dato solo está en audio?
 
 #### 11.1.20 — SVG
-SVG describe gráficos vectoriales mediante elementos XML como `svg`, `path`, `circle` y `rect`, por lo que escala sin pixelarse. Para gráficos informativos proporciona título y descripción o una alternativa textual; si es decorativo, evita que tecnologías de asistencia anuncien ruido innecesario.
 
+SVG es vectorial basado en XML; gráficos informativos requieren nombre y descripción.
 
-**Práctica y evidencia:** Crea un SVG con formas y texto alternativo accesible según su función informativa o decorativa. **Evidencia:** escala el gráfico y verifica que su significado siga disponible.
+**Ejemplo técnico:** title/desc para gráfico; aria-hidden para icono decorativo.
+
+**Práctica guiada:** Crea SVG con viewBox y alternativa.
+
+**Actividad independiente:** Diseña gráfico con descripción y tabla.
+
+**Criterios de aceptación:** No depende solo de color.
+
+**Errores frecuentes:** Omitir alternativa.
+
+**Comprobación:** ¿Por qué describir un gráfico?
 
 #### 11.1.21 — Canvas
-Canvas ofrece una superficie de dibujo controlada por JavaScript y no expone automáticamente el significado de los píxeles. Si el gráfico contiene información o controles, acompáñalo con una alternativa DOM accesible y sincroniza esa alternativa con el estado de la visualización.
 
+canvas dibuja mediante JavaScript, pero sus formas no son nodos DOM accesibles automáticamente.
 
-**Práctica y evidencia:** Dibuja una gráfica simple en Canvas y ofrece una tabla equivalente con los datos. **Evidencia:** explica por qué el contenido dibujado requiere alternativa textual.
+**Ejemplo técnico:** Gráfico con tabla equivalente.
 
-### Módulo 11.2 — Accesibilidad
+**Práctica guiada:** Dibuja datos y añade tabla HTML.
+
+**Actividad independiente:** Diseña visualización con leyenda y alternativa.
+
+**Criterios de aceptación:** Alternativa equivalente.
+
+**Errores frecuentes:** Usar canvas como reemplazo de HTML.
+
+**Comprobación:** ¿Qué pierde quien no percibe el bitmap sin alternativa?
 
 #### 11.2.01 — WCAG
 WCAG 2.2 organiza la accesibilidad en principios perceptible, operable, comprensible y robusto, con criterios verificables y niveles A, AA y AAA. Selecciona el nivel exigido por el producto o normativa, registra evidencia por criterio y no declares conformidad a partir de una única herramienta automática.
