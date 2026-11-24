@@ -1,6 +1,6 @@
 # Etapa 1 · Módulo 1.2 — Representación de información
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 1, apartado 1.2.  
 **Temas oficiales:** sistema binario, sistema decimal, sistema hexadecimal, bits y bytes, ASCII, Unicode, UTF-8, representación de enteros y números de punto flotante.
 
@@ -175,4 +175,4 @@ No se incluye video en esta versión: no se ha verificado una pieza cuyo audio h
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** ejercicios calculados manualmente; laboratorio de software propuesto, no ejecutado.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
