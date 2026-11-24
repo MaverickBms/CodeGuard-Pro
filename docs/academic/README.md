@@ -125,3 +125,10 @@ Se amplió el contenido individual de las etapas 7–10: **284 lecciones** (etap
 Los archivos fueron releídos desde la rama después de los cambios y se cotejaron los conteos de encabezados. No se detectaron lecciones vacías ni el texto genérico de relleno previamente identificado en las etapas 9–10. **Esto es una comprobación documental y estructural, no una validación mediante ejecución.** Los ejemplos, comandos, consultas, configuraciones y laboratorios aún deben probarse en entornos definidos; las referencias deben verificarse individualmente y el contenido requiere revisión técnica y pedagógica independiente.
 
 Acumulado de desarrollo documental ampliado según los registros disponibles: etapas 1–6, 265 lecciones (OpenCode); etapas 7–10, 284 lecciones (esta continuación); total etapas 1–10, 549 lecciones. Las etapas 11–32 conservan su primera pasada de contenido individualizado y quedan pendientes de profundización equivalente. Consultar `AUDITORIA_CONTINUIDAD_ASCENSO_3_1.md` para el alcance y las limitaciones detalladas.
+
+
+### Ampliación de prácticas y evidencias — etapas 11–12 — 2026-11-24
+
+Se incorporaron prácticas y evidencias específicas a las **60 lecciones de la etapa 11** (HTML, CSS, accesibilidad, diseño y SEO) y las **89 lecciones de la etapa 12** (JavaScript, DOM, asincronía, TypeScript, React, Next.js y herramientas). Los archivos se releyeron después de los cambios: 149/149 lecciones contienen su apartado de práctica/evidencia y no se detectaron encabezados vacíos.
+
+Acumulado documental ampliado: etapas 1–6, 265 lecciones según el informe de OpenCode; etapas 7–10, 284; etapas 11–12, 149; total de etapas 1–12, **698 lecciones**. Las etapas 13–32 (1.248 lecciones) requieren profundización equivalente. Ninguna de estas cifras implica por sí sola ejecución, validación técnica externa o aprobación pedagógica. Consultar la auditoría de continuidad para las limitaciones y el detalle de evidencia.
