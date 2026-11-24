@@ -497,4 +497,4 @@ Investiga un problema técnico real de un proyecto propio o un repositorio de de
 - Código ejecutado: no aplica; los talleres no incluyen un programa nuevo que se declare probado.
 - Laboratorios ejecutados: ninguno.
 - Videos verificados: ninguno añadido.
-- Estado editorial: BORRADOR; requiere revisión técnica, pedagógica, práctica y editorial independiente.
+- Estado de trabajo: BASE DE TRABAJO ACTIVA; requiere revisión técnica, pedagógica, práctica y editorial independiente.
