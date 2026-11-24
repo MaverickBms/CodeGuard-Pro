@@ -208,6 +208,13 @@ La terminal ejecuta un shell; el shell interpreta comandos. Los nombres y opcion
 - PowerShell: `Get-Location`, `Get-ChildItem`, `$env:USERNAME`, `Get-Command git`
 - CMD: `cd`, `dir`, `whoami`, `where git`
 
+**Control previo de seguridad**
+- Trabaja con una cuenta sin privilegios administrativos; no uses `sudo`, «Ejecutar como administrador» ni permisos elevados para estas prácticas.
+- Antes de crear o modificar archivos, confirma la ruta con `pwd`, `Get-Location` o `cd` y comprueba que la carpeta de destino sea la carpeta de práctica prevista.
+- Usa una carpeta nueva y vacía. Si ya existe `ascenso-terminal`, no borres su contenido: elige otro nombre o inspecciona primero lo que contiene.
+- Lee cada comando antes de ejecutarlo. No pegues secuencias largas de origen desconocido ni ejecutes scripts descargados.
+- Si la ruta, el efecto o el shell no están claros, detente y consulta la documentación antes de continuar.
+
 **Secuencia de práctica no destructiva**
 1. Consulta el directorio actual.
 2. Crea una carpeta de práctica dentro de un directorio propio.
@@ -233,7 +240,7 @@ Git separa tres estados importantes:
 - historial: commits confirmados.
 
 **Laboratorio guiado**
-1. Crea una carpeta nueva y ejecuta `git init`.
+1. Crea una carpeta nueva y vacía para este ejercicio; confirma que estás dentro de ella antes de ejecutar `git init`. No inicialices por accidente un repositorio dentro de otro proyecto.
 2. Crea README.md con el propósito del proyecto.
 3. Ejecuta `git status --short` y describe el estado.
 4. Ejecuta `git diff` (todavía no habrá cambios preparados).
