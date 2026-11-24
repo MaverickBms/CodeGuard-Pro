@@ -132,10 +132,10 @@ Los siete prerrequisitos se conservan según el inventario contrastado con el DO
 
 | Archivo | Cambio comprobable | Estado |
 |---|---|---|
-| `etapa-00/modulo-0.2-investigacion-tecnica.md` | Se añadieron siete talleres canónicos con ejemplos, tareas, evidencia, criterios, retroalimentación, evaluación analítica y referencias; se separó el material heredado como apéndice para preservar el orden oficial. | BORRADOR |
+| `etapa-00/modulo-0.2-investigacion-tecnica.md` | Se añadieron siete talleres canónicos con ejemplos, tareas, evidencia, criterios, retroalimentación, evaluación analítica y referencias; se separó el material heredado como apéndice para preservar el orden oficial. | BASE DE TRABAJO ACTIVA |
 | `etapa-00/modulo-0.3-herramientas.md` | Se añadieron procedimientos y ejercicios para VS Code, terminal, Git, GitHub, DevTools, Markdown y Draw.io; se separó explícitamente 0.3.8 «Herramientas de diagramación». | BORRADOR |
 | `etapa-00/modulo-0.4-depuracion.md` | Se añadieron casos de debugging, breakpoints, stack traces, logs, hipótesis, reproducción y análisis de causas en el orden oficial; se diseñó un laboratorio con defecto de frontera, pruebas y solución razonada. | BORRADOR |
-| `etapa-00/modulo-0.1-aprender-a-aprender.md` | Se conserva el documento previo con ocho lecciones desarrolladas a nivel de borrador; no se ha declarado superada su auditoría individual. | BORRADOR |
+| `etapa-00/modulo-0.1-aprender-a-aprender.md` | Se conserva el documento previo con ocho lecciones desarrolladas como base de trabajo activa; no se ha declarado superada su auditoría individual. | BORRADOR |
 
 La ampliación de los cuatro módulos no convierte automáticamente una lección en «desarrollada» ni un laboratorio en «ejecutado». Los ejemplos de código y comandos incorporados son propuestas didácticas no ejecutadas en este entorno.
 
@@ -147,7 +147,7 @@ La ampliación de los cuatro módulos no convierte automáticamente una lección
 | Módulos de la etapa 0 con documento | 4/4 |
 | Lecciones nominales de etapa 0 cubiertas por los cuatro documentos | 30/30 |
 | Lecciones de etapa 0 con auditoría técnica, pedagógica, práctica y editorial independiente completada | 0/30 |
-| Módulos de etapa 0 en BORRADOR | 4/4 |
+| Módulos de etapa 0 como base de trabajo activa | 4/4 |
 | Lecciones aprobadas | 0 |
 | Lecciones publicadas en la aplicación | 0 |
 | Laboratorios escritos en los documentos 0.2–0.4 | 3 (más actividades del módulo 0.1) |
@@ -191,7 +191,7 @@ La etapa 25 mantiene el campo `objetivo` vacío en el JSON. No se propone ni se 
 
 Se añadió `docs/academic/ascenso-3.1/etapa-00/proyecto-integrador-ascenso-knowledge-base.md`, alineado con el proyecto indicado por el JSON maestro. La especificación incluye contexto, resultados observables, requisitos funcionales/no funcionales, estructura de referencia, plantillas, fases conectadas con los cuatro módulos, entregables, criterios de validación, rúbrica analítica, errores frecuentes y registro de ejecución.
 
-**Estado:** BORRADOR. Se ha redactado la especificación; el repositorio del estudiante no se ha creado, no se han producido entregables, no se ha ejecutado una revisión por pares y no se ha aprobado ni publicado el proyecto.
+**Estado:** BASE DE TRABAJO ACTIVA. Se ha redactado la especificación; el repositorio del estudiante no se ha creado, no se han producido entregables, no se ha ejecutado una revisión por pares y no se ha aprobado ni publicado el proyecto.
 
 
 ### 8. Revisión de escritorio del módulo 0.1
@@ -209,7 +209,7 @@ Se completaron mejoras documentales específicas en las lecciones 0.1.2–0.1.8:
 
 La revisión se mantuvo dentro de los encabezados de las lecciones oficiales. Se hizo una comprobación estática de los ocho títulos, presencia de objetivos/criterios y balance de bloques de código Markdown. El JSON curricular se volvió a leer y no se modificó.
 
-**Estado actualizado del módulo 0.1:** 8/8 lecciones con ampliación documental de objetivos/actividades; ejemplos y guías adicionales incorporados en 0.1.2–0.1.8; 0/8 revisiones independientes; 0 aprobadas; 0 actividades probadas con estudiantes; 0 videos verificados. Sigue en BORRADOR. Los chequeos estáticos no son una validación pedagógica ni una ejecución de código.
+**Estado actualizado del módulo 0.1:** 8/8 lecciones con ampliación documental de objetivos/actividades; ejemplos y guías adicionales incorporados en 0.1.2–0.1.8; 0/8 revisiones independientes; 0 aprobadas; 0 actividades probadas con estudiantes; 0 videos verificados. Se mantiene como base de trabajo activa. Los chequeos estáticos no son una validación pedagógica ni una ejecución de código.
 
 
 ### 10. Desarrollo y revisión de escritorio del módulo 0.2
