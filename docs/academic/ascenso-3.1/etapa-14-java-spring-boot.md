@@ -158,187 +158,194 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 ### Módulo 14.1 — Arquitectura backend
 
 #### 14.1.01 — Cliente-servidor
-Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+El modelo cliente-servidor separa consumidores y proveedores de capacidades mediante solicitudes y respuestas. En backend identifica límites de confianza, responsabilidades de cada proceso y cómo se autentican las llamadas entre componentes.
 
 #### 14.1.02 — Request-response
-Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Request-response describe el intercambio de una solicitud con una respuesta que contiene estado, headers y representación. Define contratos, timeouts, códigos de error e idempotencia para que clientes puedan recuperarse de fallos y reintentos.
 
 #### 14.1.03 — MVC
-Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+MVC separa modelo, vista y controlador, aunque en una API el controlador suele coordinar entrada/salida sin renderizar vistas. Evita introducir lógica de negocio en controladores y mantén el modelo de dominio independiente del transporte.
 
 #### 14.1.04 — Middleware
-Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Middleware intercepta solicitudes o respuestas para aplicar funciones transversales como autenticación, logging, CORS o correlación. El orden de ejecución importa; limita los datos registrados y evita que middleware genérico oculte errores o modifique contratos sin documentarlo.
 
 #### 14.1.05 — Controllers
-Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Un controller recibe solicitudes, interpreta parámetros y delega el caso de uso a servicios. Valida formato y devuelve respuestas HTTP coherentes, pero no debe concentrar reglas de negocio, consultas complejas ni acceso directo a infraestructura.
 
 #### 14.1.06 — Services
-Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Un service implementa casos de uso y coordina reglas de negocio. Mantén sus dependencias explícitas y separa la lógica del framework para facilitar pruebas unitarias y cambios de transporte.
 
 #### 14.1.07 — Repositories
-Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Un repository abstrae operaciones de persistencia y consultas sobre agregados o entidades. Define métodos con intención de dominio y evita exponer detalles de SQL/ORM a capas que no deberían conocerlos.
 
 #### 14.1.08 — Models
-Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Un model representa datos y, según la arquitectura, puede representar entidades de dominio o modelos de transporte/persistencia. No mezcles automáticamente entidad JPA, DTO público y modelo de vista: sus ciclos de vida y contratos son distintos.
 
 #### 14.1.09 — DTOs
-Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Un DTO transporta datos entre límites de una aplicación o API sin exponer necesariamente la estructura interna del dominio. Define campos permitidos, valida entrada y evita serializar entidades completas que puedan revelar relaciones o atributos privados.
 
 ### Módulo 14.2 — Spring Framework
 
 #### 14.2.01 — Inversion of Control
-Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Inversion of Control desplaza la creación y coordinación de dependencias desde las clases hacia un contenedor o mecanismo externo. Esto reduce acoplamiento, pero introduce ciclo de vida y configuración que deben ser explícitos y verificables.
 
 #### 14.2.02 — Dependency Injection
-Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Dependency Injection entrega a un componente las dependencias que necesita, en lugar de construirlas directamente. Prefiere inyección por constructor para hacer requisitos visibles y facilitar pruebas con implementaciones sustitutas.
 
 #### 14.2.03 — Beans
-Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Un Bean es un objeto administrado por el contenedor Spring, que controla su creación, configuración y ciclo de vida. Declara componentes con intención y evita convertir cada clase en Bean si no requiere gestión del framework.
 
 #### 14.2.04 — Application Context
-Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+ApplicationContext es el contenedor central de Spring que registra beans, resuelve dependencias y publica eventos. Comprende cómo se construye y consulta, pero evita usarlo como localizador global de servicios porque oculta dependencias.
 
 #### 14.2.05 — Configuration
-Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+La configuración define cómo se construye y comporta una aplicación, mediante propiedades, clases de configuración y perfiles. Separa configuración por entorno, valida valores requeridos y no almacenes secretos en archivos versionados.
 
 #### 14.2.06 — Component Scanning
-Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Component Scanning detecta clases anotadas en paquetes configurados y las registra como componentes. Mantén paquetes raíz coherentes y evita escaneos demasiado amplios que incorporen accidentalmente implementaciones o configuraciones ajenas.
 
 ### Módulo 14.3 — Spring Boot
 
 #### 14.3.01 — Spring Initializr
-Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Spring Initializr genera una estructura de proyecto y selecciona dependencias iniciales compatibles. Elige versión de Spring Boot, Java y build tool de acuerdo con la matriz oficial; registra esas versiones para que el proyecto sea reproducible.
 
 #### 14.3.02 — Estructura del proyecto
-Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+La estructura del proyecto separa código de aplicación, configuración, recursos y pruebas. Organiza paquetes por funcionalidad o capas de forma consistente y conserva convenciones que permitan localizar controladores, servicios, repositorios y DTOs.
 
 #### 14.3.03 — Controllers
-Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Los controllers de Spring Boot se exponen mediante anotaciones de mapeo como `@RestController` y `@RequestMapping`. Define rutas y métodos explícitos, usa DTOs y delega el procesamiento a servicios en lugar de incluir reglas de negocio en handlers.
 
 #### 14.3.04 — Services
-Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Los services concentran casos de uso y reglas de aplicación. Mantén operaciones transaccionales en el límite adecuado y evita que el servicio dependa innecesariamente de detalles HTTP o de serialización.
 
 #### 14.3.05 — Repositories
-Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Los repositories de Spring Data proporcionan abstracciones para consultas y persistencia. Selecciona interfaces y métodos derivados con cuidado, inspecciona consultas generadas cuando sean complejas y evita cargar grandes conjuntos sin paginación.
 
 #### 14.3.06 — REST
-Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Una API REST en Spring Boot expone recursos mediante rutas, métodos HTTP y representaciones. Usa status codes correctos, valida entradas, documenta errores y considera idempotencia, paginación y compatibilidad del contrato.
 
 #### 14.3.07 — DTOs
-Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Los DTOs separan la representación externa del modelo interno. Diseña solicitudes y respuestas distintas cuando sus reglas difieran, evita exponer campos de auditoría o credenciales y controla la conversión entre DTO y dominio.
 
 #### 14.3.08 — Validation
-Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Validation aplica restricciones declarativas a datos de entrada, por ejemplo obligatoriedad, longitud, formato y rangos. Valida en el límite de entrada y devuelve errores estructurados; la validación de DTO no sustituye reglas de negocio ni controles de base de datos.
 
 #### 14.3.09 — Exception Handling
-Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Exception Handling centraliza la traducción de excepciones a respuestas HTTP mediante mecanismos como `@ControllerAdvice`. Devuelve mensajes seguros y códigos estables, registra detalles internos en logs protegidos y no expongas stack traces al cliente.
 
 #### 14.3.10 — Configuration Properties
-Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Configuration Properties vincula configuración externa tipada con clases de la aplicación. Valida rangos y valores requeridos, separa perfiles y secretos, y evita dispersar lecturas de variables de entorno por toda la lógica de negocio.
 
 ### Módulo 14.4 — Persistencia
 
 #### 14.4.01 — Spring Data JPA
-Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Spring Data JPA facilita el acceso a persistencia relacional mediante repositorios y entidades JPA. Comprende el ciclo de vida del contexto de persistencia, transacciones y carga diferida; no asumas que una llamada al repositorio siempre equivale a una consulta simple.
 
 #### 14.4.02 — Hibernate
-Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Hibernate es una implementación ORM que mapea objetos Java a estructuras relacionales y administra persistencia. Revisa SQL generado, estrategias de fetching y cachés; abstraer SQL no elimina la necesidad de comprender índices, joins y transacciones.
 
 #### 14.4.03 — ORM
-Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+ORM relaciona clases/objetos con tablas/filas y gestiona conversiones y relaciones. Es útil para productividad, pero puede ocultar consultas costosas o diferencias de modelo; utiliza SQL explícito cuando la consulta o el rendimiento lo justifique.
 
 #### 14.4.04 — Entities
-Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Una Entity representa una entidad persistente con identidad y ciclo de vida administrado por JPA. Define clave primaria, campos y reglas de igualdad cuidadosamente; evita exponer entidades directamente como respuesta pública de una API.
 
 #### 14.4.05 — Relationships
-Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Las relaciones JPA (`OneToOne`, `OneToMany`, `ManyToOne`, `ManyToMany`) modelan asociaciones y sus lados propietarios. Define cascadas, carga y restricciones según el dominio; una relación bidireccional mal gestionada puede generar ciclos JSON y consultas inesperadas.
 
 #### 14.4.06 — Repositories
-Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Los repositories encapsulan consultas de entidades y operaciones CRUD. Usa paginación, proyecciones y consultas específicas cuando sea necesario; evita métodos que devuelvan todas las filas si el conjunto puede crecer.
 
 #### 14.4.07 — Migrations
-Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Las migrations versionan cambios de esquema para aplicarlos de forma repetible entre entornos. Usa herramientas como Flyway o Liquibase, revisa scripts antes de producción y diseña cambios compatibles con despliegues graduales y rollback realista.
 
 #### 14.4.08 — MySQL
-Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+MySQL es un DBMS relacional con tipos, índices, transacciones y dialecto SQL propios. Verifica versión, motor de almacenamiento, aislamiento y configuración; no asumas que todas las características de PostgreSQL o SQL estándar se comportan igual.
 
 #### 14.4.09 — PostgreSQL
-Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+PostgreSQL ofrece un motor relacional con tipos y capacidades avanzadas, extensibilidad e integridad transaccional. Diseña migraciones y consultas para la versión elegida y utiliza planes de ejecución para comprender costes reales.
 
 ### Módulo 14.5 — Seguridad
 
 #### 14.5.01 — Spring Security
-Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Spring Security integra filtros y mecanismos de seguridad para solicitudes y recursos de la aplicación. Configura explícitamente qué rutas son públicas, autenticadas o restringidas y mantén una política de denegación por defecto.
 
 #### 14.5.02 — Authentication
-Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Authentication verifica la identidad de quien accede, por ejemplo mediante credenciales, sesión o token. Define el mecanismo, protege el proceso de recuperación y evita confundir autenticación correcta con permiso para ejecutar cualquier operación.
 
 #### 14.5.03 — Authorization
-Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Authorization decide si una identidad autenticada puede realizar una acción sobre un recurso. Aplica controles por recurso y operación, valida propiedad cuando corresponda y no confíes en roles globales si el acceso depende del contexto del dato.
 
 #### 14.5.04 — Password Hashing
-Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Password Hashing almacena verificadores derivados de contraseñas con algoritmos adaptativos como Argon2id, bcrypt o PBKDF2 según política vigente. Usa salt único y parámetros adecuados; nunca cifres reversiblemente ni guardes contraseñas en texto claro.
 
 #### 14.5.05 — JWT
-Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+JWT puede transportar claims firmados para verificar integridad y atributos del sujeto. Valida firma, algoritmo permitido, emisor, audiencia, expiración y revocación según diseño; el payload firmado no es secreto por defecto.
 
 #### 14.5.06 — Roles
-Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Roles agrupan permisos y simplifican asignación de capacidades. Define roles por responsabilidad y evita roles omnipotentes; revisa altas, bajas y cambios para que los privilegios no permanezcan después de cambiar la función del usuario.
 
 #### 14.5.07 — Permissions
-Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Permissions representan acciones concretas autorizadas sobre recursos. Aplica mínimo privilegio y verifica permisos en cada operación sensible, incluyendo endpoints secundarios y descargas; la interfaz cliente solo mejora experiencia, no impone seguridad.
 
 #### 14.5.08 — OAuth2
-Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+OAuth 2.0 es un marco de autorización delegada para que un cliente obtenga acceso limitado a recursos. Selecciona el flujo apropiado, utiliza PKCE cuando corresponde y no trates OAuth por sí solo como un protocolo de autenticación.
 
 #### 14.5.09 — OpenID Connect
-Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+OpenID Connect añade una capa de identidad sobre OAuth 2.0 y define ID Tokens y descubrimiento. Valida issuer, audience, nonce y firma; diferencia ID Token de access token y no utilices uno como sustituto del otro.
 
 ### Módulo 14.6 — Backend avanzado
 
 #### 14.6.01 — Transactions
-Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Transactions agrupa operaciones para que se apliquen según propiedades transaccionales y límites definidos. Identifica el caso de uso que requiere atomicidad y evita transacciones largas que mantengan locks mientras se espera red o intervención humana.
 
 #### 14.6.02 — Caching
-Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Caching conserva resultados para reducir latencia o carga, pero introduce invalidación y riesgo de datos obsoletos. Define clave, TTL, alcance y estrategia de invalidación; no caches respuestas sensibles compartidas entre usuarios.
 
 #### 14.6.03 — Pagination
-Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Pagination divide resultados en bloques para limitar memoria, transferencia y tiempo de respuesta. Ofrece tamaño máximo, orden estable y metadatos de continuación; cursor pagination puede ser más robusta que offsets para conjuntos cambiantes.
 
 #### 14.6.04 — Filtering
-Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Filtering permite restringir resultados mediante campos y operadores permitidos. Valida y parametriza filtros, controla consultas costosas y no traduzcas directamente expresiones arbitrarias del cliente a SQL o JPQL.
 
 #### 14.6.05 — Async
-Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Async permite ejecutar tareas fuera del hilo que atiende la solicitud o devolver resultados diferidos. Define executor, límites de cola, manejo de excepciones y propagación de contexto; asincronía sin límites puede agotar recursos.
 
 #### 14.6.06 — Events
-Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Events desacopla productores y consumidores mediante publicación de hechos o mensajes. Distingue eventos de dominio y de integración, define esquema/versionado y considera duplicados, orden y entrega al menos una vez.
 
 #### 14.6.07 — WebSockets
-Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+WebSockets mantiene una conexión bidireccional para intercambios en tiempo real. Autentica durante el establecimiento, autoriza cada canal/mensaje y define límites, reconexión y heartbeat; no asumas que el canal es confiable por ser persistente.
 
 #### 14.6.08 — File Upload
-Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+File Upload recibe archivos y debe controlar tamaño, extensión, tipo real, nombre y almacenamiento. Renombra de forma segura, analiza contenido cuando corresponda, almacena fuera de rutas ejecutables y aplica autorización al descargar.
 
 #### 14.6.09 — Email
-Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Email integra notificaciones transaccionales y mensajes de sistema. Usa plantillas seguras, controla rebotes y reintentos, no envíes secretos en enlaces sin protección y evita bloquear una solicitud de usuario esperando un proveedor externo.
 
 #### 14.6.10 — Queues
-Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Queues desacopla productores y trabajadores para procesar tareas de forma asíncrona. Diseña consumidores idempotentes, reintentos con backoff, dead-letter queues y observabilidad; una cola no garantiza orden global ni entrega exactamente una vez.
 
 ### Módulo 14.7 — Construcción y dependencias
 
 #### 14.7.01 — Maven
-Estudiar el concepto y su función dentro de construcción y dependencias; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Maven describe el proyecto y sus dependencias en `pom.xml`, y ejecuta fases del ciclo de build mediante plugins. Fija versiones, comprende scopes y evita depender de artefactos no reproducibles o repositorios no confiables.
 
 #### 14.7.02 — Gradle
-Estudiar el concepto y su función dentro de construcción y dependencias; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Gradle configura builds mediante scripts y tareas, con soporte para dependencias y plugins. Distingue Groovy DSL y Kotlin DSL, fija versiones del wrapper y revisa plugins porque ejecutan código durante el proceso de construcción.
 
 #### 14.7.03 — Dependencies
-Estudiar el concepto y su función dentro de construcción y dependencias; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Dependencies son bibliotecas externas necesarias para compilar o ejecutar la aplicación. Declara solo lo requerido, revisa licencias y vulnerabilidades, fija versiones y utiliza análisis de composición para detectar dependencias transitivas de riesgo.
 
 #### 14.7.04 — Build Lifecycle
-Estudiar el concepto y su función dentro de construcción y dependencias; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Build Lifecycle organiza fases como validación, compilación, pruebas, empaquetado y verificación. Define qué tareas son obligatorias en CI y evita marcar como exitoso un build que omite pruebas o controles de calidad.
 
 #### 14.7.05 — Profiles
-Estudiar el concepto y su función dentro de construcción y dependencias; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+Profiles permiten variar configuración o tareas para entornos y necesidades específicas. Evita que perfiles de producción desactiven seguridad o pruebas; externaliza secretos y comprueba explícitamente qué perfil está activo al construir y desplegar.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 58 orientaciones genéricas por explicaciones específicas para cada lección. Se desarrollaron límites arquitectónicos, IoC/DI, capas backend, Spring Boot REST, JPA/Hibernate, migraciones, autenticación/autorización, OAuth2/OIDC, JWT, transacciones, caché, mensajería, cargas de archivos y build/dependencias.
+
+**Revisión interna:** 58/58 entradas desarrolladas y cotejadas con el roadmap. Se reforzaron seguridad de contraseñas, validación de DTOs, errores HTTP, secretos de configuración, permisos por recurso, control de archivos y consumidores idempotentes. Pendiente: fijar versiones compatibles de Java/Spring, compilar, ejecutar pruebas, migraciones, integración de seguridad y despliegue en entorno aislado. No se declara ejecución ni aprobación externa.
