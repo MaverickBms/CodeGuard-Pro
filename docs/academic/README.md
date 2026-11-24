@@ -146,3 +146,10 @@ Acumulado documental ampliado: etapas 1–6, 265 lecciones según informe de Ope
 Se añadieron prácticas y evidencias a las **58 lecciones** de Java y Spring Boot, abarcando arquitectura, IoC/DI, REST, persistencia, seguridad, transacciones y tooling. La ampliación es documental; no se han ejecutado builds, pruebas de integración ni laboratorios de seguridad.
 
 Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11–12, 149; etapa 13, 63; etapa 14, 58; total etapas 1–14: **819 lecciones**. Restan 1.097 lecciones de etapas 15–32 para profundización equivalente. Las cifras no implican validación técnica por ejecución ni aprobación externa.
+
+
+### Ampliación de prácticas y evidencias — etapas 15–16 — 2026-11-24
+
+Se incorporaron prácticas y evidencias a las **53 lecciones de Node.js/NestJS** y las **46 lecciones de PHP/Laravel/.NET**. La revisión estructural posterior confirmó 99/99 apartados y ningún encabezado vacío. No se ejecutaron los entornos de desarrollo ni pruebas de integración.
+
+Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11–12, 149; etapa 13, 63; etapa 14, 58; etapas 15–16, 99; total etapas 1–16: **918 lecciones**. Restan 998 lecciones de etapas 17–32 para profundización equivalente. No se declara validación técnica por ejecución ni aprobación externa.
