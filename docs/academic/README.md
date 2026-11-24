@@ -1,22 +1,23 @@
 # Desarrollo académico ASCENSO 3.1
 
-Material didáctico original de ASCENSO 3.1. La etapa 0 tiene una base de trabajo activa que será la referencia operativa para desarrollar y corregir sus contenidos. Este directorio no reemplaza el PDF maestro ni publica automáticamente contenido en CodeGuard Pro. La estructura oficial se mantiene en `apps/roadmaps/data/ascenso_3_1.json`.
+Material didáctico original de ASCENSO 3.1. Las etapas 0–32 tienen una base de trabajo activa que será la referencia operativa para desarrollar y corregir sus contenidos. Este directorio no reemplaza el PDF maestro ni publica automáticamente contenido en CodeGuard Pro. La estructura oficial se mantiene en `apps/roadmaps/data/ascenso_3_1.json`.
 
 ## Estado editorial
 
-Las etapas 0–32 cuentan con documentos de desarrollo en esta rama. **Etapa 0: BASE DE TRABAJO ACTIVA** (cuatro módulos y proyecto integrador como referencia operativa vigente). **Etapas 1–32: borrador de desarrollo.** La condición de base activa no equivale a aprobación editorial, revisión independiente, ejecución de laboratorios ni publicación en la aplicación.
+Las etapas 0–32 cuentan con documentos de desarrollo en esta rama. **Etapa 0: BASE DE TRABAJO ACTIVA** (cuatro módulos y proyecto integrador como referencia operativa vigente). **Etapas 1–32: BASE DE TRABAJO ACTIVA.** La condición de base activa no equivale a aprobación editorial, revisión independiente, ejecución de laboratorios ni publicación en la aplicación.
 
 | Bloque | Etapas | Áreas | Estado |
 |---|---:|---|---|
-| Preparación y fundamentos | 0–6 | Aprendizaje, computación, Java, POO, Git, algoritmos | Etapa 0: base activa; etapas 1–6: borrador |
-| Sistemas y datos | 7–10 | Linux, Windows, redes, SQL, NoSQL | Borrador |
-| Desarrollo Full Stack | 11–16 | HTML/CSS, JavaScript, TypeScript, React, Next.js, APIs, Spring, Nest, PHP, .NET | Borrador |
-| Ingeniería de software | 17–18 | Testing, calidad, arquitectura, diseño, planificación | Borrador |
-| Infraestructura y AppSec | 19–20 | DevOps, Docker, CI/CD, Cloud, desarrollo seguro | Borrador |
-| Ciberseguridad | 21–31 | Riesgos, laboratorio, OSINT, pentesting autorizado, AppSec, AD, SOC, DFIR, Cloud Security, IA, bajo nivel | Borrador |
-| Consolidación profesional | 32 | Proyecto integral, portafolio y preparación laboral | Borrador |
+| Preparación y fundamentos | 0–6 | Aprendizaje, computación, Java, POO, Git, algoritmos | Base de trabajo activa |
+| Sistemas y datos | 7–10 | Linux, Windows, redes, SQL, NoSQL | Base de trabajo activa |
+| Desarrollo Full Stack | 11–16 | HTML/CSS, JavaScript, TypeScript, React, Next.js, APIs, Spring, Nest, PHP, .NET | Base de trabajo activa |
+| Ingeniería de software | 17–18 | Testing, calidad, arquitectura, diseño, planificación | Base de trabajo activa |
+| Infraestructura y AppSec | 19–20 | DevOps, Docker, CI/CD, Cloud, desarrollo seguro | Base de trabajo activa |
+| Ciberseguridad | 21–31 | Riesgos, laboratorio, OSINT, pentesting autorizado, AppSec, AD, SOC, DFIR, Cloud Security, IA, bajo nivel | Base de trabajo activa |
+| Consolidación profesional | 32 | Proyecto integral, portafolio y preparación laboral | Base de trabajo activa |
 
 ## Auditoría y estado de integración
+- [Guía de continuidad académica — etapas 1–32](ASCENSO_3_1_GUIA_CONTINUIDAD_ETAPAS_01_32.md)
 - [Auditoría de continuidad ASCENSO 3.1](AUDITORIA_CONTINUIDAD_ASCENSO_3_1.md)
 - [Auditoría y seguimiento de producción de la etapa 0](AUDITORIA_PRELIMINAR_ETAPA_00_ASCENSO_3.1.md)
 - [Revisión de escritorio del módulo 0.1](ascenso-3.1/etapa-00/revision-tecnica-pedagogica-modulo-0.1.md)
@@ -24,7 +25,7 @@ Las etapas 0–32 cuentan con documentos de desarrollo en esta rama. **Etapa 0: 
 - [Revisión de escritorio del módulo 0.3](ascenso-3.1/etapa-00/revision-tecnica-pedagogica-modulo-0.3.md)
 - [Revisión de escritorio del módulo 0.4](ascenso-3.1/etapa-00/revision-tecnica-pedagogica-modulo-0.4.md)
 
-**Seguimiento 2026-11-24:** los cuatro módulos y el proyecto integrador de la etapa 0 constituyen la `BASE DE TRABAJO ACTIVA`. Los cuatro módulos cubren documentalmente los 30 títulos nominales y ahora incluyen matrices de evidencia por unidad (8/7/8/7). Cada módulo cuenta con un informe de revisión de escritorio enlazado arriba; estos informes no equivalen a revisión independiente ni validación práctica. Las ampliaciones de 0.1–0.4 incluyen actividades y rúbricas adicionales; se añadió la especificación del proyecto integrador ASCENSO-Knowledge-Base. No se declaran laboratorios ejecutados, lecciones aprobadas ni contenido publicado. Consultar la auditoría enlazada para el inventario de evidencias y pendientes.
+**Seguimiento 2026-11-24:** las etapas 0–32 constituyen la `BASE DE TRABAJO ACTIVA` para el desarrollo académico. Los cuatro módulos cubren documentalmente los 30 títulos nominales y ahora incluyen matrices de evidencia por unidad (8/7/8/7). Cada módulo cuenta con un informe de revisión de escritorio enlazado arriba; estos informes no equivalen a revisión independiente ni validación práctica. Las ampliaciones de 0.1–0.4 incluyen actividades y rúbricas adicionales; se añadió la especificación del proyecto integrador ASCENSO-Knowledge-Base. No se declaran laboratorios ejecutados, lecciones aprobadas ni contenido publicado. Consultar la auditoría enlazada para el inventario de evidencias y pendientes.
 
 ## Estándares transversales
 - [Estándar editorial académico](ASCENSO_ESTANDAR_EDITORIAL.md)
@@ -82,7 +83,7 @@ Las etapas 0–32 cuentan con documentos de desarrollo en esta rama. **Etapa 0: 
 - [Etapa 32 — Proyecto profesional y portafolio](ascenso-3.1/etapa-32-proyecto-profesional-portafolio.md)
 
 ## Política de publicación
-La etapa 0 es la base de trabajo activa; el resto de las etapas permanece en desarrollo. La aprobación y publicación en CodeGuard Pro requieren completar revisión técnica, pedagógica, de referencias y licencias, y utilizar el flujo editorial existente: registrar fuentes, validar licencia y alcance, crear snapshots, enviar a revisión, aprobar y publicar. No insertar contenido directamente como publicado.
+Las etapas 0–32 son base de trabajo activa y permanecen en desarrollo. La aprobación y publicación en CodeGuard Pro requieren completar revisión técnica, pedagógica, de referencias y licencias, y utilizar el flujo editorial existente: registrar fuentes, validar licencia y alcance, crear snapshots, enviar a revisión, aprobar y publicar. No insertar contenido directamente como publicado.
 
 Los UUID curriculares deben resolverse contra la base de datos del roadmap; no se inventan identificadores. El material se conserva como fuente de autoría y revisión hasta completar ese mapeo.
 
