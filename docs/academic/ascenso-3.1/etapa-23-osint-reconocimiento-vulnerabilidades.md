@@ -115,187 +115,194 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 ### Módulo 23.1 — Reconocimiento
 
 #### 23.1.01 — Reconnaissance
-Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Reconnaissance recopila información sobre un objetivo para comprender activos, relaciones y exposición. En una evaluación profesional se realiza con autorización y alcance definido; separa hechos observados de inferencias.
 
 #### 23.1.02 — Passive Reconnaissance
-Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Passive Reconnaissance utiliza fuentes públicas o datos ya disponibles sin interactuar directamente con los sistemas objetivo. Registra fuente, fecha, confianza y límites, y evita recopilar o conservar datos personales innecesarios.
 
 #### 23.1.03 — Active Reconnaissance
-Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Active Reconnaissance interactúa directamente con activos para confirmar servicios o comportamiento y puede generar alertas o impacto. Requiere autorización explícita, ventanas, límites de tasa y condiciones de detención.
 
 #### 23.1.04 — Scope
-Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Scope define dominios, direcciones, aplicaciones, cuentas, técnicas permitidas y exclusiones. Trata cualquier activo fuera de alcance como no autorizado y detén la actividad si la titularidad es incierta.
 
 #### 23.1.05 — Asset Discovery
-Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Asset Discovery identifica activos relevantes y sus propietarios mediante inventarios, fuentes documentales y observación autorizada. Deduplica resultados y marca nivel de confianza para evitar convertir nombres o direcciones históricas en activos confirmados.
 
 #### 23.1.06 — Attack Surface Mapping
-Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Attack Surface Mapping relaciona activos, interfaces, servicios, identidades y flujos de acceso. Prioriza exposición y criticidad, identifica dependencias y registra qué elementos no pudieron verificarse.
 
 #### 23.1.07 — Reconnaissance Methodology
-Estudiar el concepto dentro de reconocimiento, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Reconnaissance Methodology estructura preparación, recopilación, validación, correlación y reporte. Define hipótesis, alcance, fuentes y criterios de cierre para que los resultados sean repetibles y auditables.
 
 ### Módulo 23.2 — OSINT (Open Source Intelligence)
 
 #### 23.2.01 — Fuentes abiertas
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Las fuentes abiertas incluyen registros públicos, documentación, sitios, repositorios y publicaciones accesibles legalmente. La disponibilidad pública no implica permiso para acceder a sistemas, reutilizar datos sin límite o vulnerar condiciones aplicables.
 
 #### 23.2.02 — Motores de búsqueda
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Los motores de búsqueda indexan páginas y permiten localizar información mediante consultas. Documenta consultas y fecha, evita automatización abusiva y no interpretes un resultado indexado como prueba de que el recurso sigue disponible.
 
 #### 23.2.03 — Operadores de búsqueda avanzada
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Los operadores de búsqueda avanzada refinan resultados por dominio, tipo de archivo, frase o fecha. Úsalos para investigación documental y evaluación autorizada, sin intentar acceder a contenido restringido ni eludir controles de acceso.
 
 #### 23.2.04 — Información pública
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+La información pública puede revelar tecnologías, estructura organizacional, contactos o metadatos. Evalúa relevancia y sensibilidad, minimiza recopilación y comunica exposiciones con evidencia y contexto.
 
 #### 23.2.05 — Registros de dominios
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Los registros de dominios contienen datos de registro, registrador, fechas y servidores de nombres según políticas de privacidad. Interpreta redacción y datos proxy correctamente; no atribuyas una organización a un registrante sin corroboración.
 
 #### 23.2.06 — DNS Records
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+DNS Records describen servicios y nombres mediante tipos como A, AAAA, CNAME, MX, NS y TXT. Interpreta TTL y delegación y evita asumir que un registro confirma un servicio operativo.
 
 #### 23.2.07 — Certificados digitales
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Los certificados digitales vinculan nombres con claves públicas y cadenas de confianza. Revisa SAN, emisor y vigencia en fuentes autorizadas; un certificado puede revelar nombres históricos, pero no prueba que un host esté activo.
 
 #### 23.2.08 — Certificate Transparency
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Certificate Transparency publica registros de certificados para facilitar detección y auditoría. Úsalo para descubrir nombres asociados a dominios bajo alcance, valida vigencia y propiedad y trata nombres internos o históricos con cautela.
 
 #### 23.2.09 — Repositorios públicos
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Los repositorios públicos pueden exponer código, configuraciones, historial y, accidentalmente, secretos. Reporta hallazgos mediante el canal responsable, no pruebes credenciales encontradas y evita clonar o redistribuir datos sensibles innecesarios.
 
 #### 23.2.10 — Metadatos
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Los metadatos describen autoría, software, fechas, ubicación u otras propiedades de archivos. Extrae solo atributos pertinentes y considera privacidad; los metadatos pueden ser falsos, heredados o alterados.
 
 #### 23.2.11 — Documentos expuestos
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Los documentos expuestos pueden contener información que no estaba destinada a difusión pública. Registra ubicación y evidencia mínima, no descargues lotes de información personal y notifica al propietario por un canal responsable.
 
 #### 23.2.12 — Correlación de información
-Estudiar el concepto dentro de osint (open source intelligence), comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Correlación de información relaciona observaciones independientes para construir hipótesis sobre activos y exposición. Registra fuente, fecha, confianza y contradicciones; evita presentar correlación como causalidad o identidad confirmada.
 
 ### Módulo 23.3 — Herramientas OSINT
 
 #### 23.3.01 — Maltego
-Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Maltego facilita visualizar relaciones entre entidades y fuentes de información mediante transformaciones. Revisa qué datos envía a servicios externos, valida cada relación y evita cargar información sensible sin autorización.
 
 #### 23.3.02 — WHOIS
-Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+WHOIS consulta datos de registro de dominios o recursos según disponibilidad y políticas. Interpreta campos redactados, proxies y fechas; corrobora información con fuentes oficiales antes de atribuir titularidad.
 
 #### 23.3.03 — DNSdumpster
-Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+DNSdumpster recopila relaciones DNS y hosts desde fuentes disponibles. Los resultados pueden ser incompletos o históricos; valida cada observación y respeta condiciones de uso y límites de consulta.
 
 #### 23.3.04 — theHarvester
-Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+theHarvester reúne información pública de fuentes configuradas, como dominios, correos y hosts. Limita consultas al alcance aprobado, protege datos personales y valida falsos positivos antes de reportar.
 
 #### 23.3.05 — Amass
-Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Amass apoya descubrimiento y mapeo de superficie de dominios mediante fuentes y técnicas configurables. Selecciona modos pasivos o activos según autorización, limita intensidad y conserva evidencia reproducible.
 
 #### 23.3.06 — Google Dorking
-Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Google Dorking utiliza operadores de búsqueda para localizar información indexada de forma precisa. En contexto defensivo, revisa únicamente dominios propios/autorizados y reporta exposición sin intentar explotar recursos o acceder a documentos restringidos.
 
 #### 23.3.07 — ExifTool
-Estudiar el concepto dentro de herramientas osint, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+ExifTool lee y modifica metadatos de numerosos formatos. En auditoría, trabaja sobre copias, registra formato y campos examinados y evita publicar coordenadas, nombres o identificadores personales.
 
 ### Módulo 23.4 — Identificación de activos
 
 #### 23.4.01 — Dominios
-Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Dominios son nombres jerárquicos que identifican zonas dentro del DNS. Distingue dominio registrable, subdominio y zona delegada; confirma relación con el propietario antes de incluirlo en el inventario.
 
 #### 23.4.02 — Subdominios
-Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Subdominios permiten organizar servicios y aplicaciones bajo un dominio. Pueden ser activos obsoletos o de terceros; valida DNS, propiedad y estado antes de cualquier prueba.
 
 #### 23.4.03 — Direcciones IP
-Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Direcciones IP identifican interfaces en redes y pueden cambiar, compartirse o pertenecer a proveedores. Correlaciona con fecha, DNS y ASN y no las uses como identificador permanente de una organización.
 
 #### 23.4.04 — Servidores
-Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Servidores ofrecen servicios de cómputo, almacenamiento o comunicación. Identifica función, propietario, entorno y criticidad mediante fuentes autorizadas; evita inferir sistema operativo por un único banner.
 
 #### 23.4.05 — Aplicaciones
-Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Aplicaciones son activos de software con usuarios, datos, endpoints y dependencias. Registra versión, propietario, entorno y criticidad y distingue producción, pruebas y servicios retirados.
 
 #### 23.4.06 — Tecnologías
-Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Tecnologías identifican frameworks, bibliotecas, servidores y plataformas utilizadas por un activo. La detección puede ser inexacta o revelar solo una capa; valida con documentación o responsables antes de asignar vulnerabilidades.
 
 #### 23.4.07 — Servicios
-Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Servicios son capacidades disponibles en un host o plataforma, identificadas por protocolo y función. Registra exposición, necesidad de negocio y responsable y evita pruebas intrusivas sin autorización.
 
 #### 23.4.08 — Infraestructura expuesta
-Estudiar el concepto dentro de identificación de activos, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Infraestructura expuesta incluye recursos accesibles desde redes públicas o de terceros. Evalúa necesidad, configuración, controles de acceso y dependencia; prioriza reducir exposición no requerida.
 
 ### Módulo 23.5 — Escaneo y enumeración
 
 #### 23.5.01 — Host Discovery
-Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Host Discovery identifica qué sistemas parecen responder en una red o conjunto de activos autorizado. Las respuestas pueden bloquearse o falsificarse; registra método y limitaciones sin interpretar ausencia de respuesta como host inexistente.
 
 #### 23.5.02 — Port Scanning
-Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Port Scanning identifica puertos que parecen abiertos, cerrados o filtrados en un objetivo. Ejecuta solo dentro del alcance aprobado, con límites de tasa y ventanas, y no equipares puerto abierto con vulnerabilidad.
 
 #### 23.5.03 — TCP Scanning
-Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+TCP Scanning observa respuestas del protocolo TCP para inferir estado de puertos y conectividad. El resultado depende de firewall, NAT y configuración; limita intensidad y documenta método y punto de observación.
 
 #### 23.5.04 — UDP Scanning
-Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+UDP Scanning tiene mayor ambigüedad porque muchos servicios UDP no responden a sondas inesperadas. Interpreta estados como open|filtered con cautela y evita escaneos amplios fuera de laboratorio.
 
 #### 23.5.05 — Service Enumeration
-Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Service Enumeration identifica protocolos y capacidades expuestas por un servicio. Utiliza métodos no destructivos autorizados, valida banners y versiones y evita solicitar operaciones que modifiquen datos.
 
 #### 23.5.06 — Version Detection
-Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Version Detection intenta estimar versiones de servicios a partir de respuestas observables. Los banners pueden ocultar o falsificar versiones; confirma con inventario del propietario antes de asociar CVEs.
 
 #### 23.5.07 — OS Detection
-Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+OS Detection infiere características del sistema operativo a partir de respuestas de red. Es probabilística y sensible a intermediarios; no la uses como única evidencia para decidir una remediación.
 
 #### 23.5.08 — Nmap
-Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Nmap es una herramienta de descubrimiento y auditoría de redes con múltiples modos y opciones. Aprende a interpretar resultados y documentación, pero realiza pruebas solo sobre activos propios o autorizados y con parámetros acordes al alcance.
 
 #### 23.5.09 — Nmap Scripting Engine (NSE)
-Estudiar el concepto dentro de escaneo y enumeración, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Nmap Scripting Engine (NSE) amplía Nmap con scripts de descubrimiento y comprobación. Revisa categoría y efecto de cada script antes de usarlo; algunos realizan acciones intrusivas y no son adecuados para producción.
 
 ### Módulo 23.6 — Gestión de vulnerabilidades
 
 #### 23.6.01 — Vulnerability Assessment
-Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Vulnerability Assessment identifica y prioriza debilidades conocidas o configuraciones inseguras. Define alcance, fuentes y limitaciones, valida hallazgos y produce recomendaciones accionables en lugar de una lista sin contexto.
 
 #### 23.6.02 — CVE
-Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+CVE identifica públicamente vulnerabilidades divulgadas mediante un identificador único. Comprueba producto, versión, configuración y referencias; la presencia de un CVE no demuestra que un activo sea vulnerable.
 
 #### 23.6.03 — CWE
-Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+CWE clasifica tipos de debilidades de software que pueden contribuir a vulnerabilidades. Utilízala para describir causa raíz y controles preventivos, no como identificador de un incidente concreto.
 
 #### 23.6.04 — CVSS
-Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+CVSS proporciona una puntuación de severidad técnica basada en métricas definidas y versión del estándar. Registra vector y versión y complementa la puntuación con exposición, impacto de negocio y controles existentes.
 
 #### 23.6.05 — Severidad
-Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Severidad resume gravedad técnica o impacto según una escala declarada. Explica criterios y evita equiparar automáticamente severidad alta con prioridad máxima en todos los contextos.
 
 #### 23.6.06 — Impacto
-Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Impacto estima consecuencias de explotación sobre confidencialidad, integridad, disponibilidad y objetivos de negocio. Considera datos, servicios, usuarios y obligaciones regulatorias.
 
 #### 23.6.07 — Probabilidad
-Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Probabilidad estima posibilidad de que una vulnerabilidad sea explotada en el contexto evaluado. Considera exposición, disponibilidad de exploit, controles y actividad observada, y declara incertidumbre.
 
 #### 23.6.08 — Priorización
-Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Priorización combina severidad, exposición, impacto, probabilidad y facilidad de remediación. Define criterios transparentes y asigna propietario y fecha objetivo; evita ordenar exclusivamente por CVSS.
 
 #### 23.6.09 — Falsos positivos
-Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Falsos positivos son hallazgos reportados que no representan una vulnerabilidad aplicable o confirmada. Valida evidencia, versión y configuración, documenta motivo de cierre y conserva posibilidad de reabrir si cambia el contexto.
 
 #### 23.6.10 — Remediación
-Estudiar el concepto dentro de gestión de vulnerabilidades, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Remediación corrige la causa raíz mediante parche, configuración, mitigación o rediseño. Define responsable, prueba de regresión y verificación posterior y registra riesgo residual si la corrección se aplaza.
 
 ### Módulo 23.7 — Herramientas
 
 #### 23.7.01 — Nessus
-Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Nessus es un escáner de vulnerabilidades que utiliza plugins y comprobaciones configurables. Verifica alcance, credenciales, intensidad y licencia; valida hallazgos críticos antes de reportar y protege resultados sensibles.
 
 #### 23.7.02 — OpenVAS
-Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+OpenVAS es una solución de evaluación de vulnerabilidades dentro del ecosistema Greenbone. Mantén feeds actualizados, limita escaneos a activos autorizados y comprende falsos positivos y cobertura del motor.
 
 #### 23.7.03 — Greenbone
-Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Greenbone ofrece componentes para gestión y evaluación de vulnerabilidades. Define roles, credenciales de escaneo y retención de reportes; trata resultados como información sensible de infraestructura.
 
 #### 23.7.04 — Nmap
-Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+Nmap puede complementar inventarios y validación de exposición de servicios, pero no reemplaza un escáner de vulnerabilidades ni una revisión de configuración. Documenta qué pregunta responde cada herramienta.
 
 #### 23.7.05 — Nmap NSE
-Estudiar el concepto dentro de herramientas, comprender sus límites y documentar su aplicación defensiva o de evaluación autorizada. Cualquier práctica debe realizarse únicamente en activos propios o con autorización expresa y alcance definido.
+NSE permite comprobaciones específicas sobre servicios, con scripts de distinto riesgo. Revisa documentación, categorías y efectos secundarios y selecciona solo scripts permitidos por las reglas de operación.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 58 orientaciones genéricas por explicaciones específicas de reconocimiento, OSINT, inventario, escaneo, enumeración y gestión de vulnerabilidades. Se reforzaron la trazabilidad de fuentes, confianza de hallazgos, minimización de datos personales y distinción entre observación, inferencia y confirmación.
+
+**Revisión interna:** 58/58 entradas desarrolladas y cotejadas con el roadmap. Se establecieron límites claros para reconocimiento activo, Nmap/NSE y escáneres: solo activos propios o expresamente autorizados, con alcance, ventana, tasa y condiciones de detención. Pendiente: verificar versiones/licencias de herramientas, ejecutar prácticas solo en laboratorio aislado y revisar resultados con un segundo evaluador. No se escanearon activos ni se declara aprobación externa.
