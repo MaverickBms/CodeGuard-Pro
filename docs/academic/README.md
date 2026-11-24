@@ -20,6 +20,7 @@ Las etapas 0–32 cuentan con un documento de desarrollo en esta rama. Todos per
 - [Auditoría de continuidad ASCENSO 3.1](AUDITORIA_CONTINUIDAD_ASCENSO_3_1.md)
 - [Auditoría y seguimiento de producción de la etapa 0](AUDITORIA_PRELIMINAR_ETAPA_00_ASCENSO_3.1.md)
 - [Revisión de escritorio del módulo 0.1](ascenso-3.1/etapa-00/revision-tecnica-pedagogica-modulo-0.1.md)
+- [Revisión de escritorio del módulo 0.2](ascenso-3.1/etapa-00/revision-tecnica-pedagogica-modulo-0.2.md)
 
 **Seguimiento 2026-11-24:** los cuatro módulos de la etapa 0 tienen cobertura documental inicial para sus 30 títulos nominales y continúan en `BORRADOR`. Las ampliaciones de 0.1–0.4 incluyen actividades y rúbricas adicionales; se añadió la especificación del proyecto integrador ASCENSO-Knowledge-Base. No se declaran laboratorios ejecutados, lecciones revisadas, aprobadas ni publicadas. Consultar la auditoría enlazada para el inventario de evidencias y pendientes.
 
