@@ -257,3 +257,8 @@ La documentación de la etapa 9 (Bases de datos relacionales y SQL) quedó desgl
 ### Continuidad ASCENSO 3.1 — etapa 10
 
 La documentación de la etapa 10 (Bases de datos NoSQL y almacenamiento moderno) quedó desglosada en 38 encabezados de lección, distribuidos en sus cuatro módulos según el roadmap oficial. Se mantienen las distinciones entre modelos, consistencia, MongoDB, Redis y otras arquitecturas, junto con el proyecto híbrido. Es base de trabajo activa; los laboratorios no se declaran ejecutados ni aprobados.
+
+
+### Continuidad ASCENSO 3.1 — etapas 11 a 13
+
+Se añadieron encabezados individuales para las 212 lecciones oficiales de las etapas 11–13: etapa 11 (60), etapa 12 (89) y etapa 13 (63). El desglose conserva la secuencia y los títulos del roadmap, y se apoya en las explicaciones, proyectos, autoevaluaciones y referencias presentes en cada documento. Es base de trabajo activa; no equivale a evaluación formal, ejecución de laboratorios, aprobación editorial ni publicación.
