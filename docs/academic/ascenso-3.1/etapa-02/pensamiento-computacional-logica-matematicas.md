@@ -191,6 +191,37 @@ La salida es el resultado que el algoritmo presenta, almacena o envía. Debe ind
 
 **Ejemplo de total de línea:** entrada: precio unitario y cantidad; procesamiento: validar ambos valores y multiplicarlos; salida: subtotal o mensaje de error.
 
+### 2.3.4 — Pseudocódigo
+
+El pseudocódigo expresa la lógica sin depender de la sintaxis de un lenguaje específico. Debe ser consistente y suficientemente preciso para que otra persona pueda implementarlo.
+
+Ejemplo:
+
+```text
+INICIO
+  LEER precio
+  LEER cantidad
+
+  SI precio < 0 O cantidad <= 0 ENTONCES
+    MOSTRAR "Entrada inválida"
+  SINO
+    subtotal <- precio * cantidad
+    MOSTRAR subtotal
+  FIN SI
+FIN
+```
+
+### 2.3.5 — Diagramas de flujo
+
+Representan visualmente el recorrido del algoritmo. Convenciones frecuentes:
+- óvalo: inicio/fin;
+- paralelogramo: entrada/salida;
+- rectángulo: proceso;
+- rombo: decisión;
+- flechas: dirección del flujo.
+
+Los símbolos son una convención de representación; lo importante es que cada decisión tenga salidas identificadas y que el flujo no quede ambiguo.
+
 ### 2.3.6 — Variables
 
 Una variable representa un dato que puede cambiar durante el algoritmo. Debe tener un nombre significativo y un dominio válido.
@@ -227,37 +258,6 @@ Antes de crear un ciclo define:
 - comportamiento ante entradas inválidas.
 
 Un ciclo que no cambia la variable que controla su condición puede convertirse en un ciclo infinito.
-
-### 2.3.4 — Pseudocódigo
-
-El pseudocódigo expresa la lógica sin depender de la sintaxis de un lenguaje específico. Debe ser consistente y suficientemente preciso para que otra persona pueda implementarlo.
-
-Ejemplo:
-
-```text
-INICIO
-  LEER precio
-  LEER cantidad
-
-  SI precio < 0 O cantidad <= 0 ENTONCES
-    MOSTRAR "Entrada inválida"
-  SINO
-    subtotal <- precio * cantidad
-    MOSTRAR subtotal
-  FIN SI
-FIN
-```
-
-### 2.3.5 — Diagramas de flujo
-
-Representan visualmente el recorrido del algoritmo. Convenciones frecuentes:
-- óvalo: inicio/fin;
-- paralelogramo: entrada/salida;
-- rectángulo: proceso;
-- rombo: decisión;
-- flechas: dirección del flujo.
-
-Los símbolos son una convención de representación; lo importante es que cada decisión tenga salidas identificadas y que el flujo no quede ambiguo.
 
 ## 2.4 — Matemáticas
 
