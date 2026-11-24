@@ -2318,6 +2318,16 @@ npm es el gestor de paquetes incluido habitualmente con Node.js. package.json de
 
 **Comprobación:** ¿Qué diferencia hay entre npm install y npm ci en un entorno reproducible?
 
+**Laboratorio de profundización — Gestión reproducible de dependencias con npm.**
+
+1. Inicializa proyecto de laboratorio. 2. Instala dependencia de desarrollo y runtime. 3. Compara package.json y package-lock.json. 4. Ejecuta scripts declarados y explica semver.
+
+**Evidencia esperada.** El proyecto mantiene manifiesto y lockfile coherentes y los scripts son reproducibles.
+
+**Seguridad y límites.** No instalar paquetes desconocidos ni ejecutar scripts de lifecycle sin revisar origen y contenido.
+
+**Registro sugerido.** Conserva versiones, archivos de configuración, comandos, salida de lint/build y resultados observados. No marques herramientas como ejecutadas sin evidencia real.
+
 #### 12.8.02 — pnpm
 
 pnpm es gestor de paquetes que utiliza almacenamiento direccionado por contenido y enlaces para ahorrar espacio y mejorar consistencia. Workspace y lockfile administran monorepos; compatibilidad depende de versión y configuración.
@@ -2333,6 +2343,16 @@ pnpm es gestor de paquetes que utiliza almacenamiento direccionado por contenido
 **Errores frecuentes:** Mezclar gestores sin política o ignorar versión fijada de pnpm.
 
 **Comprobación:** ¿Por qué conviene fijar versión de gestor en un equipo?
+
+**Laboratorio de profundización — Workspace y lockfile con pnpm.**
+
+1. Compara instalación npm y pnpm. 2. Inicializa proyecto con pnpm. 3. Inspecciona pnpm-lock.yaml y store. 4. Diseña workspace con dos paquetes ficticios.
+
+**Evidencia esperada.** El lockfile se mantiene versionado y el workspace declara dependencias entre paquetes.
+
+**Seguridad y límites.** No mezclar gestores ni lockfiles sin política explícita; revisar paquetes antes de instalar.
+
+**Registro sugerido.** Conserva versiones, archivos de configuración, comandos, salida de lint/build y resultados observados. No marques herramientas como ejecutadas sin evidencia real.
 
 #### 12.8.03 — Vite
 
@@ -2350,6 +2370,16 @@ Vite proporciona servidor de desarrollo rápido y build basado en herramientas m
 
 **Comprobación:** ¿Por qué el servidor de desarrollo no debe tratarse como servidor de producción?
 
+**Laboratorio de profundización — Servidor de desarrollo y build.**
+
+1. Crea proyecto Vite de laboratorio. 2. Identifica entrypoint y configuración. 3. Ejecuta servidor local y build de producción. 4. Inspecciona assets generados y variables expuestas.
+
+**Evidencia esperada.** Se distingue dev server de artefacto de producción y el build termina con salida esperada.
+
+**Seguridad y límites.** No exponer variables secretas con prefijos públicos ni vincular servidor dev a interfaces públicas sin necesidad.
+
+**Registro sugerido.** Conserva versiones, archivos de configuración, comandos, salida de lint/build y resultados observados. No marques herramientas como ejecutadas sin evidencia real.
+
 #### 12.8.04 — ESLint
 
 ESLint analiza patrones de código y aplica reglas configurables. Plugins y configuraciones pueden incluir reglas de framework, accesibilidad y TypeScript. Lint detecta clases de defectos, pero no demuestra corrección funcional.
@@ -2365,6 +2395,16 @@ ESLint analiza patrones de código y aplica reglas configurables. Plugins y conf
 **Errores frecuentes:** Desactivar reglas globalmente para silenciar problemas.
 
 **Comprobación:** ¿Qué diferencia hay entre lint y pruebas automatizadas?
+
+**Laboratorio de profundización — Reglas estáticas y calidad de código.**
+
+1. Configura ESLint para JavaScript/TypeScript. 2. Introduce errores de estilo y problemas detectables. 3. Ejecuta lint. 4. Corrige advertencias y documenta reglas desactivadas.
+
+**Evidencia esperada.** El lint detecta problemas previstos y la configuración evita excepciones globales injustificadas.
+
+**Seguridad y límites.** No desactivar reglas de seguridad o hooks sin explicar el motivo.
+
+**Registro sugerido.** Conserva versiones, archivos de configuración, comandos, salida de lint/build y resultados observados. No marques herramientas como ejecutadas sin evidencia real.
 
 #### 12.8.05 — Prettier
 
@@ -2382,6 +2422,16 @@ Prettier formatea código de forma consistente según configuración. Reduce deb
 
 **Comprobación:** ¿Qué clase de defectos no detecta Prettier?
 
+**Laboratorio de profundización — Formato automático y consistencia.**
+
+1. Configura Prettier con reglas compartidas. 2. Formatea archivos de ejemplo. 3. Comprueba que no cambia semántica. 4. Integra formato en script o pre-commit si el proyecto lo requiere.
+
+**Evidencia esperada.** El equipo obtiene formato determinista y separado de reglas de análisis estático.
+
+**Seguridad y límites.** No usar el formateador como sustituto de lint, revisión o pruebas.
+
+**Registro sugerido.** Conserva versiones, archivos de configuración, comandos, salida de lint/build y resultados observados. No marques herramientas como ejecutadas sin evidencia real.
+
 #### 12.8.06 — Tailwind CSS
 
 Tailwind CSS ofrece clases utilitarias generadas a partir de configuración y contenido detectado. La versión cambia configuración y directivas; seguir documentación de la versión instalada. La composición debe preservar semántica, accesibilidad y consistencia.
@@ -2397,6 +2447,16 @@ Tailwind CSS ofrece clases utilitarias generadas a partir de configuración y co
 **Errores frecuentes:** Copiar sintaxis de otra versión o usar clases solo para ocultar controles esenciales.
 
 **Comprobación:** ¿Por qué hay que identificar la versión de Tailwind antes de aplicar una guía?
+
+**Laboratorio de profundización — Diseño con utilidades y tokens.**
+
+1. Construye tarjeta responsive con utilidades. 2. Define tokens de tema. 3. Revisa clases generadas y estados focus/hover. 4. Comprueba contraste y reducción de movimiento.
+
+**Evidencia esperada.** La interfaz usa utilidades de forma consistente y mantiene accesibilidad y responsive.
+
+**Seguridad y límites.** No construir clases dinámicas que el compilador no detecta sin configurar safelist o alternativa.
+
+**Registro sugerido.** Conserva versiones, archivos de configuración, comandos, salida de lint/build y resultados observados. No marques herramientas como ejecutadas sin evidencia real.
 
 #### 12.8.07 — React DevTools
 
@@ -2414,6 +2474,16 @@ React DevTools permite inspeccionar árbol de componentes, props, estado y rendi
 
 **Comprobación:** ¿Qué evidencia aporta Profiler antes de optimizar un componente?
 
+
+**Laboratorio de profundización — Inspección de árbol y rendimiento React.**
+
+1. Abre React DevTools en una app propia. 2. Inspecciona componentes, props y state. 3. Usa Profiler para identificar renders. 4. Compara antes/después de una optimización medida.
+
+**Evidencia esperada.** El análisis relaciona renderizados con cambios de estado/props y evita optimización prematura.
+
+**Seguridad y límites.** No inspeccionar sesiones ni datos privados de usuarios; usar dataset ficticio.
+
+**Registro sugerido.** Conserva versiones, archivos de configuración, comandos, salida de lint/build y resultados observados. No marques herramientas como ejecutadas sin evidencia real.
 ## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
 
 Se sustituyeron las 89 orientaciones genéricas del desglose por explicaciones específicas de cada entrada oficial. Se añadieron precisiones sobre semántica y coerción de JavaScript, closures/prototypes/this, propagación de eventos, ciclo de eventos y microtasks, almacenamiento del navegador, límites de TypeScript en runtime, reglas de hooks, Server/Client Components, caché, autenticación y seguridad de dependencias.
