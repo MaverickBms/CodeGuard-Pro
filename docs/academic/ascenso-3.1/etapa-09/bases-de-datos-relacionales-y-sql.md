@@ -838,6 +838,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué diferencia de impacto existe entre ALTER TABLE y UPDATE?
 
+**Laboratorio de profundización — Clasificación de sentencias DDL.**
+
+1. Identifica CREATE, ALTER, DROP y TRUNCATE. 2. Clasifica operaciones que cambian esquema frente a filas. 3. Evalúa reversibilidad y dependencias. 4. Redacta un plan de cambio con respaldo y rollback.
+
+**Evidencia esperada.** Se explica el impacto estructural de cada sentencia y se distingue DDL de manipulación de datos.
+
+**Seguridad y límites.** No ejecutar DROP/TRUNCATE sobre bases compartidas ni asumir que todo DDL es reversible en cualquier motor.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.4.2 — DML
 
 **Propósito y modelo.** DML manipula filas mediante INSERT, UPDATE y DELETE, y en algunas clasificaciones incluye MERGE. Estas operaciones pueden afectar una o muchas filas; una condición WHERE ausente o incorrecta puede modificar datos masivamente. La transacción y el respaldo son controles importantes.
@@ -853,6 +863,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Ejecutar UPDATE o DELETE sin WHERE, o asumir que una condición devuelve la cantidad de filas esperada sin comprobarla.
 
 **Comprobación.** ¿Qué comprobación debe hacerse antes de ejecutar un DELETE sobre una tabla con muchos registros?
+
+**Laboratorio de profundización — Manipulación controlada de filas.**
+
+1. Inserta registros ficticios. 2. Actualiza un atributo mediante condición por clave. 3. Elimina una fila solo dentro de una transacción de laboratorio. 4. Verifica filas afectadas antes y después.
+
+**Evidencia esperada.** Cada operación modifica únicamente el conjunto esperado y se documenta el número de filas afectadas.
+
+**Seguridad y límites.** No ejecutar UPDATE o DELETE sin WHERE en datos persistentes; revisar el objetivo antes de confirmar.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.4.3 — DQL
 
@@ -870,6 +890,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué diferencia conceptual existe entre seleccionar columnas y filtrar filas?
 
+**Laboratorio de profundización — Consultas de lectura reproducibles.**
+
+1. Construye SELECT con columnas explícitas. 2. Añade filtro y orden. 3. Compara SELECT * con proyección de columnas. 4. Explica cómo paginar resultados de gran tamaño.
+
+**Evidencia esperada.** La consulta devuelve columnas y filas esperadas y no depende del orden implícito.
+
+**Seguridad y límites.** No extraer datos personales innecesarios ni realizar consultas sin límite sobre tablas grandes.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.4.4 — DCL
 
 **Propósito y modelo.** DCL agrupa sentencias de control de acceso, como GRANT y REVOKE en muchos DBMS. El alcance puede ser global, base, esquema, tabla, columna o función. La sintaxis y privilegios disponibles varían; deben probarse con cuentas de laboratorio y no con el usuario administrativo de producción.
@@ -885,6 +915,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Conceder ALL PRIVILEGES o WITH GRANT OPTION sin necesidad, o confundir autenticación con autorización.
 
 **Comprobación.** ¿Por qué conviene asignar permisos a roles en vez de replicar grants manuales a cada usuario?
+
+**Laboratorio de profundización — Control de acceso mediante GRANT y REVOKE.**
+
+1. Diseña un rol de solo lectura para una base de laboratorio. 2. Otorga SELECT sobre tablas necesarias. 3. Comprueba permisos efectivos. 4. Revoca un permiso y verifica que ya no esté disponible.
+
+**Evidencia esperada.** El rol recibe privilegios mínimos y el cambio se comprueba con la cuenta de prueba.
+
+**Seguridad y límites.** No conceder privilegios globales ni administrar cuentas reales sin autorización.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.4.5 — TCL
 
@@ -902,6 +942,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué riesgo evita agrupar el débito y crédito en una misma transacción?
 
+**Laboratorio de profundización — Control transaccional.**
+
+1. Abre una transacción. 2. Realiza dos cambios de laboratorio relacionados. 3. Comprueba estado intermedio en una sesión. 4. Ejecuta COMMIT o ROLLBACK según escenario y compara resultados.
+
+**Evidencia esperada.** Se explica qué cambios quedan persistidos y cuáles se descartan y se reconoce dependencia del motor/tabla.
+
+**Seguridad y límites.** No mantener transacciones abiertas prolongadamente ni probar sobre datos productivos.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.4.6 — CREATE
 
 **Propósito y modelo.** CREATE define objetos como bases de datos, tablas, vistas, índices, roles y otros elementos. Cada objeto tiene sintaxis, permisos y ciclo de vida propios. Antes de crear, comprueba esquema destino, nombre, dependencias, restricciones y convenciones.
@@ -917,6 +967,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Ejecutar CREATE en el esquema incorrecto o crear índices sin una consulta objetivo.
 
 **Comprobación.** ¿Qué verificaciones previas evitan crear accidentalmente un objeto en la base equivocada?
+
+**Laboratorio de profundización — Creación de objetos con DDL.**
+
+1. Crea una tabla con tipos, PK y restricciones. 2. Consulta catálogo o SHOW CREATE TABLE. 3. Crea un índice justificado por una consulta prevista. 4. Documenta dependencias del objeto.
+
+**Evidencia esperada.** El objeto se crea con estructura prevista y puede inspeccionarse desde metadatos.
+
+**Seguridad y límites.** Evitar nombres reservados y ejecutar CREATE en un esquema aislado.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.4.7 — ALTER
 
@@ -934,6 +994,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué una migración de esquema debe coordinarse con las versiones de la aplicación que escriben datos?
 
+**Laboratorio de profundización — Evolución compatible de esquema.**
+
+1. Añade una columna nullable a una tabla de laboratorio. 2. Define cómo rellenar registros existentes. 3. Evalúa cambio a NOT NULL tras validar datos. 4. Describe compatibilidad con versiones de aplicación durante despliegue.
+
+**Evidencia esperada.** La migración tiene pasos, validaciones y plan de reversión o compensación.
+
+**Seguridad y límites.** No ejecutar ALTER en tablas grandes sin evaluar bloqueo, tiempo y comportamiento del motor.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.4.8 — DROP
 
 **Propósito y modelo.** DROP elimina objetos de base de datos. DROP TABLE elimina definición y datos de la tabla; DROP DATABASE puede eliminar todo el contenedor lógico. La reversibilidad depende de respaldos, motor y operación; no debe ejecutarse sin verificar objeto, entorno y autorización.
@@ -949,6 +1019,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Usar DROP por error en lugar de DELETE o ejecutar comandos destructivos en una conexión cuyo entorno no se verificó.
 
 **Comprobación.** ¿Qué información debe confirmarse antes de ejecutar DROP TABLE?
+
+**Laboratorio de profundización — Eliminación segura de objetos.**
+
+1. Identifica diferencias entre DROP TABLE, DROP DATABASE y TRUNCATE. 2. Inspecciona dependencias y respaldos. 3. Diseña un checklist de doble confirmación para un esquema de laboratorio. 4. No ejecutes la eliminación fuera de una base desechable.
+
+**Evidencia esperada.** El checklist identifica objeto exacto, dependencias, respaldo y autorización.
+
+**Seguridad y límites.** DROP es destructivo. No incluir sentencias ejecutables de borrado sobre nombres reales ni usar privilegios elevados sin necesidad.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.4.9 — SELECT
 
@@ -966,6 +1046,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué `columna = NULL` no es la forma correcta de buscar valores nulos?
 
+**Laboratorio de profundización — Proyección, filtros y orden determinista.**
+
+1. Consulta columnas explícitas. 2. Combina WHERE y ORDER BY. 3. Añade una clave única como desempate para orden estable. 4. Explica diferencia entre filtrar filas y seleccionar columnas.
+
+**Evidencia esperada.** La consulta es reproducible y devuelve solo las columnas necesarias en orden determinista.
+
+**Seguridad y límites.** No seleccionar columnas sensibles ni depender del orden natural de almacenamiento.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.4.10 — INSERT
 
 **Propósito y modelo.** INSERT agrega filas y debe respetar tipos, claves, restricciones y valores obligatorios. Es recomendable declarar explícitamente columnas para evitar dependencia del orden físico del esquema. Inserciones masivas deben validar duplicados, integridad y tamaño de transacción.
@@ -981,6 +1071,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Omitir columnas y confiar en orden implícito, concatenar datos de usuario en SQL o ignorar errores de integridad.
 
 **Comprobación.** ¿Qué riesgo reduce indicar explícitamente la lista de columnas en INSERT?
+
+**Laboratorio de profundización — Inserción y validación de registros.**
+
+1. Inserta una fila con lista explícita de columnas. 2. Inserta varias filas ficticias. 3. Prueba una restricción UNIQUE o FK. 4. Comprueba valores por defecto y filas afectadas.
+
+**Evidencia esperada.** La inserción respeta tipos y restricciones y los errores esperados se explican.
+
+**Seguridad y límites.** No concatenar valores de usuario en SQL; utilizar parámetros preparados desde aplicaciones.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.4.11 — UPDATE
 
@@ -998,6 +1098,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué paso permite detectar que un UPDATE afectará más filas de las previstas?
 
+**Laboratorio de profundización — Actualización acotada y verificable.**
+
+1. Ejecuta primero un SELECT con el mismo WHERE. 2. Actualiza un registro de laboratorio por PK. 3. Comprueba ROW_COUNT o equivalente. 4. Verifica valor posterior y plan de reversión.
+
+**Evidencia esperada.** El conjunto afectado coincide con la previsualización y el cambio queda documentado.
+
+**Seguridad y límites.** Nunca actualizar sin validar WHERE y número esperado de filas.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.4.12 — DELETE
 
 **Propósito y modelo.** DELETE elimina filas que cumplen una condición y puede participar en transacciones según motor/tabla. Sin WHERE elimina todas las filas de la tabla, aunque conserva su estructura. Las claves foráneas pueden restringir o propagar eliminación según ON DELETE.
@@ -1013,6 +1123,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Ejecutar DELETE sin filtro, asumir que rollback siempre está disponible o borrar datos históricos requeridos.
 
 **Comprobación.** ¿Por qué un SELECT con la misma condición debe preceder a un DELETE de alcance amplio?
+
+**Laboratorio de profundización — Eliminación de filas con control.**
+
+1. Selecciona filas candidatas mediante SELECT. 2. Abre una transacción en laboratorio. 3. Elimina solo por clave y verifica filas afectadas. 4. Revierte y repite confirmando únicamente en dataset desechable.
+
+**Evidencia esperada.** La selección previa y el resultado posterior coinciden con el objetivo y se demuestra rollback.
+
+**Seguridad y límites.** No borrar datos de producción; evaluar FK y cascadas antes de eliminar.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.4.13 — WHERE
 
@@ -1030,6 +1150,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué cambia al agrupar una condición OR entre paréntesis dentro de una expresión AND?
 
+**Laboratorio de profundización — Predicados y lógica booleana.**
+
+1. Construye filtros con AND, OR y NOT. 2. Añade paréntesis para expresar precedencia. 3. Prueba comparaciones con NULL usando IS NULL. 4. Evalúa BETWEEN, IN y LIKE con datos sintéticos.
+
+**Evidencia esperada.** Los predicados seleccionan el conjunto esperado y el tratamiento de NULL es correcto.
+
+**Seguridad y límites.** No construir filtros mediante concatenación de entrada no confiable.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.4.14 — ORDER BY
 
 **Propósito y modelo.** ORDER BY define el orden del resultado por una o varias expresiones, con dirección ASC o DESC. Sin ORDER BY el motor puede devolver filas en cualquier orden. El tratamiento de NULL, collation y empates puede variar por motor.
@@ -1045,6 +1175,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Suponer orden de inserción o paginar sin orden determinista.
 
 **Comprobación.** ¿Por qué conviene incluir una clave única como último criterio de orden al paginar?
+
+**Laboratorio de profundización — Ordenamiento y paginación estable.**
+
+1. Ordena por fecha y luego por clave única. 2. Compara ASC y DESC. 3. Explica comportamiento de NULL dependiente del motor. 4. Diseña paginación por cursor o clave para grandes conjuntos.
+
+**Evidencia esperada.** El orden es determinista y la paginación no repite ni omite filas en el escenario definido.
+
+**Seguridad y límites.** No asumir que el orden de una consulta sin ORDER BY es estable.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.4.15 — GROUP BY
 
@@ -1062,6 +1202,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué representa cada fila del resultado después de un GROUP BY?
 
+**Laboratorio de profundización — Agregación por dimensión.**
+
+1. Agrupa ventas por cliente o mes. 2. Utiliza COUNT, SUM y AVG. 3. Comprueba que cada columna no agregada cumple las reglas del motor. 4. Contrasta resultados con cálculo manual de un dataset pequeño.
+
+**Evidencia esperada.** Los totales coinciden con el dataset y la consulta aplica correctamente agrupación.
+
+**Seguridad y límites.** No utilizar resultados agregados como sustituto de controles de integridad ni incluir datos personales innecesarios.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.4.16 — HAVING
 
 **Propósito y modelo.** HAVING filtra grupos después de la agregación; WHERE filtra filas antes de agrupar. Las condiciones de HAVING suelen utilizar agregados como COUNT o SUM. La ubicación de cada filtro afecta semántica y rendimiento.
@@ -1077,6 +1227,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Usar HAVING para todos los filtros o confundir COUNT de filas con COUNT de valores no nulos.
 
 **Comprobación.** ¿Por qué un filtro de fecha suele aplicarse antes de agrupar y un umbral de COUNT después?
+
+**Laboratorio de profundización — Filtrado de grupos.**
+
+1. Construye GROUP BY por cliente. 2. Usa HAVING para seleccionar grupos cuyo total supere un umbral ficticio. 3. Compara con WHERE y explica en qué etapa actúa cada uno. 4. Verifica los grupos resultantes.
+
+**Evidencia esperada.** Se distingue filtrado de filas antes de agrupar y filtrado de grupos después de agregar.
+
+**Seguridad y límites.** No usar HAVING para sustituir WHERE cuando el predicado aplica a filas individuales.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.4.17 — JOIN
 
@@ -1094,6 +1254,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué filas conserva LEFT JOIN que INNER JOIN descarta?
 
+**Laboratorio de profundización — Unión de relaciones y cardinalidad.**
+
+1. Relaciona Cliente, Pedido y LíneaPedido mediante claves. 2. Compara INNER, LEFT y RIGHT JOIN. 3. Detecta duplicación por relaciones uno-a-muchos. 4. Verifica resultados con conteos esperados.
+
+**Evidencia esperada.** Las uniones utilizan claves correctas y se explica la multiplicación de filas según cardinalidad.
+
+**Seguridad y límites.** Evitar joins sin condición y no asumir que una salida duplicada siempre indica datos duplicados.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.4.18 — Subqueries
 
 **Propósito y modelo.** Una subconsulta es una consulta anidada utilizada como expresión, fuente de filas o condición. Puede ser escalar, de varias filas, correlacionada o no correlacionada. IN, EXISTS y comparaciones deben elegirse considerando NULL, cardinalidad y optimizador.
@@ -1109,6 +1279,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Ignorar NULL en NOT IN o utilizar subconsultas correlacionadas sin revisar costo.
 
 **Comprobación.** ¿Por qué NOT EXISTS puede ser más seguro que NOT IN cuando la subconsulta puede devolver NULL?
+
+**Laboratorio de profundización — Subconsultas escalares y correlacionadas.**
+
+1. Escribe una subconsulta que devuelva un valor agregado. 2. Compara IN y EXISTS. 3. Diseña una subconsulta correlacionada para clientes con pedidos. 4. Explica tratamiento de NULL y planes de ejecución.
+
+**Evidencia esperada.** La subconsulta devuelve cardinalidad esperada y se explica relación con la consulta externa.
+
+**Seguridad y límites.** No asumir que toda subconsulta se ejecuta literalmente una vez por fila; revisar optimizador y plan.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.4.19 — CTE
 
@@ -1128,6 +1308,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 ### 9.5 — Diseño y normalización
 
+
+**Laboratorio de profundización — Consultas legibles mediante WITH.**
+
+1. Reescribe una subconsulta como CTE. 2. Divide una consulta compleja en etapas nombradas. 3. Compara resultado y plan con la versión original. 4. Identifica cuándo una CTE recursiva sería pertinente.
+
+**Evidencia esperada.** La consulta es semánticamente equivalente y mejora legibilidad sin afirmar rendimiento superior sin medir.
+
+**Seguridad y límites.** La materialización y optimización de CTE varían por motor y versión; comprobar documentación y EXPLAIN.
+
+**Registro sugerido.** Guarda motor y versión, esquema desechable, SQL utilizado, filas afectadas, resultados y plan de ejecución cuando aplique. No marques la práctica como ejecutada sin evidencia real.
 #### 9.5.1 — Primera forma normal (1NF)
 
 **Propósito y modelo.** La primera forma normal exige que cada atributo almacene un valor atómico respecto del dominio definido y que no se representen grupos repetitivos en una misma fila. «Atómico» depende del uso: un nombre completo puede ser texto si no se consulta por partes; si se requiere buscar apellido, conviene separar componentes.
