@@ -43,161 +43,161 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 #### 10.1.1 — Qué es NoSQL
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+NoSQL agrupa familias de gestores no relacionales o no exclusivamente relacionales, diseñados para modelos de datos y patrones de acceso diversos. No significa ausencia de consultas ni de esquemas. **Práctica:** describe una aplicación con datos transaccionales y documentos flexibles. **Evidencia:** identifica qué requisito justificaría evaluar un motor NoSQL.
 
 #### 10.1.2 — Diferencias SQL vs. NoSQL
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+La comparación SQL/NoSQL no es una oposición absoluta: contrasta modelo, consistencia, consultas, transacciones, escalado, operación y madurez del ecosistema. **Práctica:** compara MySQL, MongoDB y Redis para tres cargas concretas. **Evidencia:** presenta una matriz de requisitos y justifica por qué no elegirías un motor solo por popularidad.
 
 #### 10.1.3 — Modelos de almacenamiento
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Las familias habituales incluyen documentos, clave-valor, columnas anchas, grafos y series temporales; cada una optimiza patrones de acceso distintos. **Práctica:** asigna catálogo de productos, caché, relaciones sociales y métricas a una familia candidata. **Evidencia:** explica estructura, consulta dominante y limitación de cada elección.
 
 #### 10.1.4 — Consistencia
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Consistencia describe qué valores observan las lecturas después de escrituras concurrentes o distribuidas; puede variar por operación, réplica y configuración. **Práctica:** dibuja una escritura y una lectura sobre nodo primario y réplica con retraso. **Evidencia:** distingue consistencia fuerte, eventual y garantías configurables sin asumir que todo NoSQL es eventual.
 
 #### 10.1.5 — Disponibilidad
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Disponibilidad se refiere a la capacidad de responder solicitudes, incluso ante fallos parciales, pero una respuesta disponible puede tener datos desactualizados o rechazar escrituras. **Práctica:** analiza un escenario donde se pierde comunicación con una réplica. **Evidencia:** define qué operación priorizarías y qué degradación aceptarías.
 
 #### 10.1.6 — Escalabilidad
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+La escalabilidad puede ser vertical (más recursos en un nodo) u horizontal (más nodos y distribución de datos/trabajo). Ambas tienen límites y costes operativos. **Práctica:** estima qué ocurre al duplicar lecturas, escrituras y tamaño de datos en un sistema. **Evidencia:** propone una estrategia y señala el cuello de botella que debe medirse.
 
 #### 10.1.7 — CAP Theorem
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+El teorema CAP trata el compromiso entre consistencia y disponibilidad durante una partición de red en un sistema distribuido; no significa que cualquier base de datos solo pueda elegir dos propiedades en todo momento. **Práctica:** analiza un clúster dividido en dos grupos que no pueden comunicarse. **Evidencia:** describe la decisión de cada lado y cuándo se rechazaría una operación.
 
 #### 10.1.8 — Denormalización
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+La denormalización introduce duplicación o estructuras precalculadas para optimizar lecturas, a cambio de complejidad de actualización y riesgo de divergencia. **Práctica:** modela un pedido con datos del cliente embebidos como snapshot. **Evidencia:** identifica qué dato se copia, cuándo se actualiza y qué fuente es autoritativa.
 
 ### 10.2 — MongoDB
 
 #### 10.2.1 — Documentos
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+En MongoDB, un documento es una estructura BSON con campos y valores anidados; su diseño debe responder a las consultas y límites del dominio. **Práctica:** modela un documento de producto con atributos y variantes. **Evidencia:** identifica campos obligatorios, opcionales y reglas de validación.
 
 #### 10.2.2 — Colecciones
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Una colección agrupa documentos y puede aplicar validación y opciones de índices; no exige que todos los documentos tengan exactamente los mismos campos. **Práctica:** crea una colección de productos en una instancia local y consulta su listado. **Evidencia:** explica la diferencia entre colección y documento.
 
 #### 10.2.3 — BSON
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+BSON es una representación binaria de documentos con tipos adicionales a JSON, como fechas y datos binarios. **Práctica:** compara la representación conceptual de una fecha y un número decimal en JSON y BSON. **Evidencia:** explica por qué los tipos BSON importan al serializar y consultar.
 
 #### 10.2.4 — JSON
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+JSON es un formato textual de intercambio con objetos, arrays, cadenas, números, booleanos y null; no conserva por sí solo tipos de fecha ni binarios específicos. **Práctica:** valida un documento JSON de producto y detecta comas, comillas o tipos inválidos. **Evidencia:** entrega JSON válido y explica qué valores requieren convención adicional.
 
 #### 10.2.5 — CRUD
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+CRUD resume Create, Read, Update y Delete, operaciones fundamentales de persistencia. **Práctica:** en una base local de laboratorio inserta un documento, léelo, actualiza un campo y elimínalo. **Evidencia:** registra filtros, cantidad afectada y estado después de cada operación.
 
 #### 10.2.6 — Queries
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Una query expresa qué documentos recuperar y qué proyección o transformación aplicar. **Práctica:** consulta productos por categoría y proyecta solo nombre y precio. **Evidencia:** explica el filtro y por qué limitar campos puede reducir transferencia.
 
 #### 10.2.7 — Filters
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Los filtros combinan condiciones de igualdad, rangos, existencia, arrays y operadores lógicos. **Práctica:** construye una consulta con categoría y rango de precio, y otra con `$and`/`$or`. **Evidencia:** describe qué documentos coinciden y prueba casos límite.
 
 #### 10.2.8 — Indexes
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Los índices aceleran consultas al mantener estructuras auxiliares, pero consumen espacio y encarecen escrituras. **Práctica:** crea un índice sobre un campo de consulta frecuente y examina el plan con `explain`. **Evidencia:** compara antes/después y explica selectividad y coste.
 
 #### 10.2.9 — Aggregation Pipeline
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Aggregation Pipeline procesa documentos mediante etapas como `$match`, `$project`, `$group`, `$sort` y `$limit`. **Práctica:** agrupa ventas por categoría y calcula suma y cantidad. **Evidencia:** explica el orden de etapas y cómo el filtrado temprano puede reducir trabajo.
 
 #### 10.2.10 — Relationships
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Las relaciones entre documentos pueden representarse mediante embedding o referencias; la decisión depende de cardinalidad, frecuencia de lectura y ciclo de vida. **Práctica:** modela cliente-pedidos y explica si cada pedido debe embebirse o almacenarse aparte. **Evidencia:** justifica la estrategia con consultas esperadas.
 
 #### 10.2.11 — Embedding
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Embedding almacena datos relacionados dentro del mismo documento y favorece lecturas atómicas de un agregado, pero puede duplicar datos y acercarse a límites de tamaño. **Práctica:** embebe direcciones de entrega dentro de un pedido. **Evidencia:** identifica qué ocurre si la dirección maestra del cliente cambia.
 
 #### 10.2.12 — Referencing
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Referencing guarda identificadores de otros documentos y permite relaciones independientes, a costa de consultas adicionales o joins mediante agregación. **Práctica:** separa clientes y pedidos y recupera pedidos de un cliente por referencia. **Evidencia:** compara consistencia de actualización y número de consultas frente a embedding.
 
 #### 10.2.13 — Replication
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+La replicación mantiene copias de datos en varios nodos para tolerancia a fallos y continuidad; puede introducir retraso y decisiones de elección de primario. **Práctica:** dibuja un replica set con primario y secundarios. **Evidencia:** explica elección, lectura desde réplica y posible lectura desactualizada.
 
 #### 10.2.14 — Sharding
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Sharding distribuye documentos entre shards mediante una clave de partición; una mala elección puede crear hotspots o consultas dispersas. **Práctica:** evalúa claves candidatas para distribuir pedidos por cliente o fecha. **Evidencia:** analiza cardinalidad, monotonía, distribución y patrón de consulta.
 
 ### 10.3 — Redis
 
 #### 10.3.1 — Key-value
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Un almacén key-value asocia claves únicas con valores y optimiza acceso directo por clave; el valor puede ser opaco para el servidor. **Práctica:** diseña claves con prefijos por dominio para sesiones y caché. **Evidencia:** define convención, expiración y estrategia para evitar colisiones.
 
 #### 10.3.2 — Strings
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Redis Strings almacenan cadenas o secuencias binarias y admiten operaciones como SET, GET e incrementos atómicos sobre valores numéricos. **Práctica:** guarda un contador de laboratorio con `SET`, `GET` e `INCR`. **Evidencia:** explica atomicidad de INCR y por qué no equivale a leer, sumar y escribir desde el cliente.
 
 #### 10.3.3 — Lists
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Redis Lists mantienen secuencias ordenadas con operaciones en extremos, útiles para colas simples o historiales acotados. **Práctica:** usa LPUSH, RPUSH, LRANGE y LPOP en una lista de tareas ficticias. **Evidencia:** dibuja el orden después de cada operación y distingue cola y pila.
 
 #### 10.3.4 — Sets
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Redis Sets almacenan miembros únicos sin orden garantizado y ofrecen operaciones de unión, intersección y diferencia. **Práctica:** crea conjuntos de etiquetas para dos productos y calcula elementos comunes. **Evidencia:** explica cómo se elimina duplicación y cuándo el orden no debe asumirse.
 
 #### 10.3.5 — Hashes
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Redis Hashes almacenan pares campo-valor dentro de una clave, adecuados para representar atributos de una entidad pequeña. **Práctica:** crea un hash de perfil de prueba con HSET y consulta campos con HGET/HGETALL. **Evidencia:** explica por qué un hash no sustituye automáticamente una base relacional.
 
 #### 10.3.6 — Sorted Sets
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Sorted Sets asocian miembros únicos con puntuaciones numéricas y permiten consultas por rango o ranking. **Práctica:** registra puntuaciones de jugadores ficticios y consulta el top con ZREVRANGE o equivalente de la versión. **Evidencia:** explica desempates y por qué la puntuación no garantiza unicidad.
 
 #### 10.3.7 — TTL
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+TTL define cuánto tiempo permanece una clave antes de expirar; es útil para cachés y datos temporales, no para registros que requieren retención permanente. **Práctica:** crea una clave con expiración breve y consulta TTL y existencia. **Evidencia:** registra el tiempo restante y explica la diferencia entre expiración y borrado manual.
 
 #### 10.3.8 — Cache
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Una caché conserva temporalmente resultados para reducir latencia y carga, pero introduce invalidación, obsolescencia y límites de memoria. **Práctica:** diseña cache-aside para una ficha de producto. **Evidencia:** describe hit, miss, TTL e invalidación tras actualizar el producto.
 
 #### 10.3.9 — Sessions
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Una sesión mantiene estado temporal asociado a un usuario o cliente entre solicitudes; el identificador debe ser impredecible y protegido. **Práctica:** diseña una clave de sesión sin almacenar contraseñas ni datos sensibles en texto claro. **Evidencia:** define expiración, renovación y revocación.
 
 #### 10.3.10 — Pub/Sub
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Pub/Sub permite publicar mensajes a canales y distribuirlos a suscriptores conectados; no debe asumirse persistencia o entrega a clientes desconectados. **Práctica:** publica eventos sintéticos en un canal y suscríbete desde dos terminales de laboratorio. **Evidencia:** describe qué ocurre si un suscriptor se desconecta.
 
 #### 10.3.11 — Rate Limiting
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Rate limiting limita solicitudes por identidad, token o recurso para reducir abuso y proteger capacidad. Redis puede apoyar contadores con expiración, pero la estrategia debe considerar concurrencia y múltiples nodos. **Práctica:** diseña un límite de cinco solicitudes por minuto con ventana definida. **Evidencia:** describe clave, contador, expiración y respuesta al exceder el límite.
 
 ### 10.4 — Otras arquitecturas de almacenamiento
 
 #### 10.4.1 — Document databases
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Las bases documentales almacenan registros flexibles como documentos y facilitan consultas sobre campos y estructuras anidadas. **Práctica:** compara el modelo de un catálogo de productos en MongoDB y relacional. **Evidencia:** identifica consultas favorecidas y riesgos de duplicación.
 
 #### 10.4.2 — Key-value databases
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Las bases key-value optimizan acceso por clave y suelen ofrecer operaciones simples de baja latencia; su consulta por atributos internos puede ser limitada. **Práctica:** modela tokens temporales o caché de configuración con claves explícitas. **Evidencia:** define ciclo de vida, colisiones y estrategia de expiración.
 
 #### 10.4.3 — Column-family databases
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Las bases de columnas anchas organizan datos por familias de columnas y se diseñan alrededor de consultas y particiones distribuidas. **Práctica:** diseña una clave de partición y clustering para eventos por dispositivo y tiempo. **Evidencia:** explica riesgo de particiones calientes y consultas que requieren escaneo.
 
 #### 10.4.4 — Graph databases
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Las bases de grafos representan entidades como nodos y relaciones como aristas, con propiedades asociadas. Son útiles para recorridos de relaciones, no para cualquier dato conectado. **Práctica:** modela usuarios, dispositivos y conexiones sospechosas como grafo. **Evidencia:** formula una consulta de dos saltos y explica su utilidad analítica.
 
 #### 10.4.5 — Time-series databases
 
-Estudia el concepto, sus operaciones principales, límites y criterios de selección dentro del proyecto híbrido.
+Las bases de series temporales optimizan datos ordenados por tiempo, etiquetas, retención y agregaciones por ventana. **Práctica:** diseña un esquema para métricas de CPU por host y minuto. **Evidencia:** define timestamp, etiquetas, política de retención y consulta de promedio por intervalo.
 
 ## Resultados de aprendizaje
 
