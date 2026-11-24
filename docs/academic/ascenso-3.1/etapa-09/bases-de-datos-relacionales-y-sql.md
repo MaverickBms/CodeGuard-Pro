@@ -602,6 +602,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué controles deben verificarse después de instalar MySQL y antes de permitir conexiones de aplicación?
 
+**Laboratorio de profundización — Preparación reproducible del motor.**
+
+1. Identifica versión soportada y sistema operativo de laboratorio. 2. Consulta documentación oficial del instalador y requisitos. 3. Define memoria, almacenamiento, puerto y usuario de servicio. 4. Planifica verificación de instalación y desinstalación.
+
+**Evidencia esperada.** El plan identifica versión, origen, requisitos, servicios y procedimiento de reversión.
+
+**Seguridad y límites.** No instalar desde paquetes no confiables ni exponer el puerto del servidor a redes externas.
+
+**Registro sugerido.** Registra versión de MySQL, sistema operativo, sentencias ejecutadas, identidad usada, resultado y códigos/mensajes relevantes sin revelar credenciales. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.3.2 — Configuración
 
 **Propósito y modelo.** MySQL se configura mediante archivos de opciones y parámetros del servidor. Los valores afectan memoria, conexiones, logs, charset, autenticación, rutas y red. Las opciones disponibles y valores por defecto dependen de versión y distribución; deben verificarse con documentación correspondiente.
@@ -617,6 +627,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Copiar my.cnf de otra versión, asignar memoria excesiva o abrir bind-address a todas las interfaces sin firewall.
 
 **Comprobación.** ¿Por qué un parámetro que mejora una carga puede perjudicar otra?
+
+**Laboratorio de profundización — Revisión de configuración inicial.**
+
+1. Identifica archivo de configuración y opciones activas de MySQL. 2. Registra bind address, puerto, charset, collation y directorio de datos. 3. Explica cuáles requieren reinicio. 4. Diseña un cambio con respaldo y rollback sin aplicarlo en producción.
+
+**Evidencia esperada.** La ficha diferencia configuración de servidor y cliente y reconoce opciones dependientes de versión.
+
+**Seguridad y límites.** No modificar bind-address ni parámetros de seguridad sin evaluar exposición e impacto.
+
+**Registro sugerido.** Registra versión de MySQL, sistema operativo, sentencias ejecutadas, identidad usada, resultado y códigos/mensajes relevantes sin revelar credenciales. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.3.3 — MySQL Workbench
 
@@ -634,6 +654,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué componente debe estar disponible para que Workbench ejecute una consulta SQL?
 
+**Laboratorio de profundización — Conexión segura desde Workbench.**
+
+1. Crea un perfil de conexión hacia una instancia local de laboratorio. 2. Identifica host, puerto, usuario y método de autenticación. 3. Comprueba que la cuenta tenga privilegios mínimos. 4. Compara ejecutar una consulta con observar el servidor.
+
+**Evidencia esperada.** Se distingue la herramienta cliente del motor y la conexión utiliza una cuenta limitada.
+
+**Seguridad y límites.** No guardar contraseñas en archivos compartidos ni usar root para consultas rutinarias.
+
+**Registro sugerido.** Registra versión de MySQL, sistema operativo, sentencias ejecutadas, identidad usada, resultado y códigos/mensajes relevantes sin revelar credenciales. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.3.4 — Creación de bases de datos
 
 **Propósito y modelo.** CREATE DATABASE crea un contenedor lógico dentro de la instancia MySQL. Charset y collation definen comportamiento de almacenamiento y comparación de texto; deben elegirse según idioma, compatibilidad y requisitos. El nombre debe seguir convenciones y evitar colisiones.
@@ -649,6 +679,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Usar charset heredado sin revisar compatibilidad o ejecutar DROP DATABASE sin confirmar nombre y respaldo.
 
 **Comprobación.** ¿Qué diferencia existe entre charset y collation?
+
+**Laboratorio de profundización — Creación de esquema con opciones explícitas.**
+
+1. Diseña una base de datos `ventas_lab`. 2. Define charset y collation compatibles con requisitos de idioma. 3. Crea el esquema en laboratorio. 4. Verifica su existencia mediante catálogo del motor.
+
+**Evidencia esperada.** El esquema se crea con nombre y configuración documentados y no afecta bases ajenas.
+
+**Seguridad y límites.** No ejecutar DROP sobre bases existentes ni reutilizar nombres de producción.
+
+**Registro sugerido.** Registra versión de MySQL, sistema operativo, sentencias ejecutadas, identidad usada, resultado y códigos/mensajes relevantes sin revelar credenciales. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.3.5 — Creación de tablas
 
@@ -666,6 +706,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Por qué una clave foránea debe definirse además de documentar la relación en un diagrama?
 
+**Laboratorio de profundización — DDL con claves y restricciones.**
+
+1. Define tablas Cliente, Producto y Pedido. 2. Elige tipos, PK, FK, NOT NULL, UNIQUE y CHECK cuando aplique. 3. Crea las tablas en orden de dependencias. 4. Consulta metadatos para verificar columnas e índices.
+
+**Evidencia esperada.** El DDL implementa el modelo lógico y las restricciones se comprueban con casos válidos e inválidos.
+
+**Seguridad y límites.** Usar entorno desechable y revisar scripts antes de ejecutar sentencias destructivas.
+
+**Registro sugerido.** Registra versión de MySQL, sistema operativo, sentencias ejecutadas, identidad usada, resultado y códigos/mensajes relevantes sin revelar credenciales. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.3.6 — Usuarios
 
 **Propósito y modelo.** MySQL distingue cuentas por nombre de usuario y host de origen, representadas como 'usuario'@'host'. Una misma etiqueta de usuario con hosts distintos puede representar cuentas diferentes. La autenticación y los plugins disponibles dependen de versión; las aplicaciones deben usar cuentas nominativas y no root.
@@ -681,6 +731,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Compartir root con la aplicación o usar 'usuario'@'%' por comodidad sin restricciones de red.
 
 **Comprobación.** ¿Por qué el componente host forma parte de la identidad de una cuenta MySQL?
+
+**Laboratorio de profundización — Cuentas individuales y ciclo de vida.**
+
+1. Crea una cuenta de aplicación en laboratorio con nombre específico. 2. Define origen de conexión permitido. 3. Documenta propietario, finalidad y caducidad. 4. Diseña rotación y revocación de credenciales.
+
+**Evidencia esperada.** La cuenta no es compartida y su propósito y ciclo de vida están documentados.
+
+**Seguridad y límites.** No reutilizar root ni incluir contraseñas en SQL versionado o capturas.
+
+**Registro sugerido.** Registra versión de MySQL, sistema operativo, sentencias ejecutadas, identidad usada, resultado y códigos/mensajes relevantes sin revelar credenciales. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.3.7 — Permisos
 
@@ -698,6 +758,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 **Comprobación.** ¿Qué daño puede causar una cuenta de aplicación que posee privilegios administrativos globales?
 
+**Laboratorio de profundización — Matriz de privilegios MySQL.**
+
+1. Define permisos requeridos por lector, escritor y operador. 2. Asigna privilegios a nivel de esquema o tabla según necesidad. 3. Consulta `SHOW GRANTS`. 4. Prueba una operación permitida y otra denegada con cuentas distintas.
+
+**Evidencia esperada.** Los grants son mínimos, explícitos y se verifican con la identidad correspondiente.
+
+**Seguridad y límites.** No conceder ALL PRIVILEGES global ni GRANT OPTION salvo justificación formal.
+
+**Registro sugerido.** Registra versión de MySQL, sistema operativo, sentencias ejecutadas, identidad usada, resultado y códigos/mensajes relevantes sin revelar credenciales. No marques la práctica como ejecutada sin evidencia real.
+
 #### 9.3.8 — Conexiones
 
 **Propósito y modelo.** Una conexión MySQL utiliza protocolo cliente-servidor sobre transporte configurado, habitualmente TCP. Host, puerto, usuario, autenticación, TLS y reglas de red determinan si la sesión puede establecerse. El puerto por defecto habitual es 3306, pero puede cambiarse.
@@ -713,6 +783,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 **Errores frecuentes.** Resolver cualquier error abriendo el firewall a todos los orígenes o utilizar credenciales administrativas desde aplicaciones.
 
 **Comprobación.** ¿Qué diferencia existe entre «connection refused» y «access denied»?
+
+**Laboratorio de profundización — Diagnóstico de conexión cliente-servidor.**
+
+1. Verifica proceso servidor, interfaz de escucha y puerto local. 2. Comprueba resolución de nombre y conectividad desde cliente de laboratorio. 3. Distingue fallo de red, autenticación, TLS y permisos. 4. Registra mensajes sin secretos.
+
+**Evidencia esperada.** El diagnóstico sigue capas y determina si el fallo ocurre antes o después de autenticar.
+
+**Seguridad y límites.** No abrir el servicio a 0.0.0.0 como prueba rápida ni desactivar TLS o firewall.
+
+**Registro sugerido.** Registra versión de MySQL, sistema operativo, sentencias ejecutadas, identidad usada, resultado y códigos/mensajes relevantes sin revelar credenciales. No marques la práctica como ejecutada sin evidencia real.
 
 #### 9.3.9 — Una distinción importante
 
@@ -732,6 +812,16 @@ La secuencia siguiente desglosa los 81 títulos oficiales en unidades identifica
 
 ### 9.4 — SQL
 
+
+**Laboratorio de profundización — Separación entre servidor, motor y Workbench.**
+
+1. Dibuja MySQL Server como proceso DBMS y Workbench como cliente GUI. 2. Añade un cliente CLI y un driver de aplicación. 3. Describe qué componente persiste datos, ejecuta SQL y presenta resultados. 4. Analiza qué sigue funcionando si Workbench se cierra.
+
+**Evidencia esperada.** El diagrama asigna correctamente responsabilidades y demuestra que Workbench no almacena ni sustituye la base de datos.
+
+**Seguridad y límites.** No presentar Workbench como el motor ni confundir una conexión guardada con una instancia ejecutándose.
+
+**Registro sugerido.** Registra versión de MySQL, sistema operativo, sentencias ejecutadas, identidad usada, resultado y códigos/mensajes relevantes sin revelar credenciales. No marques la práctica como ejecutada sin evidencia real.
 #### 9.4.1 — DDL
 
 **Propósito y modelo.** DDL (Data Definition Language) define o modifica estructuras de base de datos: tablas, vistas, índices y otros objetos. CREATE, ALTER y DROP son operaciones DDL comunes. El comportamiento transaccional y bloqueos de DDL varían por motor y versión, por lo que no debe suponerse que toda operación es fácilmente reversible.
