@@ -40,61 +40,195 @@ Podrás explicar las redes por alcance y arquitectura; describir el recorrido de
 
 ### ¿Qué es una red?
 
-Una red conecta dispositivos para intercambiar datos y compartir servicios. Sus componentes pueden incluir interfaces, medios físicos o inalámbricos, switches, routers, puntos de acceso, firewalls y servidores.
+Una red es un conjunto de dispositivos y medios que intercambian datos mediante reglas y protocolos. Su diseño debe considerar alcance, topología, direccionamiento, servicios, controles y requisitos de disponibilidad. Una red puede ser física, inalámbrica, virtual o una combinación.
 
-Una red funcional requiere direccionamiento, mecanismos de entrega, protocolos compatibles y configuración coherente. Que dos equipos estén conectados físicamente no garantiza que puedan comunicarse a nivel IP o aplicación.
+**Práctica guiada:** dibuja dos dispositivos que intercambian datos a través de un switch y etiqueta interfaces, medio y protocolo.
+
+**Criterio de aceptación:** diferencia dispositivos, enlaces y protocolos; explica qué recurso se comparte.
+
+**Comprobación:** ¿qué elementos mínimos permiten que dos dispositivos intercambien información?
 
 ### 8.1.1 — Redes LAN
 
-Una LAN conecta dispositivos dentro de un área limitada y suele administrarse bajo una organización común. **Práctica:** dibuja una LAN doméstica con router, switch, punto de acceso y tres clientes. **Evidencia:** identifica los enlaces y explica qué tráfico permanece dentro de la red local.
+Una LAN conecta dispositivos en un área limitada mediante Ethernet, Wi‑Fi u otros medios. Su diseño considera topología, capacidad, segmentación y administración.
+
+**Práctica guiada:** Dibuja dos clientes conectados a un switch y un router; identifica medio, enlaces y límite de la LAN.
+
+**Actividad independiente:** Diseña una LAN de oficina con una red de invitados separada.
+
+**Criterios de aceptación:** Delimita la LAN y diferencia alcance físico de segmentación lógica.
+
+**Errores frecuentes:** Suponer que toda LAN debe ser cableada o que todos sus hosts comparten necesariamente una subred.
+
+**Comprobación:** ¿Puede una LAN contener varias subredes o VLAN?
 
 ### 8.1.2 — Redes WAN
 
-Una WAN interconecta redes separadas geográficamente mediante enlaces y proveedores de transporte. No es un protocolo específico. **Práctica:** representa dos LAN unidas por una WAN y señala routers de borde. **Evidencia:** explica qué equipo enruta entre sitios y qué dependencia existe del proveedor.
+Una WAN interconecta redes geográficamente separadas mediante servicios de operador o infraestructura propia. Latencia, capacidad, disponibilidad, redundancia y acuerdos de servicio condicionan su diseño.
+
+**Práctica guiada:** Dibuja dos sedes con LAN independientes unidas por una WAN; marca routers de borde y puntos de falla.
+
+**Actividad independiente:** Compara dos opciones de conectividad para una sucursal por costo, latencia, respaldo y dependencia del proveedor.
+
+**Criterios de aceptación:** Explica la interconexión de sedes y enumera criterios de diseño.
+
+**Errores frecuentes:** Confundir WAN con Internet o asumir que el enlace cifra automáticamente el tráfico.
+
+**Comprobación:** ¿Qué controles adicionales necesita una WAN para proteger sus comunicaciones?
 
 ### 8.1.3 — Redes MAN
 
-Una MAN cubre un área metropolitana y puede conectar sedes o redes de una ciudad. La categoría describe alcance, no una tecnología única. **Práctica:** compara una MAN con LAN y WAN en una tabla de alcance, propiedad y latencia esperable. **Evidencia:** justifica la clasificación de tres escenarios.
+Una MAN conecta redes dentro de un área metropolitana, como edificios o campus distribuidos en una ciudad. Es una categoría de alcance, no un protocolo único.
+
+**Práctica guiada:** Representa tres edificios enlazados por fibra metropolitana y separa las LAN de los enlaces MAN.
+
+**Actividad independiente:** Propón requisitos de redundancia, capacidad y seguridad para conectar sedes universitarias.
+
+**Criterios de aceptación:** Diferencia LAN, MAN y WAN por alcance y propósito.
+
+**Errores frecuentes:** Tratar MAN como una tecnología específica en vez de una categoría geográfica.
+
+**Comprobación:** ¿Qué rasgo geográfico distingue una MAN de una LAN?
 
 ### 8.1.4 — Internet
 
-Internet es una red global de redes interconectadas que intercambian tráfico mediante la familia de protocolos IP. La Web es uno de sus servicios, no un sinónimo. **Práctica:** traza conceptualmente la ruta desde un cliente hasta un servidor web. **Evidencia:** distingue proveedor, sistema autónomo, DNS y HTTP en el recorrido.
+Internet es una interconexión global de redes que utilizan IP y acuerdos de intercambio de tráfico. Participan proveedores, sistemas autónomos, BGP, DNS y puntos de intercambio; no existe un único operador que controle toda la red.
+
+**Práctica guiada:** Ejecuta traceroute/tracert hacia un dominio permitido y registra saltos. Un salto sin respuesta no demuestra por sí solo una falla.
+
+**Actividad independiente:** Dibuja cliente–ISP–redes intermedias–servidor y marca fronteras administrativas y posibles controles.
+
+**Criterios de aceptación:** Explica Internet como red de redes y distingue conectividad IP de servicios como la Web.
+
+**Errores frecuentes:** Usar Internet y World Wide Web como sinónimos o asumir que una traza revela siempre la ruta completa.
+
+**Comprobación:** ¿Por qué la Web es un servicio sobre Internet y no un sinónimo de Internet?
 
 ### 8.1.5 — Intranet
 
-Una intranet ofrece servicios privados a miembros de una organización y puede utilizar tecnologías web e IP comunes. Su privacidad depende de controles de identidad, red y aplicación, no del nombre. **Práctica:** diseña un portal interno y define quién puede acceder. **Evidencia:** identifica al menos dos controles de acceso.
+Una intranet ofrece recursos privados a usuarios autorizados de una organización. Puede usar tecnologías de Internet y seguir conectada a redes externas mediante controles de identidad, segmentación y políticas.
+
+**Práctica guiada:** Dibuja portal, DNS interno, autenticación y usuarios; marca las fronteras de confianza.
+
+**Actividad independiente:** Define controles para empleados, contratistas y administradores, incluyendo altas, cambios y bajas de cuentas.
+
+**Criterios de aceptación:** Distingue intranet de Internet y explica los controles de acceso.
+
+**Errores frecuentes:** Asumir que una red privada es segura solo por no ser pública.
+
+**Comprobación:** ¿Qué riesgos persisten en una intranet privada?
 
 ### 8.1.6 — Extranet
 
-Una extranet extiende acceso controlado a determinados recursos internos para terceros, proveedores o socios. Debe aplicar segmentación y privilegio mínimo. **Práctica:** modela una zona de proveedores separada de la red corporativa. **Evidencia:** enumera recursos permitidos y prohibidos y el mecanismo de autenticación.
+Una extranet comparte recursos específicos con terceros autorizados. Debe limitar datos y operaciones al mínimo necesario y aplicar autenticación, autorización, monitoreo y responsabilidades contractuales.
+
+**Práctica guiada:** Dibuja usuarios externos, zona de publicación y sistemas internos protegidos; identifica controles entre zonas.
+
+**Actividad independiente:** Construye una matriz de permisos para clientes y proveedores y un procedimiento de revocación.
+
+**Criterios de aceptación:** Distingue extranet de intranet y aplica mínimo privilegio a terceros.
+
+**Errores frecuentes:** Entregar cuentas compartidas o conectar directamente la red del proveedor a la LAN interna.
+
+**Comprobación:** ¿Por qué la extranet no debe otorgar acceso general a la red corporativa?
 
 ### 8.1.7 — Cliente-servidor
 
-En cliente-servidor, clientes solicitan servicios y servidores procesan solicitudes, mantienen recursos o devuelven respuestas. Un mismo equipo puede desempeñar ambos roles. **Práctica:** identifica cliente, servidor, solicitud y respuesta en una consulta HTTP local. **Evidencia:** dibuja el intercambio y señala dónde se autentica el usuario.
+El cliente solicita un servicio y el servidor procesa y responde. Los roles son lógicos: un servidor web puede actuar como cliente de una base de datos y un equipo puede desempeñar distintos roles simultáneamente.
+
+**Práctica guiada:** Representa una petición HTTP y su respuesta; identifica iniciador, protocolo, puerto y datos.
+
+**Actividad independiente:** Diseña una aplicación de tres capas y define cada comunicación cliente-servidor.
+
+**Criterios de aceptación:** Identifica iniciador, proveedor y límites de confianza.
+
+**Errores frecuentes:** Creer que cliente y servidor siempre son equipos físicos distintos.
+
+**Comprobación:** ¿Puede un servidor ser cliente de otro servicio?
 
 ### 8.1.8 — Peer-to-peer
 
-Peer-to-peer distribuye funciones entre nodos que pueden actuar como clientes y servidores, sin depender necesariamente de un servidor central único. Analiza descubrimiento, confianza y disponibilidad. **Práctica:** compara una arquitectura P2P con cliente-servidor para compartir archivos. **Evidencia:** identifica un beneficio y dos riesgos operativos.
+En P2P los nodos pueden actuar como clientes y servidores entre sí. La coordinación puede ser centralizada o distribuida; la arquitectura exige controles de identidad, integridad y disponibilidad.
+
+**Práctica guiada:** Compara un diagrama centralizado con uno P2P y analiza qué ocurre si un nodo se desconecta.
+
+**Actividad independiente:** Evalúa ventajas y riesgos de distribuir archivos legítimos entre sedes.
+
+**Criterios de aceptación:** Explica el rol dual de los pares y distingue descentralización de ausencia de coordinación.
+
+**Errores frecuentes:** Asumir que P2P es siempre anónimo, seguro o totalmente descentralizado.
+
+**Comprobación:** ¿Qué problemas de confianza aparecen cuando los pares comparten recursos directamente?
 
 ### 8.1.9 — Router
 
-Un router reenvía paquetes entre redes usando una tabla de rutas y decisiones de siguiente salto. Distingue enrutamiento de switching y NAT. **Práctica:** consulta la ruta por defecto de una VM con `ip route`. **Evidencia:** identifica destino, gateway e interfaz de salida.
+Un router reenvía paquetes IP entre redes según su tabla de encaminamiento, prefijos y métricas. Puede ofrecer NAT o filtrado, pero esas funciones no definen el enrutamiento.
+
+**Práctica guiada:** Consulta `ip route` o `route print`; identifica destino, gateway, interfaz y ruta por defecto.
+
+**Actividad independiente:** Diseña tres subredes conectadas por un router e indica rutas necesarias.
+
+**Criterios de aceptación:** Explica el reenvío entre redes y lee una ruta por defecto.
+
+**Errores frecuentes:** Confundir router con switch o asumir que el gateway está siempre disponible.
+
+**Comprobación:** ¿Qué hace el router si el destino no pertenece a una red conectada directamente?
 
 ### 8.1.10 — Switch
 
-Un switch de capa 2 reenvía tramas dentro de una LAN según direcciones MAC aprendidas; los switches multicapa pueden enrutar. **Práctica:** dibuja cómo aprende una tabla MAC tras dos hosts intercambiar tráfico. **Evidencia:** explica flooding inicial y reenvío unicast posterior.
+Un switch de capa 2 aprende MAC de origen y crea una tabla de reenvío. Si desconoce la MAC destino, puede inundar la trama dentro de la VLAN, excepto por el puerto de entrada. Los switches multicapa también pueden enrutar.
+
+**Práctica guiada:** Simula el aprendizaje de dos MAC en cuatro puertos y explica el destino de una trama desconocida.
+
+**Actividad independiente:** Compara hub, switch L2 y router por dominio de colisión, difusión y decisión de reenvío.
+
+**Criterios de aceptación:** Explica aprendizaje MAC y diferencia reenvío L2 de enrutamiento L3.
+
+**Errores frecuentes:** Afirmar que un switch siempre envía cada trama a todos los puertos.
+
+**Comprobación:** ¿Qué información aprende el switch al recibir una trama?
 
 ### 8.1.11 — Firewall
 
-Un firewall aplica reglas para permitir o bloquear tráfico según direcciones, puertos, protocolos, estado o identidad, dependiendo de su tipo. **Práctica:** redacta una política mínima para permitir solo el servicio necesario entre dos segmentos de laboratorio. **Evidencia:** incluye regla, dirección, alcance y justificación.
+Un firewall aplica reglas según origen, destino, protocolo, puerto, dirección y estado de conexión. Puede operar en host o red; su eficacia depende de reglas, ubicación, mantenimiento y monitoreo.
+
+**Práctica guiada:** Analiza reglas ficticias y determina qué tráfico permiten sin cambiar el firewall del equipo.
+
+**Actividad independiente:** Redacta política de entrada para un servidor web con administración restringida y registros.
+
+**Criterios de aceptación:** Interpreta reglas y aplica mínimo privilegio y denegación por defecto cuando corresponda.
+
+**Errores frecuentes:** Considerar el firewall sustituto de autenticación, parcheado o protección de endpoint.
+
+**Comprobación:** ¿Qué diferencia hay entre filtrar tráfico y autenticar a quien lo origina?
 
 ### 8.1.12 — Gateway
 
-Un gateway es un punto de salida o intermediación hacia otra red o sistema; en redes IP suele referirse al router de siguiente salto predeterminado. **Práctica:** identifica el gateway de la VM con `ip route` o `ipconfig`. **Evidencia:** explica qué ocurre con un destino que no pertenece a la subred local.
+Gateway es un punto de interconexión o traducción. En IP, la puerta de enlace predeterminada suele ser el router al que se envía tráfico destinado a redes no locales; el término también se usa en aplicaciones.
+
+**Práctica guiada:** Consulta `ip route` o `route print`; localiza ruta por defecto, gateway e interfaz.
+
+**Actividad independiente:** Explica qué ocurre si el gateway está mal configurado o no es alcanzable.
+
+**Criterios de aceptación:** Diferencia gateway, DNS y dirección IP del destino.
+
+**Errores frecuentes:** Configurar el servidor DNS como gateway o creer que el gateway resuelve nombres.
+
+**Comprobación:** ¿Qué tráfico se envía normalmente a la puerta de enlace predeterminada?
 
 ### 8.1.13 — Access Point
 
-Un access point conecta clientes inalámbricos a una red de distribución y gestiona asociación y acceso radio. No es necesariamente un router. **Práctica:** dibuja la relación entre SSID, punto de acceso, switch y gateway. **Evidencia:** distingue asociación Wi-Fi de obtención de dirección IP.
+Un AP conecta clientes inalámbricos con una red de distribución. Cobertura, bandas, canales, potencia, autenticación y cifrado afectan capacidad y seguridad. Un AP no es necesariamente un router, aunque equipos domésticos integren ambas funciones.
+
+**Práctica guiada:** Inspecciona SSID, banda y canal de una red propia mediante herramientas autorizadas; no accedas a redes ajenas.
+
+**Actividad independiente:** Diseña cobertura Wi‑Fi de oficina considerando interferencia, roaming, invitados y WPA2/WPA3.
+
+**Criterios de aceptación:** Diferencia AP y router y justifica cobertura y controles de acceso.
+
+**Errores frecuentes:** Aumentar potencia como única solución o mantener cifrado obsoleto sin evaluar riesgo.
+
+**Comprobación:** ¿Por qué una señal fuerte no garantiza calidad ni seguridad Wi‑Fi?
 
 ## 8.2 — Modelos de comunicación
 
