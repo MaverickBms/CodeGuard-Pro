@@ -1896,6 +1896,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué un archivo PCAP debe tratarse como información potencialmente confidencial?
 
+**Laboratorio de profundización — Análisis de una captura propia.**
+
+1. Captura tráfico generado por una VM propia hacia un servicio de laboratorio. 2. Filtra por protocolo y conversación. 3. Identifica Ethernet, IP y transporte. 4. Registra qué metadatos se observan y qué contenido queda cifrado.
+
+**Evidencia esperada.** La captura se limita a tráfico autorizado y el análisis diferencia metadatos, payload y efecto del cifrado.
+
+**Seguridad y límites.** No capturar redes compartidas ni exportar payloads con credenciales o datos personales.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.7.2 — tcpdump
 
 **Propósito y modelo.** tcpdump captura y muestra paquetes desde interfaces mediante filtros BPF. Permite observar tráfico en sistemas sin interfaz gráfica y guardar PCAP para análisis posterior. Requiere privilegios elevados en muchos sistemas; la captura debe tener alcance mínimo, duración definida y autorización.
@@ -1911,6 +1921,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Capturar en todas las interfaces indefinidamente o guardar PCAP en carpetas compartidas sin control de acceso.
 
 **Comprobación.** ¿Qué diferencia hay entre seleccionar una interfaz y definir un filtro BPF?
+
+**Laboratorio de profundización — Captura delimitada por interfaz y filtro.**
+
+1. Identifica la interfaz de una VM de laboratorio. 2. Diseña un filtro limitado a host/puerto propios. 3. Captura un número pequeño de paquetes o durante un intervalo corto. 4. Lee el archivo con salida detallada y explica el filtro.
+
+**Evidencia esperada.** La captura tiene alcance mínimo, filtro reproducible y explicación de campos observados.
+
+**Seguridad y límites.** No ejecutar capturas amplias en interfaces de producción ni recopilar tráfico de terceros.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.7.3 — Nmap
 
@@ -1928,6 +1948,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué evidencia adicional se necesita para determinar si un servicio expuesto es vulnerable?
 
+**Laboratorio de profundización — Inventario autorizado de un host de laboratorio.**
+
+1. Define explícitamente una VM propia como único objetivo. 2. Realiza descubrimiento básico o escaneo de puertos limitado en esa VM. 3. Relaciona resultados con servicios esperados. 4. Explica falsos positivos, filtrado y límites de detección.
+
+**Evidencia esperada.** El informe incluye alcance, autorización, parámetros, fecha y límites; no extrapola resultados a otros hosts.
+
+**Seguridad y límites.** No escanear rangos públicos ni redes ajenas. No ejecutar scripts NSE intrusivos ni pruebas de explotación.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.7.4 — ping
 
 **Propósito y modelo.** ping envía mensajes ICMP Echo para comprobar si un destino responde y medir tiempo de ida y vuelta aproximado. El resultado depende de rutas, firewall, priorización y configuración del destino; no mide por sí solo la calidad de una aplicación ni demuestra que todos los servicios funcionen.
@@ -1943,6 +1973,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Concluir que un host está apagado cuando no responde o comparar RTT de pruebas realizadas en condiciones distintas sin contexto.
 
 **Comprobación.** ¿Qué demuestra una respuesta Echo y qué no demuestra sobre un servicio web?
+
+**Laboratorio de profundización — Prueba ICMP con interpretación de pérdida.**
+
+1. Ejecuta ping a loopback, gateway de laboratorio y un destino permitido. 2. Registra latencia, pérdida y TTL. 3. Compara con un caso donde ICMP está filtrado. 4. Explica por qué no recibir respuesta no demuestra que el host esté apagado.
+
+**Evidencia esperada.** El informe diferencia pérdida, latencia y filtrado ICMP y compara destinos con contexto.
+
+**Seguridad y límites.** No realizar ping flood ni pruebas de disponibilidad masivas.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.7.5 — traceroute
 
@@ -1960,6 +2000,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué un router puede reenviar tráfico correctamente y no responder a las sondas de traceroute?
 
+**Laboratorio de profundización — Interpretación de saltos y TTL.**
+
+1. Ejecuta traceroute/tracert hacia un destino autorizado. 2. Identifica saltos, latencias y respuestas ausentes. 3. Explica TTL/Hop Limit y mensajes de tiempo excedido. 4. Compara UDP, ICMP o TCP según herramienta y plataforma.
+
+**Evidencia esperada.** El análisis explica la naturaleza parcial de la ruta observada y no interpreta asteriscos como prueba concluyente de fallo.
+
+**Seguridad y límites.** No realizar trazas masivas a redes ajenas ni publicar direcciones internas sensibles.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.7.6 — ip
 
 **Propósito y modelo.** La utilidad ip de iproute2 administra y consulta interfaces, direcciones, vecinos, rutas y túneles en Linux. Permite observar configuración con subcomandos como `ip addr`, `ip link`, `ip route` e `ip neigh`. Los subcomandos de modificación pueden interrumpir conectividad y deben probarse en VM aislada.
@@ -1975,6 +2025,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Ejecutar cambios de interfaz sobre una sesión remota sin consola o confundir configuración IP con resolución DNS.
 
 **Comprobación.** ¿Qué información ofrece `ip neigh` que no aparece en `ip route`?
+
+**Laboratorio de profundización — Inspección de interfaces y rutas Linux.**
+
+1. Ejecuta `ip addr`, `ip link` e `ip route` en una VM propia. 2. Relaciona interfaz, MAC, IP, prefijo y gateway. 3. Consulta vecinos con `ip neigh`. 4. Explica qué comandos son de lectura y cuáles alterarían el estado.
+
+**Evidencia esperada.** El inventario relaciona interfaces y rutas sin confundir dirección de enlace y red.
+
+**Seguridad y límites.** No utilizar `ip addr flush`, `ip route del` ni cambios persistentes en el host.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.7.7 — ss
 
@@ -1992,6 +2052,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué significa que un servicio escuche en 127.0.0.1 en lugar de 0.0.0.0?
 
+**Laboratorio de profundización — Inventario de sockets.**
+
+1. Ejecuta `ss -lntup` en una VM propia. 2. Identifica listeners TCP/UDP, dirección local y proceso cuando los permisos lo permiten. 3. Relaciona un listener con servicio. 4. Compara sockets en escucha con conexiones establecidas.
+
+**Evidencia esperada.** El reporte distingue listening, established y UDP y registra alcance local/privado.
+
+**Seguridad y límites.** No publicar puertos ni finalizar procesos desconocidos por aparecer en el listado.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.7.8 — netstat
 
 **Propósito y modelo.** netstat es una herramienta tradicional para consultar conexiones, puertos, estadísticas y rutas; en Linux ha sido reemplazada en gran medida por ss, aunque sigue disponible en diversos sistemas. Las opciones y salidas difieren entre Windows, Linux y otros entornos.
@@ -2007,6 +2077,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Copiar opciones de Linux en Windows o asumir que netstat es un analizador de paquetes.
 
 **Comprobación.** ¿Por qué se recomienda conocer la plataforma antes de utilizar opciones de netstat?
+
+**Laboratorio de profundización — Lectura y comparación con herramientas modernas.**
+
+1. Ejecuta `netstat -ano` en Windows o la variante disponible en Linux. 2. Identifica estado, dirección local/remota y PID. 3. Relaciona PID con proceso. 4. Compara el resultado con `ss` o `Get-NetTCPConnection`.
+
+**Evidencia esperada.** Se interpreta el estado de conexión y se explica disponibilidad variable de netstat según plataforma.
+
+**Seguridad y límites.** No asumir que netstat está instalado en todas las distribuciones ni finalizar procesos sin identificar.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.7.9 — dig
 
@@ -2024,6 +2104,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué diferencia hay entre NXDOMAIN y SERVFAIL?
 
+**Laboratorio de profundización — Consulta DNS con tipos y servidores.**
+
+1. Consulta un dominio de prueba con `dig A`, `AAAA` y `MX`. 2. Identifica servidor consultado, status, TTL y sección answer. 3. Compara resolver recursivo y servidor autoritativo. 4. Explica NXDOMAIN frente a SERVFAIL.
+
+**Evidencia esperada.** La salida se interpreta por secciones y se distingue nombre inexistente de fallo de resolución.
+
+**Seguridad y límites.** Consultar solo dominios permitidos y evitar enumeración automatizada de zonas ajenas.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.7.10 — nslookup
 
 **Propósito y modelo.** nslookup es una herramienta de consulta DNS disponible en Windows y otros sistemas. Permite resolver nombres, consultar tipos de registro y seleccionar servidor DNS. Su salida es más simple que dig en ciertos escenarios, pero resulta útil para diagnósticos básicos y entornos Windows.
@@ -2039,6 +2129,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Interpretar «Server: Unknown» como prueba automática de fallo DNS o asumir que una resolución exitosa prueba conectividad a la aplicación.
 
 **Comprobación.** ¿Qué indica nslookup cuando muestra una respuesta DNS válida pero el sitio no abre?
+
+**Laboratorio de profundización — Diagnóstico básico de resolución.**
+
+1. Consulta nombre y dirección inversa con nslookup. 2. Identifica el servidor DNS utilizado. 3. Cambia la consulta a un servidor de laboratorio autorizado si está disponible. 4. Compara la salida con dig o Resolve-DnsName.
+
+**Evidencia esperada.** El estudiante reconoce servidor, nombre consultado, respuesta y límites de la herramienta.
+
+**Seguridad y límites.** No modificar DNS de equipos compartidos ni consultar dominios internos sin autorización.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.7.11 — curl
 
@@ -2176,3 +2276,13 @@ No se incluyen videos en esta versión. La etapa contiene direccionamiento, prot
 **Resultado:** revisión documental interna realizada con los ajustes y hallazgos siguientes: Se ordenaron los encabezados de seguridad de redes según el roadmap. Se revisaron modelos, direccionamiento, protocolos, segmentación y herramientas; se mantienen restricciones de escaneo autorizado y protección de capturas. Pendiente: resolver ejercicios de subnetting de forma independiente, validar topología en laboratorio aislado y comprobar comandos por sistema operativo/versión.
 
 **Límite de validación:** no se ejecutaron laboratorios, scripts, servicios, bases de datos, máquinas virtuales ni capturas de red en esta revisión. No se declara aprobación académica externa. La etapa continúa en desarrollo hasta completar las pruebas reproducibles y la segunda revisión.
+
+**Laboratorio de profundización — Inspección HTTP sin exponer secretos.**
+
+1. Consulta un endpoint público de documentación o servicio local propio con `curl -I`. 2. Registra status y encabezados relevantes. 3. Compara HTTP y HTTPS en un entorno controlado. 4. Explica opciones de timeout y validación TLS.
+
+**Evidencia esperada.** El reporte distingue respuesta HTTP, encabezados y validación TLS y evita almacenar credenciales.
+
+**Seguridad y límites.** No utilizar `-k` para ignorar certificados en producción ni enviar tokens reales a endpoints no confiables.
+
+**Registro sugerido.** Anota versión de herramienta, sistema, objetivo autorizado, parámetros, resultado, fecha y límites de interpretación. No marques la práctica como ejecutada sin evidencia real.
