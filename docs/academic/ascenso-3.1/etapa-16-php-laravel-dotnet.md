@@ -108,3 +108,154 @@ No se incluyen videos aprobados. Se añadirán solo cuando el audio hablado sea 
 - PrestaShop Developer Documentation: https://devdocs.prestashop-project.org/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** implementaciones no ejecutadas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 16
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados organizan el estudio de los conceptos y los relacionan con la guía técnica y el proyecto de la etapa; no representan evaluación, aprobación ni ejecución práctica.
+
+### Módulo 16.1 — PHP
+
+#### 16.1.01 — Sintaxis
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.02 — Variables
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.03 — Tipos
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.04 — Operadores
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.05 — Funciones
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.06 — Arrays
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.07 — Objetos
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.08 — POO
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.09 — Namespaces
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.10 — Excepciones
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.11 — Composer
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.1.12 — Autoloading
+Estudiar el concepto y su función dentro de php; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 16.2 — Laravel
+
+#### 16.2.01 — Routing
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.02 — Controllers
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.03 — Models
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.04 — Eloquent ORM
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.05 — Migrations
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.06 — Seeders
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.07 — Middleware
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.08 — Validation
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.09 — Authentication
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.10 — Authorization
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.11 — Queues
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.12 — Jobs
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.13 — Events
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.14 — Notifications
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.2.15 — API Resources
+Estudiar el concepto y su función dentro de laravel; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 16.3 — C# y .NET
+
+#### 16.3.01 — Sintaxis de C#
+Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.3.02 — Tipos
+Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.3.03 — Clases
+Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.3.04 — Interfaces
+Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.3.05 — POO
+Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.3.06 — LINQ
+Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.3.07 — Generics
+Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.3.08 — Async/Await
+Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.3.09 — Exception handling
+Estudiar el concepto y su función dentro de c# y .net; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 16.4 — ASP.NET Core
+
+#### 16.4.01 — Arquitectura
+Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.4.02 — Controllers
+Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.4.03 — Minimal APIs
+Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.4.04 — Dependency Injection
+Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.4.05 — Middleware
+Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.4.06 — Entity Framework Core
+Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.4.07 — REST
+Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.4.08 — Authentication
+Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.4.09 — Authorization
+Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 16.4.10 — JWT
+Estudiar el concepto y su función dentro de asp.net core; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
