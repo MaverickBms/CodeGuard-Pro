@@ -1,7 +1,7 @@
 # Etapa 0 — Proyecto integrador ASCENSO-Knowledge-Base
 
 **Versión:** 0.1.0  
-**Estado editorial:** BORRADOR  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · especificación vigente para ejecutar el proyecto. La implementación y sus entregables siguen pendientes de realización.  
 **Fecha:** 2026-11-24  
 **Alineación curricular:** ASCENSO 3.1 · Etapa 0 · Proyecto oficial: «Crear ASCENSO-Knowledge-Base, un repositorio para documentar todo el aprendizaje».  
 **Propósito:** integrar aprendizaje activo, investigación técnica, herramientas y depuración en un repositorio de conocimiento personal reproducible.
