@@ -1,6 +1,6 @@
 # Etapa 3 — Programación desde cero con Java
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 3.  
 **Prioridad:** P1 · Obligatoria.  
 **Objetivo oficial:** aprender programación de verdad utilizando Java como primer lenguaje principal.
@@ -493,4 +493,4 @@ No se incluye video en esta versión: no se ha verificado una serie o pieza en e
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** los ejemplos son material didáctico no ejecutado en un JDK dentro de esta sesión; deben compilarse y probarse antes de aprobar el módulo.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
