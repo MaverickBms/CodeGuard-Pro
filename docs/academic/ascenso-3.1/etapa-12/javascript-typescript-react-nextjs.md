@@ -1483,47 +1483,116 @@ El despliegue Next.js depende de runtime Node, plataforma serverless/edge o expo
 **Comprobación:** ¿Qué implica el prefijo NEXT_PUBLIC para una variable?
 
 #### 12.8.01 — npm
-npm instala paquetes, ejecuta scripts y administra dependencias mediante `package.json` y un lockfile. Revisa scripts antes de ejecutarlos, fija versiones según política y evita instalar paquetes de nombres parecidos sin verificar el mantenedor.
 
+npm es el gestor de paquetes incluido habitualmente con Node.js. package.json declara scripts, dependencias y metadatos; package-lock.json fija árbol resuelto para instalaciones reproducibles. Scripts pueden ejecutar código, por lo que se revisa origen de dependencias.
 
-**Práctica y evidencia:** Utiliza npm para instalar dependencias y scripts definidos en package.json. **Evidencia:** explica diferencia entre dependencias de runtime y desarrollo y conserva lockfile.
+**Ejemplo técnico:** npm ci instala según lockfile y falla si package/lock no coinciden.
+
+**Práctica guiada:** Inspecciona package.json y lockfile de proyecto de laboratorio.
+
+**Actividad independiente:** Define scripts de build, test y lint.
+
+**Criterios de aceptación:** Versiones y scripts reproducibles.
+
+**Errores frecuentes:** Ejecutar paquetes desconocidos sin revisar o ignorar lockfile.
+
+**Comprobación:** ¿Qué diferencia hay entre npm install y npm ci en un entorno reproducible?
 
 #### 12.8.02 — pnpm
-pnpm gestiona dependencias con un almacén de contenido direccionado y enlaces, optimizando espacio y consistencia. Conserva `pnpm-lock.yaml`, documenta la versión del gestor y no mezcles lockfiles sin una decisión explícita del equipo.
 
+pnpm es gestor de paquetes que utiliza almacenamiento direccionado por contenido y enlaces para ahorrar espacio y mejorar consistencia. Workspace y lockfile administran monorepos; compatibilidad depende de versión y configuración.
 
-**Práctica y evidencia:** Compara pnpm con npm en almacenamiento, enlaces y workspace; no mezcles gestores en el mismo proyecto sin decisión explícita. **Evidencia:** instala desde lockfile y documenta gestor/versión.
+**Ejemplo técnico:** pnpm install --frozen-lockfile exige coherencia del lockfile.
+
+**Práctica guiada:** Compara estructura de node_modules y lockfile en proyecto de prueba.
+
+**Actividad independiente:** Diseña workspace con dos paquetes internos.
+
+**Criterios de aceptación:** Instalación reproducible y dependencias explícitas.
+
+**Errores frecuentes:** Mezclar gestores sin política o ignorar versión fijada de pnpm.
+
+**Comprobación:** ¿Por qué conviene fijar versión de gestor en un equipo?
 
 #### 12.8.03 — Vite
-Vite ofrece servidor de desarrollo y proceso de build para aplicaciones frontend. Configura plugins y variables con cuidado, recuerda que las variables expuestas al cliente son públicas y valida el artefacto de producción además del servidor local.
 
+Vite proporciona servidor de desarrollo rápido y build basado en herramientas modernas; utiliza módulos ESM en desarrollo y empaqueta para producción. Plugins y configuración dependen del framework y versión.
 
-**Práctica y evidencia:** Configura Vite para desarrollo y build, distinguiendo servidor de desarrollo y artefactos de producción. **Evidencia:** ejecuta build y verifica rutas de recursos en el resultado.
+**Ejemplo técnico:** npm run dev inicia servidor de desarrollo; npm run build genera artefactos.
+
+**Práctica guiada:** Crea app de laboratorio y observa diferencia dev/build.
+
+**Actividad independiente:** Configura variables, alias y build reproducible.
+
+**Criterios de aceptación:** Build generado y rutas verificadas.
+
+**Errores frecuentes:** Confundir servidor dev con despliegue productivo o exponer secretos con prefijos públicos.
+
+**Comprobación:** ¿Por qué el servidor de desarrollo no debe tratarse como servidor de producción?
 
 #### 12.8.04 — ESLint
-ESLint analiza patrones de código y aplica reglas para detectar errores potenciales y mantener convenciones. Configura reglas compatibles con la versión del lenguaje y framework; no desactives globalmente reglas para ocultar advertencias recurrentes.
 
+ESLint analiza patrones de código y aplica reglas configurables. Plugins y configuraciones pueden incluir reglas de framework, accesibilidad y TypeScript. Lint detecta clases de defectos, pero no demuestra corrección funcional.
 
-**Práctica y evidencia:** Configura ESLint con reglas del proyecto y corrige problemas reales sin desactivar reglas globalmente. **Evidencia:** presenta salida de lint y justifica excepciones locales.
+**Ejemplo técnico:** npm run lint informa variables no usadas y patrones problemáticos.
+
+**Práctica guiada:** Ejecuta lint en proyecto propio y clasifica errores/advertencias.
+
+**Actividad independiente:** Define reglas mínimas y justifica excepciones.
+
+**Criterios de aceptación:** Reglas reproducibles y excepciones documentadas.
+
+**Errores frecuentes:** Desactivar reglas globalmente para silenciar problemas.
+
+**Comprobación:** ¿Qué diferencia hay entre lint y pruebas automatizadas?
 
 #### 12.8.05 — Prettier
-Prettier formatea código de manera consistente y reduce discusiones de estilo. Fija configuración compartida y ejecútalo en el flujo del proyecto; el formateador no reemplaza linting, revisión ni pruebas.
 
+Prettier formatea código de forma consistente según configuración. Reduce debates de estilo, pero no valida lógica ni reemplaza ESLint. Integración debe evitar conflictos de reglas y ejecutarse de forma reproducible.
 
-**Práctica y evidencia:** Configura Prettier para formato consistente y evita que compita con reglas de lint. **Evidencia:** formatea archivos y demuestra que una segunda ejecución no genera cambios adicionales.
+**Ejemplo técnico:** prettier --check informa archivos que no cumplen formato.
+
+**Práctica guiada:** Formatea un archivo de laboratorio y revisa diff.
+
+**Actividad independiente:** Define .prettierrc y script check.
+
+**Criterios de aceptación:** Formato uniforme sin cambios semánticos esperados.
+
+**Errores frecuentes:** Usar formateador como sustituto de revisión o tests.
+
+**Comprobación:** ¿Qué clase de defectos no detecta Prettier?
 
 #### 12.8.06 — Tailwind CSS
-Tailwind CSS ofrece utilidades de bajo nivel para expresar estilos directamente en el marcado. Mantén tokens y patrones reutilizables, revisa el tamaño del CSS generado y evita construir nombres de clase dinámicos que el proceso de detección no pueda identificar.
 
+Tailwind CSS ofrece clases utilitarias generadas a partir de configuración y contenido detectado. La versión cambia configuración y directivas; seguir documentación de la versión instalada. La composición debe preservar semántica, accesibilidad y consistencia.
 
-**Práctica y evidencia:** Aplica utilidades Tailwind para construir componentes y organiza tokens/configuración según la versión utilizada. **Evidencia:** muestra diseño responsivo y documenta versión y mecanismo de configuración.
+**Ejemplo técnico:** Clases de layout y spacing componen UI sin crear selector por componente.
+
+**Práctica guiada:** Inspecciona build y clases de un componente de prueba.
+
+**Actividad independiente:** Define tokens/tema y evita clases arbitrarias repetidas.
+
+**Criterios de aceptación:** CSS generado cubre clases usadas y el HTML sigue accesible.
+
+**Errores frecuentes:** Copiar sintaxis de otra versión o usar clases solo para ocultar controles esenciales.
+
+**Comprobación:** ¿Por qué hay que identificar la versión de Tailwind antes de aplicar una guía?
 
 #### 12.8.07 — React DevTools
-React DevTools permite inspeccionar árbol de componentes, props, estado y rendimiento en desarrollo. Utilízalo para localizar renders y estructura; evita compartir capturas con datos de usuario o tokens y no lo confundas con una prueba de rendimiento completa.
 
+React DevTools permite inspeccionar árbol de componentes, props, estado y rendimiento en entorno compatible. Debe utilizarse sin exponer datos sensibles y con diferencias entre build desarrollo/producción.
 
+**Ejemplo técnico:** Profiler identifica componentes que renderizan y tiempos relativos.
 
-**Práctica y evidencia:** Usa React DevTools para inspeccionar árbol de componentes, props, estado y renders. **Evidencia:** identifica un renderizado innecesario y demuestra su causa antes de optimizar.
+**Práctica guiada:** Inspecciona árbol de una app de laboratorio y registra renders.
+
+**Actividad independiente:** Analiza renderizaciones innecesarias y justifica optimización medida.
+
+**Criterios de aceptación:** Hallazgos reproducibles y sin datos privados.
+
+**Errores frecuentes:** Optimizar por intuición o dejar herramientas de depuración con datos sensibles en producción.
+
+**Comprobación:** ¿Qué evidencia aporta Profiler antes de optimizar un componente?
 
 ## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
 
