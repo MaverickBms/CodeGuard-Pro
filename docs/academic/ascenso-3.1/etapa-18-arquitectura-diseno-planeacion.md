@@ -458,162 +458,315 @@ Dependency Inversion propone que políticas de alto nivel no dependan de detalle
 #### 18.6.01 — Creacionales
 La familia creacional agrupa patrones que abstraen o controlan la creación de objetos. La elección depende de variaciones de construcción, dependencias y ciclo de vida; el patrón no justifica ocultar una creación sencilla.
 
+
+**Práctica y evidencia:** Clasifica patrones por problema de creación, estructura o comportamiento. **Evidencia:** justifica la categoría y evita aplicar patrones por moda.
+
 #### 18.6.02 — Factory
 Factory encapsula la selección o creación de un producto detrás de una operación. Resulta útil cuando el tipo concreto depende de configuración o contexto; evita una fábrica si un constructor directo es suficiente.
+
+
+**Práctica y evidencia:** Implementa Factory para seleccionar una implementación según configuración. **Evidencia:** demuestra que el cliente no conoce la clase concreta.
 
 #### 18.6.03 — Abstract Factory
 Abstract Factory crea familias de objetos relacionados sin acoplar al cliente con clases concretas. Úsalo cuando deban variar conjuntos compatibles de productos y mantén consistencia entre los miembros de la familia.
 
+
+**Práctica y evidencia:** Usa Abstract Factory para crear familias de objetos compatibles. **Evidencia:** cambia la familia completa sin mezclar componentes incompatibles.
+
 #### 18.6.04 — Builder
 Builder separa la construcción paso a paso de la representación final de un objeto complejo. Es útil cuando hay muchas opciones o invariantes; evita convertir objetos simples en una cadena de builders innecesaria.
+
+
+**Práctica y evidencia:** Construye un objeto complejo mediante pasos de Builder y valida invariantes al finalizar. **Evidencia:** compara legibilidad con constructor de muchos parámetros.
 
 #### 18.6.05 — Singleton
 Singleton restringe una clase a una única instancia accesible globalmente en el contexto definido. Puede introducir estado global y dificultar pruebas; considera inyección de dependencias y ciclo de vida del contenedor antes de aplicarlo.
 
+
+**Práctica y evidencia:** Evalúa Singleton frente a inyección de dependencias y estado global. **Evidencia:** identifica impacto en pruebas, concurrencia y ciclo de vida.
+
 #### 18.6.06 — Prototype
 Prototype crea objetos nuevos a partir de una instancia existente mediante clonación. Define si la copia es superficial o profunda y cómo se copian recursos compartidos; no asumas que clonar preserva invariantes automáticamente.
+
+
+**Práctica y evidencia:** Clona un prototipo configurable y distingue copia superficial de profunda. **Evidencia:** demuestra que las partes mutables no quedan compartidas accidentalmente.
 
 #### 18.6.07 — Estructurales
 La familia estructural organiza cómo se componen objetos y clases para formar estructuras mayores. Sus patrones ayudan a adaptar interfaces, añadir responsabilidades y representar jerarquías sin acoplar consumidores a detalles.
 
+
+**Práctica y evidencia:** Clasifica Adapter, Decorator, Facade, Proxy, Composite, Bridge y Flyweight por intención. **Evidencia:** selecciona patrón para un problema y explica alternativa descartada.
+
 #### 18.6.08 — Adapter
 Adapter convierte la interfaz de un componente en otra que el consumidor espera. Es útil para integrar legado o proveedores distintos; mantén explícitas conversiones, errores y pérdidas de información.
+
+
+**Práctica y evidencia:** Implementa Adapter para integrar una interfaz externa incompatible con el contrato interno. **Evidencia:** el consumidor utiliza el contrato sin conocer al proveedor.
 
 #### 18.6.09 — Decorator
 Decorator añade responsabilidades a un objeto envolviéndolo sin modificar su clase original. Permite combinar comportamientos, pero muchas capas pueden dificultar diagnóstico; conserva contratos y orden de aplicación.
 
+
+**Práctica y evidencia:** Añade Decorator para incorporar una capacidad sin modificar la clase base. **Evidencia:** combina decoradores y prueba el orden de composición.
+
 #### 18.6.10 — Facade
 Facade ofrece una interfaz simplificada sobre un subsistema complejo. Reduce conocimiento requerido por el cliente, pero no debe convertirse en un objeto que concentre toda la lógica del sistema.
+
+
+**Práctica y evidencia:** Crea Facade para simplificar una operación que coordina varios subsistemas. **Evidencia:** mantiene ocultos detalles sin convertir la fachada en un objeto dios.
 
 #### 18.6.11 — Proxy
 Proxy controla el acceso a otro objeto para aplicar políticas como carga diferida, autorización o acceso remoto. La interfaz debe conservar expectativas del sujeto real y documentar latencia y fallos adicionales.
 
+
+**Práctica y evidencia:** Aplica Proxy para controlar acceso, caché o carga diferida de un recurso. **Evidencia:** demuestra que conserva el contrato del objeto real.
+
 #### 18.6.12 — Composite
 Composite organiza objetos en estructuras de árbol donde hojas y contenedores comparten una interfaz. Es apropiado para jerarquías parte-todo; define qué operaciones son válidas para hojas y cómo se propagan cambios.
+
+
+**Práctica y evidencia:** Modela elementos simples y compuestos con Composite y una operación común. **Evidencia:** recorre el árbol sin condicionales por tipo en el cliente.
 
 #### 18.6.13 — Bridge
 Bridge separa una abstracción de su implementación para que ambas evolucionen independientemente. Úsalo cuando existan dos dimensiones de variación que generarían una explosión de subclases.
 
+
+**Práctica y evidencia:** Usa Bridge para separar abstracción de implementación que pueden variar independientemente. **Evidencia:** combina dos dimensiones sin crear una jerarquía explosiva.
+
 #### 18.6.14 — Flyweight
 Flyweight comparte estado intrínseco entre muchos objetos para reducir consumo de memoria. Separa estado compartido e independiente y garantiza que el objeto compartido no sea modificado accidentalmente por un consumidor.
+
+
+**Práctica y evidencia:** Evalúa Flyweight para compartir estado intrínseco en muchos objetos similares. **Evidencia:** separa estado compartido y extrínseco y mide si la complejidad compensa.
 
 #### 18.6.15 — Comportamiento
 La familia de comportamiento organiza comunicación, responsabilidades y algoritmos entre objetos. Ayuda a cambiar flujos sin concentrar condicionales, pero añade tipos y relaciones que deben justificarse por variación real.
 
+
+**Práctica y evidencia:** Clasifica patrones de comportamiento según cómo distribuyen responsabilidad y colaboración. **Evidencia:** identifica problema de acoplamiento que resuelve el patrón.
+
 #### 18.6.16 — Strategy
 Strategy encapsula algoritmos intercambiables detrás de un contrato común. Permite elegir comportamiento por configuración o contexto y facilita pruebas; evita crear una estrategia por cada variación trivial.
+
+
+**Práctica y evidencia:** Implementa Strategy para intercambiar un algoritmo sin cambiar el cliente. **Evidencia:** añade una estrategia nueva sin modificar condicionales centrales.
 
 #### 18.6.17 — Observer
 Observer establece una relación de suscripción para notificar cambios a observadores. Define alta/baja de suscriptores, orden, errores y concurrencia; evita fugas por listeners que permanecen registrados.
 
+
+**Práctica y evidencia:** Usa Observer para notificar cambios a suscriptores y gestiona alta/baja. **Evidencia:** evita fugas de listeners y define orden/errores de notificación.
+
 #### 18.6.18 — Command
 Command encapsula una acción como objeto con datos y operación de ejecución. Facilita colas, auditoría y deshacer cuando el diseño lo soporta; define idempotencia y manejo de fallos antes de ejecutar comandos diferidos.
+
+
+**Práctica y evidencia:** Encapsula una operación como Command y permite cola, auditoría o deshacer cuando el dominio lo admite. **Evidencia:** explica qué estado requiere una reversión segura.
 
 #### 18.6.19 — State
 State permite que un objeto cambie comportamiento según su estado interno representado por objetos o transiciones explícitas. Define estados válidos y transiciones permitidas para evitar combinaciones inconsistentes de booleanos.
 
+
+**Práctica y evidencia:** Modela estados de un pedido y transiciones válidas mediante State o una máquina de estados explícita. **Evidencia:** demuestra que una transición inválida se rechaza.
+
 #### 18.6.20 — Iterator
 Iterator permite recorrer una colección sin exponer su representación interna. Define orden y comportamiento ante modificaciones concurrentes; utiliza iteradores estándar cuando satisfacen el contrato requerido.
+
+
+**Práctica y evidencia:** Implementa Iterator para recorrer una colección sin exponer su representación interna. **Evidencia:** demuestra recorrido uniforme y comportamiento ante modificación.
 
 #### 18.6.21 — Mediator
 Mediator centraliza coordinación entre componentes que de otro modo se comunicarían directamente. Reduce dependencias cruzadas, pero el mediador puede convertirse en un punto de concentración excesiva; divide responsabilidades cuando crezca.
 
+
+**Práctica y evidencia:** Usa Mediator para coordinar componentes que no deben conocerse directamente. **Evidencia:** identifica cuándo el mediador se vuelve demasiado complejo.
+
 #### 18.6.22 — Template Method
 Template Method define el esqueleto de un algoritmo y delega pasos variables a subclases o métodos especializados. Úsalo cuando el flujo general sea estable y evita jerarquías rígidas para variaciones que encajan mejor con composición.
 
+
+**Práctica y evidencia:** Aplica Template Method para fijar el esqueleto de un algoritmo con pasos redefinibles. **Evidencia:** distingue pasos invariantes de puntos de extensión.
+
 #### 18.6.23 — Chain of Responsibility
 Chain of Responsibility pasa una solicitud por una secuencia de handlers hasta que alguno la procesa o termina la cadena. Define orden, condición de finalización y comportamiento sin handler para evitar solicitudes perdidas.
+
+
+**Práctica y evidencia:** Construye Chain of Responsibility para procesar una solicitud a través de handlers. **Evidencia:** prueba orden, terminación y caso sin handler aplicable.
 
 ### Módulo 18.7 — Arquitecturas
 
 #### 18.7.01 — Monolithic Architecture
 Monolithic Architecture empaqueta gran parte de la aplicación como una unidad desplegable. Puede simplificar desarrollo y operación inicial; controla modularidad interna para evitar que el monolito se convierta en una masa acoplada.
 
+
+**Práctica y evidencia:** Dibuja un monolito con módulos y límites de despliegue y evalúa sus ventajas operativas. **Evidencia:** identifica qué escala conjuntamente y qué acoplamiento existe.
+
 #### 18.7.02 — Modular Monolith
 Modular Monolith mantiene un único despliegue con módulos internos y límites explícitos. Es una alternativa a microservicios cuando se necesita separación de dominio sin asumir complejidad de red y operación distribuida.
+
+
+**Práctica y evidencia:** Organiza un monolito modular con límites internos y dependencias explícitas. **Evidencia:** prueba que un módulo no accede directamente a datos internos de otro.
 
 #### 18.7.03 — Layered Architecture
 Layered Architecture separa responsabilidades en capas como presentación, aplicación, dominio e infraestructura. Define reglas de dependencia y evita que capas superiores accedan directamente a detalles internos de capas inferiores.
 
+
+**Práctica y evidencia:** Separa presentación, aplicación, dominio e infraestructura en arquitectura por capas. **Evidencia:** documenta dirección permitida de dependencias.
+
 #### 18.7.04 — MVC
 MVC organiza interacción entre modelo, vista y controlador. Define qué capa mantiene estado y reglas, y evita convertir controladores en coordinadores gigantes o vistas en lugares de lógica de dominio.
+
+
+**Práctica y evidencia:** Traza una solicitud en MVC desde vista/controlador hasta modelo y respuesta. **Evidencia:** evita ubicar reglas de negocio críticas en la vista.
 
 #### 18.7.05 — Clean Architecture
 Clean Architecture organiza el sistema alrededor de políticas y dominio, haciendo que detalles externos dependan de contratos internos. Evalúa el coste de abstracción y mantén dependencias dirigidas hacia el núcleo.
 
+
+**Práctica y evidencia:** Aplica Clean Architecture a un caso de uso y define puertos de entrada/salida. **Evidencia:** ejecuta prueba de dominio sin framework ni base de datos.
+
 #### 18.7.06 — Hexagonal Architecture
 Hexagonal Architecture separa el núcleo de aplicación de actores externos mediante puertos y adaptadores. Define puertos por necesidad del dominio y adapta bases de datos, interfaces y proveedores sin filtrar sus modelos internos.
+
+
+**Práctica y evidencia:** Diseña puertos y adaptadores para una aplicación que usa dos proveedores externos. **Evidencia:** sustituye adaptador en pruebas sin cambiar caso de uso.
 
 #### 18.7.07 — Onion Architecture
 Onion Architecture organiza capas concéntricas con dependencias hacia el dominio central. Mantén el dominio independiente de frameworks y persistencia; no confundas la representación visual de capas con una regla suficiente de diseño.
 
+
+**Práctica y evidencia:** Organiza dependencias en anillos de Onion Architecture y mantiene dominio en el centro. **Evidencia:** comprueba que infraestructura depende de abstracciones internas.
+
 #### 18.7.08 — Event-Driven Architecture
 Event-Driven Architecture conecta productores y consumidores mediante eventos que representan hechos. Define esquema, entrega, orden, duplicados y observabilidad; evita depender de sincronía o estado compartido entre servicios.
 
+
+**Práctica y evidencia:** Modela un flujo event-driven con productores, eventos y consumidores desacoplados. **Evidencia:** contempla duplicados, orden, idempotencia y observabilidad.
+
 #### 18.7.09 — Microservices
 Microservices divide capacidades de negocio en servicios desplegables y operables independientemente. Exige límites de dominio, automatización, observabilidad y resiliencia; evalúa primero si el beneficio supera la complejidad distribuida.
+
+
+**Práctica y evidencia:** Compara microservicios con monolito modular según autonomía de despliegue y coste distribuido. **Evidencia:** presenta criterios de descomposición y razones para no dividir prematuramente.
 
 ### Módulo 18.8 — Diseño de sistemas
 
 #### 18.8.01 — Scalability
 Scalability describe la capacidad de manejar crecimiento de carga mediante ampliación vertical u horizontal. Identifica cuello de botella y perfil de demanda antes de escalar; más instancias pueden aumentar costes y complejidad.
 
+
+**Práctica y evidencia:** Define una métrica de escalabilidad y prueba cómo responde el sistema al aumentar carga o recursos. **Evidencia:** distingue escalado vertical y horizontal.
+
 #### 18.8.02 — Availability
 Availability mide la proporción de tiempo en que un servicio cumple condiciones de disponibilidad definidas. Especifica ventana, dependencias y exclusiones; alta disponibilidad requiere redundancia, detección y recuperación probadas.
+
+
+**Práctica y evidencia:** Calcula disponibilidad a partir de tiempo de servicio y ventanas de interrupción. **Evidencia:** define SLI/SLO y excluye supuestos no documentados.
 
 #### 18.8.03 — Reliability
 Reliability es la capacidad de operar correctamente durante un periodo y condiciones determinados. Diseña tolerancia a fallos, recuperación y consistencia; mide errores y comportamiento real, no solo tiempo de actividad.
 
+
+**Práctica y evidencia:** Analiza fiabilidad mediante tasa de fallos, recuperación y degradación. **Evidencia:** propone mecanismo de redundancia y prueba de recuperación.
+
 #### 18.8.04 — Consistency
 Consistency describe qué garantías reciben los clientes sobre visibilidad y orden de actualizaciones en sistemas distribuidos. Distingue consistencia fuerte, eventual y garantías de lectura/escritura según el modelo de datos.
+
+
+**Práctica y evidencia:** Define consistencia requerida para una operación de negocio y sus lecturas. **Evidencia:** describe qué estados intermedios puede observar un usuario.
 
 #### 18.8.05 — CAP Theorem
 CAP Theorem establece que ante una partición de red un sistema distribuido debe equilibrar disponibilidad y consistencia fuerte bajo el modelo formal. No significa elegir solo dos propiedades en todo momento ni clasifica sistemas sin considerar condiciones.
 
+
+**Práctica y evidencia:** Analiza una partición de red y decide qué operaciones deben rechazarse o continuar. **Evidencia:** explica el compromiso CAP para ese escenario específico.
+
 #### 18.8.06 — Load Balancing
 Load Balancing distribuye solicitudes entre instancias para mejorar capacidad y disponibilidad. Define health checks, algoritmo, sesiones, afinidad y comportamiento ante fallos; balancear tráfico no corrige un backend saturado o incorrecto.
+
+
+**Práctica y evidencia:** Diseña balanceo de carga con health checks y estrategia de distribución. **Evidencia:** prueba comportamiento cuando un nodo deja de responder.
 
 #### 18.8.07 — Caching
 Caching guarda resultados cercanos al consumidor para reducir latencia y carga. Define TTL, invalidación, consistencia y alcance; las cachés compartidas requieren aislamiento para no mezclar datos de distintos usuarios.
 
+
+**Práctica y evidencia:** Define política de caché con TTL e invalidación para datos cambiantes. **Evidencia:** demuestra cómo evita servir indefinidamente una versión obsoleta.
+
 #### 18.8.08 — Message Queues
 Message Queues desacopla productores y consumidores y absorbe variaciones de carga. Define confirmaciones, reintentos, orden, expiración y dead-letter; consumidores deben tolerar mensajes duplicados y fallos parciales.
+
+
+**Práctica y evidencia:** Diseña comunicación asíncrona mediante cola con reintentos y dead-letter queue. **Evidencia:** explica entrega, duplicados y consumidor idempotente.
 
 #### 18.8.09 — Distributed Systems
 Distributed Systems coordina componentes que se ejecutan en nodos independientes y se comunican por redes falibles. Diseña para latencia, particiones, relojes no sincronizados y fallos parciales; no asumas transacciones locales globales.
 
+
+**Práctica y evidencia:** Dibuja componentes de un sistema distribuido y analiza latencia, particiones, fallos parciales y observabilidad. **Evidencia:** identifica una estrategia de correlación entre servicios.
+
 #### 18.8.10 — API Gateway
 API Gateway ofrece un punto de entrada para enrutamiento, políticas transversales y composición de APIs. Evita concentrar lógica de dominio en el gateway y limita su alcance para que no se convierta en cuello de botella.
+
+
+**Práctica y evidencia:** Define responsabilidades de API Gateway para enrutamiento, autenticación y límites. **Evidencia:** evita colocar reglas de dominio complejas en el gateway.
 
 #### 18.8.11 — Service Discovery
 Service Discovery permite localizar instancias de servicios dinámicamente. Define registro, salud, expiración y autenticación de descubrimiento; protege el catálogo porque revela topología y puntos internos de la plataforma.
 
+
+**Práctica y evidencia:** Modela registro y descubrimiento de servicios con health status y expiración. **Evidencia:** explica cómo se retiran instancias no saludables.
+
 #### 18.8.12 — Fault Tolerance
 Fault Tolerance permite que el sistema continúe ofreciendo capacidades aceptables ante fallos de componentes. Usa timeouts, retries con backoff, circuit breakers y degradación controlada; reintentos indiscriminados pueden amplificar una caída.
+
+
+**Práctica y evidencia:** Diseña tolerancia a fallos con timeout, retry con backoff, circuit breaker y fallback. **Evidencia:** evita reintentos ilimitados y tormentas de solicitudes.
 
 ### Módulo 18.9 — Modelado de dominios
 
 #### 18.9.01 — Domain-Driven Design
 Domain-Driven Design alinea el diseño de software con el conocimiento del dominio y colaboración entre expertos y desarrolladores. Utiliza lenguaje compartido y límites explícitos; no es una receta de clases ni exige microservicios.
 
+
+**Práctica y evidencia:** Aplica DDD para identificar lenguaje del dominio, subdominios y límites de contexto. **Evidencia:** documenta términos y conflictos de significado entre áreas.
+
 #### 18.9.02 — Entities
 Entities tienen identidad persistente que las distingue aunque cambien sus atributos. Define identidad y ciclo de vida según el dominio y evita comparar entidades solo por igualdad de todos sus campos.
+
+
+**Práctica y evidencia:** Define una Entity con identidad estable y reglas de ciclo de vida. **Evidencia:** explica por qué dos entidades con mismos atributos pueden ser distintas.
 
 #### 18.9.03 — Value Objects
 Value Objects representan conceptos definidos por sus valores y suelen ser inmutables. Encapsulan validación y operaciones propias, como dinero o rango de fechas, evitando tipos primitivos sin significado.
 
+
+**Práctica y evidencia:** Crea un Value Object inmutable para dinero o dirección y define igualdad por valor. **Evidencia:** prueba invariantes y ausencia de identidad propia.
+
 #### 18.9.04 — Aggregates
 Aggregates agrupan entidades y value objects bajo una raíz que protege invariantes y límites transaccionales. Accede al conjunto a través de su raíz y evita agregados enormes que bloqueen concurrencia.
+
+
+**Práctica y evidencia:** Diseña un Aggregate con raíz y reglas transaccionales consistentes. **Evidencia:** demuestra que cambios internos pasan por la raíz y respetan invariantes.
 
 #### 18.9.05 — Repositories
 Repositories ofrecen una abstracción para recuperar y persistir aggregates sin exponer detalles de almacenamiento al dominio. Define operaciones por intención del negocio y evita convertir el repositorio en un CRUD genérico sin límites.
 
+
+**Práctica y evidencia:** Define un Repository para recuperar y persistir agregados sin exponer detalles de almacenamiento. **Evidencia:** prueba el dominio con repositorio en memoria.
+
 #### 18.9.06 — Bounded Contexts
 Bounded Context define un límite dentro del cual un modelo y lenguaje tienen significado consistente. Identifica contextos por capacidades y reglas; no fuerces una única definición de un término que cambia entre áreas.
+
+
+**Práctica y evidencia:** Delimita Bounded Contexts para ventas e inventario y define contratos de integración. **Evidencia:** identifica términos homónimos con significado distinto.
 
 #### 18.9.07 — Ubiquitous Language
 Ubiquitous Language es el vocabulario compartido entre expertos del dominio y equipo técnico dentro de un contexto delimitado. Úsalo en conversaciones, código y documentación y revisa términos ambiguos con ejemplos reales.
 
+
+
+**Práctica y evidencia:** Construye un glosario de Ubiquitous Language y úsalo en código, pruebas y documentación. **Evidencia:** detecta un término ambiguo y acuerda una definición compartida.
 
 ## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
 
