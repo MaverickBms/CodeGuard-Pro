@@ -1232,3 +1232,12 @@ Este lote constituye cotejo estructural y revisión editorial documental. No se 
 ### Estado del roadmap
 
 No se modificó el JSON oficial. Se mantiene la estructura de 33 etapas, 212 módulos y 1.946 lecciones; el objetivo de etapa 25 permanece vacío. No se importó ni publicó contenido.
+
+
+## Addendum de auditoría documental — etapa 9 (2026-11-24)
+
+Se cotejó el archivo de Bases de datos relacionales y SQL contra el roadmap oficial. El resultado estructural fue exacto: 7 módulos, 81 lecciones y correspondencia de título y orden en las 81 unidades. Cada lección incluye laboratorio de profundización, evidencia esperada y límites de seguridad; no se detectó el texto genérico de relleno examinado en esta revisión.
+
+Se revisaron además las unidades DML de UPDATE/DELETE: los ejemplos y prácticas localizados exigen condición WHERE, verificación previa mediante SELECT y/o transacción en laboratorio. No se detectó en el cotejo una sentencia de ejemplo UPDATE/DELETE sin condición que deba corregirse. Esta búsqueda documental no sustituye pruebas contra el motor.
+
+**Límites:** no se ejecutaron instalaciones MySQL/PostgreSQL, DDL, DML, transacciones, índices, triggers, EXPLAIN ni pruebas de concurrencia. Las referencias y diferencias por versión aún requieren comprobación individual. El documento se considera desarrollado documentalmente y estructuralmente alineado, no validado mediante ejecución ni aprobado externamente.
