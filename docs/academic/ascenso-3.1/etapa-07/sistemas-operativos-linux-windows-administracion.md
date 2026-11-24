@@ -41,59 +41,227 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 ### 7.1.1 — Kernel
 
-El kernel es el componente privilegiado que administra CPU, memoria, dispositivos y servicios fundamentales del sistema. Expón la diferencia entre el kernel y el sistema operativo completo: utilidades, bibliotecas y aplicaciones se ejecutan alrededor de él. **Práctica:** identifica la versión del kernel con `uname -r` en Linux y registra la arquitectura con `uname -m`. **Evidencia:** explica qué información entrega cada comando y por qué no describe por sí solo toda la distribución.
+**Propósito y modelo.** El kernel es el núcleo privilegiado que coordina CPU, memoria, dispositivos, sistemas de archivos y mecanismos de comunicación. El sistema operativo completo incluye además bibliotecas, servicios, utilidades y aplicaciones; por eso kernel y distribución no son sinónimos. En Linux, varias distribuciones pueden utilizar el mismo kernel upstream, pero diferir en configuración, parches, integración y ciclo de soporte.
 
-### 7.1.2 — Kernel Space
+**Ejemplo desarrollado.** Cuando una aplicación solicita leer un archivo, utiliza una interfaz de usuario; el kernel comprueba permisos y estado del descriptor, coordina el sistema de archivos y devuelve datos o un error. La aplicación no controla directamente el dispositivo de almacenamiento.
 
-Kernel Space es el espacio de ejecución protegido donde opera el núcleo y donde se aplican privilegios elevados; no es una carpeta ni una partición de memoria asignada al usuario. Relaciona el modo privilegiado con la protección frente a accesos arbitrarios a hardware y memoria. **Práctica:** dibuja la frontera entre espacio de usuario y espacio de kernel y sitúa una llamada al sistema en el cruce. **Evidencia:** describe qué riesgo evita esa separación.
+**Práctica guiada.** Ejecuta `uname -r` y `uname -m`. Registra versión del kernel en ejecución y arquitectura. Contrasta con `cat /etc/os-release` para identificar por separado kernel y distribución.
 
-### 7.1.3 — User Space
+**Actividad independiente.** Explica qué responsabilidades conserva un servidor sin entorno gráfico y dibuja el recorrido de una solicitud de lectura.
 
-User Space es el entorno donde se ejecutan procesos ordinarios con permisos restringidos. Explica cómo una aplicación solicita servicios al kernel sin acceder directamente a recursos privilegiados y por qué el aislamiento entre procesos es una propiedad central. **Práctica:** observa procesos de usuario con `ps` y distingue PID, usuario y comando. **Evidencia:** interpreta tres filas sin confundir proceso con hilo.
+**Criterios de aceptación.** Diferencia kernel, distribución y utilidades; interpreta ambos comandos; identifica tres recursos administrados por el kernel.
 
-### 7.1.4 — System Calls
+**Errores frecuentes.** Afirmar que Linux es únicamente el kernel o que `uname -r` identifica la versión de Ubuntu/Debian.
 
-Una system call es la interfaz controlada mediante la cual un proceso solicita una operación al kernel, por ejemplo abrir un archivo o crear un proceso. Distingue la llamada al sistema de una función de biblioteca: la biblioteca puede preparar argumentos y finalmente invocar el mecanismo del kernel. **Práctica:** examina `open`, `read` o `write` en la documentación local con `man 2`. **Evidencia:** describe la secuencia de solicitud, validación y resultado.
+**Comprobación.** ¿Por qué una distribución puede actualizar componentes sin que todos compartan el mismo número de versión?
 
-### 7.1.5 — Procesos
+### 7.1.2 — User Space
 
-Un proceso es una instancia de programa en ejecución con espacio de direcciones, recursos y estado propios. Desarrolla estados, PID, creación y terminación, y diferencia el programa almacenado del proceso activo. **Práctica:** ejecuta `sleep 60 &`, localiza su PID con `ps` y termina únicamente ese proceso de laboratorio. **Evidencia:** registra el cambio de estado y explica por qué el PID identifica la instancia.
+**Propósito y modelo.** User Space es el contexto donde se ejecutan aplicaciones y servicios con privilegios restringidos. Los procesos poseen identidad, permisos y recursos; solicitan operaciones privilegiadas mediante interfaces controladas en vez de manipular directamente el hardware. Namespaces, seccomp y otros mecanismos pueden reforzar el aislamiento, según la plataforma y configuración.
 
-### 7.1.6 — Hilos
+**Ejemplo desarrollado.** Un editor puede leer un documento si los permisos lo permiten, pero no escribe directamente en bloques del dispositivo. Solicita la operación al sistema y recibe un descriptor o un error.
 
-Un hilo es una secuencia de ejecución dentro de un proceso; los hilos de un mismo proceso comparten recursos como el espacio de direcciones, aunque cada uno mantiene su contexto de ejecución. Compara su coste y coordinación con procesos separados, sin afirmar que todos los lenguajes implementan hilos igual. **Práctica:** dibuja un proceso con dos hilos y marca qué recursos comparten y cuáles son propios. **Evidencia:** identifica un riesgo de condición de carrera.
+**Práctica guiada.** Ejecuta `ps -eo pid,user,stat,comm --sort=pid | head`. Interpreta PID, usuario, estado y comando en tres filas. No finalices procesos ajenos a la práctica.
 
-### 7.1.7 — Scheduler
+**Actividad independiente.** Describe qué permisos necesitaría un proceso para leer un archivo privado de otra cuenta y qué controles pueden impedirlo.
 
-El scheduler decide qué tarea ejecutable recibe tiempo de CPU y cuándo ocurre el cambio, sujeto a políticas y prioridades del sistema. Distingue planificación de procesos/hilos de la planificación de trabajos de una aplicación. **Práctica:** observa `top` o `htop` y compara estado, prioridad y uso de CPU de procesos de prueba. **Evidencia:** explica por qué un proceso en espera de I/O no consume CPU continuamente.
+**Criterios de aceptación.** Explica ejecución sin privilegios, interpreta la salida de `ps` y distingue proceso de usuario.
 
-### 7.1.8 — Context Switching
+**Errores frecuentes.** Tratar User Space como una carpeta o asumir que todos los procesos de usuario tienen idénticos permisos.
 
-Un context switch guarda el contexto de una tarea y restaura el de otra para permitir la multiplexación de CPU. Explica que el cambio tiene un coste y puede implicar efectos de caché, pero no debe confundirse con el cambio entre modo usuario y modo kernel. **Práctica:** construye una línea temporal de dos tareas que alternan CPU. **Evidencia:** señala qué estado debe preservarse para reanudar correctamente cada tarea.
+**Comprobación.** ¿Por qué una aplicación solicita al kernel abrir un archivo en lugar de acceder directamente al disco?
 
-### 7.1.9 — Memoria virtual
+### 7.1.3 — Kernel Space
 
-La memoria virtual ofrece a cada proceso un espacio de direcciones lógico que el sistema traduce a memoria física mediante tablas de páginas y mecanismos del procesador. Explica aislamiento, paginación y fallos de página; diferencia memoria virtual de swap, que es solo uno de los mecanismos posibles de respaldo. **Práctica:** consulta `free -h` y `vmstat` si está disponible, sin interpretar swap como memoria RAM adicional equivalente. **Evidencia:** explica una traducción virtual-física de forma conceptual.
+**Propósito y modelo.** Kernel Space es el espacio de direcciones y privilegio administrado por el sistema y el procesador. No es una carpeta, partición física exclusiva ni directorio. El procesador aplica niveles de privilegio y protección de memoria para impedir que un proceso ordinario acceda libremente al núcleo. Una llamada al sistema permite ejecutar una operación controlada en contexto privilegiado; no convierte permanentemente la aplicación en kernel.
+
+**Ejemplo desarrollado.** Al solicitar la creación de un proceso, la aplicación entra por una interfaz del sistema; el kernel valida parámetros, aplica políticas y devuelve un identificador o un error.
+
+**Práctica guiada.** Dibuja User Space y Kernel Space. Añade aplicación, biblioteca, llamada al sistema y controlador. Marca quién inicia la solicitud y quién valida el acceso.
+
+**Actividad independiente.** Explica por qué una vulnerabilidad en código privilegiado puede tener mayor impacto que un fallo aislado en una aplicación sin privilegios.
+
+**Criterios de aceptación.** Diferencia espacio de direcciones y memoria física; explica privilegios, aislamiento y transición controlada.
+
+**Errores frecuentes.** Decir que Kernel Space es una ubicación del disco o que cualquier llamada al sistema concede privilegios administrativos al usuario.
+
+**Comprobación.** ¿Qué propiedad de seguridad se debilitaría si un proceso pudiera escribir arbitrariamente en memoria del kernel?
+
+### 7.1.4 — Procesos
+
+**Propósito y modelo.** Un proceso es una instancia de ejecución con PID, espacio de direcciones, estado, credenciales y recursos asociados. Puede crear procesos hijos y finalizar normalmente o mediante señales. En Linux, la columna STAT de `ps` resume estados como ejecutable, interrumpible, detenido o zombi. Un programa almacenado en disco no es por sí mismo un proceso activo.
+
+**Ejemplo desarrollado.** Al iniciar `sleep 45 &`, la shell crea una instancia en segundo plano. `ps -p PID -o pid,ppid,stat,etime,cmd` permite inspeccionarla, sustituyendo PID por el identificador real de esa sesión.
+
+**Práctica guiada.** En Bash ejecuta `sleep 45 & pid=$!`, consulta `ps -p "$pid" -o pid,ppid,stat,etime,cmd` y termina solo esa instancia con `kill -TERM "$pid"`. Verifica que dejó de aparecer.
+
+**Actividad independiente.** Dibuja la relación padre-hijo entre una shell y el proceso que inicia; explica qué representa PID y PPID.
+
+**Criterios de aceptación.** Diferencia programa y proceso, interpreta PID/PPID/estado y demuestra la terminación controlada del proceso propio.
+
+**Errores frecuentes.** Confundir PID con nombre de archivo o usar `kill -9` como primera opción.
+
+**Comprobación.** ¿Por qué dos instancias del mismo ejecutable tienen PID distintos?
+
+### 7.1.5 — Hilos
+
+**Propósito y modelo.** Un hilo es una unidad de ejecución dentro de un proceso. Los hilos suelen compartir espacio de direcciones y recursos del proceso, pero cada uno mantiene su propio contador de programa, registros y pila. El modelo concreto depende del sistema y del runtime. Compartir memoria facilita cooperación, pero exige sincronización cuando varias tareas acceden a datos mutables.
+
+**Ejemplo desarrollado.** Dos hilos incrementan una variable compartida. Si ambos leen 10 antes de escribir, cada uno calcula 11 y el resultado puede quedar en 11 en vez de 12: leer-modificar-escribir no es necesariamente atómico.
+
+**Práctica guiada.** Dibuja un proceso con dos hilos. Etiqueta memoria y descriptores compartidos, pila individual y contexto de CPU. Representa el intercalado que pierde una actualización.
+
+**Actividad independiente.** Propón una solución mediante mutex u operación atómica e identifica exactamente qué sección debe protegerse.
+
+**Criterios de aceptación.** Identifica recursos compartidos y propios, describe una condición de carrera y justifica un mecanismo de sincronización.
+
+**Errores frecuentes.** Afirmar que cada hilo tiene un espacio de direcciones independiente o que usar varios hilos garantiza paralelismo.
+
+**Comprobación.** ¿Por qué compartir memoria reduce ciertos costes de comunicación y aumenta el riesgo de condiciones de carrera?
+
+### 7.1.6 — Scheduler
+
+**Propósito y modelo.** El scheduler selecciona entre tareas listas para ejecutarse según políticas, prioridades, afinidad y objetivos de equidad o latencia. Una tarea bloqueada esperando I/O no compite igual que una tarea ejecutable. La implementación cambia entre sistemas y versiones; no presentes un algoritmo concreto como universal. Prioridad y nice afectan la planificación, pero no sustituyen el análisis de carga.
+
+**Ejemplo desarrollado.** Un proceso que calcula puede permanecer ejecutable, mientras otro espera una lectura de disco. El segundo aparece en la tabla de procesos, pero no consume CPU continuamente mientras está bloqueado.
+
+**Práctica guiada.** Ejecuta `ps -eo pid,stat,ni,pcpu,comm --sort=-pcpu | head`. Identifica estado, nice y consumo observado. No cambies prioridades durante la práctica.
+
+**Actividad independiente.** Compara una tarea intensiva en CPU y otra limitada por I/O; predice qué recurso limita cada una y qué observarías.
+
+**Criterios de aceptación.** Diferencia ejecutable y bloqueado, interpreta nice de forma básica y explica la competencia por CPU.
+
+**Errores frecuentes.** Confundir scheduler con cron o interpretar una muestra instantánea como medida completa de rendimiento.
+
+**Comprobación.** ¿Qué diferencia existe entre una tarea lista para ejecutar y otra que espera una operación de entrada/salida?
+
+### 7.1.7 — Context Switching
+
+**Propósito y modelo.** Un cambio de contexto guarda el estado necesario para reanudar una tarea —registros, contador de programa, puntero de pila y metadatos— y restaura el de otra. Puede involucrar cambios de espacio de direcciones y efectos en cachés o TLB, por lo que tiene coste. No es sinónimo de cualquier transición entre modo usuario y modo kernel: una llamada al sistema puede regresar al mismo hilo sin cambiar de tarea.
+
+**Ejemplo desarrollado.** La tarea A se ejecuta; una interrupción o decisión de planificación provoca que el kernel guarde su contexto y seleccione B. Más tarde restaura A desde el punto en que quedó suspendida.
+
+**Práctica guiada.** Construye una línea temporal con dos tareas: ejecución de A, interrupción, guardado, selección de B, restauración y reanudación.
+
+**Actividad independiente.** Explica dos costes posibles de cambios de contexto frecuentes y una razón por la que el sistema los necesita.
+
+**Criterios de aceptación.** Identifica el estado que debe preservarse y diferencia cambio de contexto de cambio de modo.
+
+**Errores frecuentes.** Afirmar que cada llamada al sistema produce obligatoriamente un cambio de contexto.
+
+**Comprobación.** ¿Por qué una transición a Kernel Space puede ocurrir sin que cambie el hilo ejecutado?
+
+### 7.1.8 — Memoria virtual
+
+**Propósito y modelo.** La memoria virtual separa las direcciones utilizadas por un proceso de las ubicaciones físicas. El hardware y las tablas de páginas realizan traducciones; la TLB conserva traducciones recientes. Un fallo de página es una excepción que obliga al sistema a resolver una traducción o informar de un acceso inválido; no significa siempre que haya ocurrido swap. Swap es un mecanismo de respaldo, no RAM equivalente.
+
+**Ejemplo desarrollado.** Dos procesos pueden utilizar la misma dirección virtual y referirse a páginas físicas distintas. Esto permite aislamiento y simplifica la asignación de memoria.
+
+**Práctica guiada.** En Linux consulta `free -h`, `vmstat 1 3` y, si está instalado, `pmap $$`. Registra memoria total, disponible, swap y mapa de la shell. No fuerces agotamiento de memoria.
+
+**Actividad independiente.** Dibuja dos traducciones de direcciones virtuales a marcos físicos distintos y describe qué ocurre ante una página no presente.
+
+**Criterios de aceptación.** Diferencia direcciones virtuales/físicas, página/TLB/fallo de página y memoria virtual/swap.
+
+**Errores frecuentes.** Afirmar que memoria virtual es lo mismo que swap o que todo fallo de página representa un error del programa.
+
+**Comprobación.** ¿Qué ventaja de aislamiento se obtiene al mantener espacios de direcciones separados?
+
+### 7.1.9 — Sistema de archivos
+
+**Propósito y modelo.** Un sistema de archivos organiza directorios, metadatos, asignación de bloques y operaciones sobre datos persistentes. En Linux, VFS ofrece una interfaz común a diferentes sistemas de archivos. Un nombre se asocia a un inode con metadatos; el contenido ocupa bloques. Montar integra el árbol de un volumen en un punto del espacio de nombres. Enlaces duros y simbólicos tienen semánticas distintas.
+
+**Ejemplo desarrollado.** Dos nombres pueden referirse al mismo inode mediante enlaces duros; un enlace simbólico almacena una ruta que se resuelve al acceder. Eliminar un nombre no destruye necesariamente los datos si quedan otros enlaces o un proceso mantiene el archivo abierto.
+
+**Práctica guiada.** Crea un archivo en `~/lab/etapa7`, consulta `stat`, crea un enlace simbólico con `ln -s` y compara con `ls -li`. Inspecciona montajes con `findmnt`.
+
+**Actividad independiente.** Explica la diferencia entre espacio libre (`df`) y uso de directorios (`du`) y plantea por qué pueden diferir.
+
+**Criterios de aceptación.** Identifica inode, nombre, montaje y diferencia entre enlaces; interpreta las salidas de las herramientas.
+
+**Errores frecuentes.** Tratar un directorio como dispositivo físico independiente o asumir que borrar un nombre siempre destruye inmediatamente los datos.
+
+**Comprobación.** ¿Por qué un archivo puede seguir ocupando espacio después de eliminar su nombre visible si un proceso lo mantiene abierto?
 
 ### 7.1.10 — Drivers
 
-Un driver permite que el sistema operativo controle un dispositivo mediante una interfaz definida. Distingue controladores del kernel, módulos cargables y software de usuario; su disponibilidad y modelo varían por sistema operativo y dispositivo. **Práctica:** en Linux consulta `lsmod` y `lspci -k` si las herramientas están instaladas. **Evidencia:** relaciona un dispositivo con el controlador asociado sin descargar ni modificar módulos.
+**Propósito y modelo.** Un driver traduce operaciones del sistema a interacciones específicas con un dispositivo. Puede ejecutarse en kernel o en espacio de usuario según la arquitectura. No debe confundirse con firmware: el firmware se ejecuta en el dispositivo/controlador, mientras el driver es software del sistema anfitrión. La instalación debe provenir de fuentes confiables y ser compatible con hardware y sistema.
 
-### 7.1.11 — Sistema de archivos
+**Ejemplo desarrollado.** En Linux, `lspci -k` puede mostrar el controlador asociado a un dispositivo PCI y módulos disponibles. Esa asociación no demuestra por sí sola que todas las funciones del dispositivo trabajen correctamente.
 
-El sistema de archivos organiza nombres, directorios, metadatos y bloques persistentes sobre un dispositivo o volumen. Compara estructura lógica con el soporte físico y explica montaje, permisos, enlaces y journaling a nivel introductorio. **Práctica:** crea un directorio y un archivo temporal, inspecciona tipo y metadatos con `stat` y elimínalos al finalizar. **Evidencia:** diferencia nombre, inode y contenido.
+**Práctica guiada.** Ejecuta `lspci -k` si está disponible y `lsmod` para observar módulos cargados. Relaciona un dispositivo con el controlador informado, sin descargar ni modificar módulos.
+
+**Actividad independiente.** Explica las diferencias entre driver, módulo del kernel y firmware utilizando una tarjeta de red como ejemplo.
+
+**Criterios de aceptación.** Describe el papel del controlador, distingue driver de firmware y obtiene información de solo lectura.
+
+**Errores frecuentes.** Descargar módulos al azar, asumir que todo driver es un módulo cargable o confundir el nombre comercial del dispositivo con el controlador activo.
+
+**Comprobación.** ¿Qué riesgo puede introducir un controlador ejecutado con privilegios de kernel?
+
+### 7.1.11 — System Calls
+
+**Propósito y modelo.** Una llamada al sistema es un punto de entrada definido por la ABI para solicitar operaciones como crear procesos, leer archivos o comunicarse. Una función de biblioteca puede preparar argumentos y llamar al mecanismo del kernel; por ello, una función como printf no equivale necesariamente a una única system call. El kernel valida parámetros y permisos, realiza o rechaza la operación y devuelve un resultado. En interfaces POSIX, muchos errores se reflejan mediante valores de retorno y errno.
+
+**Ejemplo desarrollado.** `open()` solicita abrir una ruta y, si tiene éxito, devuelve un descriptor. `read()` utiliza ese descriptor para solicitar bytes. La aplicación debe comprobar retorno, error y fin de archivo.
+
+**Práctica guiada.** Consulta `man 2 open`, `man 2 read` y `man 2 write`. Si existe `strace`, ejecuta `strace -e trace=openat,read,write echo prueba` y relaciona llamadas con la salida.
+
+**Actividad independiente.** Describe el flujo abrir-leer-cerrar e identifica errores posibles por permisos, ruta o descriptor inválido.
+
+**Criterios de aceptación.** Diferencia API de biblioteca y llamada al sistema; explica descriptor, retorno y errno.
+
+**Errores frecuentes.** Afirmar que toda función de biblioteca invoca una llamada al sistema o que una llamada exitosa garantiza que se escribieron todos los bytes solicitados.
+
+**Comprobación.** ¿Por qué read puede devolver menos bytes de los solicitados sin que exista un error?
 
 ### 7.1.12 — IPC (comunicación entre procesos)
 
-La comunicación entre procesos (IPC) permite intercambiar datos o sincronizar tareas mediante mecanismos como pipes, sockets, memoria compartida, colas y señales. Compara comunicación local y de red, y explica por qué cada mecanismo tiene diferentes garantías y costes. **Práctica:** conecta `printf` con `grep` mediante una pipe y describe el flujo entre procesos. **Evidencia:** identifica productor, consumidor y canal.
+**Propósito y modelo.** IPC agrupa mecanismos como pipes anónimas o con nombre, colas de mensajes, memoria compartida, señales y sockets. Cada mecanismo ofrece propiedades diferentes: flujo de bytes, mensajes delimitados, notificación, sincronización o comunicación local/remota. La elección depende del volumen, patrón de acceso, persistencia, controles de seguridad y complejidad de coordinación. Compartir memoria suele exigir sincronización adicional.
+
+**Ejemplo desarrollado.** En `printf 'uno\\ndos\\n' | grep dos`, el shell conecta stdout del primer proceso con stdin del segundo mediante una pipe. El productor no necesita conocer la implementación del consumidor.
+
+**Práctica guiada.** Ejecuta el pipeline anterior y luego sustituye el filtro por `wc -l`. Identifica productor, consumidor, canal y resultado. Investiga `set -o pipefail` para comprender cómo se propagan errores en pipelines.
+
+**Actividad independiente.** Selecciona un mecanismo IPC para notificar un evento, transferir un flujo de texto y compartir un bloque grande de datos. Justifica cada elección.
+
+**Criterios de aceptación.** Describe tres mecanismos y explica una ventaja y limitación de cada uno; distingue comunicación de sincronización.
+
+**Errores frecuentes.** Considerar una pipe equivalente a un archivo persistente o asumir que memoria compartida garantiza acceso concurrente seguro.
+
+**Comprobación.** ¿Por qué procesos que comparten memoria necesitan coordinar el acceso a datos mutables?
 
 ### 7.1.13 — Concurrencia
 
-La concurrencia describe la composición de varias tareas cuyo progreso se solapa; puede ocurrir incluso en un único núcleo mediante intercalado. Explica interleavings, secciones críticas, exclusión mutua y condiciones de carrera con un ejemplo de contador compartido. **Práctica:** construye una secuencia de dos hilos que actualizan el mismo valor y marca dónde podría perderse una actualización. **Evidencia:** propone una sincronización adecuada.
+**Propósito y modelo.** Concurrencia describe tareas cuyo progreso se intercala o solapa; puede existir incluso con un único núcleo. Una condición de carrera ocurre cuando el resultado depende de un orden de ejecución no controlado. Las secciones críticas protegen estado compartido mediante mutex, semáforos, monitores, operaciones atómicas o diseño sin estado compartido. La sincronización incorrecta puede causar interbloqueo o inanición.
+
+**Ejemplo desarrollado.** Dos tareas ejecutan contador = contador + 1. La operación implica leer, calcular y escribir; si ambas leen el mismo valor antes de escribir, una actualización puede perderse.
+
+**Práctica guiada.** Construye una tabla de intercalado de dos tareas sobre un contador inicial de cero. Anota lecturas y escrituras y calcula el resultado de cada orden.
+
+**Actividad independiente.** Diseña una solución con exclusión mutua e identifica qué operaciones quedan dentro de la sección crítica. Añade un posible riesgo de interbloqueo si se utilizan dos locks.
+
+**Criterios de aceptación.** Define concurrencia, identifica una condición de carrera, propone sincronización y explica un riesgo introducido por locks.
+
+**Errores frecuentes.** Confundir concurrencia con paralelismo o suponer que toda línea de código de alto nivel es atómica.
+
+**Comprobación.** ¿Puede existir una condición de carrera en un equipo con un solo núcleo? Justifica.
 
 ### 7.1.14 — Paralelismo
 
-El paralelismo ocurre cuando varias tareas se ejecutan simultáneamente en recursos de cómputo distintos, por ejemplo varios núcleos. Contrástalo con concurrencia y analiza límites como dependencias, contención y coste de coordinación. **Práctica:** clasifica tres escenarios (servidor de solicitudes, descarga concurrente y cálculo dividido entre núcleos) indicando si hay concurrencia, paralelismo o ambos. **Evidencia:** justifica cada clasificación.
+**Propósito y modelo.** El paralelismo ocurre cuando varias operaciones se ejecutan simultáneamente en recursos distintos, como núcleos o dispositivos especializados. Para acelerar una tarea, el trabajo debe poder dividirse, el coste de coordinación debe ser razonable y las dependencias secuenciales no deben dominar. La ley de Amdahl explica por qué la parte secuencial limita la aceleración máxima. Paralelismo no elimina la necesidad de sincronización.
+
+**Ejemplo desarrollado.** Procesar cuatro bloques independientes en cuatro núcleos puede reducir el tiempo frente a una ejecución secuencial, pero preparación, combinación de resultados y contención de memoria añaden costes.
+
+**Práctica guiada.** Clasifica: un servidor que alterna solicitudes en un núcleo; un cálculo dividido entre cuatro núcleos; y una aplicación que atiende solicitudes concurrentes mientras realiza cálculos paralelos. Justifica la clasificación.
+
+**Actividad independiente.** Propón una tarea divisible, identifica dependencias y estima qué fracción debe permanecer secuencial.
+
+**Criterios de aceptación.** Diferencia concurrencia y paralelismo, reconoce límites de escalabilidad y explica por qué añadir núcleos no garantiza aceleración lineal.
+
+**Errores frecuentes.** Usar ambos términos como sinónimos o asumir que cualquier aplicación multihilo ejecuta simultáneamente todos sus hilos.
+
+**Comprobación.** ¿Qué efecto tiene una fracción secuencial grande sobre la aceleración máxima?
 
 ## 7.2 — Linux
 
