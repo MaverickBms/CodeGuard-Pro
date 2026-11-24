@@ -267,3 +267,8 @@ Se añadieron encabezados individuales para las 212 lecciones oficiales de las e
 ### Continuidad ASCENSO 3.1 — etapas 14 a 16
 
 Se incorporaron encabezados individuales para las 157 lecciones oficiales de las etapas 14–16: etapa 14 (58), etapa 15 (53) y etapa 16 (46). El desglose organiza los contenidos de Java/Spring Boot, Node.js/NestJS, PHP/Laravel y .NET según el roadmap. Es base de trabajo activa; no equivale a ejecución de laboratorios, aprobación editorial ni publicación.
+
+
+### Continuidad ASCENSO 3.1 — etapas 17 a 19
+
+Se incorporaron encabezados individuales para las 228 lecciones oficiales de las etapas 17–19: etapa 17 (61), etapa 18 (100) y etapa 19 (67). El desglose cubre calidad y testing, arquitectura y diseño, y DevOps/infraestructura según el roadmap. Es base de trabajo activa; no se declara ejecución de pruebas, pipelines ni despliegues.
