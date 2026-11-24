@@ -640,6 +640,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué la MAC de destino de una trama suele corresponder al siguiente salto local?
 
+**Laboratorio de profundización — Lectura y aprendizaje de MAC.**
+
+1. Registra la MAC de una interfaz de laboratorio con `ip link` o `getmac`. 2. Distingue dirección unicast, multicast y broadcast. 3. Simula una tabla MAC de switch con tres hosts. 4. Explica por qué la MAC de destino cambia al cruzar un router.
+
+**Evidencia esperada.** El estudiante identifica formato, ámbito de capa 2 y función de la tabla de conmutación.
+
+**Seguridad y límites.** No publicar MAC reales de equipos de terceros ni manipular tablas ARP/MAC productivas.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
+
 ### 8.3.2 — IPv4
 
 **Propósito y modelo.** IPv4 utiliza direcciones de 32 bits representadas normalmente en cuatro octetos decimales. La dirección y la máscara determinan la porción de red y host; el enrutamiento utiliza prefijos. Direcciones privadas, públicas, loopback, link-local y reservadas tienen alcances distintos.
@@ -655,6 +665,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Asumir que toda dirección no privada es enrutable globalmente o usar rangos de documentación en producción.
 
 **Comprobación.** ¿Qué información aporta el prefijo junto a una dirección IPv4?
+
+**Laboratorio de profundización — Plan de direccionamiento IPv4.**
+
+1. Selecciona un bloque privado RFC1918 para un laboratorio. 2. Asigna IP, máscara, gateway y DNS a cuatro hosts. 3. Comprueba que no existan duplicados. 4. Determina si dos hosts están en la misma subred.
+
+**Evidencia esperada.** La asignación utiliza rangos privados correctos y cada host tiene una configuración coherente.
+
+**Seguridad y límites.** No reutilizar direcciones de redes reales sin autorización ni asumir que una IP privada es única globalmente.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
 
 ### 8.3.3 — IPv6
 
@@ -672,6 +692,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué IPv6 utiliza multicast y Neighbor Discovery en lugar de broadcast y ARP?
 
+**Laboratorio de profundización — Lectura y planificación IPv6.**
+
+1. Identifica dirección global unicast, link-local y loopback en ejemplos. 2. Expande y comprime direcciones IPv6. 3. Diseña una subred /64 de laboratorio. 4. Explica SLAAC y DHCPv6 a nivel conceptual.
+
+**Evidencia esperada.** La notación se comprime correctamente y se distinguen tipos de dirección y alcance.
+
+**Seguridad y límites.** No tratar IPv6 como una extensión textual de IPv4 ni asumir que NAT es requisito de seguridad.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
+
 ### 8.3.4 — IP pública
 
 **Propósito y modelo.** Una dirección IP pública es globalmente enrutable en el contexto de Internet, sujeta a asignación y políticas de operadores. No garantiza que un servicio sea alcanzable: pueden existir filtros, NAT, firewalls, rutas ausentes o restricciones del proveedor. La geolocalización IP es aproximada y no identifica con precisión a una persona.
@@ -687,6 +717,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Confundir IP pública con IP fija o atribuir identidad personal precisa mediante geolocalización.
 
 **Comprobación.** ¿Qué factores, además de la dirección pública, determinan si un servicio puede recibir conexiones?
+
+**Laboratorio de profundización — Identificación de exposición pública.**
+
+1. Diferencia dirección asignada por ISP, dirección de interfaz local y dirección observada externamente. 2. Explica CGNAT y NAT doméstico. 3. Diseña un inventario de activos públicos de una organización ficticia. 4. Define cómo verificar titularidad y autorización.
+
+**Evidencia esperada.** Se diferencia dirección pública enrutable, IP privada y dirección compartida por CGNAT.
+
+**Seguridad y límites.** No consultar ni escanear activos públicos ajenos sin autorización explícita.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
 
 ### 8.3.5 — IP privada
 
@@ -704,6 +744,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué dos redes privadas con el mismo prefijo pueden impedir una VPN site-to-site sencilla?
 
+**Laboratorio de profundización — Clasificación de rangos privados.**
+
+1. Identifica los rangos RFC1918 10/8, 172.16/12 y 192.168/16. 2. Clasifica direcciones de ejemplo dentro y fuera de esos rangos. 3. Explica por qué direcciones privadas no se enrutan globalmente. 4. Diseña un plan sin solapamientos entre sedes.
+
+**Evidencia esperada.** Las direcciones se clasifican correctamente y el plan evita solapamiento de subredes.
+
+**Seguridad y límites.** No asumir que cualquier IP no pública pertenece a RFC1918; existen otros rangos especiales.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
+
 ### 8.3.6 — Máscaras
 
 **Propósito y modelo.** La máscara IPv4 identifica qué bits de una dirección pertenecen al prefijo de red y cuáles al identificador de host. Puede escribirse en decimal punteado o como longitud CIDR. La operación AND bit a bit entre IP y máscara obtiene la dirección de red.
@@ -719,6 +769,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Contar bits desde cero o aplicar la regla de dos direcciones reservadas sin considerar casos especiales.
 
 **Comprobación.** ¿Qué significa que una máscara tenga 26 bits a uno consecutivos?
+
+**Laboratorio de profundización — Cálculo de red y broadcast.**
+
+1. Convierte máscaras entre decimal punteado y prefijo. 2. Para tres direcciones calcula ID de red, primer/último host y broadcast cuando aplique. 3. Explica la máscara /31 y /32 en contextos específicos. 4. Verifica los cálculos con una calculadora de subred independiente.
+
+**Evidencia esperada.** Los cálculos son consistentes con el prefijo y se reconocen excepciones como /31 y /32.
+
+**Seguridad y límites.** No aplicar reglas simplificadas de hosts utilizables a todos los prefijos sin considerar el contexto.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
 
 ### 8.3.7 — Subnetting
 
@@ -736,6 +796,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué cambia en una subred cuando el prefijo pasa de /24 a /26?
 
+**Laboratorio de profundización — División de una red en subredes.**
+
+1. Divide un bloque privado en cuatro subredes de igual tamaño. 2. Calcula prefijo, rango y broadcast. 3. Asigna una subred por área. 4. Justifica por qué cada segmento requiere su propio gateway.
+
+**Evidencia esperada.** Las subredes no se solapan y el tamaño de cada bloque cubre los hosts requeridos.
+
+**Seguridad y límites.** No utilizar bloques que se superpongan con rutas existentes de VPN o LAN.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
+
 ### 8.3.8 — CIDR
 
 **Propósito y modelo.** CIDR representa redes mediante una dirección y un prefijo de longitud variable, evitando depender de clases A/B/C. Permite agregación de rutas y asignación más flexible. La selección de ruta utiliza el prefijo más largo que coincide con el destino.
@@ -751,6 +821,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Confundir número de hosts con total de direcciones o resumir rangos no contiguos en un prefijo demasiado amplio.
 
 **Comprobación.** ¿Por qué un router elige una ruta /25 frente a una ruta /24 que también coincide?
+
+**Laboratorio de profundización — Agregación y prefijos CIDR.**
+
+1. Interpreta prefijos /20, /24, /27 y /30. 2. Calcula direcciones totales y tamaño de bloque. 3. Agrupa redes contiguas solo cuando comparten alineación y límites correctos. 4. Explica cómo la agregación reduce entradas de routing.
+
+**Evidencia esperada.** El cálculo respeta alineación de prefijos y evita anunciar rangos que no pertenecen al diseño.
+
+**Seguridad y límites.** No agregar rutas si ello incluye direcciones de otra organización o segmento.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
 
 ### 8.3.9 — VLSM
 
@@ -768,6 +848,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué conviene asignar primero la subred de mayor tamaño?
 
+**Laboratorio de profundización — Plan de direccionamiento por demanda.**
+
+1. Recibe cuatro áreas con distintos números de hosts. 2. Ordena requerimientos de mayor a menor. 3. Asigna bloques VLSM de tamaño mínimo suficiente. 4. Comprueba alineación, rangos y ausencia de solapamiento.
+
+**Evidencia esperada.** Cada subred satisface capacidad requerida con desperdicio razonable y no se solapa con las demás.
+
+**Seguridad y límites.** Documentar reserva para crecimiento y no asignar rangos en conflicto con infraestructura existente.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
+
 ### 8.3.10 — Gateway
 
 **Propósito y modelo.** En una red IP, el gateway por defecto es el siguiente salto usado cuando la tabla de rutas no contiene una ruta más específica. Debe ser alcanzable por una interfaz local y pertenecer a un segmento adecuado. Un host puede tener varios gateways o rutas según la política y el sistema operativo.
@@ -783,6 +873,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Configurar gateway fuera del enlace local o creer que el gateway es siempre un servidor DNS.
 
 **Comprobación.** ¿Cómo decide un host si debe enviar un paquete directamente o entregarlo al gateway?
+
+**Laboratorio de profundización — Selección del siguiente salto.**
+
+1. Configura un ejemplo con dos subredes y un router. 2. Determina cuándo el host envía directamente al destino y cuándo al gateway. 3. Relaciona IP del gateway y MAC resuelta por ARP o Neighbor Discovery. 4. Explica qué falla si el gateway es incorrecto.
+
+**Evidencia esperada.** La decisión local/remota es correcta y se distingue gateway IP de MAC del siguiente salto.
+
+**Seguridad y límites.** No modificar gateway real de una interfaz compartida.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
 
 ### 8.3.11 — Broadcast
 
@@ -800,6 +900,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué IPv6 utiliza multicast en lugar de broadcast?
 
+**Laboratorio de profundización — Alcance de broadcast IPv4.**
+
+1. Calcula la dirección de broadcast de tres subredes. 2. Distingue broadcast limitado y dirigido. 3. Explica por qué routers normalmente no reenvían broadcast IPv4 dirigido. 4. Compara broadcast Ethernet con multicast.
+
+**Evidencia esperada.** El estudiante calcula el broadcast correcto y diferencia su alcance de multicast y unicast.
+
+**Seguridad y límites.** No generar tormentas de broadcast ni pruebas de flooding en redes productivas.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
+
 ### 8.3.12 — ARP
 
 **Propósito y modelo.** ARP resuelve una dirección IPv4 de siguiente salto a una dirección MAC en un enlace local. Las solicitudes suelen difundirse en el segmento y las respuestas identifican la MAC asociada. ARP no atraviesa routers como una consulta de extremo a extremo; cada enlace tiene su propio contexto.
@@ -815,6 +925,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Suponer que ARP resuelve nombres de dominio o que la MAC del destino remoto se aprende en la LAN de origen.
 
 **Comprobación.** ¿Qué dirección MAC consulta un host cuando el destino IP está fuera de su subred?
+
+**Laboratorio de profundización — Resolución IPv4 a MAC.**
+
+1. Inspecciona la caché ARP/neighbor de una VM con `ip neigh` o `arp -a`. 2. Explica solicitud broadcast y respuesta unicast. 3. Distingue ARP para destino local y para gateway remoto. 4. Describe riesgo de suplantación ARP y mitigaciones de red.
+
+**Evidencia esperada.** Se explica correctamente la resolución de vecino y se identifica el riesgo de envenenamiento ARP.
+
+**Seguridad y límites.** No ejecutar ARP spoofing ni envenenamiento de caché fuera de un laboratorio aislado y autorizado.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
 
 ### 8.3.13 — DHCP
 
@@ -834,6 +954,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 ## 8.4 — Protocolos
 
+
+**Laboratorio de profundización — Ciclo DORA y reservas.**
+
+1. Dibuja Discover, Offer, Request y Acknowledge. 2. Identifica servidor, relay, scope, lease y reserva. 3. Analiza un caso sintético de pool agotado. 4. Explica riesgos de servidor DHCP no autorizado y mitigaciones.
+
+**Evidencia esperada.** El flujo DORA está ordenado y se diferencian asignación dinámica, reserva y configuración estática.
+
+**Seguridad y límites.** No instalar servidores DHCP no autorizados en una LAN real ni cambiar el servidor de producción.
+
+**Registro sugerido.** Conserva tabla de direccionamiento, cálculos, supuestos y verificación independiente. Utiliza exclusivamente redes ficticias o aisladas; no marques la práctica como ejecutada sin evidencia real.
 ### 8.4.1 — TCP
 
 **Propósito y modelo.** TCP ofrece un flujo de bytes orientado a conexión con entrega ordenada, detección de pérdida, retransmisión y control de flujo/congestión. Utiliza puertos para multiplexar aplicaciones, números de secuencia y ACK. No conserva límites de mensajes de la aplicación.
