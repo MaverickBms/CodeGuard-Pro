@@ -43,35 +43,131 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 #### 10.1.1 — Qué es NoSQL
 
-NoSQL agrupa familias de gestores no relacionales o no exclusivamente relacionales, diseñados para modelos de datos y patrones de acceso diversos. No significa ausencia de consultas ni de esquemas. **Práctica:** describe una aplicación con datos transaccionales y documentos flexibles. **Evidencia:** identifica qué requisito justificaría evaluar un motor NoSQL.
+**Propósito y modelo.** NoSQL agrupa familias de bases de datos no relacionales o no limitadas al modelo tabular clásico. Incluye documentos, clave-valor, columna ancha y grafos. Cada familia optimiza patrones de acceso distintos; NoSQL no significa ausencia de esquema, ausencia de SQL en sentido estricto ni escalabilidad automática.
+
+**Ejemplo desarrollado.** Un catálogo de productos con atributos variables puede encajar en documentos; un carrito efímero puede usar clave-valor; relaciones sociales complejas pueden beneficiarse de grafos. La elección depende de consultas, consistencia, operación y volumen.
+
+**Práctica guiada.** Clasifica cinco escenarios de aplicación según patrón de lectura/escritura, estructura, relaciones y latencia. Justifica una familia candidata y una alternativa.
+
+**Actividad independiente.** Escribe una decisión arquitectónica breve para un sistema de telemetría, indicando por qué una base relacional o NoSQL podría ser adecuada.
+
+**Criterios de aceptación.** Define NoSQL sin generalizaciones y distingue al menos cuatro modelos de datos.
+
+**Errores frecuentes.** Elegir NoSQL solo porque se espera mucho tráfico o asumir que no requiere modelado.
+
+**Comprobación.** ¿Qué patrón de acceso debería guiar la elección de una base NoSQL?
 
 #### 10.1.2 — Diferencias SQL vs. NoSQL
 
-La comparación SQL/NoSQL no es una oposición absoluta: contrasta modelo, consistencia, consultas, transacciones, escalado, operación y madurez del ecosistema. **Práctica:** compara MySQL, MongoDB y Redis para tres cargas concretas. **Evidencia:** presenta una matriz de requisitos y justifica por qué no elegirías un motor solo por popularidad.
+**Propósito y modelo.** Los DBMS relacionales priorizan relaciones explícitas, restricciones y SQL estandarizado con variaciones por motor. Las familias NoSQL ofrecen modelos y APIs diversos, a menudo con diseño orientado a consultas y escalado distribuido. No existe una superioridad universal: transacciones, consistencia y consultas complejas dependen del producto.
+
+**Ejemplo desarrollado.** Un sistema contable puede beneficiarse de restricciones relacionales y transacciones; un catálogo con atributos heterogéneos puede aprovechar documentos. Ambos escenarios requieren validación, índices, respaldo y seguridad.
+
+**Práctica guiada.** Compara un mismo dominio de pedidos en modelo relacional y documental. Identifica duplicación, joins, actualización y consistencia.
+
+**Actividad independiente.** Redacta una matriz de decisión con estructura, transacciones, escalabilidad, consultas, latencia, operación y costo.
+
+**Criterios de aceptación.** Contrasta características reales y justifica elección por requisitos.
+
+**Errores frecuentes.** Afirmar que NoSQL no soporta transacciones o que SQL no puede escalar horizontalmente.
+
+**Comprobación.** ¿Qué requisitos del dominio pueden hacer preferible un modelo relacional aunque el volumen de datos sea alto?
 
 #### 10.1.3 — Modelos de almacenamiento
 
-Las familias habituales incluyen documentos, clave-valor, columnas anchas, grafos y series temporales; cada una optimiza patrones de acceso distintos. **Práctica:** asigna catálogo de productos, caché, relaciones sociales y métricas a una familia candidata. **Evidencia:** explica estructura, consulta dominante y limitación de cada elección.
+**Propósito y modelo.** Las principales familias NoSQL incluyen documentos (JSON/BSON), clave-valor, columna ancha y grafos. También existen motores de series temporales, búsqueda y almacenamiento de objetos, con solapamientos funcionales. El modelo determina cómo se organizan datos, índices y operaciones.
+
+**Ejemplo desarrollado.** Redis es clave-valor con estructuras de datos; MongoDB es documental; Cassandra es columna ancha; Neo4j es grafo. Cada producto posee capacidades y límites específicos que deben revisarse en su documentación.
+
+**Práctica guiada.** Asocia un producto conocido con su modelo principal y un patrón de consulta característico. Identifica al menos un caso donde la categoría no explica todas las capacidades.
+
+**Actividad independiente.** Diseña almacenamiento para sesiones, catálogo, red de dependencias y métricas temporales; justifica modelo por patrón de acceso.
+
+**Criterios de aceptación.** Distingue modelos y evita clasificar todos los sistemas no relacionales como equivalentes.
+
+**Errores frecuentes.** Confundir columna ancha con columnas de una tabla relacional o asumir que todo documento es JSON sin esquema.
+
+**Comprobación.** ¿Por qué el modelo clave-valor puede ser eficiente para búsquedas por identificador, pero limitado para consultas ad hoc complejas?
 
 #### 10.1.4 — Consistencia
 
-Consistencia describe qué valores observan las lecturas después de escrituras concurrentes o distribuidas; puede variar por operación, réplica y configuración. **Práctica:** dibuja una escritura y una lectura sobre nodo primario y réplica con retraso. **Evidencia:** distingue consistencia fuerte, eventual y garantías configurables sin asumir que todo NoSQL es eventual.
+**Propósito y modelo.** Consistencia en sistemas distribuidos puede referirse a garantías de lectura/escritura entre réplicas y también a reglas de integridad del dominio; son conceptos relacionados pero no idénticos. Strong consistency, eventual consistency y consistencia causal describen comportamientos distintos. Deben especificarse por operación y producto.
+
+**Ejemplo desarrollado.** Tras escribir en una réplica, una lectura desde otra puede devolver un valor anterior bajo consistencia eventual. La aplicación debe decidir si tolera ese retraso o necesita confirmación fuerte para una operación crítica.
+
+**Práctica guiada.** Analiza una secuencia de escritura y lecturas sobre dos réplicas. Identifica qué resultado sería permitido por consistencia eventual y cuál requeriría garantía más fuerte.
+
+**Actividad independiente.** Clasifica operaciones de una tienda como tolerantes a retraso (contador de vistas) o sensibles (saldo, inventario) y define requisitos de consistencia.
+
+**Criterios de aceptación.** Distingue consistencia de dominio y consistencia distribuida; explica eventual consistency con un escenario.
+
+**Errores frecuentes.** Tratar eventual consistency como pérdida de datos o asumir que una confirmación de escritura garantiza visibilidad inmediata en todas las réplicas.
+
+**Comprobación.** ¿Qué decisión de producto debe tomarse cuando una lectura puede observar datos temporalmente desactualizados?
 
 #### 10.1.5 — Disponibilidad
 
-Disponibilidad se refiere a la capacidad de responder solicitudes, incluso ante fallos parciales, pero una respuesta disponible puede tener datos desactualizados o rechazar escrituras. **Práctica:** analiza un escenario donde se pierde comunicación con una réplica. **Evidencia:** define qué operación priorizarías y qué degradación aceptarías.
+**Propósito y modelo.** Disponibilidad describe la capacidad de un sistema para responder dentro de condiciones y tiempos definidos. En sistemas distribuidos se busca continuidad ante fallos de nodos o zonas mediante replicación, detección, failover y recuperación. Alta disponibilidad no equivale a cero pérdida de datos ni elimina mantenimiento.
+
+**Ejemplo desarrollado.** Tres nodos distribuidos en dominios de fallo pueden tolerar ciertos fallos de nodo, pero no necesariamente una interrupción de red entre zonas o un error lógico replicado a todos los nodos.
+
+**Práctica guiada.** Dibuja una arquitectura de tres nodos y marca qué fallos tolera y cuáles no. Define RTO y RPO para el servicio.
+
+**Actividad independiente.** Diseña plan de continuidad para un servicio de catálogo y uno de pagos, diferenciando disponibilidad requerida y consistencia de datos.
+
+**Criterios de aceptación.** Define disponibilidad, identifica dominios de fallo y diferencia RTO de RPO.
+
+**Errores frecuentes.** Considerar réplicas como backups o asumir que failover automático resuelve corrupción lógica.
+
+**Comprobación.** ¿Por qué una réplica no sustituye a una copia de seguridad independiente?
 
 #### 10.1.6 — Escalabilidad
 
-La escalabilidad puede ser vertical (más recursos en un nodo) u horizontal (más nodos y distribución de datos/trabajo). Ambas tienen límites y costes operativos. **Práctica:** estima qué ocurre al duplicar lecturas, escrituras y tamaño de datos en un sistema. **Evidencia:** propone una estrategia y señala el cuello de botella que debe medirse.
+**Propósito y modelo.** Escalabilidad es la capacidad de mantener niveles de servicio al aumentar carga o datos. Escalado vertical añade recursos a un nodo; horizontal distribuye carga entre nodos. Ambos tienen límites y costos. El diseño debe identificar cuellos de botella, particionamiento, consistencia, replicación y complejidad operativa.
+
+**Ejemplo desarrollado.** Aumentar RAM puede acelerar un motor hasta que el cuello de botella sea CPU o I/O. Añadir nodos puede aumentar capacidad de lectura, pero requiere distribuir datos y coordinar escrituras.
+
+**Práctica guiada.** Analiza una curva sintética de latencia y throughput bajo carga creciente. Identifica saturación y plantea si conviene escalar vertical u horizontalmente.
+
+**Actividad independiente.** Diseña una estrategia para un servicio con crecimiento de 10x, definiendo métricas, límites y umbrales de escalado.
+
+**Criterios de aceptación.** Diferencia escalado vertical/horizontal y relaciona estrategia con patrón de carga.
+
+**Errores frecuentes.** Añadir nodos sin resolver consultas ineficientes o confundir replicación con particionamiento.
+
+**Comprobación.** ¿Qué complejidad adicional introduce el escalado horizontal en comparación con aumentar recursos de un único nodo?
 
 #### 10.1.7 — CAP Theorem
 
-El teorema CAP trata el compromiso entre consistencia y disponibilidad durante una partición de red en un sistema distribuido; no significa que cualquier base de datos solo pueda elegir dos propiedades en todo momento. **Práctica:** analiza un clúster dividido en dos grupos que no pueden comunicarse. **Evidencia:** describe la decisión de cada lado y cuándo se rechazaría una operación.
+**Propósito y modelo.** El teorema CAP describe una elección bajo partición de red en sistemas distribuidos: no se puede garantizar simultáneamente consistencia fuerte y disponibilidad total ante una partición, manteniendo tolerancia a particiones. En operación real, la partición es un evento que debe contemplarse; las categorías CP/AP simplifican decisiones de diseño y no describen por sí solas todos los modos del producto.
+
+**Ejemplo desarrollado.** Ante pérdida de comunicación entre réplicas, un sistema CP puede rechazar o demorar algunas operaciones para preservar consistencia; uno AP puede aceptar operaciones localmente y reconciliar después, exponiendo lecturas divergentes temporalmente.
+
+**Práctica guiada.** Dibuja tres nodos separados por una partición y evalúa qué operaciones se aceptan en cada política. Distingue tolerancia a partición de alta disponibilidad general.
+
+**Actividad independiente.** Clasifica operaciones de un sistema de inventario y mensajería según preferencia ante partición, justificando impacto de negocio.
+
+**Criterios de aceptación.** Enuncia CAP con la condición de partición y evita afirmar que el sistema siempre elige solo dos propiedades en condiciones normales.
+
+**Errores frecuentes.** Interpretar CAP como una clasificación permanente de producto o confundir consistencia con disponibilidad de servicio HTTP.
+
+**Comprobación.** ¿Por qué CAP se analiza específicamente cuando existe una partición de red?
 
 #### 10.1.8 — Denormalización
 
-La denormalización introduce duplicación o estructuras precalculadas para optimizar lecturas, a cambio de complejidad de actualización y riesgo de divergencia. **Práctica:** modela un pedido con datos del cliente embebidos como snapshot. **Evidencia:** identifica qué dato se copia, cuándo se actualiza y qué fuente es autoritativa.
+**Propósito y modelo.** Denormalización introduce duplicación o estructuras derivadas para optimizar lecturas, reducir joins o adaptar datos a un patrón de consulta. Debe existir una fuente de verdad, estrategia de actualización, reconciliación y monitoreo de divergencias. No es una solución inicial a consultas lentas sin medición.
+
+**Ejemplo desarrollado.** Un documento de pedido puede incluir una instantánea de dirección y nombre del cliente al momento de compra, aunque esos datos existan en una entidad separada. La duplicación preserva contexto histórico y evita lecturas adicionales.
+
+**Práctica guiada.** Compara un modelo normalizado y uno desnormalizado para un reporte de pedidos. Identifica qué datos se duplican y qué evento debe actualizarlos.
+
+**Actividad independiente.** Diseña una proyección de lectura para un dashboard y define cómo reconstruirla si se desincroniza.
+
+**Criterios de aceptación.** Justifica la duplicación por patrón de acceso y documenta consistencia, actualización y reparación.
+
+**Errores frecuentes.** Denormalizar antes de medir, duplicar datos sin propietario o asumir que las copias se mantienen sincronizadas automáticamente.
+
+**Comprobación.** ¿Qué mecanismo mantiene coherente una proyección desnormalizada cuando cambia la fuente de verdad?
 
 ### 10.2 — MongoDB
 
