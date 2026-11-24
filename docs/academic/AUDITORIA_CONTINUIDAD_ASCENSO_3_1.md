@@ -349,3 +349,16 @@ Se desarrollaron individualmente las 228 entradas oficiales de las etapas 17–1
 Se sustituyeron las orientaciones genéricas por explicaciones específicas y se añadieron límites de uso, criterios técnicos y riesgos. En 18.6 se preservan «Creacionales», «Estructurales» y «Comportamiento» porque son entradas explícitas del roadmap, explicadas como rótulos de familia y no como patrones individuales.
 
 **Validación interna:** conteos cotejados con el JSON y ausencia de placeholders genéricos comprobada. Pendiente: ejecutar suites de testing, pruebas de carga, diagramas/revisión con stakeholders, builds, pipelines, despliegues y laboratorios cloud/Kubernetes/Terraform aislados. No se declara ejecución ni aprobación académica externa.
+
+
+## Desarrollo profundo individual — etapas 20 a 22 — 2026-11-24
+
+Se desarrollaron individualmente las 197 entradas oficiales de las etapas 20–22:
+
+- **Etapa 20 — AppSec:** 57/57 lecciones.
+- **Etapa 21 — Fundamentos de ciberseguridad, riesgos y ética:** 82/82 lecciones.
+- **Etapa 22 — Laboratorio y hardening:** 58/58 lecciones.
+
+Se sustituyeron las orientaciones genéricas por explicaciones específicas y se reforzaron límites de autorización, controles de aplicación, gestión de riesgos, protección de datos, IAM y aislamiento de laboratorios. La referencia a OWASP Top 10:2025 se verificó en el sitio oficial, que identifica 2025 como la versión publicada más reciente al momento de esta revisión. Se añadieron referencias oficiales de Colombia para Ley 1273/2009 y Ley 1581/2012, con advertencia de verificación jurídica vigente.
+
+**Validación interna:** conteos cotejados con el JSON y ausencia de placeholders genéricos comprobada. Pendiente: verificar legislación consolidada y normativa sectorial, ejecutar análisis AppSec/DAST y laboratorios de hardening en entornos aislados autorizados, y obtener segunda revisión especializada. No se ejecutaron pruebas ni se declara aprobación externa.
