@@ -183,3 +183,12 @@ Se añadieron prácticas y evidencias a las 573 lecciones de las etapas 23–32:
 La comprobación documental cotejó los conteos de encabezados por etapa contra el roadmap oficial para las etapas 7–32. No se detectaron encabezados vacíos; las etapas 11–32 tienen un apartado de práctica/evidencia por lección, y las etapas 7–10 contienen desarrollo y actividades específicas. El objetivo oficial de la etapa 25 permanece vacío y el JSON del roadmap no se modificó.
 
 **Cobertura documental acumulada de etapas 1–32: 1.916/1.916 lecciones** (265 etapas 1–6 según informe OpenCode; 1.651 etapas 7–32 ampliadas en esta continuación). Esta cifra describe desarrollo documental, no ejecución ni aprobación. Siguen pendientes pruebas reproducibles, verificación individual de referencias/licencias/versiones y revisión técnica/pedagógica independiente. No se importó ni publicó contenido.
+
+
+### Profundización documental integral — etapa 7 — 2026-11-24
+
+Se completó la ampliación didáctica documental de las **84 lecciones** de la etapa 7: fundamentos de sistemas operativos (14), Linux (17), administración Linux (20), Bash (12), Windows (12) y virtualización (9). Las lecciones cuentan con desarrollo conceptual y/o ampliaciones de práctica, evidencia esperada, criterios de aceptación y límites de seguridad. Se conservaron el proyecto oficial, la rúbrica y la autoevaluación.
+
+Comprobación estructural: 84/84 encabezados de lección cotejados con el roadmap. No se ejecutaron comandos, scripts, laboratorios ni instalaciones en VMs durante esta intervención; las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. El estado 84/84 describe cobertura documental, no validación técnica ni aprobación.
+
+Acumulado documental: etapas 1–6, 265; etapa 7, 84; etapas 8–32, 1.567; total etapas 1–32: **1.916 lecciones**. El roadmap oficial permanece intacto y el objetivo de la etapa 25 sigue vacío. No se importó ni publicó contenido.
