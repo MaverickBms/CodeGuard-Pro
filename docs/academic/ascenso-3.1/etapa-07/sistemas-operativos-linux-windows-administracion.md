@@ -1453,6 +1453,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Por qué una VM puede degradar el host aunque el invitado parezca disponer de recursos suficientes?
 
+**Laboratorio de profundización — Diseño de una VM reproducible.**
+
+1. Registra versión de VirtualBox y sistema anfitrión. 2. Diseña una VM Linux con RAM y vCPU moderadas. 3. Define disco virtual expansible, firmware y controladora. 4. Justifica el modo de red y los recursos reservados al host.
+
+**Evidencia esperada.** La ficha identifica host, invitado, versión y recursos; conserva margen suficiente para el host.
+
+**Seguridad y límites.** No modificar VMs compartidas. No descargar imágenes de sitios no oficiales ni ejecutar appliances sin revisar su procedencia.
+
+**Registro sugerido.** Anota hipervisor y versión, configuración observada, diagrama, comandos o pantallas consultadas y diferencias respecto del diseño. No marques la práctica como ejecutada sin evidencia real.
+
 ### 7.6.2 — VMware
 
 **Propósito y modelo.** VMware comprende productos distintos, como Workstation, Fusion y plataformas de hipervisor para centros de datos. Compatibilidad, licenciamiento, formatos de VM y redes varían por producto y versión; identifica el producto exacto antes de seguir un procedimiento.
@@ -1468,6 +1478,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 **Errores frecuentes.** Aplicar instrucciones de ESXi a Workstation, asumir licencias equivalentes o actualizar hardware virtual sin comprobar compatibilidad.
 
 **Comprobación.** ¿Qué datos deben conocerse antes de importar una VM creada en otro producto VMware?
+
+**Laboratorio de profundización — Identificación de producto y compatibilidad.**
+
+1. Identifica el producto VMware exacto y versión. 2. Consulta su documentación oficial. 3. Registra formato de VM, hardware virtual, redes y compatibilidad. 4. Diseña un plan de conversión basado en una copia, sin actualizar la VM original.
+
+**Evidencia esperada.** El análisis no mezcla instrucciones de productos distintos y documenta compatibilidades que deben verificarse.
+
+**Seguridad y límites.** No convertir ni actualizar hardware virtual sin respaldo y comprobación de compatibilidad.
+
+**Registro sugerido.** Anota hipervisor y versión, configuración observada, diagrama, comandos o pantallas consultadas y diferencias respecto del diseño. No marques la práctica como ejecutada sin evidencia real.
 
 ### 7.6.3 — Máquinas virtuales
 
@@ -1485,6 +1505,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Qué recursos comparte el hipervisor y cuáles administra el invitado?
 
+**Laboratorio de profundización — Mapa de recursos y límites de aislamiento.**
+
+1. Dibuja host, hipervisor y dos invitados. 2. Registra vCPU, RAM, disco, adaptadores y dispositivos compartidos. 3. Marca recursos sobreasignados y canales de integración. 4. Diseña una topología cliente-servidor con reglas mínimas.
+
+**Evidencia esperada.** El diagrama diferencia recursos virtuales de físicos y señala límites de aislamiento y vías de comunicación.
+
+**Seguridad y límites.** No conectar invitados vulnerables a redes productivas ni compartir carpetas o portapapeles sin necesidad.
+
+**Registro sugerido.** Anota hipervisor y versión, configuración observada, diagrama, comandos o pantallas consultadas y diferencias respecto del diseño. No marques la práctica como ejecutada sin evidencia real.
+
 ### 7.6.4 — Snapshots
 
 **Propósito y modelo.** Un snapshot registra un estado de VM, habitualmente disco y opcionalmente memoria. Permite volver a un punto anterior, pero no equivale a un respaldo independiente: puede depender de discos base y cadenas diferenciales. Retener snapshots consume almacenamiento y complica consolidación.
@@ -1500,6 +1530,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 **Errores frecuentes.** Usar snapshots como única copia o borrar manualmente archivos de la cadena.
 
 **Comprobación.** ¿Qué pérdida de datos no resolvería un snapshot almacenado junto a la VM?
+
+**Laboratorio de profundización — Política de snapshot y respaldo.**
+
+1. Inspecciona snapshots de una VM de laboratorio. 2. Registra fecha, descripción, cadena y almacenamiento ocupado. 3. Diseña política de creación, retención y consolidación. 4. Identifica un backup independiente del datastore.
+
+**Evidencia esperada.** La política explica reversión, consumo, dependencia de discos base y recuperación ante pérdida del host.
+
+**Seguridad y límites.** No borrar archivos de snapshot manualmente. No utilizar snapshots como única copia de seguridad.
+
+**Registro sugerido.** Anota hipervisor y versión, configuración observada, diagrama, comandos o pantallas consultadas y diferencias respecto del diseño. No marques la práctica como ejecutada sin evidencia real.
 
 ### 7.6.5 — Recursos virtualizados
 
@@ -1517,6 +1557,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Por qué aumentar vCPU no garantiza acelerar una aplicación?
 
+**Laboratorio de profundización — Dimensionamiento con margen del host.**
+
+1. Registra RAM, CPU y almacenamiento disponibles en el host. 2. Propón recursos para dos invitados simultáneos. 3. Calcula el margen que conserva el host. 4. Identifica efectos de sobreasignación y presión de memoria.
+
+**Evidencia esperada.** El dimensionamiento distingue capacidad configurada, asignada y utilizada; no supone que vCPU equivalen a núcleos dedicados.
+
+**Seguridad y límites.** No saturar el host para probar límites ni asignar toda la memoria disponible a los invitados.
+
+**Registro sugerido.** Anota hipervisor y versión, configuración observada, diagrama, comandos o pantallas consultadas y diferencias respecto del diseño. No marques la práctica como ejecutada sin evidencia real.
+
 ### 7.6.6 — Redes virtuales
 
 **Propósito y modelo.** El hipervisor proporciona switches, bridges y adaptadores que conectan invitados entre sí, con el host o con redes externas. La topología define dominios de broadcast, rutas, acceso y aislamiento. El modo se elige según el objetivo del laboratorio.
@@ -1532,6 +1582,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 **Errores frecuentes.** Confundir NAT con aislamiento total o conectar máquinas vulnerables en modo puente a una LAN real.
 
 **Comprobación.** ¿Qué propiedad se pierde al conectar directamente una VM vulnerable a la red física?
+
+**Laboratorio de profundización — Diagrama comparativo de modos de red.**
+
+1. Dibuja NAT, puente y red interna/Host-only. 2. Identifica qué nodos se alcanzan en cada modo. 3. Especifica DHCP, gateway, rutas y firewall. 4. Selecciona el modo adecuado para un laboratorio aislado.
+
+**Evidencia esperada.** El diagrama representa conectividad y justifica el modo según objetivo y exposición.
+
+**Seguridad y límites.** No utilizar modo puente para invitados vulnerables en una LAN real. No confundir NAT con aislamiento completo.
+
+**Registro sugerido.** Anota hipervisor y versión, configuración observada, diagrama, comandos o pantallas consultadas y diferencias respecto del diseño. No marques la práctica como ejecutada sin evidencia real.
 
 ### 7.6.7 — NAT
 
@@ -1549,6 +1609,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Por qué puede funcionar una conexión saliente mientras la entrante no está disponible?
 
+**Laboratorio de profundización — Flujo de conexión saliente y entrante.**
+
+1. Dibuja una VM que inicia una conexión saliente a través de NAT. 2. Explica por qué una conexión entrante no se establece automáticamente. 3. Diseña un reenvío local hipotético con puerto, interfaz, origen y duración. 4. Define cómo retirar la regla.
+
+**Evidencia esperada.** Se diferencia traducción saliente y reenvío de puertos, y se limita el alcance de cualquier regla propuesta.
+
+**Seguridad y límites.** No publicar puertos administrativos a Internet ni dejar redirecciones temporales permanentes.
+
+**Registro sugerido.** Anota hipervisor y versión, configuración observada, diagrama, comandos o pantallas consultadas y diferencias respecto del diseño. No marques la práctica como ejecutada sin evidencia real.
+
 ### 7.6.8 — Host-only
 
 **Propósito y modelo.** Host-only conecta el host con una o varias VMs mediante una red virtual que normalmente no se enruta a la red física. Es útil para administración y prácticas aisladas. El alcance depende de DHCP, rutas, firewall y plataforma.
@@ -1564,6 +1634,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 **Errores frecuentes.** Suponer aislamiento total aunque existan otras interfaces o rutas.
 
 **Comprobación.** ¿Qué debes revisar si una VM Host-only también tiene una interfaz NAT?
+
+**Laboratorio de profundización — Comprobación conceptual de aislamiento.**
+
+1. Inspecciona la subred y adaptador Host-only. 2. Dibuja host y dos invitados. 3. Define qué conexiones deberían funcionar. 4. Analiza cómo cambiaría el alcance si una VM añadiera otra interfaz NAT o puente.
+
+**Evidencia esperada.** El diseño identifica el dominio privado y explica que una segunda interfaz puede habilitar otra ruta de comunicación.
+
+**Seguridad y límites.** No asumir que Host-only aísla una VM si existen interfaces adicionales, rutas o servicios compartidos.
+
+**Registro sugerido.** Anota hipervisor y versión, configuración observada, diagrama, comandos o pantallas consultadas y diferencias respecto del diseño. No marques la práctica como ejecutada sin evidencia real.
 
 ### 7.6.9 — Adaptadores de red virtuales
 
@@ -1581,6 +1661,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación.** ¿Qué evidencias separan un problema de enlace de uno de DHCP o rutas?
 
+
+**Laboratorio de profundización — Diagnóstico por capas de conectividad.**
+
+1. Registra tipo de adaptador, MAC y modo de red. 2. Dentro del invitado consulta `ip addr` o `ipconfig /all`. 3. Comprueba enlace, dirección IP, gateway y DNS por separado. 4. Construye un árbol de diagnóstico para fallo de enlace, DHCP, VLAN, ruta o resolución DNS.
+
+**Evidencia esperada.** El diagnóstico separa conectividad de enlace, configuración IP, enrutamiento y DNS; documenta evidencia de cada capa.
+
+**Seguridad y límites.** No clonar MAC en redes compartidas ni cambiar varias variables a la vez durante el diagnóstico.
+
+**Registro sugerido.** Anota hipervisor y versión, configuración observada, diagrama, comandos o pantallas consultadas y diferencias respecto del diseño. No marques la práctica como ejecutada sin evidencia real.
 ## Proyecto oficial — Dos servidores virtuales
 
 ### Objetivo y preparación
