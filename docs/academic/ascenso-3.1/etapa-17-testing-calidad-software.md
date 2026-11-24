@@ -125,3 +125,209 @@ No se incluyen videos aprobados. Se incorporarán solo tras confirmar audio en e
 - CMMI: https://cmmiinstitute.com/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutaron suites ni pruebas de carga en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 17
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados orientan el estudio de los conceptos dentro de la guía y el proyecto de la etapa; no constituyen resultados de pruebas ni evidencias de implementación.
+
+### Módulo 17.1 — Fundamentos
+
+#### 17.1.01 — Quality Assurance (QA)
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.1.02 — Quality Control (QC)
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.1.03 — Verificación
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.1.04 — Validación
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.1.05 — Defectos
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.1.06 — Bugs
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.1.07 — Casos de prueba
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 17.2 — Testing funcional
+
+#### 17.2.01 — Unit Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.2.02 — Integration Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.2.03 — End-to-End Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.2.04 — Regression Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.2.05 — Smoke Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.2.06 — Sanity Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.2.07 — API Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 17.3 — Testing de usuario
+
+#### 17.3.01 — Usability Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing de usuario, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.3.02 — Accessibility Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing de usuario, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.3.03 — Exploratory Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing de usuario, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.3.04 — User Acceptance Testing (UAT)
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing de usuario, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 17.4 — Rendimiento
+
+#### 17.4.01 — Load Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.4.02 — Stress Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.4.03 — Spike Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.4.04 — Endurance Testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.4.05 — Response Time
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.4.06 — Throughput
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.4.07 — Latency
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.4.08 — Bottlenecks
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 17.5 — Testing técnico
+
+#### 17.5.01 — Test Cases
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.5.02 — Assertions
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.5.03 — Mocking
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.5.04 — Fixtures
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.5.05 — Test Doubles
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.5.06 — Test Coverage
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.5.07 — Test Isolation
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 17.6 — Metodologías
+
+#### 17.6.01 — TDD
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.6.02 — BDD
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.6.03 — AAA (Arrange, Act, Assert)
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.6.04 — Pirámide de testing
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 17.7 — Herramientas
+
+#### 17.7.01 — JUnit
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.7.02 — Mockito
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.7.03 — Jest
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.7.04 — Vitest
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.7.05 — Playwright
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.7.06 — Cypress
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.7.07 — Postman
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.7.08 — JMeter
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 17.8 — Análisis de calidad
+
+#### 17.8.01 — Static Analysis
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.8.02 — Linters
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.8.03 — Formatters
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.8.04 — SonarQube
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.8.05 — Code Coverage
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.8.06 — Code Smells
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+### Módulo 17.9 — Normas y modelos de calidad
+
+#### 17.9.01 — ISO/IEC 25010
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.9.02 — ISO/IEC/IEEE 12207
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.9.03 — CMMI
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.9.04 — Indicadores de calidad
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.9.05 — Mantenibilidad
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.9.06 — Fiabilidad
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.9.07 — Seguridad
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.9.08 — Rendimiento
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.9.09 — Usabilidad
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+
+#### 17.9.10 — Product quality model
+Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
