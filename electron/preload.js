@@ -50,7 +50,7 @@ contextBridge.exposeInMainWorld('codeguardAPI', {
 window.addEventListener('load', () => {
   try {
     const href = window.location.href || '';
-    if (href.includes('splash.html')) return;
+    if (href.includes('splash.html') || href.startsWith('data:')) return;
     setTimeout(() => {
       try { ipcRenderer.send('app-interactive-signal', { source: 'preload-fallback', ts: Date.now() }); } catch (_e) {}
     }, 20000);
