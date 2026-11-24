@@ -160,3 +160,10 @@ Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11�
 Se añadieron prácticas y evidencias a las **61 lecciones** de testing y calidad, cubriendo niveles de prueba, automatización, rendimiento, calidad y análisis estático. La comprobación documental posterior confirmó 61/61 apartados y ningún encabezado vacío. Las herramientas y suites todavía no se han ejecutado.
 
 Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11–12, 149; etapa 13, 63; etapa 14, 58; etapas 15–16, 99; etapa 17, 61; total etapas 1–17: **979 lecciones**. Restan 937 lecciones de etapas 18–32 para profundización equivalente. No se declara validación técnica por ejecución ni aprobación externa.
+
+
+### Ampliación de prácticas y evidencias — etapas 18–19 — 2026-11-24
+
+Se añadieron prácticas y evidencias a las **100 lecciones de arquitectura/diseño/planeación** y las **67 lecciones de DevOps/Docker/Cloud/Kubernetes**. La comprobación estructural posterior confirmó 167/167 apartados y ningún encabezado vacío. No se ejecutaron despliegues, pipelines ni recursos cloud.
+
+Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11–12, 149; etapa 13, 63; etapa 14, 58; etapas 15–16, 99; etapa 17, 61; etapas 18–19, 167; total etapas 1–19: **1.146 lecciones**. Restan 770 lecciones de etapas 20–32 para profundización equivalente. No se declara validación técnica por ejecución ni aprobación externa.
