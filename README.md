@@ -292,3 +292,8 @@ Se incorporaron encabezados individuales para las 143 entradas oficiales de las 
 ### Continuidad ASCENSO 3.1 — etapas 29 a 32
 
 Se incorporaron encabezados individuales para las 275 entradas oficiales de las etapas 29–32: etapa 29 (71), etapa 30 (75), etapa 31 (75) y etapa 32 (54). Se preservaron las restricciones de seguridad cloud, pruebas autorizadas de IA y análisis aislado de malware. Es base de trabajo activa; no se declaran despliegues, análisis prácticos ni resultados laborales no realizados.
+
+
+## Cierre de continuidad ASCENSO 3.1 — 24-11-2026
+
+Se completó la pasada de continuidad documental de las 32 etapas posteriores a la etapa 0. Las etapas 11–32 cuentan con encabezados granulares por cada entrada oficial del roadmap y sus conteos se cotejaron por etapa. Esto completa la organización documental de las etapas, no la redacción profunda de las 1.916 lecciones nominales de las etapas 1–32: aún deben ampliarse teoría, ejemplos, ejercicios, referencias y evidencias prácticas. El JSON curricular permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó, aprobó ni publicó contenido.
