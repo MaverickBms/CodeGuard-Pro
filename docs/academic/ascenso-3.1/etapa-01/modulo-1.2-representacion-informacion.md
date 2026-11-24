@@ -155,7 +155,7 @@ Crea un pequeño programa local (en el lenguaje que prefieras) que:
 
 **Respuestas:** 45 = (101101_2=2D_{16}); (101101_2=45); (3A_{16}=58); 40 bits; «Año» ocupa 4 bytes en UTF-8 (A=1, ñ=2, o=1); Unicode asigna puntos de código y UTF-8 los codifica en bytes; −128 a 127; porque la fracción binaria es periódica y se aproxima a una cantidad finita de bits.
 
-## Autoevaluación
+## Cierre reflexivo
 
 Explica con tus propias palabras:
 - por qué se usan bases 2 y 16 en computación;
@@ -179,3 +179,12 @@ No se incluye video en esta versión: no se ha verificado una pieza cuyo audio h
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** ejercicios calculados manualmente; laboratorio de software propuesto, no ejecutado.  
 **Estado editorial:** en desarrollo; no aprobado ni publicado.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** revisión documental de alineación con el módulo 1.2 del roadmap, cobertura de los títulos oficiales, secuencia didáctica, consistencia terminológica, ejemplos, actividad práctica, evaluación, seguridad y referencias.
+
+**Resultado:** revisión interna realizada; no equivale a aprobación académica externa ni a validación práctica. Se identificaron los ajustes anotados en este registro y se mantienen explícitas las actividades pendientes. Los laboratorios y ejemplos no se declaran ejecutados. Antes de cambiar el estado editorial se requiere cotejo bibliográfico final, ejecución reproducible de actividades y revisión por un segundo evaluador.
+
+**Hallazgos y pendientes específicos:** Se revisaron conversiones, unidades SI/binarias, distinción carácter/punto de código/codificación y límites de punto flotante. Se detectó una autoevaluación repetida; se consolidará como cierre reflexivo sin duplicar el título. Pendiente: ejecutar el codificador y verificar todos los resultados con casos automatizados.
