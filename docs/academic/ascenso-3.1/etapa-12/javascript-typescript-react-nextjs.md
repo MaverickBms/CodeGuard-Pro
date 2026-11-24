@@ -1323,66 +1323,164 @@ Error Boundaries capturan errores de renderizado en componentes descendientes y 
 **Comprobación:** ¿Qué tipos de errores no captura un Error Boundary tradicional?
 
 #### 12.7.01 — App Router
-App Router organiza rutas y layouts mediante la estructura de archivos de `app` en Next.js. Comprende segmentos, layouts anidados, loading, error y not-found; consulta la documentación de la versión del proyecto porque convenciones pueden evolucionar.
 
+App Router organiza rutas mediante estructura de carpetas y archivos especiales. Layouts, pages, loading, error y route handlers cumplen roles distintos; convenciones pueden variar por versión Next.js.
 
-**Práctica y evidencia:** Organiza rutas del App Router mediante estructura de carpetas y archivos especiales. **Evidencia:** documenta URL resultante, layout heredado y página correspondiente.
+**Ejemplo técnico:** app/cursos/[id]/page.tsx representa ruta dinámica.
+
+**Práctica guiada:** Identifica archivos de una app de laboratorio y dibuja árbol de rutas.
+
+**Actividad independiente:** Crea estructura conceptual con layout y páginas anidadas.
+
+**Criterios de aceptación:** Cada archivo cumple convención documentada para la versión.
+
+**Errores frecuentes:** Confundir App Router con Pages Router o ubicar código client sin necesidad.
+
+**Comprobación:** ¿Qué función cumple layout frente a page?
 
 #### 12.7.02 — Routing
-El routing de Next.js convierte segmentos de carpetas y archivos especiales en rutas. Diseña rutas legibles, parámetros dinámicos y layouts compartidos; evita asumir que toda navegación se ejecuta exclusivamente en el cliente.
 
+Next.js resuelve rutas estáticas y dinámicas mediante segmentos, grupos, parámetros y navegación. La estructura debe evitar rutas ambiguas y contemplar not-found, redirects y parámetros validados.
 
-**Práctica y evidencia:** Crea rutas dinámicas y navegación entre páginas, contemplando parámetros y estados no encontrados. **Evidencia:** prueba acceso directo a una URL con parámetro y ruta inexistente.
+**Ejemplo técnico:** `[slug]` captura segmento dinámico; `not-found.tsx` representa ruta no encontrada.
+
+**Práctica guiada:** Diseña árbol de rutas para catálogo y detalle.
+
+**Actividad independiente:** Define rutas, parámetros y estados 404/redirect.
+
+**Criterios de aceptación:** URLs previsibles y parámetros validados.
+
+**Errores frecuentes:** Confiar en parámetros URL sin validarlos en backend.
+
+**Comprobación:** ¿Por qué un segmento dinámico debe validarse antes de consultar datos?
 
 #### 12.7.03 — Server Components
-Server Components se ejecutan en el servidor y permiten obtener datos y reducir JavaScript enviado al navegador. No acceden a APIs exclusivas del navegador ni manejan estado cliente; evita enviar secretos o datos no autorizados en sus props.
 
+React Server Components permiten renderizar componentes en servidor y reducir JavaScript enviado al cliente. No acceden a APIs de navegador; pueden consultar datos en servidor y pasar props serializables a componentes cliente.
 
-**Práctica y evidencia:** Identifica Server Components y sus ventajas para renderizado, acceso a datos y reducción de JavaScript enviado al cliente. **Evidencia:** explica por qué un componente servidor no puede usar Hooks de cliente.
+**Ejemplo técnico:** Componente servidor consulta catálogo y entrega datos a una isla interactiva cliente.
+
+**Práctica guiada:** Clasifica componentes según necesidad de interactividad y acceso a datos.
+
+**Actividad independiente:** Refactoriza página para mantener lectura en servidor y dejar interacción mínima en cliente.
+
+**Criterios de aceptación:** Directiva client se limita a fronteras necesarias.
+
+**Errores frecuentes:** Marcar toda la aplicación como client por comodidad.
+
+**Comprobación:** ¿Qué beneficio aporta mantener un componente como Server Component?
 
 #### 12.7.04 — Client Components
-Client Components habilitan estado, eventos y APIs del navegador mediante la directiva `use client` en el límite apropiado. Mantén el límite cliente pequeño y no confundas la ejecución inicial de render con la disponibilidad de APIs del navegador.
 
+Client Components se habilitan con 'use client' y pueden usar estado, efectos y APIs del navegador. La directiva crea frontera de cliente y sus dependencias forman parte del bundle; secretos de servidor nunca deben importarse allí.
 
-**Práctica y evidencia:** Marca un Client Component cuando requiere interacción, estado o APIs del navegador. **Evidencia:** minimiza la frontera cliente y justifica cada componente marcado.
+**Ejemplo técnico:** Componente de filtro interactivo utiliza useState y recibe datos serializables.
+
+**Práctica guiada:** Identifica APIs de navegador y estado que requieren cliente.
+
+**Actividad independiente:** Extrae control interactivo pequeño desde página servidor.
+
+**Criterios de aceptación:** Frontera de cliente mínima y sin secretos.
+
+**Errores frecuentes:** Importar variables privadas de servidor o usar hooks sin directiva.
+
+**Comprobación:** ¿Por qué 'use client' debe colocarse en la frontera y no por defecto en cada archivo?
 
 #### 12.7.05 — Server-side rendering
-Server-side rendering genera HTML en el servidor para una solicitud o estrategia configurada. Considera hidratación, caché, datos personalizados y coste de render; evita que datos de usuario se filtren por cachés compartidas.
 
+SSR genera HTML en servidor para cada solicitud o render según estrategia. Puede mejorar contenido inicial y SEO, pero requiere considerar caché, datos personalizados, hydration y costo del servidor.
 
-**Práctica y evidencia:** Explica SSR como generación de HTML en servidor para una solicitud y considera hidratación y consistencia inicial. **Evidencia:** compara HTML recibido con interfaz después de hidratación.
+**Ejemplo técnico:** Una página SSR presenta contenido inicial antes de hidratar interacciones.
+
+**Práctica guiada:** Compara HTML inicial y comportamiento tras hydration en app de prueba.
+
+**Actividad independiente:** Diseña página con datos por usuario y evita caché compartida de contenido privado.
+
+**Criterios de aceptación:** Hydration coherente y caché no mezcla usuarios.
+
+**Errores frecuentes:** Cachear respuesta personalizada públicamente o depender de window en servidor.
+
+**Comprobación:** ¿Qué riesgo introduce cachear SSR personalizado con una clave de caché incorrecta?
 
 #### 12.7.06 — Static site generation
-Static site generation produce páginas durante la compilación o regeneración configurada, reduciendo trabajo por solicitud. Es apropiada para contenido que puede servirse estáticamente; define cómo se actualiza y evita publicar datos privados o obsoletos.
 
+SSG genera HTML en build o prerender para rutas conocidas. Reduce costo de solicitud y mejora distribución, pero el contenido puede quedar desactualizado; revalidación y rutas dinámicas deben planificarse.
 
-**Práctica y evidencia:** Compara generación estática con renderizado dinámico y revalidación según frescura del contenido. **Evidencia:** selecciona estrategia para una página institucional y un panel personalizado.
+**Ejemplo técnico:** Página de documentación estática con revalidación programada.
+
+**Práctica guiada:** Identifica qué contenido puede generarse en build.
+
+**Actividad independiente:** Diseña estrategia SSG para documentación y catálogo parcialmente dinámico.
+
+**Criterios de aceptación:** Datos públicos actualizados según política y sin contenido privado embebido.
+
+**Errores frecuentes:** Generar información sensible en HTML estático o asumir frescura infinita.
+
+**Comprobación:** ¿Qué trade-off introduce SSG entre rendimiento y actualidad?
 
 #### 12.7.07 — Data fetching
-Data fetching obtiene datos desde servicios o bases de datos dentro de los límites de ejecución de Next.js. Define caché, revalidación, timeout, manejo de errores y permisos; el lugar de la solicitud afecta rendimiento y exposición de secretos.
 
+Next.js ofrece mecanismos de obtención de datos en servidor y cliente; caché, revalidación, streaming y deduplicación dependen de versión/configuración. Las llamadas deben validar respuesta, controlar errores y evitar filtrar secretos al cliente.
 
-**Práctica y evidencia:** Obtén datos en el servidor o cliente según requisitos de caché, autenticación y latencia. **Evidencia:** documenta origen, política de caché, manejo de errores y datos que nunca deben exponerse al navegador.
+**Ejemplo técnico:** Fetch en servidor puede utilizar credenciales privadas si respuesta se limita a datos permitidos.
+
+**Práctica guiada:** Diseña carga de datos en Server Component y estados de loading/error.
+
+**Actividad independiente:** Implementa política de caché según público, personalización y volatilidad.
+
+**Criterios de aceptación:** Caché coherente con sensibilidad y frescura.
+
+**Errores frecuentes:** Exponer secretos en props serializadas o cachear datos de un usuario para otro.
+
+**Comprobación:** ¿Qué criterio determina si una respuesta puede almacenarse en caché compartida?
 
 #### 12.7.08 — Authentication
-La autenticación identifica al usuario y la autorización determina qué puede hacer. Usa bibliotecas y protocolos mantenidos, valida sesión y permisos en el servidor y no confíes en rutas protegidas solo por controles de interfaz.
 
+La autenticación verifica identidad; autorización decide acceso. Next.js puede integrar proveedores o sesiones, pero la protección real debe aplicarse en servidor/API y en cada recurso. Cookies seguras, rotación, expiración y CSRF forman parte del diseño.
 
-**Práctica y evidencia:** Implementa autenticación usando una biblioteca o proveedor mantenido y protege rutas/acciones en servidor. **Evidencia:** demuestra verificación de sesión y autorización por recurso; ocultar un enlace no basta.
+**Ejemplo técnico:** Middleware o layout puede mejorar navegación, pero endpoint vuelve a verificar permisos.
+
+**Práctica guiada:** Dibuja login, sesión, autorización de recurso y cierre de sesión.
+
+**Actividad independiente:** Diseña acceso con cookie HttpOnly/Secure/SameSite y comprobación de rol en servidor.
+
+**Criterios de aceptación:** Rutas y datos protegidos server-side; sesión revocable.
+
+**Errores frecuentes:** Proteger solo rutas cliente o almacenar credenciales en localStorage.
+
+**Comprobación:** ¿Por qué ocultar una página no sustituye autorización en el endpoint?
 
 #### 12.7.09 — Metadata
-Metadata permite definir título, descripción, iconos y otras propiedades de página desde la configuración de Next.js. Genera metadatos coherentes por ruta, evita duplicados y no incluyas datos personales o secretos en valores públicos.
 
+Metadata API permite definir title, description, Open Graph y metadatos dinámicos. Los valores deben corresponder al contenido; no incluir secretos ni duplicar títulos. El soporte y generación varían por versión y tipo de ruta.
 
-**Práctica y evidencia:** Define metadata por página con título, descripción y metadatos sociales coherentes. **Evidencia:** inspecciona HTML generado y evita duplicar títulos entre rutas.
+**Ejemplo técnico:** generateMetadata puede derivar title de un registro público validado.
+
+**Práctica guiada:** Define metadata estática y dinámica en rutas de prueba.
+
+**Actividad independiente:** Diseña títulos y descripciones por página con fallback seguro.
+
+**Criterios de aceptación:** Metadatos únicos, coherentes y sin datos privados.
+
+**Errores frecuentes:** Generar metadata desde input no validado o duplicar tags.
+
+**Comprobación:** ¿Qué problema puede causar reutilizar metadata genérica en todas las rutas?
 
 #### 12.7.10 — Deployment
-Deployment publica la aplicación y su configuración en un entorno de ejecución. Documenta variables de entorno, build, runtime, migraciones, observabilidad, rollback y dominio; no incluyas secretos en repositorio ni confundas build exitoso con servicio saludable.
 
+El despliegue Next.js depende de runtime Node, plataforma serverless/edge o export estático, variables de entorno, build y configuración de caché. Secretos deben residir en entorno servidor, y los builds deben ser reproducibles y verificables.
 
-**Práctica y evidencia:** Prepara despliegue con variables de entorno, build reproducible, revisión de dependencias y configuración de runtime. **Evidencia:** documenta comandos, variables requeridas sin valores secretos y health check.
+**Ejemplo técnico:** Una variable NEXT_PUBLIC se expone al bundle cliente; una variable privada no debe prefijarse así.
 
-### Módulo 12.8 — Herramientas
+**Práctica guiada:** Distingue variables públicas/privadas y modos de despliegue en configuración de prueba.
+
+**Actividad independiente:** Redacta checklist de build, migraciones, health check, rollback y monitoreo.
+
+**Criterios de aceptación:** Build reproducible y secretos no expuestos.
+
+**Errores frecuentes:** Subir .env al repositorio o asumir que todos los hostings soportan runtime idéntico.
+
+**Comprobación:** ¿Qué implica el prefijo NEXT_PUBLIC para una variable?
 
 #### 12.8.01 — npm
 npm instala paquetes, ejecuta scripts y administra dependencias mediante `package.json` y un lockfile. Revisa scripts antes de ejecutarlos, fija versiones según política y evita instalar paquetes de nombres parecidos sin verificar el mantenedor.
