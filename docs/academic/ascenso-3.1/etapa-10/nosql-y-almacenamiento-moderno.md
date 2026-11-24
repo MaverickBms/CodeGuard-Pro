@@ -510,4 +510,13 @@ No se incluyen videos en esta versión. MongoDB y Redis requieren recursos separ
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** diseños, comandos y pruebas propuestos; no ejecutados contra instancias MongoDB/Redis en esta sesión.  
-**Estado editorial:** en desarrollo; no aprobado ni publicado..
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** cotejo de las entradas oficiales del roadmap, precisión conceptual, secuencia, ejemplos, prácticas, evaluación, seguridad y referencias.
+
+**Resultado:** revisión documental interna realizada con los ajustes y hallazgos siguientes: Se revisó la cobertura de las 38 entradas oficiales, la precisión del teorema CAP, los modelos de datos, MongoDB, Redis y el diseño híbrido. Se identifica solapamiento entre el desarrollo granular y la sección de síntesis posterior; en una pasada de edición final deberá decidirse si se conserva como recapitulación explícita o se fusiona para evitar repetición. Pendiente: ejecutar operaciones CRUD, índices, agregaciones, TTL, Pub/Sub y pruebas de consistencia/recuperación en instancias aisladas.
+
+**Límite de validación:** no se ejecutaron laboratorios, scripts, servicios, bases de datos, máquinas virtuales ni capturas de red en esta revisión. No se declara aprobación académica externa. La etapa continúa en desarrollo hasta completar las pruebas reproducibles y la segunda revisión.
