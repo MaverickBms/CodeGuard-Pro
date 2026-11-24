@@ -287,3 +287,8 @@ Se incorporaron encabezados individuales para las 155 entradas curriculares de l
 ### Continuidad ASCENSO 3.1 — etapas 26 a 28
 
 Se incorporaron encabezados individuales para las 143 entradas oficiales de las etapas 26–28: etapa 26 (39), etapa 27 (58) y etapa 28 (46). El desarrollo mantiene el enfoque defensivo, de monitoreo, respuesta y preservación de evidencia. Es base de trabajo activa; no se declara conexión a entornos empresariales ni ejecución de herramientas forenses o SIEM.
+
+
+### Continuidad ASCENSO 3.1 — etapas 29 a 32
+
+Se incorporaron encabezados individuales para las 275 entradas oficiales de las etapas 29–32: etapa 29 (71), etapa 30 (75), etapa 31 (75) y etapa 32 (54). Se preservaron las restricciones de seguridad cloud, pruebas autorizadas de IA y análisis aislado de malware. Es base de trabajo activa; no se declaran despliegues, análisis prácticos ni resultados laborales no realizados.
