@@ -1,6 +1,6 @@
 # Etapa 9 — Bases de datos relacionales y SQL
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 9.  
 **Prioridad oficial:** P1 · Obligatoria.  
 **Objetivo oficial:** aprender a modelar, almacenar, consultar y administrar información.
@@ -433,4 +433,4 @@ No se incluyen videos en esta versión. Se incorporarán por subtema (modelado r
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** scripts SQL y proyecto propuestos; no ejecutados contra instancias MySQL/PostgreSQL en esta sesión.  
-**Estado editorial:** borrador.
+**Estado editorial:** en desarrollo; no aprobado ni publicado..
