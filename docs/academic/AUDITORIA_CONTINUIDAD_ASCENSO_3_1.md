@@ -377,3 +377,16 @@ Se sustituyeron las orientaciones genéricas por explicaciones específicas y se
 **Nota curricular:** el campo oficial `objetivo` de la etapa 25 sigue vacío. No se añadió ni propuso un objetivo alternativo.
 
 **Validación interna:** conteos cotejados con el JSON y ausencia de placeholders genéricos comprobada. Pendiente: verificar versiones/licencias de herramientas y ejecutar prácticas únicamente en laboratorios autorizados con segunda revisión. No se escanearon activos ni se declara aprobación externa.
+
+
+## Desarrollo profundo individual — etapas 26 a 28 — 2026-11-24
+
+Se desarrollaron individualmente las 143 entradas oficiales de las etapas 26–28:
+
+- **Etapa 26 — Active Directory y seguridad empresarial Windows:** 39/39 lecciones.
+- **Etapa 27 — Blue Team, SOC, SIEM e ingeniería de detección:** 58/58 lecciones.
+- **Etapa 28 — Threat Hunting, respuesta a incidentes y DFIR:** 46/46 lecciones.
+
+Se sustituyeron las orientaciones genéricas por explicaciones específicas y se reforzaron mínimo privilegio, protección de credenciales, telemetría, triage, validación de detecciones, privacidad, preservación de evidencia y cadena de custodia. La entrada «Herramientas» de 27.7 se explica como rótulo curricular; CSRC se identifica como repositorio NIST, no como estándar único.
+
+**Validación interna:** conteos cotejados con el JSON y ausencia de placeholders genéricos comprobada. Pendiente: validar en dominio ficticio y laboratorios SIEM/DFIR aislados, comprobar versiones de herramientas y obtener segunda revisión especializada. No se conectaron dominios empresariales ni se analizaron incidentes reales.
