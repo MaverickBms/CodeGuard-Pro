@@ -407,164 +407,317 @@ Race conditions ocurren cuando el resultado depende del orden de operaciones con
 #### 12.4.01 — Fetch API
 Fetch API realiza solicitudes de red y devuelve una promesa con un objeto `Response`. Configura método, headers y body según el contrato; comprueba `ok`, tipo de contenido y errores, y no asumas que una respuesta siempre contiene JSON.
 
+
+**Práctica y evidencia:** Realiza una solicitud `fetch` a un endpoint de prueba y gestiona estados HTTP, errores de red y parseo. **Evidencia:** distingue respuesta HTTP no exitosa de rechazo de la promesa.
+
 #### 12.4.02 — LocalStorage
 LocalStorage persiste pares clave/valor de texto en el origen del navegador y sobrevive al cierre de pestaña. No almacenes contraseñas, tokens sensibles ni datos de alto riesgo; los scripts del mismo origen pueden leerlo y una vulnerabilidad XSS expone su contenido.
+
+
+**Práctica y evidencia:** Guarda una preferencia no sensible en LocalStorage y comprueba persistencia tras recargar. **Evidencia:** explica alcance por origen, persistencia y riesgo de almacenar tokens o secretos accesibles a JavaScript.
 
 #### 12.4.03 — SessionStorage
 SessionStorage conserva datos por origen y contexto de pestaña durante la sesión de página. Úsalo para estado temporal de interfaz, no como almacén seguro; define qué ocurre al recargar, duplicar o cerrar pestañas.
 
+
+**Práctica y evidencia:** Guarda un dato temporal en SessionStorage y abre otra pestaña para observar su alcance. **Evidencia:** compara ciclo de vida con LocalStorage sin asumir sincronización entre pestañas.
+
 #### 12.4.04 — Cookies
 Las cookies son pequeños datos enviados en solicitudes según dominio, ruta y políticas del navegador. Para sesiones, configura `Secure`, `HttpOnly` y `SameSite` apropiadamente, define expiración y evita guardar información sensible legible por JavaScript.
+
+
+**Práctica y evidencia:** Inspecciona cookies de prueba con atributos Secure, HttpOnly, SameSite, Path y expiración. **Evidencia:** explica cuáles son accesibles desde JavaScript y cómo se reduce exposición CSRF/XSS.
 
 #### 12.4.05 — Geolocation
 Geolocation API solicita permiso para acceder a una ubicación estimada del dispositivo. Explica el propósito, solicita el dato solo cuando sea necesario y minimiza retención; la precisión y disponibilidad dependen del dispositivo, permisos y entorno.
 
+
+**Práctica y evidencia:** Solicita geolocalización solo tras una acción explícita del usuario y gestiona permiso denegado. **Evidencia:** demuestra que la función no debe bloquear la experiencia cuando el usuario no comparte ubicación.
+
 #### 12.4.06 — Clipboard
 Clipboard API permite leer o escribir en el portapapeles bajo restricciones de seguridad y permisos del navegador. Ofrece una acción explícita, maneja rechazo de permisos y proporciona alternativa manual para copiar cuando la API no esté disponible.
 
+
+**Práctica y evidencia:** Copia texto mediante Clipboard API en respuesta a una interacción del usuario y maneja contexto no seguro o permiso denegado. **Evidencia:** muestra alternativa manual y no copia información sensible sin consentimiento.
+
 #### 12.4.07 — File API
 File API permite que una página lea archivos que el usuario selecciona o suelta, sin conceder acceso arbitrario al sistema de archivos. Valida tipo, tamaño y contenido en servidor; el nombre o MIME declarado no demuestra que el archivo sea seguro.
+
+
+**Práctica y evidencia:** Lee un archivo seleccionado por el usuario con File API y valida tipo/tamaño también en servidor. **Evidencia:** demuestra que el atributo accept no constituye una validación de seguridad.
 
 ### Módulo 12.5 — TypeScript
 
 #### 12.5.01 — Tipos
 Los tipos TypeScript describen las formas de valores y permiten detectar incompatibilidades durante el análisis estático. El sistema se elimina en la compilación y no valida datos en runtime; valida entradas externas con esquemas o comprobaciones reales.
 
+
+**Práctica y evidencia:** Declara tipos para una entidad de dominio y activa comprobaciones del compilador. **Evidencia:** demuestra un error de asignación detectado antes de ejecutar el programa.
+
 #### 12.5.02 — Interfaces
 Una `interface` define la forma de objetos y puede extender otras interfaces o participar en declaración abierta. Úsala para contratos de objetos y servicios; recuerda que las interfaces desaparecen al compilar y no son validadores de datos.
+
+
+**Práctica y evidencia:** Define una interfaz para un objeto de cliente y úsala en una función que lo recibe. **Evidencia:** comprueba propiedades requeridas y explica tipado estructural.
 
 #### 12.5.03 — Type aliases
 Un `type alias` asigna un nombre a un tipo, que puede ser primitivo, unión, intersección, tupla o forma de objeto. Selecciona `type` o `interface` según la composición y extensibilidad que necesite el contrato.
 
+
+**Práctica y evidencia:** Crea un alias de tipo para una estructura y compáralo con una interfaz ampliable. **Evidencia:** justifica la elección según composición, unión o extensión.
+
 #### 12.5.04 — Union types
 Los union types permiten que un valor pertenezca a uno de varios tipos, por ejemplo `string | number`. Reduce la unión mediante comprobaciones de tipo y maneja todos los casos posibles antes de utilizar operaciones específicas.
+
+
+**Práctica y evidencia:** Modela un estado como unión discriminada, por ejemplo loading, success y error. **Evidencia:** demuestra que cada variante exige los campos correctos.
 
 #### 12.5.05 — Intersection types
 Los intersection types combinan requisitos de varios tipos en uno solo. Son útiles para componer contratos, pero pueden producir propiedades incompatibles; evita combinaciones que generen tipos imposibles o difíciles de interpretar.
 
+
+**Práctica y evidencia:** Combina tipos con intersección para componer capacidades y resuelve un conflicto de propiedades. **Evidencia:** explica por qué una intersección puede producir un tipo imposible.
+
 #### 12.5.06 — Generics
 Los generics parametrizan funciones, interfaces y clases para conservar relaciones entre tipos sin recurrir a `any`. Define restricciones con `extends` cuando una operación necesita propiedades concretas y prueba inferencia con diferentes entradas.
+
+
+**Práctica y evidencia:** Implementa una función genérica que conserve el tipo de entrada y salida. **Evidencia:** muestra inferencia del parámetro y un caso donde un tipo demasiado amplio pierde información.
 
 #### 12.5.07 — Type narrowing
 Type narrowing reduce una unión a un tipo más específico mediante `typeof`, `in`, igualdad, discriminantes o guards. Modela estados con etiquetas discriminantes y evita asumir que una conversión de tipo modifica el valor en runtime.
 
+
+**Práctica y evidencia:** Utiliza `typeof`, `in`, `instanceof` y discriminantes para estrechar un tipo. **Evidencia:** elimina una aserción insegura mediante control de flujo.
+
 #### 12.5.08 — Utility types
 Utility types como `Partial`, `Pick`, `Omit`, `Record`, `Readonly` y `ReturnType` derivan nuevos tipos a partir de otros. Úsalos para expresar transformaciones de contrato y evita construir tipos excesivamente complejos solo para ahorrar unas líneas.
+
+
+**Práctica y evidencia:** Aplica `Partial`, `Pick`, `Omit`, `Record` y `Readonly` a modelos de dominio. **Evidencia:** explica qué propiedades cambian y por qué los utility types no validan datos externos en runtime.
 
 #### 12.5.09 — Enums
 Los enums representan conjuntos de constantes nombradas, aunque pueden generar código JavaScript dependiendo de su forma. Considera uniones literales o `as const` cuando sea más sencillo y documenta cómo se serializan los valores.
 
+
+**Práctica y evidencia:** Compara enum con unión de literales para representar estados finitos. **Evidencia:** justifica la opción elegida y comprueba el comportamiento del código generado si se usa enum.
+
 #### 12.5.10 — Type inference
 Type inference permite que TypeScript deduzca tipos a partir de valores, parámetros contextuales y expresiones. Añade anotaciones en límites públicos o cuando aclaren intención; no anotes cada variable de forma redundante ni confíes en inferencia para datos no validados.
 
+
+**Práctica y evidencia:** Deja que TypeScript infiera tipos en expresiones simples y declara tipos explícitos en límites públicos. **Evidencia:** identifica una anotación redundante y una frontera donde la anotación mejora claridad.
+
 #### 12.5.11 — Strict mode
 Strict mode activa comprobaciones estrictas del compilador, incluida la gestión de nullability y parámetros implícitos. Actívalo progresivamente en proyectos heredados y corrige los contratos reales en vez de silenciar errores con `any` o aserciones indiscriminadas.
+
+
+**Práctica y evidencia:** Activa `strict` y corrige errores relacionados con null, parámetros implícitos y propiedades opcionales. **Evidencia:** muestra que el proyecto compila sin desactivar reglas para ocultar problemas.
 
 ### Módulo 12.6 — React
 
 #### 12.6.01 — Components
 Un componente React encapsula una parte de interfaz y suele expresarse como función que devuelve JSX. Divide por responsabilidad y reutilización, mantén componentes puros cuando sea posible y no llames componentes como funciones ordinarias.
 
+
+**Práctica y evidencia:** Construye un componente React pequeño y reutilizable con una única responsabilidad. **Evidencia:** muestra su uso en dos contextos y explica qué datos recibe.
+
 #### 12.6.02 — JSX
 JSX es una sintaxis que permite describir estructuras similares a HTML dentro de JavaScript y se transforma durante el build. Usa `className`, expresiones entre llaves y claves estables en listas; JSX no es HTML literal y aplica reglas de JavaScript.
+
+
+**Práctica y evidencia:** Escribe JSX con expresiones, listas y atributos correctos. **Evidencia:** identifica diferencias con HTML, incluida `className` y la necesidad de keys estables en listas.
 
 #### 12.6.03 — Props
 Props son entradas de solo lectura que el componente recibe de su padre. Define nombres y tipos claros, evita mutarlas y pasa callbacks para comunicar acciones hacia arriba en lugar de modificar directamente el estado de otro componente.
 
+
+**Práctica y evidencia:** Pasa datos y callbacks mediante props y evita mutarlas dentro del componente. **Evidencia:** demuestra flujo unidireccional y tipa las propiedades.
+
 #### 12.6.04 — State
 State representa información que puede cambiar y cuya actualización provoca un nuevo render. Trata el estado como inmutable, calcula actualizaciones desde el valor previo cuando dependa de él y evita duplicar datos derivados que puedan calcularse.
+
+
+**Práctica y evidencia:** Gestiona estado local con un valor primitivo y un objeto, actualizando de forma inmutable. **Evidencia:** explica por qué mutar directamente no garantiza renderizado.
 
 #### 12.6.05 — Hooks
 Hooks permiten utilizar estado y otras capacidades de React desde componentes funcionales. Llámalos en el nivel superior y en el mismo orden en cada render; no los invoques dentro de condiciones, ciclos o funciones anidadas.
 
+
+**Práctica y evidencia:** Identifica reglas de Hooks y el propósito de estado, efectos y referencias. **Evidencia:** explica por qué los Hooks deben llamarse en el nivel superior de componentes o Hooks personalizados.
+
 #### 12.6.06 — useState
 `useState` añade estado local y devuelve el valor actual y una función de actualización. Si el nuevo valor depende del anterior, utiliza la forma funcional; no modifiques arrays u objetos existentes directamente.
+
+
+**Práctica y evidencia:** Implementa un contador con `useState` y una actualización funcional cuando depende del valor anterior. **Evidencia:** prueba varias actualizaciones seguidas y explica batching.
 
 #### 12.6.07 — useEffect
 `useEffect` sincroniza un componente con sistemas externos después del render, como suscripciones o temporizadores. Declara dependencias correctas y limpieza; no lo uses para calcular valores derivados que pueden obtenerse durante el render.
 
+
+**Práctica y evidencia:** Utiliza `useEffect` para sincronizar con un sistema externo y limpia suscripciones o temporizadores. **Evidencia:** demuestra dependencias correctas y ausencia de efectos repetidos innecesarios.
+
 #### 12.6.08 — useContext
 `useContext` lee el valor del contexto más cercano para compartir datos a través del árbol. Mantén el contexto para información realmente transversal y divide contextos de alta frecuencia de cambio para evitar renders innecesarios.
+
+
+**Práctica y evidencia:** Comparte un dato de tema o sesión mediante Context sin prop drilling excesivo. **Evidencia:** identifica proveedor, consumidor y coste de rerenderizado.
 
 #### 12.6.09 — useRef
 `useRef` conserva un objeto mutable entre renders sin provocar un render al cambiar su propiedad `current`. Sirve para referencias DOM y valores persistentes no visuales; si un cambio debe reflejarse en pantalla, normalmente corresponde a state.
 
+
+**Práctica y evidencia:** Usa `useRef` para conservar una referencia DOM o valor mutable que no debe disparar renderizado. **Evidencia:** compara con state y justifica cuándo corresponde cada uno.
+
 #### 12.6.10 — Forms
 Los formularios React pueden ser controlados por estado o utilizar referencias y APIs nativas. Define validación y mensajes accesibles, evita actualizar estado de manera innecesaria por cada pulsación y protege datos sensibles en el flujo de envío.
+
+
+**Práctica y evidencia:** Implementa un formulario controlado y valida valores con mensajes accesibles. **Evidencia:** prueba envío, error, corrección y conservación de datos.
 
 #### 12.6.11 — Routing
 Routing asocia rutas de URL con vistas y navegación de una aplicación. Distingue rutas cliente de navegación de servidor, maneja rutas desconocidas y protege recursos en backend; ocultar un enlace no constituye autorización.
 
+
+**Práctica y evidencia:** Configura rutas y enlaces con la solución de routing seleccionada para el proyecto. **Evidencia:** prueba navegación directa, parámetros y ruta inexistente.
+
 #### 12.6.12 — Context API
 Context API distribuye valores compartidos sin pasar props por cada nivel. Es adecuada para temas, idioma o sesión de interfaz, pero no sustituye automáticamente una estrategia de estado compleja ni el almacenamiento seguro de credenciales.
+
+
+**Práctica y evidencia:** Diseña Context API para estado transversal de baja o moderada frecuencia de cambio. **Evidencia:** explica cuándo conviene dividir contextos o usar otra solución de estado.
 
 #### 12.6.13 — Component lifecycle
 El ciclo de vida describe montaje, actualización y desmontaje de componentes. En componentes funcionales, efectos y su limpieza expresan sincronización con sistemas externos; el modo estricto de desarrollo puede repetir ciclos para revelar efectos no seguros.
 
+
+**Práctica y evidencia:** Relaciona montaje, actualización y desmontaje con el modelo actual de componentes funcionales y efectos. **Evidencia:** explica qué sincronización se limpia al desmontar sin tratar Hooks como equivalentes literales a todos los lifecycle methods.
+
 #### 12.6.14 — State management
 State management define cómo se representa, actualiza y comparte el estado de una aplicación. Separa estado local, estado de servidor, estado de URL y estado global; selecciona la herramienta menos compleja que cubra las necesidades reales.
+
+
+**Práctica y evidencia:** Compara estado local, estado compartido y estado remoto; elige dónde mantener cada dato. **Evidencia:** presenta un diagrama de flujo y evita duplicar estado derivable.
 
 #### 12.6.15 — Custom Hooks
 Custom Hooks encapsulan lógica reutilizable que usa otros hooks y devuelve datos o acciones. Sus nombres comienzan con `use`, respetan las reglas de hooks y abstraen comportamiento, no necesariamente interfaz visual.
 
+
+**Práctica y evidencia:** Extrae lógica reutilizable en un Hook personalizado con nombre `use...` y dependencias claras. **Evidencia:** úsalo en dos componentes y demuestra que no comparte estado automáticamente entre llamadas.
+
 #### 12.6.16 — Error Boundaries
 Error Boundaries capturan errores de renderizado en partes del árbol React y muestran una interfaz alternativa. No capturan todos los errores asíncronos ni eventos; registra contexto sin exponer datos privados y ofrece recuperación o navegación segura.
+
+
+**Práctica y evidencia:** Implementa una frontera de error para capturar errores de renderizado y ofrece fallback. **Evidencia:** demuestra qué errores captura y cuáles, como ciertos fallos asíncronos o de eventos, requieren manejo separado.
 
 ### Módulo 12.7 — Next.js
 
 #### 12.7.01 — App Router
 App Router organiza rutas y layouts mediante la estructura de archivos de `app` en Next.js. Comprende segmentos, layouts anidados, loading, error y not-found; consulta la documentación de la versión del proyecto porque convenciones pueden evolucionar.
 
+
+**Práctica y evidencia:** Organiza rutas del App Router mediante estructura de carpetas y archivos especiales. **Evidencia:** documenta URL resultante, layout heredado y página correspondiente.
+
 #### 12.7.02 — Routing
 El routing de Next.js convierte segmentos de carpetas y archivos especiales en rutas. Diseña rutas legibles, parámetros dinámicos y layouts compartidos; evita asumir que toda navegación se ejecuta exclusivamente en el cliente.
+
+
+**Práctica y evidencia:** Crea rutas dinámicas y navegación entre páginas, contemplando parámetros y estados no encontrados. **Evidencia:** prueba acceso directo a una URL con parámetro y ruta inexistente.
 
 #### 12.7.03 — Server Components
 Server Components se ejecutan en el servidor y permiten obtener datos y reducir JavaScript enviado al navegador. No acceden a APIs exclusivas del navegador ni manejan estado cliente; evita enviar secretos o datos no autorizados en sus props.
 
+
+**Práctica y evidencia:** Identifica Server Components y sus ventajas para renderizado, acceso a datos y reducción de JavaScript enviado al cliente. **Evidencia:** explica por qué un componente servidor no puede usar Hooks de cliente.
+
 #### 12.7.04 — Client Components
 Client Components habilitan estado, eventos y APIs del navegador mediante la directiva `use client` en el límite apropiado. Mantén el límite cliente pequeño y no confundas la ejecución inicial de render con la disponibilidad de APIs del navegador.
+
+
+**Práctica y evidencia:** Marca un Client Component cuando requiere interacción, estado o APIs del navegador. **Evidencia:** minimiza la frontera cliente y justifica cada componente marcado.
 
 #### 12.7.05 — Server-side rendering
 Server-side rendering genera HTML en el servidor para una solicitud o estrategia configurada. Considera hidratación, caché, datos personalizados y coste de render; evita que datos de usuario se filtren por cachés compartidas.
 
+
+**Práctica y evidencia:** Explica SSR como generación de HTML en servidor para una solicitud y considera hidratación y consistencia inicial. **Evidencia:** compara HTML recibido con interfaz después de hidratación.
+
 #### 12.7.06 — Static site generation
 Static site generation produce páginas durante la compilación o regeneración configurada, reduciendo trabajo por solicitud. Es apropiada para contenido que puede servirse estáticamente; define cómo se actualiza y evita publicar datos privados o obsoletos.
+
+
+**Práctica y evidencia:** Compara generación estática con renderizado dinámico y revalidación según frescura del contenido. **Evidencia:** selecciona estrategia para una página institucional y un panel personalizado.
 
 #### 12.7.07 — Data fetching
 Data fetching obtiene datos desde servicios o bases de datos dentro de los límites de ejecución de Next.js. Define caché, revalidación, timeout, manejo de errores y permisos; el lugar de la solicitud afecta rendimiento y exposición de secretos.
 
+
+**Práctica y evidencia:** Obtén datos en el servidor o cliente según requisitos de caché, autenticación y latencia. **Evidencia:** documenta origen, política de caché, manejo de errores y datos que nunca deben exponerse al navegador.
+
 #### 12.7.08 — Authentication
 La autenticación identifica al usuario y la autorización determina qué puede hacer. Usa bibliotecas y protocolos mantenidos, valida sesión y permisos en el servidor y no confíes en rutas protegidas solo por controles de interfaz.
+
+
+**Práctica y evidencia:** Implementa autenticación usando una biblioteca o proveedor mantenido y protege rutas/acciones en servidor. **Evidencia:** demuestra verificación de sesión y autorización por recurso; ocultar un enlace no basta.
 
 #### 12.7.09 — Metadata
 Metadata permite definir título, descripción, iconos y otras propiedades de página desde la configuración de Next.js. Genera metadatos coherentes por ruta, evita duplicados y no incluyas datos personales o secretos en valores públicos.
 
+
+**Práctica y evidencia:** Define metadata por página con título, descripción y metadatos sociales coherentes. **Evidencia:** inspecciona HTML generado y evita duplicar títulos entre rutas.
+
 #### 12.7.10 — Deployment
 Deployment publica la aplicación y su configuración en un entorno de ejecución. Documenta variables de entorno, build, runtime, migraciones, observabilidad, rollback y dominio; no incluyas secretos en repositorio ni confundas build exitoso con servicio saludable.
+
+
+**Práctica y evidencia:** Prepara despliegue con variables de entorno, build reproducible, revisión de dependencias y configuración de runtime. **Evidencia:** documenta comandos, variables requeridas sin valores secretos y health check.
 
 ### Módulo 12.8 — Herramientas
 
 #### 12.8.01 — npm
 npm instala paquetes, ejecuta scripts y administra dependencias mediante `package.json` y un lockfile. Revisa scripts antes de ejecutarlos, fija versiones según política y evita instalar paquetes de nombres parecidos sin verificar el mantenedor.
 
+
+**Práctica y evidencia:** Utiliza npm para instalar dependencias y scripts definidos en package.json. **Evidencia:** explica diferencia entre dependencias de runtime y desarrollo y conserva lockfile.
+
 #### 12.8.02 — pnpm
 pnpm gestiona dependencias con un almacén de contenido direccionado y enlaces, optimizando espacio y consistencia. Conserva `pnpm-lock.yaml`, documenta la versión del gestor y no mezcles lockfiles sin una decisión explícita del equipo.
+
+
+**Práctica y evidencia:** Compara pnpm con npm en almacenamiento, enlaces y workspace; no mezcles gestores en el mismo proyecto sin decisión explícita. **Evidencia:** instala desde lockfile y documenta gestor/versión.
 
 #### 12.8.03 — Vite
 Vite ofrece servidor de desarrollo y proceso de build para aplicaciones frontend. Configura plugins y variables con cuidado, recuerda que las variables expuestas al cliente son públicas y valida el artefacto de producción además del servidor local.
 
+
+**Práctica y evidencia:** Configura Vite para desarrollo y build, distinguiendo servidor de desarrollo y artefactos de producción. **Evidencia:** ejecuta build y verifica rutas de recursos en el resultado.
+
 #### 12.8.04 — ESLint
 ESLint analiza patrones de código y aplica reglas para detectar errores potenciales y mantener convenciones. Configura reglas compatibles con la versión del lenguaje y framework; no desactives globalmente reglas para ocultar advertencias recurrentes.
+
+
+**Práctica y evidencia:** Configura ESLint con reglas del proyecto y corrige problemas reales sin desactivar reglas globalmente. **Evidencia:** presenta salida de lint y justifica excepciones locales.
 
 #### 12.8.05 — Prettier
 Prettier formatea código de manera consistente y reduce discusiones de estilo. Fija configuración compartida y ejecútalo en el flujo del proyecto; el formateador no reemplaza linting, revisión ni pruebas.
 
+
+**Práctica y evidencia:** Configura Prettier para formato consistente y evita que compita con reglas de lint. **Evidencia:** formatea archivos y demuestra que una segunda ejecución no genera cambios adicionales.
+
 #### 12.8.06 — Tailwind CSS
 Tailwind CSS ofrece utilidades de bajo nivel para expresar estilos directamente en el marcado. Mantén tokens y patrones reutilizables, revisa el tamaño del CSS generado y evita construir nombres de clase dinámicos que el proceso de detección no pueda identificar.
+
+
+**Práctica y evidencia:** Aplica utilidades Tailwind para construir componentes y organiza tokens/configuración según la versión utilizada. **Evidencia:** muestra diseño responsivo y documenta versión y mecanismo de configuración.
 
 #### 12.8.07 — React DevTools
 React DevTools permite inspeccionar árbol de componentes, props, estado y rendimiento en desarrollo. Utilízalo para localizar renders y estructura; evita compartir capturas con datos de usuario o tokens y no lo confundas con una prueba de rendimiento completa.
 
+
+
+**Práctica y evidencia:** Usa React DevTools para inspeccionar árbol de componentes, props, estado y renders. **Evidencia:** identifica un renderizado innecesario y demuestra su causa antes de optimizar.
 
 ## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
 
