@@ -149,3 +149,196 @@ No se incluyen videos aprobados. Para aprobar recursos se comprobarán idioma ha
 - Java Documentation: https://docs.oracle.com/en/java/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se ha generado ni ejecutado una API en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 14
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Los apartados organizan el estudio de los conceptos y los relacionan con la guía técnica y el proyecto de la etapa; no representan evaluación, aprobación ni ejecución práctica.
+
+### Módulo 14.1 — Arquitectura backend
+
+#### 14.1.01 — Cliente-servidor
+Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.1.02 — Request-response
+Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.1.03 — MVC
+Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.1.04 — Middleware
+Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.1.05 — Controllers
+Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.1.06 — Services
+Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.1.07 — Repositories
+Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.1.08 — Models
+Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.1.09 — DTOs
+Estudiar el concepto y su función dentro de arquitectura backend; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 14.2 — Spring Framework
+
+#### 14.2.01 — Inversion of Control
+Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.2.02 — Dependency Injection
+Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.2.03 — Beans
+Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.2.04 — Application Context
+Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.2.05 — Configuration
+Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.2.06 — Component Scanning
+Estudiar el concepto y su función dentro de spring framework; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 14.3 — Spring Boot
+
+#### 14.3.01 — Spring Initializr
+Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.3.02 — Estructura del proyecto
+Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.3.03 — Controllers
+Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.3.04 — Services
+Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.3.05 — Repositories
+Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.3.06 — REST
+Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.3.07 — DTOs
+Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.3.08 — Validation
+Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.3.09 — Exception Handling
+Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.3.10 — Configuration Properties
+Estudiar el concepto y su función dentro de spring boot; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 14.4 — Persistencia
+
+#### 14.4.01 — Spring Data JPA
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.4.02 — Hibernate
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.4.03 — ORM
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.4.04 — Entities
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.4.05 — Relationships
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.4.06 — Repositories
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.4.07 — Migrations
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.4.08 — MySQL
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.4.09 — PostgreSQL
+Estudiar el concepto y su función dentro de persistencia; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 14.5 — Seguridad
+
+#### 14.5.01 — Spring Security
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.5.02 — Authentication
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.5.03 — Authorization
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.5.04 — Password Hashing
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.5.05 — JWT
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.5.06 — Roles
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.5.07 — Permissions
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.5.08 — OAuth2
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.5.09 — OpenID Connect
+Estudiar el concepto y su función dentro de seguridad; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 14.6 — Backend avanzado
+
+#### 14.6.01 — Transactions
+Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.6.02 — Caching
+Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.6.03 — Pagination
+Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.6.04 — Filtering
+Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.6.05 — Async
+Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.6.06 — Events
+Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.6.07 — WebSockets
+Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.6.08 — File Upload
+Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.6.09 — Email
+Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.6.10 — Queues
+Estudiar el concepto y su función dentro de backend avanzado; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+### Módulo 14.7 — Construcción y dependencias
+
+#### 14.7.01 — Maven
+Estudiar el concepto y su función dentro de construcción y dependencias; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.7.02 — Gradle
+Estudiar el concepto y su función dentro de construcción y dependencias; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.7.03 — Dependencies
+Estudiar el concepto y su función dentro de construcción y dependencias; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.7.04 — Build Lifecycle
+Estudiar el concepto y su función dentro de construcción y dependencias; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
+
+#### 14.7.05 — Profiles
+Estudiar el concepto y su función dentro de construcción y dependencias; reconocer sus responsabilidades, sus límites y su interacción con los demás componentes del servicio. Aplicarlo de forma coherente en el proyecto de la etapa.
