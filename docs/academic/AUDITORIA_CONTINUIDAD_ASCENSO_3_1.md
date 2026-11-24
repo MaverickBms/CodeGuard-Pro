@@ -680,3 +680,17 @@ Se añadieron prácticas y evidencias a las **61 lecciones** de testing y calida
 **Límites:** no se ejecutaron JUnit, Mockito, Jest, Vitest, Playwright, Cypress, Postman, JMeter ni análisis SonarQube. Tampoco se realizaron pruebas de carga. No se verificaron referencias o versiones una por una. La ampliación es documental y estructural, no validación por ejecución ni aprobación externa.
 
 **Acumulado:** etapas 1–6: 265; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63; etapa 14: 58; etapas 15–16: 99; etapa 17: 61. Total de etapas 1–17 con desarrollo documental ampliado: **979 lecciones**. Etapas 18–32: 937 lecciones requieren profundización equivalente. No se importó ni publicó contenido.
+
+
+## Addendum de profundización didáctica — etapas 18–19 — 2026-11-24
+
+Se añadieron prácticas y evidencias a **167 lecciones**:
+
+- **Etapa 18 — Arquitectura, diseño y planeación: 100 lecciones.** Requisitos, agilidad, documentación, diagramas, principios de diseño, patrones, arquitecturas, sistemas distribuidos y DDD.
+- **Etapa 19 — DevOps, Docker, Cloud y Kubernetes: 67 lecciones.** Cultura DevOps, contenedores, administración de servidores, reverse proxy, CI/CD, nube, Kubernetes e infraestructura como código.
+
+**Comprobación documental:** ambos archivos se releen desde la rama; se cuentan 100 y 67 encabezados y el mismo número de apartados de práctica/evidencia. No se detectan encabezados vacíos.
+
+**Límites:** no se ejecutaron pruebas de infraestructura, imágenes/containers, pipelines, servicios cloud, clústeres Kubernetes, Terraform ni despliegues. No se crearon recursos cloud facturables. No se verificaron todas las referencias y versiones. El resultado es ampliación documental y estructural, no validación técnica por ejecución ni aprobación externa.
+
+**Acumulado:** etapas 1–6: 265; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63; etapa 14: 58; etapas 15–16: 99; etapa 17: 61; etapas 18–19: 167. Total de etapas 1–19 con desarrollo documental ampliado: **1.146 lecciones**. Etapas 20–32: 770 lecciones requieren profundización equivalente. No se importó ni publicó contenido.
