@@ -545,6 +545,8 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Ejemplo.** `pwd -P` muestra la ruta física resolviendo enlaces simbólicos; `pwd -L` conserva, cuando es posible, la ruta lógica de la shell.
 
+**Caso aplicado.** Antes de ejecutar una copia relativa, una persona comprueba la ruta actual y detecta que sigue dentro de /tmp en vez de su carpeta de proyecto. Detenerse y corregir el directorio evita escribir datos en una ubicación equivocada.
+
 **Práctica guiada.** Ejecuta `pwd` en tu directorio personal y después de entrar en `/tmp`. Registra ambas salidas y compara con `pwd -P` si hay enlaces simbólicos.
 
 **Actividad independiente.** Explica qué archivo afectaría una orden relativa si se ejecuta desde dos directorios distintos.
@@ -553,11 +555,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Ejecutar `rm` o `cp` suponiendo un directorio actual distinto del real.
 
+**Pregunta de comprensión.** ¿Por qué conocer el directorio actual es un control preventivo antes de ejecutar una orden que modifica archivos?
+
 ### 7.3.2 — ls
 
 **Propósito.** Inspeccionar nombres y metadatos sin modificar el contenido del directorio.
 
 **Ejemplo.** `ls -lah` muestra entradas ocultas, permisos y tamaños legibles; `ls -ln` presenta UID/GID numéricos, útil cuando no hay resolución de nombres.
+
+**Caso aplicado.** Un archivo de configuración no aparece en un listado normal porque su nombre comienza por punto. El listado con opción para entradas ocultas permite localizarlo sin cambiar atributos ni contenido.
 
 **Práctica guiada.** En una carpeta de laboratorio compara `ls`, `ls -la` y `ls -lh`. Identifica permisos, enlaces, propietario, tamaño y fecha. No interpretes el tamaño de un directorio como suma recursiva de su contenido.
 
@@ -567,11 +573,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Tratar el tamaño mostrado para un directorio como el espacio total que consumen todos sus archivos.
 
+**Pregunta de comprensión.** ¿Qué información adicional aporta un listado largo frente a mostrar solo nombres?
+
 ### 7.3.3 — cd
 
 **Propósito.** Cambiar el directorio de trabajo de la shell y comprender cómo se resuelven las rutas.
 
 **Ejemplo.** `cd ..` sube al directorio padre; `cd ~` entra al directorio personal; `cd -` vuelve al directorio anterior cuando la shell mantiene esa referencia.
+
+**Caso aplicado.** Un script interactivo necesita cambiar de carpeta y continuar con rutas relativas. cd debe ejecutarse en la shell que mantiene el flujo, no en un subproceso que terminará sin cambiar el contexto del llamador.
 
 **Práctica guiada.** Navega entre `/tmp`, `~` y una carpeta de laboratorio usando rutas absolutas y relativas. Confirma cada cambio con `pwd`.
 
@@ -581,11 +591,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Suponer que `cd` puede cambiar el directorio de trabajo del proceso padre; se ejecuta como builtin porque la shell debe cambiar su propio estado.
 
+**Pregunta de comprensión.** ¿Por qué cd es un builtin de shell y qué ocurriría si se ejecutara en un proceso hijo?
+
 ### 7.3.4 — mkdir
 
 **Propósito.** Crear directorios con una estructura predecible y permisos adecuados.
 
 **Ejemplo.** `mkdir -p ~/lab/etapa7/entrada` crea los componentes ausentes y no falla simplemente porque los directorios intermedios ya existan.
+
+**Caso aplicado.** Un pipeline requiere separar archivos de entrada y resultados. Crear una jerarquía explícita evita mezclar archivos originales con productos generados y facilita aplicar permisos distintos.
 
 **Práctica guiada.** Crea una jerarquía temporal con `mkdir -p` y verifica con `find` o `ls -R`. Inspecciona permisos iniciales y considera la umask.
 
@@ -595,11 +609,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Crear directorios con permisos demasiado abiertos o utilizar rutas fuera del espacio de laboratorio.
 
+**Pregunta de comprensión.** ¿Qué ventaja operativa aporta crear la estructura antes de iniciar un proceso automatizado?
+
 ### 7.3.5 — touch
 
 **Propósito.** Crear archivos vacíos y modificar marcas temporales, comprendiendo que touch no escribe contenido.
 
 **Ejemplo.** `touch nota.txt` crea el archivo si no existe; si existe, actualiza marcas temporales según opciones y permisos.
+
+**Caso aplicado.** Una herramienta de compilación utiliza marcas temporales para decidir qué archivos necesitan reconstrucción. Cambiar timestamps puede alterar esa decisión aunque el contenido permanezca idéntico.
 
 **Práctica guiada.** Crea un archivo temporal, consulta `stat nota.txt`, espera unos segundos y vuelve a ejecutar touch. Compara modificación y acceso, teniendo en cuenta las políticas de montaje.
 
@@ -609,11 +627,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Usar touch como si fuera un editor o asumir que todas las marcas temporales se actualizan idénticamente en cualquier sistema de archivos.
 
+**Pregunta de comprensión.** ¿Por qué la fecha de modificación no demuestra por sí sola que el contenido de un archivo haya cambiado?
+
 ### 7.3.6 — cp
 
 **Propósito.** Copiar archivos o directorios sin confundir copia de contenido con preservación completa de metadatos.
 
 **Ejemplo.** `cp origen destino` copia un archivo; `cp -a arbol/ copia/` intenta preservar atributos y estructura de forma recursiva.
+
+**Caso aplicado.** Antes de editar un archivo de configuración se crea una copia de trabajo. Comparar hashes permite comprobar igualdad de contenido, mientras los metadatos deben revisarse por separado.
 
 **Práctica guiada.** Copia un archivo creado en el laboratorio y compara SHA-256 con `sha256sum`. Después copia un subdirectorio con `cp -a` y revisa permisos y marcas temporales.
 
@@ -623,11 +645,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Sobrescribir el destino sin verificarlo o asumir que una copia simple conserva propietarios y permisos originales.
 
+**Pregunta de comprensión.** ¿Por qué un hash coincidente no demuestra que propietario y permisos también sean iguales?
+
 ### 7.3.7 — mv
 
 **Propósito.** Mover o renombrar entradas y comprender las diferencias entre operaciones dentro y entre sistemas de archivos.
 
 **Ejemplo.** En el mismo sistema de archivos, mv suele cambiar la entrada de directorio; entre sistemas de archivos puede requerir copiar y eliminar, con implicaciones de metadatos y atomicidad.
+
+**Caso aplicado.** Renombrar un archivo dentro del mismo volumen suele ser una operación de metadatos; moverlo a otro volumen puede implicar copia y eliminación. Para datos críticos, se verifica integridad antes de retirar el origen.
 
 **Práctica guiada.** Renombra un archivo del laboratorio y muévelo a otra carpeta del mismo volumen. Verifica ruta, contenido y permisos antes y después.
 
@@ -637,11 +663,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Usar comodines sin revisar la expansión o asumir que el movimiento entre volúmenes es siempre una operación atómica.
 
+**Pregunta de comprensión.** ¿Qué riesgo adicional aparece cuando un movimiento cruza sistemas de archivos?
+
 ### 7.3.8 — rm
 
 **Propósito.** Eliminar entradas de forma controlada, comprendiendo que rm no proporciona una papelera ni una reversión sencilla.
 
 **Ejemplo.** `rm archivo-temporal` elimina una entrada; `rm -r directorio-lab` recorre el árbol. `-f` suprime ciertas confirmaciones y errores, por lo que aumenta el riesgo de una equivocación.
+
+**Caso aplicado.** Una variable de ruta vacía podría hacer que una orden de eliminación opere sobre un objetivo distinto del esperado. Un script robusto valida que la variable no esté vacía y que la ruta permanezca dentro del directorio permitido.
 
 **Práctica guiada.** Crea un único archivo temporal, confirma la ruta con `pwd` y `ls -l` y elimina solo ese archivo. No utilices `sudo rm` ni `rm -rf` sobre rutas del sistema.
 
@@ -651,11 +681,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Ejecutar una expansión de comodines o una variable vacía sin inspeccionar qué ruta terminará usando rm.
 
+**Pregunta de comprensión.** ¿Qué controles deben preceder a una eliminación recursiva?
+
 ### 7.3.9 — find
 
 **Propósito.** Buscar archivos y directorios mediante criterios de nombre, tipo, tamaño, tiempo y permisos.
 
 **Ejemplo.** `find ~/lab -type f -name '*.log'` busca archivos regulares con esa extensión bajo el árbol de laboratorio. Las comillas evitan que la shell expanda el patrón antes de que find lo procese.
+
+**Caso aplicado.** Un administrador busca archivos de log antiguos dentro de una carpeta de aplicación concreta. Limitar la ruta inicial evita recorrer sistemas de archivos ajenos al objetivo y reduce ruido y carga.
 
 **Práctica guiada.** Crea tres archivos de prueba y localízalos por nombre y tipo. Añade `-print` explícitamente y observa cómo cambia la búsqueda al limitar la ruta inicial.
 
@@ -665,11 +699,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Ejecutar búsquedas desde `/` con privilegios elevados sin necesidad o olvidar citar patrones con comodines.
 
+**Pregunta de comprensión.** ¿Por qué la ruta inicial es una decisión de seguridad y rendimiento?
+
 ### 7.3.10 — grep
 
 **Propósito.** Filtrar líneas de texto que coinciden con patrones y comprender el alcance de las expresiones regulares.
 
 **Ejemplo.** `grep -n 'ERROR' aplicación.log` muestra líneas coincidentes con número de línea. `-i` ignora mayúsculas/minúsculas y `-r` recorre directorios, con cuidado de no incluir datos sensibles.
+
+**Caso aplicado.** Una investigación revisa registros anonimizados para encontrar mensajes de error. El patrón filtra líneas candidatas, pero no determina por sí solo la causa ni la gravedad del evento.
 
 **Práctica guiada.** Crea un archivo de texto con líneas INFO, WARN y ERROR; filtra ERROR con `grep -n` y luego cuenta coincidencias con `grep -c`.
 
@@ -679,11 +717,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Tratar grep como parser completo de formatos estructurados o asumir que ausencia de coincidencias equivale a error del comando.
 
+**Pregunta de comprensión.** ¿Por qué una coincidencia de texto debe interpretarse en contexto y no como diagnóstico final?
+
 ### 7.3.11 — chmod
 
 **Propósito.** Cambiar permisos de archivos y directorios de forma deliberada.
 
 **Ejemplo.** `chmod 640 archivo` concede lectura/escritura al propietario, lectura al grupo y ningún permiso a otros. La forma simbólica `chmod u=rw,g=r,o= archivo` expresa la misma intención.
+
+**Caso aplicado.** Una clave privada de laboratorio no debe ser legible por otros usuarios. Se establece un modo restrictivo y luego se inspecciona el resultado; no se amplían permisos para resolver fallos sin comprender el propietario.
 
 **Práctica guiada.** Crea un archivo de prueba, aplica ambos modos en pasos separados y verifica con `stat`. En un directorio, compara el efecto de r y x sobre listar y atravesar.
 
@@ -693,11 +735,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Aplicar 777 para resolver cualquier problema de acceso o cambiar permisos recursivamente sin revisar el árbol.
 
+**Pregunta de comprensión.** ¿Por qué los permisos mínimos son preferibles a utilizar 777?
+
 ### 7.3.12 — chown
 
 **Propósito.** Cambiar propietario y/o grupo cuando exista una necesidad administrativa legítima.
 
 **Ejemplo.** `chown usuario:grupo archivo` asigna ambos atributos. La operación suele requerir privilegios; las reglas exactas para transferir propiedad dependen del sistema.
+
+**Caso aplicado.** Un servicio no puede leer un archivo porque el propietario y grupo no corresponden a su identidad de ejecución. La corrección se limita al archivo necesario y se documenta antes de cualquier operación recursiva.
 
 **Práctica guiada.** Inspecciona propietario y grupo con `stat` y `ls -ln`. En un laboratorio desechable, si dispones de autorización, cambia la propiedad de un archivo creado para la práctica y vuelve a verificar. Si no tienes permisos, documenta el error sin elevar privilegios.
 
@@ -707,11 +753,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Aplicar `chown -R` sobre rutas amplias o usarlo como sustituto de comprender los permisos.
 
+**Pregunta de comprensión.** ¿Por qué una corrección de propietario debe delimitar el alcance con precisión?
+
 ### 7.3.13 — ps
 
 **Propósito.** Obtener una instantánea de procesos y sus atributos principales.
 
 **Ejemplo.** `ps -ef` presenta procesos en formato amplio; `ps -p PID -o pid,ppid,stat,etime,cmd` permite inspeccionar una instancia concreta. La salida refleja un instante, no un historial continuo.
+
+**Caso aplicado.** Una aplicación inicia varios procesos con nombres similares. Inspeccionar PID, PPID, propietario y comando completo permite identificar la instancia pertinente antes de tomar una acción.
 
 **Práctica guiada.** Inicia `sleep 60 & pid=$!` y consulta únicamente ese PID con ps. Registra PID, PPID, estado y tiempo transcurrido; termina el proceso propio al finalizar.
 
@@ -721,11 +771,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Elegir un proceso por nombre sin comprobar PID, propietario y comando completo.
 
+**Pregunta de comprensión.** ¿Por qué un nombre de proceso no es un identificador suficiente?
+
 ### 7.3.14 — top
 
 **Propósito.** Observar dinámicamente carga de CPU, memoria y procesos para formular hipótesis de rendimiento.
 
 **Ejemplo.** top actualiza periódicamente estadísticas; el porcentaje de CPU depende del número de núcleos y de la forma de cálculo. La vista es una observación, no un diagnóstico completo de causa.
+
+**Caso aplicado.** Una alerta indica CPU elevada. top ayuda a observar el patrón en tiempo real, pero la hipótesis debe contrastarse con métricas históricas, I/O y comportamiento esperado de la aplicación.
 
 **Práctica guiada.** Ejecuta `top` durante un periodo corto. Identifica carga, procesos con mayor consumo y memoria disponible. Sal con q y no cambies prioridades ni finalices procesos desde la herramienta.
 
@@ -735,11 +789,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Considerar load average como porcentaje de CPU o asumir que el proceso que aparece arriba es necesariamente la causa raíz.
 
+**Pregunta de comprensión.** ¿Qué diferencia existe entre observar correlación temporal y demostrar causalidad?
+
 ### 7.3.15 — kill
 
 **Propósito.** Enviar señales a procesos identificados y distinguir solicitud de terminación de terminación forzada.
 
 **Ejemplo.** `kill -TERM PID` solicita terminación ordenada; `kill -KILL PID` fuerza al kernel a terminar el proceso y no permite que este gestione la señal. No debe actuarse sobre PID desconocidos.
+
+**Caso aplicado.** Un proceso propio de laboratorio deja de responder. SIGTERM permite que intente cerrar archivos y liberar recursos; SIGKILL queda como último recurso cuando la terminación ordenada no funciona.
 
 **Práctica guiada.** En Bash crea `sleep 90 & pid=$!`, verifica el PID y envía SIGTERM a esa instancia. Comprueba su salida. No utilices killall ni pkill sobre procesos generales.
 
@@ -749,11 +807,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Enviar señales a PID reutilizados u obtenerlos de una lista antigua sin volver a verificarlos.
 
+**Pregunta de comprensión.** ¿Qué tareas de limpieza puede realizar un proceso al recibir SIGTERM que no puede realizar al recibir SIGKILL?
+
 ### 7.3.16 — systemctl
 
 **Propósito.** Consultar y administrar unidades gestionadas por systemd, diferenciando observación de modificación.
 
 **Ejemplo.** `systemctl status servicio` muestra estado y detalles; `is-active` consulta ejecución y `is-enabled` consulta habilitación para arranque/activación. `start`, `stop` y `enable` modifican el sistema.
+
+**Caso aplicado.** Un servicio figura habilitado pero está detenido. Consultar por separado is-enabled e is-active evita confundir configuración de arranque con estado operativo actual.
 
 **Práctica guiada.** Consulta el estado de un servicio no crítico con `systemctl status`, `systemctl is-active` y `systemctl is-enabled`. No cambies su estado en el host.
 
@@ -763,11 +825,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Ejecutar `systemctl restart` sobre un servicio desconocido sin evaluar impacto.
 
+**Pregunta de comprensión.** ¿Puede una unidad estar habilitada y no estar activa? Explica por qué.
+
 ### 7.3.17 — journalctl
 
 **Propósito.** Consultar el journal de systemd para investigar eventos por arranque, unidad, prioridad y tiempo.
 
 **Ejemplo.** `journalctl -b` muestra registros del arranque actual; `journalctl -u servicio` filtra por unidad; `-p warning` limita por prioridad. La disponibilidad y persistencia del journal dependen de la configuración.
+
+**Caso aplicado.** Una aplicación falla al iniciar. Filtrar el journal por unidad y ventana temporal reduce ruido; correlacionar mensajes con cambios recientes permite formular hipótesis que luego deben probarse.
 
 **Práctica guiada.** Consulta `journalctl -b -p warning` y luego filtra por un servicio de laboratorio. Registra timestamp, unidad, prioridad y mensaje, ocultando datos sensibles.
 
@@ -777,11 +843,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Suponer que journalctl contiene todos los eventos históricos o que un warning equivale a un incidente.
 
+**Pregunta de comprensión.** ¿Qué limitaciones tiene investigar un fallo utilizando solo una línea de log?
+
 ### 7.3.18 — df
 
 **Propósito.** Medir capacidad y espacio disponible de sistemas de archivos montados.
 
 **Ejemplo.** `df -h` presenta tamaños legibles; `df -i` muestra uso de inodos. Un volumen puede quedarse sin inodos aunque todavía informe espacio en bytes.
+
+**Caso aplicado.** Una aplicación no puede crear archivos pese a que df muestra espacio libre. Revisar inodos y punto de montaje ayuda a identificar límites que no se ven al observar únicamente bytes disponibles.
 
 **Práctica guiada.** Ejecuta `df -hT` y `df -i`. Identifica punto de montaje, tipo de sistema de archivos, capacidad, usado y disponible. No llenes volúmenes para probar límites.
 
@@ -791,11 +861,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Confundir uso de un directorio con uso de todo el sistema de archivos o interpretar tamaños redondeados como valores exactos.
 
+**Pregunta de comprensión.** ¿Cómo puede agotarse la capacidad de crear archivos sin agotar los bytes del volumen?
+
 ### 7.3.19 — du
 
 **Propósito.** Estimar cuánto espacio ocupa un árbol de archivos desde la perspectiva de sus entradas.
 
 **Ejemplo.** `du -sh ~/lab` resume el uso del directorio; `du -h --max-depth=1 ruta` compara subdirectorios. El resultado depende de enlaces, archivos dispersos y unidades de asignación.
+
+**Caso aplicado.** Un directorio de logs crece rápidamente. du ayuda a localizar subdirectorios con mayor consumo, pero antes de borrar se debe identificar el servicio propietario, la política de retención y si los archivos siguen abiertos.
 
 **Práctica guiada.** Crea archivos de distintos tamaños en una carpeta de prueba y compara `du -sh` con `ls -lh`. No uses directorios del sistema como objetivo de limpieza.
 
@@ -805,11 +879,15 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 **Error frecuente.** Borrar archivos grandes basándose solo en du sin identificar qué proceso o servicio los necesita.
 
+**Pregunta de comprensión.** ¿Por qué localizar el mayor directorio no autoriza automáticamente a eliminar su contenido?
+
 ### 7.3.20 — mount
 
 **Propósito.** Comprender cómo un sistema de archivos se incorpora al árbol de directorios y qué controles rodean el montaje.
 
 **Ejemplo.** `findmnt` consulta montajes existentes; `mount` sin argumentos suele listar montajes. Montar un dispositivo requiere identificar correctamente origen, tipo y punto de montaje, y puede alterar qué contenido queda visible en esa ruta.
+
+**Caso aplicado.** Un volumen de datos se monta sobre un directorio que ya contiene archivos. El contenido previo queda oculto mientras el montaje está activo, lo que puede confundir a procesos y operadores.
 
 **Práctica guiada.** Ejecuta `findmnt` y `mount` en modo de consulta. Identifica un punto de montaje, su origen y opciones. No montes ni desmontes dispositivos del host durante esta práctica.
 
@@ -818,6 +896,8 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 **Criterios de aceptación.** Explica origen, tipo y punto de montaje; interpreta una entrada de findmnt y reconoce riesgos de montaje/desmontaje.
 
 **Error frecuente.** Desmontar un volumen ocupado o montar un dispositivo no verificado sobre una ruta que contiene datos importantes.
+
+**Pregunta de comprensión.** ¿Qué puede ocurrir si se monta un volumen sobre una ruta que ya contiene datos?
 
 ## 7.4 — Bash
 
