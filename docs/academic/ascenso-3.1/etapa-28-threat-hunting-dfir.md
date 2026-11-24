@@ -1,7 +1,7 @@
 # Etapa 28 — Threat Hunting, respuesta a incidentes y forense digital
 
 **Prioridad:** P2/P3 · Especialización avanzada  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** investigar incidentes y reconstruir qué ocurrió en un sistema comprometido.  
 **Proyecto oficial:** investigar un incidente simulado, construir una línea temporal, identificar la causa, determinar el impacto y elaborar un informe forense.
 
@@ -96,4 +96,4 @@ No se incluyen videos aprobados. Se incorporarán solo recursos hablados en espa
 - Sysmon: https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
 - NIST SP 800-86: https://csrc.nist.gov/pubs/sp/800/86/final
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se analizaron imágenes ni evidencias reales en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se analizaron imágenes ni evidencias reales en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
