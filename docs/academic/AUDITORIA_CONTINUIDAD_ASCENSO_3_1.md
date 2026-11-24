@@ -1056,3 +1056,41 @@ Se añadieron prácticas específicas, evidencias esperadas, criterios de acepta
 **Estado:** desarrollo documental de la etapa 7 completo en esta pasada; validación técnica por ejecución y aprobación académica siguen pendientes. La cobertura 84/84 no equivale a pruebas ejecutadas ni a aprobación.
 
 El roadmap JSON no fue modificado. Se conserva el objetivo vacío de la etapa 25. No se importó ni publicó contenido.
+
+
+## Desarrollo documental individual — etapa 12 (2026-11-24)
+
+### Resultado
+
+Se desarrollaron individualmente las 89 lecciones oficiales de la etapa 12 «JavaScript, TypeScript, React y Next.js», respetando títulos, módulos y numeración:
+
+| Módulo | Lecciones oficiales | Desarrolladas |
+|---|---:|---:|
+| 12.1 — JavaScript | 19 | 19 |
+| 12.2 — DOM | 9 | 9 |
+| 12.3 — Asincronía | 10 | 10 |
+| 12.4 — Web APIs | 7 | 7 |
+| 12.5 — TypeScript | 11 | 11 |
+| 12.6 — React | 16 | 16 |
+| 12.7 — Next.js | 10 | 10 |
+| 12.8 — Herramientas | 7 | 7 |
+| **Total** | **89** | **89** |
+
+Cada lección incluye explicación técnica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación, errores frecuentes y pregunta de comprobación. Se incluyeron límites de seguridad para almacenamiento del navegador, cookies, geolocalización, portapapeles, carga de archivos, variables de entorno, autenticación, acceso a datos y uso de dependencias.
+
+### Revisión estructural
+
+- Se verificaron 89 encabezados únicos.
+- Se cotejaron los ocho módulos y sus conteos con el roadmap JSON oficial.
+- Se comprobó en todas las lecciones la presencia de práctica guiada, actividad independiente y criterios de aceptación.
+- Se conservaron resultados de aprendizaje, proyecto, evaluación y referencias preexistentes.
+
+### Límites de validación
+
+- Desarrollo documental y revisión estructural interna; no equivale a validación técnica independiente ni aprobación académica.
+- No se ejecutaron ejemplos JavaScript/TypeScript, builds, pruebas React/Next.js ni pruebas en navegadores.
+- No se probaron versiones concretas de frameworks, dependencias o herramientas; las instrucciones deben cotejarse con versiones fijadas antes de ejecutar.
+- No se verificaron exhaustivamente las referencias bibliográficas.
+- No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para este lote.
+
+No se modificó el roadmap JSON, no se inventaron UUID y no se importó, aprobó ni publicó contenido. Las etapas siguientes permanecen pendientes de desarrollo equivalente; el objetivo oficial vacío de etapa 25 permanece intacto.
