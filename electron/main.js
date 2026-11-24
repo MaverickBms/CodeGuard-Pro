@@ -1010,7 +1010,7 @@ function createMainWindow() {
         });
         writeStartupPerf({ usable: false, interactive_source: 'main-timeout', verified: false });
         mainWindow.show();
-        mainWindow.maximize();
+        mainWindow.setFullScreen(true);
         closeSplashWindow();
       }, 30000);
     }
@@ -1253,7 +1253,7 @@ ipcMain.on('app-interactive-signal', (event, payload = {}) => {
     writeStartupPerf({ usable: false, interactive_source: source, verified: false });
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.show();
-      mainWindow.maximize();
+      mainWindow.setFullScreen(true);
     }
     closeSplashWindow();
     return;
@@ -1269,7 +1269,7 @@ ipcMain.on('app-interactive-signal', (event, payload = {}) => {
   writeStartupPerf({ usable: true, interactive_source: source, verified: true, upgraded_from_fallback: !!decision.upgrade });
   if (mainWindow && !mainWindow.isDestroyed()) {
     mainWindow.show();
-    mainWindow.maximize();
+    mainWindow.setFullScreen(true);
   }
   closeSplashWindow();
 });

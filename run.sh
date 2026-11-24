@@ -71,7 +71,7 @@ if [ "$USE_FUSE" != "1" ]; then
   mkdir -p "$CACHE_HOME/codeguard-pro/extracted"
   CACHED_APP="$(resolve_extracted_app "$EXTRACT_DIR" 2>/dev/null || true)"
   if [ -z "$CACHED_APP" ]; then
-    echo "[CodeGuard] Extrayendo AppImage a caché para mejor rendimiento..."
+    if [ "${CODEGUARD_VERBOSE:-0}" = "1" ]; then echo "[CodeGuard] Extrayendo AppImage a caché para mejor rendimiento..."; fi
     rm -rf "$EXTRACT_DIR"
     mkdir -p "$EXTRACT_DIR"
     if (cd "$EXTRACT_DIR" && "$APPIMAGE" --appimage-extract >/dev/null 2>&1); then
@@ -81,7 +81,7 @@ if [ "$USE_FUSE" != "1" ]; then
       fi
       CACHED_APP="$(resolve_extracted_app "$EXTRACT_DIR/root" 2>/dev/null || resolve_extracted_app "$EXTRACT_DIR" 2>/dev/null || true)"
     else
-      echo "[CodeGuard] Extracción falló; usando FUSE/montaje."
+      if [ "${CODEGUARD_VERBOSE:-0}" = "1" ]; then echo "[CodeGuard] Extracción falló; usando FUSE/montaje."; fi
       rm -rf "$EXTRACT_DIR"
       CACHED_APP=""
     fi
@@ -90,26 +90,29 @@ if [ "$USE_FUSE" != "1" ]; then
   fi
   if [ -n "$CACHED_APP" ]; then
     LAUNCH_CMD=("$CACHED_APP")
-    echo "[CodeGuard] Usando AppImage extraído en caché."
+    if [ "${CODEGUARD_VERBOSE:-0}" = "1" ]; then echo "[CodeGuard] Usando AppImage extraído en caché."; fi
   fi
 else
-  echo "Modo FUSE/montaje activado (CODEGUARD_APPIMAGE_NO_EXTRACT=1)."
+  if [ "${CODEGUARD_VERBOSE:-0}" = "1" ]; then echo "Modo FUSE/montaje activado (CODEGUARD_APPIMAGE_NO_EXTRACT=1)."; fi
 fi
 
-echo "=============================================="
-echo "   CodeGuard Pro — Inicio"
-echo "=============================================="
-echo "AppImage: $APPIMAGE"
-echo "Datos:    $CODEGUARD_DATA_DIR"
-if [ "$USE_FUSE" != "1" ] && [ "${LAUNCH_CMD[0]}" != "$APPIMAGE" ]; then
-  echo "Caché:    $EXTRACT_DIR"
-fi
-echo ""
-echo "El servidor local inicializará el perfil al arrancar."
-echo "Usa --ozone-platform=x11 para compatibilidad con Wayland."
-echo ""
+LOG_DIR="$DATA_DIR/logs"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/launcher.log"
 
-if [ -t 1 ]; then
-  echo "[CodeGuard] Iniciando CodeGuard Pro..."
+if [ "${CODEGUARD_VERBOSE:-0}" = "1" ]; then
+  echo "=============================================="
+  echo "   CodeGuard Pro — Inicio"
+  echo "=============================================="
+  echo "AppImage: $APPIMAGE"
+  echo "Datos:    $CODEGUARD_DATA_DIR"
+  if [ "$USE_FUSE" != "1" ] && [ "${LAUNCH_CMD[0]}" != "$APPIMAGE" ]; then
+    echo "Caché:    $EXTRACT_DIR"
+  fi
+  echo "Log:      $LOG_FILE"
+  echo ""
+  exec "${LAUNCH_CMD[@]}" --ozone-platform=x11 "$@"
+else
+  echo "Iniciando CodeGuard Pro..."
+  exec "${LAUNCH_CMD[@]}" --ozone-platform=x11 "$@" >> "$LOG_FILE" 2>&1
 fi
-exec "${LAUNCH_CMD[@]}" --ozone-platform=x11 "$@"
