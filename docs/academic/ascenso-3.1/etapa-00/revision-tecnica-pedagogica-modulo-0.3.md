@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-11-24  
 **Tipo:** revisión documental y de correspondencia curricular; no es ejecución de comandos ni auditoría de seguridad.  
-**Estado:** BORRADOR.
+**Estado del registro:** vigente como revisión de escritorio; no constituye aprobación independiente ni validación experimental.
 
 ## Alcance
 
@@ -55,6 +55,6 @@ No se ejecutaron comandos en Bash, PowerShell o CMD; no se creó un repositorio 
 
 ## Límites
 
-El contenido se inspeccionó estáticamente. Las referencias oficiales documentan las herramientas, pero no prueban que el laboratorio esté ejecutado ni que una instrucción funcione sin variación en todos los sistemas. No se asigna APROBADO.
+El contenido se inspeccionó estáticamente. Las referencias oficiales documentan las herramientas, pero no prueban que el laboratorio esté ejecutado ni que una instrucción funcione sin variación en todos los sistemas. El módulo se mantiene como base de trabajo activa; no se asigna APROBADO.
 
 **Estado final:** 0/8 temas con validación práctica independiente; 0 laboratorios ejecutados; 0 videos verificados; 0 aprobaciones y 0 publicaciones.
