@@ -765,3 +765,43 @@ Se añadieron prácticas y evidencias específicas a las **573 lecciones** de la
 5. Registrar evidencia de ejecución y resolver hallazgos antes de cualquier importación.
 
 No se importó, aprobó ni publicó contenido. No se modificaron UUID ni se inventaron identificadores. No se fusionó el PR.
+
+
+## Addendum de cierre documental de la etapa 7 — 2026-11-24
+
+### Alcance de la ampliación
+
+Se completó la profundización documental individual de los módulos restantes de la etapa 7:
+
+- **7.4 Bash:** 12 lecciones (variables, operadores, condicionales, bucles, funciones, arrays, pipes, redirecciones, códigos de salida, scripts, cron y automatización).
+- **7.5 Windows:** 12 lecciones (arquitectura, NTFS, usuarios y grupos, permisos, procesos, servicios, Registro, Administrador de tareas, Visor de eventos, firewall, PowerShell y administración de servicios).
+- **7.6 Virtualización:** 9 lecciones (VirtualBox, VMware, máquinas virtuales, snapshots, recursos, redes virtuales, NAT, host-only y adaptadores virtuales).
+
+Cada lección contiene desarrollo conceptual, ejemplo o escenario razonado, práctica guiada, actividad independiente, criterios de aceptación, errores frecuentes y pregunta de comprobación. Se priorizaron prácticas de consulta y laboratorios aislados; las operaciones privilegiadas, destructivas o de cambio de configuración se excluyeron del host y se señalaron como actividades que requieren entorno autorizado.
+
+### Cobertura documental de la etapa 7
+
+| Módulo | Lecciones oficiales | Lecciones con desarrollo individualizado |
+|---|---:|---:|
+| 7.1 — Fundamentos de sistemas operativos | 14 | 14 |
+| 7.2 — Linux | 17 | 17 |
+| 7.3 — Administración Linux | 20 | 20 |
+| 7.4 — Bash | 12 | 12 |
+| 7.5 — Windows | 12 | 12 |
+| 7.6 — Virtualización | 9 | 9 |
+| **Total etapa 7** | **84** | **84** |
+
+### Revisión documental y límites
+
+- Se comprobó la correspondencia de los 84 encabezados de lección con los módulos y cantidades del roadmap oficial de etapa 7.
+- Se revisó que los módulos conservaran el orden curricular y que el proyecto oficial posterior al módulo 7.6 permaneciera en el documento.
+- Las prácticas propuestas incluyen comandos de consulta y actividades de laboratorio; no se ejecutaron en máquinas virtuales reales en esta intervención.
+- No se ejecutaron scripts, pruebas de PowerShell, cambios de firewall, modificaciones del Registro, cambios de permisos, tareas cron ni operaciones de snapshots.
+- No se realizó validación externa experta ni verificación exhaustiva de cada referencia bibliográfica en esta intervención.
+- Por ello, el estado es **desarrollo documental individualizado completo para las 84 lecciones de la etapa 7**, no validación técnica ejecutada ni aprobación académica final.
+
+### Estado global
+
+El roadmap oficial continúa sin cambios. Esta actualización no altera la identidad, cantidad ni orden de lecciones. Las etapas 8–32 continúan pendientes de la misma profundización individualizada sistemática; no se declara completo el total de 1.916 lecciones.
+
+No se importó ni publicó contenido. El objetivo oficial de la etapa 25 permanece vacío y no fue completado por inferencia.
