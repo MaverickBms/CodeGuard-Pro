@@ -107,3 +107,237 @@ No se incluyen videos aprobados. Se añadirán solo con audio español confirmad
 - GitHub Actions Security: https://docs.github.com/en/actions/security-for-github-actions
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutó pipeline ni se desplegaron recursos cloud en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 29
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Las orientaciones organizan el estudio y la aplicación en proyectos controlados; no equivalen a validación de proveedores, certificación, ejecución de laboratorios ni experiencia laboral demostrada.
+
+### Módulo 29.1 — Cloud Security
+
+#### 29.1.01 — Shared Responsibility Model
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.1.02 — Cloud IAM
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.1.03 — Cloud Networking
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.1.04 — Network Segmentation
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.1.05 — Cloud Storage Security
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.1.06 — Encryption
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.1.07 — Secrets Management
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.1.08 — Cloud Logging
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.1.09 — Cloud Monitoring
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.1.10 — Security Misconfigurations
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+### Módulo 29.2 — AWS Security
+
+#### 29.2.01 — IAM
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.2.02 — Roles
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.2.03 — Policies
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.2.04 — EC2
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.2.05 — S3
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.2.06 — VPC
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.2.07 — Security Groups
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.2.08 — CloudTrail
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.2.09 — CloudWatch
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.2.10 — GuardDuty (introducción)
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+### Módulo 29.3 — Azure Security
+
+#### 29.3.01 — Entra ID
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.3.02 — RBAC
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.3.03 — Azure Policies
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.3.04 — Key Vault
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.3.05 — Defender for Cloud (introducción)
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+### Módulo 29.4 — Google Cloud Security
+
+#### 29.4.01 — IAM
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.4.02 — Service Accounts
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.4.03 — VPC
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.4.04 — Cloud Logging
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.4.05 — Cloud Monitoring
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+### Módulo 29.5 — Docker Security
+
+#### 29.5.01 — Image Security
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.5.02 — Container Isolation
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.5.03 — Privileges
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.5.04 — Non-root Containers
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.5.05 — Vulnerability Scanning
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.5.06 — Secrets
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.5.07 — Secure Dockerfiles
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+### Módulo 29.6 — Kubernetes Security
+
+#### 29.6.01 — RBAC
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.6.02 — Network Policies
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.6.03 — Secrets
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.6.04 — Pod Security
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.6.05 — Image Security
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.6.06 — Cluster Hardening
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.6.07 — Runtime Security
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+### Módulo 29.7 — Supply Chain Security
+
+#### 29.7.01 — Dependency Security
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.7.02 — Dependency Scanning
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.7.03 — SBOM
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.7.04 — Software Bill of Materials
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.7.05 — Artifact Integrity
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.7.06 — Artifact Signing
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.7.07 — Provenance
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.7.08 — Malicious Dependencies
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.7.09 — Software Supply Chain Attacks
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+### Módulo 29.8 — DevSecOps
+
+#### 29.8.01 — Secure SDLC
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.02 — SAST
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.03 — DAST
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.04 — SCA
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.05 — Container Scanning
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.06 — Infrastructure Scanning
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.07 — Secrets Scanning
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.08 — Security Gates
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.09 — Security Automation
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.10 — CI/CD Security
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.11 — Herramientas
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.12 — Trivy
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.13 — Gitleaks
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.14 — OWASP Dependency-Check
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.15 — GitHub Dependabot
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.16 — Semgrep
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.17 — Terraform
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
+
+#### 29.8.18 — GitHub Actions
+Comprender el control y el modelo de responsabilidad compartida; traducirlo a configuraciones mínimas, observabilidad y evidencia verificable dentro de una cuenta o laboratorio autorizado.
