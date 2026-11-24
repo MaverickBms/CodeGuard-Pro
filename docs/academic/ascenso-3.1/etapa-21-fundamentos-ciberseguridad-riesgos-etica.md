@@ -404,3 +404,12 @@ Service Accounts son identidades no humanas usadas por aplicaciones y automatiza
 Se sustituyeron las 82 orientaciones genéricas por explicaciones específicas de fundamentos, principios, conceptos de riesgo, metodología, amenazas, marcos, ética/legislación e IAM.
 
 **Revisión interna:** 82/82 entradas desarrolladas y cotejadas con el roadmap. Se reforzaron autorización, límites de alcance, preservación de evidencia, protección de datos, responsabilidad profesional y controles de identidades técnicas. Las consideraciones legales colombianas se mantienen como materia de verificación normativa vigente y no como asesoría jurídica. Pendiente: cotejar referencias oficiales y legislación aplicable, realizar ejercicios de evaluación de riesgos con escenarios ficticios y obtener segunda revisión especializada. No se ejecutaron operaciones de seguridad ni se declara aprobación externa.
+
+
+### Referencias normativas y marcos oficiales para la revisión colombiana
+
+- NIST, **Cybersecurity Framework (CSF) 2.0**: https://www.nist.gov/cyberframework
+- Colombia, **Ley 1273 de 2009** — protección de la información y los datos / delitos informáticos (texto en Gestor Normativo de Función Pública): https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=34492
+- Colombia, **Ley 1581 de 2012** — régimen general de protección de datos personales (texto en Gestor Normativo de Función Pública): https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981
+
+**Precaución jurídica:** estas referencias sirven como punto de partida documental. Antes de impartir o aplicar el contenido, verificar vigencia, reglamentación, modificaciones, jurisprudencia y normas sectoriales en fuentes oficiales. El material no constituye asesoría legal.
