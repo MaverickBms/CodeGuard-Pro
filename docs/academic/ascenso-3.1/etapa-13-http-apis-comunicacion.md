@@ -1,7 +1,7 @@
 # Etapa 13 — Internet, HTTP, APIs y comunicación entre sistemas
 
 **Prioridad:** P1 · Obligatoria  
-**Estado editorial:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** comprender cómo se comunican las aplicaciones y aprender a consumir y construir APIs.  
 **Proyecto oficial:** consumir tres APIs públicas y desarrollar una aplicación que combine sus datos.
 
@@ -166,4 +166,4 @@ No se incluyen videos aprobados. Se incorporarán solo tras confirmar audio habl
 - Server-Sent Events: https://html.spec.whatwg.org/multipage/server-sent-events.html
 - OWASP API Security Top 10: https://owasp.org/www-project-api-security/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se han consumido APIs externas ni ejecutado pruebas en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se han consumido APIs externas ni ejecutado pruebas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
