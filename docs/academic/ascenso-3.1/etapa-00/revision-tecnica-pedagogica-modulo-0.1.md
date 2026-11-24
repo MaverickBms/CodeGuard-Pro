@@ -4,7 +4,7 @@
 **Rama:** `content/ascenso-stage-0-learning-method`  
 **Documento revisado:** `modulo-0.1-aprender-a-aprender.md`  
 **Tipo de revisión:** inspección editorial y de alineación interna; no equivale a revisión independiente ni a validación experimental.  
-**Estado:** hallazgos preliminares; módulo BORRADOR.
+**Estado:** registro de revisión de escritorio vigente; el módulo es la base de trabajo activa y no cuenta con aprobación independiente ni validación experimental.
 
 ## Alcance y método
 
