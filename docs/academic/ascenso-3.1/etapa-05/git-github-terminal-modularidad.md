@@ -275,7 +275,7 @@ Los cambios de entorno normalmente afectan al proceso actual y a los procesos hi
 
 Ejemplo:
 ```bash
-printf '%s\\n' "uno" "dos" "tres" > lista.txt
+printf '%s\n' "uno" "dos" "tres" > lista.txt
 ```
 
 No redirijas salidas sobre archivos importantes sin verificar el destino.
