@@ -891,72 +891,180 @@ File API permite seleccionar, leer y procesar archivos mediante input file, File
 **Comprobación:** ¿Por qué el servidor debe inspeccionar el contenido del archivo y no confiar solo en su extensión?
 
 #### 12.5.01 — Tipos
-Los tipos TypeScript describen las formas de valores y permiten detectar incompatibilidades durante el análisis estático. El sistema se elimina en la compilación y no valida datos en runtime; valida entradas externas con esquemas o comprobaciones reales.
 
+TypeScript añade análisis estático de tipos a JavaScript y se transpila/elimina anotaciones para generar JavaScript. Los tipos se verifican en compilación y no validan automáticamente datos externos en runtime.
 
-**Práctica y evidencia:** Declara tipos para una entidad de dominio y activa comprobaciones del compilador. **Evidencia:** demuestra un error de asignación detectado antes de ejecutar el programa.
+**Ejemplo técnico:** `let edad: number = 30` restringe asignaciones durante comprobación.
+
+**Práctica guiada:** Declara tipos primitivos y prueba asignaciones incompatibles.
+
+**Actividad independiente:** Tipa un modelo de datos de dominio.
+
+**Criterios de aceptación:** El tipo refleja semántica y el compilador detecta errores previstos.
+
+**Errores frecuentes:** Creer que TypeScript valida JSON recibido en runtime.
+
+**Comprobación:** ¿Qué diferencia existe entre chequeo estático y validación en ejecución?
 
 #### 12.5.02 — Interfaces
-Una `interface` define la forma de objetos y puede extender otras interfaces o participar en declaración abierta. Úsala para contratos de objetos y servicios; recuerda que las interfaces desaparecen al compilar y no son validadores de datos.
 
+Una interface describe forma de objetos y contratos estructurales; puede extenderse y fusionarse según reglas del lenguaje. TypeScript utiliza tipado estructural, por lo que compatibilidad depende de miembros y no de nombre de tipo.
 
-**Práctica y evidencia:** Define una interfaz para un objeto de cliente y úsala en una función que lo recibe. **Evidencia:** comprueba propiedades requeridas y explica tipado estructural.
+**Ejemplo técnico:** interface Usuario { id: string; activo: boolean }
+
+**Práctica guiada:** Define interface y comprueba objeto compatible e incompatible.
+
+**Actividad independiente:** Modela DTO de usuario y respuesta de API.
+
+**Criterios de aceptación:** Campos requeridos/opcionales explícitos.
+
+**Errores frecuentes:** Usar interface como si validara datos externos en runtime.
+
+**Comprobación:** ¿Qué significa que TypeScript tenga tipado estructural?
 
 #### 12.5.03 — Type aliases
-Un `type alias` asigna un nombre a un tipo, que puede ser primitivo, unión, intersección, tupla o forma de objeto. Selecciona `type` o `interface` según la composición y extensibilidad que necesite el contrato.
 
+type crea alias para tipos, uniones, intersecciones, tuplas y tipos utilitarios. No crea una clase ni estructura runtime; es una construcción del sistema de tipos.
 
-**Práctica y evidencia:** Crea un alias de tipo para una estructura y compáralo con una interfaz ampliable. **Evidencia:** justifica la elección según composición, unión o extensión.
+**Ejemplo técnico:** type Estado = 'nuevo' | 'activo' | 'cerrado'
+
+**Práctica guiada:** Define alias para estado y unión discriminada.
+
+**Actividad independiente:** Modela resultado de operación como éxito/error.
+
+**Criterios de aceptación:** Casos cubiertos sin valores ambiguos.
+
+**Errores frecuentes:** Esperar que alias exista en JavaScript generado.
+
+**Comprobación:** ¿Qué diferencia un alias de tipo de una clase en runtime?
 
 #### 12.5.04 — Union types
-Los union types permiten que un valor pertenezca a uno de varios tipos, por ejemplo `string | number`. Reduce la unión mediante comprobaciones de tipo y maneja todos los casos posibles antes de utilizar operaciones específicas.
 
+Una unión `A | B` permite que un valor sea uno de varios tipos. El código debe estrechar el tipo antes de acceder a miembros exclusivos; discriminantes literales facilitan exhaustividad.
 
-**Práctica y evidencia:** Modela un estado como unión discriminada, por ejemplo loading, success y error. **Evidencia:** demuestra que cada variante exige los campos correctos.
+**Ejemplo técnico:** type Resultado = {ok:true; dato:string} | {ok:false; error:string}
+
+**Práctica guiada:** Construye unión discriminada y usa switch para estrechar.
+
+**Actividad independiente:** Modela estados de carga y error.
+
+**Criterios de aceptación:** Todas las variantes se manejan explícitamente.
+
+**Errores frecuentes:** Acceder a propiedad que no existe en todas las variantes.
+
+**Comprobación:** ¿Qué aporta un discriminante literal a una unión?
 
 #### 12.5.05 — Intersection types
-Los intersection types combinan requisitos de varios tipos en uno solo. Son útiles para componer contratos, pero pueden producir propiedades incompatibles; evita combinaciones que generen tipos imposibles o difíciles de interpretar.
 
+Una intersección `A & B` combina requisitos de tipos; el valor debe cumplir ambos. Puede expresar composición, pero intersecciones incompatibles pueden producir tipos imposibles o confusos.
 
-**Práctica y evidencia:** Combina tipos con intersección para componer capacidades y resuelve un conflicto de propiedades. **Evidencia:** explica por qué una intersección puede producir un tipo imposible.
+**Ejemplo técnico:** type ConAuditoria = Entidad & {creadoEn: Date}
+
+**Práctica guiada:** Combina dos tipos y analiza colisiones de propiedades.
+
+**Actividad independiente:** Compón tipos de dominio sin duplicar contratos.
+
+**Criterios de aceptación:** Propiedades compatibles y semántica clara.
+
+**Errores frecuentes:** Usar intersección para modelar alternativas excluyentes.
+
+**Comprobación:** ¿Por qué A & B no significa lo mismo que A | B?
 
 #### 12.5.06 — Generics
-Los generics parametrizan funciones, interfaces y clases para conservar relaciones entre tipos sin recurrir a `any`. Define restricciones con `extends` cuando una operación necesita propiedades concretas y prueba inferencia con diferentes entradas.
 
+Los genéricos parametrizan tipos y permiten reutilizar funciones/estructuras preservando relaciones entre entradas y salidas. Las restricciones `extends` limitan operaciones válidas.
 
-**Práctica y evidencia:** Implementa una función genérica que conserve el tipo de entrada y salida. **Evidencia:** muestra inferencia del parámetro y un caso donde un tipo demasiado amplio pierde información.
+**Ejemplo técnico:** function primero<T>(items:T[]):T|undefined conserva tipo del elemento.
+
+**Práctica guiada:** Implementa función genérica y prueba con string/número.
+
+**Actividad independiente:** Diseña wrapper de resultado genérico con manejo de error.
+
+**Criterios de aceptación:** Tipo se infiere sin perder información.
+
+**Errores frecuentes:** Usar any en lugar de genérico o restringir innecesariamente T.
+
+**Comprobación:** ¿Qué información conserva un genérico que any descarta?
 
 #### 12.5.07 — Type narrowing
-Type narrowing reduce una unión a un tipo más específico mediante `typeof`, `in`, igualdad, discriminantes o guards. Modela estados con etiquetas discriminantes y evita asumir que una conversión de tipo modifica el valor en runtime.
 
+Narrowing reduce un tipo unión mediante typeof, instanceof, in, discriminantes, guards y control de flujo. La comprobación debe reflejar evidencia real y cubrir null/undefined.
 
-**Práctica y evidencia:** Utiliza `typeof`, `in`, `instanceof` y discriminantes para estrechar un tipo. **Evidencia:** elimina una aserción insegura mediante control de flujo.
+**Ejemplo técnico:** if (typeof valor === 'string') habilita métodos de cadena.
+
+**Práctica guiada:** Implementa guards para unión y valor desconocido.
+
+**Actividad independiente:** Valida entrada unknown antes de transformarla.
+
+**Criterios de aceptación:** No hay casts sin evidencia ni ramas sin cubrir.
+
+**Errores frecuentes:** Usar `as` para silenciar errores sin validar.
+
+**Comprobación:** ¿Por qué unknown es más seguro que any para datos externos?
 
 #### 12.5.08 — Utility types
-Utility types como `Partial`, `Pick`, `Omit`, `Record`, `Readonly` y `ReturnType` derivan nuevos tipos a partir de otros. Úsalos para expresar transformaciones de contrato y evita construir tipos excesivamente complejos solo para ahorrar unas líneas.
 
+Utility types transforman tipos existentes: Partial, Required, Pick, Omit, Readonly, Record, ReturnType y otros. Facilitan derivar DTOs y contratos, pero deben conservar intención semántica.
 
-**Práctica y evidencia:** Aplica `Partial`, `Pick`, `Omit`, `Record` y `Readonly` a modelos de dominio. **Evidencia:** explica qué propiedades cambian y por qué los utility types no validan datos externos en runtime.
+**Ejemplo técnico:** Pick<Usuario,'id'|'nombre'> crea vista tipada limitada.
+
+**Práctica guiada:** Deriva tipos de actualización y lectura desde una entidad.
+
+**Actividad independiente:** Diseña DTO parcial sin exponer campos internos.
+
+**Criterios de aceptación:** Campos permitidos y mutabilidad explícitos.
+
+**Errores frecuentes:** Aplicar Partial a todo y perder invariantes obligatorias.
+
+**Comprobación:** ¿Por qué un DTO de actualización no debe permitir modificar cualquier campo?
 
 #### 12.5.09 — Enums
-Los enums representan conjuntos de constantes nombradas, aunque pueden generar código JavaScript dependiendo de su forma. Considera uniones literales o `as const` cuando sea más sencillo y documenta cómo se serializan los valores.
 
+enum define un conjunto de constantes con representación runtime en TypeScript; existen enums numéricos, string enums y alternativas con union literals. La elección afecta JavaScript generado y serialización.
 
-**Práctica y evidencia:** Compara enum con unión de literales para representar estados finitos. **Evidencia:** justifica la opción elegida y comprueba el comportamiento del código generado si se usa enum.
+**Ejemplo técnico:** type Estado = 'pendiente' | 'aprobado' puede ser suficiente sin enum runtime.
+
+**Práctica guiada:** Compara enum string y unión literal en switch.
+
+**Actividad independiente:** Selecciona representación para valores que viajan por API.
+
+**Criterios de aceptación:** Valores serializados estables y documentados.
+
+**Errores frecuentes:** Asumir que enum y union type se comportan igual en runtime.
+
+**Comprobación:** ¿Qué diferencia existe entre enum y unión de literales en JavaScript generado?
 
 #### 12.5.10 — Type inference
-Type inference permite que TypeScript deduzca tipos a partir de valores, parámetros contextuales y expresiones. Añade anotaciones en límites públicos o cuando aclaren intención; no anotes cada variable de forma redundante ni confíes en inferencia para datos no validados.
 
+Type inference permite al compilador deducir tipos desde inicializadores, contexto y retornos. Anotaciones son útiles en límites públicos, parámetros complejos y contratos, pero redundancia excesiva reduce legibilidad.
 
-**Práctica y evidencia:** Deja que TypeScript infiera tipos en expresiones simples y declara tipos explícitos en límites públicos. **Evidencia:** identifica una anotación redundante y una frontera donde la anotación mejora claridad.
+**Ejemplo técnico:** const nombre = 'Ada' infiere string; una variable let puede ampliarse según contexto.
+
+**Práctica guiada:** Inspecciona inferencia de const/let, arrays y retornos.
+
+**Actividad independiente:** Elimina anotaciones redundantes sin perder claridad de API.
+
+**Criterios de aceptación:** El tipo inferido coincide con intención.
+
+**Errores frecuentes:** Anotar cada variable o depender de inferencia demasiado amplia.
+
+**Comprobación:** ¿Cuándo conviene anotar explícitamente un tipo?
 
 #### 12.5.11 — Strict mode
-Strict mode activa comprobaciones estrictas del compilador, incluida la gestión de nullability y parámetros implícitos. Actívalo progresivamente en proyectos heredados y corrige los contratos reales en vez de silenciar errores con `any` o aserciones indiscriminadas.
 
+El modo strict de TypeScript habilita un conjunto de comprobaciones más rigurosas, como strictNullChecks y noImplicitAny. Configuración exacta depende de tsconfig y versión; activar strict puede revelar defectos que deben corregirse, no silenciarse.
 
-**Práctica y evidencia:** Activa `strict` y corrige errores relacionados con null, parámetros implícitos y propiedades opcionales. **Evidencia:** muestra que el proyecto compila sin desactivar reglas para ocultar problemas.
+**Ejemplo técnico:** strictNullChecks obliga a tratar null/undefined antes de usar valor.
 
-### Módulo 12.6 — React
+**Práctica guiada:** Activa strict en proyecto de laboratorio y resuelve errores de nulabilidad.
+
+**Actividad independiente:** Define tsconfig reproducible para aplicación.
+
+**Criterios de aceptación:** Compilación estricta sin any/casts injustificados.
+
+**Errores frecuentes:** Desactivar strict para ocultar errores o añadir non-null assertion indiscriminadamente.
+
+**Comprobación:** ¿Qué clase de errores detecta strictNullChecks?
 
 #### 12.6.01 — Components
 Un componente React encapsula una parte de interfaz y suele expresarse como función que devuelve JSX. Divide por responsabilidad y reutilización, mantén componentes puros cuando sea posible y no llames componentes como funciones ordinarias.
