@@ -132,3 +132,10 @@ Acumulado de desarrollo documental ampliado según los registros disponibles: et
 Se incorporaron prácticas y evidencias específicas a las **60 lecciones de la etapa 11** (HTML, CSS, accesibilidad, diseño y SEO) y las **89 lecciones de la etapa 12** (JavaScript, DOM, asincronía, TypeScript, React, Next.js y herramientas). Los archivos se releyeron después de los cambios: 149/149 lecciones contienen su apartado de práctica/evidencia y no se detectaron encabezados vacíos.
 
 Acumulado documental ampliado: etapas 1–6, 265 lecciones según el informe de OpenCode; etapas 7–10, 284; etapas 11–12, 149; total de etapas 1–12, **698 lecciones**. Las etapas 13–32 (1.248 lecciones) requieren profundización equivalente. Ninguna de estas cifras implica por sí sola ejecución, validación técnica externa o aprobación pedagógica. Consultar la auditoría de continuidad para las limitaciones y el detalle de evidencia.
+
+
+### Ampliación de prácticas y evidencias — etapa 13 — 2026-11-24
+
+Se incorporaron prácticas y evidencias a las **63 lecciones** de Internet, HTTP, APIs, protocolos, herramientas, seguridad y documentación. La lectura posterior del archivo confirmó 63/63 apartados y ningún encabezado vacío. Las prácticas de red y seguridad se circunscriben a servicios propios o autorizados.
+
+Acumulado documental ampliado: etapas 1–6, 265 lecciones según informe de OpenCode; etapas 7–10, 284; etapas 11–12, 149; etapa 13, 63; total etapas 1–13: **761 lecciones**. Restan 1.155 lecciones de etapas 14–32 para una profundización equivalente. No se declara ejecución ni validación externa de las prácticas; revisar la auditoría para las limitaciones.
