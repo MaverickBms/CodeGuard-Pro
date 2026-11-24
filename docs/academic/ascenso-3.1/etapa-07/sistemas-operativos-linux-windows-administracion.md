@@ -1199,39 +1199,147 @@ La administración de servicios implica consultar estado, configuración de inic
 
 ### 7.6.1 — VirtualBox
 
-VirtualBox permite crear y administrar máquinas virtuales con discos, controladores y redes virtuales configurables. Las funciones disponibles dependen de versión, sistema anfitrión y paquetes instalados. **Práctica:** inspecciona la configuración de una VM apagada. **Evidencia:** identifica memoria, CPU, disco virtual y adaptador de red sin modificar la máquina principal.
+VirtualBox es un hipervisor de tipo 2 que ejecuta sistemas invitados sobre un host. La VM configura firmware, CPU, memoria, discos, controladores y adaptadores de red; las funciones dependen de la versión y plataforma.
+
+**Ejemplo:** asignar más RAM al invitado puede mejorar su rendimiento, pero reduce la disponible para el host.
+
+**Práctica guiada:** con la VM apagada, registra versión, memoria, CPU virtual, disco y red sin modificar máquinas compartidas.
+
+**Actividad independiente:** diseña una VM de laboratorio y justifica sus recursos, conservando margen para el host.
+
+**Criterios de aceptación:** diferencia host/invitado y explica límites de asignación.
+
+**Errores frecuentes:** asignar todos los recursos al invitado o asumir que cada versión ofrece idénticas funciones.
+
+**Comprobación:** ¿por qué una VM puede ir lenta aunque tenga recursos virtuales asignados?
 
 ### 7.6.2 — VMware
 
-VMware comprende distintos productos de virtualización con funciones, licencias y compatibilidades que no son idénticas. Compara el producto concreto y su documentación antes de aplicar instrucciones. **Práctica:** identifica el hipervisor y la versión instalados en un entorno de laboratorio. **Evidencia:** documenta host compatible, formato de VM y opciones de red disponibles.
+VMware comprende productos de virtualización con funciones, compatibilidades y licencias distintas. Workstation, Fusion y ESXi no deben tratarse como equivalentes; consulta la documentación del producto y versión concretos.
+
+**Ejemplo:** un formato de VM puede ser compatible entre productos, pero ciertas opciones de hardware virtual pueden requerir conversión o ajuste.
+
+**Práctica guiada:** identifica producto, versión y host del laboratorio; inspecciona CPU, memoria, disco y red de una VM apagada.
+
+**Actividad independiente:** compara dos productos con fuentes oficiales: plataforma, administración, redes, compatibilidad y licencia.
+
+**Criterios de aceptación:** nombra producto y versión y sustenta diferencias con documentación pertinente.
+
+**Errores frecuentes:** seguir instrucciones de otro producto o asumir que una licencia cubre cualquier uso.
+
+**Comprobación:** ¿por qué debe identificarse el producto VMware exacto antes de aplicar un procedimiento?
 
 ### 7.6.3 — Máquinas virtuales
 
-Una máquina virtual presenta hardware virtual a un sistema invitado y comparte recursos físicos del host mediante el hipervisor. Explica invitado, anfitrión, firmware virtual, disco y dispositivos. **Práctica:** crea una VM de prueba con recursos moderados y una imagen de instalación legítima. **Evidencia:** registra configuración y confirma que el host conserva recursos suficientes.
+Una VM presenta hardware abstraído al sistema invitado y comparte recursos físicos mediante el hipervisor. Sus componentes incluyen CPU virtual, memoria, firmware, controladores, discos y dispositivos. El aislamiento es útil, pero no elimina riesgos de red, configuración o vulnerabilidades del hipervisor.
+
+**Ejemplo:** cuatro vCPU no implican necesariamente cuatro núcleos físicos reservados en exclusiva.
+
+**Práctica guiada:** representa host, hipervisor e invitado y relaciona recursos virtuales con recursos físicos.
+
+**Actividad independiente:** diseña una topología de VM servidor y VM cliente con recursos, aislamiento y propósito.
+
+**Criterios de aceptación:** explica abstracción, asignación y límites del aislamiento.
+
+**Errores frecuentes:** asumir aislamiento absoluto o sobreasignar recursos sin medir carga.
+
+**Comprobación:** ¿qué recursos administra el hipervisor y cuáles administra el invitado?
 
 ### 7.6.4 — Snapshots
 
-Un snapshot captura el estado de una VM para facilitar pruebas y reversión; no equivale a un backup independiente ni protege necesariamente frente a pérdida del host. **Práctica:** crea un snapshot antes de un cambio inocuo y vuelve a él. **Evidencia:** describe qué estado se restauró y qué datos externos podrían no estar incluidos.
+Un snapshot captura un estado de una VM y puede incluir estado de disco y memoria según configuración. Sirve para reversión temporal, pero no equivale a un respaldo independiente. Las cadenas de snapshots consumen almacenamiento y pueden afectar rendimiento y recuperación.
+
+**Ejemplo:** volver a un snapshot descarta cambios posteriores incluidos en el estado revertido.
+
+**Práctica guiada:** inspecciona snapshots de una VM apagada y registra fecha, descripción y relación entre ellos; no reviertas una VM compartida.
+
+**Actividad independiente:** define una política con momento de creación, retención, límite de espacio y respaldo separado.
+
+**Criterios de aceptación:** diferencia snapshot y backup y explica al menos dos limitaciones.
+
+**Errores frecuentes:** conservar snapshots indefinidamente o asumir que protegen ante pérdida del host.
+
+**Comprobación:** ¿por qué un snapshot no sustituye una copia de seguridad independiente?
 
 ### 7.6.5 — Recursos virtualizados
 
-La virtualización asigna CPU, memoria, almacenamiento y dispositivos al invitado; una asignación excesiva puede degradar al host. Explica sobreasignación, memoria dinámica, E/S y límites de rendimiento. **Práctica:** compara recursos asignados con recursos disponibles antes de iniciar la VM. **Evidencia:** justifica una configuración equilibrada.
+El hipervisor asigna o planifica CPU, memoria, almacenamiento y dispositivos. La sobreasignación aloja más recursos virtuales que físicos, pero puede causar contención. El rendimiento debe medirse en host e invitado y considerar I/O, memoria y carga.
+
+**Ejemplo:** más vCPU no garantiza más velocidad; la competencia por el planificador puede elevar latencia.
+
+**Práctica guiada:** registra CPU, RAM y almacenamiento asignados y compáralos con recursos físicos del host.
+
+**Actividad independiente:** analiza tres VMs que compiten por memoria y propone redistribución basada en consumo y margen disponible.
+
+**Criterios de aceptación:** diferencia asignación, reserva y consumo e identifica señales de contención.
+
+**Errores frecuentes:** interpretar capacidad configurada como consumo real.
+
+**Comprobación:** ¿qué diferencia hay entre memoria asignada y memoria física consumida?
 
 ### 7.6.6 — Redes virtuales
 
-Las redes virtuales conectan VMs entre sí, con el host o con redes externas según el modo elegido. Distingue conmutador virtual, interfaz virtual, DHCP y rutas. **Práctica:** dibuja una topología con dos VMs y el host, indicando segmentos y puertas de enlace. **Evidencia:** predice qué pares pueden comunicarse antes de probarlo.
+Las redes virtuales conectan VMs entre sí, con el host o con redes externas mediante switches y adaptadores virtuales. El modo define alcance; la segmentación debe responder al objetivo y limitar exposición. La implementación varía entre hipervisores.
+
+**Ejemplo:** una red interna puede permitir comunicación entre VMs sin exponerlas directamente a la LAN física.
+
+**Práctica guiada:** dibuja una VM en NAT y otra host-only; identifica interfaces y flujos posibles.
+
+**Actividad independiente:** diseña un segmento aislado para dos VMs, con direccionamiento, gateway, DNS y política de firewall.
+
+**Criterios de aceptación:** explica segmentos y flujos; no asume conectividad solo por elegir un modo.
+
+**Errores frecuentes:** conectar laboratorios vulnerables a redes corporativas o confundir switch virtual con firewall.
+
+**Comprobación:** ¿qué controles adicionales requiere una red virtual?
 
 ### 7.6.7 — NAT
 
-NAT permite que una VM acceda a redes externas mediante traducción realizada por el host o hipervisor; las conexiones entrantes suelen requerir reglas de reenvío. **Práctica:** verifica conectividad saliente desde una VM aislada sin exponer servicios. **Evidencia:** explica por qué la VM puede navegar sin ser directamente alcanzable desde la LAN.
+NAT permite que una VM utilice una dirección privada y salga a través de traducción realizada por el host o el motor de red. Las conexiones entrantes y el reenvío de puertos dependen del producto. NAT no sustituye una política de firewall.
+
+**Ejemplo:** la VM puede iniciar conexiones salientes, mientras un equipo externo no puede iniciar directamente conexiones al invitado sin reglas adicionales.
+
+**Práctica guiada:** inspecciona la red NAT de una VM apagada y registra rango privado y reglas existentes; no publiques puertos.
+
+**Actividad independiente:** explica el recorrido de una conexión saliente e identifica dónde ocurre la traducción.
+
+**Criterios de aceptación:** describe dirección privada, traducción y limitaciones de conexiones entrantes.
+
+**Errores frecuentes:** tratar NAT como firewall completo o abrir puertos sin evaluar exposición.
+
+**Comprobación:** ¿por qué una VM detrás de NAT puede salir a Internet sin ser directamente accesible desde la LAN?
 
 ### 7.6.8 — Host-only
 
-Host-only crea una red privada entre el host y las VMs conectadas a ese segmento; normalmente no proporciona salida a Internet por sí misma. **Práctica:** conecta dos VMs de laboratorio a la misma red host-only y verifica conectividad con direcciones privadas. **Evidencia:** identifica qué rutas existen y cuáles no.
+Host-only crea una red virtual que suele conectar el host con las VMs participantes sin proporcionar por sí misma salida externa. Es útil para laboratorios aislados; el alcance depende del hipervisor, DHCP y rutas.
+
+**Ejemplo:** dos VMs host-only pueden comunicarse entre sí y con el host, pero no necesariamente con Internet.
+
+**Práctica guiada:** inspecciona el adaptador host-only, rango IP y DHCP. No agregues rutas ni puentes durante esta práctica.
+
+**Actividad independiente:** diseña un segmento para dos VMs con direcciones no conflictivas y controles contra puentes accidentales a la LAN.
+
+**Criterios de aceptación:** identifica participantes, rango y limitaciones de conectividad; documenta excepciones.
+
+**Errores frecuentes:** asumir aislamiento absoluto aunque existan otras interfaces o reglas de routing.
+
+**Comprobación:** ¿qué configuración adicional podría permitir a una VM host-only alcanzar una red externa?
 
 ### 7.6.9 — Adaptadores de red virtuales
 
-Los adaptadores virtuales conectan la interfaz de una VM con modos como NAT, host-only o bridge, según el hipervisor. El modo bridge puede exponer el invitado a la red física y debe elegirse con autorización. **Práctica:** inspecciona el modo y dirección IP de cada adaptador. **Evidencia:** documenta MAC, IP, modo y alcance de conectividad.
+El adaptador virtual conecta la VM a un switch o modo de red del hipervisor. Deben revisarse estado conectado, modelo, MAC, red asociada y orden de interfaces. La configuración IP dentro del invitado es independiente.
+
+**Ejemplo:** el adaptador puede estar conectado pero el invitado carecer de dirección IP válida; también puede haber varias interfaces en segmentos distintos.
+
+**Práctica guiada:** inspecciona los adaptadores de una VM apagada y registra modelo, MAC, modo y red. En el invitado consulta su configuración IP.
+
+**Actividad independiente:** diagnostica un caso sintético revisando enlace virtual, IP/máscara, gateway, DNS y firewall, en ese orden.
+
+**Criterios de aceptación:** diferencia adaptador y configuración IP y propone diagnóstico no destructivo.
+
+**Errores frecuentes:** cambiar varias variables a la vez o conectar interfaces adicionales sin comprender rutas y exposición.
+
+**Comprobación:** ¿por qué un adaptador conectado no garantiza conectividad de red?
 
 ## Proyecto oficial — Dos servidores virtuales
 
