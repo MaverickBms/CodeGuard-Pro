@@ -111,3 +111,24 @@ python manage.py exportar_manifiesto_academico \
 El directorio `./var` debe existir y el archivo de salida no debe existir. Se recomienda ejecutar primero en una copia de la base de datos y almacenar el manifiesto en una ubicación privada, pues contiene identificadores internos de contenido. No subir ese manifiesto con UUID de una instalación real a un repositorio público.
 
 **Verificación automatizada:** el workflow de GitHub Actions `CodeGuard Pro CI` terminó correctamente para el commit `510d0f8bbcaf560ce8027c8298da74fcd22baa03`: validación de sintaxis Python, `manage.py check`, comprobación de migraciones, suite Django, pruebas IPC de Electron y compilación/smoke test del servidor PyInstaller. El paquete Windows fue omitido por las condiciones del workflow. Los commits posteriores en esta rama modificaron únicamente documentación. **Pendiente de entorno real:** todavía no se ha ejecutado el exportador contra la base de datos local del usuario ni se ha generado el manifiesto real; esa comprobación requiere acceso a la instalación y su base de datos.
+
+
+## Continuidad de las etapas 1–32 — 2026-11-24
+
+Se consolidó la clasificación documental de las etapas 1–32 como **BASE DE TRABAJO ACTIVA**. Se actualizaron sus metadatos de estado para que la documentación sea la referencia operativa del desarrollo, sin presentarla como aprobada, revisada independientemente, validada en laboratorios ni publicada.
+
+Se añadió [la guía de continuidad académica de las etapas 1–32](ASCENSO_3_1_GUIA_CONTINUIDAD_ETAPAS_01_32.md), construida a partir del inventario curricular existente. La guía resume la progresión por bloques, enumera los módulos oficiales y sus cantidades nominales de lecciones, conserva los proyectos del roadmap y explica cómo conectar los proyectos a lo largo del recorrido.
+
+### Inventario confirmado
+
+- Etapas 1–32: 32 etapas, 208 módulos y 1.916 lecciones nominales.
+- Etapa 0: 4 módulos y 30 lecciones nominales.
+- Total ASCENSO 3.1: 33 etapas, 212 módulos y 1.946 lecciones nominales.
+- La etapa 25 conserva su objetivo oficial vacío; no se infirió ni se completó.
+- No se modificó `apps/roadmaps/data/ascenso_3_1.json`, no se crearon UUID y no se importó contenido.
+
+### Alcance de la actualización
+
+La clasificación como base activa establece qué documentación debe utilizarse para continuar el trabajo. No significa que las 1.916 lecciones nominales de las etapas 1–32 estén desarrolladas individualmente con el mismo nivel de detalle, ni que todos los ejemplos, laboratorios, videos o proyectos se hayan ejecutado. El desarrollo granular por lección continúa como trabajo pendiente y se realizará sin alterar el inventario oficial.
+
+La secuencia de bloques de la guía es una organización didáctica para facilitar continuidad; no introduce prerrequisitos curriculares obligatorios nuevos ni modifica los siete prerrequisitos registrados.
