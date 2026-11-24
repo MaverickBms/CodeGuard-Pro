@@ -362,55 +362,185 @@ La MTU es el tamaño máximo de la unidad de datos que puede transportar un enla
 
 ### 8.3.1 — Dirección MAC
 
-Una dirección MAC identifica una interfaz en el ámbito de enlace y se utiliza para entregar tramas en una red local; puede ser modificada o aleatorizada por software. **Práctica:** consulta MAC de una interfaz con `ip link` o `getmac`. **Evidencia:** diferencia MAC de IP y explica por qué los routers no reenvían la trama Ethernet original de extremo a extremo.
+Una dirección MAC identifica una interfaz en una tecnología de enlace como Ethernet. Las direcciones pueden ser universales o administradas localmente; la MAC de destino se utiliza dentro del enlace y puede cambiar al atravesar routers.
+
+**Práctica guiada:** Consulta interfaces con `ip link` o `getmac` y registra MAC de una interfaz propia. Distingue interfaz física, virtual y dirección asignada.
+
+**Actividad independiente:** Explica por qué un paquete IP puede conservar su dirección destino mientras la trama de cada salto utiliza MAC distintas.
+
+**Criterios de aceptación:** Identifica MAC origen/destino y limita su alcance al enlace correspondiente.
+
+**Errores frecuentes:** Confundir MAC con dirección IP o tratarla como identidad inmutable y universal del dispositivo.
+
+**Comprobación:** ¿Por qué cambia normalmente la MAC destino al pasar por un router?
 
 ### 8.3.2 — IPv4
 
-IPv4 utiliza direcciones de 32 bits representadas habitualmente en cuatro octetos decimales. Explica dirección de red, host, prefijo y límites de subred. **Práctica:** identifica red y broadcast para `192.0.2.34/27` usando una calculadora o cálculo binario. **Evidencia:** muestra máscara, rango utilizable y justificación.
+IPv4 utiliza direcciones de 32 bits representadas habitualmente en cuatro octetos decimales. La dirección se interpreta junto con una máscara o prefijo que separa parte de red y host. Algunas direcciones tienen usos especiales, como loopback, multicast y rangos privados.
+
+**Práctica guiada:** Consulta dirección y prefijo con `ip addr` o `ipconfig`. Identifica dirección, máscara, interfaz y gateway sin modificar la configuración.
+
+**Actividad independiente:** Clasifica direcciones de ejemplo en privadas, públicas, loopback, link-local y multicast usando rangos documentados.
+
+**Criterios de aceptación:** Interpreta 32 bits, notación decimal y prefijo y reconoce rangos especiales.
+
+**Errores frecuentes:** Asumir que toda dirección IPv4 es enrutable públicamente o que la máscara puede omitirse al diseñar subredes.
+
+**Comprobación:** ¿Qué información aporta el prefijo junto a una dirección IPv4?
 
 ### 8.3.3 — IPv6
 
-IPv6 utiliza direcciones de 128 bits, notación hexadecimal y reglas de compresión; incorpora tipos como global unicast, link-local y multicast. **Práctica:** expande y comprime una dirección IPv6 válida y reconoce `fe80::/10`. **Evidencia:** explica por qué IPv6 no utiliza broadcast y para qué sirve Neighbor Discovery.
+IPv6 utiliza direcciones de 128 bits escritas en hexadecimal y admite abreviación de ceros. Incluye unicast, multicast y anycast; no utiliza broadcast. La autoconfiguración SLAAC, DHCPv6 y Neighbor Discovery forman parte de su operación.
+
+**Práctica guiada:** Consulta direcciones IPv6 con `ip -6 addr` o `ipconfig /all`; distingue link-local, global y loopback si están presentes.
+
+**Actividad independiente:** Diseña un esquema IPv6 de documentación para dos subredes y explica cómo se asignarían prefijos.
+
+**Criterios de aceptación:** Interpreta notación hexadecimal y distingue tipos de dirección y ausencia de broadcast.
+
+**Errores frecuentes:** Tratar IPv6 como IPv4 con más dígitos o suponer que todas las direcciones globales son automáticamente seguras.
+
+**Comprobación:** ¿Qué mecanismo cumple funciones de descubrimiento de vecinos en IPv6?
 
 ### 8.3.4 — IP pública
 
-Una IP pública es enrutable globalmente bajo políticas de Internet y asignación de registros; no implica que un servicio sea alcanzable desde cualquier origen. **Práctica:** compara la dirección de una interfaz local con la dirección observada por un servicio externo solo en tu propio entorno. **Evidencia:** explica NAT y filtrado como causas de diferencia.
+Una IP pública es una dirección globalmente enrutable dentro del esquema de asignación de Internet, sujeta a políticas de enrutamiento y filtrado. Una dirección pública no implica que un servicio sea alcanzable: firewall, NAT, rutas y políticas del proveedor también intervienen.
+
+**Práctica guiada:** Compara la dirección configurada en tu interfaz con la dirección de salida observada por un servicio confiable, sin publicar datos personales ni realizar escaneos.
+
+**Actividad independiente:** Explica por qué una dirección pública puede no aceptar conexiones entrantes.
+
+**Criterios de aceptación:** Distingue dirección pública de accesibilidad efectiva y explica el papel de los controles perimetrales.
+
+**Errores frecuentes:** Asumir que tener IP pública significa que todos los puertos están abiertos o que el host está expuesto directamente.
+
+**Comprobación:** ¿Qué condiciones además de la IP determinan si un servicio es alcanzable desde Internet?
 
 ### 8.3.5 — IP privada
 
-Los rangos privados IPv4 definidos para redes internas no se enrutan globalmente en Internet. Conoce los bloques 10/8, 172.16/12 y 192.168/16. **Práctica:** clasifica tres direcciones y detecta si pertenecen a esos rangos. **Evidencia:** explica por qué la conectividad externa suele requerir NAT o un mecanismo de borde.
+Los rangos privados IPv4 definidos por RFC 1918 son 10.0.0.0/8, 172.16.0.0/12 y 192.168.0.0/16. No se enrutan globalmente en Internet y suelen utilizar NAT o gateways para acceder a redes externas. Las direcciones privadas pueden repetirse en redes aisladas.
+
+**Práctica guiada:** Identifica si direcciones de ejemplo pertenecen a RFC 1918 y consulta la dirección privada de una interfaz propia.
+
+**Actividad independiente:** Diseña dos LAN aisladas que reutilicen rangos privados y explica qué conflicto surgiría al interconectarlas sin renumeración o traducción.
+
+**Criterios de aceptación:** Reconoce los tres rangos privados y explica el alcance de su enrutamiento.
+
+**Errores frecuentes:** Confundir todo 172.x.x.x con privado o asumir que una dirección privada impide cualquier comunicación externa.
+
+**Comprobación:** ¿Por qué dos organizaciones pueden utilizar la misma dirección privada sin conflicto mientras sus redes estén aisladas?
 
 ### 8.3.6 — Máscaras
 
-Una máscara o prefijo determina qué bits identifican la red y cuáles quedan para hosts. Relaciona máscara decimal con longitud de prefijo CIDR. **Práctica:** convierte `/24`, `/26` y `/30` a máscaras y calcula direcciones totales. **Evidencia:** muestra el procedimiento binario y diferencia direcciones totales de hosts asignables.
+Una máscara IPv4 indica qué bits pertenecen al prefijo de red y cuáles al identificador de host. En notación CIDR, el número tras la barra expresa la cantidad de bits de prefijo. La máscara permite determinar si un destino está en la misma subred.
+
+**Práctica guiada:** Convierte máscaras comunes (/24, /26, /30) a notación decimal y binaria con una tabla de bits.
+
+**Actividad independiente:** Dado IP y prefijo, determina identificador de red, rango de hosts y broadcast para una subred válida.
+
+**Criterios de aceptación:** Calcula red y tamaño de subred con el prefijo correcto.
+
+**Errores frecuentes:** Confundir cantidad de bits de host con cantidad de hosts utilizables o asumir que todas las subredes reservan dos direcciones de la misma manera.
+
+**Comprobación:** ¿Qué significa /26 en una dirección IPv4?
 
 ### 8.3.7 — Subnetting
 
-Subnetting divide un bloque IP en subredes más pequeñas para organizar dominios de broadcast, direccionamiento y políticas. **Práctica:** divide `192.0.2.0/24` en cuatro subredes iguales y calcula red, broadcast y rango. **Evidencia:** presenta las cuatro subredes sin solapamiento.
+Subnetting divide un bloque IP en subredes más pequeñas mediante prefijos más largos. Permite segmentar dominios de broadcast, organizar direccionamiento y aplicar políticas. El diseño debe considerar cantidad de hosts, crecimiento, enlaces punto a punto y direcciones especiales.
+
+**Práctica guiada:** Divide un bloque de documentación /24 en cuatro subredes iguales; verifica límites, prefijos y ausencia de solapamiento.
+
+**Actividad independiente:** Diseña un plan de direccionamiento para usuarios, servidores, invitados y administración con tamaños distintos.
+
+**Criterios de aceptación:** Presenta subredes no solapadas que satisfacen necesidades y justifican reservas.
+
+**Errores frecuentes:** Asignar rangos superpuestos o elegir tamaños sin contar hosts y crecimiento.
+
+**Comprobación:** ¿Qué ocurre con la cantidad de hosts disponibles cuando se aumenta la longitud del prefijo?
 
 ### 8.3.8 — CIDR
 
-CIDR expresa redes mediante prefijo, por ejemplo `/24`, y permite asignación y agregación sin depender de clases tradicionales. **Práctica:** interpreta `198.51.100.64/26` y determina el bloque que cubre. **Evidencia:** calcula inicio, fin y cantidad de direcciones.
+CIDR representa redes mediante prefijos de longitud variable y permite agregación de rutas. Un prefijo como /20 indica cuántos bits iniciales identifican la red; la agregación reduce tamaño de tablas cuando los bloques son contiguos y están correctamente asignados.
+
+**Práctica guiada:** Interpreta varios prefijos (/16, /20, /24, /27) y calcula cuántos bits quedan para hosts.
+
+**Actividad independiente:** Determina si dos redes pueden agregarse en un prefijo común sin incluir bloques ajenos.
+
+**Criterios de aceptación:** Interpreta prefijo y explica agregación sin solapamiento indebido.
+
+**Errores frecuentes:** Asumir que cualquier par de redes consecutivas puede resumirse en una ruta menor.
+
+**Comprobación:** ¿Qué condiciones deben cumplirse para agregar dos prefijos en una ruta resumida?
 
 ### 8.3.9 — VLSM
 
-VLSM asigna subredes de tamaños distintos dentro de un bloque, ajustando cada prefijo a la cantidad de hosts requerida. **Práctica:** asigna subredes a tres segmentos de laboratorio con diferentes necesidades, ordenando de mayor a menor. **Evidencia:** demuestra que los bloques están alineados y no se superponen.
+VLSM permite asignar subredes de distintos tamaños dentro de un bloque, ajustando el prefijo a la cantidad de hosts requerida. El diseño suele comenzar por la subred mayor y asignar bloques alineados para evitar desperdicio y solapamientos.
+
+**Práctica guiada:** Con un bloque de documentación, asigna subredes para 50, 20, 10 y 2 hosts. Calcula prefijos y verifica límites.
+
+**Actividad independiente:** Crea un plan VLSM para departamentos y enlaces punto a punto, dejando reserva para crecimiento.
+
+**Criterios de aceptación:** Todas las subredes cumplen capacidad, alineación y no se solapan.
+
+**Errores frecuentes:** Asignar primero las redes pequeñas y fragmentar el espacio de forma que la subred mayor ya no quepa.
+
+**Comprobación:** ¿Por qué conviene asignar primero las subredes que requieren más direcciones?
 
 ### 8.3.10 — Gateway
 
-El gateway predeterminado es el siguiente salto utilizado cuando la tabla de rutas no contiene una ruta más específica. **Práctica:** inspecciona `ip route` o `route print` y localiza la ruta por defecto. **Evidencia:** interpreta destino, máscara/prefijo, siguiente salto y métrica.
+La puerta de enlace es el siguiente salto al que un host envía paquetes destinados a redes no locales. En IPv4/IPv6 se configura por interfaz o mediante mecanismos automáticos. Debe ser alcanzable en el enlace y coherente con rutas y políticas.
+
+**Práctica guiada:** Consulta ruta por defecto con `ip route`/`ip -6 route` o `route print`; registra interfaz y siguiente salto.
+
+**Actividad independiente:** Diagnostica un caso donde el host tiene IP correcta pero gateway incorrecto o inaccesible.
+
+**Criterios de aceptación:** Explica siguiente salto y diferencia gateway de DNS y servidor DHCP.
+
+**Errores frecuentes:** Asumir que gateway y DNS son el mismo servicio o que cualquier dirección de router puede utilizarse desde cualquier subred.
+
+**Comprobación:** ¿Qué sucede con tráfico no local si no existe una ruta por defecto ni una ruta más específica?
 
 ### 8.3.11 — Broadcast
 
-Broadcast IPv4 entrega un datagrama a todos los hosts de una subred; se distingue broadcast limitado y dirigido, este último sujeto a restricciones de seguridad. IPv6 utiliza multicast en lugar de broadcast. **Práctica:** calcula la dirección broadcast de una subred pequeña. **Evidencia:** explica qué hosts la reciben y por qué no debe confundirse con multicast.
+Broadcast IPv4 entrega un datagrama a todos los hosts del dominio de broadcast correspondiente. La dirección de broadcast dirigida depende del prefijo; 255.255.255.255 es broadcast limitado. Los routers normalmente no reenvían broadcasts dirigidos por defecto. IPv6 utiliza multicast en lugar de broadcast.
+
+**Práctica guiada:** Calcula la dirección de broadcast de varias subredes de ejemplo y compara con multicast IPv6.
+
+**Actividad independiente:** Explica por qué dividir una LAN en VLAN/subredes limita el alcance de broadcast.
+
+**Criterios de aceptación:** Calcula broadcast correctamente y diferencia broadcast limitado, dirigido y multicast.
+
+**Errores frecuentes:** Suponer que un broadcast IPv4 atraviesa routers o que IPv6 utiliza broadcast.
+
+**Comprobación:** ¿Qué mecanismo utiliza IPv6 en lugar de broadcast?
 
 ### 8.3.12 — ARP
 
-ARP resuelve una dirección IPv4 local a una dirección de enlace para enviar una trama dentro de la LAN. Explica caché ARP, solicitud broadcast y respuesta, así como riesgos de suplantación. **Práctica:** consulta la tabla con `ip neigh` o `arp -a` tras comunicarte con un host de laboratorio. **Evidencia:** identifica IP, MAC y estado de la entrada.
+ARP resuelve una dirección IPv4 local a una dirección MAC dentro del enlace. El host consulta caché ARP y, si es necesario, difunde una solicitud; el equipo correspondiente responde. ARP no se utiliza para resolver direcciones IPv6, donde actúa Neighbor Discovery.
+
+**Práctica guiada:** Consulta la caché con `ip neigh` o `arp -a` en un equipo propio. Relaciona una entrada con interfaz y estado.
+
+**Actividad independiente:** Dibuja el intercambio ARP cuando un host envía tráfico a otro de su misma subred y cuando el destino está en otra red.
+
+**Criterios de aceptación:** Explica que para destino remoto el host resuelve la MAC del gateway, no la MAC del host remoto.
+
+**Errores frecuentes:** Creer que ARP resuelve nombres DNS o que el router consulta ARP para la dirección IP final de Internet.
+
+**Comprobación:** ¿Qué dirección MAC busca un host cuando el destino IP está fuera de su subred?
 
 ### 8.3.13 — DHCP
 
-DHCP asigna parámetros de red como dirección IP, máscara, gateway, DNS y tiempo de concesión. Explica el intercambio DORA en DHCPv4 y la diferencia entre reserva y asignación dinámica. **Práctica:** inspecciona la concesión de tu VM sin alterar el servidor. **Evidencia:** registra servidor, duración y opciones recibidas.
+DHCP asigna parámetros de red como dirección IP, máscara/prefijo, gateway, DNS y tiempo de concesión. En IPv4, el intercambio típico se describe como Discover, Offer, Request y Acknowledge. DHCP requiere controles frente a servidores no autorizados y agotamiento de pools.
+
+**Práctica guiada:** Consulta parámetros de red obtenidos automáticamente en tu equipo y distingue dirección, gateway, DNS y duración de concesión si está disponible.
+
+**Actividad independiente:** Dibuja DORA y explica cómo un relay permite atender clientes en otra subred.
+
+**Criterios de aceptación:** Identifica los cuatro mensajes y los parámetros que recibe el cliente.
+
+**Errores frecuentes:** Confundir DHCP con DNS o asumir que la asignación automática garantiza que la dirección sea correcta y segura.
+
+**Comprobación:** ¿Qué función cumple DHCP relay cuando el servidor está en otra subred?
 
 ## 8.4 — Protocolos
 
