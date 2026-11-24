@@ -12,8 +12,11 @@ from django.core.management.base import BaseCommand, CommandError
 from apps.roadmaps.models import (
     EjemploLeccion,
     EjercicioLeccion,
+    ContenidoLeccion,
+    ContenidoLeccionActivo,
     FuenteConocimiento,
     Roadmap,
+    VersionContenidoLeccion,
 )
 
 
@@ -84,13 +87,52 @@ class Command(BaseCommand):
                     ]
                     example_count += len(examples)
                     exercise_count += len(exercises)
+                    legacy = ContenidoLeccion.objects.filter(leccion=lesson).first()
+                    active = (
+                        ContenidoLeccionActivo.objects
+                        .filter(leccion=lesson)
+                        .select_related("version")
+                        .first()
+                    )
+                    versions = list(
+                        VersionContenidoLeccion.objects.filter(leccion=lesson)
+                        .order_by("numero_version")
+                        .values("clave", "numero_version", "estado", "sha256")
+                    )
+                    for version in versions:
+                        version["clave"] = str(version["clave"])
+                        version_state_counts[version["estado"]] += 1
+                    if legacy and (legacy.objetivos_aprendizaje.strip()
+                                   or legacy.teoria_tecnica.strip()
+                                   or legacy.explicacion_sencilla.strip()):
+                        legacy_body_count += 1
+                    if active:
+                        active_content_count += 1
                     lessons.append(
                         {
+                            "id_local": lesson.pk,
                             "uuid": str(lesson.clave_contenido),
                             "titulo": lesson.titulo,
                             "descripcion": lesson.descripcion,
                             "tipo": lesson.tipo,
                             "orden": lesson.orden,
+                            "contenido_legacy": {
+                                "existe": legacy is not None,
+                                "tiene_cuerpo": bool(
+                                    legacy and (
+                                        legacy.objetivos_aprendizaje.strip()
+                                        or legacy.teoria_tecnica.strip()
+                                        or legacy.explicacion_sencilla.strip()
+                                    )
+                                ),
+                                "publicado": legacy.publicado if legacy else False,
+                            },
+                            "contenido_activo": ({
+                                "uuid_version": str(active.version.clave),
+                                "numero_version": active.version.numero_version,
+                                "estado": active.version.estado,
+                            } if active else None),
+                            "versiones": versions,
                             "ejemplos": examples,
                             "ejercicios": exercises,
                         }
@@ -130,6 +172,9 @@ class Command(BaseCommand):
                 "lecciones": lesson_count,
                 "ejemplos": example_count,
                 "ejercicios": exercise_count,
+                "lecciones_con_cuerpo_legacy": legacy_body_count,
+                "lecciones_con_contenido_activo": active_content_count,
+                "versiones_por_estado": version_state_counts,
             },
             "etapas": stages,
         }
