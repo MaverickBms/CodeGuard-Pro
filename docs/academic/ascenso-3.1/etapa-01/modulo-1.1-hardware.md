@@ -1,6 +1,6 @@
 # Etapa 1 · Módulo 1.1 — Hardware
 
-**Estado:** borrador didáctico v0.1.0.  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA · v0.1.0.  
 **Alineación:** ASCENSO 3.1, Etapa 1, apartado 1.1.  
 **Prioridad de etapa:** P1 · Obligatoria.  
 **Temas oficiales:** CPU (Unidad Central de Procesamiento), ALU (Unidad Aritmético-Lógica), registros, núcleos, hilos de ejecución, frecuencia, caché L1/L2/L3, RAM, ROM, SSD, HDD, GPU, motherboard, buses, fuente de alimentación y periféricos.
