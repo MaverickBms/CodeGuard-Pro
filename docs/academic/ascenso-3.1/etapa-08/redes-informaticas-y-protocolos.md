@@ -74,7 +74,7 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
-### 8.1.2 — Redes WAN
+### 8.1.2 — WAN
 
 **Propósito y modelo.** Una WAN interconecta redes geográficamente separadas mediante enlaces de operadores, túneles, infraestructura privada o Internet. La disponibilidad, latencia, ancho de banda, redundancia y acuerdos de servicio condicionan su diseño. Una WAN no es sinónimo de Internet: puede ser privada o superpuesta.
 
@@ -100,7 +100,7 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Registro sugerido.** Anota topología, direccionamiento de laboratorio, herramientas, resultados y límites de la observación. No marques la práctica como ejecutada sin evidencia real.
 
-### 8.1.3 — Redes MAN
+### 8.1.3 — MAN
 
 **Propósito y modelo.** Una MAN cubre un ámbito metropolitano y conecta redes de edificios o campus distribuidos en una ciudad. Puede utilizar fibra, Ethernet metropolitana o servicios del operador. La etiqueta MAN describe alcance y arquitectura general; no identifica un protocolo único.
 
