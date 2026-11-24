@@ -134,200 +134,207 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 ### Módulo 17.1 — Fundamentos
 
 #### 17.1.01 — Quality Assurance (QA)
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Quality Assurance (QA) agrupa actividades preventivas y de proceso destinadas a reducir defectos y mejorar cómo se construye el software. Incluye estándares, revisiones, automatización y mejora continua; no es sinónimo de ejecutar pruebas al final.
 
 #### 17.1.02 — Quality Control (QC)
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Quality Control (QC) evalúa entregables para detectar desviaciones respecto de requisitos y criterios. Puede incluir inspecciones y pruebas; registra evidencia, severidad y trazabilidad en vez de limitarse a declarar que algo funciona.
 
 #### 17.1.03 — Verificación
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Verificación pregunta si el producto se construye conforme a especificaciones y diseño. Utiliza revisiones, análisis estático y pruebas sobre requisitos definidos; puede descubrir defectos sin demostrar que el producto resuelve la necesidad real del usuario.
 
 #### 17.1.04 — Validación
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Validación comprueba si el producto satisface necesidades y uso previsto de sus usuarios. Requiere escenarios representativos y criterios de aceptación; una implementación técnicamente conforme puede fallar la validación si el requisito estaba equivocado.
 
 #### 17.1.05 — Defectos
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Un defecto es una condición en un artefacto que puede provocar un resultado incorrecto o incumplimiento. Documenta pasos de reproducción, entorno, resultado esperado/obtenido, impacto y evidencia para permitir diagnóstico.
 
 #### 17.1.06 — Bugs
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Bug es el término habitual para un defecto observado en software, aunque el vocabulario puede variar entre equipos. Prioriza según impacto, probabilidad, exposición y consecuencias; no confundas cantidad de bugs reportados con calidad global.
 
 #### 17.1.07 — Casos de prueba
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en fundamentos, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Un caso de prueba define precondiciones, datos, acciones y resultados esperados para comprobar un comportamiento. Incluye escenarios positivos, negativos, límites y permisos; cada expectativa debe ser observable y trazable a un requisito.
 
 ### Módulo 17.2 — Testing funcional
 
 #### 17.2.01 — Unit Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Unit Testing comprueba una unidad pequeña de comportamiento con dependencias controladas. Debe ser rápida y determinista, y verificar resultados y efectos relevantes sin probar detalles internos que puedan cambiar sin alterar el contrato.
 
 #### 17.2.02 — Integration Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Integration Testing verifica interacción entre componentes reales, por ejemplo servicio y base de datos. Controla entorno, datos y limpieza; una prueba de integración detecta fallos de configuración, consultas, serialización y límites entre módulos.
 
 #### 17.2.03 — End-to-End Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+End-to-End Testing recorre un flujo representativo desde la interfaz o entrada externa hasta el resultado final. Mantén pocos escenarios críticos, datos aislados y observabilidad; las suites E2E suelen ser más lentas y frágiles que pruebas unitarias.
 
 #### 17.2.04 — Regression Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Regression Testing vuelve a ejecutar pruebas para comprobar que cambios no rompan comportamientos existentes. Selecciona casos según riesgo e impacto y conserva pruebas para defectos corregidos, evitando una suite extensa sin mantenimiento.
 
 #### 17.2.05 — Smoke Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Smoke Testing ejecuta un conjunto pequeño de comprobaciones esenciales para saber si un build o entorno merece pruebas más profundas. Verifica arranque, rutas críticas y dependencias básicas; no equivale a validar todas las funciones.
 
 #### 17.2.06 — Sanity Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Sanity Testing realiza una comprobación acotada de una modificación o área concreta después de un cambio. Define alcance y criterio de aprobación, y no lo confundas con una prueba exhaustiva de regresión.
 
 #### 17.2.07 — API Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing funcional, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+API Testing comprueba contratos, autenticación, validación, errores, límites y comportamiento de endpoints. Incluye entradas inválidas, autorización por recurso, paginación y concurrencia; no te limites a verificar que la respuesta sea HTTP 200.
 
 ### Módulo 17.3 — Testing de usuario
 
 #### 17.3.01 — Usability Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing de usuario, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Usability Testing observa si usuarios representativos pueden completar tareas con eficacia, eficiencia y satisfacción. Define tareas y métricas antes de la sesión, registra dificultades sin guiar al participante y protege su información personal.
 
 #### 17.3.02 — Accessibility Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing de usuario, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Accessibility Testing combina evaluación automatizada, inspección manual, teclado y tecnologías de asistencia. Comprueba criterios WCAG aplicables y documenta evidencia; ningún escáner automático por sí solo demuestra conformidad.
 
 #### 17.3.03 — Exploratory Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing de usuario, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Exploratory Testing combina aprendizaje, diseño y ejecución de pruebas durante la exploración del producto. Usa charters y notas para mantener foco, registra condiciones de reproducción y complementa las pruebas automatizadas.
 
 #### 17.3.04 — User Acceptance Testing (UAT)
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing de usuario, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+User Acceptance Testing (UAT) valida que los flujos cumplen criterios de aceptación desde la perspectiva del negocio o usuario. Define responsables, datos y condiciones de aprobación antes de ejecutar; UAT no reemplaza pruebas técnicas ni de seguridad.
 
 ### Módulo 17.4 — Rendimiento
 
 #### 17.4.01 — Load Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Load Testing mide el comportamiento bajo una carga esperada o proyectada. Define usuarios concurrentes, tasa de llegada, duración y mezcla de operaciones; compara latencia, throughput y errores con objetivos de servicio.
 
 #### 17.4.02 — Stress Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Stress Testing aumenta la carga más allá del nivel normal para descubrir límites y comportamiento ante saturación. Comprueba degradación controlada, recuperación y protección de dependencias; ejecútalo solo en entornos autorizados y aislados.
 
 #### 17.4.03 — Spike Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Spike Testing aplica incrementos bruscos de carga para evaluar escalado, colas y recuperación. Observa capacidad de absorción y tiempo de estabilización, no solo el pico máximo alcanzado.
 
 #### 17.4.04 — Endurance Testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Endurance Testing mantiene una carga sostenida durante un periodo prolongado para descubrir fugas, degradación y acumulación de recursos. Registra tendencias y condiciones ambientales y evita extrapolar resultados de una ejecución breve.
 
 #### 17.4.05 — Response Time
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Response Time mide el intervalo entre solicitud y respuesta desde un punto de observación definido. Distingue tiempo total, tiempo de servidor y tiempo de cliente, y reporta percentiles además del promedio.
 
 #### 17.4.06 — Throughput
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Throughput expresa cuántas operaciones o unidades de trabajo se completan por unidad de tiempo. Interprétalo junto con latencia y tasa de error; un throughput alto no es útil si produce respuestas incorrectas.
 
 #### 17.4.07 — Latency
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Latency mide el retraso entre una acción y su efecto observable. Identifica componentes de red, cola, procesamiento y almacenamiento; utiliza percentiles como p95/p99 para comprender experiencias de cola larga.
 
 #### 17.4.08 — Bottlenecks
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en rendimiento, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Un bottleneck es un recurso o etapa que limita el rendimiento total del sistema. Formula hipótesis y mide CPU, memoria, I/O, red y locks antes de optimizar; aumentar capacidad en otro componente puede no mejorar el resultado.
 
 ### Módulo 17.5 — Testing técnico
 
 #### 17.5.01 — Test Cases
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Test Cases son especificaciones ejecutables o manuales de escenarios, entradas y resultados esperados. Mantén cada caso enfocado, repetible y vinculado a un requisito o riesgo.
 
 #### 17.5.02 — Assertions
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Assertions comparan el resultado real con una condición esperada y hacen fallar la prueba si no se cumple. Asegúrate de que la aserción compruebe el comportamiento relevante y no solo la existencia de un valor.
 
 #### 17.5.03 — Mocking
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Mocking sustituye una dependencia por una implementación controlada para simular respuestas o fallos. Úsalo para aislar límites externos, pero no simules tanto que la prueba deje de detectar errores de integración.
 
 #### 17.5.04 — Fixtures
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Fixtures preparan datos y estado necesarios para una prueba y definen su ciclo de vida. Mantén fixtures pequeños y legibles, evita dependencia entre pruebas y limpia recursos aun cuando ocurra un fallo.
 
 #### 17.5.05 — Test Doubles
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Test Doubles son sustitutos de dependencias, como mocks, stubs, fakes y spies, con propósitos distintos. Elige el doble según la interacción que deseas controlar y evita acoplar las pruebas a llamadas internas irrelevantes.
 
 #### 17.5.06 — Test Coverage
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Test Coverage mide qué partes del código o condiciones fueron ejecutadas por una suite. No demuestra calidad ni corrección: complementa la cobertura con aserciones significativas, casos límite y análisis de riesgo.
 
 #### 17.5.07 — Test Isolation
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en testing técnico, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Test Isolation evita que una prueba dependa del orden, estado o efectos de otra. Usa datos únicos, recursos temporales y limpieza fiable; la ejecución paralela debe producir resultados equivalentes a la ejecución aislada.
 
 ### Módulo 17.6 — Metodologías
 
 #### 17.6.01 — TDD
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+TDD desarrolla mediante ciclos pequeños de prueba fallida, implementación mínima y refactorización. La prueba define comportamiento esperado; evita escribir pruebas que solo confirmen la implementación actual y refactoriza manteniendo la suite verde.
 
 #### 17.6.02 — BDD
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+BDD describe comportamiento mediante ejemplos comprensibles para negocio y equipo técnico. Escenarios Given/When/Then deben expresar reglas observables y evitar convertirse en scripts de interfaz frágiles o en documentación que nadie mantiene.
 
 #### 17.6.03 — AAA (Arrange, Act, Assert)
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+AAA organiza una prueba en Arrange (preparar), Act (ejecutar) y Assert (verificar). Mantén cada fase clara y una acción principal por prueba para que el fallo revele rápidamente qué comportamiento no se cumple.
 
 #### 17.6.04 — Pirámide de testing
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en metodologías, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+La pirámide de testing propone muchas pruebas unitarias, una cantidad menor de integración y pocas E2E, como heurística de coste y velocidad. Ajusta la distribución al riesgo y arquitectura; no es una proporción universal obligatoria.
 
 ### Módulo 17.7 — Herramientas
 
 #### 17.7.01 — JUnit
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+JUnit es un framework de pruebas para Java con anotaciones, assertions, lifecycle y extensiones. Fija versión, organiza pruebas por comportamiento y evita compartir estado mutable entre casos.
 
 #### 17.7.02 — Mockito
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Mockito crea dobles de prueba para dependencias Java y permite verificar interacciones. Mockea límites externos, no cada clase interna; combina mocks con pruebas de integración para comprobar configuración y contratos reales.
 
 #### 17.7.03 — Jest
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Jest ejecuta pruebas JavaScript/TypeScript con assertions, mocks y cobertura. Configura entorno y transformaciones de acuerdo con el proyecto y evita mocks globales que oculten efectos secundarios o dependencias no declaradas.
 
 #### 17.7.04 — Vitest
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Vitest ofrece un runner integrado con herramientas modernas como Vite y soporte para pruebas unitarias y de componentes. Alinea configuración con el build, aísla módulos y comprueba compatibilidad con el entorno de ejecución elegido.
 
 #### 17.7.05 — Playwright
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Playwright automatiza navegadores para pruebas E2E y de interacción. Usa locators accesibles, espera condiciones observables y captura trazas; evita pausas fijas y datos compartidos que vuelvan inestable la suite.
 
 #### 17.7.06 — Cypress
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Cypress permite probar aplicaciones web desde el navegador con comandos encadenados y herramientas de depuración. Controla estado y red, separa pruebas de componente y E2E y evita depender de detalles visuales frágiles.
 
 #### 17.7.07 — Postman
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Postman permite ejecutar colecciones de solicitudes y assertions sobre APIs. Versiona casos reproducibles, utiliza datos no sensibles y comprueba errores y permisos, no solo respuestas exitosas.
 
 #### 17.7.08 — JMeter
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en herramientas, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+JMeter genera carga y mide comportamiento de aplicaciones y servicios mediante planes de prueba. Diseña perfiles realistas, controla recursos del generador y limita las pruebas a entornos autorizados para no afectar producción.
 
 ### Módulo 17.8 — Análisis de calidad
 
 #### 17.8.01 — Static Analysis
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Static Analysis examina código sin ejecutar el programa para detectar defectos potenciales, complejidad y patrones riesgosos. Ajusta reglas al lenguaje y contexto, revisa falsos positivos y utiliza hallazgos para priorizar mejoras.
 
 #### 17.8.02 — Linters
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Linters detectan patrones problemáticos y aplican convenciones de código. Fija configuración compartida y ejecuta reglas en CI; no conviertas warnings en errores sin acordar el criterio con el equipo.
 
 #### 17.8.03 — Formatters
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Formatters aplican formato consistente sin cambiar intencionalmente la lógica del programa. Automatiza el formato y separa su función del linting, análisis estático y revisión de calidad.
 
 #### 17.8.04 — SonarQube
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+SonarQube centraliza análisis estático, métricas y Quality Gates para proyectos compatibles. Configura perfiles y umbrales adecuados, revisa falsos positivos y no interpretes un gate aprobado como garantía de ausencia de vulnerabilidades.
 
 #### 17.8.05 — Code Coverage
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Code Coverage informa qué líneas, ramas o funciones fueron alcanzadas por pruebas. Analiza cobertura de ramas y casos críticos, pero exige aserciones y revisión de escenarios; aumentar el porcentaje sin pruebas significativas no mejora necesariamente calidad.
 
 #### 17.8.06 — Code Smells
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en análisis de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Code Smells son señales de diseño que pueden indicar complejidad, duplicación o responsabilidades mal distribuidas. No son defectos automáticos: analiza contexto, coste de cambio y riesgo antes de refactorizar.
 
 ### Módulo 17.9 — Normas y modelos de calidad
 
 #### 17.9.01 — ISO/IEC 25010
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+ISO/IEC 25010 define un modelo de calidad de producto y calidad en uso mediante características y subcaracterísticas. Consulta la edición vigente y utiliza el modelo para especificar atributos medibles, no como una certificación automática del software.
 
 #### 17.9.02 — ISO/IEC/IEEE 12207
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+ISO/IEC/IEEE 12207 describe procesos del ciclo de vida del software, desde adquisición y desarrollo hasta operación y mantenimiento. Úsala para organizar responsabilidades y evidencias según alcance; no confundas adoptar procesos con certificar un producto.
 
 #### 17.9.03 — CMMI
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+CMMI es un conjunto de modelos de mejora de capacidades y desempeño organizacional. Interpreta sus prácticas según el modelo y alcance aplicables; no lo presentes como una lista universal de pruebas para un proyecto individual.
 
 #### 17.9.04 — Indicadores de calidad
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Los indicadores de calidad convierten objetivos en medidas observables, como defectos escapados, tiempo de recuperación o cobertura de requisitos. Define fórmula, fuente, periodicidad y límites para evitar métricas que incentiven comportamientos contraproducentes.
 
 #### 17.9.05 — Mantenibilidad
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Mantenibilidad es la facilidad con que un sistema puede modificarse, corregirse, probarse y comprenderse. Evalúa modularidad, complejidad, documentación y deuda técnica mediante evidencias, no solo por estilo de código.
 
 #### 17.9.06 — Fiabilidad
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Fiabilidad es la capacidad de operar sin fallos durante un periodo y contexto definidos. Mide disponibilidad, tasa de fallos, recuperación y comportamiento ante errores; especifica carga y entorno para que el indicador sea interpretable.
 
 #### 17.9.07 — Seguridad
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Seguridad como atributo de calidad exige proteger confidencialidad, integridad, disponibilidad y controles de acceso según amenazas. Integra requisitos de seguridad, pruebas y gestión de vulnerabilidades durante todo el ciclo de vida.
 
 #### 17.9.08 — Rendimiento
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Rendimiento evalúa tiempos de respuesta, capacidad y uso de recursos bajo condiciones definidas. Establece objetivos por percentiles y perfiles de carga, y relaciona resultados con experiencia del usuario y coste de infraestructura.
 
 #### 17.9.09 — Usabilidad
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Usabilidad evalúa si usuarios específicos pueden alcanzar objetivos con eficacia, eficiencia y satisfacción en un contexto. Combina observación, métricas y accesibilidad; no infieras facilidad de uso solo desde la opinión del equipo desarrollador.
 
 #### 17.9.10 — Product quality model
-Comprender el alcance del concepto y los criterios técnicos que lo gobiernan; identificar cómo se aplica en normas y modelos de calidad, cuándo resulta apropiado y qué limitaciones deben documentarse en el proyecto.
+Product quality model organiza características que permiten especificar y evaluar la calidad del producto. Relaciona cada atributo con requisitos y medidas verificables y declara límites de evaluación; el modelo no reemplaza criterios de aceptación propios del sistema.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 61 orientaciones genéricas por explicaciones específicas de cada entrada. Se desarrollaron QA/QC, verificación/validación, pruebas funcionales y de usuario, rendimiento, dobles de prueba, TDD/BDD, herramientas, análisis estático e indicadores/modelos de calidad.
+
+**Revisión interna:** 61/61 entradas desarrolladas y cotejadas con el roadmap. Se aclaró que cobertura no equivale a calidad, que smoke/sanity/regresión tienen alcances distintos y que estándares/modelos no certifican automáticamente un producto. Pendiente: ejecutar suites en proyectos de referencia, validar perfiles de carga en infraestructura aislada, revisar versiones de herramientas y verificar métricas/umbrales con un segundo evaluador. No se declara ejecución ni aprobación externa.
