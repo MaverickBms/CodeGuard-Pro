@@ -835,6 +835,16 @@ Bash mantiene variables locales a la shell y variables exportadas al entorno de 
 
 **Comprobación:** ¿qué cambia al exportar una variable y qué no cambia?
 
+**Laboratorio de profundización — Laboratorio de alcance y quoting.**
+
+1. En una shell Bash define `proyecto="laboratorio azul"` y muestra el valor con `printf '%s\\n' "$proyecto"`. 2. Ejecuta `bash -c 'printf "%s\\n" "$proyecto"'` antes y después de `export proyecto`. 3. Define una variable con un asterisco y compara impresión citada y sin citar usando datos inocuos.
+
+**Evidencia esperada.** La shell conserva el valor completo; el proceso hijo solo recibe la variable exportada; la expansión citada evita separación de palabras y expansión de comodines.
+
+**Seguridad y límites.** No introducir contraseñas ni tokens en el entorno. No asumir que una variable exportada es persistente o está protegida frente a inspección.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
+
 ### 7.4.2 — Operadores
 
 Bash ofrece pruebas de archivos, cadenas y números, además de expresiones aritméticas. `[[ ... ]]` es una construcción de Bash; `(( ... ))` evalúa aritmética; `[ ... ]` tiene reglas de argumentos propias. Ejemplo: `[[ -f "$ruta" ]]` comprueba un archivo regular y `(( intentos < 3 ))` compara números.
@@ -848,6 +858,16 @@ Bash ofrece pruebas de archivos, cadenas y números, además de expresiones arit
 **Errores frecuentes:** mezclar sintaxis de otros lenguajes, no citar rutas o evaluar entradas con `eval`.
 
 **Comprobación:** ¿por qué una prueba de archivo y una comparación aritmética utilizan construcciones distintas?
+
+**Laboratorio de profundización — Matriz de pruebas de archivo y aritmética.**
+
+1. Crea un archivo y un directorio bajo `~/lab/bash`. 2. Evalúa `[[ -f "$ruta" ]]`, `[[ -d "$ruta" ]]`, `[[ -r "$ruta" ]]` y `(( intentos < 3 ))`. 3. Repite con una ruta inexistente y un valor límite.
+
+**Evidencia esperada.** Cada prueba corresponde a un tipo de dato; las rutas se citan; se comprueban resultados verdaderos y falsos.
+
+**Seguridad y límites.** No utilizar `eval` para convertir entradas externas en expresiones. No confundir comparación de cadenas con comparación aritmética.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
 
 ### 7.4.3 — Condicionales
 
@@ -863,6 +883,16 @@ Bash ofrece pruebas de archivos, cadenas y números, además de expresiones arit
 
 **Comprobación:** ¿qué información aporta el código de salida que no aporta necesariamente el mensaje impreso?
 
+**Laboratorio de profundización — Validación de entrada con ramas explícitas.**
+
+1. Escribe un script que exija exactamente un argumento. 2. Comprueba que el argumento sea un directorio. 3. Emite errores por stderr y utiliza estados distintos para argumentos incorrectos y ruta no válida. 4. Prueba todos los escenarios.
+
+**Evidencia esperada.** Las ramas cubren argumento ausente, ruta incorrecta y ruta válida; los códigos de salida son consistentes y están documentados.
+
+**Seguridad y límites.** El texto impreso no sustituye el estado de salida. Una prueba previa de permisos no garantiza que la operación posterior no falle.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
+
 ### 7.4.4 — Bucles
 
 `for` recorre listas o expansiones; `while` repite mientras una condición tenga éxito; `until` repite hasta que tenga éxito. La expansión de palabras y comodines puede alterar elementos si no se cita. Para leer líneas se recomienda `while IFS= read -r linea`.
@@ -876,6 +906,16 @@ Bash ofrece pruebas de archivos, cadenas y números, además de expresiones arit
 **Errores frecuentes:** usar `for x in $(cat archivo)` para leer líneas o crear bucles infinitos.
 
 **Comprobación:** ¿qué problema evita la combinación `IFS= read -r`?
+
+**Laboratorio de profundización — Procesamiento de listas y líneas.**
+
+1. Recorre un array con tres elementos, incluido uno con espacios, mediante `for elemento in "${lista[@]}"`. 2. Crea un archivo de texto sintético con espacios y barras invertidas. 3. Léelo mediante `while IFS= read -r linea; do ...; done < archivo`.
+
+**Evidencia esperada.** Se conservan los límites de los elementos, cada línea se procesa una vez y el bucle termina al llegar a EOF.
+
+**Seguridad y límites.** Evitar `for x in $(cat archivo)`: divide por espacios y puede interpretar comodines. Definir tratamiento para archivos inexistentes.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
 
 ### 7.4.5 — Funciones
 
@@ -893,6 +933,16 @@ Las funciones agrupan operaciones reutilizables y reciben argumentos posicionale
 
 **Comprobación:** ¿cuándo conviene imprimir un resultado y cuándo devolver un código de estado?
 
+**Laboratorio de profundización — Función con argumentos y estado de retorno.**
+
+1. Implementa `validar_directorio()` que compruebe el primer argumento. 2. Valida la cantidad de argumentos. 3. Invócala desde un `if` con una ruta válida y otra inexistente. 4. Separa diagnósticos en stderr y resultados en stdout.
+
+**Evidencia esperada.** La función conserva argumentos con espacios, devuelve un estado numérico y no realiza cambios sobre el sistema.
+
+**Seguridad y límites.** En Bash, `return` devuelve un código de estado, no una cadena. Citar `"$@"` al reenviar argumentos.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
+
 ### 7.4.6 — Arrays
 
 Los arrays indexados almacenan secuencias; los asociativos relacionan claves y valores y requieren una versión de Bash compatible. `"${array[@]}"` expande cada elemento como argumento separado. `"${array[*]}"` puede unir elementos dentro de comillas.
@@ -906,6 +956,16 @@ Los arrays indexados almacenan secuencias; los asociativos relacionan claves y v
 **Errores frecuentes:** confundir `[@]` con `[*]`, omitir comillas o asumir que POSIX sh implementa arrays Bash.
 
 **Comprobación:** ¿por qué `"${array[@]}"` es la forma habitual de pasar elementos como argumentos separados?
+
+**Laboratorio de profundización — Inventario de servicios con arrays.**
+
+1. Crea un array indexado con nombres, uno de ellos con espacios. 2. Recorre `"${servicios[@]}"` e imprime cada elemento entre delimitadores. 3. Consulta la longitud. 4. Si Bash lo permite, crea un array asociativo y verifica una clave antes de leerla.
+
+**Evidencia esperada.** El número de elementos coincide con los declarados y no se fragmentan valores con espacios. Se documenta la versión de Bash utilizada.
+
+**Seguridad y límites.** Arrays no forman parte de POSIX sh. Distinguir `[@]` de `[*]` y no asumir que todas las shells tienen arrays asociativos.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
 
 ### 7.4.7 — Pipes
 
@@ -923,6 +983,16 @@ Una tubería conecta stdout de un proceso con stdin del siguiente y permite comp
 
 **Comprobación:** ¿qué error puede quedar oculto si solo se consulta el estado de la última orden?
 
+**Laboratorio de profundización — Pipeline con control de errores.**
+
+1. Ejecuta `printf '%s\\n' alfa beta | grep beta | wc -l`. 2. Provoca un fallo controlado en una etapa inicial. 3. Compara el estado normal del pipeline con el resultado al activar `set -o pipefail` en una shell de laboratorio.
+
+**Evidencia esperada.** Se identifica qué proceso produce y consume cada flujo; se explica cómo pipefail expone fallos intermedios.
+
+**Seguridad y límites.** stderr no se conecta a la tubería por defecto. No asumir que un pipeline exitoso implica que todas sus etapas tuvieron éxito.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
+
 ### 7.4.8 — Redirecciones
 
 Los descriptores estándar son stdin (0), stdout (1) y stderr (2). `>` crea o trunca, `>>` añade, `2>` redirige errores y `2>&1` duplica stderr hacia el destino actual de stdout. El orden de evaluación importa.
@@ -938,6 +1008,16 @@ Los descriptores estándar son stdin (0), stdout (1) y stderr (2). `>` crea o tr
 **Errores frecuentes:** sobrescribir registros importantes o asumir que `2>&1 >archivo` equivale a `>archivo 2>&1`.
 
 **Comprobación:** ¿por qué el orden de redirecciones cambia el resultado?
+
+**Laboratorio de profundización — Separación de stdout y stderr.**
+
+1. Ejecuta una orden inocua con salida normal y otra con error controlado. 2. Redirige stdout a `salida.txt` y stderr a `errores.txt`. 3. Prueba `>todo.txt 2>&1` y compara con `2>&1 >salida.txt`.
+
+**Evidencia esperada.** Se identifica el destino de los descriptores 0, 1 y 2 y se explica el efecto del orden de evaluación.
+
+**Seguridad y límites.** El operador `>` trunca el destino. Utilizar archivos temporales y comprobar el destino antes de redirigir.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
 
 ### 7.4.9 — Exit codes
 
@@ -955,6 +1035,16 @@ El estado de salida comunica el resultado de una orden. Cero suele significar é
 
 **Comprobación:** ¿qué diferencia hay entre no encontrar datos y no poder ejecutar correctamente la búsqueda?
 
+**Laboratorio de profundización — Tabla de estados de salida.**
+
+1. Ejecuta una orden válida y captura inmediatamente `estado=$?`. 2. Repite con `grep` encontrando coincidencia, sin coincidencia y con una ruta inexistente. 3. Documenta la diferencia entre ausencia de resultados y error de ejecución.
+
+**Evidencia esperada.** Se distinguen éxito, ausencia de coincidencia y error; el estado se captura antes de ejecutar otra orden.
+
+**Seguridad y límites.** No tratar todos los estados distintos de cero como equivalentes. Consultar el manual del programa para interpretar sus códigos.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
+
 ### 7.4.10 — Scripts
 
 Un script reúne órdenes en un archivo ejecutable por un intérprete. Puede incluir shebang, validación de argumentos, funciones, control de errores y códigos de salida. `set -e` tiene excepciones y no sustituye comprobaciones explícitas.
@@ -968,6 +1058,16 @@ Un script reúne órdenes en un archivo ejecutable por un intérprete. Puede inc
 **Errores frecuentes:** no citar variables, silenciar todos los errores o confiar únicamente en `set -e`.
 
 **Comprobación:** ¿qué validaciones deben preceder a una operación de escritura sobre una ruta recibida como argumento?
+
+**Laboratorio de profundización — Script Bash verificable.**
+
+1. Crea un archivo con shebang de Bash. 2. Valida la cantidad de argumentos y que la ruta sea un directorio. 3. Cita todas las expansiones. 4. Envía diagnósticos a stderr y devuelve códigos documentados. 5. Prueba argumento ausente, ruta inexistente y ruta válida.
+
+**Evidencia esperada.** El script cubre los tres escenarios, conserva rutas con espacios y devuelve el estado esperado en cada caso.
+
+**Seguridad y límites.** No confiar ciegamente en `set -e`; no silenciar errores con `2>/dev/null`; revisar scripts externos antes de ejecutarlos.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
 
 ### 7.4.11 — Cron
 
@@ -985,6 +1085,16 @@ cron programa tareas periódicas mediante cinco campos: minuto, hora, día del m
 
 **Comprobación:** ¿por qué una orden que funciona en tu terminal puede fallar desde cron?
 
+**Laboratorio de profundización — Diseño de tarea periódica sin instalarla.**
+
+1. Interpreta la expresión `0 2 * * 1`. 2. Identifica los cinco campos. 3. Define PATH explícito, rutas absolutas, logging y zona horaria para una tarea hipotética. 4. Considera cómo evitar ejecuciones solapadas.
+
+**Evidencia esperada.** La expresión se interpreta correctamente para la implementación documentada y el diseño contempla el entorno reducido de cron.
+
+**Seguridad y límites.** No asumir herencia del PATH interactivo. La semántica de día de mes y día de semana puede variar según cron; verificar manual local.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
+
 ### 7.4.12 — Automatización
 
 Una automatización fiable combina repetibilidad, idempotencia, observabilidad, control de errores, privilegios mínimos y reversión. Debe documentar entradas, efectos, dependencias y forma de verificar el resultado.
@@ -1001,6 +1111,16 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 **Comprobación:** ¿qué propiedad permite repetir una automatización sin efectos acumulativos no deseados?
 
+
+**Laboratorio de profundización — Tarea idempotente y observable.**
+
+1. Diseña un script que cree `~/lab/reportes` si no existe. 2. Registra fecha, resultado y errores sin incluir secretos. 3. Ejecútalo dos veces en el laboratorio. 4. Explica qué sucede si dos instancias corren simultáneamente y cómo evitarlo.
+
+**Evidencia esperada.** La repetición no duplica efectos no deseados; la ejecución deja un registro útil y no necesita privilegios administrativos.
+
+**Seguridad y límites.** No automatizar borrados sin simulación y respaldo. No guardar credenciales en texto plano ni ignorar códigos de salida.
+
+**Registro sugerido.** Anota shell y versión, comandos utilizados, resultado observado, código de salida y diferencias respecto del comportamiento esperado. No marques la práctica como ejecutada sin evidencia real.
 ## 7.5 — Windows
 
 ### 7.5.1 — Arquitectura de Windows
