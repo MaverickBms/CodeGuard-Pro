@@ -980,6 +980,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué problema resuelve el número de secuencia en un flujo TCP?
 
+**Laboratorio de profundización — Análisis del establecimiento de conexión.**
+
+1. Dibuja SYN, SYN-ACK y ACK con puertos y números de secuencia ficticios. 2. Explica estado de conexión y cierre. 3. Describe retransmisión y control de flujo. 4. Relaciona una captura con los estados sin inferir aplicación solo por el puerto.
+
+**Evidencia esperada.** La secuencia está ordenada y se distinguen establecimiento, transferencia y cierre TCP.
+
+**Seguridad y límites.** Utilizar tráfico propio o sintético; no capturar sesiones ajenas.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.4.2 — UDP
 
 **Propósito y modelo.** UDP transporta datagramas sin establecer una conexión de transporte ni garantizar entrega, orden o retransmisión. Tiene baja sobrecarga y conserva límites de datagrama. Las aplicaciones pueden implementar sus propios mecanismos de confiabilidad y control.
@@ -995,6 +1005,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Afirmar que UDP siempre es más rápido o inseguro; el resultado depende del servicio y de los controles de aplicación.
 
 **Comprobación.** ¿Por qué una aplicación de voz puede preferir UDP aun cuando algunos paquetes se pierdan?
+
+**Laboratorio de profundización — Diseño de intercambio sin conexión.**
+
+1. Compara un flujo UDP y uno TCP para DNS, voz o telemetría. 2. Identifica longitud, puertos y checksum. 3. Explica quién gestiona pérdida y reordenamiento en una aplicación UDP. 4. Decide cuándo UDP es apropiado.
+
+**Evidencia esperada.** La comparación explica ausencia de handshake y responsabilidad de la aplicación ante pérdida o reordenamiento.
+
+**Seguridad y límites.** No confundir ausencia de conexión con ausencia de controles de seguridad.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.4.3 — ICMP
 
@@ -1012,6 +1032,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Por qué un ping fallido no demuestra necesariamente que un servidor web esté fuera de servicio?
 
+**Laboratorio de profundización — Diagnóstico de conectividad con ICMP.**
+
+1. Interpreta Echo Request/Reply y Destination Unreachable. 2. Explica TTL Exceeded. 3. Relaciona ICMP con traceroute y Path MTU Discovery. 4. Distingue filtrado de ICMP de caída total del servicio.
+
+**Evidencia esperada.** El estudiante reconoce mensajes ICMP relevantes y sus límites diagnósticos.
+
+**Seguridad y límites.** No inundar destinos con ping ni interpretar un bloqueo ICMP como prueba de host apagado.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.4.4 — DNS
 
 **Propósito y modelo.** DNS traduce nombres de dominio a registros como A, AAAA, CNAME, MX y TXT. La resolución suele involucrar stub resolver, recursor y servidores autoritativos; cachés y TTL afectan cuándo se observa un cambio. DNS no valida por sí solo la identidad del servicio ni cifra necesariamente la consulta.
@@ -1027,6 +1057,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Confundir DNS con registro de dominios, asumir que el cambio se propaga instantáneamente o considerar TXT como un tipo único de autenticación.
 
 **Comprobación.** ¿Por qué un cambio DNS puede tardar en reflejarse en todos los clientes?
+
+**Laboratorio de profundización — Resolución recursiva y tipos de registro.**
+
+1. Dibuja stub resolver, recursor, root, TLD y autoritativo. 2. Compara A, AAAA, CNAME, MX, TXT y PTR. 3. Explica TTL y caché. 4. Analiza un caso sintético de registro obsoleto.
+
+**Evidencia esperada.** La secuencia de resolución y la función de los registros se describen correctamente.
+
+**Seguridad y límites.** No realizar transferencia de zona ni enumeración de dominios ajenos sin autorización.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.4.5 — HTTP
 
@@ -1044,6 +1084,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué diferencia conceptual existe entre un código 401 y uno 403?
 
+**Laboratorio de profundización — Lectura de una transacción HTTP.**
+
+1. Identifica método, URI, versión, encabezados, código y cuerpo en una solicitud/respuesta sintética. 2. Compara GET, POST, PUT, PATCH y DELETE. 3. Explica idempotencia y caché. 4. Analiza códigos 2xx, 3xx, 4xx y 5xx.
+
+**Evidencia esperada.** La interpretación diferencia método, semántica, estado y encabezados.
+
+**Seguridad y límites.** No enviar datos personales a endpoints públicos de prueba.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.4.6 — HTTPS
 
 **Propósito y modelo.** HTTPS es HTTP protegido mediante TLS. TLS negocia parámetros criptográficos, autentica el servidor mediante certificados y protege confidencialidad e integridad del canal. La seguridad depende de validación de certificados, versiones y suites, gestión de claves y configuración del servidor.
@@ -1059,6 +1109,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Ignorar advertencias de certificado, almacenar claves privadas junto al código o considerar HTTPS sustituto de autorización.
 
 **Comprobación.** ¿Qué propiedad se pierde si un cliente acepta cualquier certificado sin validar identidad?
+
+**Laboratorio de profundización — Verificación conceptual de TLS.**
+
+1. Dibuja cliente, servidor, certificado, autoridad de certificación y negociación TLS. 2. Explica autenticación del servidor, cifrado y negociación de claves. 3. Describe validación de nombre, cadena y vigencia del certificado. 4. Identifica qué metadatos pueden seguir visibles.
+
+**Evidencia esperada.** Se diferencia HTTP de HTTP sobre TLS y se describen límites de confidencialidad e integridad.
+
+**Seguridad y límites.** No desactivar validación de certificados como solución; no aceptar certificados desconocidos en producción.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.4.7 — SSH
 
@@ -1076,6 +1136,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué riesgo evita verificar la clave de host antes de introducir credenciales?
 
+**Laboratorio de profundización — Administración remota segura.**
+
+1. Explica intercambio de claves del servidor y autenticación del usuario. 2. Compara contraseña y clave pública. 3. Describe known_hosts y riesgo de MITM. 4. Diseña acceso con usuarios individuales y privilegios mínimos.
+
+**Evidencia esperada.** El flujo distingue identidad del servidor y del usuario y contempla verificación de host key.
+
+**Seguridad y límites.** No deshabilitar verificación de host ni reutilizar claves privadas entre usuarios.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.4.8 — FTP
 
 **Propósito y modelo.** FTP transfiere archivos mediante canales de control y datos separados. En su forma clásica, credenciales y datos no están cifrados; modos activo y pasivo difieren en cómo se establece el canal de datos. Debe evitarse en redes no confiables salvo que esté encapsulado y protegido apropiadamente.
@@ -1091,6 +1161,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Llamar SFTP a FTP pasivo o asumir que FTPS y SFTP utilizan el mismo protocolo.
 
 **Comprobación.** ¿Por qué FTP clásico expone credenciales en una red sin cifrado?
+
+**Laboratorio de profundización — Riesgos del protocolo FTP clásico.**
+
+1. Dibuja canal de control y canal de datos. 2. Explica modo activo y pasivo. 3. Identifica exposición de credenciales y contenido sin cifrado. 4. Propón sustitución segura para transferencia remota.
+
+**Evidencia esperada.** Se identifica que FTP clásico no protege credenciales ni datos y se comparan alternativas seguras.
+
+**Seguridad y límites.** No transmitir credenciales reales ni habilitar FTP público en un laboratorio conectado a Internet.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.4.9 — SFTP
 
@@ -1108,6 +1188,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué capa de seguridad aporta SSH al canal SFTP?
 
+**Laboratorio de profundización — Transferencia segura mediante SSH.**
+
+1. Distingue SFTP de FTPS y FTP. 2. Describe autenticación y canal SSH. 3. Diseña permisos y directorio de intercambio restringido. 4. Explica verificación de integridad de archivos transferidos.
+
+**Evidencia esperada.** La comparación evita confundir protocolos y aplica mínimo privilegio al acceso a archivos.
+
+**Seguridad y límites.** No compartir claves privadas ni dejar directorios de intercambio con escritura global.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.4.10 — SMTP
 
 **Propósito y modelo.** SMTP transporta y retransmite correo entre clientes y servidores o entre servidores. El envío suele usar puertos 25 para transferencia entre servidores y  submission autenticado en 587 o 465 según configuración y práctica actual. TLS, autenticación, SPF, DKIM y DMARC cumplen funciones distintas.
@@ -1123,6 +1213,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Confundir el campo From visible con identidad autenticada o considerar SPF como firma criptográfica del contenido.
 
 **Comprobación.** ¿Por qué SMTP y IMAP cumplen funciones diferentes en el correo electrónico?
+
+**Laboratorio de profundización — Flujo de envío de correo.**
+
+1. Dibuja cliente, servidor de envío, relay y servidor destinatario. 2. Explica MAIL FROM, RCPT TO y DATA conceptualmente. 3. Distingue SMTP submission y relay. 4. Describe SPF, DKIM y DMARC como controles complementarios.
+
+**Evidencia esperada.** El flujo identifica roles y reconoce que autenticación de dominio no equivale a cifrado de contenido.
+
+**Seguridad y límites.** No enviar campañas ni pruebas masivas a destinatarios reales sin autorización.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.4.11 — IMAP
 
@@ -1140,6 +1240,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué ventaja ofrece mantener el estado del buzón en el servidor cuando se utilizan varios dispositivos?
 
+**Laboratorio de profundización — Sincronización de buzón.**
+
+1. Compara IMAP con descarga POP3. 2. Explica carpetas, flags y sincronización entre dispositivos. 3. Describe TLS y autenticación moderna. 4. Diseña una política de acceso y retención.
+
+**Evidencia esperada.** Se explica la sincronización del estado del buzón y los riesgos de credenciales.
+
+**Seguridad y límites.** No usar contraseñas de correo reales en scripts o ejercicios.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.4.12 — POP3
 
 **Propósito y modelo.** POP3 permite recuperar mensajes desde un servidor de correo. Según configuración, el cliente puede descargar y borrar mensajes o conservar copias. POP3 es más simple que IMAP y no proporciona el mismo modelo de sincronización de carpetas y estado.
@@ -1155,6 +1265,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Asumir que POP3 sincroniza carpetas o que TLS hace segura cualquier política de almacenamiento.
 
 **Comprobación.** ¿Qué problema puede causar una configuración POP3 que elimina del servidor los mensajes descargados?
+
+**Laboratorio de profundización — Modelo de descarga de correo.**
+
+1. Describe conexión, autenticación, listado y recuperación de mensajes. 2. Compara modo de descarga y conservación en servidor. 3. Explica POP3S/TLS. 4. Decide cuándo IMAP sería más adecuado.
+
+**Evidencia esperada.** La comparación identifica límites de sincronización y la importancia del canal cifrado.
+
+**Seguridad y límites.** No utilizar POP3 sin TLS ni descargar buzones de terceros.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.4.13 — SMB
 
@@ -1172,6 +1292,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Cómo se determina el acceso remoto efectivo cuando coexisten permisos SMB y NTFS?
 
+**Laboratorio de profundización — Acceso a recursos compartidos.**
+
+1. Dibuja cliente SMB, servidor y recurso compartido. 2. Distingue permisos de share y ACL NTFS. 3. Explica autenticación y firma/cifrado SMB según configuración. 4. Diseña acceso por grupos.
+
+**Evidencia esperada.** El diseño explica la evaluación combinada de permisos y las protecciones del protocolo.
+
+**Seguridad y límites.** No habilitar SMBv1 ni exponer TCP/445 a Internet.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.4.14 — LDAP
 
 **Propósito y modelo.** LDAP es un protocolo para consultar y modificar servicios de directorio organizados en entradas y atributos. Los nombres distinguidos (DN), unidades organizativas, filtros y esquemas describen objetos. LDAP no es sinónimo de Active Directory, aunque AD DS ofrece una implementación compatible con LDAP y extensiones propias.
@@ -1188,6 +1318,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 **Comprobación.** ¿Qué papel cumple el DN al delimitar una búsqueda LDAP?
 
+**Laboratorio de profundización — Consulta de directorio.**
+
+1. Identifica DIT, DN, RDN, atributos y objectClass. 2. Diseña un filtro de búsqueda sobre datos ficticios. 3. Compara LDAP simple y LDAPS/StartTLS. 4. Explica mínimo privilegio para bind y lectura.
+
+**Evidencia esperada.** La estructura DN y el filtro son coherentes y se distingue cifrado del canal y autorización.
+
+**Seguridad y límites.** No realizar enumeración de directorios reales sin autorización ni enviar credenciales por LDAP sin TLS.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
+
 ### 8.4.15 — Kerberos
 
 **Propósito y modelo.** Kerberos es un protocolo de autenticación basado en tickets y un tercero de confianza (KDC). En Active Directory, el KDC forma parte del controlador de dominio. El cliente obtiene un Ticket-Granting Ticket y solicita tickets de servicio, reduciendo la necesidad de enviar la contraseña a cada servicio.
@@ -1203,6 +1343,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 **Errores frecuentes.** Confundir Kerberos con LDAP o asumir que obtener un ticket significa que la autorización a un recurso está concedida.
 
 **Comprobación.** ¿Qué diferencia existe entre autenticación Kerberos y autorización de acceso a un archivo?
+
+**Laboratorio de profundización — Flujo de tickets de autenticación.**
+
+1. Dibuja cliente, KDC, AS, TGS y servicio. 2. Explica TGT y ticket de servicio. 3. Identifica el papel de sincronización horaria y SPN. 4. Describe por qué las contraseñas no se envían directamente al servicio en el flujo típico.
+
+**Evidencia esperada.** El flujo diferencia autenticación inicial y obtención de ticket de servicio.
+
+**Seguridad y límites.** No ejecutar ataques de extracción de tickets ni pruebas de credenciales fuera de un laboratorio autorizado.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
 
 ### 8.4.16 — WebSockets
 
@@ -1222,6 +1372,16 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 ## 8.5 — Routing y Switching
 
+
+**Laboratorio de profundización — Comunicación bidireccional persistente.**
+
+1. Compara HTTP request/response con WebSocket persistente. 2. Describe handshake Upgrade y conexión establecida. 3. Diseña autenticación, autorización por mensaje y límites de tamaño. 4. Explica heartbeat y cierre.
+
+**Evidencia esperada.** El diseño reconoce comunicación bidireccional y controles que deben aplicarse después del handshake.
+
+**Seguridad y límites.** No asumir que el handshake autentica todas las acciones ni permitir mensajes ilimitados.
+
+**Registro sugerido.** Anota protocolo, puertos solo como referencia contextual, flujo, campos observados y herramienta/versión. No marques la práctica como ejecutada sin evidencia real.
 ### 8.5.1 — Switching
 
 **Propósito y modelo.** Switching reenvía tramas dentro de una red de capa 2 usando información de direcciones MAC y VLAN. El switch aprende MAC de origen por puerto, filtra tráfico conocido e inunda destinos desconocidos dentro de la VLAN. STP y variantes previenen bucles de capa 2 en topologías redundantes.
