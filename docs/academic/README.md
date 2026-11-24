@@ -139,3 +139,10 @@ Acumulado documental ampliado: etapas 1–6, 265 lecciones según el informe de 
 Se incorporaron prácticas y evidencias a las **63 lecciones** de Internet, HTTP, APIs, protocolos, herramientas, seguridad y documentación. La lectura posterior del archivo confirmó 63/63 apartados y ningún encabezado vacío. Las prácticas de red y seguridad se circunscriben a servicios propios o autorizados.
 
 Acumulado documental ampliado: etapas 1–6, 265 lecciones según informe de OpenCode; etapas 7–10, 284; etapas 11–12, 149; etapa 13, 63; total etapas 1–13: **761 lecciones**. Restan 1.155 lecciones de etapas 14–32 para una profundización equivalente. No se declara ejecución ni validación externa de las prácticas; revisar la auditoría para las limitaciones.
+
+
+### Ampliación de prácticas y evidencias — etapa 14 — 2026-11-24
+
+Se añadieron prácticas y evidencias a las **58 lecciones** de Java y Spring Boot, abarcando arquitectura, IoC/DI, REST, persistencia, seguridad, transacciones y tooling. La ampliación es documental; no se han ejecutado builds, pruebas de integración ni laboratorios de seguridad.
+
+Acumulado documental ampliado: etapas 1–6, 265; etapas 7–10, 284; etapas 11–12, 149; etapa 13, 63; etapa 14, 58; total etapas 1–14: **819 lecciones**. Restan 1.097 lecciones de etapas 15–32 para profundización equivalente. Las cifras no implican validación técnica por ejecución ni aprobación externa.
