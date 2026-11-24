@@ -1642,6 +1642,16 @@ Los componentes React encapsulan UI reutilizable como funciones que reciben prop
 
 **Comprobación:** ¿Por qué un componente no debe modificar sus props?
 
+**Laboratorio de profundización — Composición y responsabilidad de componentes.**
+
+1. Construye componentes de presentación y contenedor. 2. Identifica responsabilidades y límites. 3. Extrae componentes reutilizables solo donde exista repetición real. 4. Comprueba árbol y props.
+
+**Evidencia esperada.** Cada componente tiene responsabilidad clara y la composición evita duplicación innecesaria.
+
+**Seguridad y límites.** No crear componentes excesivamente genéricos ni almacenar secretos en código cliente.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.6.02 — JSX
 
 JSX es una sintaxis que se transforma en llamadas/estructuras React; permite expresiones JavaScript dentro de marcado. Reglas como un solo nodo raíz, className y escape automático aplican; dangerouslySetInnerHTML requiere control estricto.
@@ -1657,6 +1667,16 @@ JSX es una sintaxis que se transforma en llamadas/estructuras React; permite exp
 **Errores frecuentes:** Insertar HTML no confiable con dangerouslySetInnerHTML.
 
 **Comprobación:** ¿Qué protección ofrece el escape automático de JSX?
+
+**Laboratorio de profundización — Expresiones y reglas JSX.**
+
+1. Renderiza expresiones, listas y atributos. 2. Usa className y expresiones entre llaves. 3. Maneja valores condicionales. 4. Explica por qué JSX no es HTML literal.
+
+**Evidencia esperada.** El JSX compila y renderiza contenido esperado y distingue atributos HTML/JSX.
+
+**Seguridad y límites.** No insertar HTML no confiable mediante dangerouslySetInnerHTML.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.6.03 — Props
 
@@ -1674,6 +1694,16 @@ Props son entradas de solo lectura para un componente. Deben tiparse y tener val
 
 **Comprobación:** ¿Qué patrón permite que un hijo notifique una acción al padre?
 
+**Laboratorio de profundización — Contrato unidireccional de propiedades.**
+
+1. Define props tipadas para componente. 2. Pasa datos desde padre a hijo. 3. Usa children cuando corresponda. 4. Evita mutar props.
+
+**Evidencia esperada.** Los props son inmutables desde el hijo y el contrato está tipado y documentado.
+
+**Seguridad y límites.** No pasar secretos o permisos sensibles al cliente suponiendo que los props son privados.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.6.04 — State
 
 State representa datos que cambian con el tiempo y afectan renderizado. En React se actualiza mediante setter; las actualizaciones pueden agruparse y dependen del valor previo. No se mutan objetos/arrays de estado directamente.
@@ -1689,6 +1719,16 @@ State representa datos que cambian con el tiempo y afectan renderizado. En React
 **Errores frecuentes:** Modificar objeto state directamente o usar valor obsoleto en actualización concurrente.
 
 **Comprobación:** ¿Por qué la forma funcional es útil cuando el nuevo estado depende del anterior?
+
+**Laboratorio de profundización — Estado local y renderizado.**
+
+1. Define estado para contador y formulario. 2. Comprueba actualización y render. 3. Evita mutación directa de objetos/arrays. 4. Distingue estado de variables locales.
+
+**Evidencia esperada.** Las actualizaciones usan nuevas referencias cuando corresponde y el render refleja estado actual.
+
+**Seguridad y límites.** No almacenar datos derivados innecesariamente ni mutar estado directamente.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.6.05 — Hooks
 
@@ -1706,6 +1746,16 @@ Hooks permiten usar estado, efectos y otras capacidades en componentes funcional
 
 **Comprobación:** ¿Por qué React exige el mismo orden de hooks en cada render?
 
+**Laboratorio de profundización — Reglas y composición de hooks.**
+
+1. Identifica hooks de React. 2. Respeta llamada en nivel superior de componente/custom hook. 3. Explica orden estable de hooks. 4. Usa lint para detectar violaciones.
+
+**Evidencia esperada.** Los hooks se llaman de forma consistente y la lógica reutilizable queda encapsulada.
+
+**Seguridad y límites.** No llamar hooks dentro de condicionales, bucles o funciones ordinarias.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.6.06 — useState
 
 useState devuelve valor actual y setter. El setter solicita nuevo render; no modifica variable local inmediatamente. Para estado derivado del anterior se usa updater funcional; inicializadores costosos pueden ser funciones.
@@ -1721,6 +1771,16 @@ useState devuelve valor actual y setter. El setter solicita nuevo render; no mod
 **Errores frecuentes:** Esperar cambio inmediato en variable local o mutar array con push.
 
 **Comprobación:** ¿Por qué setState no cambia inmediatamente la variable capturada en el render actual?
+
+**Laboratorio de profundización — Actualizaciones funcionales.**
+
+1. Implementa contador con useState. 2. Compara setState(valor) y setState(prev => ...). 3. Actualiza array/objeto de forma inmutable. 4. Prueba varias actualizaciones en el mismo evento.
+
+**Evidencia esperada.** La actualización se basa en estado previo cuando corresponde y no muta estructuras existentes.
+
+**Seguridad y límites.** No leer estado como si la actualización fuera síncrona ni mutar el objeto almacenado.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.6.07 — useEffect
 
@@ -1738,6 +1798,16 @@ useEffect sincroniza componente con sistemas externos: suscripciones, timers o c
 
 **Comprobación:** ¿Qué problema resuelve la función cleanup?
 
+**Laboratorio de profundización — Sincronización con sistemas externos.**
+
+1. Implementa efecto que registre listener o cargue dato. 2. Define dependencias. 3. Añade cleanup. 4. Maneja respuesta obsoleta y modo Strict en desarrollo.
+
+**Evidencia esperada.** El efecto refleja dependencias reales, limpia recursos y evita actualizaciones obsoletas.
+
+**Seguridad y límites.** No usar useEffect para cálculos derivados simples ni omitir dependencias para silenciar lint.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.6.08 — useContext
 
 useContext lee valor del proveedor más cercano y permite compartir datos entre componentes sin pasar props por muchos niveles. Cambios de contexto pueden volver a renderizar consumidores; dividir contextos reduce actualizaciones innecesarias.
@@ -1753,6 +1823,16 @@ useContext lee valor del proveedor más cercano y permite compartir datos entre 
 **Errores frecuentes:** Usar context para todo el estado global o consumir fuera de Provider sin fallback.
 
 **Comprobación:** ¿Qué sucede si un consumidor no encuentra Provider?
+
+**Laboratorio de profundización — Contexto y alcance de estado compartido.**
+
+1. Crea contexto de tema. 2. Provee valor en nivel adecuado. 3. Consume desde componentes descendientes. 4. Define valor por defecto y comportamiento fuera del provider.
+
+**Evidencia esperada.** El contexto se limita a consumidores relacionados y el provider tiene contrato claro.
+
+**Seguridad y límites.** No colocar todo el estado global en un único contexto sin analizar renders y acoplamiento.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.6.09 — useRef
 
@@ -1770,6 +1850,16 @@ useRef conserva objeto mutable entre renders sin provocar nuevo render al cambia
 
 **Comprobación:** ¿Por qué cambiar ref.current no provoca render?
 
+**Laboratorio de profundización — Referencia mutable sin render.**
+
+1. Usa ref para enfocar input. 2. Almacena identificador de timer. 3. Compara ref con state. 4. Explica cuándo mutar ref no provoca render.
+
+**Evidencia esperada.** La referencia conserva valor entre renders sin utilizarse como estado visible.
+
+**Seguridad y límites.** No modificar refs durante render para coordinar estado visible.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.6.10 — Forms
 
 React puede controlar formularios mediante value/onChange o permitir lectura nativa al submit. Los campos controlados deben mantener valor sincronizado y asociar etiquetas/errores; la validación del servidor sigue siendo autoritativa.
@@ -1785,6 +1875,16 @@ React puede controlar formularios mediante value/onChange o permitir lectura nat
 **Errores frecuentes:** Input controlado sin onChange o validación solo cliente.
 
 **Comprobación:** ¿Qué diferencia existe entre controlado y no controlado?
+
+**Laboratorio de profundización — Formulario controlado y no controlado.**
+
+1. Implementa input controlado y formulario con submit. 2. Valida campos y muestra errores. 3. Maneja envío asíncrono y loading. 4. Considera accesibilidad y autocomplete.
+
+**Evidencia esperada.** El formulario mantiene fuente de verdad clara y errores asociados a campos.
+
+**Seguridad y límites.** Validar en servidor y proteger endpoints; no exponer datos sensibles en estado persistente cliente.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.6.11 — Routing
 
@@ -1802,6 +1902,16 @@ El routing del cliente asocia rutas URL con vistas y navegación sin recarga com
 
 **Comprobación:** ¿Por qué una ruta oculta no protege el recurso del servidor?
 
+**Laboratorio de profundización — Rutas, parámetros y navegación.**
+
+1. Define rutas públicas y privadas en una app React. 2. Lee parámetros y query string. 3. Maneja ruta no encontrada. 4. Diseña navegación accesible y estados de carga.
+
+**Evidencia esperada.** La navegación representa URLs estables y maneja rutas desconocidas.
+
+**Seguridad y límites.** No considerar ocultar rutas como control de autorización; verificar permisos en backend.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.6.12 — Context API
 
 Context API permite compartir valores a través del árbol. Provider define el alcance y consumidores acceden al contexto; para estado complejo puede combinarse con reducer y dividir contextos para limitar renders.
@@ -1817,6 +1927,16 @@ Context API permite compartir valores a través del árbol. Provider define el a
 **Errores frecuentes:** Crear contexto global monolítico que provoca renders amplios.
 
 **Comprobación:** ¿Cuándo conviene separar un contexto de estado y otro de acciones?
+
+**Laboratorio de profundización — Estado compartido y límites de contexto.**
+
+1. Diseña contexto para usuario autenticado y tema. 2. Separa contextos de alta y baja frecuencia de cambio. 3. Evita recrear valores innecesariamente. 4. Compara con estado local o librería dedicada.
+
+**Evidencia esperada.** La solución reduce acoplamiento y justifica qué estado se comparte.
+
+**Seguridad y límites.** No enviar datos sensibles de sesión al cliente más allá de lo necesario.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.6.13 — Component lifecycle
 
@@ -1834,6 +1954,16 @@ En componentes funcionales, render, commit y efectos describen fases de actualiz
 
 **Comprobación:** ¿Por qué Strict Mode puede revelar efectos con side effects no seguros?
 
+**Laboratorio de profundización — Ciclo de render y efectos.**
+
+1. Relaciona montaje, actualización y desmontaje con renders y efectos. 2. Comprueba setup y cleanup. 3. Analiza Strict Mode en desarrollo. 4. Evita asumir que los componentes se montan una sola vez.
+
+**Evidencia esperada.** El ciclo se explica desde modelo actual de React y los recursos se limpian correctamente.
+
+**Seguridad y límites.** No usar lifecycle como analogía rígida de hooks sin entender render y commit.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.6.14 — State management
 
 La gestión de estado define dónde vive cada dato, quién puede modificarlo y cómo se sincroniza. Estado local, Context, reducers y librerías externas resuelven escalas distintas; estado servidor requiere caché, invalidación y sincronización diferenciadas.
@@ -1849,6 +1979,16 @@ La gestión de estado define dónde vive cada dato, quién puede modificarlo y c
 **Errores frecuentes:** Guardar todo en un único contexto o duplicar estado servidor en varios componentes.
 
 **Comprobación:** ¿Por qué estado de servidor y estado de interfaz suelen requerir estrategias distintas?
+
+**Laboratorio de profundización — Elección de estrategia de estado.**
+
+1. Clasifica estado local, compartido, servidor y URL. 2. Compara Context, reducer y librería externa. 3. Diseña flujo de actualización. 4. Evalúa caché y sincronización con servidor.
+
+**Evidencia esperada.** La elección depende del alcance, frecuencia y naturaleza del estado.
+
+**Seguridad y límites.** No duplicar estado servidor y local sin estrategia de invalidación.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.6.15 — Custom Hooks
 
@@ -1866,6 +2006,16 @@ Un custom hook encapsula lógica reutilizable que usa otros hooks y comparte est
 
 **Comprobación:** ¿Qué diferencia existe entre reutilizar lógica con custom hook y compartir estado global?
 
+**Laboratorio de profundización — Extracción de lógica reutilizable.**
+
+1. Extrae hook para estado de formulario o media query. 2. Define API y retorno. 3. Respeta reglas de hooks. 4. Prueba estados iniciales y cleanup.
+
+**Evidencia esperada.** El hook encapsula comportamiento reutilizable y mantiene contrato claro.
+
+**Seguridad y límites.** No llamar hooks condicionalmente dentro del custom hook.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.6.16 — Error Boundaries
 
 Error Boundaries capturan errores de renderizado en componentes descendientes y muestran fallback; no capturan todos los errores de eventos, async callbacks ni fallos fuera del árbol. La estrategia debe registrar errores sin exponer datos sensibles.
@@ -1882,6 +2032,16 @@ Error Boundaries capturan errores de renderizado en componentes descendientes y 
 
 **Comprobación:** ¿Qué tipos de errores no captura un Error Boundary tradicional?
 
+
+**Laboratorio de profundización — Aislamiento de errores de render.**
+
+1. Añade Error Boundary a una zona de interfaz. 2. Provoca error controlado en componente hijo. 3. Define fallback y recuperación. 4. Explica qué errores no captura.
+
+**Evidencia esperada.** La frontera contiene errores de render descendientes y ofrece recuperación comprensible.
+
+**Seguridad y límites.** No asumir que Error Boundaries capturan errores de eventos, promesas o código asíncrono fuera del render.
+
+**Registro sugerido.** Conserva versión de React, componente mínimo, pruebas de render, eventos, estados límite y resultado de lint. No marques la práctica como ejecutada sin evidencia real.
 #### 12.7.01 — App Router
 
 App Router organiza rutas mediante estructura de carpetas y archivos especiales. Layouts, pages, loading, error y route handlers cumplen roles distintos; convenciones pueden variar por versión Next.js.
