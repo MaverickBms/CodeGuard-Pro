@@ -133,9 +133,9 @@ Los siete prerrequisitos se conservan según el inventario contrastado con el DO
 | Archivo | Cambio comprobable | Estado |
 |---|---|---|
 | `etapa-00/modulo-0.2-investigacion-tecnica.md` | Se añadieron siete talleres canónicos con ejemplos, tareas, evidencia, criterios, retroalimentación, evaluación analítica y referencias; se separó el material heredado como apéndice para preservar el orden oficial. | BASE DE TRABAJO ACTIVA |
-| `etapa-00/modulo-0.3-herramientas.md` | Se añadieron procedimientos y ejercicios para VS Code, terminal, Git, GitHub, DevTools, Markdown y Draw.io; se separó explícitamente 0.3.8 «Herramientas de diagramación». | BORRADOR |
-| `etapa-00/modulo-0.4-depuracion.md` | Se añadieron casos de debugging, breakpoints, stack traces, logs, hipótesis, reproducción y análisis de causas en el orden oficial; se diseñó un laboratorio con defecto de frontera, pruebas y solución razonada. | BORRADOR |
-| `etapa-00/modulo-0.1-aprender-a-aprender.md` | Se conserva el documento previo con ocho lecciones desarrolladas como base de trabajo activa; no se ha declarado superada su auditoría individual. | BORRADOR |
+| `etapa-00/modulo-0.3-herramientas.md` | Se añadieron procedimientos y ejercicios para VS Code, terminal, Git, GitHub, DevTools, Markdown y Draw.io; se separó explícitamente 0.3.8 «Herramientas de diagramación». | BASE DE TRABAJO ACTIVA |
+| `etapa-00/modulo-0.4-depuracion.md` | Se añadieron casos de debugging, breakpoints, stack traces, logs, hipótesis, reproducción y análisis de causas en el orden oficial; se diseñó un laboratorio con defecto de frontera, pruebas y solución razonada. | BASE DE TRABAJO ACTIVA |
+| `etapa-00/modulo-0.1-aprender-a-aprender.md` | Se conserva el documento previo con ocho lecciones desarrolladas como base de trabajo activa; no se ha declarado superada su auditoría individual. | BASE DE TRABAJO ACTIVA |
 
 La ampliación de los cuatro módulos no convierte automáticamente una lección en «desarrollada» ni un laboratorio en «ejecutado». Los ejemplos de código y comandos incorporados son propuestas didácticas no ejecutadas en este entorno.
 
