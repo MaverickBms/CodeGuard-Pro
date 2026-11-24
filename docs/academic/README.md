@@ -61,7 +61,11 @@ Las etapas 0–32 cuentan con documentos de desarrollo en esta rama. **Etapa 0: 
 - [Etapa 4.4 — Paradigmas](ascenso-3.1/etapa-04/modulo-4.4-paradigmas.md)
 - [Etapa 4.5 — UML](ascenso-3.1/etapa-04/modulo-4.5-uml.md)
 - [Índice Etapa 4](ascenso-3.1/etapa-04/poo-y-paradigmas.md)
-- [Etapa 5 — Git, GitHub, terminal y modularidad](ascenso-3.1/etapa-05/git-github-terminal-modularidad.md)
+- [Etapa 5.1 — Git](ascenso-3.1/etapa-05/modulo-5.1-git.md)
+- [Etapa 5.2 — GitHub](ascenso-3.1/etapa-05/modulo-5.2-github.md)
+- [Etapa 5.3 — Terminal](ascenso-3.1/etapa-05/modulo-5.3-terminal.md)
+- [Etapa 5.4 — Modularidad](ascenso-3.1/etapa-05/modulo-5.4-modularidad.md)
+- [Índice Etapa 5](ascenso-3.1/etapa-05/git-github-terminal-modularidad.md)
 - [Etapa 6 — Estructuras de datos y algoritmos](ascenso-3.1/etapa-06/estructuras-de-datos-y-algoritmos.md)
 
 ## Etapas 7–12 · Sistemas y frontend
