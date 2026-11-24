@@ -1005,51 +1005,195 @@ Una automatización fiable combina repetibilidad, idempotencia, observabilidad, 
 
 ### 7.5.1 — Arquitectura de Windows
 
-La arquitectura de Windows coordina procesos, memoria, seguridad, dispositivos, servicios y subsistemas mediante componentes del sistema. Distingue kernel, modo usuario, servicios y API Win32 a nivel conceptual. **Práctica:** consulta Información del sistema y Administrador de tareas para identificar versión, arquitectura y procesos. **Evidencia:** relaciona una aplicación con procesos observables sin inferir detalles internos no expuestos.
+Windows separa componentes en modo usuario y modo kernel. El kernel y los controladores operan con privilegios elevados; las aplicaciones ordinarias se ejecutan en modo usuario y utilizan interfaces del sistema para solicitar servicios. Servicios, procesos y sesiones tienen identidades y contextos de seguridad distintos.
+
+**Ejemplo razonado:** una aplicación visible puede iniciar varios procesos auxiliares; finalizar una ventana no implica necesariamente que todos los procesos relacionados terminen.
+
+**Práctica guiada:** consulta Configuración > Sistema > Acerca de y el Administrador de tareas. Registra edición, versión, tipo de sistema y algunos procesos; no finalices procesos del sistema.
+
+**Actividad independiente:** dibuja el recorrido conceptual de una aplicación al solicitar acceso a un archivo y señala dónde intervienen el sistema operativo y los permisos.
+
+**Criterios de aceptación:** diferencia modo usuario/kernel, proceso y servicio; no atribuye a una aplicación permisos que no has comprobado.
+
+**Errores frecuentes:** confundir arquitectura x64 con edición del sistema o suponer que cada ventana equivale a un único proceso.
+
+**Comprobación:** ¿por qué una aplicación normal no debe ejecutar directamente instrucciones privilegiadas del kernel?
 
 ### 7.5.2 — Sistema de archivos NTFS
 
-NTFS organiza archivos, directorios, metadatos, permisos y características como journaling y enlaces. Distingue permisos NTFS de permisos compartidos SMB: el acceso remoto efectivo depende de ambos conjuntos. **Práctica:** inspecciona propiedades de una carpeta de laboratorio y su pestaña Seguridad. **Evidencia:** explica una entrada de control de acceso y el efecto de herencia.
+NTFS organiza archivos, directorios y metadatos y admite listas de control de acceso, journaling, compresión, cuotas y enlaces. Los permisos NTFS son distintos de los permisos de recurso compartido SMB; en acceso remoto deben considerarse ambos y el acceso efectivo resulta de su combinación.
+
+**Ejemplo razonado:** un usuario puede tener permiso NTFS de lectura local y aun así no acceder a la carpeta por red si el permiso del recurso compartido lo restringe.
+
+**Práctica guiada:** crea una carpeta de laboratorio, abre Propiedades > Seguridad y registra las entradas ACL visibles. No cambies permisos de carpetas del sistema.
+
+**Actividad independiente:** compara un escenario de acceso local y otro por SMB; determina qué permisos se deben revisar en cada caso.
+
+**Criterios de aceptación:** distingue NTFS/SMB, propietario y ACL; explica cómo verificar el acceso efectivo sin asumirlo.
+
+**Errores frecuentes:** conceder Control total para resolver problemas de lectura o modificar ACL recursivas sin evaluar herencia.
+
+**Comprobación:** ¿por qué el permiso NTFS por sí solo no describe todo el acceso a un recurso compartido?
 
 ### 7.5.3 — Usuarios y grupos
 
-Las cuentas y grupos de Windows permiten asignar derechos y permisos a identidades locales o de dominio. Distingue cuentas estándar, administradores y cuentas de servicio. **Práctica:** consulta `whoami /all` y `Get-LocalGroup` en una VM. **Evidencia:** identifica grupos habilitados y justifica el principio de mínimo privilegio.
+Windows administra identidades locales y de dominio. Las cuentas se identifican mediante SID, no solo por el nombre visible. Los grupos permiten asignar derechos y permisos a conjuntos de identidades; las cuentas integradas y de servicio tienen propósitos específicos.
+
+**Ejemplo razonado:** renombrar una cuenta local no crea una identidad nueva si su SID permanece igual. La pertenencia a grupos privilegiados amplía el impacto de una cuenta comprometida.
+
+**Práctica guiada:** en Configuración o Administración de equipos inspecciona las cuentas y grupos locales disponibles. En PowerShell consulta `whoami /user` y `whoami /groups`.
+
+**Actividad independiente:** diseña grupos para operadores, desarrolladores y auditores con permisos mínimos y responsabilidades separadas.
+
+**Criterios de aceptación:** diferencia nombre, SID, cuenta y grupo; justifica la asignación de privilegios.
+
+**Errores frecuentes:** compartir cuentas, utilizar Administradores como grupo general o confundir cuenta local con cuenta Microsoft/de dominio.
+
+**Comprobación:** ¿qué ventaja aporta el SID frente al nombre visible de una cuenta?
 
 ### 7.5.4 — Permisos
 
-Los permisos NTFS determinan acciones permitidas sobre archivos y carpetas, incluyendo lectura, escritura, modificación y control total. Explica herencia, entradas explícitas y denegaciones; evita simplificar la evaluación efectiva a una sola casilla. **Práctica:** revisa permisos de una carpeta de laboratorio sin cambiar los del sistema. **Evidencia:** calcula qué puede hacer una cuenta según sus grupos.
+Los permisos NTFS se expresan mediante ACL discrecionales que contienen entradas para usuarios o grupos. Pueden ser explícitas o heredadas; los permisos efectivos dependen de todas las entradas aplicables, de la identidad y de la ruta de acceso. La herencia facilita administración, pero puede requerir excepciones cuidadosamente documentadas.
+
+**Ejemplo razonado:** conceder lectura a un grupo no elimina necesariamente otras entradas heredadas. Deben revisarse permisos efectivos y grupos anidados antes de concluir quién accede.
+
+**Práctica guiada:** crea una carpeta de laboratorio y examina Seguridad > Opciones avanzadas. Identifica propietario, entradas heredadas y permisos básicos. No alteres ACL del sistema.
+
+**Actividad independiente:** crea una matriz de acceso para lector, editor y administrador; traduce necesidades a permisos NTFS mínimos.
+
+**Criterios de aceptación:** identifica herencia y entradas ACL; explica por qué se debe comprobar acceso efectivo.
+
+**Errores frecuentes:** aplicar denegaciones explícitas sin comprender su interacción o deshabilitar herencia de forma indiscriminada.
+
+**Comprobación:** ¿qué diferencia hay entre una entrada ACL explícita y una heredada?
 
 ### 7.5.5 — Procesos
 
-Los procesos son instancias de programas con identificadores, memoria y recursos; el Administrador de tareas y PowerShell permiten observarlos. Distingue proceso, servicio y aplicación visible. **Práctica:** ejecuta `Get-Process` y filtra un proceso conocido. **Evidencia:** registra PID, nombre y uso de recursos y explica por qué no debes finalizar procesos desconocidos.
+Un proceso de Windows es una instancia en ejecución con espacio de direcciones, identificador PID, hilos y recursos asociados. El Administrador de tareas y herramientas como `Get-Process` permiten observar procesos; PID puede cambiar entre ejecuciones y no identifica permanentemente una aplicación.
+
+**Ejemplo razonado:** dos procesos pueden ejecutar el mismo archivo ejecutable pero tener PID, argumentos, sesiones y consumo distintos.
+
+**Práctica guiada:** ejecuta `Get-Process | Sort-Object CPU -Descending | Select-Object -First 10` en PowerShell y registra nombre, PID y CPU acumulada. No finalices procesos.
+
+**Actividad independiente:** compara una aplicación con varios procesos y explica qué información adicional necesitarías para asociar un proceso a un servicio o usuario.
+
+**Criterios de aceptación:** interpreta PID, proceso y consumo; diferencia observación de diagnóstico causal.
+
+**Errores frecuentes:** finalizar procesos por nombre sin identificar instancia o interpretar CPU acumulada como porcentaje instantáneo.
+
+**Comprobación:** ¿por qué el PID no debe guardarse como identificador permanente de una aplicación?
 
 ### 7.5.6 — Servicios
 
-Un servicio de Windows ejecuta una función en segundo plano y puede iniciar automáticamente, manualmente o bajo desencadenadores. Antes de detenerlo revisa dependencias, cuenta de servicio e impacto. **Práctica:** consulta `Get-Service` y `sc.exe qc` sobre un servicio no crítico. **Evidencia:** identifica estado, tipo de inicio y dependencias.
+Los servicios de Windows son componentes de larga duración gestionados por el Service Control Manager. Tienen nombre de servicio, nombre para mostrar, tipo de inicio, estado y cuenta de ejecución. Un servicio puede estar detenido pero configurado para inicio automático; estado e inicio son propiedades distintas.
+
+**Ejemplo razonado:** cambiar el tipo de inicio no inicia necesariamente el servicio en ese momento. Iniciarlo puede activar dependencias o afectar aplicaciones.
+
+**Práctica guiada:** consulta `Get-Service` y `Get-Service -Name Spooler` si existe. Registra Status y Name; no cambies su estado.
+
+**Actividad independiente:** redacta un plan de cambio para reiniciar un servicio de laboratorio, incluyendo autorización, impacto, dependencias, ventana y verificación.
+
+**Criterios de aceptación:** distingue servicio/proceso, estado/tipo de inicio y reconoce dependencias.
+
+**Errores frecuentes:** detener servicios desconocidos o deshabilitar servicios de seguridad para resolver problemas de rendimiento.
+
+**Comprobación:** ¿puede un servicio estar detenido y configurado para inicio automático?
 
 ### 7.5.7 — Registro de Windows
 
-El Registro de Windows almacena configuración jerárquica en claves y valores, con hives y permisos propios. Modificarlo incorrectamente puede impedir el funcionamiento del sistema o de aplicaciones. **Práctica:** consulta una clave documentada mediante `reg query` sin editarla. **Evidencia:** registra ruta, tipo y dato, y explica cómo se realizaría una copia de seguridad antes de un cambio autorizado.
+El Registro es una base de datos jerárquica de configuración organizada en claves y valores. Las ramas principales representan ámbitos como configuración de equipo y usuario. Aplicaciones, controladores y componentes del sistema pueden depender de valores concretos; editar el Registro incorrectamente puede impedir el funcionamiento del sistema.
+
+**Ejemplo razonado:** una configuración bajo HKCU afecta al contexto del usuario actual, mientras HKLM contiene configuración de ámbito de equipo. El alcance exacto depende de la clave y del componente.
+
+**Práctica guiada:** abre `regedit` solo para consultar una clave no sensible conocida o utiliza `Get-ItemProperty` sobre una ruta documentada. No edites ni elimines valores.
+
+**Actividad independiente:** documenta un procedimiento seguro de cambio: fuente oficial, respaldo/exportación de la clave, autorización, modificación mínima y plan de reversión.
+
+**Criterios de aceptación:** diferencia claves y valores, reconoce ámbitos HKCU/HKLM y describe riesgos y reversión.
+
+**Errores frecuentes:** ejecutar archivos .reg desconocidos o borrar claves por su nombre sin confirmar función y respaldo.
+
+**Comprobación:** ¿por qué una modificación del Registro requiere conocer el alcance y disponer de reversión?
 
 ### 7.5.8 — Administrador de tareas
 
-El Administrador de tareas permite observar aplicaciones, procesos, rendimiento, usuarios y elementos de inicio. Explica que la vista resumida no sustituye un análisis detallado de eventos o rendimiento. **Práctica:** compara CPU, memoria y disco en reposo y durante una tarea inocua. **Evidencia:** describe el cambio observado y evita atribuir causalidad sin más datos.
+El Administrador de tareas ofrece vistas de procesos, rendimiento, aplicaciones de inicio, usuarios y servicios. Sus métricas son observaciones con granularidad y contexto determinados; no explican por sí solas la causa de una anomalía. Algunas acciones requieren elevación y pueden interrumpir trabajo.
+
+**Ejemplo razonado:** un proceso con alto consumo de memoria puede ser legítimo, estar atendiendo carga o presentar una fuga; se necesitan tendencia, aplicación, usuario y contexto.
+
+**Práctica guiada:** inspecciona las pestañas Procesos y Rendimiento. Registra CPU, memoria, disco y red durante un intervalo breve sin terminar procesos ni deshabilitar programas.
+
+**Actividad independiente:** construye una hipótesis de diagnóstico para un equipo lento y especifica qué mediciones adicionales confirmarían o refutarían cada causa.
+
+**Criterios de aceptación:** interpreta métricas básicas y separa síntoma de causa raíz.
+
+**Errores frecuentes:** finalizar tareas del sistema por nombre desconocido o deshabilitar elementos de inicio sin identificar su función.
+
+**Comprobación:** ¿por qué una captura aislada de uso de CPU puede ser insuficiente para diagnosticar lentitud?
 
 ### 7.5.9 — Visor de eventos
 
-El Visor de eventos centraliza registros de Windows, incluidos eventos de sistema, aplicación y seguridad según permisos y auditoría configurada. Aprende a filtrar por origen, nivel, ID y periodo. **Práctica:** revisa eventos recientes del registro Sistema en una VM. **Evidencia:** resume un evento con hora, origen e ID, protegiendo información personal.
+El Visor de eventos reúne registros de Windows, aplicaciones, seguridad y servicios. Cada evento puede incluir proveedor, identificador, nivel, timestamp y detalles. La disponibilidad de registros y el acceso a ellos dependen de políticas, auditoría, retención y privilegios.
+
+**Ejemplo razonado:** un evento de error es una señal para investigar, no prueba automática de una intrusión o de una falla crítica. Debe correlacionarse con otros eventos y cambios.
+
+**Práctica guiada:** abre Event Viewer y consulta los registros System y Application. Filtra por nivel y periodo; registra proveedor, Event ID y hora, sin divulgar datos sensibles.
+
+**Actividad independiente:** crea una línea temporal con eventos sintéticos y explica qué datos adicionales requerirías para atribuir causa.
+
+**Criterios de aceptación:** identifica campos principales y distingue evento, hipótesis y conclusión.
+
+**Errores frecuentes:** interpretar todo Warning como incidente, borrar logs o asumir que la ausencia de eventos demuestra ausencia de actividad.
+
+**Comprobación:** ¿por qué el Event ID aislado no basta para determinar la causa de un problema?
 
 ### 7.5.10 — Firewall
 
-Windows Defender Firewall filtra tráfico según perfiles y reglas de entrada y salida. Explica alcance, programa, puerto, protocolo y perfil de red; desactivarlo globalmente no es una solución de diagnóstico aceptable. **Práctica:** inspecciona reglas activas con `Get-NetFirewallProfile` y `Get-NetFirewallRule`. **Evidencia:** describe una regla sin modificar la política.
+Microsoft Defender Firewall aplica reglas de entrada y salida asociadas a perfiles de red (dominio, privado y público). Las reglas pueden limitar programa, protocolo, puerto, dirección y ámbito. Una regla amplia puede exponer servicios; desactivar el firewall elimina una capa de defensa y no es una técnica de diagnóstico aceptable por defecto.
+
+**Ejemplo razonado:** permitir un puerto TCP solo desde una subred de administración reduce exposición frente a permitirlo desde cualquier origen.
+
+**Práctica guiada:** consulta el estado y perfiles con `Get-NetFirewallProfile`. Inspecciona reglas con `Get-NetFirewallRule` en modo lectura; no desactives perfiles ni crees aperturas en el equipo.
+
+**Actividad independiente:** diseña una regla conceptual para un servicio de laboratorio, indicando dirección, protocolo, puerto, perfil y origen permitido.
+
+**Criterios de aceptación:** distingue perfiles y reglas de entrada/salida; aplica mínimo privilegio y justifica el ámbito.
+
+**Errores frecuentes:** deshabilitar el firewall completo o abrir puertos globalmente para resolver conectividad.
+
+**Comprobación:** ¿por qué limitar el origen de una regla suele ser más seguro que permitir cualquier dirección?
 
 ### 7.5.11 — PowerShell
 
-PowerShell es una shell y lenguaje de automatización que trabaja con objetos .NET, no solo texto. Introduce cmdlets, tuberías de objetos, módulos y ayuda integrada. **Práctica:** ejecuta `Get-Command`, `Get-Help Get-Process` y `Get-Process`. **Evidencia:** explica cómo seleccionar propiedades con `Select-Object` y filtrar con `Where-Object`.
+PowerShell es una shell y lenguaje de automatización orientado a objetos. Los cmdlets siguen normalmente el patrón Verbo-Sustantivo y transmiten objetos por la tubería, no solo texto plano. Los parámetros, tipos y propiedades pueden inspeccionarse con ayuda integrada; la versión y los módulos disponibles varían.
+
+**Ejemplo razonado:** `Get-Process | Where-Object CPU -gt 10 | Select-Object Name,Id,CPU` filtra objetos y selecciona propiedades. El resultado conserva estructura hasta que se convierte a texto.
+
+**Práctica guiada:** ejecuta `Get-Help Get-Process -Examples` si la ayuda está instalada y explora `Get-Process | Get-Member`. Registra propiedades y tipos.
+
+**Actividad independiente:** escribe una consulta de solo lectura que liste servicios detenidos y seleccione nombre y estado. No cambies servicios.
+
+**Criterios de aceptación:** distingue objeto de texto, identifica cmdlet y parámetros y explica la tubería de objetos.
+
+**Errores frecuentes:** tratar PowerShell como CMD, usar `Format-Table` a mitad de un pipeline de datos o ejecutar scripts de origen desconocido.
+
+**Comprobación:** ¿qué ventaja ofrece transmitir objetos en lugar de cadenas de texto entre comandos?
 
 ### 7.5.12 — Administración de servicios
 
-La administración de servicios requiere revisar estado, tipo de inicio, identidad de ejecución, dependencias y eventos asociados. Distingue consulta de cambio: `Get-Service` observa, mientras `Start-Service` y `Stop-Service` alteran el estado. **Práctica:** consulta un servicio de laboratorio sin detenerlo. **Evidencia:** redacta un procedimiento seguro que incluya autorización, impacto, reversión y verificación.
+La administración de servicios implica consultar estado, configuración de inicio, dependencias, cuenta de ejecución y registros. Puede realizarse con la consola Servicios, PowerShell o herramientas de control; las operaciones de cambio requieren privilegios y evaluación del impacto.
+
+**Ejemplo razonado:** `Get-Service` consulta el estado; `Start-Service` y `Stop-Service` modifican el servicio. `Set-Service` puede cambiar propiedades de configuración y no debe utilizarse sin autorización.
+
+**Práctica guiada:** consulta servicios y dependencias de un servicio no crítico con `Get-Service` y `Get-Service -Name nombre | Format-List *`. No ejecutes órdenes de cambio.
+
+**Actividad independiente:** redacta un procedimiento de mantenimiento que incluya estado inicial, autorización, dependencias, ventana, reversión y comprobación posterior.
+
+**Criterios de aceptación:** separa comandos de consulta y modificación, identifica dependencias y propone una validación posterior.
+
+**Errores frecuentes:** detener servicios de seguridad, modificar tipo de inicio sin registrar estado previo o asumir que reiniciar no afecta usuarios.
+
+**Comprobación:** ¿qué evidencias deben recogerse antes y después de modificar un servicio?
 
 ## 7.6 — Virtualización
 
