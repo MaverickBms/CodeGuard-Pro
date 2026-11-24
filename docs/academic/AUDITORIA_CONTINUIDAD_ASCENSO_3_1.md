@@ -390,3 +390,17 @@ Se desarrollaron individualmente las 143 entradas oficiales de las etapas 26–2
 Se sustituyeron las orientaciones genéricas por explicaciones específicas y se reforzaron mínimo privilegio, protección de credenciales, telemetría, triage, validación de detecciones, privacidad, preservación de evidencia y cadena de custodia. La entrada «Herramientas» de 27.7 se explica como rótulo curricular; CSRC se identifica como repositorio NIST, no como estándar único.
 
 **Validación interna:** conteos cotejados con el JSON y ausencia de placeholders genéricos comprobada. Pendiente: validar en dominio ficticio y laboratorios SIEM/DFIR aislados, comprobar versiones de herramientas y obtener segunda revisión especializada. No se conectaron dominios empresariales ni se analizaron incidentes reales.
+
+
+## Desarrollo profundo individual — etapas 29 a 32 — 2026-11-24
+
+Se desarrollaron individualmente las 275 entradas oficiales de las etapas 29–32:
+
+- **Etapa 29 — Cloud Security, DevSecOps y Supply Chain:** 71/71 lecciones.
+- **Etapa 30 — IA, automatización y criptografía avanzada/poscuántica:** 75/75 lecciones.
+- **Etapa 31 — Bajo nivel, análisis de malware e ingeniería inversa:** 75/75 lecciones.
+- **Etapa 32 — Proyecto profesional, portafolio y preparación laboral:** 54/54 lecciones.
+
+Se sustituyeron orientaciones genéricas por explicaciones específicas. Se reforzaron IAM, responsabilidad compartida, SBOM/procedencia, seguridad de agentes y LLM, gestión de claves y transición poscuántica, seguridad de memoria, análisis aislado de malware y evidencia profesional verificable. Se añadieron fuentes NIST para ML-KEM (FIPS 203), ML-DSA (FIPS 204) y SLH-DSA (FIPS 205).
+
+**Validación interna:** conteos cotejados con el JSON y ausencia de placeholders genéricos comprobada. Pendiente: validar versiones de proveedores/herramientas, ejecutar laboratorios cloud/IA/criptografía/malware solo en entornos autorizados, completar proyectos y recibir segunda revisión técnica/editorial. No se desplegó infraestructura, no se ejecutó malware ni se declara aprobación externa.
