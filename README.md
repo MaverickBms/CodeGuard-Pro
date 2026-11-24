@@ -317,3 +317,8 @@ Se desarrollaron individualmente las 157 lecciones oficiales de Java/Spring Boot
 ### Desarrollo profundo individual — etapas 17 a 19
 
 Se desarrollaron individualmente las 228 lecciones oficiales de testing/calidad, arquitectura/diseño y DevOps/infraestructura (61, 100 y 67). Se cotejaron los encabezados con el roadmap y se eliminaron orientaciones genéricas. Pruebas, pipelines, despliegues y laboratorios siguen pendientes; revisión documental interna, no aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 20 a 22
+
+Se desarrollaron individualmente las 197 lecciones oficiales de AppSec, fundamentos de ciberseguridad/riesgos/ética y laboratorio/hardening (57, 82 y 58). Se verificó OWASP Top 10:2025 en su fuente oficial y se añadieron fuentes normativas colombianas con advertencia de vigencia. Las pruebas AppSec y laboratorios siguen pendientes; revisión documental interna, no aprobación externa.
