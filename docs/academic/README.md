@@ -201,3 +201,12 @@ Se amplió el desarrollo de las **81 lecciones** de redes: fundamentos (13), mod
 Comprobación estructural: 81/81 encabezados cotejados con el roadmap oficial. No se ejecutaron capturas, escaneos, pruebas de firewall ni cambios de red en sistemas reales. Las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. La cobertura documental no equivale a validación técnica ni aprobación.
 
 Acumulado documental ampliado: etapas 1–6, 265; etapa 7, 84; etapa 8, 81; total etapas 1–8: **430 lecciones**. Restan 1.516 lecciones nominales de las etapas 9–32 para completar esta profundidad documental. El roadmap JSON permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó ni publicó contenido.
+
+
+### Profundización documental integral — etapa 9 — 2026-11-24
+
+Se amplió el desarrollo de las **81 lecciones** de bases de datos: fundamentos (10), modelado (11), MySQL (9), SQL (19), diseño y normalización (9), bases avanzadas (15) y PostgreSQL (8). Se incorporaron laboratorios específicos, evidencias esperadas, criterios de aceptación y límites de seguridad.
+
+Comprobación estructural: 81/81 encabezados cotejados con el roadmap oficial. No se ejecutaron sentencias SQL, instalaciones, migraciones, benchmarks ni pruebas concurrentes. Las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. La cobertura documental no equivale a validación técnica ni aprobación.
+
+Acumulado documental ampliado: etapas 1–6, 265; etapa 7, 84; etapa 8, 81; etapa 9, 81; total etapas 1–9: **511 lecciones**. Restan 1.435 lecciones nominales de las etapas 10–32. El roadmap JSON permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó ni publicó contenido.
