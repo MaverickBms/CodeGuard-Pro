@@ -370,3 +370,10 @@ La cobertura es documental y estructural; no se ejecutaron motores, consultas, m
 Se desarrollaron las 38 lecciones oficiales de NoSQL y almacenamiento moderno: fundamentos NoSQL (8), MongoDB (14), Redis (11) y otras arquitecturas de almacenamiento (5). Cada lección incluye explicación específica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
 
 La cobertura es documental y estructural; no se ejecutaron instancias ni laboratorios de MongoDB, Redis u otros motores. La validación técnica independiente y la revisión bibliográfica exhaustiva siguen pendientes. La auditoría de continuidad registra el alcance y los límites. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
+
+
+### Desarrollo documental individual — etapa 11 (24-11-2026)
+
+Se desarrollaron las 60 lecciones oficiales de HTML, CSS y fundamentos frontend: HTML (21), accesibilidad (8), CSS (17), diseño de interfaces (8) y SEO (6). Cada lección incluye explicación, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
+
+La cobertura es documental y estructural; no se ejecutaron pruebas de navegador, auditorías WCAG ni validaciones SEO reales. La revisión técnica independiente y el cotejo bibliográfico exhaustivo siguen pendientes. La auditoría de continuidad registra el alcance y las limitaciones. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
