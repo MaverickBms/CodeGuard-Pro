@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 from io import StringIO
 
-from django.core.management import call_command
+from django.core.management import call_command, CommandError
 from django.test import TestCase
 
 from apps.roadmaps.models import (
@@ -96,7 +96,7 @@ class ExportarManifiestoAcademicoTests(TestCase):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "manifest.json"
             output.write_text("conservar", encoding="utf-8")
-            with self.assertRaises(Exception):
+            with self.assertRaises(CommandError):
                 call_command(
                     "exportar_manifiesto_academico",
                     nombre=self.roadmap.nombre,
