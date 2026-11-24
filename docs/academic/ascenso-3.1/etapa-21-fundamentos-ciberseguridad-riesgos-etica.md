@@ -130,3 +130,270 @@ No se incluyen videos aprobados. Se añadirán solo con audio hablado en españo
 - Colombia, MinTIC: https://www.mintic.gov.co/
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** ejercicio ficticio no auditado en organización real. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 21
+
+Este desglose conserva las entradas del roadmap maestro, incluidas las notas explicativas que aparecen dentro de algunas listas curriculares. Los apartados son guías de estudio y no acreditan pruebas, autorización de laboratorio ni ejecución de herramientas.
+
+### Módulo 21.1 — Introducción a la ciberseguridad
+
+#### 21.1.01 — Seguridad informática
+Estudiar este elemento desde su función y sus límites en introducción a la ciberseguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.1.02 — Seguridad de la información
+Estudiar este elemento desde su función y sus límites en introducción a la ciberseguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.1.03 — Ciberseguridad
+Estudiar este elemento desde su función y sus límites en introducción a la ciberseguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.1.04 — Seguridad de aplicaciones
+Estudiar este elemento desde su función y sus límites en introducción a la ciberseguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.1.05 — Seguridad de infraestructura
+Estudiar este elemento desde su función y sus límites en introducción a la ciberseguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.1.06 — Seguridad empresarial
+Estudiar este elemento desde su función y sus límites en introducción a la ciberseguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.1.07 — Red Team
+Estudiar este elemento desde su función y sus límites en introducción a la ciberseguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.1.08 — Blue Team
+Estudiar este elemento desde su función y sus límites en introducción a la ciberseguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.1.09 — Purple Team
+Estudiar este elemento desde su función y sus límites en introducción a la ciberseguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 21.2 — Principios fundamentales
+
+#### 21.2.01 — CIA Triad
+Estudiar este elemento desde su función y sus límites en principios fundamentales; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.2.02 — Confidentiality
+Estudiar este elemento desde su función y sus límites en principios fundamentales; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.2.03 — Integrity
+Estudiar este elemento desde su función y sus límites en principios fundamentales; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.2.04 — Availability
+Estudiar este elemento desde su función y sus límites en principios fundamentales; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.2.05 — Authenticity
+Estudiar este elemento desde su función y sus límites en principios fundamentales; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.2.06 — Non-repudiation
+Estudiar este elemento desde su función y sus límites en principios fundamentales; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.2.07 — Accountability
+Estudiar este elemento desde su función y sus límites en principios fundamentales; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 21.3 — Conceptos de seguridad
+
+#### 21.3.01 — Assets
+Estudiar este elemento desde su función y sus límites en conceptos de seguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.3.02 — Threats
+Estudiar este elemento desde su función y sus límites en conceptos de seguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.3.03 — Vulnerabilities
+Estudiar este elemento desde su función y sus límites en conceptos de seguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.3.04 — Exploits
+Estudiar este elemento desde su función y sus límites en conceptos de seguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.3.05 — Attack Vectors
+Estudiar este elemento desde su función y sus límites en conceptos de seguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.3.06 — Attack Surface
+Estudiar este elemento desde su función y sus límites en conceptos de seguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.3.07 — Risk
+Estudiar este elemento desde su función y sus límites en conceptos de seguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.3.08 — Impact
+Estudiar este elemento desde su función y sus límites en conceptos de seguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.3.09 — Likelihood
+Estudiar este elemento desde su función y sus límites en conceptos de seguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.3.10 — Security Controls
+Estudiar este elemento desde su función y sus límites en conceptos de seguridad; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 21.4 — Gestión de riesgos
+
+#### 21.4.01 — Identificación de activos
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.02 — Clasificación de información
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.03 — Identificación de amenazas
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.04 — Identificación de vulnerabilidades
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.05 — Análisis de probabilidad
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.06 — Análisis de impacto
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.07 — Matriz de riesgos
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.08 — Evaluación de riesgos
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.09 — Tratamiento de riesgos
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.10 — Mitigación
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.11 — Aceptación
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.12 — Transferencia
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.4.13 — Evitación
+Estudiar este elemento desde su función y sus límites en gestión de riesgos; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 21.5 — Ciberamenazas
+
+#### 21.5.01 — Malware
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.02 — Ransomware
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.03 — Spyware
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.04 — Trojan
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.05 — Worms
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.06 — Phishing
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.07 — Spear Phishing
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.08 — Credential Theft
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.09 — Social Engineering
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.10 — Insider Threats
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.11 — Supply Chain Attacks
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.12 — Denial of Service
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.5.13 — Distributed Denial of Service
+Estudiar este elemento desde su función y sus límites en ciberamenazas; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 21.6 — Marcos y estándares
+
+#### 21.6.01 — NIST Cybersecurity Framework 2.0
+Estudiar este elemento desde su función y sus límites en marcos y estándares; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.6.02 — ISO/IEC 27001:2022
+Estudiar este elemento desde su función y sus límites en marcos y estándares; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.6.03 — ISO/IEC 27002:2022
+Estudiar este elemento desde su función y sus límites en marcos y estándares; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.6.04 — ISO/IEC 27005
+Estudiar este elemento desde su función y sus límites en marcos y estándares; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.6.05 — CIS Controls
+Estudiar este elemento desde su función y sus límites en marcos y estándares; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.6.06 — MITRE ATT&CK
+Estudiar este elemento desde su función y sus límites en marcos y estándares; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.6.07 — Principios Zero Trust
+Estudiar este elemento desde su función y sus límites en marcos y estándares; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.6.08 — Information security management systems
+Estudiar este elemento desde su función y sus límites en marcos y estándares; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 21.7 — Ética y legislación
+
+#### 21.7.01 — Hacking ético
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.7.02 — Diferencia entre White Hat, Gray Hat y Black Hat
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.7.03 — Autorización
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.7.04 — Alcance
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.7.05 — Rules of Engagement
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.7.06 — Confidencialidad
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.7.07 — Divulgación responsable
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.7.08 — Protección de datos
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.7.09 — Gestión de evidencias
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.7.10 — Responsabilidad profesional
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.7.11 — Consideraciones legales colombianas
+Estudiar este elemento desde su función y sus límites en ética y legislación; relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+### Módulo 21.8 — Gestión de identidades (IAM)
+
+#### 21.8.01 — Identity and Access Management
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.8.02 — Usuarios
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.8.03 — Roles
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.8.04 — Permisos
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.8.05 — Privilegios
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.8.06 — MFA
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.8.07 — RBAC
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.8.08 — ABAC
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.8.09 — Least Privilege
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.8.10 — Identity Federation
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
+
+#### 21.8.11 — Service Accounts
+Estudiar este elemento desde su función y sus límites en gestión de identidades (iam); relacionarlo con la reducción de riesgos, la protección de activos y los controles aplicables al escenario autorizado de aprendizaje.
