@@ -161,3 +161,8 @@ Se conservaron los ejemplos y el proyecto de inventario, y se mantuvo explícito
 ### Expansión granular — etapa 4
 
 El documento de POO y paradigmas quedó alineado con sus 33 lecciones nominales: 12 de POO, 5 de relaciones, 5 de conceptos de diseño, 5 de paradigmas y 6 de UML. Se separaron clases, objetos e instancias; atributos y métodos; y los elementos de UML para clases, objetos, relaciones, herencia, interfaces y secuencia. Se conservaron el ejemplo de dominio de biblioteca, el proyecto y sus entregables.
+
+
+### Expansión granular — etapa 5
+
+El documento de Git, GitHub, terminal y modularidad quedó alineado con sus 42 lecciones nominales: 17 de Git, 9 de GitHub, 7 de terminal y 9 de modularidad. Se separaron las áreas de Git (repositorio, working directory, staging, operaciones de sincronización e historial), comandos de terminal, redirecciones/pipes y módulos/imports/exports/namespaces/paquetes. El orden de las operaciones Git se ajustó al roadmap. Se mantuvieron las advertencias para operaciones destructivas, secretos y publicación de repositorios.
