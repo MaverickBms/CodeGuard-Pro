@@ -6,10 +6,15 @@ function classifyInteractiveSignal(payload) {
   return { source, verified };
 }
 
-function shouldAcceptInteractiveSignal({ trusted, senderIsMain, alreadyInteractive, alreadyFallback }) {
+function shouldAcceptInteractiveSignal({ trusted, senderIsMain, alreadyInteractive, alreadyFallback, verified }) {
   if (!trusted) return { ok: false, reason: 'untrusted' };
   if (!senderIsMain) return { ok: false, reason: 'wrong-sender' };
-  if (alreadyInteractive || alreadyFallback) return { ok: false, reason: 'already-resolved' };
+  if (alreadyInteractive) return { ok: false, reason: 'already-resolved' };
+  // Permitir que una señal explícita verificada actualice un fallback previo.
+  if (alreadyFallback) {
+    if (verified) return { ok: true, upgrade: true };
+    return { ok: false, reason: 'already-resolved' };
+  }
   return { ok: true };
 }
 

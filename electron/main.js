@@ -832,8 +832,9 @@ function createSplashWindow() {
   splashWindow.webContents.on('did-finish-load', () => {
     if (!splashWindow || splashWindow.isDestroyed()) return;
     const currentUrl = splashWindow.webContents.getURL();
-    if (!currentUrl.includes('splash.html')) return;
-    if (!startupPerf.marks_ms.splash_document_loaded) perfMark('splash_document_loaded');
+    const isSplashContent = currentUrl.includes('splash.html') || currentUrl.startsWith('data:text/html');
+    if (!isSplashContent) return;
+    if (!startupPerf.marks_ms.splash_document_loaded) perfMark('splash_document_loaded', { splash_url: currentUrl.slice(0, 40) });
     splashReady = true;
     // Enviar estado actual al splash (buffer de eventos previos a la suscripción).
     const snapshot = startupProgress.snapshot();
@@ -873,6 +874,7 @@ function createSplashWindow() {
   });
   splashWindow.webContents.on('render-process-gone', (_event, details) => {
     console.error('[Splash] render-process-gone', details);
+    if (!mainWindow || mainWindow.isDestroyed()) { try { createMainWindow(); } catch (_e) {} }
     if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
     closeSplashWindow(true);
   });
@@ -885,21 +887,43 @@ function createSplashWindow() {
   emitStartupProgress({ phase: 'electron', status: 'active', task: 'Inicializando el entorno de escritorio…', detail: 'Cargando la pantalla de inicio.' });
 
   const splashPath = path.join(__dirname, 'splash.html');
+  const loadSplashDataUrl = () => {
+    try {
+      const html = fs.readFileSync(splashPath, 'utf8');
+      return 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
+    } catch (_e) {
+      return null;
+    }
+  };
   const attemptSplashLoad = (attempt = 1) => {
     if (!splashWindow || splashWindow.isDestroyed()) return;
-    splashWindow.loadFile(splashPath).then(() => {
-      if (!startupPerf.marks_ms.splash_loadfile_resolved) perfMark('splash_loadfile_resolved', { attempt });
+    // Preferir data URL: más fiable dentro de AppImage/asar y evita problemas de file://.
+    const dataUrl = loadSplashDataUrl();
+    const loadPromise = dataUrl
+      ? splashWindow.loadURL(dataUrl)
+      : splashWindow.loadFile(splashPath);
+    loadPromise.then(() => {
+      if (!startupPerf.marks_ms.splash_loadfile_resolved) perfMark('splash_loadfile_resolved', { attempt, via: dataUrl ? 'data-url' : 'file' });
     }).catch((err) => {
-      console.error(`[Splash] loadFile failed (attempt ${attempt}):`, err);
+      console.error(`[Splash] load failed (attempt ${attempt}):`, err);
       perfMark('splash_load_failed', { attempt, error: err && err.message ? err.message : String(err) });
       if (attempt < 2 && splashWindow && !splashWindow.isDestroyed()) {
         setTimeout(() => attemptSplashLoad(attempt + 1), 250);
         return;
       }
-      // Recuperación: no bloquear la app si el splash no puede cargarse.
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.show();
+      // Último intento con loadFile si data URL falló.
+      if (dataUrl && splashWindow && !splashWindow.isDestroyed()) {
+        splashWindow.loadFile(splashPath).then(() => {
+          if (!startupPerf.marks_ms.splash_loadfile_resolved) perfMark('splash_loadfile_resolved', { attempt: attempt + 1, via: 'file-fallback' });
+        }).catch(() => {
+          if (!mainWindow || mainWindow.isDestroyed()) { try { createMainWindow(); } catch (_e) {} }
+          if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+          closeSplashWindow(true);
+        });
+        return;
       }
+      if (!mainWindow || mainWindow.isDestroyed()) { try { createMainWindow(); } catch (_e) {} }
+      if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
       closeSplashWindow(true);
     });
   };
@@ -910,9 +934,9 @@ function createSplashWindow() {
     if (splashReady) return;
     console.error('[Splash] timeout esperando carga del splash');
     perfMark('splash_load_timeout');
-    if (mainWindow && !mainWindow.isDestroyed() && !mainWindow.isVisible()) {
-      mainWindow.show();
-    }
+    if (!mainWindow || mainWindow.isDestroyed()) { try { createMainWindow(); } catch (_e) {} }
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+    closeSplashWindow(true);
   }, 15000);
   return splashWindow;
 }
@@ -988,7 +1012,7 @@ function createMainWindow() {
         mainWindow.show();
         mainWindow.maximize();
         closeSplashWindow();
-      }, 12000);
+      }, 30000);
     }
   });
   mainWindow.webContents.on('dom-ready', () => {
@@ -1201,19 +1225,20 @@ ipcMain.handle('check-knowledge-updates', event => {
 ipcMain.on('app-interactive-signal', (event, payload = {}) => {
   const trusted = isTrustedIpcEvent(event);
   const senderIsMain = !!(mainWindow && !mainWindow.isDestroyed() && event.sender === mainWindow.webContents);
+  const { source, verified } = classifyInteractiveSignal(payload);
   const decision = shouldAcceptInteractiveSignal({
     trusted,
     senderIsMain,
     alreadyInteractive: !!startupPerf.marks_ms.app_interactive,
     alreadyFallback: !!startupPerf.marks_ms.app_interactive_fallback,
+    verified,
   });
   if (!decision.ok) {
-    perfMark('app_interactive_signal_rejected', { reason: decision.reason });
+    perfMark('app_interactive_signal_rejected', { reason: decision.reason, source, verified });
     return;
   }
 
-  const { source, verified } = classifyInteractiveSignal(payload);
-  perfMark('app_interactive_signal_received', { source, verified });
+  perfMark('app_interactive_signal_received', { source, verified, upgrade: !!decision.upgrade });
 
   if (!verified) {
     // Fallback: mostrar para no bloquear al usuario, pero sin declarar usable/100%.
@@ -1234,10 +1259,14 @@ ipcMain.on('app-interactive-signal', (event, payload = {}) => {
     return;
   }
 
-  if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint');
+  if (decision.upgrade) {
+    perfMark('app_interactive_upgraded_from_fallback', { source });
+  }
+  if (!startupPerf.marks_ms.main_renderer_frame_ready) perfMark('main_renderer_frame_ready', { source: 'interactive-signal' });
+  if (!startupPerf.marks_ms.renderer_first_paint) perfMark('renderer_first_paint', { verified: 'renderer_frame_only' });
   perfMark('app_interactive', { source });
   emitStartupProgress({ phase: 'ui', status: 'done', task: 'Aplicación lista', detail: 'CodeGuard Pro está listo para usarse.', interactive: true });
-  writeStartupPerf({ usable: true, interactive_source: source, verified: true });
+  writeStartupPerf({ usable: true, interactive_source: source, verified: true, upgraded_from_fallback: !!decision.upgrade });
   if (mainWindow && !mainWindow.isDestroyed()) {
     mainWindow.show();
     mainWindow.maximize();
@@ -1301,7 +1330,6 @@ if (!gotLock) {
     }
 
     createSplashWindow();
-    createMainWindow();
 
     const loadMainWithRetry = async (url, attempt = 1) => {
       if (!mainWindow || mainWindow.isDestroyed()) throw new Error('Ventana principal no disponible');
@@ -1325,6 +1353,7 @@ if (!gotLock) {
 
     try {
       const url = await startDjango();
+      if (!mainWindow || mainWindow.isDestroyed()) createMainWindow();
       await loadMainWithRetry(url, 1);
       console.log(`[Startup] Carga principal iniciada en ${Date.now() - startupStartedAt} ms.`);
       scheduleKnowledgeSync();

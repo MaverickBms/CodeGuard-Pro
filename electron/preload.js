@@ -53,7 +53,7 @@ window.addEventListener('load', () => {
     if (href.includes('splash.html')) return;
     setTimeout(() => {
       try { ipcRenderer.send('app-interactive-signal', { source: 'preload-fallback', ts: Date.now() }); } catch (_e) {}
-    }, 8000);
+    }, 20000);
   } catch (_e) {}
 });
 

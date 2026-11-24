@@ -295,7 +295,7 @@
       function trySignal(attempt) {
         if (window.__cgInteractiveSignaled) return;
         if (criticalReady()) { requestAnimationFrame(sendOnce); return; }
-        if (attempt < 40) setTimeout(function () { trySignal(attempt + 1); }, 250);
+        if (attempt < 120) setTimeout(function () { trySignal(attempt + 1); }, 250);
       }
       if (document.readyState === 'complete') trySignal(0);
       else window.addEventListener('load', function () { trySignal(0); }, { once: true });

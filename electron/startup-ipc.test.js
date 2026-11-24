@@ -15,10 +15,14 @@ test('classifyInteractiveSignal: fallback no es verificada', () => {
 });
 
 test('shouldAcceptInteractiveSignal: rechaza no confiable, otra ventana, duplicado', () => {
-  assert.deepEqual(shouldAcceptInteractiveSignal({ trusted: false, senderIsMain: true, alreadyInteractive: false, alreadyFallback: false }), { ok: false, reason: 'untrusted' });
-  assert.deepEqual(shouldAcceptInteractiveSignal({ trusted: true, senderIsMain: false, alreadyInteractive: false, alreadyFallback: false }), { ok: false, reason: 'wrong-sender' });
-  assert.deepEqual(shouldAcceptInteractiveSignal({ trusted: true, senderIsMain: true, alreadyInteractive: true, alreadyFallback: false }), { ok: false, reason: 'already-resolved' });
-  assert.deepEqual(shouldAcceptInteractiveSignal({ trusted: true, senderIsMain: true, alreadyInteractive: false, alreadyFallback: true }), { ok: false, reason: 'already-resolved' });
+  assert.deepEqual(shouldAcceptInteractiveSignal({ trusted: false, senderIsMain: true, alreadyInteractive: false, alreadyFallback: false, verified: true }), { ok: false, reason: 'untrusted' });
+  assert.deepEqual(shouldAcceptInteractiveSignal({ trusted: true, senderIsMain: false, alreadyInteractive: false, alreadyFallback: false, verified: true }), { ok: false, reason: 'wrong-sender' });
+  assert.deepEqual(shouldAcceptInteractiveSignal({ trusted: true, senderIsMain: true, alreadyInteractive: true, alreadyFallback: false, verified: true }), { ok: false, reason: 'already-resolved' });
+  assert.deepEqual(shouldAcceptInteractiveSignal({ trusted: true, senderIsMain: true, alreadyInteractive: false, alreadyFallback: true, verified: false }), { ok: false, reason: 'already-resolved' });
+});
+
+test('shouldAcceptInteractiveSignal: permite upgrade de fallback por señal verificada', () => {
+  assert.deepEqual(shouldAcceptInteractiveSignal({ trusted: true, senderIsMain: true, alreadyInteractive: false, alreadyFallback: true, verified: true }), { ok: true, upgrade: true });
 });
 
 test('shouldAcceptInteractiveSignal: acepta señal válida de ventana principal', () => {
