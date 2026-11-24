@@ -633,6 +633,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Qué limitación aparece cuando el sistema necesita buscar valores por atributos y no conoce la clave?
 
+**Laboratorio de profundización — Diseño de claves y ciclo de vida.**
+
+1. Define claves para sesión, preferencias y contador. 2. Diseña prefijos y namespaces. 3. Explica TTL, atomicidad de operaciones y límites de búsqueda por valor. 4. Define política de expiración.
+
+**Evidencia esperada.** Las claves son únicas, legibles y tienen ciclo de vida y propósito definidos.
+
+**Seguridad y límites.** No incluir datos personales o secretos en nombres de claves ni asumir que key-value soporta consultas arbitrarias.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.3.2 — Strings
 
 **Propósito y modelo.** Redis Strings almacena secuencias de bytes y soporta operaciones de lectura/escritura, incremento atómico y expiración. Puede guardar texto, números codificados o datos binarios; el cliente debe definir serialización y límites de tamaño. Las operaciones atómicas ayudan a evitar carreras en contadores simples.
@@ -648,6 +658,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Guardar objetos complejos sin versión de serialización o usar un contador como registro financiero durable sin respaldo.
 
 **Comprobación.** ¿Qué ventaja ofrece INCR frente a leer, incrementar en la aplicación y volver a escribir?
+
+**Laboratorio de profundización — Operaciones atómicas con valores.**
+
+1. Practica SET, GET, MGET e incremento sobre datos ficticios. 2. Compara sobrescritura y NX/XX cuando estén disponibles. 3. Define expiración. 4. Explica límites de tamaño y concurrencia.
+
+**Evidencia esperada.** Las operaciones devuelven el estado esperado y se identifica atomicidad de comandos individuales.
+
+**Seguridad y límites.** No usar Redis como contador distribuido sin considerar persistencia, expiración y semántica del comando.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.3.3 — Lists
 
@@ -665,6 +685,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Qué ocurre si un consumidor retira una tarea y se cae antes de procesarla?
 
+**Laboratorio de profundización — Colas simples con listas.**
+
+1. Inserta tareas sintéticas al inicio y final. 2. Consume elementos y observa orden FIFO/LIFO según comandos. 3. Explica bloqueo de consumidor. 4. Diseña tratamiento de tareas fallidas.
+
+**Evidencia esperada.** El estudiante predice el orden de extracción y distingue lista de cola con garantías adicionales.
+
+**Seguridad y límites.** No asumir durabilidad de cola ni confirmación de procesamiento si la arquitectura no la implementa.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.3.4 — Sets
 
 **Propósito y modelo.** Redis Sets almacena valores únicos sin orden definido y soporta operaciones de pertenencia, unión, intersección y diferencia. Es útil para etiquetas, conjuntos de permisos temporales o membresías, siempre que se consideren cardinalidad y memoria.
@@ -680,6 +710,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Depender del orden de iteración o utilizar Sets para datos que requieren valores repetidos o atributos por elemento.
 
 **Comprobación.** ¿Por qué un Set no es adecuado cuando cada elemento necesita almacenar atributos adicionales asociados?
+
+**Laboratorio de profundización — Conjuntos y deduplicación.**
+
+1. Inserta identificadores ficticios en un set. 2. Comprueba unicidad. 3. Ejecuta intersección y diferencia entre grupos. 4. Diseña un caso de membresía o deduplicación.
+
+**Evidencia esperada.** Las operaciones de conjunto producen resultados esperados y la ausencia de duplicados se demuestra.
+
+**Seguridad y límites.** No utilizar un set como registro histórico si se requiere orden o atributos por elemento.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.3.5 — Hashes
 
@@ -697,6 +737,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Por qué un Redis Hash no sustituye automáticamente a una tabla relacional?
 
+**Laboratorio de profundización — Estructuras de atributos por clave.**
+
+1. Modela perfil de sesión con campos. 2. Inserta y actualiza un campo sin reemplazar los demás. 3. Consulta campos específicos. 4. Compara hash con serialización JSON en un string.
+
+**Evidencia esperada.** Se entiende el acceso por campo y el impacto de la estructura en consultas y actualizaciones.
+
+**Seguridad y límites.** No guardar secretos de autenticación en texto claro ni permitir campos arbitrarios sin validación.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.3.6 — Sorted Sets
 
 **Propósito y modelo.** Redis Sorted Sets asocia miembros únicos con puntuaciones numéricas y mantiene orden por score. Soporta rankings, colas priorizadas y ventanas temporales. Deben definirse desempates, precisión, actualización de score y expiración; la puntuación no es una identidad.
@@ -712,6 +762,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Usar puntuaciones como identificadores o asumir que score conserva precisión decimal arbitraria.
 
 **Comprobación.** ¿Qué sucede cuando dos miembros tienen la misma puntuación en un Sorted Set?
+
+**Laboratorio de profundización — Ranking por puntuación.**
+
+1. Añade usuarios ficticios con puntuación. 2. Consulta ranking ascendente y descendente. 3. Actualiza puntuación y explica orden de empates. 4. Diseña expiración o limpieza de miembros antiguos.
+
+**Evidencia esperada.** El ranking se calcula de forma reproducible y se explica score y miembro.
+
+**Seguridad y límites.** No usar identificadores reales de usuarios ni confiar en puntuaciones recibidas sin validación.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.3.7 — TTL
 
@@ -729,6 +789,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Por qué una expiración de clave no equivale necesariamente a eliminación inmediata de todas las copias persistentes?
 
+**Laboratorio de profundización — Expiración y semántica temporal.**
+
+1. Crea una clave de laboratorio con expiración corta. 2. Consulta TTL antes y después. 3. Explica diferencia entre clave sin TTL y TTL -1/-2 según Redis. 4. Diseña política de renovación.
+
+**Evidencia esperada.** Se interpreta correctamente el tiempo restante y la ausencia o expiración de clave.
+
+**Seguridad y límites.** No depender de TTL como único mecanismo de retención legal o borrado seguro.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.3.8 — Cache
 
 **Propósito y modelo.** Una caché guarda temporalmente resultados para reducir latencia o carga sobre una fuente de verdad. Las estrategias incluyen cache-aside, write-through y write-behind. La invalidación, TTL, consistencia y protección frente a cache stampede son parte del diseño.
@@ -744,6 +814,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Tratar caché como almacenamiento definitivo o invalidar una clave antes de confirmar la escritura en la fuente de verdad sin estrategia de consistencia.
 
 **Comprobación.** ¿Qué problema puede causar un cache stampede cuando una clave muy consultada expira?
+
+**Laboratorio de profundización — Patrones de caché y coherencia.**
+
+1. Diseña cache-aside para un producto. 2. Define hit, miss, expiración e invalidación. 3. Analiza actualización concurrente de base y caché. 4. Explica cache stampede y mitigación.
+
+**Evidencia esperada.** El patrón define fuente de verdad, invalidación y comportamiento ante cache miss.
+
+**Seguridad y límites.** No guardar datos sensibles sin aislamiento ni asumir que la caché siempre contiene la versión actual.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.3.9 — Sessions
 
@@ -761,6 +841,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Qué controles impiden que conocer una clave Redis permita a un atacante suplantar directamente a un usuario?
 
+**Laboratorio de profundización — Gestión segura de sesiones.**
+
+1. Diseña almacenamiento de sesión con identificador aleatorio. 2. Define TTL, rotación y revocación. 3. Explica cookies Secure, HttpOnly y SameSite. 4. Analiza qué sucede si Redis se reinicia o pierde datos.
+
+**Evidencia esperada.** El diseño protege identificadores de sesión y define expiración y revocación.
+
+**Seguridad y límites.** No almacenar tokens o credenciales en logs ni exponer Redis a redes públicas.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.3.10 — Pub/Sub
 
 **Propósito y modelo.** Redis Pub/Sub distribuye mensajes efímeros a suscriptores de canales. Los suscriptores desconectados no reciben mensajes publicados mientras no están conectados; no es una cola durable ni garantiza entrega. Para persistencia y replay se requieren mecanismos como Streams u otro broker.
@@ -776,6 +866,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Usar Pub/Sub como registro de eventos duradero o publicar datos sensibles en canales accesibles a demasiados roles.
 
 **Comprobación.** ¿Qué limitación presenta Pub/Sub cuando un consumidor está desconectado durante la publicación?
+
+**Laboratorio de profundización — Mensajería efímera y suscriptores.**
+
+1. Dibuja publisher, canal y dos subscribers. 2. Publica un mensaje sintético. 3. Explica qué ocurre si un subscriber está desconectado. 4. Compara Pub/Sub con una cola persistente.
+
+**Evidencia esperada.** Se reconoce que Pub/Sub tradicional no garantiza replay de mensajes perdidos por suscriptores desconectados.
+
+**Seguridad y límites.** No transmitir secretos por canales sin controles ni asumir persistencia de mensajes.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.3.11 — Rate Limiting
 
@@ -795,6 +895,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 ### 10.4 — Otras arquitecturas de almacenamiento
 
+**Laboratorio de profundización — Limitación de solicitudes por ventana.**
+
+1. Diseña límite de cinco solicitudes por minuto por identidad ficticia. 2. Compara fixed window, sliding window y token bucket. 3. Define clave, TTL y respuesta al límite. 4. Explica atomicidad de actualización.
+
+**Evidencia esperada.** El diseño evita carreras mediante operación atómica o script y documenta ventana y política.
+
+**Seguridad y límites.** No utilizar IP como única identidad en todos los contextos ni permitir que clientes eludan el límite cambiando claves.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.4.1 — Document databases
 
 **Propósito y modelo.** Las bases documentales almacenan registros como documentos con campos, objetos anidados y arreglos. Favorecen agregados consultados juntos y esquemas evolutivos, pero requieren validación, control de crecimiento y decisiones de embedding/referencing. MongoDB es un ejemplo conocido; otros motores difieren en consultas, consistencia e índices.
@@ -810,6 +920,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Interpretar esquema flexible como ausencia de contrato o embeber datos ilimitados.
 
 **Comprobación.** ¿Qué criterio permite decidir si un subdocumento debe embebirse o almacenarse por separado?
+
+**Laboratorio de profundización — Evaluación de modelo documental.**
+
+1. Modela un catálogo con atributos variables. 2. Define validación, consultas y actualización de documentos. 3. Compara MongoDB con un modelo relacional para ventas. 4. Justifica cuándo documentos son adecuados.
+
+**Evidencia esperada.** La elección se sustenta en estructura y acceso y reconoce necesidad de validación e integridad.
+
+**Seguridad y límites.** No generalizar propiedades de MongoDB a todos los motores documentales.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.4.2 — Key-value databases
 
@@ -827,6 +947,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Qué patrón de acceso favorece una base clave-valor y cuál resulta menos natural?
 
+**Laboratorio de profundización — Comparación de almacenamiento por clave.**
+
+1. Identifica operaciones soportadas por un almacén key-value. 2. Diseña claves para configuración y sesión. 3. Explica limitaciones de consultas secundarias y modelado. 4. Compara Redis con un almacén persistente de clave-valor.
+
+**Evidencia esperada.** El análisis reconoce simplicidad de acceso y restricciones de consulta y consistencia.
+
+**Seguridad y límites.** No usar claves previsibles que permitan enumeración o exponer almacenamiento sin autenticación.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.4.3 — Column-family databases
 
 **Propósito y modelo.** Las bases de datos de familia de columnas o wide-column organizan datos en filas identificadas por clave y conjuntos de columnas agrupadas en familias. Están diseñadas para distribución y grandes volúmenes con patrones de consulta previstos. No equivalen a columnas de una tabla relacional ni a bases columnares analíticas.
@@ -843,6 +973,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 **Comprobación.** ¿Cómo puede una partition key mal elegida generar hotspots en un clúster distribuido?
 
+**Laboratorio de profundización — Modelo orientado a particiones.**
+
+1. Diseña una tabla de eventos particionada por tenant y fecha. 2. Identifica partition key y clustering columns. 3. Explica por qué el diseño parte de consultas. 4. Analiza hotspots y tamaño de partición.
+
+**Evidencia esperada.** La tabla responde a consultas previstas y explica distribución y orden dentro de partición.
+
+**Seguridad y límites.** No diseñar particiones sin límites ni elegir claves que concentren todas las escrituras.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
+
 #### 10.4.4 — Graph databases
 
 **Propósito y modelo.** Las bases de grafos representan entidades como nodos y relaciones como aristas, a menudo con propiedades. Son útiles cuando las consultas recorren relaciones de profundidad variable o patrones conectados. El rendimiento depende de estructura, índices, dirección y cardinalidad de relaciones.
@@ -858,6 +998,16 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 **Errores frecuentes.** Elegir grafos solo porque existen relaciones o no limitar profundidad y cardinalidad en consultas de recorrido.
 
 **Comprobación.** ¿Qué tipo de consulta puede ser más natural en un grafo que en un modelo tabular?
+
+**Laboratorio de profundización — Modelado de nodos y aristas.**
+
+1. Modela usuarios, productos y relaciones de compra. 2. Define nodos, etiquetas, propiedades y aristas. 3. Diseña una consulta de recomendaciones de dos saltos. 4. Compara con JOIN relacional.
+
+**Evidencia esperada.** El modelo representa relaciones de primer nivel y la consulta se justifica por recorrido de grafo.
+
+**Seguridad y límites.** No inferir relaciones sensibles ni almacenar datos personales sin propósito y controles.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
 
 #### 10.4.5 — Time-series databases
 
@@ -1196,3 +1346,13 @@ No se incluyen videos en esta versión. MongoDB y Redis requieren recursos separ
 **Resultado:** revisión documental interna realizada con los ajustes y hallazgos siguientes: Se revisó la cobertura de las 38 entradas oficiales, la precisión del teorema CAP, los modelos de datos, MongoDB, Redis y el diseño híbrido. Se identifica solapamiento entre el desarrollo granular y la sección de síntesis posterior; en una pasada de edición final deberá decidirse si se conserva como recapitulación explícita o se fusiona para evitar repetición. Pendiente: ejecutar operaciones CRUD, índices, agregaciones, TTL, Pub/Sub y pruebas de consistencia/recuperación en instancias aisladas.
 
 **Límite de validación:** no se ejecutaron laboratorios, scripts, servicios, bases de datos, máquinas virtuales ni capturas de red en esta revisión. No se declara aprobación académica externa. La etapa continúa en desarrollo hasta completar las pruebas reproducibles y la segunda revisión.
+
+**Laboratorio de profundización — Retención y agregación temporal.**
+
+1. Define mediciones con timestamp, métrica y etiquetas. 2. Diseña política de retención y downsampling. 3. Explica cardinalidad de etiquetas. 4. Compara consulta de rango temporal con una tabla relacional.
+
+**Evidencia esperada.** El diseño controla cardinalidad y define retención y agregación según uso.
+
+**Seguridad y límites.** No incluir identificadores personales de alta cardinalidad como etiquetas sin evaluar privacidad y costos.
+
+**Registro sugerido.** Documenta producto y versión, claves/dataset sintéticos, operaciones, resultados, tiempos y decisiones de consistencia o retención. No marques la práctica como ejecutada sin evidencia real.
