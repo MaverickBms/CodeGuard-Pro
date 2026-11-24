@@ -1241,3 +1241,10 @@ Se cotejó el archivo de Bases de datos relacionales y SQL contra el roadmap ofi
 Se revisaron además las unidades DML de UPDATE/DELETE: los ejemplos y prácticas localizados exigen condición WHERE, verificación previa mediante SELECT y/o transacción en laboratorio. No se detectó en el cotejo una sentencia de ejemplo UPDATE/DELETE sin condición que deba corregirse. Esta búsqueda documental no sustituye pruebas contra el motor.
 
 **Límites:** no se ejecutaron instalaciones MySQL/PostgreSQL, DDL, DML, transacciones, índices, triggers, EXPLAIN ni pruebas de concurrencia. Las referencias y diferencias por versión aún requieren comprobación individual. El documento se considera desarrollado documentalmente y estructuralmente alineado, no validado mediante ejecución ni aprobado externamente.
+
+
+## Addendum de auditoría documental — etapa 10 (2026-11-24)
+
+Se cotejó el documento de NoSQL y almacenamiento moderno contra el roadmap oficial. Coinciden los 4 módulos, las 38 lecciones, su orden y sus títulos. Las 38 lecciones contienen laboratorio de profundización y evidencia esperada. No se detectaron discrepancias de numeración o título en este cotejo.
+
+**Límites:** no se ejecutaron instalaciones ni consultas en MongoDB, Redis u otros motores; no se probaron índices, agregaciones, replicación, persistencia, TTL, consistencia o recuperación. La etapa está desarrollada documentalmente y alineada en estructura, pero no validada mediante ejecución ni revisión externa.
