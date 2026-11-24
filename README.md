@@ -8,7 +8,7 @@ El núcleo corre en tu propio equipo: un servidor **Django** local + una aplicac
 
 El roadmap ASCENSO 3.1 (33 etapas) ya está implementado y cargable mediante `python manage.py cargar_ascenso`. El proyecto también incorpora bases funcionales de tutoría IA local (Ollama), evaluaciones, gamificación, mundo/avatar y desafíos; consulta el plan maestro en la rama `documentation` para distinguir lo implementado de lo que sigue en progreso. El flujo editorial de conocimiento versionado (fuentes, snapshots, referencias, envío a revisión, aprobación, publicación, sustitución y retirada) está implementado mediante comandos de gestión (`crear_version_leccion`, `gestionar_version_leccion`, `registrar_fuente_conocimiento`, `revisar_licencia_fuente`). El registro local de paquetes de conocimiento y el verificador de distribución firmada (Ed25519) están implementados (`PaqueteConocimientoInstalado`, `EstadoSincronizacion`, `validate_package_archive`, `verify_signed_manifest`).
 
-La auditoría QA integral del 16-11-2026 identifica los pendientes de instalación limpia, portabilidad, pruebas E2E y recuperación de datos (ver informe QA en la rama `documentation`).
+La auditoría QA integral del 16-11-2026 mantiene pendientes la instalación limpia, la portabilidad y la aceptación E2E de escritorio (ver informe QA en la rama `documentation`). La recuperación de datos ya está implementada con creación, verificación, restauración transaccional y rollback.
 
 El cliente de sincronización pull-only por HTTPS, el comando `sincronizar_conocimiento`, el publicador local y la integración de comprobaciones periódicas con Electron están implementados. **La distribución remota de producción sigue pendiente**: no hay hosting/endpoint público, allowlist ni claves públicas de producción configuradas. Sin esa configuración, el cliente falla cerrado y no realiza conexiones. No se contempla subir progreso, intentos, código ni datos personales del estudiante.
 
@@ -43,7 +43,16 @@ datos.
 - Marcado de lecciones y de etapas completas con **recalculo automático de porcentaje**.
 - Bloqueo de etapas cuyos prerrequisitos no estén completados.
 
-### 4. Temas visuales
+### 4. Evaluaciones y evidencias
+
+- **Evaluaciones:** índice de quizzes y exámenes publicados de la ruta activa,
+  con etapa, módulo, umbral, número de preguntas y estado del último intento.
+- **Evidencias:** portafolio local de criterios de finalización registrados y
+  lista de criterios obligatorios pendientes, con enlace a la etapa.
+- Las evidencias de proyecto/manual son declaraciones del estudiante; las
+  evaluaciones automáticas se califican por separado.
+
+### 5. Temas visuales
 
 12 temas con las 12 paletas oficiales (P01–P12): claro (P01), oscuro (P02),
 alto contraste (P04), retro-pixel (P05), cyberpunk (P03), fantasía (P07),
@@ -56,7 +65,7 @@ El texto es blanco/negro según la luminancia para garantizar **WCAG AA
 botones, bordes, focus). Se respeta `prefers-reduced-motion` y no se usa
 `transition: all`.
 
-### 5. Autenticación (temporalmente desactivada)
+### 6. Autenticación (temporalmente desactivada)
 
 El flujo de autenticación original queda preservado y no se ha eliminado:
 
@@ -85,7 +94,16 @@ ni cambios de esquema.
 
 ## Estado de distribución (QA 16-11-2026)
 
-La compilación Linux x64 y la configuración de build Windows existen, pero la instalación limpia y el primer arranque todavía requieren aceptación. No distribuir como versión estable hasta corregir la inicialización de datos y completar las pruebas de escritorio/offline. Consulta el informe QA integral en la rama `documentation`.
+El AppImage Linux x64 se compiló y verificó con un E2E sobre perfil temporal:
+health check, cinco rutas HTTP 200, 12 temas, responsive, persistencia de tema
+tras reiniciar y cierre sin procesos huérfanos. El job `windows-package` de CI
+ejecutó la aceptación automatizada completa (instalación NSIS, primer arranque,
+health, persistencia de tema y progreso, cierre, desinstalación y portable) y
+publicó el artefacto `codeguard-windows-x64`. **La aceptación manual en un
+equipo Windows físico sigue pendiente**; CI no sustituye hardware real. No
+distribuir como versión estable hasta completar esa matriz. Consulta
+[docs/PROJECT_EXECUTION_STATUS.md](docs/PROJECT_EXECUTION_STATUS.md) y el
+informe QA de la rama `documentation`.
 
 ## ⚡ Instalación rápida
 
@@ -126,19 +144,36 @@ Comandos de gestión disponibles:
 | `validar_paquete_contenido` | Valida un lote JSON académico sin escribir en la base de datos |
 | `publicar_paquete_conocimiento` | Genera localmente un paquete reproducible, manifiesto y firma Ed25519 desde contenido editorial publicado |
 | `sincronizar_conocimiento` | Comprueba y descarga actualizaciones firmadas desde un endpoint HTTPS configurado |
-| `crear_backup --output RUTA.zip` | Crea una copia ZIP verificada de la base local y `media/` (herramienta interna) |
+| `crear_backup --output RUTA.zip` | Crea una copia ZIP verificada de la base local y `media/` |
 | `verificar_backup RUTA.zip` | Verifica estructura, hashes e integridad SQLite de una copia |
+| `restaurar_backup RUTA.zip --confirm` | Restaura base y `media/` con validación previa y rollback |
 
-### Copias de seguridad (herramientas internas, no función integrada de la UI)
+### Copias de seguridad y restauración
 
-Desde la raíz del proyecto, con el entorno Django configurado:
+La pantalla **Backups** permite crear una copia verificada y volver a verificar
+cualquier copia de la carpeta local. Las copias se guardan fuera del perfil de
+datos, en `CodeGuard Backups/`, junto al directorio de datos de la aplicación.
+
+La restauración está disponible con la aplicación cerrada:
+
+- **Aplicación empaquetada:** menú **CodeGuard Pro → Restaurar copia de seguridad…**.
+  La aplicación se detiene, restaura el ZIP, conserva una copia de reversión del
+  perfil anterior y se reinicia.
+- **Entorno de desarrollo:** `python manage.py restaurar_backup RUTA.zip --confirm`.
+
+Desde la raíz del proyecto también puedes crear copias por CLI:
 
 ```bash
 python manage.py crear_backup --output "$HOME/CodeGuard-backup.zip"
 python manage.py verificar_backup "$HOME/CodeGuard-backup.zip"
 ```
 
-El destino debe estar fuera de `CODEGUARD_DATA_DIR` y no existir previamente. El formato actual incluye `db.sqlite3` como snapshot consistente y `media/`; excluye `.secret_key` y logs. La restauración todavía no está implementada: no borres ni reemplaces manualmente tu perfil basándote en este ZIP. Consulta [el estado y las limitaciones](docs/BACKUPS_Y_RESTAURACION.md).
+El destino debe estar fuera de `CODEGUARD_DATA_DIR` y no existir previamente.
+El formato incluye `db.sqlite3` como snapshot consistente y `media/`; excluye
+`.secret_key` y logs. La restauración valida formato, hashes, integridad SQLite
+y compatibilidad de esquema, rechaza versiones futuras y restaura en staging
+antes de sustituir el perfil. Consulta
+[el contrato y las pruebas pendientes de plataforma](https://github.com/MaverickBms/CodeGuard-Pro/blob/documentation/docs/BACKUPS_Y_RESTAURACION.md).
 
 ---
 
@@ -184,7 +219,16 @@ python manage.py makemigrations --check --dry-run --settings=config.settings.dev
 python manage.py test apps.core apps.accounts apps.audit apps.roadmaps apps.tutoring apps.gamification apps.challenges --settings=config.settings.development
 ```
 
-Resultado reportado en el repositorio (16-11-2026): **245 pruebas OK** en `apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`, `apps.gamification` y `apps.challenges`, con `--settings=config.settings.development` (system check 0 issues y migraciones al día). El subconjunto de cuatro apps principales figura con 197 pruebas en el historial; 138 corresponde a una línea base anterior. Reproducir el comando completo en el HEAD actual antes de una release. Ver el seguimiento por fases y validaciones pendientes en la rama `documentation`.
+Resultado verificado en este repositorio (19-11-2026): **292 pruebas OK** en
+`apps.core`, `apps.accounts`, `apps.audit`, `apps.roadmaps`, `apps.tutoring`,
+`apps.gamification` y `apps.challenges`, con
+`--settings=config.settings.development` (system check 0 incidencias y
+migraciones al día). Las pruebas incluyen restauración de backups, cabeceras
+CSP, contraste WCAG de los 12 temas e índices de evaluaciones/evidencias.
+`npm run test:electron` ejecuta las 20 pruebas de IPC, restauración y
+persistencia de tema de escritorio. Las cifras históricas de 245/197/138 quedan sustituidas por esta
+línea base reproducible. El inventario académico y los hallazgos editoriales
+están en [docs/ROADMAP_ASCENSO_INVENTARIO.md](docs/ROADMAP_ASCENSO_INVENTARIO.md).
 
 ## ❓ Solución de problemas
 

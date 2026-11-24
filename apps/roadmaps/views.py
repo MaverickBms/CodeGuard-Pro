@@ -10,7 +10,7 @@ from types import SimpleNamespace
 
 from django.contrib import messages
 from django.core.exceptions import ValidationError
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -45,6 +45,104 @@ from .services import (
     roadmap_activo,
 )
 from .services_evaluacion import evaluar_quiz, registrar_cumplimiento_criterio
+
+
+@requiere_acceso
+def evaluaciones(request):
+    """Índice de evaluaciones publicadas de la ruta activa.
+
+    Muestra únicamente quizzes/exámenes publicados, su etapa/módulo y el último
+    intento del usuario. No permite enviar evaluaciones bloqueadas: el envío
+    sigue validándose en ``evaluar_quiz``.
+    """
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
+
+    usuario = get_usuario_actual(request)
+    quizzes = list(
+        Quiz.objects.filter(
+            estado=Quiz.ESTADO_PUBLICADO,
+        )
+        .filter(Q(etapa__roadmap=roadmap) | Q(modulo__etapa__roadmap=roadmap))
+        .select_related("etapa", "modulo__etapa")
+        .prefetch_related("preguntas")
+        .annotate(total_preguntas=Count("preguntas"))
+        .order_by("etapa__numero", "modulo__numero", "nombre")
+    )
+
+    ultimo_resultado = {}
+    if usuario is not None and quizzes:
+        resultados = (
+            ResultadoEvaluacion.objects.filter(usuario=usuario, quiz__in=quizzes)
+            .select_related("quiz")
+            .order_by("-creado_en")
+        )
+        for resultado in resultados:
+            ultimo_resultado.setdefault(resultado.quiz_id, resultado)
+
+    completadas = etapas_completadas(usuario, roadmap) if usuario is not None else set()
+    for quiz in quizzes:
+        quiz.etapa_real = quiz.modulo.etapa if quiz.modulo_id else quiz.etapa
+        quiz.ultimo_resultado = ultimo_resultado.get(quiz.id)
+        quiz.bloqueada = (
+            quiz.etapa_real is not None
+            and quiz.etapa_real.esta_bloqueada_para(completadas)
+        )
+
+    return render(
+        request,
+        "roadmaps/evaluaciones.html",
+        {
+            "roadmap": roadmap,
+            "quizzes": quizzes,
+            "total_publicadas": len(quizzes),
+        },
+    )
+
+
+@requiere_acceso
+def evidencias(request):
+    """Portafolio local de evidencias de criterios de finalización."""
+    roadmap = roadmap_activo()
+    if roadmap is None:
+        return render(request, "roadmaps/sin_datos.html")
+
+    usuario = get_usuario_actual(request)
+    cumplimientos = CumplimientoCriterio.objects.none()
+    pendientes = CriterioFinalizacion.objects.none()
+
+    if usuario is not None:
+        cumplimientos = (
+            CumplimientoCriterio.objects.filter(
+                usuario=usuario,
+                satisfecho=True,
+                criterio__etapa__roadmap=roadmap,
+            )
+            .select_related("criterio__etapa")
+            .order_by("-actualizado_en")
+        )
+        pendientes = (
+            CriterioFinalizacion.objects.filter(
+                etapa__roadmap=roadmap,
+                obligatorio=True,
+            )
+            .exclude(cumplimientos__usuario=usuario, cumplimientos__satisfecho=True)
+            .select_related("etapa")
+            .order_by("etapa__numero", "orden", "id")[:100]
+        )
+
+    return render(
+        request,
+        "roadmaps/evidencias.html",
+        {
+            "roadmap": roadmap,
+            "cumplimientos": cumplimientos,
+            "pendientes": pendientes,
+            "total_evidencias": cumplimientos.count(),
+            "usuario_disponible": usuario is not None,
+        },
+    )
 
 
 @requiere_acceso

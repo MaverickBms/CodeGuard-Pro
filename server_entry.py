@@ -52,6 +52,31 @@ def main() -> int:
     except Exception as exc:
         return _die(f"No se pudo configurar Django: {exc}", 3)
 
+    # Restauración solicitada desde Electron con la aplicación detenida. Este
+    # modo no inicia Waitress ni aplica migraciones: valida el ZIP, sustituye
+    # base/media con rollback y termina. Electron reinicia la aplicación y el
+    # arranque normal aplicará las migraciones pendientes.
+    if len(sys.argv) == 3 and sys.argv[1] == "--restore-backup":
+        from django.conf import settings
+
+        from apps.core.restore import restore_backup
+
+        try:
+            result = restore_backup(
+                sys.argv[2], data_dir=settings.DATA_DIR, confirm=True
+            )
+        except Exception as exc:
+            print(f"[CodeGuard Restore] {exc}", file=sys.stderr, flush=True)
+            traceback.print_exc(file=sys.stderr)
+            return 8
+        print(
+            "[CodeGuard Restore] Perfil restaurado correctamente "
+            f"({result['applied_migrations']} migraciones aplicadas, "
+            f"{result['pending_migrations']} pendientes).",
+            flush=True,
+        )
+        return 0
+
     # El sincronizador se ejecuta en un proceso separado y no toca el servidor,
     # las migraciones ni el roadmap. El servidor principal ya administra esos pasos.
     if sys.argv[1:] == ["--sync-knowledge"]:

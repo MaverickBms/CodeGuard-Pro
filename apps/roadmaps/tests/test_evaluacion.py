@@ -559,8 +559,13 @@ class ExamenEtapaHomologacionTests(TestCase):
             enunciado="Pregunta",
             datos_respuesta={"respuesta_esperada": "ok"},
         )
-        resultado = evaluar_quiz(self.usuario, examen2, {str(p2.id): "ok"})
-        self.assertTrue(resultado.aprobado)
+        with self.assertRaisesMessage(ValidationError, "prerrequisitos"):
+            evaluar_quiz(self.usuario, examen2, {str(p2.id): "ok"})
+        self.assertFalse(
+            ResultadoEvaluacion.objects.filter(
+                quiz=examen2, usuario=self.usuario
+            ).exists()
+        )
         self.assertFalse(
             Progreso.objects.filter(
                 usuario=self.usuario, etapa=etapa2, modulo__isnull=True, leccion__isnull=True, estado="completado"
@@ -729,6 +734,16 @@ class BlockedStageCriterionTests(TestCase):
             descripcion="Presentar evidencia.", tipo="proyecto",
             obligatorio=True, orden=1,
         )
+        # Etapa sin prerrequisitos para validar el resto de reglas de entrada
+        # sin que el bloqueo de prerrequisitos enmascare el error esperado.
+        self.etapa_libre = Etapa.objects.create(
+            roadmap=roadmap, numero=2, titulo="Etapa libre"
+        )
+        self.criterio_libre = CriterioFinalizacion.objects.create(
+            etapa=self.etapa_libre, titulo="Proyecto libre",
+            descripcion="Presentar evidencia.", tipo="proyecto",
+            obligatorio=True, orden=1,
+        )
 
     def test_criterio_de_etapa_bloqueada_no_acepta_evidencia(self):
         with self.assertRaisesMessage(ValidationError, "prerrequisitos"):
@@ -746,11 +761,11 @@ class BlockedStageCriterionTests(TestCase):
     def test_criterio_no_se_marca_sin_evidencia(self):
         with self.assertRaisesMessage(ValidationError, "Describe la evidencia"):
             registrar_cumplimiento_criterio(
-                self.usuario, self.criterio, evidencia="  ", origen="proyecto"
+                self.usuario, self.criterio_libre, evidencia="  ", origen="proyecto"
             )
         self.assertFalse(
             CumplimientoCriterio.objects.filter(
-                usuario=self.usuario, criterio=self.criterio
+                usuario=self.usuario, criterio=self.criterio_libre
             ).exists()
         )
 
@@ -758,23 +773,23 @@ class BlockedStageCriterionTests(TestCase):
     def test_criterio_rechaza_evidencia_mayor_a_5000_caracteres(self):
         with self.assertRaisesMessage(ValidationError, "5.000 caracteres"):
             registrar_cumplimiento_criterio(
-                self.usuario, self.criterio, evidencia="x" * 5001,
+                self.usuario, self.criterio_libre, evidencia="x" * 5001,
                 origen="proyecto",
             )
         self.assertFalse(
             CumplimientoCriterio.objects.filter(
-                usuario=self.usuario, criterio=self.criterio
+                usuario=self.usuario, criterio=self.criterio_libre
             ).exists()
         )
 
     def test_criterio_rechaza_origen_no_permitido(self):
         with self.assertRaisesMessage(ValidationError, "origen"):
             registrar_cumplimiento_criterio(
-                self.usuario, self.criterio, evidencia="Evidencia válida.",
+                self.usuario, self.criterio_libre, evidencia="Evidencia válida.",
                 origen="admin_inventado",
             )
         self.assertFalse(
             CumplimientoCriterio.objects.filter(
-                usuario=self.usuario, criterio=self.criterio
+                usuario=self.usuario, criterio=self.criterio_libre
             ).exists()
         )

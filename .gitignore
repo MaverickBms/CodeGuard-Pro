@@ -16,6 +16,8 @@ htmlcov/
 
 # Django: datos locales, bases de datos y secretos
 /data/
+# Copias creadas desde la pantalla Backups en desarrollo (fuera del perfil).
+/CodeGuard Backups/
 /.local-data/
 /.codeguard-data/
 db.sqlite3*

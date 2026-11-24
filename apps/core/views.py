@@ -148,17 +148,17 @@ def panel(request):
                 },
                 {
                     "titulo": "Evaluaciones",
-                    "descripcion": "Preguntas, rúbricas, intentos y resultados.",
-                    "url": "assessments:lista",
+                    "descripcion": "Quizzes y exámenes publicados, intentos y resultados.",
+                    "url": "roadmaps:evaluaciones",
                     "icono": "📝",
-                    "implementado": False,
+                    "implementado": True,
                 },
                 {
                     "titulo": "Evidencias",
-                    "descripcion": "Portafolio por etapa y competencia.",
-                    "url": "evidence:lista",
+                    "descripcion": "Portafolio local de criterios y proyectos por etapa.",
+                    "url": "roadmaps:evidencias",
                     "icono": "📎",
-                    "implementado": False,
+                    "implementado": True,
                 },
                 {
                     "titulo": "Laboratorios",
@@ -169,10 +169,10 @@ def panel(request):
                 },
                 {
                     "titulo": "Administración y backups",
-                    "descripcion": "Backup, restauración y auditoría.",
-                    "url": "backups:lista",
+                    "descripcion": "Creación y verificación de copias locales; restauración guiada.",
+                    "url": "core:backups",
                     "icono": "💾",
-                    "implementado": False,
+                    "implementado": True,
                 },
                 {
                     "titulo": "Vigencia y revisión",

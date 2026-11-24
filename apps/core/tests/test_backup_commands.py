@@ -23,5 +23,7 @@ class BackupCommandTests(SimpleTestCase):
         destination = Path(self.temporary.name) / "cli-backup.zip"
         with override_settings(DATA_DIR=self.root):
             call_command("crear_backup", output=str(destination))
-            call_command("verificar_backup", archive=str(destination))
+            # ``archive`` es un argumento posicional del comando; call_command
+            # exige pasarlo posicionalmente para poder asociarlo.
+            call_command("verificar_backup", str(destination))
         self.assertTrue(destination.is_file())
