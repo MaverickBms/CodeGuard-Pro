@@ -883,3 +883,40 @@ Cada lección incluye explicación conceptual específica, práctica guiada, act
 - La etapa 8 no se declara terminada: faltan 30 lecciones de routing/switching, seguridad y herramientas.
 
 La etapa 7 queda documentada con desarrollo individualizado de sus 84 lecciones. La etapa 8 presenta 51 de 81 lecciones profundizadas. El roadmap oficial y sus identidades curriculares permanecen sin modificación; no se importó ni publicó contenido.
+
+
+## Desarrollo documental individual — etapa 8 (2026-11-24)
+
+### Resultado
+
+Se desarrollaron individualmente las 81 lecciones oficiales de la etapa 8 «Redes informáticas y protocolos», respetando títulos, numeración y distribución del roadmap:
+
+| Módulo | Lecciones oficiales | Desarrolladas |
+|---|---:|---:|
+| 8.1 — Fundamentos de redes | 13 | 13 |
+| 8.2 — Modelos de comunicación | 9 | 9 |
+| 8.3 — Direccionamiento | 13 | 13 |
+| 8.4 — Protocolos | 16 | 16 |
+| 8.5 — Routing y Switching | 10 | 10 |
+| 8.6 — Seguridad de redes | 9 | 9 |
+| 8.7 — Herramientas | 11 | 11 |
+| **Total** | **81** | **81** |
+
+Cada lección incorpora desarrollo conceptual específico, ejemplo o escenario, práctica guiada, actividad independiente, criterios de aceptación, errores frecuentes y pregunta de comprobación. Se incluyeron restricciones explícitas de autorización para captura de tráfico, Nmap, inspección de servicios, configuración de firewall y otras actividades de red.
+
+### Revisión estructural
+
+- Se verificaron 81 encabezados únicos de lección.
+- Se cotejaron los siete módulos y sus conteos con `apps/roadmaps/data/ascenso_3_1.json`.
+- Se verificó en las 81 lecciones la presencia de práctica guiada, actividad independiente y criterios de aceptación.
+- Se conservaron proyecto oficial, evaluación y referencias preexistentes.
+
+### Límites de validación
+
+- Se trata de desarrollo documental y revisión estructural interna; no equivale a validación técnica independiente ni aprobación académica.
+- No se ejecutaron laboratorios de routing, switching, VLAN, VPN, firewall o direccionamiento en infraestructura real.
+- No se ejecutaron capturas ni escaneos de red; los comandos de diagnóstico se proponen para equipos propios o expresamente autorizados.
+- No se verificaron individualmente todas las referencias ni vigencia de versiones de herramientas.
+- No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para este lote.
+
+No se modificó el roadmap JSON, no se inventaron UUID y no se importó, aprobó ni publicó contenido. El objetivo de etapa 25 continúa vacío. Las etapas posteriores aún requieren desarrollo y revisión equivalentes.
