@@ -327,3 +327,8 @@ Se desarrollaron individualmente las 197 lecciones oficiales de AppSec, fundamen
 ### Desarrollo profundo individual — etapas 23 a 25
 
 Se desarrollaron individualmente las 155 lecciones oficiales de OSINT/reconocimiento, pentesting y seguridad web/APIs (58, 47 y 50). Se cotejaron conteos con el roadmap y se eliminaron textos genéricos. Las prácticas se limitan a entornos propios/autorizados; el objetivo oficial vacío de etapa 25 permanece intacto. No se ejecutaron escaneos ni se declara aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 26 a 28
+
+Se desarrollaron individualmente las 143 lecciones oficiales de Active Directory, Blue Team/SOC/SIEM y Threat Hunting/DFIR (39, 58 y 46). Se cotejaron conteos con el roadmap y se eliminaron textos genéricos. Las validaciones prácticas en dominios y laboratorios aislados siguen pendientes; revisión documental interna, no aprobación externa.
