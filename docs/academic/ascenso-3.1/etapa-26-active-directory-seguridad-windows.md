@@ -109,128 +109,135 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Las guías d
 ### Módulo 26.1 — Active Directory
 
 #### 26.1.01 — Domain
-Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Domain es una unidad lógica y administrativa de Active Directory que agrupa objetos y políticas bajo una base común de identidad. Comprende límites de autenticación, replicación y administración y documenta relaciones de confianza.
 
 #### 26.1.02 — Domain Controller
-Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Domain Controller autentica identidades y mantiene una copia de los datos del directorio para el dominio. Protege su disponibilidad, parcheado, respaldos y acceso administrativo; un controlador comprometido puede afectar gran parte del entorno.
 
 #### 26.1.03 — Forest
-Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Forest es el límite superior de seguridad y esquema en Active Directory, compuesto por uno o más dominios. Evalúa relaciones de confianza y administración forestal antes de delegar privilegios.
 
 #### 26.1.04 — Tree
-Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Tree agrupa dominios relacionados mediante un espacio de nombres DNS contiguo y relaciones de confianza. Distingue árbol y bosque y verifica estructura real antes de modificar relaciones.
 
 #### 26.1.05 — Organizational Units
-Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Organizational Units organizan objetos y permiten delegar administración y aplicar GPOs. Diseña OU según responsabilidades y políticas, no solo por organigrama; evita herencia confusa y delegaciones amplias.
 
 #### 26.1.06 — Users
-Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Users representan identidades humanas o de servicio en el directorio. Define ciclo de vida, atributos, autenticación y revisión de acceso; deshabilita cuentas obsoletas y evita cuentas compartidas.
 
 #### 26.1.07 — Groups
-Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Groups reúnen usuarios y equipos para asignar permisos y políticas. Usa grupos por función, documenta anidamiento y revisa miembros privilegiados regularmente.
 
 #### 26.1.08 — Computers
-Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Computers son objetos que representan equipos unidos al dominio y su relación de confianza. Controla cuentas de equipo, actualización, ubicación y ciclo de vida; retira objetos obsoletos.
 
 #### 26.1.09 — Group Policy Objects
-Comprender el concepto, los datos o controles involucrados y su papel dentro de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Group Policy Objects aplican configuraciones a usuarios y equipos según sitio, dominio y OU. Prueba cambios en una OU piloto, documenta precedencia y evita políticas contradictorias o que bloqueen administración.
 
 ### Módulo 26.2 — Protocolos
 
 #### 26.2.01 — LDAP
-Comprender el concepto, los datos o controles involucrados y su papel dentro de protocolos; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+LDAP es un protocolo para acceder y modificar servicios de directorio. Comprende operaciones, atributos y búsquedas; protege autenticación y transporte y evita exponer consultas o atributos sensibles.
 
 #### 26.2.02 — Kerberos
-Comprender el concepto, los datos o controles involucrados y su papel dentro de protocolos; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Kerberos autentica mediante tickets y un centro de distribución de claves, reduciendo exposición de contraseñas en cada servicio. Sincroniza tiempo, protege cuentas de servicio y monitorea anomalías de tickets.
 
 #### 26.2.03 — NTLM
-Comprender el concepto, los datos o controles involucrados y su papel dentro de protocolos; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+NTLM es un mecanismo heredado de autenticación desafío-respuesta que puede aumentar riesgos frente a protocolos modernos. Reduce su uso donde sea viable, monitorea dependencias y planifica migración sin romper servicios críticos.
 
 #### 26.2.04 — SMB
-Comprender el concepto, los datos o controles involucrados y su papel dentro de protocolos; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+SMB permite compartir archivos, impresoras y otros recursos en redes Windows. Deshabilita versiones inseguras, limita exposición, aplica firma/cifrado cuando proceda y revisa permisos de comparticiones.
 
 #### 26.2.05 — DNS
-Comprender el concepto, los datos o controles involucrados y su papel dentro de protocolos; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+DNS permite localizar servicios y controladores de dominio mediante registros y zonas. Protege actualizaciones dinámicas, delegaciones y resolución; errores DNS pueden interrumpir autenticación y facilitar suplantación.
 
 ### Módulo 26.3 — Administración
 
 #### 26.3.01 — Usuarios
-Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+La administración de usuarios controla altas, cambios, bajas, atributos y credenciales. Aplica flujos aprobados, cuentas nominales y desactivación oportuna de accesos.
 
 #### 26.3.02 — Grupos
-Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+La administración de grupos asigna membresías y permisos según funciones. Usa grupos de seguridad y convenciones de nombres, revisa anidamiento y elimina miembros innecesarios.
 
 #### 26.3.03 — Permisos
-Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Permisos controlan acceso a objetos y recursos mediante ACL y grupos. Evalúa permisos efectivos, herencia y propietarios; evita conceder control total por conveniencia.
 
 #### 26.3.04 — Políticas
-Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Políticas de dominio aplican configuraciones de seguridad y operación de forma centralizada. Mantén línea base, pruebas piloto, control de cambios y excepciones con fecha de revisión.
 
 #### 26.3.05 — Autenticación
-Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Autenticación de dominio verifica identidad y relación de confianza del usuario/equipo. Protege controladores, credenciales y sincronización de tiempo y monitorea fallos repetidos.
 
 #### 26.3.06 — Autorización
-Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Autorización determina qué recursos y acciones puede utilizar una identidad autenticada. Separa autenticación de permisos y valida acceso en el recurso, no solo en el inicio de sesión.
 
 #### 26.3.07 — Gestión de identidades
-Comprender el concepto, los datos o controles involucrados y su papel dentro de administración; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Gestión de identidades administra ciclo de vida, roles, privilegios, revisiones y trazabilidad de cuentas. Integra procesos de RR. HH. y operación y automatiza bajas con validación.
 
 ### Módulo 26.4 — Seguridad de Active Directory
 
 #### 26.4.01 — Misconfigurations
-Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Misconfigurations incluyen delegaciones excesivas, políticas débiles, servicios heredados y configuraciones por defecto. Compara el dominio con una línea base reconocida y documenta desviaciones con impacto.
 
 #### 26.4.02 — Privileged Accounts
-Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Privileged Accounts tienen capacidad elevada sobre dominios, equipos o datos. Separa cuentas administrativas, exige MFA, limita uso y revisa actividades privilegiadas.
 
 #### 26.4.03 — Excessive Permissions
-Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Excessive Permissions conceden más acceso del necesario a usuarios, grupos o servicios. Revisa ACL y membresías, elimina permisos heredados no requeridos y prueba impacto de cambios.
 
 #### 26.4.04 — Kerberos Security
-Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Kerberos Security requiere proteger tickets, claves, SPNs y cuentas de servicio. Utiliza contraseñas robustas o gMSA donde aplique, cifrados actuales y monitoreo de anomalías.
 
 #### 26.4.05 — NTLM Risks
-Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+NTLM Risks incluyen relay, exposición de hashes y dependencia de autenticación heredada según configuración. Inventaría usos, restringe exposición y migra gradualmente a mecanismos modernos.
 
 #### 26.4.06 — Lateral Movement Concepts
-Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Lateral Movement Concepts describe cómo un adversario podría desplazarse entre sistemas usando credenciales o relaciones de confianza. En defensa, segmenta administración, limita credenciales reutilizadas y correlaciona accesos anómalos.
 
 #### 26.4.07 — Privilege Escalation Paths
-Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Privilege Escalation Paths son cadenas de permisos y configuraciones que podrían permitir elevar privilegios. Analiza rutas con herramientas defensivas, valida hallazgos y prioriza romper los eslabones de mayor impacto.
 
 #### 26.4.08 — Credential Security
-Comprender el concepto, los datos o controles involucrados y su papel dentro de seguridad de active directory; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Credential Security protege contraseñas, hashes, tickets, claves y tokens del entorno. Usa MFA, cuentas administradas, protección de memoria, rotación y monitoreo; evita compartir credenciales entre servicios.
 
 ### Módulo 26.5 — Herramientas
 
 #### 26.5.01 — BloodHound
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+BloodHound modela relaciones y permisos de Active Directory para identificar rutas de exposición y privilegios. Úsalo para auditoría defensiva autorizada, protege el grafo exportado y valida cada ruta con propietarios.
 
 #### 26.5.02 — SharpHound
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+SharpHound recopila datos de directorio y relaciones para alimentar análisis de BloodHound. La recopilación puede ser sensible y detectable; limita alcance, protege archivos y no la ejecutes sin aprobación.
 
 #### 26.5.03 — PowerShell
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+PowerShell administra Windows y Active Directory mediante cmdlets y objetos. Usa módulos oficiales, sesiones auditables y scripts revisados; firma o controla procedencia y evita ejecutar código remoto no verificado.
 
 #### 26.5.04 — Windows Event Viewer
-Comprender el concepto, los datos o controles involucrados y su papel dentro de herramientas; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Windows Event Viewer permite revisar eventos de sistema, seguridad y directorio. Define filtros, retención y correlación temporal y protege exportaciones que puedan contener identidades o datos internos.
 
 ### Módulo 26.6 — Hardening
 
 #### 26.6.01 — Least Privilege
-Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Least Privilege limita cada cuenta a permisos mínimos necesarios y durante el tiempo requerido. Revisa roles y accesos periódicamente y separa administración cotidiana de tareas privilegiadas.
 
 #### 26.6.02 — Privileged Access
-Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Privileged Access aplica controles reforzados a cuentas administrativas, como MFA, estaciones dedicadas, aprobación temporal y auditoría. Define proceso de emergencia y monitorea uso excepcional.
 
 #### 26.6.03 — Credential Protection
-Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Credential Protection reduce exposición de secretos mediante protección de credenciales, rotación, MFA y controles de endpoint. Evita almacenar contraseñas en scripts y protege cuentas de servicio.
 
 #### 26.6.04 — Group Policy Security
-Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Group Policy Security establece configuraciones seguras para autenticación, auditoría, firewall, servicios y restricciones de usuario. Prueba GPOs en etapas y mide cumplimiento sin aplicar plantillas incompatibles indiscriminadamente.
 
 #### 26.6.05 — Auditing
-Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Auditing registra y revisa cambios, autenticaciones, privilegios y accesos relevantes. Define eventos, retención y alertas y verifica que la política realmente genere telemetría suficiente.
 
 #### 26.6.06 — Logging
-Comprender el concepto, los datos o controles involucrados y su papel dentro de hardening; relacionarlo con prevención, detección, respuesta o documentación, según corresponda.
+Logging centraliza eventos de dominio y endpoints para investigación y detección. Sincroniza relojes, protege integridad, limita acceso y evita que logs almacenen contraseñas o tokens.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 39 orientaciones genéricas por explicaciones específicas de Active Directory, protocolos, administración, seguridad, herramientas y hardening.
+
+**Revisión interna:** 39/39 entradas desarrolladas y cotejadas con el roadmap. Se reforzaron privilegios, cuentas de servicio, protección de credenciales, riesgos de NTLM/Kerberos, revisión de GPO y sensibilidad de datos recopilados por herramientas. Pendiente: validar configuración en un dominio ficticio aislado, revisar eventos con versiones soportadas de Windows Server y obtener segunda revisión especializada. No se conectó a un dominio empresarial ni se ejecutaron herramientas; no se declara aprobación externa.
