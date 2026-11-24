@@ -239,3 +239,18 @@ Se volvió a contrastar el JSON curricular oficial con los encabezados de los cu
 En 0.2 se normalizó la etiqueta de los siete encabezados canónicos de «Taller» a «Lección», sin cambiar su numeración ni sus títulos, para que la unidad curricular no se confunda con el formato de actividad. Las claves de práctica y los encabezados de apéndices no se cuentan como lecciones adicionales. En 0.3, los seis encabezados introductorios y los apéndices heredados tampoco se suman al conteo: la serie numerada de la profundización es la que cubre las ocho unidades del JSON.
 
 **Límite de esta comprobación:** la coincidencia 8/7/8/7 demuestra trazabilidad estructural de las unidades, no que cada lección haya superado revisión técnica, pedagógica, práctica o de fuentes. Los cuatro módulos se mantienen como BASE DE TRABAJO ACTIVA; no se declara aprobación ni publicación.
+
+### 13. Matrices de evidencia por lección — 2026-11-24
+
+Se añadieron matrices de evidencia a los cuatro módulos para que la base de trabajo indique qué producto observable permite revisar cada unidad y qué señal concreta caracteriza un desempeño suficiente.
+
+| Módulo | Filas de evidencia | Cobertura |
+|---|---:|---|
+| 0.1 — Aprender a aprender | 8 | Una fila por cada lección 0.1.1–0.1.8 |
+| 0.2 — Investigación técnica | 7 | Una fila por cada lección 0.2.1–0.2.7 |
+| 0.3 — Herramientas | 8 | Una fila por cada tema 0.3.1–0.3.8 |
+| 0.4 — Depuración | 7 | Una fila por cada tema 0.4.1–0.4.7 |
+
+La matriz de 0.1 se amplió porque la versión anterior solo incluía cinco de las ocho lecciones. Las matrices nuevas precisan evidencias para investigación documental, terminal/Git/GitHub, DevTools, diagramación, reproducción de errores, hipótesis y regresión.
+
+**Alcance:** se comprobó estáticamente la presencia de las filas y su correspondencia numérica con los encabezados. No se han recibido productos de estudiantes, no se han aplicado las rúbricas, no se han ejecutado los laboratorios y no se ha medido aprendizaje. Las matrices son criterios operativos de trabajo, no resultados de evaluación.
