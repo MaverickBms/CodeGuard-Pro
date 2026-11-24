@@ -520,3 +520,37 @@ Cada unidad fue ampliada con explicación vinculada al título oficial, una apli
 - Etapas 11–32: 1.367 lecciones conservan la primera pasada individual previa; requieren la misma profundización didáctica y revisión de evidencia aplicada a este lote.
 
 Se mantiene pendiente la validación mediante ejecución, la comprobación bibliográfica individual, la revisión técnica experta y la revisión pedagógica independiente. No se importó ni publicó contenido. El objetivo oficial de la etapa 25 permanece vacío y el archivo JSON del roadmap no se modificó.
+
+
+## Addendum de profundización didáctica — etapas 11–12 — 2026-11-24
+
+### Lote trabajado
+
+Se añadieron prácticas y evidencias de comprensión a las unidades individuales de las etapas 11 y 12, conservando el desarrollo conceptual preexistente:
+
+| Etapa | Lecciones | Ampliación |
+|---:|---:|---|
+| 11 — HTML y CSS | 60 | Prácticas específicas para estructura HTML, semántica, formularios, multimedia, accesibilidad, CSS, diseño responsivo y fundamentos de SEO. |
+| 12 — JavaScript, TypeScript, React y Next.js | 89 | Prácticas para lenguaje, DOM, asincronía, APIs del navegador, tipado, componentes, Hooks, App Router y herramientas de desarrollo. |
+| **Total** | **149** | **60 + 89** |
+
+### Comprobación documental
+
+- Se releen los dos archivos desde la rama después de la actualización.
+- Se comprueban 60 y 89 encabezados de lección, respectivamente.
+- Las 149 lecciones contienen un apartado específico de práctica y evidencia.
+- No se detectan encabezados de lección vacíos.
+- No se ejecutaron los ejemplos en navegadores, compiladores, proyectos React/Next.js ni pruebas de accesibilidad automatizadas o manuales.
+- No se verificaron referencias o versiones de cada herramienta una por una.
+- La comprobación es estructural/documental; no equivale a validación técnica de ejecución ni a revisión externa.
+
+### Estado acumulado de esta continuación
+
+- Etapas 7–10: 284 lecciones con desarrollo didáctico ampliado.
+- Etapas 11–12: 149 lecciones con prácticas y evidencias incorporadas.
+- **Etapas 7–12: 433 lecciones ampliadas.**
+- Etapas 1–6: 265 lecciones desarrolladas documentalmente por OpenCode según su informe.
+- **Etapas 1–12: 698 lecciones con desarrollo documental ampliado registrado.**
+- Etapas 13–32: 1.248 lecciones conservan la primera pasada individual previa y requieren profundización equivalente en prácticas, evidencias y validación.
+
+La redacción ampliada no constituye aprobación. Siguen pendientes ejecución reproducible, verificación bibliográfica individual, revisión técnica experta y revisión pedagógica independiente. No se importó ni publicó contenido.
