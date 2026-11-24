@@ -267,71 +267,275 @@ Un sistema operativo coordina el hardware y ofrece abstracciones y servicios a l
 
 ### 7.2.1 — Distribuciones
 
-Una distribución Linux integra el kernel con utilidades, gestor de paquetes, bibliotecas, instalador, políticas y ciclo de mantenimiento. Compara criterios de selección —soporte, estabilidad, comunidad, repositorios y uso— sin reducir las distribuciones a temas visuales. **Práctica:** compara las páginas oficiales de Ubuntu y Debian para identificar versiones y periodos de soporte publicados. **Evidencia:** recomienda una para un laboratorio y justifica la decisión.
+**Propósito y modelo.** Una distribución integra el kernel Linux con bibliotecas, utilidades, gestor de paquetes, políticas, instalador y repositorios. La selección debe considerar soporte, estabilidad, compatibilidad de aplicaciones, ciclo de mantenimiento, comunidad y requisitos del entorno. Una distribución no se define solo por su escritorio.
+
+**Ejemplo desarrollado.** Para un servidor de producción, una edición con ciclo de soporte extendido puede reducir cambios frecuentes; para aprendizaje, una distribución con documentación y comunidad amplias puede facilitar la resolución de problemas. La elección depende del uso y no existe una distribución universalmente mejor.
+
+**Práctica guiada.** Compara las páginas oficiales de Ubuntu y Debian. Registra modelo de publicación, edición estable disponible, política de soporte y gestor de paquetes. No uses artículos de terceros como única evidencia.
+
+**Actividad independiente.** Recomienda una distribución para un servidor web pequeño y otra para un laboratorio de aprendizaje. Justifica ambas decisiones con criterios explícitos.
+
+**Criterios de aceptación.** Explica qué integra una distribución y sustenta la recomendación con al menos tres criterios verificables.
+
+**Errores frecuentes.** Confundir distribución con entorno de escritorio o asumir que una versión de soporte extendido recibe indefinidamente todas las mismas actualizaciones.
+
+**Comprobación.** ¿Qué riesgos introduce elegir una distribución sin revisar su ciclo de soporte?
 
 ### 7.2.2 — Kernel Linux
 
-El kernel Linux es el núcleo del sistema y se desarrolla como proyecto de código abierto; una distribución selecciona, configura y empaqueta una versión junto con otros componentes. Distingue versión upstream, kernel empaquetado y kernel en ejecución. **Práctica:** consulta `uname -r` y `cat /proc/version`. **Evidencia:** explica por qué el número mostrado no identifica por sí solo la versión completa de la distribución.
+**Propósito y modelo.** El kernel Linux es el núcleo del sistema y se publica como proyecto abierto. Una distribución selecciona una versión, aplica parches, configura opciones y empaqueta módulos y herramientas. Debes distinguir versión upstream, paquete del proveedor y kernel actualmente arrancado; pueden no coincidir exactamente.
+
+**Ejemplo desarrollado.** Una actualización puede instalar un kernel nuevo sin cambiar el que está ejecutándose hasta el siguiente reinicio. Por eso el gestor de paquetes puede mostrar una versión instalada distinta de la informada por uname.
+
+**Práctica guiada.** Ejecuta `uname -r`, `cat /proc/version` y, en Debian/Ubuntu, consulta paquetes instalados con `dpkg -l 'linux-image*'`. Registra qué dato ofrece cada fuente.
+
+**Actividad independiente.** Explica qué pasos de verificación harías después de instalar una actualización del kernel antes de retirar una versión anterior.
+
+**Criterios de aceptación.** Diferencia versión en ejecución, paquete instalado y versión upstream; explica por qué puede requerirse reinicio.
+
+**Errores frecuentes.** Suponer que `uname -r` muestra la versión completa de la distribución o eliminar todos los kernels anteriores inmediatamente.
+
+**Comprobación.** ¿Por qué el kernel instalado más reciente no tiene que ser el kernel que está ejecutándose ahora?
 
 ### 7.2.3 — Ubuntu
 
-Ubuntu es una distribución basada en Debian que publica ediciones y ciclos de soporte definidos por Canonical. Explica diferencias generales entre LTS y versiones intermedias y la importancia de consultar el ciclo vigente antes de instalar en producción. **Práctica:** identifica versión, codename y origen de paquetes en una VM con `lsb_release -a` o `/etc/os-release`. **Evidencia:** registra la edición y su fuente oficial de soporte.
+**Propósito y modelo.** Ubuntu es una distribución basada en Debian publicada por Canonical, con ediciones y periodos de mantenimiento definidos. Las versiones LTS y las versiones intermedias responden a ciclos distintos; la cobertura de actualizaciones puede variar por edición, paquete y modalidad de soporte. Verifica siempre la política vigente en documentación oficial.
+
+**Ejemplo desarrollado.** Un servidor puede permanecer en una LTS por estabilidad operativa, mientras un laboratorio puede probar una versión más reciente. La decisión debe contemplar compatibilidad, soporte de hardware, ventana de mantenimiento y aplicaciones requeridas.
+
+**Práctica guiada.** En una VM ejecuta `cat /etc/os-release` y, si está disponible, `lsb_release -a`. Identifica ID, versión y codename. Consulta la página oficial de ciclo de vida para esa versión.
+
+**Actividad independiente.** Elabora una ficha de instalación para un servidor Ubuntu que incluya edición, origen de la ISO, verificación de integridad y plan de actualización.
+
+**Criterios de aceptación.** Identifica la versión real, distingue LTS de no-LTS y aporta la referencia oficial del ciclo aplicable.
+
+**Errores frecuentes.** Elegir una versión solo por ser la más nueva o confundir fecha de publicación con fin de soporte.
+
+**Comprobación.** ¿Qué información debe verificarse antes de desplegar una versión de Ubuntu en un servidor que debe mantenerse varios años?
 
 ### 7.2.4 — Debian
 
-Debian es una distribución comunitaria con ramas y políticas de publicación propias, conocida por priorizar estabilidad y criterios de software libre. Distingue stable, testing y unstable como ramas de desarrollo, no como niveles de seguridad garantizados. **Práctica:** inspecciona `/etc/os-release` y la configuración de repositorios de una VM Debian sin cambiarla. **Evidencia:** explica qué rama está configurada y por qué no se deben mezclar repositorios indiscriminadamente.
+**Propósito y modelo.** Debian es una distribución comunitaria con políticas de publicación y ramas propias. Stable prioriza estabilidad; Testing participa en la preparación de la siguiente versión estable y Unstable es una rama de desarrollo continuo. Estas denominaciones no equivalen por sí solas a niveles de seguridad o a una recomendación para todo uso.
+
+**Ejemplo desarrollado.** Un servidor que prioriza previsibilidad puede utilizar Stable y recibir actualizaciones de seguridad según la política del proyecto. Mezclar repositorios de distintas ramas puede introducir dependencias incompatibles y actualizaciones inesperadas.
+
+**Práctica guiada.** En una VM consulta `cat /etc/os-release` y revisa en modo lectura los archivos de configuración de APT bajo `/etc/apt/`. No cambies ni mezcles repositorios.
+
+**Actividad independiente.** Compara el ciclo de Debian Stable con el de una distribución de publicación continua y describe qué tipo de operación podría beneficiarse de cada modelo.
+
+**Criterios de aceptación.** Explica las diferencias generales entre ramas, identifica la configuración presente y justifica por qué no deben mezclarse repositorios sin planificación.
+
+**Errores frecuentes.** Interpretar Unstable como sinónimo de inseguro o considerar Testing como una versión estable lista para cualquier servidor.
+
+**Comprobación.** ¿Por qué una política de repositorios coherente es importante para la reproducibilidad y estabilidad del sistema?
 
 ### 7.2.5 — Estructura del sistema de archivos
 
-La jerarquía del sistema de archivos Linux presenta una vista unificada de recursos y volúmenes bajo una raíz `/`; no equivale a las letras de unidad de Windows. Explica rutas absolutas y relativas, directorios montados y convenciones del Filesystem Hierarchy Standard. **Práctica:** recorre `/`, `/home`, `/etc` y `/var` en modo lectura. **Evidencia:** clasifica qué tipo de información suele residir en cada ubicación.
+**Propósito y modelo.** Linux presenta una jerarquía unificada bajo la raíz `/`. Los volúmenes y dispositivos se integran en puntos de montaje; no se navega mediante letras de unidad como en Windows. Las rutas pueden ser absolutas o relativas y los permisos se evalúan en cada componente del camino.
 
-### 7.2.6 — Directorios del sistema de archivos
+**Ejemplo desarrollado.** La ruta `/var/log/app.log` parte de la raíz y atraviesa directorios. Aunque el archivo tenga permiso de lectura, la cuenta también necesita permiso de búsqueda (x) en los directorios para llegar a él.
 
-Los directorios `/etc`, `/var`, `/home`, `/usr`, `/tmp` y `/opt` tienen propósitos distintos: configuración del sistema, datos variables, perfiles, software y recursos compartidos, temporales y aplicaciones adicionales. Advierte que los detalles pueden variar por distribución y paquete. **Práctica:** localiza un archivo de configuración y un log sin modificarlos. **Evidencia:** justifica por qué cada ruta es apropiada y evita almacenar secretos en ubicaciones públicas.
+**Práctica guiada.** Recorre `/`, `/home`, `/etc` y `/var` con `ls -ld` y consulta montajes con `findmnt`. No modifiques archivos del sistema.
+
+**Actividad independiente.** Dibuja una jerarquía que incluya raíz, directorio personal y un volumen montado bajo `/mnt/datos`. Explica cómo cambia la ruta visible sin cambiar el contenido del volumen.
+
+**Criterios de aceptación.** Distingue ruta absoluta/relativa, raíz y punto de montaje; identifica permisos de recorrido.
+
+**Errores frecuentes.** Suponer que `/mnt` es necesariamente un disco o que cada directorio representa una partición independiente.
+
+**Comprobación.** ¿Qué diferencia existe entre un directorio y un punto de montaje?
+
+### 7.2.6 — Directorios /etc, /var, /home, /usr, /tmp, /opt
+
+**Propósito y modelo.** La jerarquía FHS asigna convenciones a directorios habituales: `/etc` para configuración del host; `/var` para datos variables como logs y colas; `/home` para directorios personales; `/usr` para programas y datos compartidos; `/tmp` para temporales; y `/opt` para software adicional. La distribución y los paquetes pueden introducir variaciones.
+
+**Ejemplo desarrollado.** Un archivo de configuración de un servicio suele residir bajo `/etc`, mientras sus registros pueden encontrarse bajo `/var/log`. No deben confundirse configuración, datos de aplicación y temporales.
+
+**Práctica guiada.** Localiza las seis rutas con `ls -ld`. Escoge un archivo de configuración y un registro de ejemplo y explica por qué se ubican allí. No leas ni publiques secretos.
+
+**Actividad independiente.** Decide dónde ubicarías configuración, datos persistentes, caché y temporales de una aplicación propia; justifica la decisión y permisos requeridos.
+
+**Criterios de aceptación.** Clasifica correctamente los seis directorios y distingue datos persistentes de temporales.
+
+**Errores frecuentes.** Guardar datos importantes en `/tmp` o tratar `/usr` como directorio personal.
+
+**Comprobación.** ¿Qué problema operativo surgiría si una aplicación guardara su única copia de datos en un directorio temporal?
 
 ### 7.2.7 — Usuarios
 
-Las cuentas de usuario representan identidades locales con UID, grupo principal, directorio personal y shell, entre otros atributos. Distingue nombre visible de UID y explica cuentas de servicio frente a cuentas interactivas. **Práctica:** consulta `id`, `getent passwd` y `whoami` en una VM. **Evidencia:** interpreta UID, GID y grupos suplementarios sin revelar datos sensibles del host.
+**Propósito y modelo.** Las cuentas locales representan identidades del sistema mediante UID, grupo principal, directorio personal, shell y otros atributos. El nombre es una etiqueta; el UID es el identificador numérico utilizado por el sistema. Las cuentas de servicio suelen limitarse a ejecutar procesos y no deberían usarse como cuentas interactivas generales.
+
+**Ejemplo desarrollado.** Dos procesos iniciados por una misma cuenta comparten la identidad efectiva salvo que intervenga un mecanismo de cambio de credenciales. Los permisos de archivos se evalúan utilizando UID y grupos, no solo el nombre que aparece en una terminal.
+
+**Práctica guiada.** Ejecuta `whoami`, `id` y `getent passwd "$(whoami)"`. Identifica UID, GID, grupos y shell sin divulgar datos de otras cuentas.
+
+**Actividad independiente.** Diseña tres identidades para un servidor: administrador, operador de despliegue y servicio web. Define qué tareas necesita cada una y cuáles no debe poder realizar.
+
+**Criterios de aceptación.** Interpreta UID/GID, distingue cuenta humana y de servicio y aplica mínimo privilegio.
+
+**Errores frecuentes.** Compartir cuentas administrativas entre personas o ejecutar servicios como root sin necesidad.
+
+**Comprobación.** ¿Por qué los permisos siguen funcionando aunque se cambie el nombre visible de una cuenta pero se conserve su UID?
 
 ### 7.2.8 — Grupos
 
-Los grupos reúnen identidades para asignar permisos de forma administrable; una cuenta puede pertenecer a un grupo principal y a varios suplementarios. Explica el uso de grupos para compartir recursos sin conceder privilegios globales. **Práctica:** inspecciona `getent group` y `id` con una cuenta de laboratorio. **Evidencia:** diseña un grupo para un directorio compartido y describe qué acceso habilitaría.
+**Propósito y modelo.** Los grupos permiten asignar permisos a conjuntos de cuentas. Cada usuario tiene un grupo principal y puede pertenecer a grupos suplementarios. La pertenencia a un grupo puede afectar el acceso a archivos, dispositivos y servicios, por lo que debe concederse según responsabilidades reales.
+
+**Ejemplo desarrollado.** Un directorio de proyecto puede pertenecer al grupo `desarrollo` y permitir escritura al grupo, evitando que cada integrante necesite privilegios administrativos. El bit setgid en un directorio puede hacer que los archivos nuevos hereden el grupo del directorio, según el sistema de archivos y la configuración.
+
+**Práctica guiada.** Consulta `id` y `getent group`. En un laboratorio propio, crea un directorio temporal y analiza cómo se representan propietario y grupo con `ls -ld`. No alteres grupos del sistema anfitrión.
+
+**Actividad independiente.** Propón una matriz de acceso para un equipo de desarrollo con lectores, editores y administradores; asigna grupos y justifica cada permiso.
+
+**Criterios de aceptación.** Diferencia grupo principal y suplementario y explica cómo se evalúan los permisos de grupo.
+
+**Errores frecuentes.** Añadir usuarios a grupos privilegiados para resolver problemas puntuales o asumir que un cambio de grupo se aplica siempre a sesiones ya abiertas.
+
+**Comprobación.** ¿Por qué los grupos simplifican la administración frente a asignar permisos individualmente a cada usuario?
 
 ### 7.2.9 — Permisos
 
-Los permisos tradicionales de Unix representan lectura, escritura y ejecución para propietario, grupo y otros; también existen ACL y bits especiales. Explica que el significado de ejecución cambia entre archivos y directorios. **Práctica:** crea un archivo de prueba y compara `chmod 640` con `chmod 750` usando `ls -l`. **Evidencia:** traduce ambos modos a permisos efectivos y selecciona el mínimo necesario.
+**Propósito y modelo.** Los permisos Unix tradicionales definen lectura (r), escritura (w) y ejecución (x) para propietario, grupo y otros. En archivos, x permite ejecutar; en directorios, x permite atravesar/buscar entradas. ACL y bits especiales amplían el modelo. La máscara umask influye en los permisos iniciales de nuevos objetos.
+
+**Ejemplo desarrollado.** El modo 640 significa propietario rw-, grupo r-- y otros ---; 750 significa propietario rwx, grupo r-x y otros ---. En un directorio, el permiso x es necesario para acceder a entradas aunque se conozca su nombre.
+
+**Práctica guiada.** Crea un archivo temporal, aplica `chmod 640 archivo` y consulta `stat` y `ls -l`. Luego prueba 750 sobre un directorio de laboratorio y compara el efecto de r y x.
+
+**Actividad independiente.** Define permisos mínimos para un archivo de configuración que solo el propietario debe editar y para un directorio compartido donde un grupo pueda listar y crear archivos.
+
+**Criterios de aceptación.** Traduce modos octales a simbólicos, distingue permisos de archivo/directorio y justifica mínimo privilegio.
+
+**Errores frecuentes.** Aplicar 777 como solución general o creer que r en un directorio permite siempre abrir archivos sin x.
+
+**Comprobación.** ¿Por qué un usuario puede conocer el nombre de un archivo y aun así no poder acceder a él?
 
 ### 7.2.10 — Propietarios
 
-La propiedad de archivos y directorios identifica un usuario y un grupo asociados al objeto. Distingue propietario de quien creó el archivo originalmente y explica cómo la propiedad influye en la evaluación de permisos. **Práctica:** consulta `stat` y `ls -ln` sobre archivos de laboratorio. **Evidencia:** identifica UID/GID propietarios y explica qué cambiaría al reasignar el grupo.
+**Propósito y modelo.** Cada objeto del sistema de archivos mantiene propietario de usuario y grupo. La propiedad determina qué clase de permisos se evalúa y puede influir en cuotas, auditoría y operaciones administrativas. El propietario actual no tiene que ser la persona que creó originalmente el archivo; una transferencia puede cambiarlo.
+
+**Ejemplo desarrollado.** Un archivo creado por root dentro de un directorio de aplicación puede quedar inaccesible para el servicio si la propiedad y permisos no se ajustan a la cuenta de ejecución. Cambiar propietario indiscriminadamente puede abrir acceso o romper servicios.
+
+**Práctica guiada.** Ejecuta `stat archivo` y `ls -ln archivo` en un objeto de laboratorio. Compara nombres resueltos con UID/GID numéricos.
+
+**Actividad independiente.** Diseña la propiedad de un directorio de despliegue con una cuenta administradora, un grupo operativo y una cuenta de servicio de solo lectura.
+
+**Criterios de aceptación.** Identifica propietario y grupo, explica su relación con permisos y justifica una asignación segura.
+
+**Errores frecuentes.** Ejecutar `chown -R` sobre rutas amplias sin revisar alcance o confundir el propietario con el proceso que tiene abierto el archivo.
+
+**Comprobación.** ¿Qué puede salir mal si se cambia recursivamente el propietario de todo un directorio de sistema?
 
 ### 7.2.11 — Root
 
-Root es la cuenta de UID 0 con privilegios administrativos amplios; no es simplemente un usuario normal con una contraseña más fuerte. Explica el riesgo de operar como root de forma continua y el principio de mínimo privilegio. **Práctica:** verifica `id` y `whoami` en una cuenta ordinaria; no habilites acceso root remoto. **Evidencia:** describe dos tareas que requieren elevación y dos que no.
+**Propósito y modelo.** Root es la cuenta cuyo UID es 0 y posee privilegios administrativos amplios. No es simplemente un usuario normal con una contraseña fuerte. Los procesos con identidad efectiva root pueden modificar componentes críticos, por lo que el uso cotidiano debe limitarse y las tareas administrativas deben ser deliberadas y auditables.
+
+**Ejemplo desarrollado.** Leer información pública o editar un archivo propio normalmente no requiere root; instalar paquetes, modificar configuración global o administrar servicios puede requerir elevación. El requisito depende de permisos y políticas concretas.
+
+**Práctica guiada.** Ejecuta `id` y `whoami` en una cuenta ordinaria. Identifica qué operaciones del laboratorio funcionan sin elevación y no habilites acceso root remoto.
+
+**Actividad independiente.** Clasifica diez tareas administrativas en: usuario normal, elevación puntual o privilegio administrativo continuo; justifica las excepciones.
+
+**Criterios de aceptación.** Explica UID 0, mínimo privilegio y dos riesgos del uso permanente de root.
+
+**Errores frecuentes.** Usar root para ejecutar cualquier aplicación o asumir que ocultar la cuenta root sustituye controles de acceso.
+
+**Comprobación.** ¿Cómo reduce el principio de mínimo privilegio el impacto de un error o compromiso?
 
 ### 7.2.12 — Sudo
 
-`sudo` permite ejecutar comandos con privilegios delegados conforme a una política, normalmente registrada en `/etc/sudoers` y archivos asociados. Explica autenticación, alcance, auditoría y el riesgo de conceder permisos demasiado amplios. **Práctica:** en una VM desechable, ejecuta `sudo -l` para inspeccionar permisos; no edites sudoers con un editor ordinario. **Evidencia:** diferencia autorización para un comando concreto de acceso administrativo irrestricto.
+**Propósito y modelo.** sudo permite ejecutar órdenes con otra identidad, normalmente root, conforme a reglas de autorización. La política puede restringir usuarios, comandos, argumentos y contexto; las decisiones deben ser específicas y auditables. Una regla demasiado amplia puede equivaler a conceder administración completa.
+
+**Ejemplo desarrollado.** Una persona autorizada puede ejecutar una operación administrativa puntual sin mantener una sesión root abierta. La autorización no debe inferirse por pertenecer a cualquier grupo: depende de la política sudoers efectiva.
+
+**Práctica guiada.** Ejecuta `sudo -l` para inspeccionar los permisos de tu cuenta. En un entorno de laboratorio, consulta `man sudoers` y estudia el uso de `visudo`; no edites la política del host compartido.
+
+**Actividad independiente.** Diseña una regla conceptual que permita reiniciar un servicio específico sin conceder shell root ni comandos arbitrarios. Identifica riesgos de rutas y argumentos.
+
+**Criterios de aceptación.** Diferencia autenticación y autorización, interpreta una lista de permisos y explica por qué se utiliza visudo.
+
+**Errores frecuentes.** Conceder `NOPASSWD: ALL` como solución rápida o editar sudoers directamente sin validación sintáctica.
+
+**Comprobación.** ¿Por qué permitir ejecutar un editor como root puede equivaler a conceder privilegios mucho mayores que editar un archivo concreto?
 
 ### 7.2.13 — Procesos
 
-La administración de procesos en Linux utiliza PID, señales, prioridades y herramientas de observación. Distingue procesos en ejecución, durmientes, detenidos y zombis, y evita terminar procesos desconocidos del sistema. **Práctica:** lanza `sleep 120` en una terminal, localízalo con `pgrep -a sleep` y finaliza solo el PID creado. **Evidencia:** registra comando, PID y resultado.
+**Propósito y modelo.** En Linux, la administración de procesos utiliza PID, señales, prioridades y herramientas de observación. Los estados incluyen ejecución, espera, detención y zombi. Una señal solicita una acción al proceso; no todas las señales pueden capturarse o ignorarse. Debes identificar el proceso y su propietario antes de actuar.
+
+**Ejemplo desarrollado.** `pgrep -a sleep` localiza procesos por nombre, pero puede devolver procesos ajenos a la práctica. Por eso la actividad debe crear un proceso propio y guardar su PID para actuar únicamente sobre él.
+
+**Práctica guiada.** En una shell Bash ejecuta `sleep 90 & pid=$!`, inspecciona `ps -p "$pid" -o pid,stat,cmd` y envía `kill -TERM "$pid"`. Comprueba el resultado con `kill -0 "$pid"` y consulta el código de salida.
+
+**Actividad independiente.** Explica cuándo utilizarías SIGTERM y por qué SIGKILL debe reservarse para casos en que el proceso no responde.
+
+**Criterios de aceptación.** Identifica el PID propio, interpreta estado y explica diferencia entre solicitud de terminación y terminación forzada.
+
+**Errores frecuentes.** Matar por nombre sin verificar, usar PID obsoleto o terminar procesos de sistema para liberar recursos.
+
+**Comprobación.** ¿Qué oportunidad ofrece SIGTERM que SIGKILL no ofrece?
 
 ### 7.2.14 — Servicios
 
-Un servicio es una función persistente o de larga duración administrada por el sistema; en muchas distribuciones modernas systemd gestiona unidades y dependencias. Distingue servicio, proceso y unidad. **Práctica:** consulta `systemctl status` de un servicio existente sin cambiar su estado. **Evidencia:** interpreta activo/inactivo, habilitado/deshabilitado y el proceso asociado.
+**Propósito y modelo.** Un servicio es una función persistente o de larga duración administrada por el sistema. En muchas distribuciones actuales, systemd gestiona unidades, dependencias, activación y estados. Servicio, proceso y unidad no son sinónimos: una unidad puede representar servicios, sockets, timers y otros recursos.
+
+**Ejemplo desarrollado.** Una unidad de servicio puede estar activa ahora pero no habilitada para iniciar automáticamente en el siguiente arranque. El estado activo describe ejecución; habilitado describe relación con el arranque o activación configurada.
+
+**Práctica guiada.** Ejecuta `systemctl status` sobre un servicio no crítico y consulta `systemctl is-active nombre` y `systemctl is-enabled nombre`. No inicies, detengas ni habilites servicios del host.
+
+**Actividad independiente.** Redacta un procedimiento de cambio para reiniciar un servicio de laboratorio: autorización, impacto, dependencias, ventana, reversión y verificación.
+
+**Criterios de aceptación.** Diferencia servicio/proceso/unidad y activo/habilitado; interpreta estado y dependencias.
+
+**Errores frecuentes.** Reiniciar servicios desconocidos o asumir que habilitar un servicio significa que está ejecutándose ahora.
+
+**Comprobación.** ¿Puede un servicio estar activo pero deshabilitado para el siguiente arranque? Explica.
 
 ### 7.2.15 — Paquetes
 
-El gestor de paquetes resuelve dependencias, verifica metadatos y registra la instalación de software desde repositorios configurados. Compara el rol de APT en Debian/Ubuntu con el de otros gestores sin mezclar comandos entre distribuciones. **Práctica:** consulta `apt-cache policy` o `apt show` para un paquete conocido, sin instalarlo. **Evidencia:** identifica versión candidata, repositorio y dependencias declaradas.
+**Propósito y modelo.** Un gestor de paquetes instala, actualiza y elimina software a partir de metadatos y repositorios, resolviendo dependencias y registrando archivos. APT se utiliza en Debian/Ubuntu; otros sistemas utilizan gestores diferentes. La confianza depende de repositorios, firmas, claves y configuración de origen.
+
+**Ejemplo desarrollado.** `apt show paquete` presenta metadatos del paquete disponible; `apt-cache policy paquete` ayuda a identificar versiones candidatas y orígenes. Ninguno exige instalar el paquete.
+
+**Práctica guiada.** Consulta información de un paquete conocido con `apt show` y `apt-cache policy`. Registra versión instalada, candidata y repositorio. No ejecutes actualizaciones globales en el host.
+
+**Actividad independiente.** Describe un procedimiento seguro para evaluar e instalar una actualización en un servidor: respaldo, origen, changelog, dependencias, ventana, verificación y reversión.
+
+**Criterios de aceptación.** Explica repositorio, paquete, dependencia y firma; interpreta la versión candidata y su origen.
+
+**Errores frecuentes.** Instalar paquetes desde scripts o repositorios desconocidos, mezclar ramas o usar `apt upgrade -y` sin revisar impacto.
+
+**Comprobación.** ¿Qué garantiza la firma de un repositorio y qué aspectos de seguridad no garantiza por sí sola?
 
 ### 7.2.16 — Logs
 
-Los logs registran eventos del sistema y aplicaciones; su formato, ubicación y retención dependen del servicio y la distribución. Explica niveles de severidad, marcas temporales, correlación y protección de datos sensibles. **Práctica:** consulta `journalctl -b -p warning` y limita la salida a un servicio de laboratorio. **Evidencia:** resume un evento sin copiar credenciales ni datos personales.
+**Propósito y modelo.** Los logs registran eventos del sistema y aplicaciones. Pueden almacenarse en archivos, journal u otros sistemas centralizados. Su utilidad depende de marcas temporales, zona horaria, severidad, origen, retención y correlación. Los registros pueden contener datos personales o secretos y deben tratarse como información sensible.
+
+**Ejemplo desarrollado.** Un evento de autenticación fallida aislado puede ser un error de usuario; una secuencia correlacionada por hora, cuenta y origen puede indicar un patrón. No concluyas que existe un incidente sin contexto adicional.
+
+**Práctica guiada.** Consulta `journalctl -b -p warning` y limita la salida a un servicio de laboratorio con `journalctl -u nombre-servicio`. Resume un evento sin copiar tokens, direcciones privadas sensibles ni datos personales.
+
+**Actividad independiente.** Construye una línea temporal con tres eventos sintéticos y explica qué campos permitirían correlacionarlos.
+
+**Criterios de aceptación.** Identifica hora, origen, nivel y mensaje; distingue observación de inferencia y protege datos sensibles.
+
+**Errores frecuentes.** Interpretar todo warning como fallo crítico, asumir que la ausencia de logs demuestra ausencia de actividad o borrar registros para liberar espacio.
+
+**Comprobación.** ¿Por qué sincronización horaria y retención son importantes para investigar un incidente?
 
 ### 7.2.17 — Variables de entorno
 
-Las variables de entorno transmiten configuración a procesos hijos, como rutas, idioma y opciones de ejecución; no son un almacén seguro para secretos por defecto. Distingue variables de shell, entorno exportado y archivos de configuración persistentes. **Práctica:** inspecciona `printenv`, crea una variable temporal y expórtala a un proceso hijo. **Evidencia:** explica por qué una variable no exportada no aparece en el entorno de un subproceso.
+**Propósito y modelo.** Las variables de entorno transmiten configuración a un proceso y, normalmente, a sus procesos hijos. Ejemplos comunes son PATH, LANG y variables específicas de aplicaciones. No son un almacén seguro de secretos por defecto: pueden filtrarse mediante procesos, diagnósticos, volcados o configuraciones.
+
+**Ejemplo desarrollado.** Una variable asignada en una shell sin exportar está disponible para esa shell, pero no necesariamente para un proceso hijo. Al exportarla, se incorpora al entorno que recibe el subproceso.
+
+**Práctica guiada.** En Bash ejecuta `APP_MODE=lab`, consulta `printenv APP_MODE`, luego ejecuta `export APP_MODE=lab` y vuelve a consultar. Lanza `sh -c 'printf "%s\\n" "$APP_MODE"'` y compara resultados.
+
+**Actividad independiente.** Diseña cómo configurarías una aplicación por entorno (desarrollo/pruebas/producción) sin incluir credenciales en el repositorio ni imprimirlas en logs.
+
+**Criterios de aceptación.** Diferencia variable de shell y variable exportada; explica herencia a procesos hijos y al menos dos riesgos al manejar secretos.
+
+**Errores frecuentes.** Suponer que exportar una variable la hace persistente entre sesiones o que ocultar su valor en la terminal evita su exposición a otros mecanismos.
+
+**Comprobación.** ¿Por qué una variable de entorno no debe considerarse automáticamente un gestor de secretos?
 
 ## 7.3 — Administración Linux
 
