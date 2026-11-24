@@ -990,3 +990,37 @@ Cada lección contiene explicación específica, ejemplo o escenario, práctica 
 - No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para este lote.
 
 No se modificó el roadmap JSON, no se inventaron UUID y no se importó, aprobó ni publicó contenido. Las etapas posteriores permanecen pendientes de desarrollo equivalente; el objetivo oficial vacío de etapa 25 sigue intacto.
+
+
+## Desarrollo documental individual — etapa 11 (2026-11-24)
+
+### Resultado
+
+Se desarrollaron individualmente las 60 lecciones oficiales de la etapa 11 «HTML, CSS y fundamentos frontend», conservando módulos, títulos y numeración:
+
+| Módulo | Lecciones oficiales | Desarrolladas |
+|---|---:|---:|
+| 11.1 — HTML | 21 | 21 |
+| 11.2 — Accesibilidad | 8 | 8 |
+| 11.3 — CSS | 17 | 17 |
+| 11.4 — Diseño de interfaces | 8 | 8 |
+| 11.5 — SEO | 6 | 6 |
+| **Total** | **60** | **60** |
+
+Las lecciones incluyen explicación técnica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación, errores frecuentes y pregunta de comprobación. Se incorporaron consideraciones de HTML semántico, teclado, ARIA, contraste, lectores de pantalla, responsive, reducción de movimiento y uso veraz de metadatos/datos estructurados.
+
+### Revisión estructural
+
+- Se verificaron 60 encabezados únicos.
+- Se cotejaron los cinco módulos y sus conteos con el roadmap JSON oficial.
+- Se comprobó en todas las lecciones la presencia de práctica guiada, actividad independiente y criterios de aceptación.
+- Se conservaron resultados de aprendizaje, proyecto, evaluación y referencias preexistentes.
+
+### Límites de validación
+
+- Desarrollo documental y revisión estructural interna; no constituye validación técnica independiente ni aprobación académica.
+- No se ejecutaron pruebas de navegador, validadores HTML/CSS, auditorías WCAG, pruebas con lectores de pantalla ni evaluación de SEO en entornos reales.
+- No se verificó exhaustivamente la vigencia de todas las referencias ni la compatibilidad entre navegadores.
+- No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para este lote.
+
+No se modificó el roadmap JSON, no se inventaron UUID y no se importó, aprobó ni publicó contenido. Las etapas posteriores siguen pendientes de desarrollo equivalente; el objetivo oficial vacío de etapa 25 permanece intacto.
