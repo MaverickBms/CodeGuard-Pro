@@ -154,157 +154,304 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Los apartado
 #### 18.1.01 — Requerimientos funcionales
 Los requerimientos funcionales describen capacidades y comportamientos que el sistema debe ofrecer. Redáctalos con actor, acción, condición y resultado observable; cada requisito debe poder relacionarse con criterios de aceptación y pruebas.
 
+
+**Práctica y evidencia:** Redacta requisitos funcionales para crear y consultar pedidos con actores y resultados observables. **Evidencia:** cada requisito puede verificarse mediante un escenario.
+
 #### 18.1.02 — No funcionales
 Los requerimientos no funcionales expresan atributos y restricciones como rendimiento, seguridad, disponibilidad, accesibilidad y mantenibilidad. Cuantifícalos con umbrales, contexto y método de medición; «rápido» o «seguro» no son criterios verificables por sí solos.
+
+
+**Práctica y evidencia:** Define requisitos no funcionales medibles de rendimiento, seguridad, disponibilidad y accesibilidad. **Evidencia:** sustituye adjetivos vagos por umbrales, condiciones y método de medición.
 
 #### 18.1.03 — Historias de usuario
 Una historia de usuario comunica una necesidad desde la perspectiva de un actor y el valor esperado. Acompáñala con criterios de aceptación, reglas y dependencias; la plantilla «Como/quiero/para» no reemplaza el análisis.
 
+
+**Práctica y evidencia:** Escribe historias de usuario con actor, necesidad y valor y añade criterios de aceptación. **Evidencia:** demuestra que una historia puede dividirse en tareas sin perder el resultado del usuario.
+
 #### 18.1.04 — Casos de uso
 Un caso de uso describe interacciones entre actores y sistema para alcanzar un objetivo, incluyendo flujo principal y alternativas. Registra precondiciones, postcondiciones y excepciones para descubrir comportamientos que una historia breve podría omitir.
+
+
+**Práctica y evidencia:** Modela un caso de uso de compra con flujo principal, alternos y excepciones. **Evidencia:** identifica actor, precondición, postcondición y límites del sistema.
 
 #### 18.1.05 — Reglas de negocio
 Las reglas de negocio expresan políticas, cálculos, permisos y restricciones propias del dominio. Distingue reglas del negocio de decisiones técnicas y define fuente de autoridad, prioridad y tratamiento de excepciones.
 
+
+**Práctica y evidencia:** Extrae reglas de negocio para inventario y descuentos y exprésalas sin depender de una interfaz. **Evidencia:** prueba casos válidos, inválidos y fronteras.
+
 #### 18.1.06 — Restricciones
 Las restricciones limitan soluciones posibles por tecnología, presupuesto, normativa, plazo, infraestructura o compatibilidad. Registra su origen y si son obligatorias o negociables; una restricción no documentada puede convertirse en riesgo de diseño.
+
+
+**Práctica y evidencia:** Registra restricciones técnicas, legales, presupuestales y de operación. **Evidencia:** clasifica cuáles son obligatorias y cuáles son decisiones negociables.
 
 #### 18.1.07 — Stakeholders
 Stakeholders son personas u organizaciones que influyen en el sistema o reciben sus efectos. Identifica necesidades, autoridad, conflictos y canales de decisión; no asumas que una sola persona representa a todos los usuarios.
 
+
+**Práctica y evidencia:** Identifica stakeholders, intereses, influencia y necesidades de información. **Evidencia:** construye una matriz y define cómo gestionar conflictos.
+
 #### 18.1.08 — Alcance del proyecto
 El alcance define qué incluye y excluye el proyecto, sus entregables y límites. Documenta supuestos, exclusiones y criterios de cambio para prevenir expansión no controlada y desacuerdos sobre el resultado esperado.
+
+
+**Práctica y evidencia:** Define alcance incluido/excluido, entregables y supuestos del proyecto. **Evidencia:** redacta una declaración de alcance que permita rechazar solicitudes fuera de objetivo.
 
 ### Módulo 18.2 — Metodologías ágiles
 
 #### 18.2.01 — Manifiesto Ágil
 El Manifiesto Ágil expresa valores y principios para desarrollar software de forma adaptativa y colaborativa. Interprétalo como orientación para decisiones y aprendizaje, no como ausencia de planificación, documentación o control.
 
+
+**Práctica y evidencia:** Compara los valores y principios del Manifiesto Ágil con un proceso de trabajo concreto. **Evidencia:** explica qué significa responder al cambio sin abandonar planificación.
+
 #### 18.2.02 — Scrum
 Scrum es un marco de trabajo con responsabilidades, eventos y artefactos definidos. Comprende Product Owner, Scrum Master y Developers, y adapta el marco con transparencia; no conviertas los eventos en reuniones sin propósito ni inspección.
+
+
+**Práctica y evidencia:** Simula un Sprint Scrum con objetivo, backlog, eventos y revisión. **Evidencia:** distingue responsabilidades y no convierte Daily en reporte al jefe.
 
 #### 18.2.03 — Kanban
 Kanban visualiza el flujo de trabajo y limita trabajo en progreso para mejorar entrega y detectar cuellos de botella. Define políticas explícitas y mide tiempo de ciclo y throughput, no solo cantidad de tareas en columnas.
 
+
+**Práctica y evidencia:** Diseña un tablero Kanban con estados, políticas explícitas y límites WIP. **Evidencia:** identifica bloqueos y mide tiempo de ciclo.
+
 #### 18.2.04 — Sprints
 Un Sprint es un periodo fijo en Scrum para crear un incremento de valor utilizable. Define objetivo y duración consistente, y ajusta alcance mediante colaboración sin comprometer el objetivo del Sprint.
+
+
+**Práctica y evidencia:** Formula un Sprint Goal y selecciona trabajo que pueda terminarse dentro del Sprint. **Evidencia:** demuestra coherencia entre objetivo y elementos seleccionados.
 
 #### 18.2.05 — Product Backlog
 Product Backlog es una lista ordenada y evolutiva del trabajo necesario para mejorar el producto. Refina elementos con criterios y valor, manteniendo transparencia sobre prioridad, incertidumbre y dependencias.
 
+
+**Práctica y evidencia:** Ordena un Product Backlog por valor, riesgo y dependencias. **Evidencia:** justifica prioridad y criterios de refinamiento.
+
 #### 18.2.06 — Sprint Backlog
 Sprint Backlog reúne el objetivo del Sprint, elementos seleccionados y plan de trabajo de Developers. Se actualiza conforme se aprende y no debe convertirse en una lista rígida de tareas impuesta externamente.
+
+
+**Práctica y evidencia:** Descompón el objetivo de Sprint en tareas y plan de entrega. **Evidencia:** cada elemento tiene resultado observable y estimación razonada.
 
 #### 18.2.07 — Planning
 Planning establece por qué el Sprint es valioso, qué puede completarse y cómo se realizará el trabajo. Participan quienes corresponda según Scrum; el resultado debe ser un objetivo claro y un plan adaptativo.
 
+
+**Práctica y evidencia:** Realiza una Planning con capacidad real, objetivo y selección de backlog. **Evidencia:** documenta supuestos y evita compromiso basado solo en velocidad histórica.
+
 #### 18.2.08 — Daily
 Daily Scrum es una oportunidad breve para inspeccionar progreso hacia el objetivo y adaptar el plan. No es un reporte de estatus al gerente ni una obligación de responder siempre tres preguntas idénticas.
+
+
+**Práctica y evidencia:** Simula una Daily breve enfocada en progreso hacia objetivo y adaptación del plan. **Evidencia:** identifica impedimento y acción concreta.
 
 #### 18.2.09 — Review
 Review inspecciona el incremento y obtiene retroalimentación de stakeholders para adaptar el Product Backlog. Presenta software funcional y resultados reales; no la conviertas en una demostración preparada que oculte limitaciones.
 
+
+**Práctica y evidencia:** Prepara una Review con incremento funcional y feedback de stakeholders. **Evidencia:** separa inspección del producto de aprobación formal del Sprint.
+
 #### 18.2.10 — Retrospective
 Retrospective analiza cómo mejorar calidad y efectividad del equipo, procesos y herramientas. Acuerda acciones pequeñas con responsable y seguimiento; evita buscar culpables o producir listas que nunca se implementan.
+
+
+**Práctica y evidencia:** Conduce una retrospectiva basada en datos y selecciona una mejora pequeña. **Evidencia:** define responsable y señal para comprobar impacto en el siguiente ciclo.
 
 #### 18.2.11 — Definition of Done
 Definition of Done establece criterios compartidos para considerar un incremento terminado y con calidad suficiente. Incluye pruebas, revisión, documentación y controles aplicables; no debe confundirse con criterios de aceptación de una historia específica.
 
+
+**Práctica y evidencia:** Define una Definition of Done con calidad, pruebas, seguridad y documentación. **Evidencia:** verifica un incremento contra cada criterio antes de considerarlo terminado.
+
 #### 18.2.12 — Story Points
 Story Points son una técnica relativa de estimación de esfuerzo/complexidad/incertidumbre, no horas ni productividad individual. Úsalos solo si ayudan a planificar y nunca para comparar personas o convertir velocidad en objetivo.
 
+
+**Práctica y evidencia:** Estima esfuerzo relativo con story points mediante comparación y discusión de incertidumbre. **Evidencia:** explica por qué puntos no equivalen a horas ni sirven para comparar equipos.
+
 #### 18.2.13 — Gestión del trabajo en progreso (WIP)
 WIP limita cuántos elementos pueden estar en progreso simultáneamente. Establece límites según capacidad y observa bloqueos; reducir multitarea puede mejorar flujo, pero el límite debe revisarse con datos y contexto.
+
+
+**Práctica y evidencia:** Limita trabajo en progreso y observa efecto sobre flujo y bloqueos. **Evidencia:** compara lead time/cycle time antes y después de una política WIP.
 
 ### Módulo 18.3 — Documentación
 
 #### 18.3.01 — README
 README explica propósito, requisitos, instalación, configuración, ejecución y contribución de un repositorio. Mantén instrucciones probadas y coherentes con el estado real; nunca incluyas secretos ni instrucciones que requieran permisos no documentados.
 
+
+**Práctica y evidencia:** Escribe un README con propósito, requisitos, instalación, ejecución y contribución. **Evidencia:** otra persona puede iniciar el proyecto siguiendo solo el documento.
+
 #### 18.3.02 — Especificación de requisitos
 La especificación de requisitos documenta funciones, calidad, interfaces, restricciones y criterios de aceptación. Mantén identificadores, versiones y trazabilidad hacia diseño y pruebas para gestionar cambios sin perder contexto.
+
+
+**Práctica y evidencia:** Crea una especificación de requisitos trazable a historias, reglas y pruebas. **Evidencia:** detecta requisitos ambiguos y conflictos.
 
 #### 18.3.03 — Documentación técnica
 La documentación técnica explica arquitectura, componentes, contratos, decisiones y operación para desarrolladores y operadores. Debe responder cómo funciona el sistema y qué límites tiene, no duplicar comentarios obvios del código.
 
+
+**Práctica y evidencia:** Documenta arquitectura, dependencias, decisiones y operación técnica. **Evidencia:** un desarrollador nuevo puede ubicar componentes y puntos de extensión.
+
 #### 18.3.04 — Documentación funcional
 La documentación funcional describe capacidades desde el punto de vista del usuario y las reglas del negocio. Usa lenguaje del dominio, flujos y excepciones verificables para que negocio, QA y desarrollo compartan interpretación.
+
+
+**Práctica y evidencia:** Describe flujos funcionales, roles y reglas de negocio para usuarios y analistas. **Evidencia:** cada flujo enlaza con un requisito y criterio de aceptación.
 
 #### 18.3.05 — API Documentation
 API Documentation describe endpoints, esquemas, autenticación, errores, límites y ejemplos. Genera o valida documentación desde contratos versionados y evita publicar credenciales o datos reales en ejemplos.
 
+
+**Práctica y evidencia:** Documenta endpoints con esquema, autenticación, ejemplos, errores y límites. **Evidencia:** un consumidor puede reproducir una solicitud sin consultar el código.
+
 #### 18.3.06 — Architecture Decision Records (ADR)
 Architecture Decision Records (ADR) registran contexto, decisión, alternativas y consecuencias de una decisión arquitectónica. Mantén cada ADR breve, fechado y con estado; no reescribas la historia para ocultar decisiones reemplazadas.
+
+
+**Práctica y evidencia:** Redacta un ADR con contexto, decisión, alternativas y consecuencias. **Evidencia:** distingue hechos de supuestos y explica cuándo revisar la decisión.
 
 #### 18.3.07 — Changelog
 Changelog comunica cambios relevantes entre versiones, incluyendo funcionalidades, correcciones y cambios incompatibles. Sigue una convención estable y redacta entradas para consumidores, no como copia indiscriminada de commits.
 
+
+**Práctica y evidencia:** Mantén un changelog por versión con cambios añadidos, corregidos y retirados. **Evidencia:** cada entrada se vincula a un cambio verificable y no incluye secretos.
+
 #### 18.3.08 — Manual de instalación
 El manual de instalación especifica requisitos, pasos, configuración, permisos y verificación posterior. Incluye recuperación y desinstalación cuando aplique y prueba los pasos desde un entorno limpio.
+
+
+**Práctica y evidencia:** Escribe un manual de instalación con versiones, variables y pasos de verificación. **Evidencia:** instala desde un entorno limpio siguiendo el documento.
 
 #### 18.3.09 — Manual de usuario
 El manual de usuario explica tareas y resultados con lenguaje comprensible, capturas pertinentes y resolución de problemas. Organiza por objetivos del usuario y mantén imágenes alineadas con la versión real del producto.
 
+
+**Práctica y evidencia:** Crea un manual de usuario con tareas frecuentes, errores y recuperación. **Evidencia:** una persona no técnica completa una tarea sin asistencia.
+
 #### 18.3.10 — Plan de pruebas
 El plan de pruebas define alcance, estrategia, entornos, datos, responsabilidades, riesgos y criterios de entrada/salida. Relaciónalo con requisitos y riesgos; no prometas cobertura o resultados antes de ejecutar las pruebas.
 
+
+**Práctica y evidencia:** Diseña un plan de pruebas con alcance, entornos, riesgos, datos y criterios de salida. **Evidencia:** relaciona pruebas con requisitos y responsables.
+
 #### 18.3.11 — Documentación de despliegue
 La documentación de despliegue describe artefactos, configuración, secretos, migraciones, observabilidad y recuperación. Diferencia entornos y permisos, y proporciona pasos verificables para rollback y respuesta a fallos.
+
+
+**Práctica y evidencia:** Documenta despliegue, configuración, observabilidad, rollback y recuperación. **Evidencia:** simula un despliegue en staging y una reversión documentada.
 
 ### Módulo 18.4 — Diagramas
 
 #### 18.4.01 — Diagramas de flujo
 Los diagramas de flujo representan pasos y decisiones de un proceso mediante símbolos y conexiones. Mantén un nivel de detalle consistente, etiqueta condiciones y verifica que cada ruta tenga inicio, fin y tratamiento de errores.
 
+
+**Práctica y evidencia:** Dibuja un flujo de proceso con decisiones, excepciones y puntos de inicio/fin. **Evidencia:** valida que no existan ramas sin salida o pasos ambiguos.
+
 #### 18.4.02 — UML
 UML ofrece notaciones estandarizadas para modelar estructura y comportamiento de sistemas. Selecciona el diagrama según la pregunta que buscas responder; no es necesario producir todos los tipos para cada proyecto.
+
+
+**Práctica y evidencia:** Selecciona diagramas UML adecuados al problema y usa notación consistente. **Evidencia:** explica qué aspecto del sistema representa cada diagrama.
 
 #### 18.4.03 — Diagrama de clases
 Un diagrama de clases representa clases, atributos, operaciones y relaciones estáticas. Muestra solo el detalle útil para la decisión y mantiene consistencia con el modelo de dominio o código que describe.
 
+
+**Práctica y evidencia:** Modela clases, atributos, operaciones y asociaciones de un dominio pequeño. **Evidencia:** distingue asociación, composición y herencia con justificación.
+
 #### 18.4.04 — Diagrama de secuencia
 Un diagrama de secuencia muestra participantes y mensajes ordenados en el tiempo para un escenario. Incluye alternativas, errores y límites de sistema relevantes; evita convertirlo en una transcripción de cada línea de código.
+
+
+**Práctica y evidencia:** Dibuja una secuencia de solicitud entre UI, API, servicio y repositorio. **Evidencia:** muestra mensajes, retornos y escenarios de error.
 
 #### 18.4.05 — Diagrama de actividades
 Un diagrama de actividades representa flujo de trabajo, decisiones, concurrencia y responsabilidades. Úsalo para procesos complejos y valida que las guardas de decisión y caminos alternativos sean explícitos.
 
+
+**Práctica y evidencia:** Representa un flujo de aprobación con decisiones y estados. **Evidencia:** cubre camino exitoso, rechazo y cancelación.
+
 #### 18.4.06 — Diagrama de componentes
 Un diagrama de componentes muestra unidades modulares y sus interfaces/dependencias. Permite revisar acoplamiento y límites de despliegue; evita confundir componentes lógicos con procesos o máquinas físicas.
+
+
+**Práctica y evidencia:** Dibuja componentes, interfaces y dependencias del sistema. **Evidencia:** identifica acoplamientos y límites de despliegue.
 
 #### 18.4.07 — Diagrama de despliegue
 Un diagrama de despliegue representa nodos de ejecución, artefactos y conexiones entre entornos. Identifica zonas de confianza, puertos y dependencias externas sin publicar secretos ni detalles que comprometan infraestructura real.
 
+
+**Práctica y evidencia:** Representa nodos, artefactos, conexiones y entornos en un diagrama de despliegue. **Evidencia:** señala zonas de confianza y dependencias externas.
+
 #### 18.4.08 — Diagramas ER
 Los diagramas entidad-relación modelan entidades, atributos, claves y cardinalidades de datos. Comprueba que las relaciones reflejen reglas del dominio y que el modelo pueda traducirse a restricciones e índices.
 
+
+**Práctica y evidencia:** Modela entidades, claves, cardinalidades y restricciones en un ERD. **Evidencia:** deriva tablas sin relaciones muchos-a-muchos sin resolver.
+
 #### 18.4.09 — C4 Model
 C4 Model describe arquitectura mediante niveles de contexto, contenedores, componentes y código. Mantén cada vista orientada a una audiencia y un propósito, y evita mezclar niveles de abstracción en un mismo diagrama.
+
+
+**Práctica y evidencia:** Construye vistas C4 de contexto, contenedores y componentes para una aplicación. **Evidencia:** mantiene consistencia de nombres y audiencias entre niveles.
 
 ### Módulo 18.5 — Principios de diseño
 
 #### 18.5.01 — SOLID
 SOLID reúne cinco principios de diseño orientado a objetos que buscan reducir rigidez y mejorar extensibilidad. Aplícalos como heurísticas según el contexto, no como reglas mecánicas que obliguen a crear abstracciones innecesarias.
 
+
+**Práctica y evidencia:** Evalúa una clase con cada principio SOLID y propone una refactorización justificada. **Evidencia:** identifica el principio afectado y el coste del cambio.
+
 #### 18.5.02 — DRY
 DRY recomienda evitar duplicación de conocimiento que debe cambiar de manera coordinada. No significa eliminar toda repetición textual: abstraer demasiado pronto puede crear acoplamiento y hacer el sistema más difícil de modificar.
+
+
+**Práctica y evidencia:** Elimina duplicación real mediante abstracción que represente una regla común. **Evidencia:** demuestra que la abstracción no oculta diferencias relevantes.
 
 #### 18.5.03 — KISS
 KISS favorece soluciones simples que satisfacen el problema real y pueden mantenerse. La simplicidad se evalúa frente a requisitos, riesgos y evolución, no por la menor cantidad de líneas de código.
 
+
+**Práctica y evidencia:** Simplifica una solución y compara legibilidad y complejidad antes/después. **Evidencia:** conserva comportamiento con pruebas.
+
 #### 18.5.04 — YAGNI
 YAGNI aconseja no implementar capacidades especulativas que todavía no se necesitan. Conserva puntos de extensión razonables, pero prioriza requisitos presentes y evita complejidad prematura.
+
+
+**Práctica y evidencia:** Evalúa una funcionalidad especulativa y decide no implementarla hasta existir requisito. **Evidencia:** registra coste evitado y señal que justificaría incorporarla.
 
 #### 18.5.05 — Separation of Concerns
 Separation of Concerns divide el sistema en partes con responsabilidades y razones de cambio diferenciadas. Define límites que permitan evolucionar presentación, dominio e infraestructura sin propagar modificaciones innecesarias.
 
+
+**Práctica y evidencia:** Separa persistencia, reglas de dominio y presentación en un caso pequeño. **Evidencia:** demuestra que una capa puede cambiar sin reescribir las demás.
+
 #### 18.5.06 — High Cohesion
 High Cohesion significa que los elementos de un módulo colaboran alrededor de una responsabilidad relacionada. Evalúa si funciones y datos cambian por razones similares; agrupar por conveniencia técnica puede producir módulos poco cohesivos.
+
+
+**Práctica y evidencia:** Aumenta cohesión agrupando responsabilidades relacionadas y separando las ajenas. **Evidencia:** explica por qué cada módulo tiene una razón principal para cambiar.
 
 #### 18.5.07 — Low Coupling
 Low Coupling reduce dependencias fuertes entre módulos y limita el conocimiento que cada uno necesita de otros. Utiliza contratos y límites claros, pero no elimines toda dependencia: la colaboración debe seguir siendo explícita y comprensible.
 
+
+**Práctica y evidencia:** Reduce dependencias concretas entre módulos mediante contratos estables. **Evidencia:** sustituye una implementación sin cambiar consumidores.
+
 #### 18.5.08 — Dependency Inversion
 Dependency Inversion propone que políticas de alto nivel no dependan de detalles concretos, sino de abstracciones estables. Define interfaces en el límite correcto y evita crear abstracciones que solo replican una implementación sin necesidad.
+
+
+**Práctica y evidencia:** Invierte dependencias para que política de alto nivel dependa de abstracciones. **Evidencia:** prueba dominio sin infraestructura real.
 
 ### Módulo 18.6 — Patrones GoF
 
