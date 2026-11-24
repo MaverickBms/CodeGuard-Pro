@@ -135,6 +135,17 @@ Entrega una ficha de verificación con afirmación, evidencia, fuente, fecha/ver
 2. ¿Qué haces si dos fuentes discrepan? Compruebas alcance, fecha, versión, contexto y autoridad; documentas la discrepancia si no puede resolverse.
 3. ¿Qué significa «no tengo evidencia suficiente»? Que la conclusión debe permanecer abierta, no que la afirmación sea falsa.
 
+
+### Producto y clave de retroalimentación
+
+**Producto mínimo:** una ficha con explicación inicial, vacíos detectados, explicación revisada, ejemplo propio y límite de la analogía.
+
+**Ejemplo de referencia — dirección IP (IPv4):** «Una dirección IPv4 es un identificador numérico de 32 bits que se representa habitualmente como cuatro números decimales separados por puntos, por ejemplo 192.0.2.10. En una red IP, permite identificar una interfaz dentro de un contexto de direccionamiento y enrutar paquetes hacia el destino correspondiente. Puede compararse con una dirección postal porque ayuda a localizar un destino, pero la analogía es limitada: una dirección IP no identifica necesariamente a una persona o dispositivo de forma permanente, puede cambiar y puede compartirse mediante mecanismos como NAT. IPv6 utiliza un espacio de direcciones distinto y mucho mayor».  
+**Comprobación:** contrasta la explicación con documentación técnica de IPv4/IPv6 antes de entregarla; el ejemplo es una respuesta modelo breve, no reemplaza la lectura de la especificación.
+
+**Rúbrica breve (0–3 por criterio):** exactitud conceptual; claridad; ejemplo coherente; límite de analogía reconocido; corrección tras consultar fuente. Un error factual importante exige revisión aunque la suma sea alta.
+
+---
 ---
 
 ## Lección 0.1.3 — Método Feynman como ejercicio de explicación
@@ -182,6 +193,25 @@ Después contrasta la definición con una fuente técnica pertinente y corrige c
 ### Criterios de evaluación
 La explicación define el concepto, utiliza correctamente sus términos, distingue analogía y realidad, ofrece un ejemplo coherente y reconoce sus límites.
 
+
+### Ficha de verificación de fuentes — ejemplo resuelto
+
+**Afirmación evaluada:** «El comando `git status` muestra el estado del árbol de trabajo y del área de preparación».
+
+| Campo | Registro de ejemplo |
+|---|---|
+| Fuente primaria | Manual oficial de Git, página `git-status` |
+| URL | https://git-scm.com/docs/git-status |
+| Versión/contexto | Consultar la versión del manual instalada o la versión publicada por el proyecto |
+| Evidencia | La descripción del manual explica que informa los caminos que difieren entre archivos de índice, árbol de trabajo y HEAD, entre otros estados |
+| Límite | No es un historial completo de cambios ni sustituye `git log` o `git diff` |
+| Conclusión | La afirmación es sustancialmente correcta, pero debe precisarse qué estados y comparaciones muestra |
+
+**Entrega del estudiante:** completa la misma ficha con otra afirmación técnica. Si la fuente no permite resolverla, escribe «no comprobado» y explica qué evidencia falta.
+
+**Rúbrica (0–3):** afirmación precisa; fuente pertinente; evidencia localizable; versión/fecha registrada; conclusión que respeta los límites. No se premia una conclusión categórica sin evidencia.
+
+---
 ---
 
 ## Lección 0.1.4 — Repetición espaciada
@@ -224,6 +254,18 @@ Diseña un calendario de dos semanas para aprender diez comandos de terminal. In
 ### Criterios de evaluación
 El calendario distribuye sesiones, exige recuperar o aplicar conocimientos, incluye retroalimentación y justifica los ajustes. No se evalúa que el estudiante use exactamente los días del ejemplo.
 
+
+### Plantilla y ejemplo de registro de repasos
+
+| Fecha | Concepto/tarea | Recuperación antes de consultar | Resultado | Error detectado | Próxima acción |
+|---|---|---|---|---|---|
+| Día 1 | Diferencia entre `git status` y `git diff` | Explica ambos y predice qué información entrega cada uno | Parcial | Confunde estado con contenido del cambio | Revisar manual y repetir con un repositorio de práctica |
+| Día 2 | Mismo concepto, sin apuntes | Explica la diferencia y aporta un ejemplo | Correcto | No distingue cambios preparados | Añadir una prueba que compare índice y árbol de trabajo |
+| Día 5 | Caso nuevo | Resuelve y justifica | Correcto con ayuda | Olvida indicar qué archivos están preparados | Repetir más adelante con un caso distinto |
+
+**Cómo ajustar:** si la recuperación es fluida y correcta, aumenta gradualmente el intervalo o cambia a un problema de transferencia. Si es parcial o incorrecta, revisa la explicación, practica con una pista y programa otra recuperación antes. Estos ajustes son heurísticos de estudio, no un algoritmo validado para todos.
+
+---
 ---
 
 ## Lección 0.1.5 — Práctica deliberada y práctica enfocada
@@ -258,6 +300,20 @@ Selecciona una habilidad que ya hayas practicado. Diseña tres sesiones de 20–
 ### Criterios de evaluación
 La meta es medible; la tarea corresponde a la habilidad; existe retroalimentación; el estudiante registra correcciones y no confunde tiempo invertido con dominio.
 
+
+### Ejemplo de tres sesiones con retroalimentación
+
+| Sesión | Meta observable | Tarea | Evidencia y retroalimentación |
+|---|---|---|---|
+| 1 | Identificar condiciones de borde | Resolver tres ejercicios con listas de longitud 0, 1 y varias posiciones | Registrar qué índice se espera y cuál se obtiene |
+| 2 | Corregir la causa, no ocultar el síntoma | Reproducir un caso fallido, formular hipótesis y probar una modificación | Explicar por qué la modificación corrige el caso |
+| 3 | Transferir el aprendizaje | Resolver un ejercicio nuevo con estructura de datos distinta | Comparar precisión y necesidad de pistas con la sesión 1 |
+
+**Registro obligatorio:** habilidad entrenada, dificultad, tiempo aproximado, resultado, error específico, feedback recibido y decisión para la siguiente sesión. El tiempo es contexto, no medida suficiente de dominio.
+
+**Pregunta de control:** si el estudiante solo termina más rápido, pero mantiene los mismos errores, ¿hay evidencia suficiente de mejora? No; debe observarse precisión o transferencia con criterios comparables.
+
+---
 ---
 
 ## Lección 0.1.6 — Resolución de problemas
@@ -299,6 +355,34 @@ Diseña un algoritmo en pseudocódigo para calcular el promedio de tres califica
 ### Criterios de evaluación
 El problema está delimitado, las entradas y salidas son claras, los supuestos se declaran, el procedimiento es comprensible y los casos de prueba cubren condiciones normales y límite.
 
+
+### Solución de referencia: promedio de tres calificaciones
+
+**Supuesto explícito para este ejemplo:** cada calificación debe estar entre 0 y 100, inclusive. Otro sistema educativo puede usar una escala distinta; el rango no debe extrapolarse sin verificar el contexto.
+
+```text
+leer nota1, nota2, nota3
+
+si alguna nota es menor que 0 o mayor que 100:
+    mostrar "Entrada inválida"
+si no:
+    promedio = (nota1 + nota2 + nota3) / 3
+    mostrar promedio
+```
+
+**Casos de prueba**
+
+| Entradas | Resultado esperado |
+|---|---|
+| 80, 90, 100 | 90 |
+| 0, 0, 0 | 0 |
+| 100, 100, 100 | 100 |
+| -1, 80, 80 | Entrada inválida |
+| 80, 101, 80 | Entrada inválida |
+
+**Razonamiento:** el promedio solo se calcula si las tres entradas satisfacen el contrato. Las pruebas cubren un caso normal, límites inferior y superior y valores fuera del rango. En una implementación real también se debe decidir cómo tratar texto no numérico, valores ausentes y precisión decimal.
+
+---
 ---
 
 ## Lección 0.1.7 — Descomposición de problemas complejos
