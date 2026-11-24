@@ -1,9 +1,0 @@
-#!/bin/bash
-# =============================================================================
-# CodeGuard Pro — Acceso rápido desde la raíz del repositorio
-# Delega en run.sh para mantener una única lógica de detección y arranque.
-# =============================================================================
-set -euo pipefail
-
-PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-exec "$PROJECT_DIR/run.sh" "$@"
