@@ -337,3 +337,8 @@ Se desarrollaron individualmente las 143 lecciones oficiales de Active Directory
 ### Desarrollo profundo individual — etapas 29 a 32
 
 Se desarrollaron individualmente las 275 lecciones oficiales de cloud/DevSecOps, IA/automatización/criptografía, bajo nivel/malware y portafolio profesional (71, 75, 75 y 54). Se cotejaron los conteos con el roadmap y se eliminaron textos genéricos. Laboratorios, despliegues y proyectos verificables siguen pendientes; revisión documental interna, no aprobación externa.
+
+
+### Estado consolidado de desarrollo individual — 24-11-2026
+
+Se completó la primera pasada de desarrollo individual de las 1.916 entradas nominales de las etapas 1–32 (549 en etapas 1–10 y 1.367 en etapas 11–32). Se registraron revisiones editoriales internas por bloque y se cotejó la correspondencia curricular. Esta fase cubre redacción individual inicial y revisión documental; no equivale a aprobación final. Siguen pendientes el cotejo bibliográfico completo, la ejecución reproducible de ejemplos/laboratorios, las pruebas de accesibilidad/seguridad y la revisión técnica-pedagógica independiente. El JSON curricular no se modificó y el objetivo de etapa 25 permanece vacío. No se importó ni publicó contenido.
