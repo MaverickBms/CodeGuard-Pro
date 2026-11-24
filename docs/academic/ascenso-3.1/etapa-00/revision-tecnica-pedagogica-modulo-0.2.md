@@ -3,7 +3,7 @@
 **Fecha:** 2026-11-24  
 **Rama:** `content/ascenso-stage-0-learning-method`  
 **Tipo:** inspección documental y de alineación curricular; no equivale a auditoría de seguridad, revisión externa ni ejecución práctica.  
-**Estado editorial:** BORRADOR.
+**Estado del registro:** vigente como revisión de escritorio; no constituye aprobación independiente ni validación experimental.
 
 ## Alcance
 
@@ -73,4 +73,4 @@ Los dos videos continúan como candidatos. No se escuchó su audio en esta revis
 
 Se añadieron claves modelo para los siete temas y una lista de control de calidad de fuentes. Los casos se identifican expresamente como simulados; no se atribuyen a repositorios o incidencias reales. Los comandos de consulta de Python se muestran como ejemplos didácticos y no se ejecutaron en esta sesión.
 
-**Estado final:** módulo BORRADOR; 0/7 temas con revisión independiente completa; 0 laboratorios ejecutados; 0 videos verificados; 0 aprobaciones y 0 publicaciones.
+**Estado final:** módulo en base de trabajo activa; 0/7 temas con revisión independiente completa; 0 laboratorios ejecutados; 0 videos verificados; 0 aprobaciones y 0 publicaciones.
