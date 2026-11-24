@@ -192,3 +192,12 @@ Se completó la ampliación didáctica documental de las **84 lecciones** de la 
 Comprobación estructural: 84/84 encabezados de lección cotejados con el roadmap. No se ejecutaron comandos, scripts, laboratorios ni instalaciones en VMs durante esta intervención; las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. El estado 84/84 describe cobertura documental, no validación técnica ni aprobación.
 
 Acumulado documental: etapas 1–6, 265; etapa 7, 84; etapas 8–32, 1.567; total etapas 1–32: **1.916 lecciones**. El roadmap oficial permanece intacto y el objetivo de la etapa 25 sigue vacío. No se importó ni publicó contenido.
+
+
+### Profundización documental integral — etapa 8 — 2026-11-24
+
+Se amplió el desarrollo de las **81 lecciones** de redes: fundamentos (13), modelos de comunicación (9), direccionamiento (13), protocolos (16), routing/switching (10), seguridad de redes (9) y herramientas (11). Se incorporaron laboratorios específicos, evidencias esperadas, criterios de aceptación y límites de seguridad.
+
+Comprobación estructural: 81/81 encabezados cotejados con el roadmap oficial. No se ejecutaron capturas, escaneos, pruebas de firewall ni cambios de red en sistemas reales. Las referencias aún requieren verificación individual y revisión técnica/pedagógica independiente. La cobertura documental no equivale a validación técnica ni aprobación.
+
+Acumulado documental ampliado: etapas 1–6, 265; etapa 7, 84; etapa 8, 81; total etapas 1–8: **430 lecciones**. Restan 1.516 lecciones nominales de las etapas 9–32 para completar esta profundidad documental. El roadmap JSON permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó ni publicó contenido.
