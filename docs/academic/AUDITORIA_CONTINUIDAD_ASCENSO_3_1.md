@@ -1312,3 +1312,36 @@ Se añadieron prácticas específicas de HTML semántico, formularios, multimedi
 **Estado:** desarrollo documental de la etapa 11 completado en esta pasada; validación automatizada/manual, verificación de referencias y aprobación independiente pendientes. La cobertura 60/60 no equivale a conformidad WCAG ni a aprobación.
 
 El roadmap JSON permanece sin cambios. No se importó ni publicó contenido.
+
+
+## Profundización documental integral — etapa 12 (2026-11-24)
+
+### Alcance
+
+Se amplió el desarrollo de las **89 lecciones** oficiales de JavaScript, TypeScript, React, Next.js y herramientas:
+
+| Módulo | Lecciones | Cobertura documental |
+|---|---:|---:|
+| 12.1 JavaScript | 19 | 19/19 |
+| 12.2 DOM | 9 | 9/9 |
+| 12.3 Asincronía | 10 | 10/10 |
+| 12.4 Web APIs | 7 | 7/7 |
+| 12.5 TypeScript | 11 | 11/11 |
+| 12.6 React | 16 | 16/16 |
+| 12.7 Next.js | 10 | 10/10 |
+| 12.8 Herramientas | 7 | 7/7 |
+| **Total** | **89** | **89/89** |
+
+Se añadieron prácticas de fundamentos JavaScript, DOM, asincronía, Web APIs, TypeScript estricto, composición y hooks React, Server/Client Components de Next.js, autenticación, renderizado y herramientas de desarrollo.
+
+### Control editorial y técnico
+
+- Se cotejaron los ocho módulos y sus cantidades contra el roadmap oficial.
+- Se verificaron estructuralmente 89 encabezados de lección, coincidentes con el JSON.
+- Se incluyeron límites para almacenamiento cliente, cookies, geolocalización, portapapeles, formularios, autenticación, dependencias y exposición de secretos.
+- No se ejecutaron builds, tests, lint, navegadores, DevTools ni despliegues durante esta intervención.
+- No se verificaron individualmente todas las referencias ni se obtuvo revisión técnica externa.
+
+**Estado:** desarrollo documental de la etapa 12 completado en esta pasada; ejecución reproducible, verificación de referencias y aprobación independiente pendientes. La cobertura 89/89 no equivale a pruebas ejecutadas ni a aprobación.
+
+El roadmap JSON permanece sin cambios. No se importó ni publicó contenido.
