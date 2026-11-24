@@ -1282,3 +1282,33 @@ Las ampliaciones contextualizan cada concepto en una situación de ingeniería, 
 No se ejecutaron builds, pruebas automatizadas, aplicaciones, bases de datos, servidores, comandos administrativos ni laboratorios en entornos reales o aislados durante esta entrega. Tampoco se completó una verificación individual de vigencia de todas las referencias ni una revisión externa independiente. Las ampliaciones son material didáctico documental que requiere validación práctica, versionado reproducible, revisión técnica por dominio y revisión pedagógica antes de aprobación.
 
 No se declara completado el currículo global de 1.916 lecciones de las etapas 1–32, ni se autoriza importación, aprobación o publicación por este addendum. El objetivo de la etapa 25 permanece sin completar ni inferir.
+
+
+## Profundización documental integral — etapa 11 (2026-11-24)
+
+### Alcance
+
+Se amplió el desarrollo de las **60 lecciones** oficiales de HTML, CSS y fundamentos de frontend:
+
+| Módulo | Lecciones | Cobertura documental |
+|---|---:|---:|
+| 11.1 HTML | 21 | 21/21 |
+| 11.2 Accesibilidad | 8 | 8/8 |
+| 11.3 CSS | 17 | 17/17 |
+| 11.4 Diseño de interfaces | 8 | 8/8 |
+| 11.5 SEO | 6 | 6/6 |
+| **Total** | **60** | **60/60** |
+
+Se añadieron prácticas específicas de HTML semántico, formularios, multimedia, SVG/Canvas, WCAG/ARIA, navegación por teclado, contraste, cascada CSS, layouts, responsive, movimiento reducido, sistemas de diseño, metadatos e indexación.
+
+### Control editorial y técnico
+
+- Se cotejaron los cinco módulos y sus cantidades contra el roadmap oficial.
+- Se verificaron estructuralmente 60 encabezados de lección, coincidentes con el JSON.
+- Se incorporaron criterios de accesibilidad y seguridad para formularios, contenido dinámico, SVG, datos estructurados y metadatos.
+- No se ejecutaron validadores HTML/CSS, pruebas cross-browser, lectores de pantalla, mediciones automatizadas de contraste ni pruebas de indexación durante esta intervención.
+- No se verificaron individualmente todas las referencias ni se obtuvo revisión técnica externa.
+
+**Estado:** desarrollo documental de la etapa 11 completado en esta pasada; validación automatizada/manual, verificación de referencias y aprobación independiente pendientes. La cobertura 60/60 no equivale a conformidad WCAG ni a aprobación.
+
+El roadmap JSON permanece sin cambios. No se importó ni publicó contenido.
