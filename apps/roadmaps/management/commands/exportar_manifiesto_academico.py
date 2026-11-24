@@ -64,6 +64,9 @@ class Command(BaseCommand):
         queryset = roadmap.etapas.prefetch_related(
             "modulos__lecciones__ejemplos",
             "modulos__lecciones__ejercicios",
+            "modulos__lecciones__contenido",
+            "modulos__lecciones__contenido_activo__version",
+            "modulos__lecciones__versiones_contenido",
         ).order_by("orden", "numero")
 
         for stage in queryset:
@@ -79,7 +82,7 @@ class Command(BaseCommand):
                             "titulo": item.titulo,
                             "orden": item.orden,
                         }
-                        for item in lesson.ejemplos.all().order_by("orden", "id")
+                        for item in lesson.ejemplos.all()
                     ]
                     exercises = [
                         {
@@ -88,24 +91,31 @@ class Command(BaseCommand):
                             "nivel": item.nivel,
                             "orden": item.orden,
                         }
-                        for item in lesson.ejercicios.all().order_by("orden", "id")
+                        for item in lesson.ejercicios.all()
                     ]
                     example_count += len(examples)
                     exercise_count += len(exercises)
-                    legacy = ContenidoLeccion.objects.filter(leccion=lesson).first()
-                    active = (
-                        ContenidoLeccionActivo.objects
-                        .filter(leccion=lesson)
-                        .select_related("version")
-                        .first()
-                    )
-                    versions = list(
-                        VersionContenidoLeccion.objects.filter(leccion=lesson)
-                        .order_by("numero_version")
-                        .values("clave", "numero_version", "estado", "sha256")
-                    )
+                    try:
+                        legacy = lesson.contenido
+                    except ContenidoLeccion.DoesNotExist:
+                        legacy = None
+                    try:
+                        active = lesson.contenido_activo
+                    except ContenidoLeccionActivo.DoesNotExist:
+                        active = None
+                    versions = [
+                        {
+                            "clave": str(version.clave),
+                            "numero_version": version.numero_version,
+                            "estado": version.estado,
+                            "sha256": version.sha256,
+                        }
+                        for version in sorted(
+                            lesson.versiones_contenido.all(),
+                            key=lambda item: item.numero_version,
+                        )
+                    ]
                     for version in versions:
-                        version["clave"] = str(version["clave"])
                         version_state_counts[version["estado"]] += 1
                     if legacy and (legacy.objetivos_aprendizaje.strip()
                                    or legacy.teoria_tecnica.strip()
