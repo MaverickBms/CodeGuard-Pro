@@ -116,3 +116,249 @@ No se incluyen videos aprobados. Se añadirán solo con audio español y relaci�
 - NIST Post-Quantum Cryptography: https://csrc.nist.gov/projects/post-quantum-cryptography
 
 **Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutó agente ni automatización sobre fuentes externas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
+
+
+## Desglose granular de lecciones oficiales — etapa 30
+
+Este desglose conserva los títulos y el orden del roadmap maestro. Las orientaciones organizan el estudio y la aplicación en proyectos controlados; no equivalen a validación de proveedores, certificación, ejecución de laboratorios ni experiencia laboral demostrada.
+
+### Módulo 30.1 — Inteligencia artificial para seguridad
+
+#### 30.1.01 — Machine Learning
+Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.1.02 — Anomaly Detection
+Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.1.03 — Pattern Recognition
+Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.1.04 — Classification
+Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.1.05 — Security Analytics
+Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.1.06 — AI-assisted Investigation
+Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.1.07 — Limitations of AI in Security
+Comprender el concepto, sus fundamentos y límites dentro de inteligencia artificial para seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+### Módulo 30.2 — LLM Security
+
+#### 30.2.01 — Large Language Models
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.02 — Prompt Injection
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.03 — Indirect Prompt Injection
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.04 — Jailbreaking
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.05 — Data Leakage
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.06 — Context Manipulation
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.07 — Tool Abuse
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.08 — Agent Security
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.09 — RAG Security
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.10 — Guardrails
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.11 — Sandboxing
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.2.12 — Least Privilege for Agents
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+### Módulo 30.3 — AI Red Teaming
+
+#### 30.3.01 — Attack Surface
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.3.02 — Adversarial Inputs
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.3.03 — Prompt Injection Testing
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.3.04 — Tool-use Abuse
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.3.05 — Data Exfiltration Scenarios
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.3.06 — Model Evaluation
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+#### 30.3.07 — Security Testing of AI Systems
+Comprender el riesgo, los límites y los controles del sistema de IA; probar únicamente entornos propios o autorizados, sin introducir secretos ni datos personales en servicios externos.
+
+### Módulo 30.4 — Automatización con Python
+
+#### 30.4.01 — Python avanzado
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.02 — OOP
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.03 — Modules
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.04 — Packages
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.05 — Requests
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.06 — JSON
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.07 — YAML
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.08 — Regex
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.09 — subprocess
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.10 — Sockets
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.11 — Asyncio
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.12 — Logging
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.13 — APIs
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.4.14 — File Processing
+Comprender el concepto, sus fundamentos y límites dentro de automatización con python; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+### Módulo 30.5 — Automatización de seguridad
+
+#### 30.5.01 — Log Processing
+Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.5.02 — IOC Extraction
+Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.5.03 — Threat Intelligence Collection
+Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.5.04 — Report Generation
+Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.5.05 — API Integrations
+Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.5.06 — Vulnerability Reporting
+Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.5.07 — Alert Classification
+Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.5.08 — Security Automation Pipelines
+Comprender el concepto, sus fundamentos y límites dentro de automatización de seguridad; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+### Módulo 30.6 — Threat Intelligence avanzado
+
+#### 30.6.01 — Threat Intelligence Lifecycle
+Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.6.02 — OSINT Automation
+Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.6.03 — MITRE ATT&CK
+Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.6.04 — TTP Correlation
+Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.6.05 — Threat Feeds
+Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.6.06 — Intelligence Analysis
+Comprender el concepto, sus fundamentos y límites dentro de threat intelligence avanzado; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+### Módulo 30.7 — Criptografía avanzada
+
+#### 30.7.01 — Symmetric Cryptography
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.02 — Asymmetric Cryptography
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.03 — AES
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.04 — RSA
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.05 — ECC
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.06 — Hashing
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.07 — SHA-2
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.08 — SHA-3
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.09 — Digital Signatures
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.10 — PKI
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.11 — TLS
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.7.12 — Key Management
+Comprender el concepto, sus fundamentos y límites dentro de criptografía avanzada; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+### Módulo 30.8 — Criptografía poscuántica
+
+#### 30.8.01 — Quantum Computing Concepts
+Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.8.02 — Harvest Now, Decrypt Later
+Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.8.03 — Post-Quantum Cryptography
+Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.8.04 — ML-KEM
+Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.8.05 — ML-DSA
+Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.8.06 — SLH-DSA
+Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.8.07 — Cryptographic Migration
+Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.8.08 — Crypto Agility
+Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
+
+#### 30.8.09 — CSRC
+Comprender el concepto, sus fundamentos y límites dentro de criptografía poscuántica; relacionarlo con decisiones técnicas, seguridad, operación y documentación del proyecto de la etapa.
