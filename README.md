@@ -342,3 +342,10 @@ Se desarrollaron individualmente las 275 lecciones oficiales de cloud/DevSecOps,
 ### Estado consolidado de desarrollo individual — 24-11-2026
 
 Se completó la primera pasada de desarrollo individual de las 1.916 entradas nominales de las etapas 1–32 (549 en etapas 1–10 y 1.367 en etapas 11–32). Se registraron revisiones editoriales internas por bloque y se cotejó la correspondencia curricular. Esta fase cubre redacción individual inicial y revisión documental; no equivale a aprobación final. Siguen pendientes el cotejo bibliográfico completo, la ejecución reproducible de ejemplos/laboratorios, las pruebas de accesibilidad/seguridad y la revisión técnica-pedagógica independiente. El JSON curricular no se modificó y el objetivo de etapa 25 permanece vacío. No se importó ni publicó contenido.
+
+
+### Profundización didáctica por lección — etapa 7 (24-11-2026)
+
+Se completó una profundización documental de las 84 lecciones de la etapa 7: fundamentos de sistemas operativos (14), Linux (17), administración Linux (20), Bash (12), Windows (12) y virtualización (9). Cada lección contiene explicación específica, práctica guiada, actividad independiente, criterios de aceptación y comprobación; además se incorporan ejemplos, escenarios y precauciones operativas según el tema.
+
+Este resultado es una revisión y profundización documental interna. No significa que las prácticas se hayan ejecutado en máquinas virtuales ni que las lecciones estén validadas técnicamente por terceros. Permanecen pendientes la ejecución con evidencia, verificación bibliográfica completa y revisión experta independiente. La auditoría de continuidad contiene el alcance y las limitaciones detalladas. No se modificó el JSON oficial, no se importó ni publicó contenido.
