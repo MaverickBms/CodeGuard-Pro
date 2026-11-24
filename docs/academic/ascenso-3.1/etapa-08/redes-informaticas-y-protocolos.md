@@ -234,39 +234,129 @@ Un AP conecta clientes inalámbricos con una red de distribución. Cobertura, ba
 
 ### 8.2.1 — Modelo OSI
 
-El modelo OSI es un marco conceptual de siete capas para razonar sobre funciones de comunicación; no es una pila de protocolos que se instale literalmente. **Práctica:** ubica Ethernet, IP, TCP y HTTP en el modelo como aproximación didáctica. **Evidencia:** justifica la capa y explica que algunas tecnologías abarcan varias funciones.
+El modelo OSI organiza las funciones de comunicación en siete capas. Es un marco conceptual para clasificar protocolos y localizar fallos, no una descripción rígida de cada implementación real.
+
+**Práctica guiada:** Clasifica fallos sintéticos: cable desconectado, VLAN incorrecta, ruta ausente, puerto TCP cerrado y error HTTP. Justifica la capa principal y dependencias.
+
+**Actividad independiente:** Construye una tabla de capas, función, unidad de datos y ejemplos tecnológicos.
+
+**Criterios de aceptación:** Enumera las siete capas y utiliza el modelo como herramienta de diagnóstico.
+
+**Errores frecuentes:** Afirmar que cada protocolo pertenece siempre a una única capa o que OSI es una pila instalada literalmente.
+
+**Comprobación:** ¿Qué ventaja aporta separar la comunicación en capas?
 
 ### 8.2.2 — Las siete capas OSI
 
-Las capas OSI describen funciones: física, enlace, red, transporte, sesión, presentación y aplicación. Las fronteras no siempre coinciden exactamente con implementaciones modernas. **Práctica:** analiza una solicitud web y asigna ejemplos de función a cada capa. **Evidencia:** describe qué pregunta responde cada capa sin memorizar solo nombres.
+Las capas son física, enlace, red, transporte, sesión, presentación y aplicación. Cada una abstrae responsabilidades y utiliza servicios inferiores. En sistemas reales algunas funciones se combinan o distribuyen.
+
+**Práctica guiada:** Clasifica Ethernet, IP, TCP, UDP, DNS, HTTP y TLS; anota cuándo la clasificación es aproximada.
+
+**Actividad independiente:** Describe una petición HTTPS y las funciones de comunicación que intervienen en cada capa.
+
+**Criterios de aceptación:** Ordena y explica las siete capas y reconoce clasificaciones aproximadas.
+
+**Errores frecuentes:** Confundir sesión con inicio de sesión de usuario o presentación con interfaz gráfica.
+
+**Comprobación:** ¿Por qué OSI sigue siendo útil si una pila no implementa siete módulos separados?
 
 ### 8.2.3 — Modelo TCP/IP
 
-TCP/IP agrupa funciones en acceso a red, Internet, transporte y aplicación, aunque los modelos de referencia varían en número de capas. **Práctica:** mapea Ethernet, IP, TCP y DNS/HTTP al modelo usado en el curso. **Evidencia:** compara una capa OSI con su correspondencia aproximada en TCP/IP.
+El modelo TCP/IP suele agrupar funciones en acceso a red, Internet, transporte y aplicación. Describe la arquitectura práctica de Internet; su correspondencia con OSI es aproximada, no uno a uno.
+
+**Práctica guiada:** Asigna Ethernet, IP, TCP, UDP, DNS y HTTP a capas TCP/IP y compara la clasificación con OSI.
+
+**Actividad independiente:** Dibuja una consulta DNS sobre UDP y una conexión HTTPS sobre TCP, anotando capas y unidades de datos.
+
+**Criterios de aceptación:** Explica las capas del modelo elegido y la correspondencia aproximada con OSI.
+
+**Errores frecuentes:** Confundir IP con TCP o afirmar que existe una única representación didáctica universal.
+
+**Comprobación:** ¿Qué función aporta IP que no proporciona TCP?
 
 ### 8.2.4 — Encapsulamiento
 
-El encapsulamiento añade información de control al dato al descender por las capas: cabeceras y, según el protocolo, tráileres. **Práctica:** representa datos de aplicación dentro de un segmento TCP, paquete IP y trama Ethernet. **Evidencia:** identifica direcciones de cada capa y explica por qué cambian en cada salto.
+Al descender por la pila, cada capa añade información de control a los datos. En una comunicación web, los datos de aplicación pueden quedar dentro de un segmento TCP, un paquete IP y una trama Ethernet.
+
+**Práctica guiada:** Dibuja la encapsulación de una petición HTTP sobre TCP/IP/Ethernet y etiqueta cada encabezado.
+
+**Actividad independiente:** Explica qué ocurre con la trama cuando el paquete atraviesa un router hacia otra LAN.
+
+**Criterios de aceptación:** Representa el orden correcto de encapsulación y diferencia encabezados de datos de aplicación.
+
+**Errores frecuentes:** Creer que la trama Ethernet permanece intacta de extremo a extremo a través de routers.
+
+**Comprobación:** ¿Qué partes cambian normalmente cuando un paquete atraviesa un router?
 
 ### 8.2.5 — Desencapsulamiento
 
-El desencapsulamiento retira y procesa la información de protocolo al recibir datos, verificando campos y entregando la carga a la capa superior. **Práctica:** dibuja el recorrido inverso de una trama Ethernet recibida. **Evidencia:** explica cómo una MAC de destino, una IP y un puerto cumplen funciones diferentes.
+El receptor procesa los encabezados de cada capa, valida la información que corresponda y entrega la carga útil a la capa superior. Desencapsular no es lo mismo que descifrar: el cifrado depende de protocolos y claves.
+
+**Práctica guiada:** Examina una captura de laboratorio e identifica los campos Ethernet, IP, TCP y HTTP.
+
+**Actividad independiente:** Describe qué impediría que los datos llegaran a la aplicación: trama inválida, IP incorrecta, puerto sin escucha o error de aplicación.
+
+**Criterios de aceptación:** Explica el orden de procesamiento y relaciona cada encabezado con su función.
+
+**Errores frecuentes:** Suponer que desencapsulamiento equivale a descifrado TLS.
+
+**Comprobación:** ¿Qué diferencia existe entre desencapsular y descifrar?
 
 ### 8.2.6 — Paquetes
 
-Un paquete suele referirse a la unidad de datos de capa de red, por ejemplo un datagrama IP, que contiene direcciones y campos de control. **Práctica:** inspecciona un paquete IP en una captura de laboratorio. **Evidencia:** identifica IP origen/destino, protocolo superior y TTL o Hop Limit.
+En este contexto, paquete suele referirse a una unidad de datos IP con encabezado y carga útil. Los routers utilizan campos IP para reenviar paquetes; fragmentación, tamaño y tratamiento dependen de versión y camino.
+
+**Práctica guiada:** Inspecciona un paquete IP en una captura de laboratorio y localiza direcciones, TTL, protocolo y longitud.
+
+**Actividad independiente:** Compara paquete IP y trama Ethernet y explica el alcance de MAC e IP.
+
+**Criterios de aceptación:** Identifica campos principales y distingue paquete, segmento y trama.
+
+**Errores frecuentes:** Usar paquete, trama y segmento como sinónimos o asumir que las MAC permanecen iguales a través de Internet.
+
+**Comprobación:** ¿Qué información utiliza un router para decidir el siguiente salto?
 
 ### 8.2.7 — Tramas
 
-Una trama es la unidad de datos de enlace que se transmite sobre un medio local y contiene direcciones de enlace y mecanismos de detección de errores según la tecnología. **Práctica:** localiza cabecera Ethernet y tipo EtherType en Wireshark. **Evidencia:** distingue MAC origen/destino de direcciones IP.
+Una trama es la unidad de datos de enlace para una tecnología concreta, como Ethernet. Incluye direcciones de enlace y campos de control; en Ethernet puede incorporar FCS. Los routers suelen terminar una trama y construir otra para el siguiente enlace.
+
+**Práctica guiada:** Examina una captura Ethernet y localiza MAC origen/destino, EtherType y longitud; considera que FCS puede no aparecer en la captura.
+
+**Actividad independiente:** Explica qué campos de enlace cambian cuando el paquete atraviesa un router.
+
+**Criterios de aceptación:** Identifica función de MAC y EtherType y diferencia trama de paquete IP.
+
+**Errores frecuentes:** Suponer que FCS siempre aparece en capturas o que MAC identifica el host extremo a través de toda la ruta.
+
+**Comprobación:** ¿Por qué el router construye una nueva trama para el siguiente enlace?
 
 ### 8.2.8 — Segmentos
 
-Un segmento suele designar la unidad de datos de TCP; UDP utiliza el término datagrama. TCP incorpora puertos, números de secuencia, confirmaciones y control de flujo. **Práctica:** examina una conexión TCP de laboratorio y localiza puertos y flags. **Evidencia:** explica SYN, ACK y FIN a nivel básico.
+En TCP, un segmento incluye encabezado TCP y datos. Puertos, secuencias, reconocimientos y flags permiten comunicación fiable y ordenada. UDP transporta datagramas; no ofrece las mismas garantías de TCP.
+
+**Práctica guiada:** Examina una captura TCP de laboratorio y localiza puertos, SYN/ACK/FIN y números de secuencia.
+
+**Actividad independiente:** Representa el establecimiento TCP de tres vías y explica la función de cada mensaje.
+
+**Criterios de aceptación:** Identifica campos TCP básicos y diferencia segmento TCP de datagrama UDP.
+
+**Errores frecuentes:** Afirmar que cada segmento equivale a un mensaje de aplicación o que TCP conserva límites de mensajes.
+
+**Comprobación:** ¿Por qué TCP se considera un flujo de bytes?
 
 ### 8.2.9 — MTU
 
-MTU es el tamaño máximo de unidad de transmisión de una interfaz o enlace; no debe confundirse con el tamaño máximo de carga de aplicación. Explica fragmentación IPv4 y Path MTU Discovery en términos generales. **Práctica:** consulta MTU de interfaces con `ip link`. **Evidencia:** predice qué puede ocurrir si un paquete supera el MTU del camino.
+La MTU es el tamaño máximo de la unidad de datos que puede transportar un enlace sin fragmentación en esa capa. Ethernet estándar suele usar 1500 bytes de carga IP, pero túneles y encapsulación pueden reducir la MTU de camino.
+
+**Práctica guiada:** Consulta MTU con `ip link` o `netsh interface ipv4 show subinterfaces`; registra interfaz y valor sin modificarlo.
+
+**Actividad independiente:** Explica por qué una aplicación puede fallar con ciertos tamaños de transferencia si Path MTU Discovery no funciona correctamente.
+
+**Criterios de aceptación:** Distingue MTU de enlace y MTU de camino y relaciona encapsulación con tamaño disponible.
+
+**Errores frecuentes:** Confundir MTU con ancho de banda o asumir que 1500 aplica a todas las interfaces.
+
+**Comprobación:** ¿Cómo puede una MTU incorrecta afectar solo algunos tamaños de tráfico?
 
 ## 8.3 — Direccionamiento
 
