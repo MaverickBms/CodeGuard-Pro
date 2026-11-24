@@ -1,6 +1,6 @@
 # Desarrollo académico ASCENSO 3.1
 
-Material didáctico original en desarrollo. Este directorio no reemplaza el PDF maestro ni publica automáticamente contenido en CodeGuard Pro.
+Material didáctico original en desarrollo. Este directorio no reemplaza el PDF maestro ni publica automáticamente contenido en CodeGuard Pro. La estructura oficial se mantiene en `apps/roadmaps/data/ascenso_3_1.json`.
 
 ## Estado editorial
 
@@ -18,6 +18,9 @@ Las etapas 0–32 cuentan con un documento de desarrollo en esta rama. Todos per
 
 ## Auditoría y estado de integración
 - [Auditoría de continuidad ASCENSO 3.1](AUDITORIA_CONTINUIDAD_ASCENSO_3_1.md)
+- [Auditoría y seguimiento de producción de la etapa 0](AUDITORIA_PRELIMINAR_ETAPA_00_ASCENSO_3.1.md)
+
+**Seguimiento 2026-11-24:** los cuatro módulos de la etapa 0 tienen cobertura documental inicial para sus 30 títulos nominales y continúan en `BORRADOR`. Las ampliaciones de 0.2, 0.3 y 0.4 incluyen actividades y rúbricas adicionales; no se declaran laboratorios ejecutados, lecciones revisadas, aprobadas ni publicadas. Consultar la auditoría enlazada para el inventario de evidencias y pendientes.
 
 ## Estándares transversales
 - [Estándar editorial académico](ASCENSO_ESTANDAR_EDITORIAL.md)
