@@ -1,7 +1,7 @@
 # Etapa 16 — Backend III: PHP, Laravel y .NET
 
 **Prioridad:** P2 · Complementaria  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** conocer otros ecosistemas empresariales y poder adaptarte a proyectos que utilicen diferentes tecnologías.  
 **Proyecto oficial:** crear una API pequeña en Laravel y otra en ASP.NET Core, comparando su arquitectura con Spring Boot y NestJS.
 
@@ -107,4 +107,4 @@ No se incluyen videos aprobados. Se añadirán solo cuando el audio hablado sea 
 - Magento DevDocs: https://developer.adobe.com/commerce/docs/
 - PrestaShop Developer Documentation: https://devdocs.prestashop-project.org/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** implementaciones no ejecutadas en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** implementaciones no ejecutadas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
