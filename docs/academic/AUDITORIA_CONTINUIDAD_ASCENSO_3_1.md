@@ -1024,3 +1024,35 @@ Las lecciones incluyen explicación técnica, ejemplo, práctica guiada, activid
 - No se ejecutaron pruebas automatizadas ni se obtuvo evidencia CI para este lote.
 
 No se modificó el roadmap JSON, no se inventaron UUID y no se importó, aprobó ni publicó contenido. Las etapas posteriores siguen pendientes de desarrollo equivalente; el objetivo oficial vacío de etapa 25 permanece intacto.
+
+
+## Profundización documental integral — etapa 7 (2026-11-24)
+
+### Alcance
+
+Se completó la ampliación didáctica documental de las **84 lecciones** oficiales de la etapa 7, distribuidas en seis módulos:
+
+| Módulo | Lecciones | Cobertura documental |
+|---|---:|---|
+| 7.1 Fundamentos de sistemas operativos | 14 | 14/14 |
+| 7.2 Linux | 17 | 17/17 |
+| 7.3 Administración Linux | 20 | 20/20 |
+| 7.4 Bash | 12 | 12/12 |
+| 7.5 Windows | 12 | 12/12 |
+| 7.6 Virtualización | 9 | 9/9 |
+| **Total** | **84** | **84/84** |
+
+Se añadieron prácticas específicas, evidencias esperadas, criterios de aceptación, límites de seguridad y registros sugeridos a las lecciones de Bash, Windows y virtualización. Se amplió además el trabajo previo de Linux y administración con ejercicios guiados y advertencias operativas. El proyecto oficial de dos servidores virtuales, rúbrica, autoevaluación y referencias se conservaron.
+
+### Control editorial y técnico
+
+- Se cotejaron los seis módulos y sus cantidades de lecciones contra el roadmap oficial.
+- Se comprobó estructuralmente la presencia de 84 encabezados de lección en el documento.
+- Se conservaron las prácticas en modo de inspección o laboratorio autorizado; no se instruye desactivar controles ni modificar servicios del host.
+- No se ejecutaron los comandos Bash/PowerShell en máquinas reales o virtuales durante esta intervención.
+- No se ejecutaron instalaciones de Windows Server, Ubuntu Server, VirtualBox o VMware.
+- No se verificaron individualmente todas las referencias externas ni se obtuvo revisión experta independiente.
+
+**Estado:** desarrollo documental de la etapa 7 completo en esta pasada; validación técnica por ejecución y aprobación académica siguen pendientes. La cobertura 84/84 no equivale a pruebas ejecutadas ni a aprobación.
+
+El roadmap JSON no fue modificado. Se conserva el objetivo vacío de la etapa 25. No se importó ni publicó contenido.
