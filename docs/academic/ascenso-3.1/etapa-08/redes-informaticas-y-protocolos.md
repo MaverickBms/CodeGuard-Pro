@@ -1036,39 +1036,147 @@ Una red es un conjunto de dispositivos y medios que intercambian datos mediante 
 
 ### 8.6.1 — Firewalls
 
-Los firewalls pueden filtrar por paquetes, estado, aplicación o identidad, según su arquitectura. **Práctica:** diseña reglas para permitir HTTPS desde clientes a un servidor y bloquear administración desde redes de usuario. **Evidencia:** especifica origen, destino, protocolo, puerto y dirección.
+**Propósito y modelo.** Un firewall controla tráfico que cruza un límite de seguridad mediante reglas de origen, destino, protocolo, puerto, estado y, en algunos productos, aplicación o identidad. Puede ser de red, host, nube o aplicación. Su efectividad depende de política, orden, inspección, logging y mantenimiento.
+
+**Ejemplo desarrollado.** Una política de denegación por defecto permite solo HTTPS hacia el frontend y una conexión específica del frontend hacia backend. La administración se limita a una red de gestión y se registra.
+
+**Práctica guiada.** Lee un conjunto de reglas sintéticas y determina qué flujo coincide primero. Identifica regla redundante, excesiva y faltante sin modificar firewalls reales.
+
+**Actividad independiente.** Construye política para una aplicación de tres capas, con entradas, salidas y administración mínimas.
+
+**Criterios de aceptación.** Explica dirección, estado, orden y denegación por defecto; justifica cada excepción.
+
+**Errores frecuentes.** Crear reglas Any/Any, no revisar reglas obsoletas o considerar que el firewall evita errores de autorización de aplicación.
+
+**Comprobación.** ¿Por qué una política permisiva de salida también puede representar un riesgo?
 
 ### 8.6.2 — VPN
 
-Una VPN crea un túnel protegido sobre una red subyacente y puede conectar usuarios o sitios. Distingue acceso remoto y site-to-site, y explica que el cifrado no elimina riesgos del endpoint. **Práctica:** dibuja los extremos y rutas de una VPN de acceso remoto. **Evidencia:** identifica autenticación, cifrado y redes alcanzables.
+**Propósito y modelo.** Una VPN crea un túnel lógico sobre una red subyacente para proteger tráfico o conectar redes. Puede ser acceso remoto o site-to-site, y operar en capa 2 o 3 según tecnología. Cifrado, autenticación de pares, gestión de claves, rutas, DNS y segmentación determinan su seguridad.
+
+**Ejemplo desarrollado.** Una VPN de acceso remoto puede permitir a un empleado alcanzar solo aplicaciones corporativas, no toda la LAN. El túnel cifrado protege el tránsito, pero el dispositivo final y las credenciales aún deben estar protegidos.
+
+**Práctica guiada.** Dibuja una VPN de acceso remoto y una site-to-site. Identifica extremos, redes anunciadas, autenticación y rutas. No configures túneles contra redes ajenas.
+
+**Actividad independiente.** Diseña acceso remoto con MFA, postura de dispositivo, segmentación por rol, registro y procedimiento de revocación.
+
+**Criterios de aceptación.** Diferencia tipos de VPN y explica qué protege y qué no protege el túnel.
+
+**Errores frecuentes.** Considerar VPN como anonimato total o permitir acceso amplio sin revisar rutas y políticas.
+
+**Comprobación.** ¿Por qué una VPN cifrada no garantiza que el usuario solo acceda a los recursos que necesita?
 
 ### 8.6.3 — DMZ
 
-Una DMZ aloja servicios que deben ser accesibles desde redes menos confiables, separados de la red interna sensible. **Práctica:** diseña una zona DMZ para un servidor web con acceso mínimo a una base de datos. **Evidencia:** justifica reglas y demuestra que la DMZ no equivale a confiar plenamente en el servidor.
+**Propósito y modelo.** Una DMZ es una zona de red intermedia que aloja servicios que necesitan comunicación con redes externas, separándolos de sistemas internos sensibles. El diseño establece flujos explícitos entre Internet, DMZ y LAN; no basta con crear una subred etiquetada como DMZ.
+
+**Ejemplo desarrollado.** Un servidor web público reside en DMZ; solo puede iniciar conexiones necesarias hacia un backend específico. La base de datos permanece en una zona interna y no acepta conexiones directas desde Internet.
+
+**Práctica guiada.** Dibuja tres zonas y escribe matriz de flujos: Internet→web, web→backend, backend→base de datos y administración desde red de gestión. Marca el resto como denegado.
+
+**Actividad independiente.** Diseña una DMZ para portal web y servidor de correo, con límites de confianza, monitoreo, parcheo y acceso administrativo.
+
+**Criterios de aceptación.** Explica el propósito de DMZ y define flujos entre zonas con mínimo privilegio.
+
+**Errores frecuentes.** Permitir DMZ→LAN sin restricción o alojar base de datos expuesta en la misma zona que el servidor público.
+
+**Comprobación.** ¿Qué debe ocurrir con el tráfico desde la DMZ hacia la red interna que no esté expresamente autorizado?
 
 ### 8.6.4 — ACL
 
-Una ACL define condiciones que permiten o deniegan tráfico o acceso a recursos, según el dispositivo y el contexto. **Práctica:** redacta una ACL conceptual que permita solo DNS y HTTPS entre segmentos de laboratorio. **Evidencia:** explica orden de evaluación, coincidencias y regla implícita final cuando aplique.
+**Propósito y modelo.** Una ACL es una lista de reglas que permite o deniega tráfico o acceso a recursos según criterios definidos. En redes, puede filtrar direcciones, protocolos y puertos en interfaces; en sistemas, controla acceso a objetos. La ubicación, orden y semántica de evaluación son específicas de plataforma.
+
+**Ejemplo desarrollado.** Una ACL extendida puede permitir TCP desde una subred de usuarios a un servidor en puerto 443 y denegar otros flujos hacia esa zona. Debe existir una regla final coherente con la política.
+
+**Práctica guiada.** Interpreta una ACL sintética línea por línea. Para cada paquete de ejemplo identifica la primera regla coincidente y el resultado.
+
+**Actividad independiente.** Diseña una ACL para permitir administración SSH solo desde una subred de gestión y bloquear el resto de orígenes.
+
+**Criterios de aceptación.** Identifica criterios, orden y acción; explica el efecto de una regla implícita de denegación cuando aplique.
+
+**Errores frecuentes.** Colocar reglas específicas después de una regla general o asumir que todas las plataformas procesan ACL de forma idéntica.
+
+**Comprobación.** ¿Por qué el orden de reglas puede cambiar el resultado de una ACL?
 
 ### 8.6.5 — Puertos abiertos
 
-Un puerto abierto indica que un proceso acepta conexiones en una interfaz, no que el servicio sea necesariamente vulnerable. **Práctica:** consulta sockets de escucha de tu propia VM con `ss -lntup`. **Evidencia:** asocia puerto, protocolo, proceso y dirección de escucha.
+**Propósito y modelo.** Un puerto abierto indica que un proceso o dispositivo acepta conexiones en una combinación de dirección, protocolo y puerto. Un puerto TCP en escucha no demuestra vulnerabilidad por sí mismo; debe identificarse servicio, versión, exposición, autenticación y necesidad de negocio. UDP no utiliza el mismo concepto de handshake, por lo que la detección es distinta.
+
+**Ejemplo desarrollado.** Un servicio puede escuchar solo en loopback y no ser accesible desde la red, aunque aparezca en una lista local. Otro puede escuchar en todas las interfaces y quedar expuesto por firewall o router.
+
+**Práctica guiada.** En un host propio consulta sockets con `ss -lntup` o `Get-NetTCPConnection -State Listen`. Registra protocolo, dirección local y proceso; no escanees terceros.
+
+**Actividad independiente.** Construye inventario de servicios esperados y compara con puertos en escucha de una VM de laboratorio.
+
+**Criterios de aceptación.** Diferencia escucha local, exposición de red y accesibilidad efectiva; identifica proceso propietario.
+
+**Errores frecuentes.** Cerrar puertos a ciegas o concluir que un puerto es accesible desde Internet solo porque escucha localmente.
+
+**Comprobación.** ¿Qué diferencia existe entre un puerto en escucha en 127.0.0.1 y uno en 0.0.0.0?
 
 ### 8.6.6 — Servicios expuestos
 
-Un servicio expuesto es una función accesible desde una zona de red; su riesgo depende de versión, configuración, autenticación y superficie alcanzable. **Práctica:** inventaría servicios de una VM propia y clasifícalos por necesidad y alcance. **Evidencia:** propone reducir exposición sin deshabilitar servicios críticos a ciegas.
+**Propósito y modelo.** Un servicio expuesto es una aplicación o función accesible desde una zona de red determinada. La exposición se evalúa por interfaz de escucha, rutas, NAT, firewall, balanceadores, autenticación, versión y datos procesados. Inventariar exposición es una actividad continua, no una fotografía única.
+
+**Ejemplo desarrollado.** Un panel de administración puede estar protegido por contraseña, pero si se expone a Internet aumenta la superficie de ataque y debe limitarse por VPN, IP de gestión o proxy con controles robustos.
+
+**Práctica guiada.** Revisa una arquitectura ficticia e identifica servicios públicos, internos y administrativos. Para cada uno registra propietario, puerto, propósito y control de acceso.
+
+**Actividad independiente.** Crea un registro de exposición con clasificación de criticidad, justificación comercial, responsable, fecha de revisión y plan de retirada.
+
+**Criterios de aceptación.** Distingue servicio necesario de servicio accidentalmente expuesto y propone mitigaciones proporcionadas.
+
+**Errores frecuentes.** Mantener interfaces de administración públicas o asumir que un servicio está protegido solo porque usa HTTPS.
+
+**Comprobación.** ¿Qué preguntas deben responderse antes de publicar un nuevo servicio en Internet?
 
 ### 8.6.7 — Superficie de ataque
 
-La superficie de ataque reúne interfaces, servicios, identidades, dependencias y rutas por las que un actor podría interactuar con un sistema. **Práctica:** crea un inventario de activos y puntos de entrada para una VM de laboratorio. **Evidencia:** prioriza tres reducciones de superficie y explica el riesgo asociado.
+**Propósito y modelo.** La superficie de ataque comprende interfaces, servicios, identidades, dependencias, rutas de red y funciones que un adversario podría intentar utilizar. Se reduce eliminando componentes innecesarios, limitando privilegios, segmentando, parcheando y monitoreando. No se mide solo contando puertos.
+
+**Ejemplo desarrollado.** Un servidor con SSH, panel de administración, base de datos y agente de monitoreo tiene distintas rutas de acceso y dependencias. Retirar un servicio no usado puede reducir exposición, siempre que se valide que no sea dependencia de otro componente.
+
+**Práctica guiada.** Sobre un diagrama de laboratorio, enumera activos, interfaces, cuentas, servicios y dependencias. Clasifica cada elemento por exposición y sensibilidad.
+
+**Actividad independiente.** Prioriza cinco medidas de reducción de superficie usando impacto, esfuerzo y riesgo operativo.
+
+**Criterios de aceptación.** Define superficie de ataque y justifica medidas con relación a activos y amenazas.
+
+**Errores frecuentes.** Confundir vulnerabilidad con superficie de ataque o deshabilitar servicios críticos sin análisis de dependencia.
+
+**Comprobación.** ¿Por qué reducir componentes innecesarios puede disminuir riesgo aunque no se haya descubierto una vulnerabilidad concreta?
 
 ### 8.6.8 — Filtrado de tráfico
 
-El filtrado de tráfico aplica políticas sobre paquetes y flujos según origen, destino, protocolo, puerto, estado o contenido. **Práctica:** analiza una regla de firewall de laboratorio y predice su efecto sobre tres flujos. **Evidencia:** documenta permitido, bloqueado y no coincidente.
+**Propósito y modelo.** El filtrado de tráfico aplica reglas a paquetes o flujos según origen, destino, protocolo, puerto, estado y zona. Puede ocurrir en host, router, firewall, nube o aplicación. El filtrado stateful mantiene contexto de conexiones; stateless evalúa cada paquete según reglas sin mantener estado de sesión equivalente.
+
+**Ejemplo desarrollado.** Un firewall stateful puede permitir respuestas de una conexión saliente ya establecida sin crear una regla de entrada general. Una ACL stateless puede requerir reglas explícitas para tráfico de retorno.
+
+**Práctica guiada.** Clasifica flujos sintéticos y determina qué regla permite o deniega cada uno. Explica diferencia entre filtrado stateful y stateless.
+
+**Actividad independiente.** Construye reglas para tráfico web entrante y DNS saliente de un segmento, con logging de denegaciones relevantes.
+
+**Criterios de aceptación.** Identifica atributos del flujo y diferencia evaluación stateful/stateless.
+
+**Errores frecuentes.** Permitir rangos amplios para simplificar reglas o no considerar el tráfico de retorno y los protocolos auxiliares.
+
+**Comprobación.** ¿Qué contexto conserva un firewall stateful que un filtro stateless no mantiene de la misma forma?
 
 ### 8.6.9 — Políticas de filtrado
 
-Una política de filtrado establece objetivos, zonas, reglas, excepciones, registro y revisión periódica. **Práctica:** redacta una política de denegación por defecto con excepciones justificadas para una red pequeña. **Evidencia:** incluye propietario, propósito, pruebas y procedimiento de reversión.
+**Propósito y modelo.** Una política de filtrado traduce requisitos de negocio y seguridad en reglas ordenadas, revisables y verificables. Debe establecer zonas, propietarios, flujos autorizados, denegación por defecto, logging, excepciones temporales, revisión y proceso de cambio. Las reglas huérfanas y duplicadas degradan la claridad y el control.
+
+**Ejemplo desarrollado.** Una regla temporal de soporte debe incluir responsable, origen limitado, servicio, fecha de expiración y ticket. Sin caducidad, una excepción puntual puede convertirse en exposición permanente.
+
+**Práctica guiada.** Audita una política ficticia y marca reglas sin propietario, Any/Any, solapadas, sin justificación o sin fecha de expiración.
+
+**Actividad independiente.** Redacta una política para una red corporativa con usuarios, servidores, invitados y administración. Incluye proceso de aprobación y revisión trimestral.
+
+**Criterios de aceptación.** Produce reglas justificadas, trazables y con vencimiento para excepciones; distingue política de implementación.
+
+**Errores frecuentes.** Dejar reglas temporales indefinidas, no registrar cambios o utilizar nombres ambiguos que impiden auditar.
+
+**Comprobación.** ¿Qué información mínima permite revisar y retirar una excepción de firewall de forma segura?
 
 ## 8.7 — Herramientas
 
