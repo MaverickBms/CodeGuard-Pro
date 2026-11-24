@@ -1,7 +1,7 @@
 # Etapa 27 — Blue Team, SOC, SIEM e ingeniería de detección
 
 **Prioridad:** P2 · Especialización defensiva  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** aprender a detectar, analizar y responder a comportamientos sospechosos.  
 **Proyecto oficial:** construir un pequeño SOC de laboratorio que recopile registros de Linux y Windows, centralice eventos y genere alertas ante comportamientos simulados.
 
@@ -101,4 +101,4 @@ No se incluyen videos aprobados. Se añadirán solo tras confirmar audio hablado
 - Wazuh: https://documentation.wazuh.com/
 - Sigma: https://sigmahq.io/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se desplegó SIEM ni se generaron alertas en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se desplegó SIEM ni se generaron alertas en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
