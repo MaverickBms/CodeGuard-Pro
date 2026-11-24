@@ -421,4 +421,4 @@ Ejecuta con `python -m unittest -v`. La prueba del límite debe fallar con el c�
 - Breakpoints y logs: instrucciones revisadas; práctica de estudiante pendiente.
 - Laboratorio: no ejecutado.
 - Videos: ninguno verificado ni añadido.
-- Estado: BORRADOR; requiere revisión técnica, pedagógica, práctica y editorial independiente.
+- Estado de trabajo: BASE DE TRABAJO ACTIVA; requiere revisión técnica, pedagógica, práctica y editorial independiente.
