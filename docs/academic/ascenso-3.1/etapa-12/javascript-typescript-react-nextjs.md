@@ -1,7 +1,7 @@
 # Etapa 12 — JavaScript, TypeScript y frameworks frontend
 
 **Prioridad:** P1 · Obligatoria  
-**Estado editorial:** borrador  
+**Estado editorial:** en desarrollo; no aprobado ni publicado.  
 **Objetivo oficial:** convertirte en un desarrollador frontend capaz de construir aplicaciones interactivas.  
 **Proyecto oficial:** dashboard administrativo con autenticación visual, formularios, paneles, tablas, filtros y consumo de APIs.
 
@@ -161,4 +161,4 @@ No se aprueban videos en esta versión. Se incorporarán solo tras confirmar aud
 - Prettier: https://prettier.io/docs/
 - Tailwind CSS: https://tailwindcss.com/docs
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** ejemplos y proyecto no ejecutados en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** ejemplos y proyecto no ejecutados en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
