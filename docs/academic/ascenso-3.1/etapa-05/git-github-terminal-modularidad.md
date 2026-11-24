@@ -22,124 +22,37 @@ Podrás explicar el flujo de cambios de Git, crear ramas y commits comprensibles
 
 ### 5.1.1 — Repositorios
 
-Git es un sistema de control de versiones distribuido. Un repositorio conserva objetos y referencias que permiten reconstruir la historia del proyecto.
-
 ### 5.1.2 — Working directory
-
-El working directory es el directorio de trabajo que contiene los archivos del proyecto. Aquí editas y creas archivos antes de preparar cambios.
 
 ### 5.1.3 — Staging area
 
-La staging area (índice) es la selección de cambios que formarán el próximo commit. El comando `git status` permite conocer el estado actual. Ejecutarlo con frecuencia evita confundir archivos modificados, preparados o sin seguimiento.
-
 ### 5.1.4 — Commits
-
-Un commit registra un conjunto de cambios con autoría, fecha, mensaje y referencia al estado anterior. Un commit debe representar una unidad lógica coherente.
-
-Buenas prácticas:
-- mensajes claros que expliquen el propósito;
-- cambios pequeños y revisables;
-- no incluir archivos generados, secretos o datos personales;
-- revisar el diff antes de confirmar;
-- no utilizar un commit como sustituto de pruebas.
-
-Flujo básico:
-
-```bash
-git status
-git diff
-git add src/
-git diff --staged
-git commit -m "feat: agregar consulta de productos"
-```
-
-Revisa las rutas antes de ejecutar `git add`; evita `git add .` a ciegas en proyectos con archivos sensibles o generados.
 
 ### 5.1.5 — Branches
 
-Una rama es una referencia móvil a un commit. Permite desarrollar una funcionalidad o corrección sin alterar directamente la línea principal.
-
-```bash
-git switch -c feature/consulta-productos
-# editar y probar
-git status
-git add src/
-git commit -m "feat: implementar consulta de productos"
-```
-
-Las ramas deben tener propósito y alcance definidos. No mantengas ramas abandonadas indefinidamente.
-
-### 5.1.8 — Clone
-
-`clone` crea una copia local inicial de un repositorio remoto.
-
-### 5.1.9 — Pull
-
-`pull` obtiene cambios y los integra según la configuración (frecuentemente fetch + merge o rebase).
-
-### 5.1.10 — Push
-
-`push` publica commits locales en un remoto.
-
-Antes de hacer push, verifica remoto, rama y contenido. Nunca publiques secretos, credenciales, archivos de entorno o datos privados.
-
 ### 5.1.6 — Merge
-
-**Merge** integra historias y puede crear un commit de merge. Conserva la estructura de ambas líneas de desarrollo.
 
 ### 5.1.7 — Rebase
 
-**Rebase** reaplica commits sobre una base diferente y cambia sus identificadores. Puede producir una historia lineal, pero reescribe commits.
+### 5.1.8 — Clone
 
-Regla de colaboración: evita reescribir historia compartida sin coordinación. No hagas rebase de una rama que otras personas estén usando salvo que exista un acuerdo claro.
+### 5.1.9 — Pull
+
+### 5.1.10 — Push
 
 ### 5.1.11 — Fetch
 
-`fetch` descarga referencias y objetos remotos sin integrar automáticamente los cambios en tu rama actual.
-
 ### 5.1.12 — Diff
-
-`git diff` muestra diferencias entre estados. Revisa los cambios antes de integrarlos y utiliza opciones para limitar archivos o commits cuando el diff sea grande.
-
-```bash
-git diff
-git diff --staged
-```
 
 ### 5.1.13 — Log
 
-`git log` permite recorrer la historia del repositorio.
-
-```bash
-git log --oneline --decorate --graph -15
-git show --stat HEAD
-```
-
 ### 5.1.14 — Stash
-
-`git stash` guarda temporalmente cambios locales para permitir cambiar de contexto. No es una copia de seguridad ni sustituye commits.
-
-```bash
-git stash push -m "trabajo temporal en formulario"
-git stash list
-git stash apply
-```
-
-Comprueba el estado después de aplicar el stash: pueden aparecer conflictos. No borres un stash hasta confirmar que los cambios están recuperados.
 
 ### 5.1.15 — Reset
 
-`reset` mueve una referencia de rama y puede cambiar el índice/directorio de trabajo según el modo. `--hard` descarta cambios y puede provocar pérdida de trabajo.
-
 ### 5.1.16 — Revert
 
-`revert` crea un nuevo commit que revierte los cambios de otro commit; suele ser más seguro para historia compartida.
-
 ### 5.1.17 — Cherry-pick
-
-`cherry-pick` aplica los cambios introducidos por commits seleccionados sobre la rama actual; puede generar conflictos y nuevos commits.
-
-**Regla de seguridad:** no ejecutes `git reset --hard`, `git clean -fd`, force-push ni eliminación de ramas sobre trabajo real sin revisar estado, destino y recuperación. Practica primero en un repositorio desechable.
 
 ## 5.2 — GitHub
 
@@ -448,4 +361,18 @@ No se incluye video en esta versión: no se ha validado una pieza concreta con a
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** comandos y laboratorio propuestos; no ejecutados en un entorno de terminal real.  
-**Estado editorial:** en desarrollo; no aprobado ni publicado..
+**Estado editorial:** en desarrollo; no aprobado ni publicado.
+
+
+## Compatibilidad y seguridad operativa
+
+Los comandos de Git y de terminal se deben ejecutar en un repositorio de práctica propio. La sintaxis de shell varía entre Bash, Zsh y PowerShell; cada ejercicio debe indicar la shell utilizada y no asumir que un comando es portable. Antes de usar `reset`, `rebase`, `push --force` o eliminación de archivos, revisar rama, remoto, estado y copias de seguridad. No incluir tokens, claves privadas ni credenciales en commits, capturas o logs.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** cotejo del temario con el roadmap, cobertura de cada lección, progresión, ejemplos, proyecto, evaluación, terminología y advertencias de uso.
+
+**Resultado:** revisión documental interna realizada. La etapa cubre 5.1–5.4 y conserva proyecto/actividades y rúbrica. No equivale a aprobación académica externa ni a validación de ejecución. Los ejemplos y laboratorios no se declaran ejecutados; la aprobación requiere segunda revisión, comprobación de fuentes y ejecución reproducible de las actividades.
+
+**Pendientes:** comprobar ejemplos con JDK 21 y UML para etapa 4; para etapa 5, ejecutar el laboratorio en repositorio aislado con Bash y PowerShell, validar cada comando destructivo/recuperación y revisar la evolución de la documentación oficial de Git/GitHub.
