@@ -1248,3 +1248,37 @@ Se revisaron además las unidades DML de UPDATE/DELETE: los ejemplos y práctica
 Se cotejó el documento de NoSQL y almacenamiento moderno contra el roadmap oficial. Coinciden los 4 módulos, las 38 lecciones, su orden y sus títulos. Las 38 lecciones contienen laboratorio de profundización y evidencia esperada. No se detectaron discrepancias de numeración o título en este cotejo.
 
 **Límites:** no se ejecutaron instalaciones ni consultas en MongoDB, Redis u otros motores; no se probaron índices, agregaciones, replicación, persistencia, TTL, consistencia o recuperación. La etapa está desarrollada documentalmente y alineada en estructura, pero no validada mediante ejecución ni revisión externa.
+
+
+## Addendum de profundización didáctica por lección — 2026-11-24 (continuación autónoma)
+
+### Alcance incorporado en esta entrega
+
+Se amplió el desarrollo de 240 lecciones oficiales en cinco documentos de etapa, preservando los títulos y el orden curricular:
+
+| Etapa | Lecciones ampliadas | Trabajo añadido |
+|---|---:|---|
+| 7 — Sistemas operativos | 20 | Casos aplicados y preguntas de comprensión para las 20 entradas del módulo 7.3 Administración Linux; se conservaron las prácticas, criterios y advertencias ya existentes. |
+| 13 — HTTP, APIs y comunicación | 63 | Escenarios de aplicación y preguntas de comprensión en los 63 apartados; los módulos 13.1–13.2 y 13.3–13.7 recibieron ampliaciones específicas sobre protocolos, contratos, consumo, estilos de comunicación, seguridad y documentación. |
+| 14 — Java y Spring Boot | 58 | Escenarios aplicados y preguntas de comprensión para arquitectura, Spring Framework, Spring Boot, persistencia, seguridad, capacidades avanzadas y herramientas de build. |
+| 15 — Node.js y NestJS | 53 | Escenarios aplicados y preguntas de comprensión para runtime, event loop, módulos, Express, NestJS, persistencia, identidad, mensajería y pruebas. |
+| 16 — PHP, Laravel y .NET | 46 | Escenarios aplicados y preguntas de comprensión para PHP, Laravel, C# y ASP.NET Core. Se eliminó un bloque documental duplicado detectado durante la edición y se comprobó que las 46 claves de lección quedaran únicas y completas. |
+| **Total** | **240** | **Ampliación didáctica documental; no equivale a ejecución ni validación técnica externa.** |
+
+### Forma de profundización
+
+Las ampliaciones contextualizan cada concepto en una situación de ingeniería, identifican la decisión o el riesgo relevante y plantean una pregunta que exige explicar consecuencias, controles o criterios de diseño. Se preservaron las prácticas y evidencias previamente existentes en las etapas 13–16. En la etapa 7.3 se añadieron escenarios y preguntas a las 20 lecciones de administración Linux.
+
+### Comprobaciones editoriales realizadas
+
+- Se cotejaron las claves de lección de las etapas 13, 14, 15 y 16 con los apartados existentes en sus documentos; las cantidades son 63, 58, 53 y 46 respectivamente.
+- Tras corregir el bloque duplicado de la etapa 16, se comprobó que permanecen 46 encabezados granulares y 46 identificadores únicos, incluido 16.1.02.
+- La etapa 7 mantiene 84 encabezados de lección y se añadieron 20 escenarios/preguntas al módulo 7.3.
+- Se mantuvieron los apartados de práctica/evidencia existentes; esta edición no registra su ejecución.
+- Se preservó el roadmap oficial; el archivo JSON no se modificó.
+
+### Límites y pendientes
+
+No se ejecutaron builds, pruebas automatizadas, aplicaciones, bases de datos, servidores, comandos administrativos ni laboratorios en entornos reales o aislados durante esta entrega. Tampoco se completó una verificación individual de vigencia de todas las referencias ni una revisión externa independiente. Las ampliaciones son material didáctico documental que requiere validación práctica, versionado reproducible, revisión técnica por dominio y revisión pedagógica antes de aprobación.
+
+No se declara completado el currículo global de 1.916 lecciones de las etapas 1–32, ni se autoriza importación, aprobación o publicación por este addendum. El objetivo de la etapa 25 permanece sin completar ni inferir.
