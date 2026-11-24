@@ -1,7 +1,7 @@
 # Etapa 14 — Backend I: Java y Spring Boot
 
 **Prioridad:** Especialización principal  
-**Estado editorial:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** construir servicios backend profesionales utilizando Java.  
 **Proyecto oficial:** API REST empresarial para administrar usuarios, productos, inventario, ventas y permisos.
 
@@ -148,4 +148,4 @@ No se incluyen videos aprobados. Para aprobar recursos se comprobarán idioma ha
 - Gradle: https://docs.gradle.org/current/userguide/userguide.html
 - Java Documentation: https://docs.oracle.com/en/java/
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se ha generado ni ejecutado una API en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se ha generado ni ejecutado una API en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
