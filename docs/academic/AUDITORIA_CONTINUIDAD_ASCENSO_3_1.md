@@ -1210,3 +1210,25 @@ Se añadieron prácticas específicas de selección de modelos, consistencia, di
 **Estado:** desarrollo documental de la etapa 10 completado en esta pasada; ejecución reproducible, verificación de referencias y aprobación independiente pendientes. La cobertura 38/38 no equivale a pruebas ejecutadas ni a aprobación.
 
 El roadmap JSON permanece sin cambios. No se importó ni publicó contenido.
+
+
+## Addendum de auditoría editorial — etapa 8 (2026-11-24)
+
+### Cotejo de estructura con el roadmap
+
+Se cotejó el documento `docs/academic/ascenso-3.1/etapa-08/redes-informaticas-y-protocolos.md` con la etapa 8 del archivo oficial `apps/roadmaps/data/ascenso_3_1.json`.
+
+- El roadmap define 7 módulos y 81 lecciones; el documento contiene 81 encabezados de lección numerados.
+- Se comprobó la correspondencia de cantidades por módulo y el orden de títulos.
+- Se normalizaron los encabezados de WAN y MAN para respetar los títulos oficiales.
+- Se detectó y corrigió un desplazamiento en el módulo 8.6: faltaba la lección «Segmentación» y se había incluido «Políticas de filtrado» como una lección adicional que no existe en el roadmap. Se incorporó el contenido de segmentación en 8.6.5; se alinearon las lecciones restantes a los títulos y números oficiales; el contenido útil de políticas de filtrado se integró como complemento dentro de 8.6.9 «Filtrado de tráfico».
+- Se reubicó al cierre del módulo 8.5 un laboratorio de direccionamiento/routing que había quedado bajo el encabezado del módulo 8.6.
+- Se comprobó que el documento no contiene el texto genérico de relleno previamente buscado y que las 81 lecciones presentan contenido individualizado, ejemplos o prácticas y comprobación didáctica.
+
+### Límites de validación
+
+Este lote constituye cotejo estructural y revisión editorial documental. No se ejecutaron configuraciones de routers, switches, VLAN, firewalls, VPN, escaneos Nmap ni capturas de paquetes. Las prácticas y laboratorios permanecen como actividades propuestas hasta que se registren resultados reproducibles en un entorno autorizado. Tampoco se declara revisión externa o aprobación técnica.
+
+### Estado del roadmap
+
+No se modificó el JSON oficial. Se mantiene la estructura de 33 etapas, 212 módulos y 1.946 lecciones; el objetivo de etapa 25 permanece vacío. No se importó ni publicó contenido.
