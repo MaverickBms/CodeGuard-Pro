@@ -173,59 +173,227 @@ Este desglose conserva los 38 títulos oficiales y añade una unidad identificab
 
 #### 10.2.1 — Documentos
 
-En MongoDB, un documento es una estructura BSON con campos y valores anidados; su diseño debe responder a las consultas y límites del dominio. **Práctica:** modela un documento de producto con atributos y variantes. **Evidencia:** identifica campos obligatorios, opcionales y reglas de validación.
+**Propósito y modelo.** Una base documental almacena registros como documentos, comúnmente JSON o BSON, con campos anidados y arreglos. El diseño se orienta a agregados y patrones de consulta; no elimina la necesidad de definir validaciones, índices, relaciones y políticas de actualización.
+
+**Ejemplo desarrollado.** Un documento de pedido puede incluir datos de dirección como instantánea y líneas de pedido embebidas. La decisión evita joins frecuentes, pero puede duplicar información y generar documentos grandes.
+
+**Práctica guiada.** Diseña un documento JSON para Pedido con identificador, fecha, cliente, dirección histórica y líneas. Valida estructura, tipos y campos obligatorios.
+
+**Actividad independiente.** Compara un documento embebido y otro normalizado para el mismo dominio y determina qué consultas favorece cada diseño.
+
+**Criterios de aceptación.** Explica documento, campos, anidamiento y límites de tamaño según motor; justifica estructura por patrón de acceso.
+
+**Errores frecuentes.** Embutir relaciones ilimitadas o asumir que un documento no necesita esquema ni validación.
+
+**Comprobación.** ¿Qué ventaja y qué costo introduce embutir líneas de pedido dentro del documento Pedido?
 
 #### 10.2.2 — Colecciones
 
-Una colección agrupa documentos y puede aplicar validación y opciones de índices; no exige que todos los documentos tengan exactamente los mismos campos. **Práctica:** crea una colección de productos en una instancia local y consulta su listado. **Evidencia:** explica la diferencia entre colección y documento.
+**Propósito y modelo.** Una colección agrupa documentos relacionados y suele ser equivalente conceptual —no estricta— a una tabla. Los documentos pueden variar en campos, pero una estructura heterogénea sin reglas dificulta consultas y mantenimiento. Las colecciones pueden tener índices y validadores según DBMS.
+
+**Ejemplo desarrollado.** Una colección clientes puede almacenar documentos con campos comunes y subdocumentos opcionales. El validador puede exigir email y fecha_creacion aunque algunos atributos sean variables.
+
+**Práctica guiada.** Define colección para dispositivos IoT y propone campos obligatorios, opcionales y tipos. Diseña un validador conceptual para rechazar valores inválidos.
+
+**Actividad independiente.** Establece convención de colecciones para una aplicación y documenta límites entre datos operativos, auditoría y eventos.
+
+**Criterios de aceptación.** Diferencia colección y documento y define reglas de consistencia de estructura.
+
+**Errores frecuentes.** Crear una colección por usuario o mezclar tipos de documentos incompatibles sin un discriminador claro.
+
+**Comprobación.** ¿Por qué una colección documental también necesita un contrato de estructura?
 
 #### 10.2.3 — BSON
 
-BSON es una representación binaria de documentos con tipos adicionales a JSON, como fechas y datos binarios. **Práctica:** compara la representación conceptual de una fecha y un número decimal en JSON y BSON. **Evidencia:** explica por qué los tipos BSON importan al serializar y consultar.
+**Propósito y modelo.** BSON es una representación binaria de documentos utilizada por MongoDB. Incluye tipos adicionales y metadatos de longitud que no existen de la misma forma en JSON textual, como ObjectId, fechas y datos binarios. La representación en wire/storage no debe confundirse con el JSON que se intercambia en APIs.
+
+**Ejemplo desarrollado.** Un campo _id puede contener ObjectId, mientras una fecha BSON se almacena como valor temporal tipado. Serializar a JSON extendido puede requerir representación especial para conservar tipos.
+
+**Práctica guiada.** Compara un documento JSON con su representación JSON extendida para ObjectId y fecha. Identifica campos que perderían tipo si se convierten a cadenas sin convención.
+
+**Actividad independiente.** Define un contrato de intercambio entre API JSON y MongoDB que preserve fechas, identificadores y decimales.
+
+**Criterios de aceptación.** Explica por qué BSON no es simplemente JSON comprimido y reconoce tipos adicionales.
+
+**Errores frecuentes.** Tratar ObjectId como secreto o convertir fechas a texto local sin zona horaria.
+
+**Comprobación.** ¿Qué ventaja aporta conservar tipos nativos frente a almacenar todos los valores como cadenas?
 
 #### 10.2.4 — JSON
 
-JSON es un formato textual de intercambio con objetos, arrays, cadenas, números, booleanos y null; no conserva por sí solo tipos de fecha ni binarios específicos. **Práctica:** valida un documento JSON de producto y detecta comas, comillas o tipos inválidos. **Evidencia:** entrega JSON válido y explica qué valores requieren convención adicional.
+**Propósito y modelo.** JSON es un formato textual de intercambio de datos con objetos, arreglos, cadenas, números, booleanos y null. No define por sí solo esquema, tipos de fecha, referencias ni reglas de negocio. Los consumidores deben validar estructura y limitar tamaño/profundidad para evitar errores y abuso.
+
+**Ejemplo desarrollado.** Un objeto JSON puede representar pedido con arreglo de líneas. Las claves son cadenas; los números no deben utilizarse para identificadores largos si el consumidor pierde precisión numérica.
+
+**Práctica guiada.** Escribe un documento JSON válido y valida sintaxis con herramienta local. Prueba errores de coma, comillas y tipos; no incluyas datos personales.
+
+**Actividad independiente.** Diseña esquema de JSON para un evento de auditoría con versión, timestamp UTC, actor seudónimo y atributos permitidos.
+
+**Criterios de aceptación.** Distingue objeto/arreglo/tipo primitivo y valida sintaxis y contrato semántico.
+
+**Errores frecuentes.** Suponer que JSON admite comentarios o fechas nativas, o confiar en datos recibidos sin validación.
+
+**Comprobación.** ¿Qué diferencia existe entre que un JSON sea sintácticamente válido y que cumpla el contrato de una aplicación?
 
 #### 10.2.5 — CRUD
 
-CRUD resume Create, Read, Update y Delete, operaciones fundamentales de persistencia. **Práctica:** en una base local de laboratorio inserta un documento, léelo, actualiza un campo y elimínalo. **Evidencia:** registra filtros, cantidad afectada y estado después de cada operación.
+**Propósito y modelo.** CRUD representa Create, Read, Update y Delete, las operaciones básicas sobre documentos. En MongoDB se implementan con métodos de inserción, consulta, actualización y eliminación. Deben considerarse filtros, atomicidad por documento, concurrencia, validación y autorización.
+
+**Ejemplo desarrollado.** insertOne crea un documento; find consulta; updateOne modifica campos mediante operadores; deleteOne elimina una coincidencia. Los filtros deben identificar el conjunto exacto de documentos.
+
+**Práctica guiada.** En una instancia local o entorno de prueba crea una colección y ejecuta CRUD sobre documentos sintéticos. Antes de borrar, ejecuta el mismo filtro con find y revisa coincidencias.
+
+**Actividad independiente.** Construye secuencia CRUD para inventario con validación, manejo de errores y registro de operaciones.
+
+**Criterios de aceptación.** Ejecuta operaciones sobre datos ficticios y demuestra alcance correcto de filtros.
+
+**Errores frecuentes.** Ejecutar updateMany/deleteMany con filtros vacíos o construir consultas concatenando entrada sin validación.
+
+**Comprobación.** ¿Qué verificación previa reduce el riesgo de borrar documentos no previstos?
 
 #### 10.2.6 — Queries
 
-Una query expresa qué documentos recuperar y qué proyección o transformación aplicar. **Práctica:** consulta productos por categoría y proyecta solo nombre y precio. **Evidencia:** explica el filtro y por qué limitar campos puede reducir transferencia.
+**Propósito y modelo.** Las consultas documentales seleccionan documentos mediante filtros y proyecciones. Pueden combinar condiciones, operadores de comparación, existencia, arreglos y campos anidados. El rendimiento depende de índices y selectividad; una consulta funcionalmente correcta puede ser costosa.
+
+**Ejemplo desarrollado.** Un filtro por estado y fecha puede recuperar pedidos abiertos de un periodo. La proyección devuelve solo los campos necesarios y reduce transferencia.
+
+**Práctica guiada.** Construye consultas con igualdad, rangos, AND/OR y campos anidados sobre una colección sintética. Compara filtro completo y proyección.
+
+**Actividad independiente.** Define consultas para tablero de pedidos y explica índices necesarios y límites de paginación.
+
+**Criterios de aceptación.** Expresa filtros precisos y limita campos y resultados.
+
+**Errores frecuentes.** Utilizar consultas sin límites sobre colecciones grandes o suponer que la consulta por campo anidado es equivalente a una columna relacional indexada.
+
+**Comprobación.** ¿Por qué una proyección puede reducir costos aunque el filtro encuentre las mismas filas?
 
 #### 10.2.7 — Filters
 
-Los filtros combinan condiciones de igualdad, rangos, existencia, arrays y operadores lógicos. **Práctica:** construye una consulta con categoría y rango de precio, y otra con `$and`/`$or`. **Evidencia:** describe qué documentos coinciden y prueba casos límite.
+**Propósito y modelo.** Los filtros de MongoDB usan operadores como $eq, $gt, $gte, $in, $exists, $and, $or y expresiones sobre arreglos. Los tipos importan: comparar número con cadena no es equivalente. La semántica de campos ausentes y null debe probarse explícitamente.
+
+**Ejemplo desarrollado.** `{ precio: { $gte: 10, $lt: 50 } }` selecciona valores dentro de un rango numérico; `{ campo: null }` puede coincidir con null y, según consulta, campos ausentes, por lo que se requiere cuidado.
+
+**Práctica guiada.** Crea documentos con campo ausente, null, número y cadena. Ejecuta filtros con $exists, igualdad y rangos y documenta diferencias.
+
+**Actividad independiente.** Diseña filtros para pedidos con estado, fecha, etiquetas y monto, incluyendo datos incompletos.
+
+**Criterios de aceptación.** Interpreta operadores y distingue null de campo ausente y de tipo incompatible.
+
+**Errores frecuentes.** No validar tipos, asumir semántica SQL de NULL o utilizar $where innecesariamente.
+
+**Comprobación.** ¿Por qué conviene diferenciar un campo ausente de un campo presente con valor null?
 
 #### 10.2.8 — Indexes
 
-Los índices aceleran consultas al mantener estructuras auxiliares, pero consumen espacio y encarecen escrituras. **Práctica:** crea un índice sobre un campo de consulta frecuente y examina el plan con `explain`. **Evidencia:** compara antes/después y explica selectividad y coste.
+**Propósito y modelo.** Los índices MongoDB mantienen estructuras para acelerar consultas y ordenamientos. Tipos comunes incluyen índices simples, compuestos, multikey, geoespaciales, textuales y TTL. Cada índice ocupa memoria/disco y añade costo de escritura; la selección debe basarse en consultas reales y explain.
+
+**Ejemplo desarrollado.** Un índice compuesto {cliente_id:1, fecha:-1} puede apoyar consultas por cliente y fecha descendente. El orden de campos afecta prefijos útiles y sort.
+
+**Práctica guiada.** En una colección de prueba ejecuta explain para una consulta antes y después de un índice. Observa winningPlan, keysExamined y docsExamined cuando estén disponibles.
+
+**Actividad independiente.** Propón índices para tres consultas frecuentes y explica impacto de cada uno en escrituras y almacenamiento.
+
+**Criterios de aceptación.** Justifica índice por patrón de consulta y valida plan con datos representativos.
+
+**Errores frecuentes.** Indexar todos los campos o creer que la presencia de índice garantiza un plan eficiente.
+
+**Comprobación.** ¿Qué costo operativo tiene mantener muchos índices en una colección con escrituras frecuentes?
 
 #### 10.2.9 — Aggregation Pipeline
 
-Aggregation Pipeline procesa documentos mediante etapas como `$match`, `$project`, `$group`, `$sort` y `$limit`. **Práctica:** agrupa ventas por categoría y calcula suma y cantidad. **Evidencia:** explica el orden de etapas y cómo el filtrado temprano puede reducir trabajo.
+**Propósito y modelo.** El Aggregation Pipeline procesa documentos mediante etapas como $match, $project, $group, $sort, $unwind y $lookup. El orden de etapas influye en volumen procesado y rendimiento; $match temprano puede reducir documentos que atraviesan el pipeline, cuando la semántica lo permite.
+
+**Ejemplo desarrollado.** Un pipeline puede filtrar pedidos por fecha, agrupar por cliente y sumar totales. $unwind transforma elementos de un arreglo en documentos separados, alterando cardinalidad.
+
+**Práctica guiada.** Construye pipeline sobre datos sintéticos con $match, $group y $sort. Cuenta documentos antes y después de $unwind.
+
+**Actividad independiente.** Diseña reporte de ventas por mes y categoría; incluye manejo de campos faltantes y verifica resultados manualmente con un conjunto pequeño.
+
+**Criterios de aceptación.** Explica etapas y cambios de cardinalidad y valida agregados.
+
+**Errores frecuentes.** Aplicar $unwind sin comprender duplicación de documentos o agrupar antes de filtrar innecesariamente.
+
+**Comprobación.** ¿Qué cambia en el número de documentos cuando se aplica $unwind a un arreglo con varios elementos?
 
 #### 10.2.10 — Relationships
 
-Las relaciones entre documentos pueden representarse mediante embedding o referencias; la decisión depende de cardinalidad, frecuencia de lectura y ciclo de vida. **Práctica:** modela cliente-pedidos y explica si cada pedido debe embebirse o almacenarse aparte. **Evidencia:** justifica la estrategia con consultas esperadas.
+**Propósito y modelo.** Las relaciones entre documentos pueden representarse mediante embedding (datos anidados) o referencing (identificadores relacionados). La elección depende de cardinalidad, frecuencia de lectura, actualización, tamaño, consistencia y ciclo de vida. No existe una regla única de «embebido siempre».
+
+**Ejemplo desarrollado.** Dirección histórica de un pedido puede embebirse para preservar el contexto; una colección de comentarios ilimitados puede referenciarse para evitar crecimiento de documento.
+
+**Práctica guiada.** Modela relación Usuario–Dirección y Pedido–Líneas. Para cada una decide embedding o referencia y explica patrón de acceso.
+
+**Actividad independiente.** Diseña modelo documental para curso y estudiantes con matrículas, historial y cambios frecuentes.
+
+**Criterios de aceptación.** Justifica representación según cardinalidad, crecimiento y consistencia.
+
+**Errores frecuentes.** Embutir arreglos ilimitados o duplicar datos mutables sin estrategia de sincronización.
+
+**Comprobación.** ¿Qué criterio ayuda a decidir si una relación debe embebirse o referenciarse?
 
 #### 10.2.11 — Embedding
 
-Embedding almacena datos relacionados dentro del mismo documento y favorece lecturas atómicas de un agregado, pero puede duplicar datos y acercarse a límites de tamaño. **Práctica:** embebe direcciones de entrega dentro de un pedido. **Evidencia:** identifica qué ocurre si la dirección maestra del cliente cambia.
+**Propósito y modelo.** Embedding guarda subdocumentos o arreglos dentro del documento principal. Favorece lecturas agregadas y actualizaciones atómicas dentro de un documento, pero puede duplicar datos y aumentar tamaño. Debe considerarse límite de documento, crecimiento y frecuencia de modificación.
+
+**Ejemplo desarrollado.** Las líneas de un pedido pueden embebirse porque se consultan junto con el pedido y tienen ciclo de vida relacionado. Un historial ilimitado de eventos no es adecuado si provoca crecimiento sin límite.
+
+**Práctica guiada.** Diseña documento Pedido con líneas embebidas y calcula cómo crece al añadir elementos. Identifica campos mutables y campos históricos.
+
+**Actividad independiente.** Evalúa embedding de direcciones de usuario frente a direcciones históricas de pedido; justifica consistencia y retención.
+
+**Criterios de aceptación.** Explica beneficios y límites y demuestra que el tamaño/cantidad de elementos está acotado.
+
+**Errores frecuentes.** Embutir relaciones N:M de gran tamaño o repetir datos cambiantes sin reconciliación.
+
+**Comprobación.** ¿Por qué un arreglo embebido que crece sin límite puede convertirse en un problema de diseño?
 
 #### 10.2.12 — Referencing
 
-Referencing guarda identificadores de otros documentos y permite relaciones independientes, a costa de consultas adicionales o joins mediante agregación. **Práctica:** separa clientes y pedidos y recupera pedidos de un cliente por referencia. **Evidencia:** compara consistencia de actualización y número de consultas frente a embedding.
+**Propósito y modelo.** Referencing almacena identificadores de otros documentos y recupera datos mediante consultas adicionales o $lookup. Reduce duplicación y permite colecciones independientes, pero puede aumentar operaciones de lectura y requiere gestionar referencias huérfanas y consistencia entre documentos.
+
+**Ejemplo desarrollado.** Una orden puede almacenar cliente_id en vez de copiar todo el perfil. Si el perfil cambia, las consultas reflejan el dato actual, mientras la dirección histórica de compra quizá deba conservarse como snapshot embebido.
+
+**Práctica guiada.** Modela Cliente y Pedido en colecciones separadas y construye consulta conceptual que recupere ambos. Considera qué sucede si el cliente se elimina.
+
+**Actividad independiente.** Diseña estrategia de borrado lógico, integridad referencial a nivel aplicación y detección de referencias huérfanas.
+
+**Criterios de aceptación.** Explica ventajas y costos y define manejo de referencias inválidas.
+
+**Errores frecuentes.** Asumir que el DBMS impone automáticamente FK entre colecciones o realizar N+1 consultas sin evaluar rendimiento.
+
+**Comprobación.** ¿Qué responsabilidad adicional asume la aplicación cuando modela relaciones mediante referencias?
 
 #### 10.2.13 — Replication
 
-La replicación mantiene copias de datos en varios nodos para tolerancia a fallos y continuidad; puede introducir retraso y decisiones de elección de primario. **Práctica:** dibuja un replica set con primario y secundarios. **Evidencia:** explica elección, lectura desde réplica y posible lectura desactualizada.
+**Propósito y modelo.** La replicación mantiene copias de datos en varios nodos para disponibilidad, redundancia y distribución de lecturas. En MongoDB, replica sets eligen un primario y mantienen secundarios mediante oplog. La consistencia observable depende de read concern, write concern, preferencias de lectura y estado de replicación.
+
+**Ejemplo desarrollado.** Una escritura confirmada con una política de write concern limitada puede no estar replicada en todos los secundarios. Una lectura desde secundario puede observar retraso.
+
+**Práctica guiada.** Dibuja un replica set de tres miembros con primario, secundarios y elección. Describe qué ocurre ante caída del primario, sin desplegar nodos en producción.
+
+**Actividad independiente.** Define política de write concern/read concern para un catálogo y para registros financieros; justifica disponibilidad y durabilidad.
+
+**Criterios de aceptación.** Explica elección, replicación y retraso; diferencia réplica de backup.
+
+**Errores frecuentes.** Considerar secundarios como copias de seguridad o asumir que todas las escrituras están inmediatamente disponibles en cada réplica.
+
+**Comprobación.** ¿Por qué una replicación activa no protege frente a una eliminación lógica accidental propagada a todos los nodos?
 
 #### 10.2.14 — Sharding
 
-Sharding distribuye documentos entre shards mediante una clave de partición; una mala elección puede crear hotspots o consultas dispersas. **Práctica:** evalúa claves candidatas para distribuir pedidos por cliente o fecha. **Evidencia:** analiza cardinalidad, monotonía, distribución y patrón de consulta.
+**Propósito y modelo.** Sharding distribuye documentos entre shards usando una shard key. Permite escalar capacidad horizontal y distribuir carga, pero introduce complejidad de enrutamiento, balanceo, transacciones y operación. La elección de shard key afecta cardinalidad, distribución, monotonicidad y consultas frecuentes.
+
+**Ejemplo desarrollado.** Una shard key monotónica puede concentrar nuevas escrituras en un único shard; una clave de alta cardinalidad y distribución adecuada puede repartirlas mejor, aunque dificulte consultas sin la clave.
+
+**Práctica guiada.** Compara tres shard keys hipotéticas para eventos: timestamp, tenant_id y hash de identificador. Evalúa distribución, consultas y riesgo de hotspots.
+
+**Actividad independiente.** Diseña estrategia de sharding para un SaaS multi-tenant y explica cómo se manejan tenants grandes y consultas globales.
+
+**Criterios de aceptación.** Justifica shard key y describe trade-offs de distribución y enrutamiento.
+
+**Errores frecuentes.** Elegir shard key solo por unicidad o creer que sharding mejora automáticamente cualquier consulta.
+
+**Comprobación.** ¿Qué es un hotspot y cómo puede producirlo una shard key mal elegida?
 
 ### 10.3 — Redis
 
