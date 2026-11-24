@@ -593,3 +593,14 @@ También se corrigió el orden y la numeración de los encabezados para que coin
 Este trabajo profundiza 14 lecciones que ya pertenecían al inventario oficial de la etapa 7; no añade lecciones ni altera el total curricular. Es un sublote del desarrollo de la etapa 7 y no permite marcar la etapa completa como validada. Las etapas 7–32 siguen requiriendo revisión y profundización progresiva conforme al alcance general.
 
 El roadmap JSON no fue modificado. El objetivo oficial de la etapa 25 permanece vacío. No se importó, aprobó ni publicó contenido.
+
+
+## Addendum de profundización didáctica — etapa 13 — 2026-11-24
+
+Se añadieron prácticas y evidencias específicas a las **63 lecciones** de Internet, HTTP, APIs, herramientas de consumo, protocolos alternativos, seguridad y documentación de APIs.
+
+**Comprobación documental:** el archivo se releyó desde la rama después del cambio; se contaron 63 encabezados de lección, 63 apartados de práctica/evidencia y ningún encabezado vacío. Las prácticas se limitan a servicios propios o autorizados, y los ejemplos de credenciales/tokens utilizan datos ficticios.
+
+**Límites:** no se ejecutaron solicitudes, servidores, pruebas de CORS, JWT, OAuth/tokens, webhooks, gRPC, GraphQL ni herramientas Postman/Insomnia. No se verificaron todas las referencias ni versiones. El resultado es ampliación documental y comprobación estructural, no validación técnica por ejecución ni aprobación externa.
+
+**Acumulado registrado:** etapas 1–6: 265 lecciones según el informe de OpenCode; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63. Total de etapas 1–13 con desarrollo documental ampliado: **761 lecciones**. Etapas 14–32: 1.155 lecciones requieren profundización equivalente. Se mantienen pendientes la ejecución reproducible, revisión bibliográfica individual y revisión técnica/pedagógica independiente. No se importó ni publicó contenido.
