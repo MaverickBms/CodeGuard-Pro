@@ -1126,3 +1126,35 @@ Se incorporaron laboratorios conceptuales y prácticos específicos sobre topolo
 **Estado:** desarrollo documental de la etapa 8 completado en esta pasada; ejecución reproducible, verificación de referencias y aprobación independiente pendientes. La cobertura 81/81 no equivale a pruebas ejecutadas ni a aprobación.
 
 El roadmap JSON permanece sin cambios. No se importó ni publicó contenido.
+
+
+## Profundización documental integral — etapa 9 (2026-11-24)
+
+### Alcance
+
+Se amplió el desarrollo de las **81 lecciones** oficiales de bases de datos relacionales y SQL:
+
+| Módulo | Lecciones | Cobertura documental |
+|---|---:|---:|
+| 9.1 Fundamentos | 10 | 10/10 |
+| 9.2 Modelado | 11 | 11/11 |
+| 9.3 MySQL | 9 | 9/9 |
+| 9.4 SQL | 19 | 19/19 |
+| 9.5 Diseño y normalización | 9 | 9/9 |
+| 9.6 Bases de datos avanzadas | 15 | 15/15 |
+| 9.7 PostgreSQL | 8 | 8/8 |
+| **Total** | **81** | **81/81** |
+
+Se añadieron laboratorios específicos de modelado, claves, restricciones, administración de MySQL, sentencias SQL, transacciones, normalización, concurrencia, índices, planes de ejecución y PostgreSQL. Las prácticas destructivas se limitaron explícitamente a esquemas y datasets desechables.
+
+### Control editorial y técnico
+
+- Se cotejaron los siete módulos y sus cantidades contra el roadmap oficial.
+- Se verificaron estructuralmente 81 encabezados de lección, coincidentes con el conteo del JSON.
+- Se añadieron advertencias para DDL destructivo, UPDATE/DELETE, privilegios, credenciales y consultas costosas.
+- No se ejecutaron sentencias SQL, instalaciones de MySQL/PostgreSQL, migraciones, benchmarks ni pruebas concurrentes durante esta intervención.
+- No se verificaron individualmente todas las referencias ni se obtuvo revisión técnica externa.
+
+**Estado:** desarrollo documental de la etapa 9 completado en esta pasada; ejecución reproducible, verificación de referencias y aprobación independiente pendientes. La cobertura 81/81 no equivale a pruebas ejecutadas ni a aprobación.
+
+El roadmap JSON permanece sin cambios. No se importó ni publicó contenido.
