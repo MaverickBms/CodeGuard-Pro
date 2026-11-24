@@ -554,3 +554,42 @@ Se añadieron prácticas y evidencias de comprensión a las unidades individuale
 - Etapas 13–32: 1.248 lecciones conservan la primera pasada individual previa y requieren profundización equivalente en prácticas, evidencias y validación.
 
 La redacción ampliada no constituye aprobación. Siguen pendientes ejecución reproducible, verificación bibliográfica individual, revisión técnica experta y revisión pedagógica independiente. No se importó ni publicó contenido.
+
+
+## Addendum de profundización adicional — módulo 7.1 (2026-11-24)
+
+### Alcance realizado
+
+Se profundizaron las 14 lecciones oficiales del módulo 7.1, «Fundamentos de sistemas operativos», dentro del documento `docs/academic/ascenso-3.1/etapa-07/sistemas-operativos-linux-windows-administracion.md`.
+
+Cada lección incorpora ahora, con contenido específico de su materia:
+
+- propósito y modelo conceptual;
+- ejemplo explicado;
+- práctica guiada;
+- actividad independiente;
+- criterios de aceptación;
+- errores frecuentes;
+- pregunta de comprobación.
+
+También se corrigió el orden y la numeración de los encabezados para que coincidan exactamente con el orden del módulo 7.1 en el roadmap: Kernel, User Space, Kernel Space, Procesos, Hilos, Scheduler, Context Switching, Memoria virtual, Sistema de archivos, Drivers, System Calls, IPC, Concurrencia y Paralelismo.
+
+### Comprobaciones documentales
+
+- Se cotejaron los 14 títulos y su secuencia con `apps/roadmaps/data/ascenso_3_1.json`.
+- Se verificó que el documento contiene 14 encabezados de lección del módulo 7.1 y que ninguno está vacío.
+- El contenido fue escrito para este módulo; no se aplicó una plantilla genérica intercambiando nombres.
+- Se preservaron los apartados posteriores del documento (módulos 7.2–7.6, proyecto, evaluación y referencias).
+
+### Límites de validación
+
+- No se ejecutaron comandos ni prácticas en una máquina Linux real o VM.
+- No se ejecutaron pruebas de concurrencia, código, scripts ni mediciones de rendimiento.
+- No se hizo verificación web individual de las referencias durante este lote.
+- La revisión es documental interna; no equivale a validación técnica por ejecución ni revisión independiente.
+
+### Estado y conteo
+
+Este trabajo profundiza 14 lecciones que ya pertenecían al inventario oficial de la etapa 7; no añade lecciones ni altera el total curricular. Es un sublote del desarrollo de la etapa 7 y no permite marcar la etapa completa como validada. Las etapas 7–32 siguen requiriendo revisión y profundización progresiva conforme al alcance general.
+
+El roadmap JSON no fue modificado. El objetivo oficial de la etapa 25 permanece vacío. No se importó, aprobó ni publicó contenido.
