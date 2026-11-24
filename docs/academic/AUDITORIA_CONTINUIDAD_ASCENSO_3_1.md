@@ -669,3 +669,14 @@ Las lecciones se desarrollaron con explicaciones específicas, ejemplos, prácti
 En esta sesión se profundizaron 51 de las 84 lecciones de la etapa 7. Esto no añade lecciones al roadmap ni altera su identidad curricular. Las etapas 8–32 permanecen sujetas a revisión y profundización progresiva; no se declara completado el objetivo global de 1.916 lecciones.
 
 El roadmap JSON permanece sin cambios (SHA del archivo en la rama: `43b6350dd911350c2b5f68c3d3de3dea4696f878`). El objetivo oficial de la etapa 25 continúa vacío. No se importó, aprobó ni publicó contenido.
+
+
+## Addendum de profundización didáctica — etapa 17 — 2026-11-24
+
+Se añadieron prácticas y evidencias a las **61 lecciones** de testing y calidad: QA/QC, niveles de prueba, pruebas de API, usabilidad y accesibilidad, rendimiento, diseño de casos, dobles de prueba, TDD/BDD, herramientas, análisis estático y modelos de calidad.
+
+**Comprobación documental:** se releyó el archivo desde la rama; se contaron 61 encabezados, 61 apartados de práctica/evidencia y ningún encabezado vacío.
+
+**Límites:** no se ejecutaron JUnit, Mockito, Jest, Vitest, Playwright, Cypress, Postman, JMeter ni análisis SonarQube. Tampoco se realizaron pruebas de carga. No se verificaron referencias o versiones una por una. La ampliación es documental y estructural, no validación por ejecución ni aprobación externa.
+
+**Acumulado:** etapas 1–6: 265; etapas 7–10: 284; etapas 11–12: 149; etapa 13: 63; etapa 14: 58; etapas 15–16: 99; etapa 17: 61. Total de etapas 1–17 con desarrollo documental ampliado: **979 lecciones**. Etapas 18–32: 937 lecciones requieren profundización equivalente. No se importó ni publicó contenido.
