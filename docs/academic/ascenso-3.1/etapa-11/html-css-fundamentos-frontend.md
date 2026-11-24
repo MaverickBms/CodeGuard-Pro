@@ -1099,54 +1099,132 @@ transform modifica representación visual mediante translate, scale, rotate o sk
 **Comprobación:** ¿Por qué transform no modifica el espacio que el elemento ocupa en el flujo normal?
 
 #### 11.4.01 — Jerarquía visual
-La jerarquía visual establece prioridades mediante tamaño, peso, contraste, posición y agrupación. Diseña primero qué debe comprender y hacer el usuario; valida que la prioridad visual coincide con la importancia funcional y no depende únicamente de color o tamaño.
 
+La jerarquía visual guía la atención mediante tamaño, peso, contraste, agrupación y posición; debe reflejar prioridades reales.
 
-**Práctica y evidencia:** Ordena título, acción principal y contenido secundario mediante tamaño, peso y contraste. **Evidencia:** realiza una prueba de cinco segundos y pide identificar la acción prioritaria.
+**Ejemplo técnico:** Título, resumen, acción principal y contenido secundario.
+
+**Práctica guiada:** Audita una pantalla y marca el recorrido visual.
+
+**Actividad independiente:** Rediseña una pantalla saturada sin eliminar información.
+
+**Criterios de aceptación:** La prioridad visual coincide con la tarea principal.
+
+**Errores frecuentes:** Usar color o tamaño como única señal.
+
+**Comprobación:** ¿Cómo comprobarías que la jerarquía guía la tarea?
 
 #### 11.4.02 — Espaciado
-El espaciado organiza grupos y relaciones entre elementos. Define una escala consistente y utiliza espacio cercano para señalar pertenencia; comprueba densidad, alineación y respiración visual con contenido real, no solo con textos de muestra de longitud uniforme.
 
+El espaciado crea agrupación y ritmo. Una escala de tokens reduce variaciones y mejora consistencia.
 
-**Práctica y evidencia:** Define una escala de espaciado y aplícala entre secciones, componentes y controles. **Evidencia:** muestra consistencia sin márgenes arbitrarios repetidos.
+**Ejemplo técnico:** Escala inicial 4/8/16/24 px adaptada al producto.
+
+**Práctica guiada:** Mide distancias y clasifícalas por función.
+
+**Actividad independiente:** Aplica escala a formulario y tarjetas.
+
+**Criterios de aceptación:** Espaciados repetibles y jerarquía clara.
+
+**Errores frecuentes:** Márgenes arbitrarios por elemento.
+
+**Comprobación:** ¿Qué comunica un espacio menor entre elementos?
 
 #### 11.4.03 — Tipografía
-La tipografía combina familia, tamaño, peso, altura de línea y longitud de lectura. Selecciona fuentes legibles, reserva estilos para jerarquías claras y verifica acentos, caracteres especiales, fallback y ampliación de texto sin pérdida de contenido.
 
+La tipografía afecta legibilidad y jerarquía; define familia, tamaño, peso, interlineado y longitud de línea.
 
-**Práctica y evidencia:** Selecciona familias, tamaños, interlineado y longitud de línea para lectura prolongada. **Evidencia:** compara legibilidad en móvil y escritorio.
+**Ejemplo técnico:** Escala tipográfica con cuerpo legible y line-height suficiente.
+
+**Práctica guiada:** Compara escalas y prueba zoom móvil.
+
+**Actividad independiente:** Define tokens para títulos, cuerpo, código y ayuda.
+
+**Criterios de aceptación:** Texto legible y jerarquía clara.
+
+**Errores frecuentes:** Texto pequeño o líneas demasiado largas.
+
+**Comprobación:** ¿Por qué importa la longitud de línea?
 
 #### 11.4.04 — Layouts
-Un layout distribuye regiones y contenido según una estructura visual y funcional. Elige Grid para organización bidimensional y Flexbox para distribución en un eje cuando encaje; documenta las restricciones y verifica que el orden visual no contradiga el orden del DOM.
 
+Un layout distribuye regiones según tareas, contenido y viewport. Grid y Flexbox resuelven estructuras distintas.
 
-**Práctica y evidencia:** Construye una página con encabezado, sidebar, contenido y panel auxiliar usando Grid o Flexbox. **Evidencia:** documenta cómo colapsa el layout en móvil.
+**Ejemplo técnico:** Dashboard con navegación, área principal y panel contextual.
+
+**Práctica guiada:** Dibuja wireframe para móvil y escritorio.
+
+**Actividad independiente:** Implementa layout responsive con áreas.
+
+**Criterios de aceptación:** Sin solapamiento y orden DOM lógico.
+
+**Errores frecuentes:** Posicionar toda la página con absolute.
+
+**Comprobación:** ¿Qué diferencia wireframe y layout implementado?
 
 #### 11.4.05 — Componentes
-Un componente encapsula una unidad de interfaz con propósito, estructura, estilos, comportamiento y estados definidos. Establece entradas y salidas claras, evita dependencias globales innecesarias y documenta variantes, accesibilidad y comportamiento en error o carga.
 
+Un componente encapsula estructura, estilo y comportamiento reutilizable; define variantes, estados, API y accesibilidad.
 
-**Práctica y evidencia:** Crea componentes visuales reutilizables para botón, tarjeta y campo de formulario. **Evidencia:** demuestra variantes y estados sin duplicar reglas inconexas.
+**Ejemplo técnico:** Botón con variantes, disabled/loading y foco visible.
+
+**Práctica guiada:** Identifica componentes repetidos y estados.
+
+**Actividad independiente:** Implementa tarjeta y botón documentados.
+
+**Criterios de aceptación:** API coherente y semántica preservada.
+
+**Errores frecuentes:** API excesiva o duplicación innecesaria.
+
+**Comprobación:** ¿Qué estados debe documentar un componente?
 
 #### 11.4.06 — Design Systems
-Un design system reúne principios, tokens, componentes, patrones y documentación para mantener decisiones coherentes. No es solo una biblioteca de botones: incluye criterios de uso, accesibilidad, gobernanza y proceso para introducir cambios sin fragmentar la experiencia.
 
+Un design system reúne principios, tokens, componentes, patrones, documentación y gobierno; no es solo una librería visual.
 
-**Práctica y evidencia:** Define tokens, componentes, patrones y reglas de uso en un pequeño design system. **Evidencia:** muestra una pantalla construida únicamente con esos elementos.
+**Ejemplo técnico:** Tokens de color/espacio alimentan componentes y plantillas.
+
+**Práctica guiada:** Distingue token, componente y patrón.
+
+**Actividad independiente:** Define contribución y versionado.
+
+**Criterios de aceptación:** Reglas documentadas y criterios de calidad.
+
+**Errores frecuentes:** Cambiar tokens sin evaluar impacto.
+
+**Comprobación:** ¿Qué diferencia design system de librería de componentes?
 
 #### 11.4.07 — Consistencia visual
-La consistencia visual hace que componentes equivalentes se comporten y se vean de manera predecible. Define reglas para tipografía, color, espaciado, estados e iconografía y permite excepciones justificadas cuando el contexto de uso lo exige.
 
+La consistencia reduce carga cognitiva al mantener reglas previsibles. Excepciones deben justificarse por contexto.
 
-**Práctica y evidencia:** Compara varias páginas del mismo producto y corrige inconsistencias de tipografía, color, espaciado y controles. **Evidencia:** presenta una lista de decisiones unificadas.
+**Ejemplo técnico:** Patrones equivalentes para confirmaciones y mensajes.
+
+**Práctica guiada:** Compara pantallas y registra divergencias.
+
+**Actividad independiente:** Define patrones y excepciones justificadas.
+
+**Criterios de aceptación:** Acciones equivalentes se comunican de forma coherente.
+
+**Errores frecuentes:** Uniformidad rígida o variaciones sin razón.
+
+**Comprobación:** ¿Cuándo se justifica una excepción?
 
 #### 11.4.08 — Mobile-first
-Mobile-first comienza por priorizar contenido y tareas bajo restricciones de espacio y amplía progresivamente. No significa reducir funciones en móvil; valida navegación, foco, objetivos táctiles y lectura en anchuras pequeñas y luego añade mejoras para pantallas mayores.
 
+Mobile-first inicia con restricciones de pantalla pequeña y amplía capacidades según espacio; prioriza contenido, navegación y rendimiento.
 
-**Práctica y evidencia:** Diseña primero para una columna y mejora progresivamente para pantallas mayores. **Evidencia:** demuestra que contenido y acciones esenciales funcionan antes de añadir columnas.
+**Ejemplo técnico:** Una columna móvil puede convertirse en grid de tres columnas.
 
-### Módulo 11.5 — SEO
+**Práctica guiada:** Prueba flujo a 320px antes de ampliar.
+
+**Actividad independiente:** Diseña formulario móvil y adapta a escritorio.
+
+**Criterios de aceptación:** Acciones disponibles sin pérdida ni scroll horizontal injustificado.
+
+**Errores frecuentes:** Ocultar funciones clave en móvil.
+
+**Comprobación:** ¿Por qué mobile-first no es solo reducir tamaños?
 
 #### 11.5.01 — Metadatos
 Los metadatos describen el documento para navegadores, buscadores y plataformas de compartición. Incluye codificación, viewport, idioma, título y descripción adecuados; nunca coloques secretos ni información personal que no deba hacerse pública.
