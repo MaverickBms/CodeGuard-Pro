@@ -432,4 +432,4 @@ Consulta de enlaces: 2026-11-24. La disponibilidad de funciones puede variar por
 - Laboratorio: diseñado, no ejecutado.
 - Evidencias de estudiantes: no disponibles.
 - Videos: no se añade ni verifica ninguno.
-- Estado: BORRADOR; requiere revisión técnica, pedagógica, práctica y editorial independiente.
+- Estado de trabajo: BASE DE TRABAJO ACTIVA; requiere revisión técnica, pedagógica, práctica y editorial independiente.
