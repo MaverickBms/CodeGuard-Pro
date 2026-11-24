@@ -749,4 +749,4 @@ Antes de cambiar código:
 - Se mantienen las referencias bibliográficas existentes; no se incorporan citas nuevas ni se atribuyen resultados adicionales a los autores citados.
 - No se ejecutaron experimentos educativos ni se midió aprendizaje de estudiantes.
 - Los videos siguen como candidatos pendientes de escucha y revisión.
-- Estado editorial: BORRADOR; la revisión técnica/pedagógica completa sigue pendiente.
+- Estado de trabajo: BASE DE TRABAJO ACTIVA; la revisión técnica/pedagógica independiente sigue pendiente.
