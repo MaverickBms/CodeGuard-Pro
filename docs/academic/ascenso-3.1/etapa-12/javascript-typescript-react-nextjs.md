@@ -1174,6 +1174,16 @@ Fetch API realiza solicitudes HTTP y devuelve Promise de Response. Debe comproba
 
 **Comprobación:** ¿Qué comprueba response.ok?
 
+**Laboratorio de profundización — Consumo HTTP con fetch.**
+
+1. Consulta un endpoint de prueba autorizado. 2. Comprueba response.ok y status. 3. Maneja JSON inválido, timeout y error de red. 4. Usa AbortController para cancelar una solicitud.
+
+**Evidencia esperada.** El código diferencia error de red de respuesta HTTP no exitosa y valida el contenido antes de usarlo.
+
+**Seguridad y límites.** No incluir tokens en URL ni desactivar controles CORS; CORS no sustituye autorización del servidor.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.4.02 — LocalStorage
 
 localStorage conserva pares clave-valor de texto por origen y persiste entre sesiones. No es almacén seguro para tokens sensibles; puede ser leído por JavaScript del mismo origen y queda expuesto ante XSS. El acceso puede fallar por políticas del navegador.
@@ -1189,6 +1199,16 @@ localStorage conserva pares clave-valor de texto por origen y persiste entre ses
 **Errores frecuentes:** Guardar contraseñas o tokens de sesión en localStorage.
 
 **Comprobación:** ¿Qué amenaza expone tokens guardados en localStorage ante XSS?
+
+**Laboratorio de profundización — Persistencia local y validación.**
+
+1. Guarda preferencia no sensible en localStorage. 2. Lee y parsea el valor con manejo de JSON inválido. 3. Define versión de esquema y migración simple. 4. Elimina el valor al restablecer preferencias.
+
+**Evidencia esperada.** La aplicación maneja ausencia, corrupción y evolución del dato local.
+
+**Seguridad y límites.** No guardar contraseñas, tokens de sesión o datos sensibles en localStorage.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.4.03 — SessionStorage
 
@@ -1206,6 +1226,16 @@ sessionStorage mantiene datos por origen y contexto de pestaña, normalmente dur
 
 **Comprobación:** ¿Qué diferencia de ciclo de vida tiene respecto a localStorage?
 
+**Laboratorio de profundización — Alcance de almacenamiento por pestaña.**
+
+1. Guarda estado temporal de un flujo. 2. Abre nueva pestaña y compara comportamiento. 3. Prueba recarga y cierre de pestaña. 4. Define qué datos deben descartarse al terminar.
+
+**Evidencia esperada.** Se explica alcance por contexto de pestaña y diferencia con localStorage.
+
+**Seguridad y límites.** No utilizar sessionStorage como garantía de confidencialidad ni guardar secretos.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.4.04 — Cookies
 
 Las cookies se envían automáticamente según dominio, path, SameSite y Secure. HttpOnly impide lectura desde JavaScript; Secure limita envío a HTTPS; SameSite ayuda frente a CSRF pero requiere diseño. Las cookies no deben almacenar secretos innecesarios y necesitan expiración y protección adecuadas.
@@ -1221,6 +1251,16 @@ Las cookies se envían automáticamente según dominio, path, SameSite y Secure.
 **Errores frecuentes:** Creer que HttpOnly evita CSRF o guardar JWT sensible sin estrategia.
 
 **Comprobación:** ¿Qué amenaza mitiga HttpOnly y cuál no?
+
+**Laboratorio de profundización — Atributos y ciclo de vida de cookies.**
+
+1. Inspecciona cookies de un sitio de laboratorio propio. 2. Identifica Domain, Path, Expires/Max-Age, Secure, HttpOnly y SameSite. 3. Diseña cookie de sesión segura desde servidor. 4. Explica CSRF y alcance de SameSite.
+
+**Evidencia esperada.** Se identifica qué atributos controla cliente y cuáles deben establecerse desde servidor.
+
+**Seguridad y límites.** No crear cookies de autenticación accesibles a JavaScript ni exponer datos sensibles en valores.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.4.05 — Geolocation
 
@@ -1238,6 +1278,16 @@ Geolocation API solicita permiso explícito y devuelve ubicación bajo política
 
 **Comprobación:** ¿Por qué debe existir una alternativa si el usuario deniega ubicación?
 
+**Laboratorio de profundización — Permisos y uso responsable de ubicación.**
+
+1. Implementa solicitud de geolocalización tras acción explícita del usuario. 2. Maneja permiso denegado, timeout y posición no disponible. 3. Explica precisión y vigencia. 4. Define retención mínima.
+
+**Evidencia esperada.** La función solicita permiso en contexto y maneja fallos sin bloquear la aplicación.
+
+**Seguridad y límites.** No recopilar ubicación sin consentimiento ni almacenar coordenadas más tiempo del necesario.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.4.06 — Clipboard
 
 Clipboard API permite leer/escribir portapapeles bajo contexto seguro y restricciones de permiso/gesto de usuario. Copiar datos sensibles puede exponerlos a otras aplicaciones; la interfaz debe indicar qué se copia y evitar lecturas inesperadas.
@@ -1253,6 +1303,16 @@ Clipboard API permite leer/escribir portapapeles bajo contexto seguro y restricc
 **Errores frecuentes:** Leer portapapeles sin contexto o asumir que API siempre está disponible.
 
 **Comprobación:** ¿Por qué la copia al portapapeles debe ser una acción explícita?
+
+**Laboratorio de profundización — Acceso seguro al portapapeles.**
+
+1. Implementa copia de texto tras interacción del usuario. 2. Maneja rechazo de permisos y contexto seguro. 3. Proporciona confirmación accesible. 4. Prueba alternativa manual.
+
+**Evidencia esperada.** La acción tiene fallback y no depende de permiso siempre concedido.
+
+**Seguridad y límites.** No leer portapapeles sin acción clara ni copiar secretos a portapapeles compartido.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.4.07 — File API
 
@@ -1270,6 +1330,16 @@ File API permite seleccionar, leer y procesar archivos mediante input file, File
 
 **Comprobación:** ¿Por qué el servidor debe inspeccionar el contenido del archivo y no confiar solo en su extensión?
 
+**Laboratorio de profundización — Lectura segura de archivos del usuario.**
+
+1. Permite seleccionar archivo con input file. 2. Inspecciona name, type y size. 3. Lee texto de un archivo sintético. 4. Valida contenido en servidor si se sube.
+
+**Evidencia esperada.** La aplicación limita tamaño y tipo esperado y no confía solo en extensión o MIME del cliente.
+
+**Seguridad y límites.** No ejecutar archivos seleccionados ni confiar en validación de tipo del navegador como protección suficiente.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.5.01 — Tipos
 
 TypeScript añade análisis estático de tipos a JavaScript y se transpila/elimina anotaciones para generar JavaScript. Los tipos se verifican en compilación y no validan automáticamente datos externos en runtime.
@@ -1285,6 +1355,16 @@ TypeScript añade análisis estático de tipos a JavaScript y se transpila/elimi
 **Errores frecuentes:** Creer que TypeScript valida JSON recibido en runtime.
 
 **Comprobación:** ¿Qué diferencia existe entre chequeo estático y validación en ejecución?
+
+**Laboratorio de profundización — Tipado estático y tipos primitivos.**
+
+1. Define tipos string, number, boolean, arrays y objetos. 2. Compara any, unknown y never. 3. Activa strict. 4. Corrige errores sin convertir todo a any.
+
+**Evidencia esperada.** El código expresa contratos y utiliza unknown para datos no validados.
+
+**Seguridad y límites.** Los tipos desaparecen en runtime; validar datos externos durante ejecución.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.5.02 — Interfaces
 
@@ -1302,6 +1382,16 @@ Una interface describe forma de objetos y contratos estructurales; puede extende
 
 **Comprobación:** ¿Qué significa que TypeScript tenga tipado estructural?
 
+**Laboratorio de profundización — Contratos estructurales con interfaces.**
+
+1. Define interfaz Usuario y Pedido. 2. Implementa objetos compatibles. 3. Compara propiedades opcionales y readonly. 4. Extiende interfaces con responsabilidad clara.
+
+**Evidencia esperada.** Los contratos describen forma de objetos y detectan incompatibilidades estáticas.
+
+**Seguridad y límites.** No utilizar interfaz como sustituto de validación runtime de JSON externo.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.5.03 — Type aliases
 
 type crea alias para tipos, uniones, intersecciones, tuplas y tipos utilitarios. No crea una clase ni estructura runtime; es una construcción del sistema de tipos.
@@ -1317,6 +1407,16 @@ type crea alias para tipos, uniones, intersecciones, tuplas y tipos utilitarios.
 **Errores frecuentes:** Esperar que alias exista en JavaScript generado.
 
 **Comprobación:** ¿Qué diferencia un alias de tipo de una clase en runtime?
+
+**Laboratorio de profundización — Alias y uniones discriminadas.**
+
+1. Define alias para identificadores y estados. 2. Construye union discriminada. 3. Compara alias con interface. 4. Usa exhaustividad con never.
+
+**Evidencia esperada.** El alias mejora legibilidad y la unión discriminada permite manejar todos los casos.
+
+**Seguridad y límites.** No crear alias nominales aparentes si TypeScript mantiene compatibilidad estructural.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.5.04 — Union types
 
@@ -1334,6 +1434,16 @@ Una unión `A | B` permite que un valor sea uno de varios tipos. El código debe
 
 **Comprobación:** ¿Qué aporta un discriminante literal a una unión?
 
+**Laboratorio de profundización — Narrowing de tipos unidos.**
+
+1. Define función que reciba string | number. 2. Usa typeof para estrechar. 3. Maneja null y undefined. 4. Añade caso no alcanzable.
+
+**Evidencia esperada.** Cada rama utiliza operaciones válidas para el tipo estrechado.
+
+**Seguridad y límites.** No forzar casts para silenciar errores de diseño.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.5.05 — Intersection types
 
 Una intersección `A & B` combina requisitos de tipos; el valor debe cumplir ambos. Puede expresar composición, pero intersecciones incompatibles pueden producir tipos imposibles o confusos.
@@ -1349,6 +1459,16 @@ Una intersección `A & B` combina requisitos de tipos; el valor debe cumplir amb
 **Errores frecuentes:** Usar intersección para modelar alternativas excluyentes.
 
 **Comprobación:** ¿Por qué A & B no significa lo mismo que A | B?
+
+**Laboratorio de profundización — Composición de capacidades.**
+
+1. Combina tipos Identificable y ConMarcaTemporal. 2. Define objeto que satisfaga ambos. 3. Analiza conflictos de propiedades con tipos incompatibles. 4. Compara intersección con herencia.
+
+**Evidencia esperada.** La intersección representa composición de contratos sin duplicar campos incoherentes.
+
+**Seguridad y límites.** No crear intersecciones imposibles que produzcan never sin detectar conflicto.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.5.06 — Generics
 
@@ -1366,6 +1486,16 @@ Los genéricos parametrizan tipos y permiten reutilizar funciones/estructuras pr
 
 **Comprobación:** ¿Qué información conserva un genérico que any descarta?
 
+**Laboratorio de profundización — Funciones y estructuras genéricas.**
+
+1. Implementa función identity<T>. 2. Crea contenedor genérico con restricciones extends. 3. Preserva tipo de retorno. 4. Compara con any.
+
+**Evidencia esperada.** El tipo genérico conserva información y evita perder seguridad estática.
+
+**Seguridad y límites.** No introducir genéricos sin necesidad ni restringir tipos más de lo que exige el contrato.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.5.07 — Type narrowing
 
 Narrowing reduce un tipo unión mediante typeof, instanceof, in, discriminantes, guards y control de flujo. La comprobación debe reflejar evidencia real y cubrir null/undefined.
@@ -1381,6 +1511,16 @@ Narrowing reduce un tipo unión mediante typeof, instanceof, in, discriminantes,
 **Errores frecuentes:** Usar `as` para silenciar errores sin validar.
 
 **Comprobación:** ¿Por qué unknown es más seguro que any para datos externos?
+
+**Laboratorio de profundización — Guardas y discriminación.**
+
+1. Utiliza typeof, in, instanceof y predicados de tipo. 2. Valida una unión de eventos. 3. Maneja null. 4. Escribe type guard reutilizable.
+
+**Evidencia esperada.** El compilador reconoce el tipo tras cada comprobación y no se usa dato antes de validar.
+
+**Seguridad y límites.** No declarar type guard que afirme condiciones que no comprueba realmente.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.5.08 — Utility types
 
@@ -1398,6 +1538,16 @@ Utility types transforman tipos existentes: Partial, Required, Pick, Omit, Reado
 
 **Comprobación:** ¿Por qué un DTO de actualización no debe permitir modificar cualquier campo?
 
+**Laboratorio de profundización — Transformación de contratos existentes.**
+
+1. Aplica Partial, Pick, Omit, Record y Readonly a tipos de dominio. 2. Construye DTO de actualización. 3. Explica diferencia entre Partial y opcionalidad semántica. 4. Comprueba inferencia.
+
+**Evidencia esperada.** El tipo derivado conserva el contrato esperado y reduce duplicación.
+
+**Seguridad y límites.** No permitir actualización masiva de campos sensibles por usar Partial sin lista permitida.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.5.09 — Enums
 
 enum define un conjunto de constantes con representación runtime en TypeScript; existen enums numéricos, string enums y alternativas con union literals. La elección afecta JavaScript generado y serialización.
@@ -1413,6 +1563,16 @@ enum define un conjunto de constantes con representación runtime en TypeScript;
 **Errores frecuentes:** Asumir que enum y union type se comportan igual en runtime.
 
 **Comprobación:** ¿Qué diferencia existe entre enum y unión de literales en JavaScript generado?
+
+**Laboratorio de profundización — Representación de conjuntos finitos.**
+
+1. Compara enum numérico, string union y const object. 2. Evalúa salida JavaScript generada. 3. Diseña estados de pedido. 4. Comprueba serialización JSON.
+
+**Evidencia esperada.** La representación mantiene valores estables entre frontend y API.
+
+**Seguridad y límites.** No asumir que enum TypeScript existe en runtime como tipo puro ni aceptar valores no validados.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
 
 #### 12.5.10 — Type inference
 
@@ -1430,6 +1590,16 @@ Type inference permite al compilador deducir tipos desde inicializadores, contex
 
 **Comprobación:** ¿Cuándo conviene anotar explícitamente un tipo?
 
+**Laboratorio de profundización — Inferencia contextual y explícita.**
+
+1. Observa inferencia en variables, funciones y callbacks. 2. Identifica cuándo la anotación mejora claridad. 3. Evita anotaciones redundantes. 4. Revisa tipo inferido en IDE/compilador.
+
+**Evidencia esperada.** La inferencia reduce ruido sin ocultar contratos importantes.
+
+**Seguridad y límites.** No depender de inferencia amplia cuando el límite público requiere tipo explícito.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
+
 #### 12.5.11 — Strict mode
 
 El modo strict de TypeScript habilita un conjunto de comprobaciones más rigurosas, como strictNullChecks y noImplicitAny. Configuración exacta depende de tsconfig y versión; activar strict puede revelar defectos que deben corregirse, no silenciarse.
@@ -1446,6 +1616,16 @@ El modo strict de TypeScript habilita un conjunto de comprobaciones más riguros
 
 **Comprobación:** ¿Qué clase de errores detecta strictNullChecks?
 
+
+**Laboratorio de profundización — Configuración estricta del compilador.**
+
+1. Activa strict en tsconfig. 2. Revisa strictNullChecks y noImplicitAny. 3. Corrige errores de entrada y retorno. 4. Define política de migración incremental.
+
+**Evidencia esperada.** La compilación identifica riesgos de nulabilidad y tipos implícitos y el proyecto documenta excepciones.
+
+**Seguridad y límites.** No desactivar strict globalmente para ocultar errores sin registrar deuda técnica.
+
+**Registro sugerido.** Registra versión de navegador/Node y TypeScript, tsconfig, datos sintéticos, pruebas de tipos y comportamiento runtime. No marques la práctica como ejecutada sin evidencia real.
 #### 12.6.01 — Components
 
 Los componentes React encapsulan UI reutilizable como funciones que reciben props y devuelven elementos React. Deben ser predecibles, con responsabilidades claras y composición antes que jerarquías profundas.
