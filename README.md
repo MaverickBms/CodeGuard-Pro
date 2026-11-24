@@ -307,3 +307,8 @@ Se revisaron editorialmente los documentos de las etapas 1–10 y se cotejaron s
 ### Desarrollo profundo individual — etapas 11 a 13
 
 Se desarrollaron individualmente las 212 lecciones oficiales de las etapas 11–13 (60, 89 y 63 respectivamente), sustituyendo textos genéricos por explicaciones técnicas específicas, límites y criterios de aplicación. Se cotejó la cobertura con el roadmap y se comprobó que no quedaran los placeholders de granularización. Las pruebas frontend, accesibilidad, APIs y despliegue siguen pendientes; revisión interna documental, no aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 14 a 16
+
+Se desarrollaron individualmente las 157 lecciones oficiales de Java/Spring Boot, Node.js/NestJS y PHP/Laravel/.NET (58, 53 y 46). Se cotejó su cobertura con el roadmap y se eliminaron las orientaciones genéricas. Compilaciones, pruebas, migraciones y laboratorios de seguridad siguen pendientes; revisión documental interna, no aprobación externa.
