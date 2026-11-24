@@ -46,339 +46,339 @@ Una red funcional requiere direccionamiento, mecanismos de entrega, protocolos c
 
 ### 8.1.1 — Redes LAN
 
-Conecta dispositivos en un área local como vivienda, oficina o laboratorio.
+Una LAN conecta dispositivos dentro de un área limitada y suele administrarse bajo una organización común. **Práctica:** dibuja una LAN doméstica con router, switch, punto de acceso y tres clientes. **Evidencia:** identifica los enlaces y explica qué tráfico permanece dentro de la red local.
 
 ### 8.1.2 — Redes WAN
 
-Conecta redes o ubicaciones geográficamente distantes.
+Una WAN interconecta redes separadas geográficamente mediante enlaces y proveedores de transporte. No es un protocolo específico. **Práctica:** representa dos LAN unidas por una WAN y señala routers de borde. **Evidencia:** explica qué equipo enruta entre sitios y qué dependencia existe del proveedor.
 
 ### 8.1.3 — Redes MAN
 
-Cubre una zona metropolitana. Estas categorías describen alcance aproximado, no una tecnología única.
+Una MAN cubre un área metropolitana y puede conectar sedes o redes de una ciudad. La categoría describe alcance, no una tecnología única. **Práctica:** compara una MAN con LAN y WAN en una tabla de alcance, propiedad y latencia esperable. **Evidencia:** justifica la clasificación de tres escenarios.
 
 ### 8.1.4 — Internet
 
-Red global de redes interconectadas que utiliza TCP/IP; no es sinónimo de Web.
+Internet es una red global de redes interconectadas que intercambian tráfico mediante la familia de protocolos IP. La Web es uno de sus servicios, no un sinónimo. **Práctica:** traza conceptualmente la ruta desde un cliente hasta un servidor web. **Evidencia:** distingue proveedor, sistema autónomo, DNS y HTTP en el recorrido.
 
 ### 8.1.5 — Intranet
 
-Entorno privado de información y servicios para una organización.
+Una intranet ofrece servicios privados a miembros de una organización y puede utilizar tecnologías web e IP comunes. Su privacidad depende de controles de identidad, red y aplicación, no del nombre. **Práctica:** diseña un portal interno y define quién puede acceder. **Evidencia:** identifica al menos dos controles de acceso.
 
 ### 8.1.6 — Extranet
 
-Acceso controlado a recursos para entidades externas autorizadas.
+Una extranet extiende acceso controlado a determinados recursos internos para terceros, proveedores o socios. Debe aplicar segmentación y privilegio mínimo. **Práctica:** modela una zona de proveedores separada de la red corporativa. **Evidencia:** enumera recursos permitidos y prohibidos y el mecanismo de autenticación.
 
 ### 8.1.7 — Cliente-servidor
 
-Un cliente solicita un servicio a un servidor.
+En cliente-servidor, clientes solicitan servicios y servidores procesan solicitudes, mantienen recursos o devuelven respuestas. Un mismo equipo puede desempeñar ambos roles. **Práctica:** identifica cliente, servidor, solicitud y respuesta en una consulta HTTP local. **Evidencia:** dibuja el intercambio y señala dónde se autentica el usuario.
 
 ### 8.1.8 — Peer-to-peer
 
-Los participantes pueden actuar como pares y compartir recursos directamente.
+Peer-to-peer distribuye funciones entre nodos que pueden actuar como clientes y servidores, sin depender necesariamente de un servidor central único. Analiza descubrimiento, confianza y disponibilidad. **Práctica:** compara una arquitectura P2P con cliente-servidor para compartir archivos. **Evidencia:** identifica un beneficio y dos riesgos operativos.
 
 ### 8.1.9 — Router
 
-Interconecta redes IP y reenvía paquetes según tablas de rutas.
+Un router reenvía paquetes entre redes usando una tabla de rutas y decisiones de siguiente salto. Distingue enrutamiento de switching y NAT. **Práctica:** consulta la ruta por defecto de una VM con `ip route`. **Evidencia:** identifica destino, gateway e interfaz de salida.
 
 ### 8.1.10 — Switch
 
-Conecta dispositivos locales y reenvía tramas según direcciones MAC.
+Un switch de capa 2 reenvía tramas dentro de una LAN según direcciones MAC aprendidas; los switches multicapa pueden enrutar. **Práctica:** dibuja cómo aprende una tabla MAC tras dos hosts intercambiar tráfico. **Evidencia:** explica flooding inicial y reenvío unicast posterior.
 
 ### 8.1.11 — Firewall
 
-Aplica reglas para permitir o bloquear tráfico.
+Un firewall aplica reglas para permitir o bloquear tráfico según direcciones, puertos, protocolos, estado o identidad, dependiendo de su tipo. **Práctica:** redacta una política mínima para permitir solo el servicio necesario entre dos segmentos de laboratorio. **Evidencia:** incluye regla, dirección, alcance y justificación.
 
 ### 8.1.12 — Gateway
 
-Punto de salida o intermediación hacia otra red; el gateway predeterminado suele ser un router.
+Un gateway es un punto de salida o intermediación hacia otra red o sistema; en redes IP suele referirse al router de siguiente salto predeterminado. **Práctica:** identifica el gateway de la VM con `ip route` o `ipconfig`. **Evidencia:** explica qué ocurre con un destino que no pertenece a la subred local.
 
 ### 8.1.13 — Access Point
 
-Proporciona conectividad inalámbrica a una red.
+Un access point conecta clientes inalámbricos a una red de distribución y gestiona asociación y acceso radio. No es necesariamente un router. **Práctica:** dibuja la relación entre SSID, punto de acceso, switch y gateway. **Evidencia:** distingue asociación Wi-Fi de obtención de dirección IP.
 
 ## 8.2 — Modelos de comunicación
 
 ### 8.2.1 — Modelo OSI
 
-Modelo conceptual que organiza funciones de comunicación en siete capas.
+El modelo OSI es un marco conceptual de siete capas para razonar sobre funciones de comunicación; no es una pila de protocolos que se instale literalmente. **Práctica:** ubica Ethernet, IP, TCP y HTTP en el modelo como aproximación didáctica. **Evidencia:** justifica la capa y explica que algunas tecnologías abarcan varias funciones.
 
 ### 8.2.2 — Las siete capas OSI
 
-| Capa | Nombre | Función |
-|---:|---|---|
-| 7 | Aplicación | servicios de red |
-| 6 | Presentación | representación y codificación |
-| 5 | Sesión | gestión de diálogos |
-| 4 | Transporte | puertos y control extremo a extremo |
-| 3 | Red | direccionamiento y routing |
-| 2 | Enlace | tramas y entrega local |
-| 1 | Física | señales y medio |
+Las capas OSI describen funciones: física, enlace, red, transporte, sesión, presentación y aplicación. Las fronteras no siempre coinciden exactamente con implementaciones modernas. **Práctica:** analiza una solicitud web y asigna ejemplos de función a cada capa. **Evidencia:** describe qué pregunta responde cada capa sin memorizar solo nombres.
 
 ### 8.2.3 — Modelo TCP/IP
 
-El modelo TCP/IP suele describirse en cuatro capas: aplicación, transporte, Internet y acceso a red. Algunas fuentes separan enlace y física y presentan cinco capas. Explica siempre qué convención estás utilizando.
-
-Relación aproximada:
-- aplicación TCP/IP: agrupa funciones de aplicación, presentación y sesión de OSI;
-- transporte: TCP y UDP;
-- Internet: IP e ICMP;
-- acceso a red: tecnologías de enlace y transmisión.
+TCP/IP agrupa funciones en acceso a red, Internet, transporte y aplicación, aunque los modelos de referencia varían en número de capas. **Práctica:** mapea Ethernet, IP, TCP y DNS/HTTP al modelo usado en el curso. **Evidencia:** compara una capa OSI con su correspondencia aproximada en TCP/IP.
 
 ### 8.2.4 — Encapsulamiento
 
-Cada capa agrega información de control, como cabeceras y tráileres.
+El encapsulamiento añade información de control al dato al descender por las capas: cabeceras y, según el protocolo, tráileres. **Práctica:** representa datos de aplicación dentro de un segmento TCP, paquete IP y trama Ethernet. **Evidencia:** identifica direcciones de cada capa y explica por qué cambian en cada salto.
 
 ### 8.2.5 — Desencapsulamiento
 
-El receptor procesa la información en sentido inverso y retira las cabeceras.
+El desencapsulamiento retira y procesa la información de protocolo al recibir datos, verificando campos y entregando la carga a la capa superior. **Práctica:** dibuja el recorrido inverso de una trama Ethernet recibida. **Evidencia:** explica cómo una MAC de destino, una IP y un puerto cumplen funciones diferentes.
 
 ### 8.2.6 — Paquetes
 
-Un paquete IP transporta información de capa de red, con direcciones origen/destino y campos de control.
+Un paquete suele referirse a la unidad de datos de capa de red, por ejemplo un datagrama IP, que contiene direcciones y campos de control. **Práctica:** inspecciona un paquete IP en una captura de laboratorio. **Evidencia:** identifica IP origen/destino, protocolo superior y TTL o Hop Limit.
 
 ### 8.2.7 — Tramas
 
-Una trama transporta datos en un enlace local e incluye información propia de la tecnología de enlace.
+Una trama es la unidad de datos de enlace que se transmite sobre un medio local y contiene direcciones de enlace y mecanismos de detección de errores según la tecnología. **Práctica:** localiza cabecera Ethernet y tipo EtherType en Wireshark. **Evidencia:** distingue MAC origen/destino de direcciones IP.
 
 ### 8.2.8 — Segmentos
 
-Un segmento TCP es una unidad de datos de transporte; UDP utiliza datagramas, no segmentos TCP.
+Un segmento suele designar la unidad de datos de TCP; UDP utiliza el término datagrama. TCP incorpora puertos, números de secuencia, confirmaciones y control de flujo. **Práctica:** examina una conexión TCP de laboratorio y localiza puertos y flags. **Evidencia:** explica SYN, ACK y FIN a nivel básico.
 
 ### 8.2.9 — MTU
 
-La MTU es el tamaño máximo de unidad de datos que puede transportarse en un enlace sin fragmentación a ese nivel. La MTU depende de la tecnología y configuración. En Ethernet convencional suele utilizarse una MTU IP de 1500 bytes, pero no asumas que todas las rutas o redes tienen el mismo valor.
-
-Una MTU inconsistente puede causar problemas de conectividad, especialmente cuando la detección de MTU de ruta o los mensajes ICMP necesarios están bloqueados.
+MTU es el tamaño máximo de unidad de transmisión de una interfaz o enlace; no debe confundirse con el tamaño máximo de carga de aplicación. Explica fragmentación IPv4 y Path MTU Discovery en términos generales. **Práctica:** consulta MTU de interfaces con `ip link`. **Evidencia:** predice qué puede ocurrir si un paquete supera el MTU del camino.
 
 ## 8.3 — Direccionamiento
 
 ### 8.3.1 — Dirección MAC
 
-Identifica una interfaz en tecnologías de enlace como Ethernet; puede modificarse por software y no garantiza autenticidad.
+Una dirección MAC identifica una interfaz en el ámbito de enlace y se utiliza para entregar tramas en una red local; puede ser modificada o aleatorizada por software. **Práctica:** consulta MAC de una interfaz con `ip link` o `getmac`. **Evidencia:** diferencia MAC de IP y explica por qué los routers no reenvían la trama Ethernet original de extremo a extremo.
 
 ### 8.3.2 — IPv4
 
-Utiliza direcciones de 32 bits, representadas normalmente en decimal punteado.
+IPv4 utiliza direcciones de 32 bits representadas habitualmente en cuatro octetos decimales. Explica dirección de red, host, prefijo y límites de subred. **Práctica:** identifica red y broadcast para `192.0.2.34/27` usando una calculadora o cálculo binario. **Evidencia:** muestra máscara, rango utilizable y justificación.
 
 ### 8.3.3 — IPv6
 
-Utiliza direcciones de 128 bits y representación hexadecimal abreviada.
+IPv6 utiliza direcciones de 128 bits, notación hexadecimal y reglas de compresión; incorpora tipos como global unicast, link-local y multicast. **Práctica:** expande y comprime una dirección IPv6 válida y reconoce `fe80::/10`. **Evidencia:** explica por qué IPv6 no utiliza broadcast y para qué sirve Neighbor Discovery.
 
 ### 8.3.4 — IP pública
 
-Es globalmente enrutable, aunque el acceso depende de políticas y filtros. No publiques direcciones reales.
+Una IP pública es enrutable globalmente bajo políticas de Internet y asignación de registros; no implica que un servicio sea alcanzable desde cualquier origen. **Práctica:** compara la dirección de una interfaz local con la dirección observada por un servicio externo solo en tu propio entorno. **Evidencia:** explica NAT y filtrado como causas de diferencia.
 
 ### 8.3.5 — IP privada
 
-Los rangos privados IPv4 se reservan para redes internas y no se enrutan globalmente.
+Los rangos privados IPv4 definidos para redes internas no se enrutan globalmente en Internet. Conoce los bloques 10/8, 172.16/12 y 192.168/16. **Práctica:** clasifica tres direcciones y detecta si pertenecen a esos rangos. **Evidencia:** explica por qué la conectividad externa suele requerir NAT o un mecanismo de borde.
 
 ### 8.3.6 — Máscaras
 
-Indican qué bits de IPv4 corresponden al prefijo de red.
+Una máscara o prefijo determina qué bits identifican la red y cuáles quedan para hosts. Relaciona máscara decimal con longitud de prefijo CIDR. **Práctica:** convierte `/24`, `/26` y `/30` a máscaras y calcula direcciones totales. **Evidencia:** muestra el procedimiento binario y diferencia direcciones totales de hosts asignables.
 
 ### 8.3.7 — Subnetting
 
-Divide un bloque en redes menores. Un prefijo /p deja 32-p bits de host.
+Subnetting divide un bloque IP en subredes más pequeñas para organizar dominios de broadcast, direccionamiento y políticas. **Práctica:** divide `192.0.2.0/24` en cuatro subredes iguales y calcula red, broadcast y rango. **Evidencia:** presenta las cuatro subredes sin solapamiento.
 
 ### 8.3.8 — CIDR
 
-Representa el prefijo con una barra, por ejemplo /24. 192.0.2.0/24 contiene 256 direcciones totales.
+CIDR expresa redes mediante prefijo, por ejemplo `/24`, y permite asignación y agregación sin depender de clases tradicionales. **Práctica:** interpreta `198.51.100.64/26` y determina el bloque que cubre. **Evidencia:** calcula inicio, fin y cantidad de direcciones.
 
 ### 8.3.9 — VLSM
 
-Permite utilizar máscaras de distinta longitud; asigna bloques mayores primero y comprueba solapamientos.
+VLSM asigna subredes de tamaños distintos dentro de un bloque, ajustando cada prefijo a la cantidad de hosts requerida. **Práctica:** asigna subredes a tres segmentos de laboratorio con diferentes necesidades, ordenando de mayor a menor. **Evidencia:** demuestra que los bloques están alineados y no se superponen.
 
 ### 8.3.10 — Gateway
 
-Permite enviar tráfico a destinos fuera de la red local.
+El gateway predeterminado es el siguiente salto utilizado cuando la tabla de rutas no contiene una ruta más específica. **Práctica:** inspecciona `ip route` o `route print` y localiza la ruta por defecto. **Evidencia:** interpreta destino, máscara/prefijo, siguiente salto y métrica.
 
 ### 8.3.11 — Broadcast
 
-IPv4 broadcast dirige paquetes a todos los hosts del dominio; IPv6 utiliza multicast, no broadcast.
+Broadcast IPv4 entrega un datagrama a todos los hosts de una subred; se distingue broadcast limitado y dirigido, este último sujeto a restricciones de seguridad. IPv6 utiliza multicast en lugar de broadcast. **Práctica:** calcula la dirección broadcast de una subred pequeña. **Evidencia:** explica qué hosts la reciben y por qué no debe confundirse con multicast.
 
 ### 8.3.12 — ARP
 
-Resuelve direcciones IPv4 de siguiente salto a direcciones de enlace en la LAN.
+ARP resuelve una dirección IPv4 local a una dirección de enlace para enviar una trama dentro de la LAN. Explica caché ARP, solicitud broadcast y respuesta, así como riesgos de suplantación. **Práctica:** consulta la tabla con `ip neigh` o `arp -a` tras comunicarte con un host de laboratorio. **Evidencia:** identifica IP, MAC y estado de la entrada.
 
 ### 8.3.13 — DHCP
 
-Asigna parámetros como IP, prefijo, gateway y DNS mediante concesiones.
+DHCP asigna parámetros de red como dirección IP, máscara, gateway, DNS y tiempo de concesión. Explica el intercambio DORA en DHCPv4 y la diferencia entre reserva y asignación dinámica. **Práctica:** inspecciona la concesión de tu VM sin alterar el servidor. **Evidencia:** registra servidor, duración y opciones recibidas.
 
 ## 8.4 — Protocolos
 
 ### 8.4.1 — TCP
 
-Transporte fiable y orientado a conexión con secuencias, confirmaciones y retransmisiones.
+TCP ofrece un flujo de bytes fiable y ordenado con establecimiento de conexión, retransmisión y control de congestión. **Práctica:** observa el handshake de tres vías en una captura propia. **Evidencia:** identifica SYN, SYN-ACK y ACK y explica qué no garantiza TCP sobre la aplicación.
 
 ### 8.4.2 — UDP
 
-Transporte de datagramas sin garantía de entrega ni orden.
+UDP ofrece datagramas sin establecimiento de conexión ni garantía de entrega u orden; las aplicaciones gestionan las necesidades adicionales. **Práctica:** identifica tráfico UDP en una captura de DNS de laboratorio. **Evidencia:** compara overhead y garantías frente a TCP.
 
 ### 8.4.3 — ICMP
 
-Mensajes de control y diagnóstico IP. Ping suele utilizar ICMP.
+ICMP comunica errores y condiciones de red, y también sustenta herramientas de diagnóstico como ping. No es un protocolo de transporte para aplicaciones. **Práctica:** interpreta una respuesta Echo y un mensaje Destination Unreachable en capturas de laboratorio. **Evidencia:** diferencia diagnóstico de garantía de disponibilidad.
 
 ### 8.4.4 — DNS
 
-Resuelve nombres mediante registros como A, AAAA, MX y CNAME; cachés y TTL afectan propagación.
+DNS traduce nombres a registros como A, AAAA, MX, TXT y CNAME mediante consultas recursivas e iterativas. **Práctica:** consulta un dominio propio o de documentación con `dig`. **Evidencia:** identifica tipo, TTL, servidor consultado y diferencia entre respuesta autoritativa y recursiva.
 
 ### 8.4.5 — HTTP
 
-Define semántica de solicitudes y respuestas web; no cifra el canal por sí solo.
+HTTP define semántica de solicitudes y respuestas, métodos, códigos de estado, cabeceras y representación de recursos. **Práctica:** consulta una URL pública de documentación con `curl -I`. **Evidencia:** interpreta método, estado y cabeceras principales sin asumir que un 200 garantiza corrección funcional.
 
 ### 8.4.6 — HTTPS
 
-HTTP protegido mediante TLS con validación de certificados. No garantiza que el sitio sea honesto.
+HTTPS es HTTP protegido mediante TLS, que aporta confidencialidad, integridad y autenticación del servidor según validación de certificados. **Práctica:** inspecciona certificado y versión TLS de un sitio propio o autorizado. **Evidencia:** explica cadena de confianza, nombre del servidor y por qué cifrado no equivale a que el sitio sea legítimo.
 
 ### 8.4.7 — SSH
 
-Canal seguro para acceso remoto; verifica la clave del servidor.
+SSH proporciona acceso remoto seguro y canales cifrados, normalmente mediante autenticación por clave o contraseña. **Práctica:** conecta dos VMs propias en una red aislada y verifica la huella de host antes de confiar. **Evidencia:** distingue autenticación del servidor y del usuario.
 
 ### 8.4.8 — FTP
 
-Protocolo tradicional de transferencia que no cifra credenciales ni datos por defecto.
+FTP transfiere archivos mediante un canal de control y otro de datos; el protocolo clásico no cifra credenciales ni contenido. **Práctica:** analiza conceptualmente puertos activo/pasivo y explica por qué FTP sin cifrar no debe utilizarse en redes no confiables. **Evidencia:** compara sus riesgos con SFTP.
 
 ### 8.4.9 — SFTP
 
-Protocolo de transferencia sobre SSH, distinto de FTP y FTPS.
+SFTP es un protocolo de transferencia de archivos que funciona sobre SSH y no es simplemente FTP protegido por TLS. **Práctica:** describe una sesión SFTP hacia un servidor de laboratorio y las operaciones de listar, subir y descargar. **Evidencia:** identifica el canal SSH y los permisos que limitan acceso.
 
 ### 8.4.10 — SMTP
 
-Envío y retransmisión de correo.
+SMTP transporta y retransmite correo entre clientes y servidores o entre servidores; el envío autenticado suele utilizar extensiones y TLS según configuración. **Práctica:** dibuja el flujo desde cliente de correo hasta servidor receptor. **Evidencia:** distingue SMTP de protocolos de acceso como IMAP y POP3.
 
 ### 8.4.11 — IMAP
 
-Acceso y sincronización de buzones.
+IMAP permite acceder y sincronizar mensajes almacenados en el servidor, carpetas y estados entre varios clientes. **Práctica:** compara una cuenta de prueba configurada con IMAP frente a un modelo de descarga local. **Evidencia:** explica sincronización, carpetas y almacenamiento remoto.
 
 ### 8.4.12 — POP3
 
-Recuperación de mensajes con un modelo distinto de IMAP.
+POP3 está orientado a recuperar mensajes desde el servidor, con comportamientos de descarga y conservación que dependen del cliente. **Práctica:** compara un flujo POP3 con IMAP en un diagrama. **Evidencia:** justifica cuál se adapta mejor a varios dispositivos y qué limitaciones operativas tiene.
 
 ### 8.4.13 — SMB
 
-Compartición de archivos y recursos; restringe versiones y acceso.
+SMB permite compartir archivos, impresoras y otros recursos en redes, especialmente en entornos Windows. Explica autenticación, permisos compartidos y NTFS, y versiones del protocolo. **Práctica:** inspecciona un recurso compartido en una red de laboratorio. **Evidencia:** calcula el acceso efectivo considerando ambos niveles de permisos.
 
 ### 8.4.14 — LDAP
 
-Acceso a servicios de directorio; requiere autenticación y transporte protegidos.
+LDAP es un protocolo de acceso y consulta a servicios de directorio mediante entradas, atributos y nombres distinguidos. **Práctica:** interpreta un DN y un filtro LDAP de ejemplo sin consultar directorios ajenos. **Evidencia:** identifica base de búsqueda, atributo y alcance.
 
 ### 8.4.15 — Kerberos
 
-Autenticación basada en tickets que depende de infraestructura y sincronización temporal.
+Kerberos es un protocolo de autenticación basado en tickets y un tercero de confianza, común en dominios Windows/Active Directory. Explica KDC, TGT, tickets de servicio y dependencia de sincronización horaria. **Práctica:** dibuja el intercambio de autenticación sin incluir secretos reales. **Evidencia:** explica por qué la contraseña no se envía al servicio en cada solicitud.
 
 ### 8.4.16 — WebSockets
 
-Comunicación bidireccional persistente; autentica, autoriza y valida cada operación.
+WebSocket mantiene un canal bidireccional persistente entre cliente y servidor tras un handshake iniciado sobre HTTP. **Práctica:** compara una aplicación de chat por polling con otra basada en WebSocket. **Evidencia:** identifica cuándo conviene cada enfoque y qué controles de autenticación/origen siguen siendo necesarios.
 
 ## 8.5 — Routing y Switching
 
 ### 8.5.1 — Switching
 
-El switch aprende MAC de origen y asocia direcciones con puertos.
+Switching reenvía tramas dentro de una red de capa 2 usando una tabla de direcciones MAC y dominios de broadcast. **Práctica:** simula el aprendizaje de MAC en una topología con tres hosts. **Evidencia:** explica flooding, aprendizaje y filtrado.
 
 ### 8.5.2 — Routing
 
-El router consulta su tabla para determinar siguiente salto o interfaz de salida.
+Routing selecciona caminos para reenviar paquetes entre redes mediante prefijos y métricas. Distingue plano de control y plano de datos a nivel introductorio. **Práctica:** interpreta una tabla de rutas de una VM. **Evidencia:** explica la regla de prefijo más específico.
 
 ### 8.5.3 — Tablas de rutas
 
-Registran prefijos, siguiente salto, interfaz y métricas. La ruta predeterminada se usa cuando no hay una más específica.
-
-Un router consulta su tabla de rutas para determinar el siguiente salto o interfaz de salida. La selección suele considerar prefijo más específico y métricas/prioridades según el protocolo y sistema.
+Una tabla de rutas asocia destinos con siguiente salto, interfaz, métrica y origen de la ruta. **Práctica:** ejecuta `ip route` o `route print` en un equipo de laboratorio. **Evidencia:** identifica ruta conectada, ruta por defecto y ruta más específica para un destino.
 
 ### 8.5.4 — Rutas estáticas
 
-Se configuran manualmente y requieren mantenimiento.
+Una ruta estática es configurada explícitamente por un administrador y no se adapta automáticamente a cambios de topología. **Práctica:** redacta la configuración conceptual para alcanzar una subred de laboratorio a través de un router conocido; no alteres rutas del host principal. **Evidencia:** indica destino, prefijo y siguiente salto.
 
 ### 8.5.5 — Rutas dinámicas
 
-Se aprenden mediante protocolos de routing.
+Los protocolos de routing dinámico intercambian información para calcular rutas y responder a cambios; ejemplos incluyen OSPF y BGP con ámbitos y objetivos distintos. **Práctica:** compara OSPF dentro de un sistema autónomo con BGP entre sistemas autónomos. **Evidencia:** describe qué problema resuelve cada uno sin equipararlos.
 
 ### 8.5.6 — NAT
 
-NAT modifica información de direcciones y, en algunas variantes, puertos. Se utiliza comúnmente para permitir que varios dispositivos compartan una dirección IPv4 pública. NAT no es por sí solo un firewall ni una garantía de seguridad.
+NAT modifica direcciones o puertos en el tránsito entre redes; PAT permite compartir una dirección pública mediante puertos. **Práctica:** dibuja una conexión desde dos hosts privados hacia un servidor externo. **Evidencia:** explica traducción de origen y por qué NAT no sustituye un firewall.
 
 ### 8.5.7 — VLAN
 
-Crea un dominio lógico de capa 2 separado.
+Una VLAN segmenta lógicamente una infraestructura de capa 2 en dominios separados. Explica etiquetado 802.1Q y la necesidad de routing para comunicar VLAN distintas. **Práctica:** diseña VLAN de usuarios y servidores con subredes separadas. **Evidencia:** identifica qué tráfico queda aislado y qué equipo permitiría comunicación controlada.
 
 ### 8.5.8 — Trunking
 
-Transporta varias VLAN mediante etiquetado; un enlace access suele transportar una VLAN.
+Trunking transporta tráfico de varias VLAN por un enlace, normalmente mediante etiquetas 802.1Q. Distingue puerto access y trunk y el riesgo de VLAN nativa mal configurada. **Práctica:** representa dos switches conectados por trunk y dos VLAN. **Evidencia:** indica qué tramas llevan etiqueta y cómo se preserva la segmentación.
 
 ### 8.5.9 — Segmentación
 
-Separa sistemas para limitar movimiento lateral y reducir exposición.
+La segmentación divide una red en zonas con políticas distintas para reducir movimiento lateral y limitar exposición. **Práctica:** separa usuarios, servidores y administración en un diagrama de laboratorio. **Evidencia:** define flujos necesarios y denegaciones por defecto.
 
 ### 8.5.10 — Subredes
 
-Una subred es una porción lógica de un bloque IP; diseña prefijos sin solapamiento.
+Una subred es una partición lógica de un espacio IP identificada por prefijo. Relaciona subnetting con límites de broadcast IPv4 y diseño de rutas. **Práctica:** calcula una subred para una cantidad dada de hosts y comprueba que no se solape con otra. **Evidencia:** entrega red, prefijo, broadcast y rango.
 
 ## 8.6 — Seguridad de redes
 
 ### 8.6.1 — Firewalls
 
+Los firewalls pueden filtrar por paquetes, estado, aplicación o identidad, según su arquitectura. **Práctica:** diseña reglas para permitir HTTPS desde clientes a un servidor y bloquear administración desde redes de usuario. **Evidencia:** especifica origen, destino, protocolo, puerto y dirección.
+
 ### 8.6.2 — VPN
+
+Una VPN crea un túnel protegido sobre una red subyacente y puede conectar usuarios o sitios. Distingue acceso remoto y site-to-site, y explica que el cifrado no elimina riesgos del endpoint. **Práctica:** dibuja los extremos y rutas de una VPN de acceso remoto. **Evidencia:** identifica autenticación, cifrado y redes alcanzables.
 
 ### 8.6.3 — DMZ
 
+Una DMZ aloja servicios que deben ser accesibles desde redes menos confiables, separados de la red interna sensible. **Práctica:** diseña una zona DMZ para un servidor web con acceso mínimo a una base de datos. **Evidencia:** justifica reglas y demuestra que la DMZ no equivale a confiar plenamente en el servidor.
+
 ### 8.6.4 — ACL
+
+Una ACL define condiciones que permiten o deniegan tráfico o acceso a recursos, según el dispositivo y el contexto. **Práctica:** redacta una ACL conceptual que permita solo DNS y HTTPS entre segmentos de laboratorio. **Evidencia:** explica orden de evaluación, coincidencias y regla implícita final cuando aplique.
 
 ### 8.6.5 — Puertos abiertos
 
+Un puerto abierto indica que un proceso acepta conexiones en una interfaz, no que el servicio sea necesariamente vulnerable. **Práctica:** consulta sockets de escucha de tu propia VM con `ss -lntup`. **Evidencia:** asocia puerto, protocolo, proceso y dirección de escucha.
+
 ### 8.6.6 — Servicios expuestos
+
+Un servicio expuesto es una función accesible desde una zona de red; su riesgo depende de versión, configuración, autenticación y superficie alcanzable. **Práctica:** inventaría servicios de una VM propia y clasifícalos por necesidad y alcance. **Evidencia:** propone reducir exposición sin deshabilitar servicios críticos a ciegas.
 
 ### 8.6.7 — Superficie de ataque
 
+La superficie de ataque reúne interfaces, servicios, identidades, dependencias y rutas por las que un actor podría interactuar con un sistema. **Práctica:** crea un inventario de activos y puntos de entrada para una VM de laboratorio. **Evidencia:** prioriza tres reducciones de superficie y explica el riesgo asociado.
+
 ### 8.6.8 — Filtrado de tráfico
 
+El filtrado de tráfico aplica políticas sobre paquetes y flujos según origen, destino, protocolo, puerto, estado o contenido. **Práctica:** analiza una regla de firewall de laboratorio y predice su efecto sobre tres flujos. **Evidencia:** documenta permitido, bloqueado y no coincidente.
+
 ### 8.6.9 — Políticas de filtrado
+
+Una política de filtrado establece objetivos, zonas, reglas, excepciones, registro y revisión periódica. **Práctica:** redacta una política de denegación por defecto con excepciones justificadas para una red pequeña. **Evidencia:** incluye propietario, propósito, pruebas y procedimiento de reversión.
 
 ## 8.7 — Herramientas
 
 ### 8.7.1 — Wireshark
 
-Captura y analiza paquetes visualmente. Los archivos pueden contener credenciales, cookies y datos privados.
+Wireshark captura y analiza paquetes, decodificando protocolos y permitiendo filtros de captura y visualización. **Práctica:** captura tráfico generado por tu propia VM y filtra DNS o TCP. **Evidencia:** identifica interfaz, filtro y campos relevantes; elimina o anonimiza datos sensibles antes de compartir la captura.
 
 ### 8.7.2 — tcpdump
 
-Captura tráfico desde terminal. Limita interfaz, duración y filtros.
+`tcpdump` captura tráfico desde interfaz y permite filtros BPF para limitar lo observado. **Práctica:** captura unos pocos paquetes ICMP o DNS en una interfaz de laboratorio con permisos adecuados. **Evidencia:** documenta comando, interfaz, filtro y límite de paquetes; no captures tráfico de terceros.
 
 ### 8.7.3 — Nmap
 
-Descubre hosts y servicios. Utilízalo solo contra VMs propias o sistemas autorizados.
+Nmap descubre hosts y servicios mediante técnicas de sondeo; su uso debe limitarse a sistemas propios o con autorización explícita. **Práctica:** escanea únicamente la VM objetivo de tu laboratorio aislado y un puerto que hayas habilitado deliberadamente. **Evidencia:** registra alcance, comando, hora y resultado, y explica límites de detección.
 
 ### 8.7.4 — ping
 
-Comprueba respuesta ICMP; su bloqueo no demuestra que un host esté apagado.
+`ping` envía solicitudes ICMP Echo para comprobar respuesta y estimar latencia, pero un bloqueo ICMP no demuestra que el host esté caído. **Práctica:** ejecuta un número limitado de solicitudes a otra VM propia. **Evidencia:** interpreta pérdida, RTT y posibles causas de ausencia de respuesta.
 
 ### 8.7.5 — traceroute
 
-Observa saltos de una ruta; routers intermedios pueden no responder.
+`traceroute` o `tracert` infiere saltos de una ruta mediante TTL/Hop Limit y respuestas de red; firewalls y balanceo pueden alterar resultados. **Práctica:** ejecuta la herramienta hacia un destino autorizado y limita el número de saltos. **Evidencia:** explica asteriscos y por qué cada salto no necesariamente revela toda la ruta.
 
 ### 8.7.6 — ip
 
-Consulta interfaces, direcciones y rutas Linux.
+`ip` administra y consulta interfaces, direcciones, vecinos y rutas en Linux. **Práctica:** utiliza `ip addr`, `ip link` e `ip route` en modo lectura. **Evidencia:** documenta interfaz, dirección, estado, MAC y gateway sin ejecutar cambios de configuración.
 
 ### 8.7.7 — ss
 
-Lista sockets y puertos en Linux.
+`ss` muestra sockets y conexiones; opciones como `-l`, `-t`, `-u`, `-n` y `-p` filtran escuchas, protocolos y procesos. **Práctica:** consulta sockets TCP en escucha de tu VM. **Evidencia:** identifica dirección local, puerto, estado y proceso cuando los permisos lo permiten.
 
 ### 8.7.8 — netstat
 
-Muestra estadísticas y conexiones; está obsoleto o ausente en algunas distribuciones modernas.
+`netstat` muestra conexiones, rutas y estadísticas en sistemas donde está disponible; en Linux moderno suele preferirse `ss`. **Práctica:** compara la salida equivalente de ambas herramientas en un entorno que tenga las dos. **Evidencia:** explica qué información coincide y cuál depende de opciones o implementación.
 
 ### 8.7.9 — dig
 
-Realiza consultas DNS detalladas.
+`dig` consulta DNS y presenta respuesta, autoridad, información adicional y tiempos. **Práctica:** consulta registros A, AAAA y MX de un dominio público de documentación. **Evidencia:** identifica servidor, tipo, TTL y sección de respuesta.
 
 ### 8.7.10 — nslookup
 
-Consulta DNS con una interfaz sencilla.
+`nslookup` permite consultar servidores DNS de forma interactiva o directa; su presentación varía por plataforma. **Práctica:** consulta un nombre y una dirección inversa en un entorno de prueba. **Evidencia:** compara el resultado con `dig` y explica diferencias de formato.
 
 ### 8.7.11 — curl
 
-Realiza solicitudes a servicios y URLs. Evita incluir secretos en argumentos o historial.
+`curl` realiza solicitudes a URLs y permite inspeccionar cabeceras, métodos, códigos y cuerpos; no es solo una herramienta de descarga. **Práctica:** usa `curl -I` y una solicitud GET a una API pública de prueba o servicio propio. **Evidencia:** registra URL, método, estado y cabeceras sin enviar credenciales.
 
 ## Proyecto oficial — Red virtual de varias máquinas
 
