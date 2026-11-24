@@ -1227,41 +1227,100 @@ Mobile-first inicia con restricciones de pantalla pequeña y amplía capacidades
 **Comprobación:** ¿Por qué mobile-first no es solo reducir tamaños?
 
 #### 11.5.01 — Metadatos
-Los metadatos describen el documento para navegadores, buscadores y plataformas de compartición. Incluye codificación, viewport, idioma, título y descripción adecuados; nunca coloques secretos ni información personal que no deba hacerse pública.
 
+Los metadatos describen documento, codificación, viewport, idioma y recursos. No todos afectan ranking; sí ayudan a interpretación y presentación.
 
-**Práctica y evidencia:** Añade metadatos de idioma, viewport, título y descripción coherentes con el contenido real. **Evidencia:** inspecciona el HTML generado y corrige valores duplicados o ausentes.
+**Ejemplo técnico:** charset, viewport y description cumplen propósitos distintos.
+
+**Práctica guiada:** Inspecciona head de páginas y clasifica metadatos.
+
+**Actividad independiente:** Define metadatos únicos para página de curso.
+
+**Criterios de aceptación:** Valores precisos y coherentes.
+
+**Errores frecuentes:** Repetir meta keywords como si determinara ranking.
+
+**Comprobación:** ¿Qué metadatos configuran codificación y viewport?
 
 #### 11.5.02 — Títulos
-El elemento `title` identifica de forma concisa y única la página y suele aparecer en pestañas y resultados de búsqueda. Escribe títulos específicos, coherentes con el contenido y comprensibles fuera de contexto; no repitas una plantilla idéntica en todo el sitio.
 
+title identifica el documento en pestañas, marcadores y resultados; debe ser único, descriptivo y fiel.
 
-**Práctica y evidencia:** Escribe títulos únicos, descriptivos y concisos para páginas distintas. **Evidencia:** compara título de navegador con encabezado principal y propósito de la página.
+**Ejemplo técnico:** «Guía de SQL: consultas y modelado | Academia».
+
+**Práctica guiada:** Compara títulos genéricos y descriptivos.
+
+**Actividad independiente:** Redacta títulos para cinco rutas.
+
+**Criterios de aceptación:** Cada título distingue su página.
+
+**Errores frecuentes:** Repetir title o rellenar keywords.
+
+**Comprobación:** ¿Qué problema genera reutilizar title en todo el sitio?
 
 #### 11.5.03 — Descripciones
-La meta description resume la utilidad de una página y puede utilizarse como fragmento en resultados, aunque el buscador puede generar otro. Redacta una descripción veraz, diferenciada y orientada al contenido real; no la trates como garantía de ranking.
 
+meta description resume contenido y puede influir en el fragmento mostrado, pero el buscador puede generar otro.
 
-**Práctica y evidencia:** Redacta descripciones que resuman la página sin prometer contenido inexistente ni repetir palabras clave artificialmente. **Evidencia:** verifica correspondencia entre descripción y contenido visible.
+**Ejemplo técnico:** Descripción que resume objetivo y público de una lección.
+
+**Práctica guiada:** Compara description con contenido real.
+
+**Actividad independiente:** Redacta descripciones para landing y artículo.
+
+**Criterios de aceptación:** Resumen preciso y diferenciado.
+
+**Errores frecuentes:** Prometer contenido no existente o tratarlo como ranking garantizado.
+
+**Comprobación:** ¿Por qué no se garantiza que el buscador muestre la description literal?
 
 #### 11.5.04 — Estructura semántica
-La estructura semántica facilita que personas, navegadores y motores comprendan las regiones y relaciones del contenido. Usa headings, enlaces descriptivos, landmarks y datos visibles coherentes; no añadas etiquetas solo para insertar palabras clave.
 
+La semántica ayuda a tecnologías de asistencia y sistemas de indexación a interpretar contenido.
 
-**Práctica y evidencia:** Comprueba que encabezados, landmarks y enlaces describan la estructura de la página. **Evidencia:** genera un esquema semántico y detecta regiones duplicadas o vacías.
+**Ejemplo técnico:** article con h1, secciones h2 y enlaces descriptivos.
+
+**Práctica guiada:** Audita headings, landmarks y enlaces.
+
+**Actividad independiente:** Reestructura un artículo y valida títulos.
+
+**Criterios de aceptación:** Jerarquía lógica y enlaces comprensibles.
+
+**Errores frecuentes:** Enlaces «clic aquí» o headings solo para keywords.
+
+**Comprobación:** ¿Qué aporta un texto de enlace descriptivo?
 
 #### 11.5.05 — Indexación
-La indexación es el proceso por el que un buscador incorpora y puede recuperar contenido rastreado. Facilita descubrimiento mediante enlaces internos, sitemap cuando proceda y respuestas HTTP correctas; `robots.txt` no es un mecanismo de confidencialidad ni sustituye autenticación.
 
+Indexación implica descubrir, rastrear, procesar y almacenar contenido. robots.txt controla rastreo, no protege información privada; noindex debe poder ser leído por crawler.
 
-**Práctica y evidencia:** Revisa robots, enlaces internos, canonicals y respuestas HTTP en un sitio de prueba. **Evidencia:** distingue indexabilidad técnica de garantía de posicionamiento.
+**Ejemplo técnico:** Una página bloqueada en robots.txt puede seguir conocida por enlaces, aunque el crawler no lea su noindex.
+
+**Práctica guiada:** Inspecciona robots.txt y meta robots en un sitio de prueba.
+
+**Actividad independiente:** Diseña política para páginas públicas, privadas y duplicadas.
+
+**Criterios de aceptación:** Privacidad protegida por autenticación y controles reales.
+
+**Errores frecuentes:** Usar robots.txt como seguridad.
+
+**Comprobación:** ¿Por qué robots.txt no protege información privada?
 
 #### 11.5.06 — Datos estructurados (introducción)
-Los datos estructurados describen entidades y propiedades con vocabularios como Schema.org, habitualmente en JSON-LD. Los valores deben coincidir con contenido visible y políticas del buscador; no inventes reseñas, precios, eventos o disponibilidad para intentar obtener resultados enriquecidos.
 
+Datos estructurados describen entidades mediante vocabularios como Schema.org y formatos como JSON-LD. Deben reflejar contenido real; no garantizan resultados enriquecidos.
 
+**Ejemplo técnico:** Article con headline, author y datePublished cuando son datos reales.
 
-**Práctica y evidencia:** Añade datos estructurados únicamente cuando correspondan al contenido visible y al vocabulario admitido. **Evidencia:** valida el JSON-LD y explica que su presencia no garantiza un resultado enriquecido.
+**Práctica guiada:** Añade JSON-LD de artículo y valida sintaxis.
+
+**Actividad independiente:** Diseña marcado para curso y omite datos no confirmados.
+
+**Criterios de aceptación:** JSON válido y propiedades coherentes con contenido visible.
+
+**Errores frecuentes:** Inventar reseñas, precios o autoría.
+
+**Comprobación:** ¿Por qué el marcado debe coincidir con contenido visible?
 
 ## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
 
