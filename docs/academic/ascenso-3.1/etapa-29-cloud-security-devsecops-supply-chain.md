@@ -1,7 +1,7 @@
 # Etapa 29 — Cloud Security, DevSecOps y Supply Chain Security
 
 **Prioridad:** P2 · Especialización avanzada  
-**Estado:** borrador académico  
+**Estado de trabajo:** BASE DE TRABAJO ACTIVA  
 **Objetivo oficial:** aprender a proteger aplicaciones, infraestructura y servicios desplegados en la nube.  
 **Proyecto oficial:** crear un pipeline DevSecOps que construya, pruebe, analice y despliegue una aplicación de manera automatizada, integrando controles de seguridad.
 
@@ -106,4 +106,4 @@ No se incluyen videos aprobados. Se añadirán solo con audio español confirmad
 - Semgrep: https://semgrep.dev/docs/
 - GitHub Actions Security: https://docs.github.com/en/actions/security-for-github-actions
 
-**Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutó pipeline ni se desplegaron recursos cloud en esta sesión. **Estado:** borrador.
+**Consulta documental:** 2026-11-19. **Verificación práctica:** no se ejecutó pipeline ni se desplegaron recursos cloud en esta sesión. **Estado:** base de trabajo activa; sin aprobación ni publicación.
