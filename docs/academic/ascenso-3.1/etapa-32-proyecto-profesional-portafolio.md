@@ -122,173 +122,180 @@ Este desglose conserva los títulos y el orden del roadmap maestro. Las orientac
 ### Módulo 32.1 — Portafolio de desarrollo
 
 #### 32.1.01 — GitHub Profile
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+GitHub Profile presenta identidad técnica, proyectos y contribuciones públicas. Mantén descripción veraz, enlaces activos y actividad representativa; no publiques correo privado, tokens ni datos personales innecesarios.
 
 #### 32.1.02 — Repositories
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Repositories organizan código, historial, issues y configuración de proyectos. Mantén nombres claros, licencia adecuada, estructura reproducible y reglas de contribución.
 
 #### 32.1.03 — README
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+README explica propósito, funcionalidades, requisitos, instalación, configuración, ejecución y limitaciones del proyecto. Prueba cada instrucción desde un entorno limpio y no incluyas secretos.
 
 #### 32.1.04 — Technical Documentation
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Technical Documentation explica arquitectura, módulos, contratos, dependencias y operación. Usa diagramas y ejemplos actualizados y documenta decisiones y límites conocidos.
 
 #### 32.1.05 — Architecture Documentation
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Architecture Documentation describe componentes, relaciones, límites de confianza y decisiones arquitectónicas. Mantén vistas dirigidas a audiencias concretas y sincronizadas con la implementación real.
 
 #### 32.1.06 — API Documentation
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+API Documentation describe endpoints, métodos, esquemas, autenticación, errores y ejemplos reproducibles. Usa OpenAPI cuando proceda y verifica que coincide con la versión desplegada.
 
 #### 32.1.07 — Screenshots
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Screenshots muestran interfaz y flujos del proyecto como evidencia visual. Usa datos ficticios, elimina información sensible y etiqueta versión/entorno para evitar confundir prototipo con producción.
 
 #### 32.1.08 — Demo
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Demo permite observar una funcionalidad mediante entorno accesible, video o sesión guiada. Explica precondiciones y limitaciones y no presentes mocks o datos simulados como operaciones reales.
 
 #### 32.1.09 — Deployment
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Deployment publica el proyecto en un entorno controlado y accesible. Documenta proveedor, configuración, variables, TLS, observabilidad, backups y rollback; nunca expongas secretos en el repositorio.
 
 #### 32.1.10 — Project Presentation
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Project Presentation comunica problema, usuarios, arquitectura, decisiones, contribución y resultados. Adapta el nivel técnico a la audiencia y distingue capacidades terminadas, prototipos y trabajo pendiente.
 
 ### Módulo 32.2 — Proyectos Full Stack
 
 #### 32.2.01 — Sistema de autenticación
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un sistema de autenticación debe gestionar registro, inicio, sesión, recuperación, MFA y cierre de forma segura. Implementa protocolos y bibliotecas mantenidas, almacena contraseñas con hashing adaptativo y prueba revocación.
 
 #### 32.2.02 — Sistema de inventario
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un sistema de inventario administra productos, existencias, movimientos y trazabilidad. Define invariantes de stock, concurrencia, auditoría y permisos antes de implementar operaciones CRUD.
 
 #### 32.2.03 — Sistema de ventas
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un sistema de ventas registra pedidos, líneas, pagos y estados del proceso. Modela transacciones, idempotencia, impuestos y conciliación según requisitos y no almacenes datos de pago sensibles sin controles aplicables.
 
 #### 32.2.04 — E-commerce
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+E-commerce integra catálogo, carrito, pedidos, pagos y logística. Protege sesiones, precios y autorización en servidor, valida callbacks de pago y evita confiar en importes enviados por el cliente.
 
 #### 32.2.05 — Dashboard administrativo
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un dashboard administrativo presenta indicadores y acciones para gestionar una operación. Define roles, filtros, actualización de datos y estados vacíos/error y evita mostrar información fuera del permiso del usuario.
 
 #### 32.2.06 — Sistema de reservas
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un sistema de reservas gestiona disponibilidad, horarios, confirmaciones y cancelaciones. Controla concurrencia para evitar doble reserva, define zonas horarias y registra cambios de estado.
 
 #### 32.2.07 — Sistema de gestión empresarial
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un sistema de gestión empresarial integra procesos y datos de varias áreas. Define límites de dominio, auditoría, permisos y migración de datos; evita construir un monolito sin módulos ni reglas claras.
 
 #### 32.2.08 — Aplicación con comunicación en tiempo real
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Una aplicación en tiempo real intercambia eventos o mensajes con baja latencia mediante WebSockets o tecnologías equivalentes. Define reconexión, autorización por canal, orden y límites de mensajes.
 
 ### Módulo 32.3 — Proyectos de infraestructura
 
 #### 32.3.01 — Servidor Linux
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un servidor Linux desplegado debe tener sistema soportado, usuarios mínimos, SSH seguro, firewall, parches y monitoreo. Documenta configuración y procedimiento de recuperación.
 
 #### 32.3.02 — API desplegada
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Una API desplegada debe ofrecer contrato estable, TLS, autenticación, autorización, límites y observabilidad. Prueba salud, errores, paginación y recuperación antes de declararla disponible.
 
 #### 32.3.03 — Aplicación Dockerizada
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Una aplicación Dockerizada empaqueta runtime y dependencias en una imagen reproducible. Usa imágenes base mantenidas, usuario no root, escaneo y configuración externa sin secretos en capas.
 
 #### 32.3.04 — Nginx Reverse Proxy
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Nginx Reverse Proxy enruta solicitudes a servicios internos y puede terminar TLS y aplicar límites. Configura hosts, headers, timeouts y logs y verifica que no exponga endpoints internos.
 
 #### 32.3.05 — Pipeline CI/CD
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un pipeline CI/CD compila, prueba, analiza y despliega artefactos con trazabilidad. Protege runners y secretos, exige aprobaciones adecuadas y conserva evidencia de cada versión.
 
 #### 32.3.06 — Monitorización
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Monitoring recoge métricas y señales para observar salud y rendimiento del sistema. Define SLOs, alertas accionables, dashboards y responsables de respuesta.
 
 #### 32.3.07 — Gestión de logs
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Gestión de logs centraliza eventos para diagnóstico, auditoría y seguridad. Establece formato, retención, sincronización y control de acceso y redacta credenciales y datos personales.
 
 ### Módulo 32.4 — Proyectos de seguridad
 
 #### 32.4.01 — Auditoría de una aplicación propia
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Una auditoría de aplicación propia evalúa alcance, arquitectura, controles, dependencias y vulnerabilidades con permiso explícito. Documenta metodología, evidencia, limitaciones y remediación.
 
 #### 32.4.02 — Laboratorio de reconocimiento
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un laboratorio de reconocimiento define activos ficticios, fuentes y límites para aprender descubrimiento. Mantén red aislada, documenta autorización y evita consultar sistemas de terceros.
 
 #### 32.4.03 — Evaluación de vulnerabilidades
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Una evaluación de vulnerabilidades identifica debilidades y prioriza riesgo según exposición e impacto. Valida falsos positivos y entrega plan de corrección con responsable.
 
 #### 32.4.04 — Pentesting documentado
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un pentesting documentado demuestra metodología, alcance, autorización, pruebas controladas y resultados. Limita evidencias, no incluyas datos sensibles y distingue vulnerabilidades confirmadas de hipótesis.
 
 #### 32.4.05 — Laboratorio SOC
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un laboratorio SOC integra logs sintéticos, reglas y flujo de triage para practicar detección. Evalúa cobertura y falsos positivos y mantiene el entorno sin datos reales.
 
 #### 32.4.06 — Reglas Sigma
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Reglas Sigma describen detecciones de forma portable entre backends compatibles. Documenta fuente de log, condición, referencias y pruebas positivas/negativas.
 
 #### 32.4.07 — Threat Hunting
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Threat Hunting utiliza hipótesis para buscar señales en telemetría disponible. Registra consultas, fuentes, ventana temporal, evidencia y limitaciones y evita conclusiones sin corroboración.
 
 #### 32.4.08 — Análisis de incidentes
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Análisis de incidentes reconstruye cronología, alcance, causa e impacto con evidencia preservada. Mantén cadena de custodia y separa hechos de inferencias.
 
 #### 32.4.09 — Automatización de seguridad
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Automatización de seguridad integra recolección, análisis, enriquecimiento y notificación. Usa permisos mínimos, idempotencia, logs y aprobación para acciones disruptivas.
 
 #### 32.4.10 — Cloud Security Assessment
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Cloud Security Assessment revisa IAM, redes, almacenamiento, logging y configuración cloud dentro de cuentas autorizadas. Limita permisos, protege reportes y prioriza remediación verificable.
 
 ### Módulo 32.5 — Trabajo colaborativo
 
 #### 32.5.01 — Code Review
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Code Review evalúa cambios en corrección, seguridad, mantenibilidad y pruebas. Revisa intención y riesgos, solicita cambios concretos y conserva un tono respetuoso.
 
 #### 32.5.02 — Pull Requests
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Pull Requests proponen cambios para revisión y trazabilidad antes de integrar. Incluye contexto, alcance, pruebas, capturas pertinentes y riesgos; no mezcles cambios ajenos al objetivo.
 
 #### 32.5.03 — Git Flow
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Git Flow es un modelo de ramas con convenciones para desarrollo y releases. Comprende coste y alternativas más simples; el equipo debe adoptar un flujo explícito y consistente.
 
 #### 32.5.04 — Scrum
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Scrum organiza trabajo iterativo mediante responsabilidades, eventos y artefactos. Participa en planificación, revisión y retrospectiva con objetivos y feedback verificables.
 
 #### 32.5.05 — Kanban
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Kanban visualiza flujo y limita WIP para mejorar entrega. Define políticas de columnas y mide tiempo de ciclo y bloqueos.
 
 #### 32.5.06 — Trabajo en equipo
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Trabajo en equipo requiere acuerdos sobre responsabilidades, revisión, comunicación y resolución de dependencias. Comparte contexto y solicita ayuda temprano.
 
 #### 32.5.07 — Comunicación técnica
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Comunicación técnica transmite decisiones, riesgos y resultados con precisión y audiencia adecuada. Distingue hechos, supuestos y recomendaciones y documenta acuerdos.
 
 #### 32.5.08 — Gestión de tareas
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Gestión de tareas descompone objetivos en unidades estimables, priorizadas y verificables. Define responsable, dependencias, criterios de cierre y seguimiento.
 
 #### 32.5.09 — Resolución de conflictos
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Resolución de conflictos busca comprender intereses y evidencia y acordar acciones. Separa problema técnico de diferencias personales y escala cuando afecte seguridad o integridad.
 
 ### Módulo 32.6 — Preparación laboral
 
 #### 32.6.01 — Hoja de vida
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+La hoja de vida resume experiencia, formación, proyectos y habilidades relevantes para un rol. Usa fechas y logros verificables y no atribuyas trabajo colectivo como contribución individual.
 
 #### 32.6.02 — LinkedIn
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+LinkedIn presenta trayectoria y contactos profesionales en un perfil público. Mantén información consistente con la hoja de vida y evita publicar datos confidenciales de empleadores o clientes.
 
 #### 32.6.03 — Portafolio web
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Un portafolio web reúne proyectos, casos de estudio y enlaces verificables. Incluye propósito, rol, arquitectura, capturas, demo, limitaciones y resultados reales.
 
 #### 32.6.04 — Entrevistas técnicas
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Entrevistas técnicas evalúan razonamiento, fundamentos y capacidad de explicar decisiones. Practica verbalizar supuestos, complejidad, casos límite y alternativas.
 
 #### 32.6.05 — Entrevistas conductuales
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Entrevistas conductuales exploran colaboración, aprendizaje, responsabilidad y respuesta a dificultades. Prepara ejemplos reales con contexto, acciones y resultados sin inventar experiencias.
 
 #### 32.6.06 — Resolución de algoritmos
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Resolución de algoritmos requiere comprender problema, restricciones, casos límite y complejidad. Explica enfoque, prueba ejemplos y compara soluciones antes de optimizar.
 
 #### 32.6.07 — SQL Interviews
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+SQL Interviews suelen evaluar consultas, joins, agregación, modelado e índices. Practica con esquemas de prueba y explica NULL, cardinalidad y efectos de transacciones.
 
 #### 32.6.08 — System Design
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+System Design evalúa requisitos, escala, disponibilidad, consistencia, datos, APIs y trade-offs de una solución. Declara supuestos, estima cargas y presenta fallos y observabilidad.
 
 #### 32.6.09 — Comunicación en inglés
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+Comunicación en inglés profesional requiere describir proyectos, aclarar dudas y documentar decisiones técnicas. Practica vocabulario del dominio y precisión, sin memorizar respuestas que oculten tu nivel real.
 
 #### 32.6.10 — Presentación de proyectos
-Desarrollar una evidencia profesional verificable para el portafolio, documentando alcance, decisiones, contribución individual, pruebas, limitaciones y resultados reales sin exagerar experiencia.
+La presentación de proyectos resume problema, usuarios, solución, arquitectura, decisiones, pruebas y resultados. Demuestra el producto funcionando cuando sea posible y declara claramente qué partes son prototipo o simulación.
+
+
+## Registro de desarrollo profundo y revisión editorial interna — 2026-11-24
+
+Se sustituyeron las 54 orientaciones genéricas por explicaciones específicas de portafolio, proyectos full stack, infraestructura, seguridad, colaboración y preparación laboral.
+
+**Revisión interna:** 54/54 entradas desarrolladas y cotejadas con el roadmap. Se reforzó la obligación de demostrar contribuciones y resultados reales, distinguir prototipos de despliegues y proteger datos/confidencialidad. Los proyectos de seguridad y cloud deben ejecutarse solo en activos propios o autorizados. Pendiente: completar proyectos, revisar repositorios y demos, ejecutar pruebas reproducibles, obtener retroalimentación externa y validar materiales laborales sin exagerar experiencia. No se declara experiencia laboral ni aprobación externa.
