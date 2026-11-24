@@ -132,3 +132,12 @@ No se incorpora video en esta versión porque no se ha verificado una pieza con 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** laboratorio de observación propuesto; no ejecutado en un equipo físico.  
 **Estado editorial:** en desarrollo; no aprobado ni publicado.
+
+
+## Registro de revisión editorial interna — 2026-11-24
+
+**Alcance:** revisión documental de alineación con el módulo 1.4 del roadmap, cobertura de los títulos oficiales, secuencia didáctica, consistencia terminológica, ejemplos, actividad práctica, evaluación, seguridad y referencias.
+
+**Resultado:** revisión interna realizada; no equivale a aprobación académica externa ni a validación práctica. Se identificaron los ajustes anotados en este registro y se mantienen explícitas las actividades pendientes. Los laboratorios y ejemplos no se declaran ejecutados. Antes de cambiar el estado editorial se requiere cotejo bibliográfico final, ejecución reproducible de actividades y revisión por un segundo evaluador.
+
+**Hallazgos y pendientes específicos:** Se revisaron la secuencia firmware–POST–cargador–kernel y las diferencias entre BIOS heredado y UEFI. Se conserva el enfoque de observación, sin modificar firmware. Pendiente: verificar el recorrido en equipos de referencia y documentar diferencias de fabricante/arranque.
