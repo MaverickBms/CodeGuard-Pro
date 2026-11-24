@@ -24,7 +24,7 @@ Las etapas 0–32 cuentan con documentos de desarrollo en esta rama. **Etapa 0: 
 - [Revisión de escritorio del módulo 0.3](ascenso-3.1/etapa-00/revision-tecnica-pedagogica-modulo-0.3.md)
 - [Revisión de escritorio del módulo 0.4](ascenso-3.1/etapa-00/revision-tecnica-pedagogica-modulo-0.4.md)
 
-**Seguimiento 2026-11-24:** los cuatro módulos y el proyecto integrador de la etapa 0 constituyen la `BASE DE TRABAJO ACTIVA`. Los cuatro módulos cubren documentalmente los 30 títulos nominales. Cada módulo cuenta con un informe de revisión de escritorio enlazado arriba; estos informes no equivalen a revisión independiente ni validación práctica. Las ampliaciones de 0.1–0.4 incluyen actividades y rúbricas adicionales; se añadió la especificación del proyecto integrador ASCENSO-Knowledge-Base. No se declaran laboratorios ejecutados, lecciones aprobadas ni contenido publicado. Consultar la auditoría enlazada para el inventario de evidencias y pendientes.
+**Seguimiento 2026-11-24:** los cuatro módulos y el proyecto integrador de la etapa 0 constituyen la `BASE DE TRABAJO ACTIVA`. Los cuatro módulos cubren documentalmente los 30 títulos nominales y ahora incluyen matrices de evidencia por unidad (8/7/8/7). Cada módulo cuenta con un informe de revisión de escritorio enlazado arriba; estos informes no equivalen a revisión independiente ni validación práctica. Las ampliaciones de 0.1–0.4 incluyen actividades y rúbricas adicionales; se añadió la especificación del proyecto integrador ASCENSO-Knowledge-Base. No se declaran laboratorios ejecutados, lecciones aprobadas ni contenido publicado. Consultar la auditoría enlazada para el inventario de evidencias y pendientes.
 
 ## Estándares transversales
 - [Estándar editorial académico](ASCENSO_ESTANDAR_EDITORIAL.md)
