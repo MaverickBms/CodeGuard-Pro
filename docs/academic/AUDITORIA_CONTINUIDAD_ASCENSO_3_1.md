@@ -310,3 +310,16 @@ Se realizó una pasada de revisión editorial documental sobre las etapas 1–10
 La revisión realizada es **interna y documental**: confirma correspondencia curricular, consistencia de estructura y aplicación de correcciones editoriales concretas. No constituye aprobación académica externa ni validación funcional. No se ejecutaron compilaciones Java, ejercicios algorítmicos, comandos Git/terminal, máquinas virtuales, capturas de red, ni instancias MySQL, PostgreSQL, MongoDB o Redis. Las referencias deben recibir cotejo bibliográfico final y los ejemplos/laboratorios requieren ejecución reproducible antes de aprobar módulos.
 
 Los módulos de etapas 1–10 siguen en **BASE DE TRABAJO ACTIVA**. No se modificó el roadmap ni se declara aprobación o publicación.
+
+
+## Desarrollo profundo individual — etapas 11 a 13 — 2026-11-24
+
+Se reemplazaron las 212 descripciones genéricas agregadas durante la pasada de granularización por explicaciones individualizadas y específicas para cada lección oficial:
+
+- **Etapa 11:** 60/60 lecciones, HTML, accesibilidad, CSS, diseño de interfaces y SEO.
+- **Etapa 12:** 89/89 lecciones, JavaScript, DOM, asincronía, Web APIs, TypeScript, React, Next.js y herramientas.
+- **Etapa 13:** 63/63 lecciones, arquitectura web, HTTP, APIs, consumo, estilos de comunicación, seguridad y documentación.
+
+Cada apartado incluye explicación técnica y límites/decisiones de uso; los contenidos se articulan con las guías principales, ejemplos, proyectos y ejercicios ya presentes. Se reforzaron riesgos de XSS y almacenamiento del navegador, reglas de Hooks, exposición de variables de cliente, seguridad de tokens, CORS, XML/XXE, serialización, autorización y protección de secretos.
+
+**Validación interna:** se cotejaron los encabezados contra el roadmap y se comprobó que no permanecieran los textos genéricos de relleno en las 212 entradas. Pendiente: fijar versiones concretas de runtime/frameworks, ejecutar pruebas de frontend, accesibilidad y APIs en entornos controlados y obtener segunda revisión académica. No se declara despliegue, certificación WCAG ni aprobación externa.
