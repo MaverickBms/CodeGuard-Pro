@@ -224,3 +224,14 @@ Se incorporó el desglose individual de las lecciones oficiales de las etapas 17
 - **Etapa 19 — DevOps, Docker, CI/CD y servidores:** 67 lecciones en fundamentos DevOps, Docker, servidores, Nginx, CI/CD, cloud, proveedores, Kubernetes y Terraform.
 
 Los títulos y su secuencia corresponden al roadmap oficial. En la etapa 18 se preservan como entradas curriculares los rótulos de familias de patrones (creacionales, estructurales y de comportamiento) presentes en el JSON. No se ejecutaron suites de pruebas, pipelines, despliegues, clústeres ni infraestructura cloud en esta sesión. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
+
+
+### Expansión granular — etapas 20 a 22
+
+Se incorporó el desglose de las entradas curriculares de las etapas 20–22:
+
+- **Etapa 20 — Desarrollo seguro de software (AppSec):** 57 entradas en fundamentos, seguridad web, OWASP Top 10, autenticación/autorización, seguridad de APIs e infraestructura.
+- **Etapa 21 — Fundamentos de ciberseguridad, gestión de riesgos y ética:** 82 entradas en panorama de seguridad, principios, conceptos, gestión de riesgos, amenazas, marcos, ética/legislación e IAM.
+- **Etapa 22 — Laboratorio de ciberseguridad, hardening y administración segura:** 58 entradas en virtualización, Linux, hardening Linux/Windows, redes y entornos de laboratorio.
+
+Se conservaron las entradas textuales del roadmap, incluidas las notas que figuran dentro de algunas listas de lecciones; no se alteró su fuente curricular. Toda práctica ofensiva o de validación se mantiene limitada a entornos propios, aislados y autorizados. No se desplegaron máquinas virtuales, no se ejecutaron herramientas ni se realizaron pruebas contra sistemas externos. Las etapas permanecen como base de trabajo activa, sin aprobación ni publicación.
