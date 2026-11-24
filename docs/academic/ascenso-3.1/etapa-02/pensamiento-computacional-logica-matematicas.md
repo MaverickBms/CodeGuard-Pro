@@ -23,7 +23,7 @@ Al finalizar podrás analizar un problema antes de programar, separar lo esencia
 
 El pensamiento computacional es una forma estructurada de formular problemas y diseñar soluciones que puedan ejecutarse, comprobarse o automatizarse. No es sinónimo de programar: se aplica antes y durante la implementación.
 
-### Descomposición
+### 2.1.1 — Descomposición
 
 Consiste en dividir un problema amplio en subproblemas más pequeños, comprensibles y comprobables.
 
@@ -39,7 +39,7 @@ Cada parte puede descomponerse aún más. El módulo de ventas, por ejemplo, req
 
 Una buena descomposición procura responsabilidades claras y evita que cada parte dependa innecesariamente de todas las demás.
 
-### Abstracción
+### 2.1.2 — Abstracción
 
 Abstraer es conservar los detalles relevantes para el objetivo y omitir temporalmente los que no afectan la solución.
 
@@ -47,19 +47,19 @@ Para calcular el total de una venta necesitamos precio, cantidad, descuentos e i
 
 La abstracción no significa ignorar detalles importantes. Si una regla fiscal afecta el cálculo, no se puede omitir.
 
-### Reconocimiento de patrones
+### 2.1.3 — Reconocimiento de patrones
 
 Busca similitudes entre situaciones para reutilizar soluciones o reglas.
 
 Ejemplo: las operaciones de agregar, consultar, modificar y eliminar pueden repetirse en productos, clientes y proveedores. Reconocer el patrón ayuda a diseñar operaciones coherentes, pero no significa que todas las entidades deban compartir exactamente las mismas reglas.
 
-### Generalización
+### 2.1.4 — Generalización
 
 Consiste en formular una solución que funcione para una familia de casos, no solo para un ejemplo específico.
 
 Una fórmula para calcular el subtotal de una línea de venta debe funcionar con distintos precios y cantidades válidas. Debe especificar también qué ocurre con cantidades negativas, cero o valores fuera de rango.
 
-### Modelado de problemas
+### 2.1.5 — Modelado de problemas
 
 Un modelo representa los elementos y relaciones relevantes de una situación. Puede ser textual, matemático, tabular, gráfico o algorítmico.
 
@@ -71,7 +71,7 @@ Para una venta:
 
 Un modelo es una simplificación útil, no una copia perfecta de la realidad. Debe declarar sus supuestos.
 
-### Casos límite
+### 2.1.6 — Casos límite
 
 Son entradas o situaciones extremas que pueden revelar errores:
 - lista vacía;
@@ -103,7 +103,7 @@ No basta con probar el «camino feliz». Las reglas deben indicar cómo se manej
 
 La lógica permite expresar condiciones y razonar sobre ellas. En programación se utiliza para decisiones, validaciones, filtros y control de flujo.
 
-### Proposiciones
+### 2.2.1 — Proposiciones
 
 Una proposición es un enunciado declarativo al que se le puede asignar un valor de verdad: verdadero o falso.
 
@@ -112,9 +112,13 @@ Ejemplos:
 - «La cantidad solicitada es positiva» puede evaluarse para una entrada.
 - «Cierra la ventana» no es una proposición: es una orden.
 
-### Operadores AND, OR y NOT
+### 2.2.2 — Operadores AND, OR y NOT
 
 Sean P y Q proposiciones:
+
+### 2.2.3 — Tablas de verdad
+
+La tabla de verdad enumera las combinaciones posibles de valores y permite comprobar el resultado de un operador o expresión.
 
 | P | Q | P AND Q | P OR Q |
 |---|---|---|---|
@@ -138,19 +142,19 @@ Tabla de NOT:
 
 La prioridad de operadores y el uso de paréntesis importan. Escribe expresiones complejas de forma explícita para evitar interpretaciones erróneas.
 
-### Implicación
+### 2.2.4 — Implicaciones
 
 La expresión «si P, entonces Q» se representa (P \rightarrow Q). Solo es falsa cuando P es verdadera y Q es falsa.
 
 Ejemplo: «Si el pago está confirmado, entonces se puede emitir el comprobante». Esta regla no afirma que todo comprobante implica necesariamente un pago confirmado, salvo que se establezca también la relación inversa.
 
-### Equivalencia
+### 2.2.5 — Equivalencias
 
 (P \leftrightarrow Q) es verdadera cuando ambas proposiciones tienen el mismo valor de verdad. Puede leerse «P si y solo si Q».
 
 En diseño de software, una equivalencia expresa que dos condiciones se cumplen exactamente en los mismos casos. No declares equivalencias cuando solo has demostrado una dirección de implicación.
 
-### Álgebra booleana
+### 2.2.6 — Álgebra booleana
 
 Permite transformar expresiones lógicas manteniendo su valor de verdad. Identidades útiles:
 
@@ -163,7 +167,7 @@ Permite transformar expresiones lógicas manteniendo su valor de verdad. Identid
 
 Estas leyes ayudan a simplificar condiciones y revisar validaciones.
 
-### Predicados
+### 2.2.7 — Predicados
 
 Un predicado es una expresión cuyo valor de verdad depende de una o más variables. Por ejemplo, (StockSuficiente(producto,cantidad)).
 
@@ -173,26 +177,33 @@ Cuando se asignan valores concretos, el predicado puede evaluarse como verdadero
 
 Un algoritmo es una secuencia finita y ordenada de pasos para resolver una tarea. Debe definir qué recibe, qué transforma y qué resultado produce.
 
-### Entrada, procesamiento y salida
+### 2.3.1 — Entrada
 
-- **Entrada:** datos proporcionados por el usuario, archivo, dispositivo o sistema.
-- **Procesamiento:** reglas y operaciones que transforman esos datos.
-- **Salida:** resultado presentado, almacenado o enviado.
+La entrada son los datos que recibe el algoritmo desde el usuario, un archivo, un dispositivo u otro sistema. Define formato, tipo, rango y reglas de validación.
 
-Ejemplo de total de línea:
-- entrada: precio unitario y cantidad;
-- procesamiento: validar ambos valores y multiplicarlos;
-- salida: subtotal o mensaje de error.
+### 2.3.2 — Procesamiento
 
-### Variables
+El procesamiento aplica operaciones y reglas a los datos recibidos. Debe respetar el orden de las operaciones y las restricciones del problema.
+
+### 2.3.3 — Salida
+
+La salida es el resultado que el algoritmo presenta, almacena o envía. Debe indicar formato y comportamiento cuando no exista un resultado válido.
+
+**Ejemplo de total de línea:** entrada: precio unitario y cantidad; procesamiento: validar ambos valores y multiplicarlos; salida: subtotal o mensaje de error.
+
+### 2.3.6 — Variables
 
 Una variable representa un dato que puede cambiar durante el algoritmo. Debe tener un nombre significativo y un dominio válido.
 
 Ejemplos: `precioUnitario`, `cantidad`, `subtotal`. Evita nombres ambiguos como `x` o `dato2` cuando el significado puede expresarse.
 
-### Contadores y acumuladores
+### 2.3.7 — Contadores
 
-Un contador registra cuántas veces ocurre un evento; suele incrementarse en una unidad. Un acumulador combina valores a medida que se procesan.
+Un contador registra cuántas veces ocurre un evento; suele incrementarse en una unidad.
+
+### 2.3.8 — Acumuladores
+
+Un acumulador combina valores a medida que se procesan.
 
 Ejemplo:
 - contador: número de productos procesados;
@@ -200,9 +211,13 @@ Ejemplo:
 
 Inicializa ambos antes del ciclo. Si el contador empieza en un valor incorrecto, el resultado puede fallar incluso cuando el ciclo esté bien escrito.
 
-### Condiciones e iteraciones
+### 2.3.9 — Condiciones
 
-Una condición permite seleccionar un camino. Una iteración repite un bloque mientras se cumpla una condición o por una cantidad determinada de veces.
+Una condición permite seleccionar un camino.
+
+### 2.3.10 — Iteraciones
+
+Una iteración repite un bloque mientras se cumpla una condición o por una cantidad determinada de veces.
 
 Antes de crear un ciclo define:
 - condición de inicio;
@@ -213,7 +228,7 @@ Antes de crear un ciclo define:
 
 Un ciclo que no cambia la variable que controla su condición puede convertirse en un ciclo infinito.
 
-### Pseudocódigo
+### 2.3.4 — Pseudocódigo
 
 El pseudocódigo expresa la lógica sin depender de la sintaxis de un lenguaje específico. Debe ser consistente y suficientemente preciso para que otra persona pueda implementarlo.
 
@@ -233,7 +248,7 @@ INICIO
 FIN
 ```
 
-### Diagramas de flujo
+### 2.3.5 — Diagramas de flujo
 
 Representan visualmente el recorrido del algoritmo. Convenciones frecuentes:
 - óvalo: inicio/fin;
@@ -246,31 +261,31 @@ Los símbolos son una convención de representación; lo importante es que cada 
 
 ## 2.4 — Matemáticas
 
-### Aritmética
+### 2.4.1 — Aritmética
 
 Operaciones fundamentales: suma, resta, multiplicación, división, potencias y raíces. En programación importa además el tipo numérico, el orden de operaciones y el tratamiento de división por cero.
 
 Ejemplo de importe: (precio \times cantidad). Si se aplican descuentos, documenta si se calculan antes o después de impuestos y qué reglas de redondeo aplican.
 
-### Álgebra básica
+### 2.4.2 — Álgebra básica
 
 Las variables representan cantidades desconocidas o cambiantes. Las expresiones permiten modelar relaciones.
 
 Si (p) es el precio unitario y (q) la cantidad, el subtotal es (S=pq).
 
-### Ecuaciones
+### 2.4.3 — Ecuaciones
 
 Una ecuación expresa igualdad entre dos expresiones. Resolverla significa encontrar los valores que satisfacen la igualdad.
 
 Ejemplo: si (S=pq), entonces para (p\neq0), (q=S/p). En el modelo real, además deben comprobarse unidades y restricciones del dominio.
 
-### Funciones
+### 2.4.4 — Funciones
 
 Una función asigna una salida a cada entrada válida según una regla. Por ejemplo, (f(q)=pq) para precio fijo (p).
 
 En programación, una función puede recibir parámetros, validar datos y devolver un resultado. Debe documentar entradas, salida, efectos secundarios y errores posibles.
 
-### Conjuntos
+### 2.4.5 — Conjuntos
 
 Un conjunto es una colección bien definida de elementos. Se usan operaciones como:
 - unión (A\cup B);
@@ -280,19 +295,23 @@ Un conjunto es una colección bien definida de elementos. Se usan operaciones co
 
 Ejemplo: conjunto de productos activos y conjunto de productos con stock. Su intersección contiene productos que cumplen ambas condiciones.
 
-### Relaciones
+### 2.4.6 — Relaciones
 
 Una relación conecta elementos de conjuntos. Puede representar «pertenece a», «es proveedor de» o «es mayor que». Las propiedades (reflexiva, simétrica, transitiva, etc.) dependen de la relación estudiada.
 
-### Proporciones y porcentajes
+### 2.4.7 — Proporciones
 
-Una proporción compara cantidades. Un porcentaje expresa una razón por cada cien.
+Una proporción compara cantidades.
+
+### 2.4.8 — Porcentajes
+
+Un porcentaje expresa una razón por cada cien.
 
 Si un producto cuesta 80.000 y se aplica un descuento del 10%, el descuento es 8.000 y el precio posterior es 72.000, antes de considerar impuestos u otras reglas.
 
 Evita sumar porcentajes sin revisar la base sobre la que se aplican. Dos descuentos sucesivos del 10% no equivalen a un descuento único del 20%: (0,9\times0,9=0,81), es decir, reducción total del 19%.
 
-### Probabilidad básica
+### 2.4.9 — Probabilidad básica
 
 La probabilidad cuantifica incertidumbre bajo un modelo. En un espacio muestral finito con resultados equiprobables, (P(A)=\frac{\text{casos favorables}}{\text{casos posibles}}).
 
@@ -300,21 +319,21 @@ No todos los sucesos reales son equiprobables ni independientes. Una probabilida
 
 ## 2.5 — Matemática discreta (introducción)
 
-### Lógica matemática
+### 2.5.1 — Lógica matemática
 
 Formaliza proposiciones, cuantificadores y reglas de inferencia. Es la base para razonar sobre condiciones, algoritmos y propiedades de estructuras.
 
-### Combinatoria
+### 2.5.2 — Combinatoria
 
 Estudia cómo contar selecciones y arreglos sin enumerar todos los casos. Antes de elegir una fórmula, pregunta si el orden importa y si se permite repetir elementos.
 
-### Permutaciones
+### 2.5.3 — Permutaciones
 
 Cuentan ordenamientos donde el orden importa. Para ordenar (n) elementos distintos, hay (n!) permutaciones.
 
 Ejemplo: ordenar tres productos A, B y C produce (3!=6) órdenes.
 
-### Combinaciones
+### 2.5.4 — Combinaciones
 
 Cuentan selecciones donde el orden no importa. El número de formas de elegir (k) elementos de (n) es:
 
@@ -324,7 +343,11 @@ Cuentan selecciones donde el orden no importa. El número de formas de elegir (k
 
 Ejemplo: elegir dos integrantes de un equipo de cuatro produce \(\binom{4}{2}=6\) pares.
 
-### Relaciones y grafos
+### 2.5.5 — Relaciones
+
+Una relación conecta elementos de conjuntos. Puede representar pertenencia, dependencia, precedencia u otras asociaciones. Sus propiedades dependen de la relación estudiada.
+
+### 2.5.6 — Grafos
 
 Un grafo está formado por vértices y aristas. Puede modelar conexiones entre ciudades, dependencias entre tareas, redes de computadores o relaciones entre entidades.
 
@@ -338,7 +361,7 @@ Conceptos iniciales:
 
 Ejemplo empresarial: productos y proveedores pueden modelarse como nodos conectados por relaciones «suministra». No se debe confundir este modelo conceptual con un diseño de base de datos definitivo.
 
-### Aritmética modular
+### 2.5.7 — Aritmética modular
 
 Trabaja con residuos de divisiones. (a\equiv b\pmod n) significa que (a) y (b) dejan el mismo residuo al dividirse por (n).
 
@@ -469,4 +492,4 @@ No se incorpora video en esta versión. La selección audiovisual de esta etapa 
 
 **Consulta de fuentes:** 2026-11-19.  
 **Verificación práctica:** algoritmos y ejercicios propuestos; el proyecto aún no se implementa ni ejecuta como software.  
-**Estado editorial:** borrador; revisar referencias, atribuciones y pertinencia audiovisual antes de aprobar.
+**Estado editorial:** en desarrollo; referencias y pertinencia audiovisual pendientes de revisión antes de aprobar.
