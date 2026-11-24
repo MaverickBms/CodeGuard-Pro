@@ -565,11 +565,19 @@ El versionado permite evolucionar contratos sin romper consumidores. Define pol�
 Fetch consume recursos HTTP desde JavaScript y devuelve promesas. Comprueba `response.ok`, parsea según `Content-Type`, gestiona cancelación y errores de red y no almacenes tokens sensibles en el código fuente del cliente.
 
 
+**Escenario aplicado.** Una solicitud Fetch debe tratar por separado timeout/red, respuesta 4xx/5xx y error al parsear. Comprueba response.ok antes de procesar JSON y cancela solicitudes obsoletas.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Por qué Fetch puede resolver la promesa aunque el servidor responda 404?
+
 **Práctica y evidencia:** Consume un endpoint con Fetch y gestiona HTTP no exitoso, red, timeout y parseo. **Evidencia:** distingue fallo de transporte de respuesta 4xx/5xx.
 
 #### 13.4.02 — Axios
 Axios es una biblioteca cliente HTTP que facilita configuración, interceptores y transformación de datos. Evalúa si el proyecto necesita la dependencia adicional, configura timeouts y evita interceptores que registren credenciales o reintenten indefinidamente.
 
+
+**Escenario aplicado.** Una instancia Axios centraliza baseURL y timeout. Los interceptores no deben imprimir Authorization y los reintentos deben limitarse a operaciones seguras o protegidas por idempotencia.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué riesgo introduce un interceptor que registra todos los headers?
 
 **Práctica y evidencia:** Implementa una solicitud Axios con configuración central, interceptores y cancelación cuando aplique. **Evidencia:** evita duplicar credenciales o registrar tokens en logs.
 
@@ -577,11 +585,19 @@ Axios es una biblioteca cliente HTTP que facilita configuración, interceptores 
 Postman permite construir solicitudes, organizar colecciones y documentar pruebas de APIs. Usa variables de entorno para endpoints y credenciales de prueba, nunca exportes secretos y diferencia una colección ejecutada de una especificación de comportamiento validada.
 
 
+**Escenario aplicado.** Una colección Postman organiza pruebas de login, lectura y creación con variables de entorno. Al exportarla se revisa que no contenga tokens, cookies ni datos reales.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué debe verificarse antes de compartir una colección?
+
 **Práctica y evidencia:** Crea una colección Postman con variables de entorno y pruebas de respuesta. **Evidencia:** exporta una colección sin secretos y documenta los asserts.
 
 #### 13.4.04 — Insomnia
 Insomnia permite explorar y probar APIs mediante solicitudes, entornos y colecciones. Mantén los entornos separados, controla secretos y registra método, headers, body y respuesta para que otra persona pueda reproducir la prueba.
 
+
+**Escenario aplicado.** Un workspace Insomnia separa desarrollo y pruebas mediante entornos. La URL cambia por variable, pero las credenciales se obtienen de un mecanismo seguro y no se guardan en el repositorio.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Por qué separar entornos reduce errores de destino y filtración?
 
 **Práctica y evidencia:** Reproduce una solicitud en Insomnia y guarda un entorno de laboratorio con variables no sensibles. **Evidencia:** documenta método, URL, cabeceras y respuesta.
 
@@ -589,11 +605,19 @@ Insomnia permite explorar y probar APIs mediante solicitudes, entornos y colecci
 Thunder Client integra pruebas HTTP en el editor y facilita trabajar junto al código. Guarda colecciones sin credenciales reales, documenta dependencias del entorno y no confundas una prueba manual aislada con cobertura automatizada.
 
 
+**Escenario aplicado.** Thunder Client permite probar una API local, pero una solicitud manual no sustituye pruebas automatizadas ni evidencia de cobertura. Registra configuración reproducible y respuesta esperada.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué limitación tiene una colección manual como evidencia de calidad?
+
 **Práctica y evidencia:** Utiliza Thunder Client para enviar solicitudes a un servidor local y comparar respuestas. **Evidencia:** registra configuración y resultado sin incluir tokens reales.
 
 #### 13.4.06 — Manejo de errores
 El manejo de errores distingue fallo de conexión, timeout, rechazo HTTP, respuesta inválida y error de negocio. Muestra mensajes útiles al usuario, conserva identificadores de correlación para soporte y evita filtrar stack traces o detalles internos.
 
+
+**Escenario aplicado.** Un error interno devuelve un identificador de correlación y mensaje seguro; stack trace y detalles técnicos quedan en logs protegidos para soporte.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué información debe ocultarse al cliente y conservarse de forma controlada para diagnóstico?
 
 **Práctica y evidencia:** Diseña un formato uniforme de error con código, mensaje seguro, correlación y detalles internos solo en logs protegidos. **Evidencia:** demuestra que el cliente no recibe stack traces ni secretos.
 
@@ -601,11 +625,19 @@ El manejo de errores distingue fallo de conexión, timeout, rechazo HTTP, respue
 La autenticación verifica quién realiza la solicitud y debe separarse de la autorización, que decide qué puede hacer. Utiliza mecanismos mantenidos, protege credenciales y aplica controles de sesión, rotación y revocación según el riesgo.
 
 
+**Escenario aplicado.** Un usuario autenticado intenta consultar un pedido de otra cuenta. El servidor reconoce su identidad, pero debe denegar el acceso por autorización de recurso.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Por qué autenticar correctamente no autoriza acceso a todos los recursos?
+
 **Práctica y evidencia:** Implementa autenticación de prueba y verifica identidad en servidor antes de acceder a recursos. **Evidencia:** diferencia autenticación de autorización y prueba acceso anónimo y autenticado.
 
 #### 13.4.08 — Headers
 Los headers del cliente incluyen negociación de contenido, idioma, autorización y trazabilidad. Añade solo los necesarios, respeta políticas CORS y no pongas secretos en headers que puedan copiarse a registros o herramientas compartidas.
 
+
+**Escenario aplicado.** Los headers de idioma, contenido y correlación se documentan por separado de Authorization. Solo se aceptan headers necesarios y los valores se validan.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Por qué no deben copiarse indiscriminadamente headers de una solicitud a otra?
 
 **Práctica y evidencia:** Define cabeceras requeridas para correlación, caché, contenido y autenticación. **Evidencia:** documenta cuáles son obligatorias y cómo se validan.
 
@@ -613,11 +645,19 @@ Los headers del cliente incluyen negociación de contenido, idioma, autorizació
 Los tokens representan credenciales o concesiones con alcance y vigencia definidos. Valida emisor, audiencia, expiración y firma cuando aplique; almacénalos con controles apropiados y evita registrarlos, compartirlos o incluirlos en URLs.
 
 
+**Escenario aplicado.** Un token tiene emisor, audiencia, alcance y expiración. El cliente no debe asumir que decodificar un payload equivale a validar firma o permiso.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué diferencia existe entre decodificar y validar un token?
+
 **Práctica y evidencia:** Compara tokens opacos y autocontenidos, expiración, audiencia, emisor y revocación. **Evidencia:** explica almacenamiento y transmisión seguros sin incluir tokens reales en el repositorio.
 
 #### 13.4.10 — Documentación
 La documentación de consumo explica cómo configurar entorno, autenticar, llamar operaciones y tratar errores. Incluye ejemplos sin secretos, respuestas representativas, límites y versiones; verifica que los ejemplos coincidan con el contrato desplegado.
 
+
+**Escenario aplicado.** La documentación de consumo incluye precondiciones, ejemplo sin secretos, parámetros, respuesta y errores. Otra persona debe reproducir la solicitud sin consultar el código fuente.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué evidencia demuestra que la documentación es suficiente para un consumidor?
 
 **Práctica y evidencia:** Documenta un endpoint con propósito, parámetros, esquema, ejemplos y errores. **Evidencia:** permite que otra persona reproduzca una solicitud usando solo la documentación.
 
@@ -627,11 +667,19 @@ La documentación de consumo explica cómo configurar entorno, autenticar, llama
 GraphQL permite solicitar datos mediante un esquema tipado y operaciones como query, mutation y subscription. Controla profundidad, complejidad, autorización por campo y exposición de introspección según el entorno; evita resolver datos sin límites.
 
 
+**Escenario aplicado.** Una consulta GraphQL solicita campos específicos, pero profundidad y complejidad deben limitarse para evitar consultas costosas y resolver permisos por campo.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Por qué una sola consulta GraphQL puede consumir muchos recursos?
+
 **Práctica y evidencia:** Diseña una consulta GraphQL que solicite campos concretos y compara con endpoints REST equivalentes. **Evidencia:** explica resolvers, esquema y riesgos de consultas costosas.
 
 #### 13.5.02 — WebSockets
 WebSockets mantiene un canal bidireccional persistente después de un handshake HTTP. Define autenticación, autorización por mensaje, límites, reconexión y heartbeat; valida el origen y no asumas que el canal permanece confiable tras la conexión inicial.
 
+
+**Escenario aplicado.** Un WebSocket mantiene un canal bidireccional; cada mensaje necesita validación y autorización, incluso después de autenticar el handshake inicial.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Por qué la autenticación del handshake no basta para todos los mensajes?
 
 **Práctica y evidencia:** Construye un intercambio WebSocket en un servidor de laboratorio y gestiona cierre/reconexión. **Evidencia:** documenta autenticación, origen permitido y límites de mensajes.
 
@@ -639,17 +687,29 @@ WebSockets mantiene un canal bidireccional persistente después de un handshake 
 gRPC utiliza contratos definidos mediante Protocol Buffers y transporte HTTP/2 para comunicación entre servicios. Es útil para APIs tipadas y streaming; documenta compatibilidad de esquemas, deadlines, errores y autenticación entre servicios.
 
 
+**Escenario aplicado.** Dos servicios gRPC comparten un contrato protobuf versionado. Cambios incompatibles en campos y tipos deben gestionarse con reglas de compatibilidad y deadlines.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué ventaja ofrece un contrato tipado y qué riesgo aparece al cambiarlo sin compatibilidad?
+
 **Práctica y evidencia:** Define un servicio gRPC con mensajes protobuf y un método RPC. **Evidencia:** explica contrato, generación de stubs y negociación de transporte.
 
 #### 13.5.04 — Webhooks
 Un webhook envía una notificación HTTP cuando ocurre un evento en un sistema. Verifica firmas, limita reintentos, soporta entregas duplicadas y procesa de forma idempotente; responde rápido y delega tareas largas a una cola.
 
 
+**Escenario aplicado.** Un proveedor reenvía un webhook si no recibe respuesta. El receptor valida firma y timestamp y deduplica event_id para que una entrega repetida no duplique efectos.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Por qué el receptor debe tolerar eventos duplicados?
+
 **Práctica y evidencia:** Implementa un webhook receptor que valide firma, timestamp y repetición de eventos. **Evidencia:** demuestra rechazo de firma incorrecta y procesamiento idempotente.
 
 #### 13.5.05 — Server-Sent Events
 Server-Sent Events permite que el servidor envíe eventos unidireccionales al navegador mediante una conexión HTTP. Define reconexión, identificadores de evento y control de acceso; el cliente no puede enviar mensajes por el mismo canal SSE.
 
+
+**Escenario aplicado.** SSE envía actualizaciones del servidor al navegador y permite reconexión mediante identificadores de evento. No ofrece un canal de escritura desde el cliente.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿En qué caso SSE es más sencillo que WebSocket y cuál es su limitación?
 
 **Práctica y evidencia:** Construye un flujo SSE que envíe eventos unidireccionales desde servidor al navegador. **Evidencia:** compara SSE con WebSocket y explica reconexión y formato de eventos.
 
@@ -659,11 +719,19 @@ Server-Sent Events permite que el servidor envíe eventos unidireccionales al na
 CORS es un mecanismo del navegador que controla si un origen puede leer respuestas de otro origen. Configura orígenes, métodos y headers permitidos de forma específica; CORS no es autenticación ni impide que clientes no navegador llamen a la API.
 
 
+**Escenario aplicado.** El navegador envía preflight cuando la solicitud requiere autorización CORS. La API valida origen, método y headers, pero mantiene autenticación independiente.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Por qué CORS no bloquea llamadas directas realizadas por clientes fuera del navegador?
+
 **Práctica y evidencia:** Configura CORS para permitir solo orígenes necesarios, métodos y cabeceras concretas. **Evidencia:** prueba solicitud preflight y explica que CORS no sustituye autenticación.
 
 #### 13.6.02 — API Keys
 Una API key identifica una aplicación o proyecto y puede servir para cuotas o control de acceso limitado. No la consideres secreto seguro si está embebida en frontend público; combina controles de servidor, restricciones y rotación.
 
+
+**Escenario aplicado.** Una API key embebida en JavaScript público puede extraerse. Las claves de servidor se almacenan fuera del repositorio, limitan alcance y se rotan/revocan.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Por qué una API key incluida en frontend no puede tratarse como secreto?
 
 **Práctica y evidencia:** Diseña una API key de prueba con alcance, rotación, almacenamiento seguro y revocación. **Evidencia:** demuestra que la clave no se expone en código cliente ni logs.
 
@@ -671,11 +739,19 @@ Una API key identifica una aplicación o proyecto y puede servir para cuotas o c
 JWT es un formato de token con claims codificados y, habitualmente, firma o cifrado según el perfil. Verifica algoritmo permitido, firma, emisor, audiencia y expiración; el payload firmado no está cifrado necesariamente y puede ser legible.
 
 
+**Escenario aplicado.** Un JWT firmado puede ser leído por quien lo obtiene. El servidor valida algoritmo permitido, firma, emisor, audiencia y expiración antes de aceptar claims.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué protección aporta la firma y qué no oculta?
+
 **Práctica y evidencia:** Valida un JWT comprobando firma, algoritmo permitido, issuer, audience y expiración. **Evidencia:** demuestra rechazo de token manipulado y aclara que el payload no está cifrado por defecto.
 
 #### 13.6.04 — Cookies seguras
 Las cookies seguras de sesión deben configurarse con `Secure`, `HttpOnly` y `SameSite` según el flujo. Usa TLS, limita alcance con `Path`/`Domain`, rota identificadores y añade defensas CSRF cuando la arquitectura lo requiera.
 
+
+**Escenario aplicado.** Una cookie de autenticación usa Secure, HttpOnly y SameSite adecuados y la aplicación incorpora protección CSRF cuando el patrón de credenciales lo requiere.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué amenaza reduce SameSite y por qué no elimina toda necesidad de CSRF controls?
 
 **Práctica y evidencia:** Configura cookies de autenticación con Secure, HttpOnly, SameSite y protección CSRF acorde al flujo. **Evidencia:** inspecciona atributos y prueba cierre de sesión.
 
@@ -683,11 +759,19 @@ Las cookies seguras de sesión deben configurarse con `Secure`, `HttpOnly` y `Sa
 Refresh tokens permiten obtener nuevos access tokens sin volver a autenticar al usuario en cada ciclo. Almacénalos de forma protegida, rótalos cuando corresponda, detecta reutilización y permite revocación por dispositivo o sesión.
 
 
+**Escenario aplicado.** La rotación de refresh token invalida el anterior. Si se detecta reutilización de un token ya rotado, el servidor puede revocar la familia y requerir nueva autenticación.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué puede indicar la reutilización de un refresh token antiguo?
+
 **Práctica y evidencia:** Diseña rotación de refresh tokens con detección de reutilización y revocación de familia. **Evidencia:** describe estados, almacenamiento y respuesta ante robo/reuso.
 
 #### 13.6.06 — Rate limiting
 Rate limiting restringe solicitudes por usuario, token, IP u otra clave para proteger disponibilidad y cuotas. Define ventanas y respuestas consistentes, considera proxies confiables y evita que una sola dirección compartida bloquee injustamente a muchos usuarios.
 
+
+**Escenario aplicado.** El rate limiting devuelve 429 y, cuando corresponde, información de reintento. La clave de limitación considera usuarios, credenciales y proxies confiables para evitar bypass o bloqueo injusto.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué problemas surgen al limitar únicamente por IP?
 
 **Práctica y evidencia:** Implementa un límite de solicitudes por usuario o cliente con respuesta 429 y cabeceras informativas. **Evidencia:** prueba ventana, concurrencia y bypasses por identidades compartidas.
 
@@ -697,11 +781,19 @@ Rate limiting restringe solicitudes por usuario, token, IP u otra clave para pro
 OpenAPI describe contratos HTTP mediante un documento estructurado que puede generar documentación, clientes y validaciones. Mantén el esquema junto al código, especifica seguridad y errores y comprueba que las rutas documentadas coincidan con la implementación.
 
 
+**Escenario aplicado.** La especificación OpenAPI documenta request/response, seguridad, errores y ejemplos. La integración continua puede detectar divergencia entre contrato y código, pero el documento debe mantenerse vigente.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Por qué una especificación válida sintácticamente puede estar desactualizada respecto a la API real?
+
 **Práctica y evidencia:** Escribe una especificación OpenAPI para un endpoint de lectura y otro de escritura. **Evidencia:** valida el documento y comprueba que ejemplos coincidan con esquemas.
 
 #### 13.7.02 — Swagger
 Swagger es un conjunto de herramientas del ecosistema OpenAPI para visualizar, editar y probar especificaciones. Distingue la especificación OpenAPI de Swagger UI/Editor y protege las interfaces interactivas en entornos no públicos.
 
+
+**Escenario aplicado.** Swagger UI permite explorar y ejecutar operaciones documentadas. En producción se restringe el acceso o se configura autenticación para no exponer endpoints internos ni facilitar abuso.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué riesgos existen al dejar una interfaz interactiva de API abierta sin controles?
 
 **Práctica y evidencia:** Utiliza Swagger UI para explorar una especificación y enviar una solicitud al entorno de prueba. **Evidencia:** documenta cómo se autentica el explorador y qué operaciones están disponibles.
 
@@ -709,12 +801,20 @@ Swagger es un conjunto de herramientas del ecosistema OpenAPI para visualizar, e
 Postman Collections agrupa solicitudes, variables y scripts para reproducir flujos de API. Incluye datos de prueba no sensibles, assertions sobre status/body y documentación de precondiciones; versiona colecciones sin credenciales ni datos personales.
 
 
+**Escenario aplicado.** Una colección Postman versionada contiene solicitudes y assertions, pero usa variables no sensibles y datos sintéticos. Su ejecución se registra con entorno y versión de API.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué diferencia hay entre una colección de solicitudes y una especificación contractual OpenAPI?
+
 **Práctica y evidencia:** Organiza una colección Postman por recurso y flujo de negocio con variables no sensibles. **Evidencia:** demuestra ejecución reproducible y ausencia de credenciales incrustadas.
 
 #### 13.7.04 — API versioning
 API versioning mantiene compatibilidad mientras evolucionan rutas, representaciones o contratos. Documenta cambios deprecados, soporte y migración; usa versionado explícito y pruebas contractuales para detectar consumidores afectados antes de retirar una versión.
 
 
+
+**Escenario aplicado.** Una política de versionado define compatibilidad, fechas de deprecación, métricas de adopción y retirada. Los consumidores reciben aviso y una ruta de migración verificable.
+
+**Criterio de análisis.** La evidencia debe incluir configuración, resultado esperado y límites de seguridad del patrón. **Pregunta de comprensión:** ¿Qué condiciones deben cumplirse antes de retirar una versión antigua?
 
 **Práctica y evidencia:** Documenta política de versionado, compatibilidad, deprecación y retirada para una API. **Evidencia:** crea una matriz de cambios y plan de migración para consumidores.
 
