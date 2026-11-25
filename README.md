@@ -136,6 +136,7 @@ Comandos de gestión disponibles:
 | Comando | Propósito |
 |---|---|
 | `cargar_ascenso` | Carga o actualiza las 33 etapas del roadmap ASCENSO 3.1 |
+| `exportar_manifiesto_academico` | Exporta en solo lectura UUID curriculares reales, estructura, ejemplos, ejercicios y estado editorial |
 | `crear_version_leccion` | Genera un snapshot versionado borrador de una lección |
 | `gestionar_version_leccion` | Envía, aprueba, publica o retira una versión de contenido |
 | `importar_paquete_contenido` | Importa un lote validado como borradores editoriales |
@@ -147,6 +148,8 @@ Comandos de gestión disponibles:
 | `crear_backup --output RUTA.zip` | Crea una copia ZIP verificada de la base local y `media/` |
 | `verificar_backup RUTA.zip` | Verifica estructura, hashes e integridad SQLite de una copia |
 | `restaurar_backup RUTA.zip --confirm` | Restaura base y `media/` con validación previa y rollback |
+
+Para obtener el inventario real de una instalación de desarrollo (incluidos UUID), ejecuta `python manage.py exportar_manifiesto_academico --nombre "PROYECTO ASCENSO — Roadmap Maestro Consolidado" --edicion "3.1" --salida RUTA_PRIVADA.json --incluir-fuentes`. El nombre del ejemplo corresponde al registro creado desde el JSON maestro actual; si tu instalación usa otro, consulta el nombre y la edición exactos en el registro `Roadmap`. El archivo contiene identificadores propios de esa instalación: mantenlo fuera del repositorio público. La exportación es de solo lectura y no incluye progreso ni datos de usuarios. Este manifiesto es un inventario de correspondencia; no es un paquete JSON v1 importable ni genera contenido académico.
 
 ### Copias de seguridad y restauración
 
@@ -247,3 +250,140 @@ La documentación técnica extendida (índice, arquitectura, estructura del repo
 ---
 
 *CodeGuard Pro — con cimientos técnicos sólidos, funcionales, seguros, comprobables y preparados para evolucionar.*
+
+
+### Continuidad ASCENSO 3.1 — etapa 9
+
+La documentación de la etapa 9 (Bases de datos relacionales y SQL) quedó desglosada en 81 encabezados de lección, distribuidos en sus siete módulos según el roadmap oficial. Incluye fundamentos, modelado, MySQL, SQL, normalización, temas avanzados y PostgreSQL. Es una base de trabajo activa: los ejemplos y laboratorios no se consideran ejecutados ni aprobados por este cambio.
+
+
+### Continuidad ASCENSO 3.1 — etapa 10
+
+La documentación de la etapa 10 (Bases de datos NoSQL y almacenamiento moderno) quedó desglosada en 38 encabezados de lección, distribuidos en sus cuatro módulos según el roadmap oficial. Se mantienen las distinciones entre modelos, consistencia, MongoDB, Redis y otras arquitecturas, junto con el proyecto híbrido. Es base de trabajo activa; los laboratorios no se declaran ejecutados ni aprobados.
+
+
+### Continuidad ASCENSO 3.1 — etapas 11 a 13
+
+Se añadieron encabezados individuales para las 212 lecciones oficiales de las etapas 11–13: etapa 11 (60), etapa 12 (89) y etapa 13 (63). El desglose conserva la secuencia y los títulos del roadmap, y se apoya en las explicaciones, proyectos, autoevaluaciones y referencias presentes en cada documento. Es base de trabajo activa; no equivale a evaluación formal, ejecución de laboratorios, aprobación editorial ni publicación.
+
+
+### Continuidad ASCENSO 3.1 — etapas 14 a 16
+
+Se incorporaron encabezados individuales para las 157 lecciones oficiales de las etapas 14–16: etapa 14 (58), etapa 15 (53) y etapa 16 (46). El desglose organiza los contenidos de Java/Spring Boot, Node.js/NestJS, PHP/Laravel y .NET según el roadmap. Es base de trabajo activa; no equivale a ejecución de laboratorios, aprobación editorial ni publicación.
+
+
+### Continuidad ASCENSO 3.1 — etapas 17 a 19
+
+Se incorporaron encabezados individuales para las 228 lecciones oficiales de las etapas 17–19: etapa 17 (61), etapa 18 (100) y etapa 19 (67). El desglose cubre calidad y testing, arquitectura y diseño, y DevOps/infraestructura según el roadmap. Es base de trabajo activa; no se declara ejecución de pruebas, pipelines ni despliegues.
+
+
+### Continuidad ASCENSO 3.1 — etapas 20 a 22
+
+Se incorporaron encabezados individuales para las 197 entradas oficiales de las etapas 20–22: etapa 20 (57), etapa 21 (82) y etapa 22 (58). Se mantuvieron las restricciones de laboratorio propio, aislado y autorizado. Es base de trabajo activa; no se declara ejecución de máquinas virtuales, pruebas ofensivas ni laboratorios.
+
+
+### Continuidad ASCENSO 3.1 — etapas 23 a 25
+
+Se incorporaron encabezados individuales para las 155 entradas curriculares de las etapas 23–25: etapa 23 (58), etapa 24 (47) y etapa 25 (50). Se mantienen las condiciones de autorización y alcance para laboratorios; el objetivo oficial vacío de la etapa 25 no fue alterado ni completado. Es base de trabajo activa, sin ejecución de herramientas ni aprobación editorial.
+
+
+### Continuidad ASCENSO 3.1 — etapas 26 a 28
+
+Se incorporaron encabezados individuales para las 143 entradas oficiales de las etapas 26–28: etapa 26 (39), etapa 27 (58) y etapa 28 (46). El desarrollo mantiene el enfoque defensivo, de monitoreo, respuesta y preservación de evidencia. Es base de trabajo activa; no se declara conexión a entornos empresariales ni ejecución de herramientas forenses o SIEM.
+
+
+### Continuidad ASCENSO 3.1 — etapas 29 a 32
+
+Se incorporaron encabezados individuales para las 275 entradas oficiales de las etapas 29–32: etapa 29 (71), etapa 30 (75), etapa 31 (75) y etapa 32 (54). Se preservaron las restricciones de seguridad cloud, pruebas autorizadas de IA y análisis aislado de malware. Es base de trabajo activa; no se declaran despliegues, análisis prácticos ni resultados laborales no realizados.
+
+
+## Cierre de continuidad ASCENSO 3.1 — 24-11-2026
+
+Se completó la pasada de continuidad documental de las 32 etapas posteriores a la etapa 0. Las etapas 11–32 cuentan con encabezados granulares por cada entrada oficial del roadmap y sus conteos se cotejaron por etapa. Esto completa la organización documental de las etapas, no la redacción profunda de las 1.916 lecciones nominales de las etapas 1–32: aún deben ampliarse teoría, ejemplos, ejercicios, referencias y evidencias prácticas. El JSON curricular permanece intacto; la etapa 25 conserva su objetivo vacío. No se importó, aprobó ni publicó contenido.
+
+
+### Desarrollo profundo y revisión editorial — etapas 1 a 10
+
+Se revisaron editorialmente los documentos de las etapas 1–10 y se cotejaron sus encabezados con el roadmap: 549/549 entradas curriculares coinciden por módulo. Se corrigieron duplicaciones, referencias impropias, orden de lecciones, compatibilidad JDK 21 y advertencias operativas. La revisión es documental interna; los ejemplos y laboratorios siguen pendientes de ejecución reproducible y segunda revisión académica. Los contenidos permanecen como base de trabajo activa, sin aprobación ni publicación.
+
+
+### Desarrollo profundo individual — etapas 11 a 13
+
+Se desarrollaron individualmente las 212 lecciones oficiales de las etapas 11–13 (60, 89 y 63 respectivamente), sustituyendo textos genéricos por explicaciones técnicas específicas, límites y criterios de aplicación. Se cotejó la cobertura con el roadmap y se comprobó que no quedaran los placeholders de granularización. Las pruebas frontend, accesibilidad, APIs y despliegue siguen pendientes; revisión interna documental, no aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 14 a 16
+
+Se desarrollaron individualmente las 157 lecciones oficiales de Java/Spring Boot, Node.js/NestJS y PHP/Laravel/.NET (58, 53 y 46). Se cotejó su cobertura con el roadmap y se eliminaron las orientaciones genéricas. Compilaciones, pruebas, migraciones y laboratorios de seguridad siguen pendientes; revisión documental interna, no aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 17 a 19
+
+Se desarrollaron individualmente las 228 lecciones oficiales de testing/calidad, arquitectura/diseño y DevOps/infraestructura (61, 100 y 67). Se cotejaron los encabezados con el roadmap y se eliminaron orientaciones genéricas. Pruebas, pipelines, despliegues y laboratorios siguen pendientes; revisión documental interna, no aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 20 a 22
+
+Se desarrollaron individualmente las 197 lecciones oficiales de AppSec, fundamentos de ciberseguridad/riesgos/ética y laboratorio/hardening (57, 82 y 58). Se verificó OWASP Top 10:2025 en su fuente oficial y se añadieron fuentes normativas colombianas con advertencia de vigencia. Las pruebas AppSec y laboratorios siguen pendientes; revisión documental interna, no aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 23 a 25
+
+Se desarrollaron individualmente las 155 lecciones oficiales de OSINT/reconocimiento, pentesting y seguridad web/APIs (58, 47 y 50). Se cotejaron conteos con el roadmap y se eliminaron textos genéricos. Las prácticas se limitan a entornos propios/autorizados; el objetivo oficial vacío de etapa 25 permanece intacto. No se ejecutaron escaneos ni se declara aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 26 a 28
+
+Se desarrollaron individualmente las 143 lecciones oficiales de Active Directory, Blue Team/SOC/SIEM y Threat Hunting/DFIR (39, 58 y 46). Se cotejaron conteos con el roadmap y se eliminaron textos genéricos. Las validaciones prácticas en dominios y laboratorios aislados siguen pendientes; revisión documental interna, no aprobación externa.
+
+
+### Desarrollo profundo individual — etapas 29 a 32
+
+Se desarrollaron individualmente las 275 lecciones oficiales de cloud/DevSecOps, IA/automatización/criptografía, bajo nivel/malware y portafolio profesional (71, 75, 75 y 54). Se cotejaron los conteos con el roadmap y se eliminaron textos genéricos. Laboratorios, despliegues y proyectos verificables siguen pendientes; revisión documental interna, no aprobación externa.
+
+
+### Estado consolidado de desarrollo individual — 24-11-2026
+
+Se completó la primera pasada de desarrollo individual de las 1.916 entradas nominales de las etapas 1–32 (549 en etapas 1–10 y 1.367 en etapas 11–32). Se registraron revisiones editoriales internas por bloque y se cotejó la correspondencia curricular. Esta fase cubre redacción individual inicial y revisión documental; no equivale a aprobación final. Siguen pendientes el cotejo bibliográfico completo, la ejecución reproducible de ejemplos/laboratorios, las pruebas de accesibilidad/seguridad y la revisión técnica-pedagógica independiente. El JSON curricular no se modificó y el objetivo de etapa 25 permanece vacío. No se importó ni publicó contenido.
+
+
+### Profundización didáctica por lección — etapa 7 (24-11-2026)
+
+Se completó una profundización documental de las 84 lecciones de la etapa 7: fundamentos de sistemas operativos (14), Linux (17), administración Linux (20), Bash (12), Windows (12) y virtualización (9). Cada lección contiene explicación específica, práctica guiada, actividad independiente, criterios de aceptación y comprobación; además se incorporan ejemplos, escenarios y precauciones operativas según el tema.
+
+Este resultado es una revisión y profundización documental interna. No significa que las prácticas se hayan ejecutado en máquinas virtuales ni que las lecciones estén validadas técnicamente por terceros. Permanecen pendientes la ejecución con evidencia, verificación bibliográfica completa y revisión experta independiente. La auditoría de continuidad contiene el alcance y las limitaciones detalladas. No se modificó el JSON oficial, no se importó ni publicó contenido.
+
+
+### Desarrollo documental individual — etapa 8 (24-11-2026)
+
+Se desarrollaron las 81 lecciones oficiales de Redes informáticas y protocolos: fundamentos (13), modelos de comunicación (9), direccionamiento (13), protocolos (16), routing/switching (10), seguridad de redes (9) y herramientas (11). Las lecciones incluyen explicación técnica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación. Las actividades de captura, escaneo y administración de red se limitan a sistemas propios o expresamente autorizados.
+
+La cobertura es documental y estructural; no se ejecutaron laboratorios ni escaneos, no se verificó exhaustivamente la bibliografía y no existe aprobación técnica independiente. La auditoría de continuidad registra alcance y límites. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
+
+
+### Desarrollo documental individual — etapa 9 (24-11-2026)
+
+Se desarrollaron las 81 lecciones oficiales de Bases de datos relacionales y SQL: fundamentos (10), modelado (11), MySQL (9), SQL (19), diseño y normalización (9), bases de datos avanzadas (15) y PostgreSQL (8). Cada lección incluye explicación específica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
+
+La cobertura es documental y estructural; no se ejecutaron motores, consultas, migraciones ni laboratorios. La validación técnica independiente y el cotejo bibliográfico exhaustivo permanecen pendientes. La auditoría de continuidad contiene el alcance y las limitaciones. El roadmap JSON no fue modificado; no se importó ni publicó contenido.
+
+
+### Desarrollo documental individual — etapa 10 (24-11-2026)
+
+Se desarrollaron las 38 lecciones oficiales de NoSQL y almacenamiento moderno: fundamentos NoSQL (8), MongoDB (14), Redis (11) y otras arquitecturas de almacenamiento (5). Cada lección incluye explicación específica, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
+
+La cobertura es documental y estructural; no se ejecutaron instancias ni laboratorios de MongoDB, Redis u otros motores. La validación técnica independiente y la revisión bibliográfica exhaustiva siguen pendientes. La auditoría de continuidad registra el alcance y los límites. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
+
+
+### Desarrollo documental individual — etapa 11 (24-11-2026)
+
+Se desarrollaron las 60 lecciones oficiales de HTML, CSS y fundamentos frontend: HTML (21), accesibilidad (8), CSS (17), diseño de interfaces (8) y SEO (6). Cada lección incluye explicación, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
+
+La cobertura es documental y estructural; no se ejecutaron pruebas de navegador, auditorías WCAG ni validaciones SEO reales. La revisión técnica independiente y el cotejo bibliográfico exhaustivo siguen pendientes. La auditoría de continuidad registra el alcance y las limitaciones. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
+
+
+### Desarrollo documental individual — etapa 12 (24-11-2026)
+
+Se desarrollaron las 89 lecciones oficiales de JavaScript, TypeScript, React y Next.js: JavaScript (19), DOM (9), asincronía (10), Web APIs (7), TypeScript (11), React (16), Next.js (10) y herramientas (7). Cada lección incluye explicación, ejemplo, práctica guiada, actividad independiente, criterios de aceptación y comprobación.
+
+La cobertura es documental y estructural; no se ejecutaron ejemplos, builds, pruebas de navegador ni laboratorios de frameworks. La validación técnica independiente, el cotejo de versiones y la revisión bibliográfica exhaustiva siguen pendientes. La auditoría de continuidad registra alcance y límites. El roadmap JSON permanece sin cambios; no se importó ni publicó contenido.
