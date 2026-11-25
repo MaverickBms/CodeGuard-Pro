@@ -105,32 +105,38 @@ class ImportacionContenidoTests(TestCase):
         self.directory = Path(self.temp.name)
         self.write_document()
 
-    def write_document(self):
-        (self.directory / "variables.json").write_text(
+    def write_document(self, name="variables.json"):
+        (self.directory / name).write_text(
             json.dumps(self.document, ensure_ascii=False), encoding="utf-8"
         )
 
-    def approve_license(self, state="compatible", use="original"):
+    def approve_license(self, state="compatible", use="original", alcance=None, evidencia=None):
         self.document["fuentes"][0]["uso_declarado"] = use
         self.write_document()
+        if alcance is None:
+            alcance = "Permite redistribución con atribución." if state == "compatible" else "Consulta técnica para elaborar contenido original."
+        if evidencia is None:
+            evidencia = "https://docs.python.org/3/license.html"
         return revisar_licencia_fuente(
             self.fuente.pk,
             actor=self.editor,
             estado=state,
-            evidencia="https://docs.python.org/3/license.html",
-            alcance="Permite redistribución con atribución." if state == "compatible" else "",
+            evidencia=evidencia,
+            alcance=alcance,
             nota="Revisión manual documentada.",
         )
 
     def test_validacion_no_escribe_en_base_de_datos(self):
+        self.approve_license()
         report = validar_directorio_contenido(self.directory)
         self.assertEqual(report["documents"], 1)
         self.assertEqual(report["valid"], 1)
         self.assertFalse(report["errors"])
         self.assertEqual(VersionContenidoLeccion.objects.count(), 0)
-        self.assertTrue(report["warnings"])
+        self.assertFalse(report["warnings"])
 
     def test_importacion_crea_solo_borrador_y_referencias(self):
+        self.approve_license()
         report = validar_directorio_contenido(self.directory)
         result = importar_documentos_validados(report, actor=self.editor)
         version = result["created"][0]
@@ -148,6 +154,7 @@ class ImportacionContenidoTests(TestCase):
             version.save()
 
     def test_reimportacion_del_mismo_hash_es_idempotente(self):
+        self.approve_license()
         report = validar_directorio_contenido(self.directory)
         first = importar_documentos_validados(report, actor=self.editor)
         second_report = validar_directorio_contenido(self.directory)
@@ -173,11 +180,11 @@ class ImportacionContenidoTests(TestCase):
         report = validar_directorio_contenido(self.directory)
         self.assertTrue(report["errors"])
 
-    def test_fuente_pendiente_bloquea_envio_a_revision(self):
+    def test_fuente_pendiente_bloquea_validacion(self):
         report = validar_directorio_contenido(self.directory)
-        version = importar_documentos_validados(report, actor=self.editor)["created"][0]
-        with self.assertRaisesMessage(ValidationError, "estado de licencia 'pendiente'"):
-            enviar_version_a_revision(version.pk, actor=self.editor)
+        self.assertTrue(report["errors"])
+        self.assertTrue(any("pendiente" in e for e in report["errors"]))
+        self.assertEqual(VersionContenidoLeccion.objects.count(), 0)
 
     def test_revision_compatible_habilita_revision_editorial(self):
         self.approve_license()
@@ -195,10 +202,8 @@ class ImportacionContenidoTests(TestCase):
     def test_solo_referencia_no_permite_adaptacion(self):
         self.approve_license(state="solo_referencia", use="adaptacion")
         report = validar_directorio_contenido(self.directory)
-        version = importar_documentos_validados(report, actor=self.editor)["created"][0]
-        with self.assertRaisesMessage(ValidationError, "solo permite contenido original"):
-            enviar_version_a_revision(version.pk, actor=self.editor)
-
+        self.assertTrue(report["errors"])
+        self.assertTrue(any("solo referencia" in e.lower() or "original" in e.lower() for e in report["errors"]))
 
     def test_cambio_posterior_de_licencia_bloquea_aprobacion_y_snapshot_es_inmutable(self):
         self.approve_license()
@@ -215,6 +220,7 @@ class ImportacionContenidoTests(TestCase):
             actor=self.editor,
             estado="solo_referencia",
             evidencia="https://docs.python.org/3/license.html",
+            alcance="Consulta para contenido original.",
             nota="Se actualizó la interpretación de los términos.",
         )
         with self.assertRaisesMessage(ValidationError, "cambió después del envío a revisión"):
@@ -232,8 +238,89 @@ class ImportacionContenidoTests(TestCase):
             )
 
     def test_usuario_sin_privilegios_no_puede_importar(self):
+        self.approve_license()
         report = validar_directorio_contenido(self.directory)
         with self.assertRaisesMessage(ValidationError, "editor activo"):
             importar_documentos_validados(report, actor=get_user_model().objects.create_user(
                 username="no_editor", password="ClaveSegura123!"
             ))
+
+    def test_licencia_requiere_permiso_bloquea_validacion(self):
+        self.approve_license(state="requiere_permiso")
+        report = validar_directorio_contenido(self.directory)
+        self.assertTrue(any("requiere_permiso" in e for e in report["errors"]))
+
+    def test_licencia_no_reutilizable_bloquea_validacion(self):
+        self.approve_license(state="no_reutilizable")
+        report = validar_directorio_contenido(self.directory)
+        self.assertTrue(any("no_reutilizable" in e for e in report["errors"]))
+
+    def test_compatible_sin_alcance_bloquea_validacion(self):
+        revisar_licencia_fuente(
+            self.fuente.pk, actor=self.editor, estado="compatible",
+            evidencia="https://docs.python.org/3/license.html",
+            alcance="Alcance temporal.", nota="ok"
+        )
+        # Simular ausencia de alcance en BD sin pasar por servicio: no permitido por servicio,
+        # así que probamos a través del servicio directamente.
+        with self.assertRaisesMessage(ValidationError, "alcance"):
+            revisar_licencia_fuente(
+                self.fuente.pk, actor=self.editor, estado="compatible",
+                evidencia="https://docs.python.org/3/license.html",
+                alcance="", nota="sin alcance"
+            )
+
+    def test_solo_referencia_sin_alcance_bloquea_revision_licencia(self):
+        with self.assertRaisesMessage(ValidationError, "alcance de consulta"):
+            revisar_licencia_fuente(
+                self.fuente.pk, actor=self.editor, estado="solo_referencia",
+                evidencia="https://docs.python.org/3/license.html",
+                alcance="", nota="sin alcance"
+            )
+
+    def test_fuente_inactiva_rechazada(self):
+        self.approve_license()
+        self.fuente.activa = False
+        self.fuente.save(update_fields=["activa"])
+        report = validar_directorio_contenido(self.directory)
+        self.assertTrue(any("inactiva" in e.lower() for e in report["errors"]))
+
+    def test_fuente_inexistente_rechazada(self):
+        self.approve_license()
+        self.document["fuentes"][0]["clave"] = "00000000-0000-0000-0000-000000000099"
+        self.write_document()
+        report = validar_directorio_contenido(self.directory)
+        self.assertTrue(any("no están registradas" in e or "registrada" in e.lower() for e in report["errors"]))
+
+    def test_fuente_sin_evidencia_o_auditoria_rechazada(self):
+        # Fuente con estado compatible pero sin auditoría: forzar estado directamente en BD no es posible por servicio;
+        # creamos fuente y la dejamos sin revisar.
+        fuente2 = FuenteConocimiento.objects.create(
+            publicador="W3C", titulo="HTML Spec",
+            url_canonica="https://html.spec.whatwg.org/", edicion="living",
+            estado_revision_licencia="compatible", activa=True,
+        )
+        self.document["fuentes"][0]["clave"] = str(fuente2.clave)
+        self.write_document()
+        report = validar_directorio_contenido(self.directory)
+        self.assertTrue(any("auditoría" in e.lower() or "evidencia" in e.lower() for e in report["errors"]))
+
+    def test_cambio_posterior_a_validacion_bloquea_importacion(self):
+        self.approve_license()
+        report = validar_directorio_contenido(self.directory)
+        self.assertFalse(report["errors"])
+        # Cambiar licencia después de validar pero antes de importar
+        revisar_licencia_fuente(
+            self.fuente.pk, actor=self.editor, estado="no_reutilizable",
+            evidencia="https://docs.python.org/3/license.html",
+            alcance="", nota="Cambio posterior."
+        )
+        with self.assertRaises(ValidationError):
+            importar_documentos_validados(report, actor=self.editor)
+        self.assertEqual(VersionContenidoLeccion.objects.count(), 0)
+
+    def test_solo_referencia_con_alcance_y_uso_original_pasa(self):
+        self.approve_license(state="solo_referencia", use="original")
+        report = validar_directorio_contenido(self.directory)
+        self.assertFalse(report["errors"])
+        self.assertEqual(report["valid"], 1)

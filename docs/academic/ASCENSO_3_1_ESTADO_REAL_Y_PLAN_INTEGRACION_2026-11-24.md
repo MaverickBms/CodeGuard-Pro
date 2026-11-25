@@ -1,3 +1,5 @@
+> **Estado documental:** Histórico/supersedido para cierre de fase. Ver `CIERRE_FASE_INTEGRACION_ASCENSO_3_1.md` para el estado final verificable.
+
 # ASCENSO 3.1 — estado documental, estado de aplicación y continuidad
 
 **Fecha de corte:** 2026-11-24  

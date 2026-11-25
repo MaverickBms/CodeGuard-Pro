@@ -19,7 +19,7 @@ class Command(BaseCommand):
             choices=["compatible", "solo_referencia", "requiere_permiso", "no_reutilizable"],
         )
         parser.add_argument("--evidencia", required=True, help="URL HTTPS o referencia verificable")
-        parser.add_argument("--alcance", default="", help="Alcance permitido; obligatorio para compatible")
+        parser.add_argument("--alcance", default="", help="Alcance permitido; obligatorio para compatible y solo_referencia")
         parser.add_argument("--nota", required=True, help="Justificación de la decisión editorial")
 
     def handle(self, *args, **options):

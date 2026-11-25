@@ -241,14 +241,43 @@ def _validate_against_database(document, filename):
     sources = {str(item.clave): item for item in FuenteConocimiento.objects.filter(clave__in=source_uuids)}
     if len(sources) != len(source_uuids):
         raise ImportContentError(f"{filename}: una o más fuentes no están registradas.")
-    inactive = [source.titulo for source in sources.values() if not source.activa]
-    if inactive:
-        raise ImportContentError(f"{filename}: contiene fuentes inactivas: {', '.join(inactive)}.")
-    warnings = [
-        f"Fuente '{sources[item['clave']].titulo}' con licencia '{sources[item['clave']].estado_revision_licencia}'."
-        for item in document["fuentes"]
-        if sources[item["clave"]].estado_revision_licencia != "compatible"
-    ]
+
+    for item in document["fuentes"]:
+        source = sources[item["clave"]]
+        use = item["uso_declarado"]
+        state = source.estado_revision_licencia
+        if not source.activa:
+            raise ImportContentError(f"{filename}: la fuente '{source.titulo}' está inactiva.")
+        if state in {"pendiente", "requiere_permiso", "no_reutilizable"}:
+            raise ImportContentError(
+                f"{filename}: la fuente '{source.titulo}' tiene estado de licencia '{state}' y no puede superar la validación."
+            )
+        if not (source.revisada_por_id and source.revisada_en and source.evidencia_licencia):
+            raise ImportContentError(
+                f"{filename}: la fuente '{source.titulo}' carece de evidencia y auditoría de licencia revisadas."
+            )
+        if state == "compatible":
+            if not source.alcance_licencia.strip():
+                raise ImportContentError(
+                    f"{filename}: la fuente '{source.titulo}' es compatible pero no documenta el alcance autorizado."
+                )
+            if use not in SOURCE_USES:
+                raise ImportContentError(f"{filename}: uso declarado no permitido para '{source.titulo}'.")
+        elif state == "solo_referencia":
+            if not source.alcance_licencia.strip():
+                raise ImportContentError(
+                    f"{filename}: la fuente '{source.titulo}' es solo referencia pero no documenta el alcance de consulta."
+                )
+            if use != "original":
+                raise ImportContentError(
+                    f"{filename}: la fuente '{source.titulo}' es solo referencia y solo permite uso 'original'."
+                )
+        else:
+            raise ImportContentError(
+                f"{filename}: estado de licencia no admitido para importación: '{state}'."
+            )
+
+    warnings = []
     return lesson, sources, warnings
 
 

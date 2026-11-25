@@ -1,3 +1,5 @@
+> **Estado documental:** Histórico. Para el cierre verificable de la fase de integración técnica, ver `CIERRE_FASE_INTEGRACION_ASCENSO_3_1.md`.
+
 # Auditoría de continuidad académica ASCENSO 3.1
 
 **Fecha:** 2026-11-19  

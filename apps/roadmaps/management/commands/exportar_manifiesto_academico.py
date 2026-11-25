@@ -226,8 +226,8 @@ class Command(BaseCommand):
             raise CommandError("La ruta de salida no puede ser un enlace simbólico.")
         if path.exists():
             raise CommandError("El archivo de salida ya existe; elija otra ruta.")
-        if not path.parent.exists() or not path.parent.is_dir():
-            raise CommandError("El directorio de salida debe existir.")
+        if path.parent.is_symlink() or not path.parent.exists() or not path.parent.is_dir():
+            raise CommandError("El directorio de salida debe existir y no puede ser symlink.")
         try:
             with path.open("x", encoding="utf-8", newline="\n") as handle:
                 handle.write(rendered)

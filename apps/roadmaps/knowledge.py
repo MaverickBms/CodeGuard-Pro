@@ -193,11 +193,16 @@ def _validar_version_para_revision(version: VersionContenidoLeccion) -> None:
             raise ValidationError(
                 f"La fuente '{fuente.titulo}' no documenta el alcance de reutilización."
             )
-        if estado == "solo_referencia" and referencia.uso_declarado != "original":
-            raise ValidationError(
-                f"La fuente '{fuente.titulo}' solo permite contenido original; "
-                "no se admiten citas, adaptaciones ni reproducciones."
-            )
+        if estado == "solo_referencia":
+            if not fuente.alcance_licencia.strip():
+                raise ValidationError(
+                    f"La fuente '{fuente.titulo}' es solo referencia y debe documentar el alcance de consulta."
+                )
+            if referencia.uso_declarado != "original":
+                raise ValidationError(
+                    f"La fuente '{fuente.titulo}' solo permite contenido original; "
+                    "no se admiten citas, adaptaciones ni reproducciones."
+                )
         if version.estado != "borrador":
             snapshot_licencia = (
                 referencia.estado_licencia_snapshot,
@@ -360,6 +365,8 @@ def revisar_licencia_fuente(
         raise ValidationError("La evidencia debe ser una URL HTTPS absoluta sin credenciales.")
     if estado == "compatible" and not alcance:
         raise ValidationError("La reutilización compatible exige documentar su alcance.")
+    if estado == "solo_referencia" and not alcance:
+        raise ValidationError("La revisión solo_referencia exige documentar el alcance de consulta.")
     fuente = FuenteConocimiento.objects.select_for_update().get(pk=fuente_id)
     fuente.estado_revision_licencia = estado
     fuente.evidencia_licencia = evidencia
