@@ -178,7 +178,7 @@ No se declararon PASS pruebas no ejecutadas.
 
 ## 11. Commit final y estado de CI
 
-- Commit final: ver §Entrega en el informe de cierre de la intervención (se registrará tras commit).
+- Commit final: `8dc5975` (contenido) + commit de documentación de cierre (este documento actualizado).
 - CI: existe `.github/workflows/ci.yml` en la rama. El estado de CI del commit final debe verificarse tras push; no se atribuyen resultados de commits anteriores al HEAD nuevo. Si no se dispara automáticamente, revisar triggers del workflow para la rama/PR.
 
 ## 12. Limitaciones reales fuera de esta fase
