@@ -3,7 +3,8 @@
 - **Fecha:** 2026-11-24
 - **Rama:** `content/ascenso-stage-0-learning-method`
 - **PR:** #14 (borrador, sin fusionar)
-- **Estado:** **CERRADA CON BLOQUEOS EXTERNOS DOCUMENTADOS** (ver §12 y §13)
+- **Estado:** **CERRADA CON BLOQUEOS EXTERNOS DOCUMENTADOS** (ver §13 y §14)
+- **Actualización de cierre final:** 2026-11-24 — pendientes 1-4 atendidos con evidencia; persisten bloqueos externos editoriales/DB-scope.
 
 > Este documento es el cierre único de la fase de preparación e integración técnica de ASCENSO 3.1. Sustituye como referencia operativa los informes de continuidad previos para esta fase; esos documentos se conservan como historial.
 
@@ -76,6 +77,10 @@ Distinción requerida:
 - **Contenido publicado:** 0.
 
 ## 5. Resultado de la auditoría de fuentes y licencias
+
+Matriz detallada: `docs/academic/MATRIZ_LICENCIAS_FUENTES_ASCENSO_3_1.md` (13/13 fuentes investigadas; clasificación conservadora basada en evidencia accesible; sin cambios en BD).
+
+**Conclusión de auditoría:** completada y verificable. **Conclusión operativa:** 12/13 fuentes quedan restringidas (`requiere_permiso`/`pendiente`) para reutilización; 1/13 (`Facione`, ERIC ED315423) es viable como `solo_referencia` con alcance explícito, pero su alcance no está documentado en BD, por lo que el validador técnico la rechaza hasta revisión editorial autorizada.
 
 ### Hallazgos
 1. **Política anterior insuficiente:** la validación permitía pasar con advertencia para fuentes no `compatible`; la revisión de licencia se aplicaba principalmente al enviar a revisión. Corregido.
@@ -151,14 +156,13 @@ Los commits existen en `release/1.0.0-final` (historial Git). El worktree acadé
 
 ## 9. Paquete piloto y resultado de validación
 
-- Paquete: `etapa-00-modulo-0.1-leccion-01-aprendizaje-activo.json` (Etapa 0, Módulo 0.1, Lección 1).
-- Ubicación privada: `/tmp/opencode/private_ascenso/piloto/` (fuera del repo, no committed).
-- SHA-256 del paquete: `ef346af25b5a09d1462062a37ec46f81aba764ade60e3d3ca77a145863a1831d`.
-- Contenido: coherente con lección real, UUID reales de lección/ejemplo/ejercicios/fuente desde manifiesto, esquema JSON v1, uso declarado `original`.
-- Validación oficial contra DB real (solo lectura): **FALLA ESPERADA POR DATOS DB** — la fuente real referenciada es `solo_referencia`, activa, con evidencia/auditoría, pero sin `alcance_licencia`; la nueva política la rechaza correctamente.
-- No se ejecutó `importar_paquete_contenido`. No se escribió en la base de datos.
+- **Paquete original conservado como evidencia:** `etapa-00-modulo-0.1-leccion-01-aprendizaje-activo.json` (Etapa 0, Módulo 0.1, Lección 1, “Aprendizaje activo.”). SHA-256: `ef346af25b5a09d1462062a37ec46f81aba764ade60e3d3ca77a145863a1831d`.
+- **Estructura:** JSON v1 válido en forma, UUID reales de lección/ejemplo/ejercicios/fuente desde manifiesto privado, contenido original, uso declarado `original`, sin importación.
+- **Validación oficial contra DB real (solo lectura, `validar_paquete_contenido`):** **NO SUPERA** la validación por política de fuentes. Error: la fuente real referenciada es `solo_referencia` activa con evidencia/auditoría pero sin `alcance_licencia` documentado. El validador la rechaza correctamente.
+- **Alternativa:** no es posible construir un paquete piloto que supere la validación completa contra la DB real sin modificar registros de fuentes (prohibido) ni inventar UUID/fuentes (prohibido). Las 13 fuentes registradas carecen de alcance documentado en BD; el contrato exige ≥1 fuente registrada y autorizada. No se debilitó la política.
+- **No se ejecutó** `importar_paquete_contenido`. **No se escribió** en la base de datos.
 
-Conclusión: el paquete es estructuralmente correcto; la validación falla por incumplimiento de la política de alcance en datos de fuente existentes en DB, no por defecto del paquete ni del validador. La corrección de alcance requiere decisión editorial y actualización de fuente por flujo autorizado (fuera de esta fase, sin escritura en esta intervención).
+Conclusión: bloqueo externo/editorial. El paquete es correcto y la política funciona; el paso pendiente es revisión editorial autorizada de licencias/alcances en BD.
 
 ## 10. Pruebas ejecutadas y resultados
 
@@ -178,10 +182,21 @@ No se declararon PASS pruebas no ejecutadas.
 
 ## 11. Commit final y estado de CI
 
-- Commit final: `8dc5975` (contenido) + commit de documentación de cierre (este documento actualizado).
-- CI: existe `.github/workflows/ci.yml` en la rama. El estado de CI del commit final debe verificarse tras push; no se atribuyen resultados de commits anteriores al HEAD nuevo. Si no se dispara automáticamente, revisar triggers del workflow para la rama/PR.
+- **HEAD final:** `122f0a6fa5611a1f0c505a1c8d6f85fb692051c4` — `docs(ascenso): registrar hash de commit en cierre de fase`
+- **Commit de contenido:** `8dc59754f7e59a4b5d9b5adf8f2c2a6b8df7f5ad`
+- **CI verificada (GitHub Actions):** run `45522620733` — `CodeGuard Pro CI`, evento `push`, rama `content/ascenso-stage-0-learning-method`, SHA `122f0a6fa5611a1f0c505a1c8d6f85fb692051c4`, conclusión **success**.
+  - URL: https://github.com/MaverickBms/CodeGuard-Pro/actions/runs/45522620733
+  - Jobs: `Django checks and test suite` (success), `PyInstaller server build and smoke test` (success), `Electron IPC unit tests` (success), `Windows x64 package` (skipped por condición de workflow: solo workflow_dispatch/PR/release/1.0.0; no es fallo).
+- No se atribuyen resultados de commits anteriores al HEAD nuevo.
 
-## 12. Limitaciones reales fuera de esta fase
+## 12. Preservación privada de artefactos
+
+- **Ubicación privada persistente (fuera del repo):** `~/.local/share/codeguard-pro/ascenso_3_1/` (permisos 700/600).
+- **Contenido:** `manifiesto/` (manifiesto privado), `piloto/` (paquete piloto), `evidencias/` (matriz de licencias, inventario), `checksums/SHA256SUMS.txt`.
+- **Verificación:** hashes SHA-256 calculados y verificados (`sha256sum -c` OK). Archivos originales en `/tmp/opencode/private_ascenso/` no eliminados por la copia.
+- **Git:** la ubicación está fuera del repositorio; `git status` limpio respecto a estos artefactos.
+
+## 13. Limitaciones reales fuera de esta fase
 
 1. **Fuentes DB sin `alcance_licencia`:** 13/13 fuentes `solo_referencia` carecen de alcance. Hasta que se revise su licencia con alcance documentado por el flujo editorial autorizado, los paquetes que las referencien no pasarán la validación estricta.
 2. **Divergencia `library` app:** DB tiene `library.0002` aplicada; la app no está en esta rama. Requiere decisión de integración de rama.
@@ -189,7 +204,7 @@ No se declararon PASS pruebas no ejecutadas.
 4. **Validación profunda 1.946 lecciones:** no realizada (pedagógica/técnica/ejecución/referencias). La presencia estructural no equivale a aprobación.
 5. **CI del commit final:** pendiente de ejecución/confirmación tras push.
 
-## 13. Procedimiento concreto para la siguiente fase editorial
+## 14. Procedimiento concreto para la siguiente fase editorial
 
 1. **Revisar licencias de fuentes** (flujo autorizado, con evidencia y alcance): completar `alcance_licencia` para fuentes `solo_referencia`/`compatible` según corresponda, sin modificar datos fuera del flujo auditado.
 2. **Revalidar paquete piloto** contra DB real tras actualizar alcance de fuente; confirmar PASS.
