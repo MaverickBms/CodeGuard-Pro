@@ -182,10 +182,10 @@ No se declararon PASS pruebas no ejecutadas.
 
 ## 11. Commit final y estado de CI
 
-- **HEAD final:** `122f0a6fa5611a1f0c505a1c8d6f85fb692051c4` — `docs(ascenso): registrar hash de commit en cierre de fase`
-- **Commit de contenido:** `8dc59754f7e59a4b5d9b5adf8f2c2a6b8df7f5ad`
-- **CI verificada (GitHub Actions):** run `45522620733` — `CodeGuard Pro CI`, evento `push`, rama `content/ascenso-stage-0-learning-method`, SHA `122f0a6fa5611a1f0c505a1c8d6f85fb692051c4`, conclusión **success**.
-  - URL: https://github.com/MaverickBms/CodeGuard-Pro/actions/runs/45522620733
+- **HEAD final verificado:** `ce9e4b7a8c9e1a75bc070c574c02ff17084b8960` — `docs(ascenso): cerrar pendientes de integración con matriz de licencias y evidencia CI`
+- **Commits previos de la fase:** `8dc59754f7e59a4b5d9b5adf8f2c2a6b8df7f5ad` (contenido), `122f0a6fa5611a1f0c505a1c8d6f85fb692051c4` (documentación de cierre).
+- **CI verificada (GitHub Actions):** run `45528884424` — `CodeGuard Pro CI`, evento `push`, rama `content/ascenso-stage-0-learning-method`, SHA `ce9e4b7a8c9e1a75bc070c574c02ff17084b8960`, conclusión **success**.
+  - URL: https://github.com/MaverickBms/CodeGuard-Pro/actions/runs/45528884424
   - Jobs: `Django checks and test suite` (success), `PyInstaller server build and smoke test` (success), `Electron IPC unit tests` (success), `Windows x64 package` (skipped por condición de workflow: solo workflow_dispatch/PR/release/1.0.0; no es fallo).
 - No se atribuyen resultados de commits anteriores al HEAD nuevo.
 
@@ -198,11 +198,11 @@ No se declararon PASS pruebas no ejecutadas.
 
 ## 13. Limitaciones reales fuera de esta fase
 
-1. **Fuentes DB sin `alcance_licencia`:** 13/13 fuentes `solo_referencia` carecen de alcance. Hasta que se revise su licencia con alcance documentado por el flujo editorial autorizado, los paquetes que las referencien no pasarán la validación estricta.
-2. **Divergencia `library` app:** DB tiene `library.0002` aplicada; la app no está en esta rama. Requiere decisión de integración de rama.
-3. **Contenido editorial masivo no importado:** 1946 lecciones documentadas en Markdown, pero solo 8 borradores en DB y 0 publicadas. La importación es una fase editorial posterior.
-4. **Validación profunda 1.946 lecciones:** no realizada (pedagógica/técnica/ejecución/referencias). La presencia estructural no equivale a aprobación.
-5. **CI del commit final:** pendiente de ejecución/confirmación tras push.
+1. **Alcances de licencia pendientes en BD (bloqueo externo):** 13/13 fuentes registradas carecen de `alcance_licencia` documentado en BD. Hasta que se revise cada fuente por el flujo editorial autorizado (`revisar_licencia_fuente`) con evidencia y alcance, los paquetes que las referencien no pasarán la validación estricta. La investigación documental no equivale a actualización de BD.
+2. **Evidencia específica/permisos de titulares no verificados (bloqueo externo):** la matriz clasificó conservadoramente 12/13 fuentes como `requiere_permiso`/`pendiente` y 1/13 como `solo_referencia` viable solo para consulta sin reproducción. La clasificación documental no constituye autorización legal ni permiso de reproducción/adaptación.
+3. **Divergencia `library` app/migración (bloqueo externo):** la DB real tiene `library.0002` aplicada; la app `library` no está presente en esta rama. Requiere decisión de integración de rama.
+4. **Contenido editorial masivo no importado:** 1946 lecciones documentadas estructuralmente en Markdown, pero solo 8 borradores en DB y 0 aprobadas/publicadas. La importación es una fase editorial posterior.
+5. **Validación profunda 1.946 lecciones:** no realizada (pedagógica/técnica/ejecución/referencias). La presencia estructural no equivale a aprobación.
 
 ## 14. Procedimiento concreto para la siguiente fase editorial
 
